@@ -4343,6 +4343,7 @@
     <Content Include="Views\RptExecutiveSummary\Odometer.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListOdometer.cshtml" />
     <Content Include="Views\RptCfmIdle\_ListCfmIdleVehicle.cshtml" />
+    <Content Include="Views\RptFuel\_ListFuel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

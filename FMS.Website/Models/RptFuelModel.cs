@@ -10,15 +10,17 @@ namespace FMS.Website.Models
     {
         public RptFuelModel()
         {
-            Details = new List<RptFuelItem>();
+            RptFuelItem = new List<RptFuelItem>();
             //SearchViewExport = new VehicleSearchViewExport();
             SearchView = new RptFuelSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.YearFrom = DateTime.Now.Year;
         }
-        public List<RptFuelItem> Details { get; set; }
+        public List<RptFuelItem> RptFuelItem { get; set; }
         public RptFuelSearchView SearchView { get; set; }
+        public RptFuelSearchViewExport SearchViewExport { get; set; }
         public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
     }
 
     public class RptFuelItem
@@ -27,6 +29,8 @@ namespace FMS.Website.Models
         public string PoliceNumber { get; set; }
         public int Liter { get; set; }
         public Decimal Odometer { get; set; }
+        public Decimal Usage { get; set; }
+        public Decimal kmlt { get; set; }
         public Decimal Cost { get; set; }
         public string FuelType { get; set; }
         public string CostCenter { get; set; }
@@ -38,6 +42,7 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
         public string Location { get; set; }
+        public string Regional { get; set; }
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
         public DateTime? CreatedDate { get; set; }
@@ -48,8 +53,10 @@ namespace FMS.Website.Models
         public int MonthFrom { get; set; }
         public int YearFrom { get; set; }
         public string VehicleType { get; set; }
-        public string SupplyMethod { get; set; }
+        public string CostCenter { get; set; }
         public string Function { get; set; }
+        public string Regional { get; set; }
+        public string PoliceNumber { get; set; }
 
         public SelectList MonthList
         {
@@ -77,6 +84,19 @@ namespace FMS.Website.Models
         }
 
         public SelectList VehicleTypeList { get; set; }
-        public SelectList CostCenter { get; set; }
+        public SelectList CostCenterList { get; set; }
+        public SelectList FunctionList { get; set; }
+        public SelectList RegionalList { get; set; }
+    }
+
+    public class RptFuelSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int YearFrom { get; set; }
+        public string VehicleType { get; set; }
+        public string CostCenter { get; set; }
+        public string Function { get; set; }
+        public string Regional { get; set; }
+        public string PoliceNumber { get; set; }
     }
 }

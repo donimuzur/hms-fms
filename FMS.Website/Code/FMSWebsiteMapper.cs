@@ -22,7 +22,8 @@ namespace FMS.Website.Code
 	        InitializeCAF();
             InitializeExecutiveSummary();
             InitializeCfmIdleReport();
-            
+            InitializeRptFuel();
+
             Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
                 .ForMember(dest => dest.ActionDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))

@@ -35,7 +35,7 @@
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
           </Key>
-          <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PO_NUMBER" Type="varchar" MaxLength="20" />
           <Property Name="PO_DATE" Type="datetime" />
           <Property Name="CREATED_DATE" Type="datetime" />
@@ -45,7 +45,7 @@
           <Key>
             <PropertyRef Name="AUTO_GR_DETAIL_ID" />
           </Key>
-          <Property Name="AUTO_GR_DETAIL_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_DETAIL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
           <Property Name="LINE_ITEM" Type="int" />
           <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
@@ -113,6 +113,7 @@
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
+          <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="KPI_REPORT_DATA">
           <Key>
@@ -701,13 +702,13 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
-          <Property Name="MST_FLEET_ID" Type="bigint" />
           <Property Name="START_CONTRACT" Type="datetime" />
           <Property Name="END_CONTRACT" Type="datetime" />
           <Property Name="VENDOR" Type="nvarchar" MaxLength="100" />
           <Property Name="MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GST" Type="decimal" Precision="18" Scale="2" />
           <Property Name="TOTAL_MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="SALES_BY_REGION_REPORT_DATA">
           <Key>
@@ -823,18 +824,18 @@
           <Property Name="TRA_CCF_ID" Type="bigint" Nullable="false" />
           <Property Name="COMPLAINT_DATE" Type="date" />
           <Property Name="COMPLAINT_NOTE" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="COMPLAINT_ATT" Type="nvarchar" MaxLength="100" />
           <Property Name="COORDINATOR_RESPONSE_DATE" Type="date" />
           <Property Name="COORDINATOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="COORDINATOR_PROMISED_DATE" Type="date" />
+          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="COORDINATOR_ATT" Type="nvarchar" MaxLength="100" />
           <Property Name="VENDOR_RESPONSE_DATE" Type="date" />
           <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="VENDOR_PROMISED_DATE" Type="date" />
-          <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
-          <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
-          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
           <Property Name="VENDOR_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -968,8 +969,8 @@
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
-          <Property Name="FLEXBEN" Type="int" />
           <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="FLEXBEN" Type="int" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -3567,6 +3568,7 @@
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MST_FLEET_ID" Type="Int64" />
+          <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="KPI_REPORT_DATA">
           <Key>
@@ -4758,6 +4760,7 @@
           <EntitySetMapping Name="FUEL_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.FUEL_REPORT_DATA">
               <MappingFragment StoreEntitySet="FUEL_REPORT_DATA">
+                <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
                 <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />

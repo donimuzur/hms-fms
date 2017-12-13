@@ -12,19 +12,19 @@
     </a>
 </div>
 <section class="content">
-    @*@using (Html.BeginForm(Model.TitleExport, "RptFuel", FormMethod.Post, new { @id = "ExportToXls" }))
-    {*@
-        @*@Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
+   @using (Html.BeginForm(Model.TitleExport, "RptFuel", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
         @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
         @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
-        @Html.HiddenFor(model => model.SearchViewExport.SupplyMethod)
-        @Html.HiddenFor(model => model.SearchViewExport.Function)*@
-    @* } *@
+        @Html.HiddenFor(model => model.SearchViewExport.Function)
+        @Html.HiddenFor(model => model.SearchViewExport.Regional)
+        @Html.HiddenFor(model => model.SearchViewExport.PoliceNumber)
+    }
     <div class="wpanel">
+        <p>@Model.ErrorMessage</p>
         <div class="row">
-            @using (Ajax.BeginForm("FilterNoVehicle", "RptFuel",
+            @using (Ajax.BeginForm("FilterFuel", "RptFuel",
                 new AjaxOptions
                 {
                     HttpMethod = "POST",
@@ -48,13 +48,31 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Cost Center</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                        @Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "ALL", new { @class = "form-control select" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Vehicle Type</label>
                         @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Function</label>
+                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Regional</label>
+                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Police Number</label>
+                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control text" })
                     </div>
                 </div>
                     <div class="clearfix"></div>
@@ -66,83 +84,18 @@
                 </div>
     </div>
     <div id="contenttable" class="wpanel">
-        <table id="tbRptFuel" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Police Number</th>
-                    <th>Liter</th>
-                    <th>Odometer</th>
-                    <th>Cost</th>
-                    <th>Fuel Type</th>
-                    <th>Cost Center</th>
-                    <th>Function</th>
-                    <th>Manufacturer</th>
-                    <th>Model</th>
-                    <th>Series</th>
-                    <th>Body Type</th>
-                    <th>Vehicle Type</th>
-                    <th>Vehicle Usage</th>
-                    <th>Location</th>
-                    <th>Report Month</th>
-                    <th>Report Year</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
-                {
-                    <tr>
-                        <td>@Html.Raw(data.PoliceNumber)</td>
-                        <td>@Html.Raw(data.Liter)</td>
-                        <td>@Html.Raw(data.Odometer)</td>
-                        <td>@Html.Raw(data.Cost)</td>
-                        <td>@Html.Raw(data.FuelType)</td>
-                        <td>@Html.Raw(data.CostCenter)</td>
-                        <td>@Html.Raw(data.Function)</td>
-                        <td>@Html.Raw(data.Manufacturer)</td>
-                        <td>@Html.Raw(data.Models)</td>
-                        <td>@Html.Raw(data.Series)</td>
-                        <td>@Html.Raw(data.BodyType)</td>
-                        <td>@Html.Raw(data.VehicleType)</td>
-                        <td>@Html.Raw(data.VehicleUsage)</td>
-                        <td>@Html.Raw(data.Location)</td>
-                        <td>@Html.Raw(data.ReportMonth)</td>
-                        <td>@Html.Raw(data.ReportYear)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @Html.Partial("_ListFuel")
     </div>
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
     function ExportXls() {
         $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
         $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
-        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
         $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
-        $('#SearchViewExport_SupplyMethod').val($('#SearchView_SupplyMethod').val());
         $('#SearchViewExport_Function').val($('#SearchView_Function').val());
+        $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
+        $('#SearchViewExport_PoliceNumber').val($('#SearchView_PoliceNumber').val());
         $('#ExportToXls').submit();
     }
 
