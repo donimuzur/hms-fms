@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="69d3f7c11adf45949818cf198c617c54" Name="Diagram1" ZoomLevel="56">
+        <EntityTypeShape EntityType="DFISModelEntities.MasterDynamicField" Width="1.5" PointX="7.375" PointY="8.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterFunction" Width="1.5" PointX="15.125" PointY="8.5" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterList" Width="1.5" PointX="0.5" PointY="4.125" />
+        <EntityTypeShape EntityType="DFISModelEntities.GenBuildingFacility" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.tm_location" Width="1.5" PointX="7.375" PointY="2.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterConfiguration" Width="1.5" PointX="3.375" PointY="4.125" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterConfigurationEmail" Width="1.5" PointX="7.375" PointY="5.375" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransactionLog" Width="1.5" PointX="12" PointY="6.5" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransactionLog_MasterFunction" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterUser" Width="1.5" PointX="23.5" PointY="4.5" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransactionLog_MasterUser" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterConvertionPointSS" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterRole" Width="1.5" PointX="17.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterRolesFunctionMapping" Width="1.5" PointX="15.125" PointY="4.375" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterUserRoleMapping" Width="1.5" PointX="20.625" PointY="4.625" />
+        <AssociationConnector Association="DFISModelEntities.FK_MasterRolesFunctionMapping_MasterFunction" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="DFISModelEntities.FK_MasterRolesFunctionMapping_MasterRole" />
+        <AssociationConnector Association="DFISModelEntities.FK_MasterUserRoleMapping_MasterRole" />
+        <AssociationConnector Association="DFISModelEntities.FK_MasterUserRoleMapping_MasterUser" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterEquipmentType" Width="1.5" PointX="25.75" PointY="8.875" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterHoliday" Width="1.5" PointX="0.5" PointY="11.375" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterIconFacility" Width="1.5" PointX="11.75" PointY="10.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterTransportRegion" Width="1.5" PointX="3.375" PointY="11.375" />
+        <EntityTypeShape EntityType="DFISModelEntities.NotificationSystem" Width="1.5" PointX="25.75" PointY="4.875" />
+        <AssociationConnector Association="DFISModelEntities.FK_NotificationSystem_MasterUser" />
+        <EntityTypeShape EntityType="DFISModelEntities.UserRolesSecurityView" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIVehicleDeliveryProcess" Width="1.5" PointX="18.875" PointY="13.875" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIInputSVView" Width="1.5" PointX="11.875" PointY="14.375" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIInventoryAccuracy" Width="1.5" PointX="21.125" PointY="13.875" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIDistributionCostSV" Width="1.5" PointX="7.375" PointY="15.375" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIProductivityDetail" Width="1.5" PointX="16.75" PointY="13.875" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralContImproveSandBag" Width="1.5" PointX="23.375" PointY="13.625" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIVehicleDeliveryProcessView" Width="1.5" PointX="3.375" PointY="18.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIInventoryAccuracyView" Width="1.5" PointX="5.375" PointY="19.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIDistributionCost" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPITotalRecordableInjury" Width="1.5" PointX="21.125" PointY="8.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterMapping" Width="1.5" PointX="13.375" PointY="1.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIDistributionCostView" Width="1.5" PointX="17.375" PointY="1.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterFABrand" Width="1.5" PointX="11.375" PointY="19.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterLoadFactorCFP" Width="1.5" PointX="13.375" PointY="19.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIInventoryRegionAccuracyView" Width="1.5" PointX="19.375" PointY="17.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterKPIColorSummary" Width="1.5" PointX="15.375" PointY="19.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIOvertimeAboveRegulation" Width="1.5" PointX="0.75" PointY="21.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIOvertime" Width="1.5" PointX="21.375" PointY="19.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterRoleFunctionTreeListView" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterUserLocationMapTreeListView" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralRecognitionHistory" Width="1.5" PointX="17.375" PointY="22.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIUploadedEmployee" Width="1.5" PointX="23.375" PointY="19.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPISummaryReport" Width="1.5" PointX="7.375" PointY="19.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.NewsHighlight" Width="1.5" PointX="12.375" PointY="24.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterGuideline" Width="1.5" PointX="14.375" PointY="26.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralSafeIntegration" Width="1.5" PointX="21.125" PointY="26.375" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseTempHumidity" Width="1.5" PointX="28" PointY="12.125" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseTempHumidity_MasterEquipmentType" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterLocation" Width="1.5" PointX="3.125" PointY="23.625" />
+        <AssociationConnector Association="DFISModelEntities.FK_GeneralContImproveSandBag_MasterLocation" />
+        <AssociationConnector Association="DFISModelEntities.FK_GeneralSafeIntegration_MasterLocation" />
+        <AssociationConnector Association="DFISModelEntities.FK_KPIInventoryAccuracy_MasterLocation" />
+        <AssociationConnector Association="DFISModelEntities.FK_KPITotalRecordableInjury_MasterLocation" />
+        <AssociationConnector Association="DFISModelEntities.FK_MasterEquipmentType_MasterLocation" />
+        <AssociationConnector Association="DFISModelEntities.FK_Location_ParentLocation" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseTempHumidity_MasterLocation" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportVehicleData" Width="1.5" PointX="5.375" PointY="24.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIProductivity" Width="1.5" PointX="14.5" PointY="13.375" />
+        <AssociationConnector Association="DFISModelEntities.FK_KPIProductivityDetail_KPIProductivity1" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralBuildingFacilityDetail" Width="1.5" PointX="9.625" PointY="6" />
+        <AssociationConnector Association="DFISModelEntities.FK__GeneralBu__IDDyn__0E990F48" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPISugestionSystemView" Width="1.5" PointX="17.375" PointY="8.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralBuildingFacility" Width="1.5" PointX="5.375" PointY="35.875" />
+        <AssociationConnector Association="DFISModelEntities.FK__GeneralBu__IDBui__163A3110" />
+        <AssociationConnector Association="DFISModelEntities.FK__GeneralBu__IDLoc__135DC465" />
+        <EntityTypeShape EntityType="DFISModelEntities.General5SMonitoring" Width="1.5" PointX="5.375" PointY="41.375" />
+        <AssociationConnector Association="DFISModelEntities.FK_General5SMonitoring_MasterLocation" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportDriverManagement" Width="1.5" PointX="9.625" PointY="38.625" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseBeetleMonitoring" Width="1.5" PointX="28" PointY="17" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseBeetleMonitoring_MasterEquipmentType" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseBeetleMonitoring_MasterLocation" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportLostClaimFACode" Width="1.5" PointX="29.625" PointY="24.25" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportLostClaimUploadBox" Width="1.5" PointX="29.625" PointY="30.5" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransportLostClaimFACode_MasterFABrand" />
+        <EntityTypeShape EntityType="DFISModelEntities.BuildingFacilityListView" Width="1.5" PointX="7.375" PointY="24.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseSealStock" Width="1.5" PointX="5.375" PointY="46.625" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseSealStock_MasterLocation" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseSealManagement" Width="1.5" PointX="31" PointY="16.875" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseSealManagement_MasterEquipmentType" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseSealManagement_MasterLocation" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterGenWeek" Width="1.5" PointX="9.375" PointY="24.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterZoneLocation" Width="1.5" PointX="5.375" PointY="51.375" />
+        <AssociationConnector Association="DFISModelEntities.FK__MasterZon__IDLoc__357DD23F" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportLostClaimDamage" Width="1.5" PointX="27.375" PointY="23.875" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransportLostClaimFACode_TransportLostClaimDamage" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransportLostClaimUploadBoxes_TransportLostClaimDamage" />
+        <EntityTypeShape EntityType="DFISModelEntities.CustomReportState" Width="1.5" PointX="25.75" PointY="0.75" />
+        <AssociationConnector Association="DFISModelEntities.FK_CustomReportState_MasterUser" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseStockForecast" Width="1.5" PointX="5.375" PointY="68.25" />
+        <AssociationConnector Association="DFISModelEntities.FK__Warehouse__IDLoc__621B6E8C" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPILoadFactorCFP" Width="1.5" PointX="0.75" PointY="27.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.HRD_EMP_V2" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterLeadTime" Width="1.5" PointX="5.375" PointY="73.5" />
+        <AssociationConnector Association="DFISModelEntities.FK__MasterLea__Locat__2FC4F8E9" />
+        <AssociationConnector Association="DFISModelEntities.FK__MasterLea__Locat__30B91D22" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterMappingLocationPercentage" Width="1.5" PointX="5.375" PointY="55.5" />
+        <AssociationConnector Association="DFISModelEntities.FK__MasterMap__Locat__272FB2E8" />
+        <AssociationConnector Association="DFISModelEntities.FK__MasterMap__Locat__2823D721" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralBuildingFacilityView" Width="1.5" PointX="3.375" PointY="7.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterFGStacking" Width="1.5" PointX="5.375" PointY="60.5" />
+        <AssociationConnector Association="DFISModelEntities.FK_MasterFGStacking_MasterLocation" />
+        <EntityTypeShape EntityType="DFISModelEntities.GPDetail" Width="1.5" PointX="16.375" PointY="27.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.GPHeader" Width="1.5" PointX="18.375" PointY="27.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.SJDetail" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralContImprovSS" Width="1.5" PointX="23.375" PointY="26.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralBuildingFacilityIcon" Width="1.5" PointX="14" PointY="30.25" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralBuildingFacilityImage" Width="1.5" PointX="7.625" PointY="59" />
+        <EntityTypeShape EntityType="DFISModelEntities.GeneralBuildingFacilityMap" Width="1.5" PointX="7.625" PointY="62.25" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPILoadFactorPercentage" Width="1.5" PointX="3.375" PointY="30.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.KPIOvertimeTotalEmp" Width="1.5" PointX="30.375" PointY="11.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.SchemaVersion" Width="1.5" PointX="5.375" PointY="12.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.sysdiagram" Width="1.5" PointX="7.375" PointY="12.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportSealNumber" Width="1.5" PointX="32.375" PointY="25.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportUnitFrequentData" Width="1.5" PointX="28.375" PointY="6" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseStockDetail" Width="1.5" PointX="5.375" PointY="77.875" />
+        <EntityTypeShape EntityType="DFISModelEntities.tm_location_item" Width="1.5" PointX="32.375" PointY="29.75" />
+        <AssociationConnector Association="DFISModelEntities.FK__GeneralBu__IDBui__1A0AC1F4" />
+        <AssociationConnector Association="DFISModelEntities.FK__GeneralBu__IDBui__1DDB52D8" />
+        <AssociationConnector Association="DFISModelEntities.FK__GeneralBu__IDBui__20B7BF83" />
+        <AssociationConnector Association="DFISModelEntities.FK__GeneralBu__IDIco__1AFEE62D" />
+        <AssociationConnector Association="DFISModelEntities.FK__Warehouse__IDLoc__79F2F81D" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterVendor" Width="1.5" PointX="2.375" PointY="40.5" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransportDriverManagement_MasterVendor" />
+        <EntityTypeShape EntityType="DFISModelEntities.LoadUnloadSealDetail" Width="1.5" PointX="32.625" PointY="2" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportLoadingUnloading" Width="1.5" PointX="7.375" PointY="29.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseStockDetailSalesPlan" Width="1.5" PointX="5.375" PointY="95.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseStockForecastSalesPlan" Width="1.5" PointX="5.375" PointY="91.25" />
+        <AssociationConnector Association="DFISModelEntities.FK__Warehouse__IDLoc__2CD37DA5" />
+        <AssociationConnector Association="DFISModelEntities.FK__Warehouse__IDLoc__328C56FB" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportTicketNCR" Width="1.5" PointX="9.375" PointY="28.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportVesselMonitoring" Width="1.5" PointX="4.625" PointY="103" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportVesselMonitoringDetail" Width="1.5" PointX="6.875" PointY="104.125" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransportVesselMonitoring_MasterVendor" />
+        <AssociationConnector Association="DFISModelEntities.FK_TransportVesselMonitoringDetail_TransportVesselMonitoring" />
+        <EntityTypeShape EntityType="DFISModelEntities.MasterKilometer" Width="1.5" PointX="33.375" PointY="14.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportTruckArrival" Width="1.5" PointX="16.375" PointY="33.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.tm_location_detail" Width="1.5" PointX="32.375" PointY="5.75" />
+        <EntityTypeShape EntityType="DFISModelEntities.TransportLoadingUnloadingDetail" Width="1.5" PointX="30.375" PointY="0.75" />
+        <AssociationConnector Association="DFISModelEntities.FK_LoadUnloadSealDetail_TransportLoadingUnloadingDetail" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseStockCount" Width="1.5" PointX="18.375" PointY="39" />
+        <EntityTypeShape EntityType="DFISModelEntities.WarehouseStockCountDetail" Width="1.5" PointX="20.625" PointY="32.5" />
+        <EntityTypeShape EntityType="DFISModelEntities.StockCountByLoc" Width="1.5" PointX="32.375" PointY="9.75" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseStockCountDetail_MasterFABrand" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseStockCount_MasterLocation" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseStockCountDetail_Location" />
+        <AssociationConnector Association="DFISModelEntities.FK_WarehouseStockCountDetail_WarehouseStockCount" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
