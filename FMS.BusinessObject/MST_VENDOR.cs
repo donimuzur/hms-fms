@@ -16,8 +16,8 @@ namespace FMS.BusinessObject
     {
         public MST_VENDOR()
         {
-            this.TRA_CAF = new HashSet<TRA_CAF>();
             this.MST_PENALTY_LOGIC = new HashSet<MST_PENALTY_LOGIC>();
+            this.TRA_CAF = new HashSet<TRA_CAF>();
             this.TRA_CRF = new HashSet<TRA_CRF>();
         }
     
@@ -31,8 +31,8 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
     
-        public virtual ICollection<TRA_CAF> TRA_CAF { get; set; }
         public virtual ICollection<MST_PENALTY_LOGIC> MST_PENALTY_LOGIC { get; set; }
+        public virtual ICollection<TRA_CAF> TRA_CAF { get; set; }
         public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
     }
 }

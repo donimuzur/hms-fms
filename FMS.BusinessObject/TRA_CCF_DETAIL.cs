@@ -27,9 +27,9 @@ namespace FMS.BusinessObject
         public string VENDOR_NOTE { get; set; }
         public Nullable<System.DateTime> VENDOR_PROMISED_DATE { get; set; }
         public string VENDOR_ATT { get; set; }
+        public string COMPLAINT_URL { get; set; }
         public string COORDINATOR_URL { get; set; }
         public string VENDOR_URL { get; set; }
-        public string COMPLAINT_URL { get; set; }
     
         public virtual TRA_CCF TRA_CCF { get; set; }
     }

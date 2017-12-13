@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AC_VS_OB_REPORT_DATA">
           <Key>
             <PropertyRef Name="ID" />
@@ -61,7 +61,7 @@
           <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
           <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="COLOR" Type="nvarchar" MaxLength="50" />
-          <Property Name="GROUP_LEVEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="GROUP_LEVEL" Type="int" />
           <Property Name="START_CONTRACT" Type="date" />
           <Property Name="END_CONTRACT" Type="date" />
           <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
@@ -113,6 +113,7 @@
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
+          <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="KPI_REPORT_DATA">
           <Key>
@@ -2123,7 +2124,7 @@
           <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GROUP_LEVEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
           <Property Name="START_CONTRACT" Type="DateTime" Precision="0" />
           <Property Name="END_CONTRACT" Type="DateTime" Precision="0" />
           <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2175,6 +2176,7 @@
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MST_FLEET_ID" Type="Int64" />
+          <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="KPI_REPORT_DATA">
           <Key>
@@ -3031,7 +3033,7 @@
           </Key>
           <Property Name="TRA_CSF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
           <Property Name="EPAF_ID" Type="Int64" />
           <Property Name="REASON" Type="Int32" Nullable="false" />
           <Property Name="EFFECTIVE_DATE" Type="DateTime" Nullable="false" Precision="0" />
@@ -3106,7 +3108,7 @@
           </Key>
           <Property Name="TRA_CTF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
           <Property Name="EPAF_ID" Type="Int64" />
           <Property Name="EMPLOYEE_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -3183,7 +3185,7 @@
           </Key>
           <Property Name="TRA_TEMPORARY_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
-          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="FMSModel.DocumentStatus" Nullable="false" />
           <Property Name="DOCUMENT_NUMBER_RELATED" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
           <Property Name="REASON" Type="Int32" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
@@ -3877,6 +3879,7 @@
           <EntitySetMapping Name="FUEL_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.FUEL_REPORT_DATA">
               <MappingFragment StoreEntitySet="FUEL_REPORT_DATA">
+                <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
                 <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
