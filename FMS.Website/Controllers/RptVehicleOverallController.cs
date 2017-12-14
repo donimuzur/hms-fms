@@ -25,7 +25,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary ;
         }
-
+       
         public ActionResult Index()
         {
             var model = new VehicleOverallReportModel();
@@ -43,11 +43,10 @@ namespace FMS.Website.Controllers
             model.ListVehicle = ListData;
             return View(model);
         }
-
-
-        public ActionResult DetailsVehicle(VehicleOverallReportModel filter)
+        
+        public ActionResult DetailsVehicle(string id,VehicleOverallSearchView filter)
         {
-            var model = ListVehicle(filter);
+            var model = GetVehicleData(filter).Where(x => x.ChasisNumber ==id).FirstOrDefault();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
