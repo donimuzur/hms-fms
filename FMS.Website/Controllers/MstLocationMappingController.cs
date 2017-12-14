@@ -65,7 +65,6 @@ namespace FMS.Website.Controllers
                 {  
                     addressList.Add(new { ADDRESS=model.Address, BASETOWN=model.Basetown });
                 }
-
                 foreach (var address in addressList)
                 {
                     var data = Mapper.Map<LocationMappingDto>(model);
@@ -75,14 +74,55 @@ namespace FMS.Website.Controllers
                     data.Basetown = address.BASETOWN;
                     data.CreatedBy = CurrentUser.USERNAME;
                     data.IsActive = true;
+
+                    var exist = _locationMappingBLL.GetLocationMapping().Where(x => x.Address == data.Address
+                        && (x.Basetown == null ? "" : x.Basetown.ToLower()) == (data.Basetown == null ? "" : data.Basetown.ToLower())
+                        && (x.Location == null ? "" : x.Location.ToLower()) == (data.Location == null ? "" : data.Location.ToLower())
+                        && (x.Region == null ? "" : x.Region.ToLower()) == (data.Region == null ? "" : data.Region.ToLower())
+                        && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (data.ZoneSales == null ? "" : data.ZoneSales.ToLower())
+                        && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (data.ZonePriceList == null ? "" : data.ZonePriceList.ToLower())).FirstOrDefault();
+                    if (exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exsit";
+
+                        var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+                        model.LocationList = new SelectList(list, "City", "City");
+
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+
                     try
                     {
                         _locationMappingBLL.Save(data);
+                        
                     }
-                    catch (Exception)
+                    catch (Exception exception)
                     {
+                        model.ErrorMessage = exception.Message;
+
+                        var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+                        model.LocationList = new SelectList(list, "City", "City");
+
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
                         return View(model);
                     }
+                }
+                try
+                {
+                    _locationMappingBLL.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    var msg = exception.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+                    model.LocationList = new SelectList(list, "City", "City");
+                    return View(model);
                 }
             }
 
@@ -111,6 +151,7 @@ namespace FMS.Website.Controllers
                 try
                 {
                     _locationMappingBLL.Save(data, CurrentUser);
+                    _locationMappingBLL.SaveChanges();
 
                 }
                 catch (Exception exp)
@@ -118,7 +159,6 @@ namespace FMS.Website.Controllers
                     var error = exp.Message;
                     throw;
                 }
-
             }
             return RedirectToAction("Index", "MstLocationMapping");
         }
@@ -160,10 +200,12 @@ namespace FMS.Website.Controllers
                         
 //                        data.ValidFrom = Convert.ToDateTime(data.ValidFromS);
                         var dto = Mapper.Map<LocationMappingDto>(data);
+                      
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
                             _locationMappingBLL.Save(dto); ;
                         }
+
                     }
                     catch (Exception exception)
                     {
@@ -172,6 +214,17 @@ namespace FMS.Website.Controllers
                         Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
+                }
+                try
+                {
+                    _locationMappingBLL.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    var msg = exception.Message;
+                    Model.MainMenu = _mainMenu;
+                    Model.CurrentLogin = CurrentUser;
+                    return View(Model);
                 }
             }
             return RedirectToAction("Index", "MstLocationMapping");
@@ -213,7 +266,13 @@ namespace FMS.Website.Controllers
                         item.ErrorMessage = exp.Message;
                         
                     }
-                    
+                    var exist = _locationMappingBLL.GetLocationMapping().Where(x => x.Address == item.Address
+                           && (x.Basetown == null ? "" : x.Basetown.ToLower()) == (item.Basetown == null ? "" : item.Basetown.ToLower())
+                           && (x.Location == null ? "" : x.Location.ToLower()) == (item.Location == null ? "" : item.Location.ToLower())
+                           && (x.Region == null ? "" : x.Region.ToLower()) == (item.Region == null ? "" : item.Region.ToLower())
+                           && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (item.ZoneSales == null ? "" : item.ZoneSales.ToLower())
+                           && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToLower())).FirstOrDefault();
+                    if (exist != null) item.ErrorMessage = "Data Already Exist";
                     model.Add(item);
                 }
             }

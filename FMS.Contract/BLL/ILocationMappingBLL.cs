@@ -14,5 +14,6 @@ namespace FMS.Contract.BLL
         List<LocationMappingDto> GetLocationMapping();
         void Save(LocationMappingDto Dto);
         void Save(LocationMappingDto data, Login currentUser);
+        void SaveChanges();
     }
 }
