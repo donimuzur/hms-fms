@@ -27,14 +27,9 @@
                     <tr>
                         <th>No</th>
                         <th>Police Number</th>
-                        <th>Chasis Number</th>
-                        <th>Engine Number</th>
-                        <th>Employee ID</th>
                         <th>Employee Name</th>
-                        <th>Group Level</th>
-                        <th>Assigned To</th>
+                        <th>Employee ID</th>
                         <th>Cost Center</th>
-                        <th>Vendor Name</th>
                         <th>Manufacturer.</th>
                         <th>Model</th>
                         <th style="min-width: 80px">Series</th>
@@ -44,7 +39,7 @@
                         <th>Branding</th>
                         <th>Color</th>
                         <th>Airbag</th>
-                        <th>Chassis Number</th>
+                        <th>Chasis Number</th>
                         <th>Engine Number</th>
                         <th>Request Year</th>
                         <th>Vehicle Type</th>
@@ -53,7 +48,7 @@
                         <th>Project Name</th>
                         <th style="min-width: 80px">Start Date</th>
                         <th style="min-width: 80px">End Date</th>
-                        <th>Vendor</th>
+                        <th>Vendor Name</th>
                         <th>City</th>
                         <th>Supply Method</th>
                         <th>Restitution</th>
@@ -191,14 +186,9 @@
                     var tr = '<tr>' +
                             createColumn(i + 1) +
                             createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
-                            createColumnWithHiddenField(uploaditems[i].ChasisNumber, 'Model.Details[' + i + '].ChasisNumber') +
-                            createColumnWithHiddenField(uploaditems[i].EngineNumber, 'Model.Details[' + i + '].EngineNumber') +
-                            createColumnWithHiddenField(uploaditems[i].EmployeeID == null ? "" : uploaditems[i].EmployeeID, 'Model.Details[' + i + '].EmployeeID') +
                             createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
-                            createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
-                            createColumnWithHiddenField(uploaditems[i].AssignedTo, 'Model.Details[' + i + '].AssignedTo') +
+                            createColumnWithHiddenField(uploaditems[i].EmployeeID == null ? "" : uploaditems[i].EmployeeID, 'Model.Details[' + i + '].EmployeeID') +
                             createColumnWithHiddenField(uploaditems[i].CostCenter, 'Model.Details[' + i + '].CostCenter') +
-                            createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
                             createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Details[' + i + '].Manufacturer') +
                             createColumnWithHiddenField(uploaditems[i].Models, 'Model.Details[' + i + '].Models') +
                             createColumnWithHiddenField(uploaditems[i].Series, 'Model.Details[' + i + '].Series') +
