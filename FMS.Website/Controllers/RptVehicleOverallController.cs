@@ -44,9 +44,10 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult DetailsVehicle()
+
+        public ActionResult DetailsVehicle(VehicleOverallReportModel filter)
         {
-            var model = new VehicleOverallItem();
+            var model = ListVehicle(filter);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -73,6 +74,5 @@ namespace FMS.Website.Controllers
             var dbData = _vehicleOverallReportBLL.GetVehicle(input);
             return Mapper.Map<List<VehicleOverallItem>>(dbData);
         }
-
     }
 }

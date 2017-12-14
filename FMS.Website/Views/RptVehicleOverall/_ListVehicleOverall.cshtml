@@ -5,6 +5,8 @@
     <thead>
         <tr>
             <th style="min-width: 70px">Police Number</th>
+            <th style="min-width: 70px">Chasis Number</th>
+            <th style="min-width: 70px">Engine Number</th>
             <th style="min-width: 70px">Employee ID</th>
             <th style="min-width: 70px">Employee Name</th>
             <th style="min-width: 70px">Cost Center</th>
@@ -18,9 +20,6 @@
             <th style="min-width: 70px">Color</th>
             <th style="min-width: 70px">Airbag</th>
             <th style="min-width: 70px">ABS</th>
-            <th style="min-width: 70px">Chasis Number</th>
-            <th style="min-width: 70px">Engine Number</th>
-            <th style="min-width: 70px">Vehicle Status</th>
             <th style="min-width: 70px">Start Rent</th>
             <th style="min-width: 70px">End Rent</th>
             <th style="min-width: 70px">Vendor</th>
@@ -35,6 +34,7 @@
             <th style="min-width: 70px">PO Line</th>
             <th style="min-width: 70px">Function</th>
             <th style="min-width: 70px">Regional</th>
+            <th style="min-width: 70px">Vehicle Status</th>
         </tr>
     </thead>
     <thead class="filters">
@@ -77,6 +77,8 @@
         {
             <tr>
                 <td>@Html.Raw(data.PoliceNumber)</td>
+                <td><a href="@Url.Action("DetailsVehicle", "RptVehicleOverall", new { @id =Model})">@Html.Raw(data.ChasisNumber)</a></td>
+                <td>@Html.Raw(data.EngineNumber)</td>
                 <td>@Html.Raw(data.EmployeeId)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.CostCenter)</td>
@@ -90,16 +92,13 @@
                 <td>@Html.Raw(data.Colour)</td>
                 <td>@Html.Raw(data.Airbag ==false ? "No" : "Yes" )</td>
                 <td>@Html.Raw(data.Abs == false ? "No" : "Yes")</td>
-                <td>@Html.Raw(data.ChasisNumber)</td>
-                <td>@Html.Raw(data.EngineNumber)</td>
-                <td>@Html.Raw(data.VehicleStatus == false ? "InActive" : "Active")</td>
-                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("yyyy-MMM-dd"))</td>
-                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("yyyy-MMM-dd"))</td>
+                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.Vendor)</td>
                 <td>@Html.Raw(data.AssetsNumber)</td>
                 <td>@Html.Raw(data.City)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
-                <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("yyyy-MMM-dd"))</td>
+                <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.MonthlyInstallment)</td>
                 <td>@Html.Raw(data.Vat)</td>
                 <td>@Html.Raw(data.TotalMonthlyInstallment)</td>
@@ -107,6 +106,7 @@
                 <td>@Html.Raw(data.PoLine)</td>
                 <td>@Html.Raw(data.Function)</td>
                 <td>@Html.Raw(data.Regional)</td>
+                <td>@Html.Raw(data.VehicleStatus == false ? "InActive" : "Active")</td>
             </tr>
         }
     </tbody>

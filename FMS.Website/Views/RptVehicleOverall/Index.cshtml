@@ -9,7 +9,7 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportVehicleOverall", "RptVehiceReport", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportVehicleOverall", "RptVehicleOverall", FormMethod.Post, new { @id = "ExportToXls" }))
     {
         @Html.HiddenFor(model => model.SearchView.FromDate,new { @id="filter_FromDate"})
         @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
@@ -24,7 +24,7 @@
     }
     <div class="wpanel">
         <div class="row col-md-12">
-            @using (Ajax.BeginForm("ListVehicle", "RptVehiceReport",
+            @using (Ajax.BeginForm("ListVehicle", "RptVehicleOverall",
                 new AjaxOptions
                 {
                     HttpMethod = "POST",
