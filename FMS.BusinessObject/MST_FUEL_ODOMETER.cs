@@ -15,25 +15,25 @@ namespace FMS.BusinessObject
     public partial class MST_FUEL_ODOMETER
     {
         public long MST_FUEL_ODOMETER_ID { get; set; }
+        public string VEHICLE_TYPE { get; set; }
         public string POLICE_NUMBER { get; set; }
         public string EMPLOYEE_ID { get; set; }
-        public string COST_CENTER { get; set; }
-        public Nullable<decimal> FUEL_AMOUNT { get; set; }
-        public Nullable<decimal> LAST_KM { get; set; }
-        public Nullable<decimal> COST { get; set; }
-        public string CREATED_BY { get; set; }
-        public System.DateTime CREATED_DATE { get; set; }
-        public string MODIFIED_BY { get; set; }
-        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
-        public bool IS_ACTIVE { get; set; }
-        public string VEHICLE_TYPE { get; set; }
         public string EMPLOYEE_NAME { get; set; }
         public Nullable<int> ECS_RMB_TRANSID { get; set; }
         public Nullable<int> SEQ_NUMBER { get; set; }
         public string CLAIM_TYPE { get; set; }
         public Nullable<System.DateTime> DATE_OF_COST { get; set; }
+        public string COST_CENTER { get; set; }
+        public Nullable<decimal> FUEL_AMOUNT { get; set; }
+        public Nullable<decimal> LAST_KM { get; set; }
+        public Nullable<decimal> COST { get; set; }
         public string CLAIM_COMMENT { get; set; }
         public Nullable<System.DateTime> POSTED_TIME { get; set; }
+        public string CREATED_BY { get; set; }
+        public System.DateTime CREATED_DATE { get; set; }
+        public string MODIFIED_BY { get; set; }
+        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
+        public bool IS_ACTIVE { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
     }
