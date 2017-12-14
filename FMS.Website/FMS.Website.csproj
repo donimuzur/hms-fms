@@ -4361,6 +4361,8 @@
     <Content Include="Views\RptExecutiveSummary\_ListFuelCostByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\LeaseCostByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListLeaseCostByFunction.cshtml" />
+    <Content Include="Views\MstGs\ReportGs.cshtml" />
+    <Content Include="Views\MstGs\_RptGsFilter.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SalesByRegion.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListSalesByRegion.cshtml" />
     <Content Include="Views\RptExecutiveSummary\Accident.cshtml" />
