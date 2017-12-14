@@ -15,6 +15,7 @@
                         <label class="control-label">Employee ID<span class="red">*</span></label>
                         <div class="row">
                             <div class="col-md-2">
+                                @Html.HiddenFor(model => model.IS_ACTIVE)
                                 @Html.TextBoxFor(model => model.EMPLOYEE_CODE, new { @class = "form-control", @readonly = "readonly" })
                             </div>
                             <div class="col-md-10">
@@ -107,6 +108,9 @@
 </section>
 
 <script>
+    $(document).ready(function () {
+        $("#IS_ACTIVE").val("True");
+    });
     $("#BaseTownEmployee").change(function () {
         //alert($("#AddressEmployee").val());
 
