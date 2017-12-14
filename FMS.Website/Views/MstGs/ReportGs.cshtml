@@ -1,0 +1,143 @@
+﻿@model FMS.Website.Models.GsModel
+
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">
+        @Html.Raw("GS Report")
+
+    </h5>
+    @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>*@
+    @if (Model.CurrentPageAccess.ReadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-upload"></i> Export
+        </a>
+    }
+
+</div>
+<section class="content">
+
+
+    @using (Html.BeginForm("ReportGs", "MstGs", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+        <div class="wpanel">
+            @Html.Partial("_RptGsFilter")
+        </div>
+    }
+
+    <div class="wpanel">
+        <table id="tbEpaf" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+
+                    <th>Employee Name</th>
+                    <th>Vehicle Usage</th>
+                    <th>Police Number</th>
+                    <th>Group Level</th>
+                    <th>Location</th>
+
+                    <th>GS Request Date</th>
+                    <th>GS Fulfillment Date</th>
+                    <th>GS Unit</th>
+                    <th>GS Police Number</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Lead Time</th>
+                    @*<th>KPI Fulfillment</th>*@
+                    <th>Remark</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    @*<th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>*@
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
+                        <td>@Html.Raw(data.GroupLevel)</td>
+                        <td>@Html.Raw(data.Location)</td>
+
+                        <td>@Html.Raw(data.GsRequestDates)</td>
+                        <td>@Html.Raw(data.GsFullfillmentDates)</td>
+                        <td>@Html.Raw(data.GsUnitType)</td>
+                        <td>@Html.Raw(data.GsPoliceNumber)</td>
+                        <td>@Html.Raw(data.StartDates)</td>
+                        <td>@Html.Raw(data.EndDates)</td>
+                        <td>@Html.Raw(data.LeadTimeS)</td>
+                        @*<th>@Html.Raw(data.EmployeeName)KPI Fulfillment</th>*@
+                        <td>@Html.Raw(data.Remark)</td>
+
+
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+    function ExportXls() {
+        //$('#ExportToXls').submit();
+        $("#ExportToXls").attr("action", '@Url.Action("ExportReportGs", "MstGs")');
+            $("#btnSubmit").trigger('click');
+        }
+
+
+        function filter() {
+            $("#ExportToXls").attr("action", '@Url.Action("ReportGs", "MstGs")');
+            $("#btnSubmit").trigger('click');
+        }
+        
+        function reset() {
+            $(".form-control").val("");
+        }
+
+        $(function () {
+            // DataTable
+            var table = $('#tbEpaf').DataTable({
+                "dom": 'lf<"table-overflow"t>pi',
+                orderCellsTop: true
+            });
+
+            // Apply the search
+            table.columns().eq(0).each(function (colIdx) {
+                $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                    table
+                        .column(colIdx)
+                        .search(this.value)
+                        .draw();
+                });
+            });
+        });
+
+    </script>
+
+
+
+
+
+
+
+</section>

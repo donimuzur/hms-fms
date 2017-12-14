@@ -56,13 +56,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control", @required = "required", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.CITY, new { @class = "form-control", @required = "required", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @required = "required", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @required = "required", @readonly = "readonly" })
                         @*@Html.TextBoxFor(model => model.ADDRESS, new { @class = "form-control", @autocomplete = "off" })*@
                     </div>
                 </div>
@@ -123,10 +123,12 @@
                 $.each(result['CityList'], function (i, option) {
                     optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
                     $('#AddressEmployee').append($('<option></option>').val(option.Value).html(option.Text));
+                    $('#CITY').val(option.Value);
                 });
                 $.each(result['AddressList'], function (i, option) {
                     optionArray[i] = "<option value='" + option.Value + "'>" + option.Text + "</option>";
                     $('#address').append($('<option></option>').val(option.Value).html(option.Text));
+                    $('#ADDRESS').val(option.Value);
                 });
             }
         });
