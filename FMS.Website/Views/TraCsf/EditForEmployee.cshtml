@@ -169,14 +169,14 @@
                                                     @if(Model.Detail.IsBenefit){
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="control-label">Category</label>
+                                                                <label class="control-label">Category<span class="red">*</span></label>
                                                                 @Html.DropDownListFor(model => model.Detail.VehicleCat, Model.Detail.VehicleCatList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                             </div>
                                                         </div>
                                                     }
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Vehicle Usage</label>
+                                                            <label class="control-label">Vehicle Usage<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
@@ -197,13 +197,13 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">City</label>
+                                                            <label class="control-label">City<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Address</label>
+                                                            <label class="control-label">Address<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.LocationAddress, Model.Detail.LocationAddressList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
@@ -364,7 +364,8 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCsfId" id="TraCsfId">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:none" />
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
             </div>
         </div>
@@ -376,12 +377,12 @@
             <div class="modal-header">
                 <h4 class="modal-title">Select Vehicle</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 0 15px !important">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="wpanel">
                         <div class="form-group">
                             <input type="hidden" name="IdVehicle" id="IdVehicle">
-                            <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                            <table id="tbCsfVehiclePopup" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -390,6 +391,17 @@
                                         <th>Series</th>
                                         <th>Body Type</th>
                                         <th>Color</th>
+                                    </tr>
+                                </thead>
+                                <thead class="filters">
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tb-body-select-veh"></tbody>
@@ -442,21 +454,6 @@
 </div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        var Id = document.getElementById("Detail_EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraCsf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id: Id },
-            success: function (response) {
-                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
-                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
-            }
-        });
-    }
-
     $(document).ready(function () {
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCsf")';
@@ -468,14 +465,14 @@
 
         $("#Detail_VehicleCat").change(function () {
             $("#btnSelectVeh").css("display", "");
-            $('#tb-body-select-vehicle').css("display", "");
+            $('#tbCsfVehicle').css("display", "");
             $('#Detail_VehicleUsage').prop('disabled', false);
 
             var str = $('#Detail_VehicleCat').find("option:selected").text();
 
             if (str.toLowerCase() == "no car") {
                 $("#btnSelectVeh").css("display", "none");
-                $('#tb-body-select-vehicle').css("display", "none");
+                $('#tbCsfVehicle').css("display", "none");
                 $('#tb-body-select-vehicle').html("");
                 $('#Detail_VehicleUsage').val('');
                 $('#Detail_VehicleUsage').prop('disabled', true);
@@ -506,6 +503,21 @@
 
         $('#btnUploadCsf').click(function () {
             uploadXmlFile();
+        });
+
+        $('#sendmodal').on('hidden.bs.modal', function () {
+            $("#imgLoader").css("display", "none");
+            $("#btnCloseSend").css("display", "");
+            $("#btnConfirmSend").css("display", "");
+        });
+
+        $('#selectvehmodal').on('hidden.bs.modal', function () {
+            var table = null;
+
+            if ($.fn.dataTable.isDataTable('#tbCsfVehiclePopup')) {
+                table = $('#tbCsfVehiclePopup').DataTable();
+                table.destroy();
+            }
         });
     });
 
@@ -557,6 +569,10 @@
     $("#btnConfirmSend").click(function () {
         $('#Detail_IsSaveSubmit').val('submit');
         $("#btnSaveProgress").trigger('click');
+
+        $("#imgLoader").css("display", "");
+        $("#btnCloseSend").css("display", "none");
+        $("#btnConfirmSend").css("display", "none");
     });
 
     function UploadCsf(value) {
@@ -602,7 +618,14 @@
 
         if (manufacturer != undefined) {
             $('#tb-body-select-vehicle').html(tableData);
-        } 
+        }
+
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbCsfVehiclePopup')) {
+            table = $('#tbCsfVehiclePopup').DataTable();
+            table.destroy();
+        }
 
         $('#selectvehmodal').modal('hide');
     });
