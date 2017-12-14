@@ -28,7 +28,7 @@ namespace FMS.Website.Controllers
         {
             _pageBLL = pageBll;
             _autoGrBLL = autoGrBLL;
-            _mainMenu = Enums.MenuList.RptExecutiveSummary;
+            _mainMenu = Enums.MenuList.RptAutoGr;
         }
 
         public RptAutoGrModel InitModel(RptAutoGrModel model)

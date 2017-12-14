@@ -335,6 +335,16 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 15, data.MonthlyInstallment.HasValue ? data.MonthlyInstallment.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+
+                    SLStyle valueStyle = slDocument.CreateStyle();
+                    valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                    valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                    valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                    valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+                    slDocument.AutoFitColumn(1, 16);
+                    slDocument.SetCellStyle(iRow, 1, iRow , 16, valueStyle);
+                    
                 }
                 else if (data.Note == "SubTotal")
                 {
@@ -354,6 +364,16 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 15, "Total Installment");
                     slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+
+                    SLStyle headerStyle = slDocument.CreateStyle();
+                    headerStyle.Font.Bold = true;
+                    headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+                    slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
                 }
                 else if (data.Note == "GrandTotal")
                 {
@@ -373,20 +393,22 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 15, "Installment");
                     slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+
+                    SLStyle headerStyle = slDocument.CreateStyle();
+                    headerStyle.Font.Bold = true;
+                    headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+                    slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
                 }
                    
                 iRow++;
             }
 
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-            slDocument.AutoFitColumn(1, 16);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
+            
 
             return slDocument;
         }
