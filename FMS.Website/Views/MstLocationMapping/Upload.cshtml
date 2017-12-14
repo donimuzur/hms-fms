@@ -139,9 +139,13 @@
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+                if (error == '')
+                {
+                    $('#btnSave').prop('disabled', false);
+                }
+                
             }
         });
     };
