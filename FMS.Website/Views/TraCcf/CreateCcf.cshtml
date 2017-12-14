@@ -284,7 +284,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="control-label">Attachment *</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" required/>
+                                                        <input type="file" id ="ComplaintAtt" name="ComplaintAtt" class="form-control" required/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -465,8 +465,15 @@
     });
 
     function SendCtf(value) {
-        $('#TraCcfIdSend').val(value);
-        $('#sendmodal').modal('show');
+        if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+        {
+            alert("Note & Attachmnent is Required");
+        }
+        else
+        {
+            $('#TraCcfIdSend').val(value);
+            $('#sendmodal').modal('show');
+        }
     }
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
