@@ -479,7 +479,7 @@ namespace FMS.BLL.Temporary
                     //if submit from FLEET for wtc
                     if (tempData.CREATED_BY == input.UserId && !isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information";
+                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
                         bodyMail.Append("Dear " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -550,7 +550,7 @@ namespace FMS.BLL.Temporary
                     //if Fleet Approve for benefit
                     if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information";
+                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
                         bodyMail.Append("Dear " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
