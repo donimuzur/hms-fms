@@ -1,0 +1,32 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.VehicleOverallItem
+<div class="panel-body">
+    <div class="row">
+        <table id="tbVehicleHistory" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="min-width: 70px">Date</th>
+                    <th style="min-width: 70px">Employee</th>
+                    <th style="min-width: 70px">Description</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                    <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.DetailsHistory)
+        {
+        <tr>
+            <td>@Html.Raw(data.Date.HasValue ? data.Date.Value.ToString("yyyy-MMM-dd"): "")</td>
+            <td>@Html.Raw(data.Employee)</td>
+            <td>@Html.Raw(data.Description)</td>
+        </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+</div>

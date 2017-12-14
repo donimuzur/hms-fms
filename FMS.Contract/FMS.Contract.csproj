@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\IAutoGrBLL.cs" />
     <Compile Include="BLL\ICafBLL.cs" />
     <Compile Include="BLL\ICarComplaintFormBLL.cs" />
+    <Compile Include="BLL\ICfmIdleReportBLL.cs" />
     <Compile Include="BLL\IComplaintCategoryBLL.cs" />
     <Compile Include="BLL\ICostObBLL.cs" />
     <Compile Include="BLL\ICtfExtendBLL.cs" />
@@ -74,14 +76,17 @@
     <Compile Include="BLL\ITraCsfBLL.cs" />
     <Compile Include="BLL\ITraCtfBLL.cs" />
     <Compile Include="BLL\ITraTemporaryBLL.cs" />
+    <Compile Include="BLL\IVehicleOverallReportBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\IAutoGrService.cs" />
     <Compile Include="Service\ICAFService.cs" />
     <Compile Include="Service\ICarComplaintFormService.cs" />
     <Compile Include="Service\ICcfService.cs" />
+    <Compile Include="Service\ICfmIdleReportService.cs" />
     <Compile Include="Service\IComplaintCategoryService.cs" />
     <Compile Include="Service\ICostObService.cs" />
     <Compile Include="Service\ICRFService.cs" />
@@ -113,6 +118,7 @@
     <Compile Include="Service\ITemporaryService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\IVehicleOverallReportService.cs" />
     <Compile Include="Service\IVehicleSpectService.cs" />
     <Compile Include="Service\IVendorService.cs" />
     <Compile Include="Service\IWorkflowHistoryService.cs" />

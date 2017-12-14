@@ -284,7 +284,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="control-label">Attachment *</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" required/>
+                                                        <input type="file" id ="ComplaintAtt" name="ComplaintAtt" class="form-control" required="required"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -298,7 +298,8 @@
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" style="display:none" />
+                <a href="#ComplaintAtt" class="btn btn-primary" onclick="save();">Save</a>
                 <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -465,11 +466,34 @@
     });
 
     function SendCtf(value) {
-        $('#TraCcfIdSend').val(value);
-        $('#sendmodal').modal('show');
+        if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+        {
+            alert("Note & Attachmnent is Required");
+        }
+        else
+        {
+            $('#TraCcfIdSend').val(value);
+            $('#sendmodal').modal('show');
+        }
     }
+    
+    function save() {
+        
+        var vehType = $("#VehicleType").val();
+        
+        if (vehType == "WTC") {
+            $("#ComplaintAtt").attr("required", "required");
+        } else {
+            $("#ComplaintAtt").removeAttr("required");
+        }
+
+        $("#btnSubmit").trigger('click');
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormCreate').submit();
     });
+    
+
 </script>

@@ -358,14 +358,14 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Note</label>
-                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                        <label class="control-label">Note *</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate", @required = "required" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Attachment</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                        <label class="control-label">Attachment *</label>
+                                                        <input type="file" id="ComplaintAtt" name="ComplaintAtt" class="form-control" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -429,7 +429,8 @@
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" style="display:none" />
+                <a href="#ComplaintAtt" class="btn btn-primary" onclick="save();">Save</a>
                 @if (Model.IsPersonalDashboard == true)
                 {
                     <a href="@Url.Action("PersonalDashboard", "TraCcf")" class="btn btn-default">Back</a>
@@ -599,9 +600,30 @@
     });
 
     function SendCcf(value) {
-        $('#TraCcfIdSend').val(value);
-        $('#sendmodal').modal('show');
+        if($('#DetailSave_ComplaintNote').val() == "")
+        {
+            alert("Note is Required");
+        }
+        else
+        {
+            $('#TraCcfIdSend').val(value);
+            $('#sendmodal').modal('show');
+        }
     }
+    
+    function save() {
+        
+        var vehType = $("#VehicleType").val();
+        
+        if (vehType == "WTC") {
+            $("#ComplaintAtt").attr("required", "required");
+        } else {
+            $("#ComplaintAtt").removeAttr("required");
+        }
+
+        $("#btnSubmit").trigger('click');
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();

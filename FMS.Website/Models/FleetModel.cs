@@ -36,6 +36,22 @@ namespace FMS.Website.Models
         public string EndRent { get; set; }
         public string Regional { get; set; }
         public string City { get; set; }
+        public string PoliceNumber { get; set; }
+        public string EngineNumber { get; set; }
+        public string ChasisNumber { get; set; }
+        public string EmployeeID { get; set; }
+        public string EmployeeName { get; set; }
+        public string EndDate { get; set; }
+
+        public SelectList PoliceNumberList { get; set; }
+
+        public SelectList EngineNumberList { get; set; }
+
+        public SelectList ChasisNumberList { get; set; }
+
+        public SelectList EmployeeIDList { get; set; }
+
+        public SelectList EmployeeNameList { get; set; }
 
         public SelectList StatusList
         {

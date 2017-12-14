@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.Service
 {
@@ -14,5 +15,6 @@ namespace FMS.Contract.Service
         MST_GS GetGsById(int MstGsId);
         void Save(MST_GS dbGs);
         void Save(MST_GS dbGs, Login userLogin);
+        List<MST_GS> GetGsByParam(RptGsInput input);
     }
 }
