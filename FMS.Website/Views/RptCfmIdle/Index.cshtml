@@ -11,13 +11,13 @@
 <section class="content">
     @using (Html.BeginForm("ExportCfmIdle", "RptCfmIdle", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-        @Html.HiddenFor(model => model.SearchViewExport.FromDate)
-        @Html.HiddenFor(model => model.SearchViewExport.ToDate)
-        @Html.HiddenFor(model => model.SearchViewExport.CostCenter)
-        @Html.HiddenFor(model => model.SearchViewExport.PoliceNumber)
+        @Html.HiddenFor(model => model.SearchView.FromDate,new { @id = "filter_FromDate" })
+        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
+        @Html.HiddenFor(model => model.SearchView.CostCenter, new { @id = "filter_CostCenter" })
+        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "filter_PoliceNumber" })
     }
     <div class="wpanel">
-        <div class="row col-md-6">
+        <div class="row col-md-12">
             @using (Ajax.BeginForm("ListCfmIdleVehicle", "RptCfmIdle",
                 new AjaxOptions
                 {
@@ -27,42 +27,38 @@
                     OnComplete = "setupDataTables",
                 }))
             {
-                <div class="col-md-12">
-                    <label class="control-label">Period</label>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <div class="input-group date" id="FromDate">
-                                @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From" })
-                                <span class="input-group-addon btn btn-primary">
-                                    <i class="fa fa-calendar "></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="input-group date" id="ToDate">
-                              @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" })
-                              <span class="input-group-addon btn btn-primary">
-                                  <i class="fa fa-calendar "></i>
-                              </span>
-                          </div>
-                      </div>
-                    </div>
-                    @*<div class="col-md-6">
-                        <div class="form-group">
-                            
-                        </div>
-                    </div>*@
-                </div>
-                <div class="col-md-12">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Cost Center</label>
                         @Html.TextBoxFor(model => model.SearchView.CostCenter, new { @class = "form-control ", @maxlength = "10" })
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Police Number</label>
-                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control "})
+                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Period From</label>
+                        <div class="input-group date" id="FromDate">
+                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Period To</label>
+                        <div class="input-group date" id="ToDate">
+                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -81,18 +77,23 @@
 <script src="~/Scripts/CfmIdle.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#SearchViewExport_FromDate').val($('#SearchView_FromDate').val());
-        $('#SearchViewExport_ToDate').val($('#SearchView_ToDate').val());
-        $('#SearchViewExport_CostCenter').val($('#SearchView_CostCenter').val());
-        $('#SearchViewExport_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#filter_FromDate').val($('#SearchView_FromDate').val());
+        $('#filter_ToDate').val($('#SearchView_ToDate').val());
+        $('#filter_CostCenter').val($('#SearchView_CostCenter').val());
+        $('#filter_PoliceNumber').val($('#SearchView_PoliceNumber').val());
         $('#ExportToXls').submit();
     }
 
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": false
         });
 
         // Apply the search
@@ -108,8 +109,14 @@
 
     $(document).on('click', '#btn-reset', function () {
         var todayDate = new Date();
-        $('#SearchView_FromDate').val('');
-        $('#SearchView_ToDate').val('');
+        todayDate.setHours(00, 00, 00, 00);
+        
+        var date = new Date();
+        date.setDate(1);
+        date.setHours(00, 00, 00, 00);
+
+        $('#FromDate').val(date);
+        $('#ToDate').val(todayDate);
         $("#SearchView_CostCenter").val('');
         $("#SearchView_PoliceNumber").val('');
 

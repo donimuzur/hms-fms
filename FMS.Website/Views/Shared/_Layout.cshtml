@@ -257,6 +257,8 @@
 		            </ul>
                     break;
                 case Enums.MenuList.RptExecutiveSummary:
+                case Enums.MenuList.RptGs:
+                case Enums.MenuList.RptAutoGr:
                     <h5 class="sb-title">Main Menu - Report</h5>
 		            <ul id="sidemenu" role="tablist">
 			            <li>
@@ -266,7 +268,7 @@
                             </a>
 			            </li>
                         <li>
-                            <a id="KpiMonitoringParent" href="#">
+                            <a id="KpiMonitoringParent" href="@Url.Action("Index", "RptKpiMonitoring")">
                                 <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
                                 <h5>KPI Monitoring</h5>
                             </a>
@@ -278,7 +280,7 @@
                             </a>
                         </li>
                         <li>
-                            <a id="FuelParent" href="#">
+                            <a id="FuelParent" href="@Url.Action("Index", "RptFuel")">
                                 <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
                                 <h5>Fuel</h5>
                             </a>
@@ -296,7 +298,7 @@
                             </a>
                         </li>
                         <li>
-                            <a id="GsParent" href="#">
+                            <a id="GsParent" href="@Url.Action("ReportGs","MstGs")">
                                 <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
                                 <h5>GS</h5>
                             </a>
@@ -312,6 +314,10 @@
                                 <li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
                                 <li><a id="Odometer" href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></li>
                                 <li><a id="LiterByFunction" href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></li>
+                                <li><a id="FuelCostByFunction" href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></li>
+                                <li><a id="LeaseCostByFunction" href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></li>
+                                <li><a id="SalesByRegion" href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></li>
+                                <li><a id="Accident" href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></li>
                             </ul>
                         </li>
 		            </ul>

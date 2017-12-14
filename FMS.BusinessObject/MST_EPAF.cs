@@ -16,9 +16,9 @@ namespace FMS.BusinessObject
     {
         public MST_EPAF()
         {
+            this.TRA_CRF = new HashSet<TRA_CRF>();
             this.TRA_CSF = new HashSet<TRA_CSF>();
             this.TRA_CTF = new HashSet<TRA_CTF>();
-            this.TRA_CRF = new HashSet<TRA_CRF>();
         }
     
         public long MST_EPAF_ID { get; set; }
@@ -46,8 +46,8 @@ namespace FMS.BusinessObject
         public virtual MST_DOCUMENT_TYPE MST_DOCUMENT_TYPE { get; set; }
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_REMARK MST_REMARK { get; set; }
+        public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
         public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
         public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
-        public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
     }
 }
