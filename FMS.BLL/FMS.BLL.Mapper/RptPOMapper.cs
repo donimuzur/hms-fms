@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
+using AutoMapper;
 using FMS.AutoMapperExtensions;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
+using FMS.Website.Models;
 
 namespace FMS.BLL.Mapper
 {
@@ -56,19 +59,19 @@ namespace FMS.BLL.Mapper
                .ForMember(dest => dest.CHASIS_NUMBER, opt => opt.MapFrom(src => src.ChasisNumber))
                .ForMember(dest => dest.ENGINE_NUMBER, opt => opt.MapFrom(src => src.EngineNumber))
                .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
-               .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
-               .ForMember(dest => dest.PoNumber, opt => opt.MapFrom(src => src.PO_NUMBER))
-               .ForMember(dest => dest.PoLine, opt => opt.MapFrom(src => src.PO_LINE))
-               .ForMember(dest => dest.ReportMonth, opt => opt.MapFrom(src => src.REPORT_MONTH))
-               .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
-               .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
-               .ForMember(dest => dest.StartContract, opt => opt.MapFrom(src => src.START_CONTRACT))
-               .ForMember(dest => dest.EndContract, opt => opt.MapFrom(src => src.END_CONTRACT))
-               .ForMember(dest => dest.Vendor, opt => opt.MapFrom(src => src.VENDOR))
-               .ForMember(dest => dest.MonthlyInstallment, opt => opt.MapFrom(src => src.MONTHLY_INSTALLMENT))
-               .ForMember(dest => dest.Gst, opt => opt.MapFrom(src => src.GST))
-               .ForMember(dest => dest.TotMonthInstallment, opt => opt.MapFrom(src => src.TOTAL_MONTHLY_INSTALLMENT))
-               .ForMember(dest => dest.MstFleetId, opt => opt.MapFrom(src => src.MST_FLEET_ID))
+               .ForMember(dest => dest.VEHICLE_USAGE, opt => opt.MapFrom(src => src.VehicleUsage))
+               .ForMember(dest => dest.PO_NUMBER, opt => opt.MapFrom(src => src.PoNumber))
+               .ForMember(dest => dest.PO_LINE, opt => opt.MapFrom(src => src.PoLine))
+               .ForMember(dest => dest.REPORT_MONTH, opt => opt.MapFrom(src => src.ReportMonth))
+               .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
+               .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+               .ForMember(dest => dest.START_CONTRACT, opt => opt.MapFrom(src => src.StartContract))
+               .ForMember(dest => dest.END_CONTRACT, opt => opt.MapFrom(src => src.EndContract))
+               .ForMember(dest => dest.VENDOR, opt => opt.MapFrom(src => src.Vendor))
+               .ForMember(dest => dest.MONTHLY_INSTALLMENT, opt => opt.MapFrom(src => src.MonthlyInstallment))
+               .ForMember(dest => dest.GST, opt => opt.MapFrom(src => src.Gst))
+               .ForMember(dest => dest.TOTAL_MONTHLY_INSTALLMENT, opt => opt.MapFrom(src => src.TotMonthInstallment))
+               .ForMember(dest => dest.MST_FLEET_ID, opt => opt.MapFrom(src => src.MstFleetId))
                ;
         }
     }

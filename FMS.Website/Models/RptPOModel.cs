@@ -13,6 +13,10 @@ namespace FMS.Website.Models
             RptPOItem = new List<RptPOItem>();
         }
         public List<RptPOItem> RptPOItem { get; set; }
+        public RptPOSearchView SearchView { get; set; }
+        public RptPOSearchViewExport SearchViewExport { get; set; }
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
     }
 
     public class RptPOItem
@@ -38,5 +42,24 @@ namespace FMS.Website.Models
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
         public DateTime? CreatedDate { get; set; }
+    }
+
+    public class RptPOSearchView
+    {
+        public DateTime PeriodFrom { get; set; }
+        public DateTime PeriodTo { get; set; }
+        public string EmployeeName { get; set; }
+        public string CostCenter { get; set; }
+        public string SupplyMethod { get; set; }
+        public SelectList SupplyMethodList { get; set; }
+    }
+
+    public class RptPOSearchViewExport
+    {
+        public DateTime PeriodFrom { get; set; }
+        public DateTime PeriodTo { get; set; }
+        public string EmployeeName { get; set; }
+        public string CostCenter { get; set; }
+        public string SupplyMethod { get; set; }
     }
 }

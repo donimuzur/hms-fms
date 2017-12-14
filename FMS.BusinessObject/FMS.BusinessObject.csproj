@@ -129,6 +129,7 @@
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\RptGsInput.cs" />
     <Compile Include="Inputs\RptFuel.cs" />
+    <Compile Include="Inputs\RptPo.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="Inputs\VehicleOverallReportInput.cs" />
     <Compile Include="KPI_REPORT_DATA.cs">
