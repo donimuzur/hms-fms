@@ -644,14 +644,30 @@
     });
 
     function SendCcf(value) {
-        $('#TraCcfIdSend').val(value);
-        if (document.getElementById('ComplaintAtt').value == "" && document.getElementById('DetailSave_ComplaintNote').value == "")
+        var vehType = $("#VehicleType").val();
+        if (vehType == "WTC")
         {
-            alert('complaint note & attachment file required');
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
         else
         {
-            $('#sendmodal').modal('show');
+            if($('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
     }
     
