@@ -358,14 +358,14 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Note</label>
-                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                        <label class="control-label">Note *</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate", @required = "required" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Attachment</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                        <label class="control-label">Attachment *</label>
+                                                        <input type="file" id="ComplaintAtt" name="ComplaintAtt" class="form-control" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -599,8 +599,15 @@
     });
 
     function SendCcf(value) {
-        $('#TraCcfIdSend').val(value);
-        $('#sendmodal').modal('show');
+        if($('#DetailSave_ComplaintNote').val() == "")
+        {
+            alert("Note is Required");
+        }
+        else
+        {
+            $('#TraCcfIdSend').val(value);
+            $('#sendmodal').modal('show');
+        }
     }
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
