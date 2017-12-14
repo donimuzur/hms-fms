@@ -1,0 +1,38 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.AccidentModel
+
+<table id="tbAccident" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Vehicle Type</th>
+            <th>Regional</th>
+            <th>Function</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Accident Count</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.AccidentDataList)
+        {
+            <tr>
+                <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.Region)</td>
+                <td>@Html.Raw(data.Function)</td>
+                <td>@Html.Raw(data.Month)</td>
+                <td>@Html.Raw(data.ReportYear)</td>
+                <td>@Html.Raw(data.AccidentCount)</td>
+            </tr>
+        }
+    </tbody>
+</table>

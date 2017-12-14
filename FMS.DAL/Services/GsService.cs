@@ -1,5 +1,7 @@
-﻿using FMS.BusinessObject;
+﻿using System.Linq.Expressions;
+using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.Service;
 using FMS.Core;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Utils;
 
 namespace FMS.DAL.Services
 {
@@ -42,5 +45,50 @@ namespace FMS.DAL.Services
             _uow.SaveChanges();
         }
 
+        public List<MST_GS> GetGsByParam(RptGsInput input)
+        {
+            Expression<Func<MST_GS, bool>> queryFilter = c => c.IS_ACTIVE;
+
+            if (input != null)
+            {
+                if (input.StartDateBegin.HasValue)
+                {
+                    queryFilter = queryFilter.And(x => x.START_DATE >= input.StartDateBegin.Value);
+                }
+
+                if (input.StartDateEnd.HasValue)
+                {
+                    queryFilter = queryFilter.And(x => x.START_DATE <= input.StartDateEnd.Value);
+                }
+
+                if (input.EndDateBegin.HasValue)
+                {
+                    queryFilter = queryFilter.And(x => x.END_DATE >= input.StartDateBegin.Value);
+                }
+
+                if (input.EndDateEnd.HasValue)
+                {
+                    queryFilter = queryFilter.And(x => x.END_DATE <= input.StartDateEnd.Value);
+                }
+
+                if (input.EndDateBegin.HasValue)
+                {
+                    queryFilter = queryFilter.And(x => x.END_DATE >= input.StartDateBegin.Value);
+                }
+
+                if (!string.IsNullOrEmpty(input.VehicleUsage))
+                {
+                    queryFilter = queryFilter.And(x => x.VEHICLE_USAGE.ToUpper() == input.VehicleUsage.ToUpper());
+                }
+
+                if (!string.IsNullOrEmpty(input.Location))
+                {
+                    queryFilter = queryFilter.And(x => input.Location.ToUpper().Contains(x.LOCATION.ToUpper()));
+                }
+                //queryFilter = queryFilter.And(x=> x.)
+            }
+
+            return _gsRepository.Get(queryFilter, null, "").ToList();
+        }
     }
 }

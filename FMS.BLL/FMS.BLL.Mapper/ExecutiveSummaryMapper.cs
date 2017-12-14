@@ -28,6 +28,22 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<LITER_BY_FUNC_REPORT_DATA, LiterByFunctionDto>().IgnoreAllNonExisting();
 
             AutoMapper.Mapper.CreateMap<LiterByFunctionDto, LITER_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<FUEL_COST_BY_FUNC_REPORT_DATA, FuelCostByFunctionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<FuelCostByFunctionDto, FUEL_COST_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LEASE_COST_BY_FUNC_REPORT_DATA, LeaseCostByFunctionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<LeaseCostByFunctionDto, LEASE_COST_BY_FUNC_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SALES_BY_REGION_REPORT_DATA, SalesByRegionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SalesByRegionDto, SALES_BY_REGION_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ACCIDENT_REPORT_DATA, AccidentDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<AccidentDto, ACCIDENT_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }

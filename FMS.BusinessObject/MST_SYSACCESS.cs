@@ -17,6 +17,7 @@ namespace FMS.BusinessObject
         public int MST_SYSACCESS_ID { get; set; }
         public string ROLE_NAME { get; set; }
         public string ROLE_NAME_ALIAS { get; set; }
+        public int MODUL_ID { get; set; }
         public Nullable<bool> READ_ACCESS { get; set; }
         public Nullable<bool> WRITE_ACCESSS { get; set; }
         public string CREATED_BY { get; set; }
@@ -24,7 +25,6 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
-        public int MODUL_ID { get; set; }
         public Nullable<bool> UPLOAD_ACCESS { get; set; }
     
         public virtual MST_MODUL MST_MODUL { get; set; }

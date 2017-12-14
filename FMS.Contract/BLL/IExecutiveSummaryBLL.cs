@@ -15,5 +15,9 @@ namespace FMS.Contract.BLL
         List<NoVehicleMakeDto> GetNoOfVehicleMakeData(VehicleMakeGetByParamInput filter);
         List<OdometerDto> GetOdometerData(OdometerGetByParamInput filter);
         List<LiterByFunctionDto> GetLiterByFunctionData(LiterFuncGetByParamInput filter);
+        List<FuelCostByFunctionDto> GetFuelCostByFunctionData(FuelCostFuncGetByParamInput filter);
+        List<LeaseCostByFunctionDto> GetLeaseCostByFunctionData(LeaseCostFuncGetByParamInput filter);
+        List<SalesByRegionDto> GetSalesByRegionData(SalesRegionGetByParamInput filter);
+        List<AccidentDto> GetAccidentData(AccidentGetByParamInput filter);
     }
 }
