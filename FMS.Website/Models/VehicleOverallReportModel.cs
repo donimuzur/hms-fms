@@ -57,8 +57,11 @@ namespace FMS.Website.Models
         public DateTime? TerminationDate { get; set; }
         public bool Restitution { get; set; }
         public decimal? MonthlyInstallment { get; set; }
+        public string MonthlyInstallmentStr { get; set; }
         public decimal? Vat { get; set; }
+        public string VatStr { get; set; }
         public decimal? TotalMonthlyInstallment { get; set; }
+        public string TotalMonthlyInstallmentStr { get; set; }
         public string PoNumber { get; set; }
         public string PoLine { get; set; }
         public int ReportMonth { get; set; }

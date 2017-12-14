@@ -10,7 +10,7 @@
             <th style="min-width: 100px">Employee ID</th>
             <th style="min-width: 100px">Employee Name</th>
             <th style="min-width: 100px">Cost Center</th>
-            <th style="min-width: 100px">Make</th>
+            <th style="min-width: 100px">Manufacture</th>
             <th style="min-width: 100px">Model</th>
             <th style="min-width: 100px">Series</th>
             <th style="min-width: 100px">Transmission</th>
@@ -20,6 +20,7 @@
             <th style="min-width: 100px">Color</th>
             <th style="min-width: 100px">Airbag</th>
             <th style="min-width: 100px">ABS</th>
+            <th style="min-width: 100px">Vehicle Type</th>
             <th style="min-width: 100px">Start Rent</th>
             <th style="min-width: 100px">End Rent</th>
             <th style="min-width: 100px">Vendor</th>
@@ -39,6 +40,7 @@
     </thead>
     <thead class="filters">
         <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -92,6 +94,7 @@
                 <td>@Html.Raw(data.Colour)</td>
                 <td>@Html.Raw(data.Airbag ==false ? "No" : "Yes" )</td>
                 <td>@Html.Raw(data.Abs == false ? "No" : "Yes")</td>
+                <td>@Html.Raw(data.VehicleType)</td>
                 <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.Vendor)</td>

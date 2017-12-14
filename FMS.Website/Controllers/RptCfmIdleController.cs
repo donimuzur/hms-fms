@@ -197,7 +197,6 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-
         private string CreateXlsCfmIdle(CfmIdleReportModel model)
         {
             //get data
@@ -275,7 +274,6 @@ namespace FMS.Website.Controllers
 
             return path;
         }
-
         private SLDocument CreateHeaderCfmIdle(SLDocument slDocument)
         {
             int iRow = 2;
