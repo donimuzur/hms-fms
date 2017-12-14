@@ -103,6 +103,10 @@
             $("#btnSubmit").trigger('click');
         }
 
+        function reset() {
+            $(".form-control").val("");
+        }
+
         $(function () {
             // DataTable
             var table = $('#tbEpaf').DataTable({
