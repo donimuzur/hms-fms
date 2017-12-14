@@ -429,7 +429,8 @@
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" style="display:none" />
+                <a href="#ComplaintAtt" class="btn btn-primary" onclick="save();">Save</a>
                 @if (Model.IsPersonalDashboard == true)
                 {
                     <a href="@Url.Action("PersonalDashboard", "TraCcf")" class="btn btn-default">Back</a>
@@ -609,6 +610,20 @@
             $('#sendmodal').modal('show');
         }
     }
+    
+    function save() {
+        
+        var vehType = $("#VehicleType").val();
+        
+        if (vehType == "WTC") {
+            $("#ComplaintAtt").attr("required", "required");
+        } else {
+            $("#ComplaintAtt").removeAttr("required");
+        }
+
+        $("#btnSubmit").trigger('click');
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
