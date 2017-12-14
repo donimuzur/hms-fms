@@ -38,12 +38,11 @@ namespace FMS.DAL.Services
         public void Save (MST_LOCATION_MAPPING dbLocationMapping)
         {
             _locationmappingRepository.InsertOrUpdate(dbLocationMapping);
-            _uow.SaveChanges();
         }
+      
         public void Save(MST_LOCATION_MAPPING dbLocationMapping, Login userLogin)
         {
             _locationmappingRepository.InsertOrUpdate(dbLocationMapping, userLogin, Enums.MenuList.MasterLocationMapping);
-            _uow.SaveChanges();
         }
 
 
