@@ -88,6 +88,7 @@
     <Compile Include="Dto\PenaltyLogicDto.cs" />
     <Compile Include="Dto\RptAutoGrDto.cs" />
     <Compile Include="Dto\RptFuelDto.cs" />
+    <Compile Include="Dto\RptPODto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
     <Compile Include="Dto\ReasonDto.cs" />

@@ -321,6 +321,7 @@
     <Compile Include="Models\RptAutoGrModel.cs" />
     <Compile Include="Models\RptFuelModel.cs" />
     <Compile Include="Models\RptKpiMonitoringModel.cs" />
+    <Compile Include="Models\RptPOModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
