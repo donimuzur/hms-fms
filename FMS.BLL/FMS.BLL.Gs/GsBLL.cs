@@ -2,6 +2,7 @@
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
@@ -46,6 +47,13 @@ namespace FMS.BLL.Gs
         {
             var dbGs = Mapper.Map<MST_GS>(Dto);
             _gsService.Save(dbGs, userLogin);
+        }
+
+        public List<GsDto> GetGsReport(RptGsInput input)
+        {
+            List<MST_GS> data = _gsService.GetGsByParam(input);
+            var redata = Mapper.Map<List<GsDto>>(data);
+            return redata;
         }
     }
 }
