@@ -164,7 +164,7 @@ namespace FMS.Website.Controllers
         public ActionResult ReportGs()
         {
             var model = new GsModel();
-            var data = _gsBLL.GetGs();
+            var data = _gsBLL.GetGsReport(new RptGsInput());
             model.Details = Mapper.Map<List<GsItem>>(data);
             model.MainMenu = Enums.MenuList.RptGs;
             model.CurrentLogin = CurrentUser;
@@ -335,11 +335,11 @@ namespace FMS.Website.Controllers
 
         #region export xls
 
-        public void ExportReportGs()
+        public void ExportReportGs(GsModel model)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsMasterGs();
+            pathFile = CreateXlsReportGs(model.FilterReport);
 
             var newFile = new FileInfo(pathFile);
 
@@ -393,7 +393,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Gs Report");
-            slDocument.MergeWorksheetCells(1, 1, 1, 17);
+            slDocument.MergeWorksheetCells(1, 1, 1, 13);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
