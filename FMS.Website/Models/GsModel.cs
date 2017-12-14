@@ -35,9 +35,25 @@ namespace FMS.Website.Models
         public string GroupLevels { get; set; }
         public string Location { get; set; }
         public DateTime? GsRequestDate { get; set; }
-        public string GsRequestDates { get; set; }
+
+        public string GsRequestDates
+        {
+            get
+            {
+                return GsRequestDate.HasValue ? GsRequestDate.Value.ToString("dd-MMM-yyyy") : "";
+            }
+        }
+
         public DateTime? GsFullfillmentDate { get; set; }
-        public string GsFullfillmentDates { get; set; }
+
+        public string GsFullfillmentDates
+        {
+            get
+            {
+                return GsFullfillmentDate.HasValue ? GsFullfillmentDate.Value.ToString("dd-MMM-yyyy") : "";
+            }
+        }
+
         public string GsManufacturer { get; set; }
         public string GsModel { get; set; }
         public string GsSeries { get; set; }
