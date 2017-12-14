@@ -11,8 +11,8 @@
     <div class="wpanel">
         <div role="tabpanel">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#Details" aria-controls="Details" role="tab" data-toggle="tab">Details Info</a></li>
-                <li role="presentation"><a href="#History" aria-controls="History" role="tab" data-toggle="tab">Vehicle History</a></li>
+                <li role="presentation" class="active" id="DetailsParent" data-toggle="tab"><a href="#Details" aria-controls="History" role="tab" data-toggle="tab">Details Info</a></li>
+                <li role="presentation"  id="HistoryParent"  data-toggle="tab"><a href="#History"  aria-controls="Details"  role="tab" data-toggle="tab">Vehicle History</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="Details">
@@ -32,12 +32,12 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/VehicleOverall.js"></script>
 <script type="text/javascript">
-    //function ExportXls() {
-    //    $('#SearchViewExport_FromDate').val($('#SearchView_FromDate').val());
-    //    $('#SearchViewExport_ToDate').val($('#SearchView_ToDate').val());
+    function ExportXls() {
+        $('#SearchViewExport_FromDate').val($('#SearchView_FromDate').val());
+        $('#SearchViewExport_ToDate').val($('#SearchView_ToDate').val());
 
-    //    $('#ExportToXls').submit();
-    //}
+        $('#ExportToXls').submit();
+    }
 
     function setupDataTables() {
         // DataTable

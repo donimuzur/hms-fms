@@ -77,7 +77,7 @@ namespace FMS.Website.Controllers
         
         public ActionResult DetailsVehicle(string id,VehicleOverallSearchView filter)
         {
-            var model = GetVehicleData(filter).Where(x => x.ChasisNumber ==id).FirstOrDefault();
+            var model = GetVehicleData(filter).Where(x => (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (id == null ? "" : id.ToUpper())).FirstOrDefault();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
 
