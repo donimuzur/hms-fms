@@ -78,12 +78,12 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.VehicleUsage))
                 {
-                    queryFilter = queryFilter.Or(x => x.VEHICLE_USAGE.ToUpper() == input.VehicleUsage.ToUpper());
+                    queryFilter = queryFilter.And(x => x.VEHICLE_USAGE.ToUpper() == input.VehicleUsage.ToUpper());
                 }
 
                 if (!string.IsNullOrEmpty(input.Location))
                 {
-                    queryFilter = queryFilter.Or(x => input.Location.ToUpper().Contains(x.LOCATION.ToUpper()));
+                    queryFilter = queryFilter.And(x => input.Location.ToUpper().Contains(x.LOCATION.ToUpper()));
                 }
                 //queryFilter = queryFilter.And(x=> x.)
             }

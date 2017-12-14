@@ -22,11 +22,31 @@
                     <div class="form-group">
                         <label for="">Form Type</label>
                         <select class="form-control month" id="formType" name="formType">
+                            <option value="">All</option>
                             @foreach (var item in Model.FormTyps)
                             {
                                 <option value="@item">@item</option>
                             }
                         </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Vehicle Usage</label>
+                        <select class="form-control month" id="vehicleUsage" name="vehicleUsage">
+                            <option value="">All</option>
+                            @foreach (var item in Model.VehicleUsages)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Location</label>
+                        <input class="form-control" id="location" placeholder="" />
                     </div>
                 </div>
             </div>
@@ -55,29 +75,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Vehicle Usage</label>
-                        <select class="form-control month" id="vehicleUsage" name="vehicleUsage">
-                            @foreach (var item in Model.VehicleUsages)
-                            {
-                                <option value="@item">@item</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Location</label>
-                        <input class="form-control" id="location" placeholder="" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-1">
-                    <input type="submit" class="btn btn-primary" value="Apply FIlter" />
+                <div class="col-md-12">
+                    <input type="submit" class="btn btn-primary" value="FIlter" />
+                    <input type="reset" class="btn btn-default" value="Reset"/>
                 </div>
             </div>
         </form>
@@ -108,15 +108,10 @@
                     <th>Send Surat Kuasa</th>
                     <th>Send Agreement</th>
                     <th>Remark</th>
-                    <th>Report Month</th>
-                    <th>Report Year</th>
-                    <th>Created Date</th>
                 </tr>
             </thead>
             <thead class="filters">
                 <tr>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
@@ -148,7 +143,7 @@
                         <td>@Html.Raw(data.FORM_TYPE)</td>
                         <td>@Html.Raw(data.EMPLOYEE_ID)</td>
                         <td>@Html.Raw(data.EMPLOYEE_NAME)</td>
-                        <td>@Html.Raw(data.EFFECTIVE_DATE)</td>
+                        <td>@Html.Raw(data.EFFECTIVE_DATE.Value.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.REASON)</td>
                         <td>@Html.Raw(data.ADDRESS)</td>
                         <td>@Html.Raw(data.PREVIOUS_BASE_TOWN)</td>
@@ -158,18 +153,15 @@
                         <td>@Html.Raw(data.VEHICLE_MODEL)</td>
                         <td>@Html.Raw(data.COLOR)</td>
                         <td>@Html.Raw(data.POLICE_NUMBER)</td>
-                        <td>@Html.Raw(data.TEMPORARY_REQUEST_DATE)</td>
-                        <td>@Html.Raw(data.EE_RECEIVED_TEMP)</td>
-                        <td>@Html.Raw(data.SEND_TO_EMP_DATE)</td>
-                        <td>@Html.Raw(data.SEND_BACK_TO_HR)</td>
-                        <td>@Html.Raw(data.SEND_TO_FLEET_DATE)</td>
-                        <td>@Html.Raw(data.SEND_TO_EMPLOYEE_BENEFIT_DATE)</td>
-                        <td>@Html.Raw(data.SEND_SURAT_KUASA)</td>
-                        <td>@Html.Raw(data.SEND_AGREEMENT)</td>
+                        <td>@Html.Raw((data.TEMPORARY_REQUEST_DATE != null)?data.TEMPORARY_REQUEST_DATE.Value.ToString("dd-MMM-yyyy"):null)</td>
+                        <td>@Html.Raw((data.EE_RECEIVED_TEMP != null) ? data.EE_RECEIVED_TEMP.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
+                        <td>@Html.Raw((data.SEND_TO_EMP_DATE != null) ? data.SEND_TO_EMP_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
+                        <td>@Html.Raw((data.SEND_BACK_TO_HR != null) ? data.SEND_BACK_TO_HR.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
+                        <td>@Html.Raw((data.SEND_TO_FLEET_DATE != null) ? data.SEND_TO_FLEET_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
+                        <td>@Html.Raw((data.SEND_TO_EMPLOYEE_BENEFIT_DATE != null) ? data.SEND_TO_EMPLOYEE_BENEFIT_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
+                        <td>@Html.Raw((data.SEND_SURAT_KUASA != null) ? data.SEND_TO_EMPLOYEE_BENEFIT_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
+                        <td>@Html.Raw((data.SEND_AGREEMENT != null) ? data.SEND_TO_EMPLOYEE_BENEFIT_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
                         <td>@Html.Raw(data.REMARK)</td>
-                        <td>@Html.Raw(data.REPORT_MONTH)</td>
-                        <td>@Html.Raw(data.REPORT_YEAR)</td>
-                        <td>@Html.Raw(data.CREATED_DATE)</td>
                     </tr>
                 }
             </tbody>
