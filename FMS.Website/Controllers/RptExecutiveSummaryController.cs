@@ -1585,5 +1585,173 @@ namespace FMS.Website.Controllers
         #endregion
 
         #endregion
+
+        #region --------- AC Vs OB --------------
+
+        public ActionResult AcVsOb()
+        {
+            var model = new AcVsObModel();
+            var input = Mapper.Map<AcVsObGetByParamInput>(model.SearchView);
+            var data = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
+
+            model.TitleForm = "AC Vs OB";
+            model.TitleExport = "ExportAcVsOb";
+            model.AcVsObDataList = Mapper.Map<List<AcVsObData>>(data);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult FilterAcVsOb(AcVsObModel model)
+        {
+            model.AcVsObDataList = GetAcVsObData(model.SearchView);
+            return PartialView("_ListAcVsOb", model);
+        }
+
+        private List<AcVsObData> GetAcVsObData(AcVsObSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _execSummBLL.GetAcVsObData(new AcVsObGetByParamInput()).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
+                return Mapper.Map<List<AcVsObData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<AcVsObGetByParamInput>(filter);
+
+            var dbData = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
+            return Mapper.Map<List<AcVsObData>>(dbData);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportAcVsOb(AcVsObModel model)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<AcVsObGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsLeaseCostByFunction(input);
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsLeaseCostByFunction(AcVsObGetByParamInput input)
+        {
+            //get data
+            List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
+            var listData = Mapper.Map<List<AcVsObData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "AC Vs OB");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelDashboardAcVsOb(slDocument, listData);
+
+            var fileName = "ExecSum_AcVsOb" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelDashboardAcVsOb(SLDocument slDocument)
+        {
+            int iRow = 2;
+
+            slDocument.SetCellValue(iRow, 1, "Function");
+            slDocument.SetCellValue(iRow, 2, "Month");
+            slDocument.SetCellValue(iRow, 3, "Year");
+            slDocument.SetCellValue(iRow, 4, "Cost OB");
+            slDocument.SetCellValue(iRow, 5, "Actual Cost");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 5, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardAcVsOb(SLDocument slDocument, List<AcVsObData> listData)
+        {
+            int iRow = 3; //starting row data
+
+            foreach (var data in listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear))
+            {
+                slDocument.SetCellValue(iRow, 1, data.Function);
+                slDocument.SetCellValue(iRow, 2, data.Month);
+                slDocument.SetCellValue(iRow, 3, data.ReportYear.ToString());
+                slDocument.SetCellValueNumeric(iRow, 4, data.CostOb.ToString());
+                slDocument.SetCellValueNumeric(iRow, 5, data.ActualCost.ToString());
+
+                iRow++;
+            }
+
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.AutoFitColumn(1, 5);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 5, valueStyle);
+
+            //add row for total
+            slDocument.SetCellValue(iRow, 1, "Total");
+            slDocument.MergeWorksheetCells(iRow, 1, iRow, 3);
+            slDocument.SetCellValueNumeric(iRow, 4, listData.Sum(x => x.CostOb.Value).ToString());
+            slDocument.SetCellValueNumeric(iRow, 5, listData.Sum(x => x.ActualCost == null ? 0 : x.ActualCost.Value).ToString());
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Font.Bold = true;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(iRow, 1, iRow, 5, headerStyle);
+
+            return slDocument;
+        }
+
+        #endregion
+
+        #endregion
     }
 }

@@ -9,6 +9,7 @@
     $('#LeaseCostByFunction').removeClass('active');
     $('#SalesByRegion').removeClass('active');
     $('#Accident').removeClass('active');
+    $('#AcVsOb').removeClass('active');
 
     if ($('.title-page').html() == 'Number Of Vehicle') {
         $('#NumbVehicle').addClass('active');
@@ -28,6 +29,8 @@
         $('#SalesByRegion').addClass('active');
     } else if ($('.title-page').html() == 'Accident') {
         $('#Accident').addClass('active');
+    } else if ($('.title-page').html() == 'AC Vs OB') {
+        $('#AcVsOb').addClass('active');
     }
 
 });

@@ -219,6 +219,27 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 ;
 
+            Mapper.CreateMap<AcVsObDto, AcVsObData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
+                .ForMember(dest => dest.Function, opt => opt.MapFrom(src => src.FUNCTION))
+                .ForMember(dest => dest.ActualCost, opt => opt.MapFrom(src => src.ACTUAL_COST))
+                .ForMember(dest => dest.CostOb, opt => opt.MapFrom(src => src.COST_OB))
+                .ForMember(dest => dest.ReportMonth, opt => opt.MapFrom(src => src.REPORT_MONTH))
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.REPORT_MONTH.Value)))
+                .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                ;
+
+            Mapper.CreateMap<AcVsObData, AcVsObDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.FUNCTION, opt => opt.MapFrom(src => src.Function))
+                .ForMember(dest => dest.ACTUAL_COST, opt => opt.MapFrom(src => src.ActualCost))
+                .ForMember(dest => dest.COST_OB, opt => opt.MapFrom(src => src.CostOb))
+                .ForMember(dest => dest.REPORT_MONTH, opt => opt.MapFrom(src => src.ReportMonth))
+                .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+                ;
+
             Mapper.CreateMap<VehicleSearchView, VehicleGetByParamInput>().IgnoreAllNonExisting();
             Mapper.CreateMap<VehicleSearchViewExport, VehicleGetByParamInput>().IgnoreAllNonExisting();
 
@@ -245,6 +266,9 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<AccidentSearchView, AccidentGetByParamInput>().IgnoreAllNonExisting();
             Mapper.CreateMap<AccidentSearchViewExport, AccidentGetByParamInput>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<AcVsObSearchView, AcVsObGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<AcVsObSearchViewExport, AcVsObGetByParamInput>().IgnoreAllNonExisting();
         }
     }
 }
