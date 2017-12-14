@@ -44,6 +44,10 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<ACCIDENT_REPORT_DATA, AccidentDto>().IgnoreAllNonExisting();
 
             AutoMapper.Mapper.CreateMap<AccidentDto, ACCIDENT_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<AC_VS_OB_REPORT_DATA, AcVsObDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<AcVsObDto, AC_VS_OB_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }

@@ -19,5 +19,6 @@ namespace FMS.Contract.BLL
         List<LeaseCostByFunctionDto> GetLeaseCostByFunctionData(LeaseCostFuncGetByParamInput filter);
         List<SalesByRegionDto> GetSalesByRegionData(SalesRegionGetByParamInput filter);
         List<AccidentDto> GetAccidentData(AccidentGetByParamInput filter);
+        List<AcVsObDto> GetAcVsObData(AcVsObGetByParamInput filter);
     }
 }
