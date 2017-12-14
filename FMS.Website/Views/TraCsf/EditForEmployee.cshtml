@@ -468,12 +468,14 @@
 
         $("#Detail_VehicleCat").change(function () {
             $("#btnSelectVeh").css("display", "");
+            $('#tb-body-select-vehicle').css("display", "");
             $('#Detail_VehicleUsage').prop('disabled', false);
 
             var str = $('#Detail_VehicleCat').find("option:selected").text();
 
             if (str.toLowerCase() == "no car") {
                 $("#btnSelectVeh").css("display", "none");
+                $('#tb-body-select-vehicle').css("display", "none");
                 $('#tb-body-select-vehicle').html("");
                 $('#Detail_VehicleUsage').val('');
                 $('#Detail_VehicleUsage').prop('disabled', true);
