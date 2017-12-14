@@ -164,19 +164,19 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">Monthly Installment</label>
-                    @Html.TextBoxFor(model => model.MonthlyInstallment, new { @class = "form-control ", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.MonthlyInstallmentStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">VAT</label>
-                    @Html.TextBoxFor(model => model.Vat, new { @class = "form-control ", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.VatStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">Total Monthly Charge</label>
-                    @Html.TextBoxFor(model => model.TotalMonthlyInstallment, new { @class = "form-control ", @readonly = "readonly" })
+                    @Html.TextBoxFor(model => model.TotalMonthlyInstallmentStr, new { @class = "decimal form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">

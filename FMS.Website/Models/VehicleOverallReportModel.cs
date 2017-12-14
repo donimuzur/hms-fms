@@ -57,8 +57,11 @@ namespace FMS.Website.Models
         public DateTime? TerminationDate { get; set; }
         public bool Restitution { get; set; }
         public decimal? MonthlyInstallment { get; set; }
+        public string MonthlyInstallmentStr { get; set; }
         public decimal? Vat { get; set; }
+        public string VatStr { get; set; }
         public decimal? TotalMonthlyInstallment { get; set; }
+        public string TotalMonthlyInstallmentStr { get; set; }
         public string PoNumber { get; set; }
         public string PoLine { get; set; }
         public int ReportMonth { get; set; }
@@ -87,33 +90,15 @@ namespace FMS.Website.Models
         public string Regional { get; set; }
         public string City { get; set; }
 
-        public SelectList MonthList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() {Text = "ALL", Value = "0" },
-                    new SelectListItem() {Text = "January", Value = "1" },
-                    new SelectListItem() {Text = "February", Value = "2" },
-                    new SelectListItem() {Text = "March", Value = "3" },
-                    new SelectListItem() {Text = "April", Value = "4" },
-                    new SelectListItem() {Text = "May", Value = "5" },
-                    new SelectListItem() {Text = "June", Value = "6" },
-                    new SelectListItem() {Text = "July", Value = "7" },
-                    new SelectListItem() {Text = "August", Value = "8" },
-                    new SelectListItem() {Text = "September", Value = "9" },
-                    new SelectListItem() {Text = "October", Value = "10" },
-                    new SelectListItem() {Text = "November", Value = "11" },
-                    new SelectListItem() {Text = "December", Value = "12" }
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-
-        }
-
+        
+        public SelectList StatusList { get; set; }
         public SelectList VehicleTypeList { get; set; }
         public SelectList SupplyMethodList { get; set; }
+        public SelectList RegionalList { get; set; }
+        public SelectList VendorList { get; set; }
+        public SelectList BodyTypeList { get; set; }
+        public SelectList CityList { get; set; }
+
     }
 
     public class VehicleOverallSearchViewExport
