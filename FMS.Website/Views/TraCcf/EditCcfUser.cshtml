@@ -137,7 +137,7 @@
                                                     @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
                                                     @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                     <h5> &nbsp; </h5>
-                                                    <hr></hr>
+                                                    <hr />
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Date<span class="red">*</span></label>
@@ -600,14 +600,30 @@
     });
 
     function SendCcf(value) {
-        if($('#DetailSave_ComplaintNote').val() == "")
+        var vehType = $("#VehicleType").val();
+        if (vehType == "WTC")
         {
-            alert("Note is Required");
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
         else
         {
-            $('#TraCcfIdSend').val(value);
-            $('#sendmodal').modal('show');
+            if($('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
     }
     
