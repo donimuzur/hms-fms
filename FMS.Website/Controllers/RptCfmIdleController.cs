@@ -36,8 +36,10 @@ namespace FMS.Website.Controllers
             var model = new CfmIdleReportModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.SearchView.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            model.SearchView.ToDate = DateTime.Today;
             var filter = new CfmIdleGetByParamInput();
-            filter.FromDate = null;
+            filter.FromDate = new DateTime(DateTime.Today.Year,DateTime.Today.Month,1);
             filter.ToDate = DateTime.Today;
 
             var data = _cfmIdleReportBLL.GetCfmIdle(filter);
@@ -48,19 +50,22 @@ namespace FMS.Website.Controllers
             {
                 var CfmIdleVehicle = new CfmIdleVehicle();
 
-                var StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
-
                 var today = DateTime.Today;
-                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
+                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays;
+                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays ;
 
+                if (item.StartIdle.HasValue)
+                {
+                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
+                }
                 if (item.EndIdle.HasValue)
                 {
-                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
+                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 }
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
 
-                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
+                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * (item.MonthlyInstallment.HasValue ? item.MonthlyInstallment : 0)), 2);
 
             }
 
@@ -98,24 +103,29 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public PartialViewResult ListCfmIdleVehicle(CfmIdleReportModel model)
         {
+            model.ListCfmIdle = new List<CfmIdleVehicle>();
             model.ListCfmIdle = GetVehicleData(model.SearchView);
+
             foreach (var item in model.ListCfmIdle)
             {
                 var CfmIdleVehicle = new CfmIdleVehicle();
-                
-                var StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays - 1;
 
                 var today = DateTime.Today;
-                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays + 1;
+                var StartIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays;
+                var EndIdle = (decimal)(today - new DateTime(1900, 1, 1)).TotalDays;
 
+                if (item.StartIdle.HasValue)
+                {
+                    StartIdle = (decimal)(item.StartIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
+                }
                 if (item.EndIdle.HasValue)
                 {
-                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 1;
+                    EndIdle = (decimal)(item.EndIdle.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 }
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
 
-                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
+                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * (item.MonthlyInstallment.HasValue ? item.MonthlyInstallment : 0)), 2);
                 
             }
 
@@ -243,7 +253,7 @@ namespace FMS.Website.Controllers
             var slDocument = new SLDocument();
 
             //title
-            slDocument.SetCellValue(1, 1, "Personal Dokumen CTF");
+            slDocument.SetCellValue(1, 1, "CFM IDLE Report");
             slDocument.MergeWorksheetCells(1, 1, 1, 16);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -325,6 +335,16 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 15, data.MonthlyInstallment.HasValue ? data.MonthlyInstallment.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+
+                    SLStyle valueStyle = slDocument.CreateStyle();
+                    valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                    valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                    valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                    valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+                    slDocument.AutoFitColumn(1, 16);
+                    slDocument.SetCellStyle(iRow, 1, iRow , 16, valueStyle);
+                    
                 }
                 else if (data.Note == "SubTotal")
                 {
@@ -344,6 +364,16 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 15, "Total Installment");
                     slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+
+                    SLStyle headerStyle = slDocument.CreateStyle();
+                    headerStyle.Font.Bold = true;
+                    headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+                    slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
                 }
                 else if (data.Note == "GrandTotal")
                 {
@@ -363,20 +393,22 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 15, "Installment");
                     slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+
+                    SLStyle headerStyle = slDocument.CreateStyle();
+                    headerStyle.Font.Bold = true;
+                    headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+                    headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+                    slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
                 }
                    
                 iRow++;
             }
 
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-            slDocument.AutoFitColumn(1, 16);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
+            
 
             return slDocument;
         }

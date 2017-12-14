@@ -23,6 +23,7 @@ namespace FMS.BusinessObject.Dto
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
         public string Location { get; set; }
+        public string Regional { get; set; }
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
         public DateTime? CreatedDate { get; set; }

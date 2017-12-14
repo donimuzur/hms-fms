@@ -32,11 +32,11 @@ namespace FMS.DAL.Services
             {
                 if (filter.FromDate.HasValue)
                 {
-                    queryFilter = queryFilter.And(c => c.CREATED_DATE >= filter.FromDate);
+                    queryFilter = queryFilter.And(c => c.START_IDLE >= filter.FromDate);
                 }
                 if (filter.ToDate.HasValue)
                 {
-                    queryFilter = queryFilter.And(c => c.CREATED_DATE <= filter.ToDate);
+                    queryFilter = queryFilter.And(c => c.END_IDLE <= filter.ToDate);
                 }
                 if (!string.IsNullOrEmpty(filter.CostCenter))
                 {
