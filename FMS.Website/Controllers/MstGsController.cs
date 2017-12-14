@@ -197,7 +197,7 @@ namespace FMS.Website.Controllers
             });
 
             model.Details = Mapper.Map<List<GsItem>>(data);
-            var settingList = _settingBLL.GetSetting().Where(x => x.SettingName.StartsWith("VEHICLE_USAGE")).Select(x => new { VehicleUsage = x.SettingValue }).ToList();
+            var settingList = _settingBLL.GetSetting().Where(x => x.SettingGroup.StartsWith("VEHICLE_USAGE")).Select(x => new { x.SettingName, x.SettingValue }).ToList();
             model.VehicleUsageList = new SelectList(settingList, "SettingName", "SettingValue");
             return View(model);
         }
