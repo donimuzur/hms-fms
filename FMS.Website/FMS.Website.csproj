@@ -4369,6 +4369,8 @@
     <Content Include="Views\RptExecutiveSummary\_ListAccident.cshtml" />
     <Content Include="Views\RptKpiMonitoring\Index.cshtml" />
     <Content Include="Views\RptFuel\_ListFuel.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\AcVsOb.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListAcVsOb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

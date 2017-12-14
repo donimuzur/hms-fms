@@ -111,4 +111,15 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
     }
+
+    public class AcVsObDto
+    {
+        public int ID { get; set; }
+        public string FUNCTION { get; set; }
+        public decimal? ACTUAL_COST { get; set; }
+        public decimal? COST_OB { get; set; }
+        public int? REPORT_MONTH { get; set; }
+        public int? REPORT_YEAR { get; set; }
+        public DateTime CREATED_DATE { get; set; }
+    }
 }

@@ -46,7 +46,6 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.POLICE_NUMBER.ToUpper() == filter.PoliceNumber.ToUpper());
                 }
-               
             }
             return _cfmIdleReportRepository.Get(queryFilter, null, "").ToList();
         }
