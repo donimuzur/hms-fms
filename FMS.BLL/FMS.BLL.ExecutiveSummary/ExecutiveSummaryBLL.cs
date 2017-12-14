@@ -86,5 +86,12 @@ namespace FMS.BLL.ExecutiveSummary
 
             return Mapper.Map<List<AccidentDto>>(data);
         }
+
+        public List<AcVsObDto> GetAcVsObData(AcVsObGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllAcVsOb(filter);
+
+            return Mapper.Map<List<AcVsObDto>>(data);
+        }
     }
 }
