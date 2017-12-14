@@ -72,5 +72,19 @@ namespace FMS.BLL.ExecutiveSummary
 
             return Mapper.Map<List<LeaseCostByFunctionDto>>(data);
         }
+
+        public List<SalesByRegionDto> GetSalesByRegionData(SalesRegionGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllSalesByRegion(filter);
+
+            return Mapper.Map<List<SalesByRegionDto>>(data);
+        }
+
+        public List<AccidentDto> GetAccidentData(AccidentGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllAccident(filter);
+
+            return Mapper.Map<List<AccidentDto>>(data);
+        }
     }
 }

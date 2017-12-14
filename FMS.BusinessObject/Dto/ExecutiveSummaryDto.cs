@@ -87,4 +87,28 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
     }
+
+    public class SalesByRegionDto
+    {
+        public int ID { get; set; }
+        public string REGION { get; set; }
+        public decimal? TOTAL_KM { get; set; }
+        public decimal? TOTAL_COST { get; set; }
+        public decimal? STICK { get; set; }
+        public int? REPORT_MONTH { get; set; }
+        public int? REPORT_YEAR { get; set; }
+        public DateTime CREATED_DATE { get; set; }
+    }
+
+    public class AccidentDto
+    {
+        public int ID { get; set; }
+        public string REGION { get; set; }
+        public string FUNCTION { get; set; }
+        public string VEHICLE_TYPE { get; set; }
+        public int? ACCIDENT_COUNT { get; set; }
+        public int? REPORT_MONTH { get; set; }
+        public int? REPORT_YEAR { get; set; }
+        public DateTime CREATED_DATE { get; set; }
+    }
 }

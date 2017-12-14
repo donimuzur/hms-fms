@@ -1,0 +1,201 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.RptKpiMonitoringModel
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Report KPI Monitoring</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+
+<section class="content">
+    @using (Html.BeginForm("ExportKpiMonitoring", "RptKpiMonitoring", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+    }
+    <div class="wpanel">
+        <form method="post" action="@Url.Action("Index", "RptKpiMonitoring")">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Form Type</label>
+                        <select class="form-control month" id="formType" name="formType">
+                            @foreach (var item in Model.FormTyps)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Effective Date Form</label>
+                        <div class="input-group date">
+                            <input class="form-control" id="effectiveDateFrom" name="effectiveDateFrom" placeholder="Form" value="@DateTime.Now.ToString("dd-MMM-yyyy")" />
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Effective Date To</label>
+                        <div class="input-group date">
+                            <input class="form-control" id="effectiveDateTo" name="effectiveDateTo" placeholder="To" value="@DateTime.Now.ToString("dd-MMM-yyyy")" />
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Vehicle Usage</label>
+                        <select class="form-control month" id="vehicleUsage" name="vehicleUsage">
+                            @foreach (var item in Model.VehicleUsages)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Location</label>
+                        <input class="form-control" id="location" placeholder="" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <input type="submit" class="btn btn-primary" value="Apply FIlter" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="contenttable" class="wpanel">
+        <table id="tbKpi" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Form Type</th>
+                    <th>Employee Id</th>
+                    <th>Employee Name</th>
+                    <th>Effective Date</th>
+                    <th>Reason</th>
+                    <th>Address</th>
+                    <th>Previous Base Town</th>
+                    <th>New Base Town</th>
+                    <th>Vehicle Usage</th>
+                    <th>Vehicle Group Level</th>
+                    <th>Vehicle Model</th>
+                    <th>Color</th>
+                    <th>Police Number</th>
+                    <th>Temporary Request Date</th>
+                    <th>Ee Received Temp</th>
+                    <th>Send To Emp Date</th>
+                    <th>Send Back To Hr</th>
+                    <th>Send To Fleet Date</th>
+                    <th>Send To Employee Benefit Date</th>
+                    <th>Send Surat Kuasa</th>
+                    <th>Send Agreement</th>
+                    <th>Remark</th>
+                    <th>Report Month</th>
+                    <th>Report Year</th>
+                    <th>Created Date</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.KpiReportDatas)
+                {
+                    <tr>
+                        <td>@Html.Raw(data.FORM_TYPE)</td>
+                        <td>@Html.Raw(data.EMPLOYEE_ID)</td>
+                        <td>@Html.Raw(data.EMPLOYEE_NAME)</td>
+                        <td>@Html.Raw(data.EFFECTIVE_DATE)</td>
+                        <td>@Html.Raw(data.REASON)</td>
+                        <td>@Html.Raw(data.ADDRESS)</td>
+                        <td>@Html.Raw(data.PREVIOUS_BASE_TOWN)</td>
+                        <td>@Html.Raw(data.NEW_BASE_TOWN)</td>
+                        <td>@Html.Raw(data.VEHICLE_USAGE)</td>
+                        <td>@Html.Raw(data.VEHICLE_GROUP_LEVEL)</td>
+                        <td>@Html.Raw(data.VEHICLE_MODEL)</td>
+                        <td>@Html.Raw(data.COLOR)</td>
+                        <td>@Html.Raw(data.POLICE_NUMBER)</td>
+                        <td>@Html.Raw(data.TEMPORARY_REQUEST_DATE)</td>
+                        <td>@Html.Raw(data.EE_RECEIVED_TEMP)</td>
+                        <td>@Html.Raw(data.SEND_TO_EMP_DATE)</td>
+                        <td>@Html.Raw(data.SEND_BACK_TO_HR)</td>
+                        <td>@Html.Raw(data.SEND_TO_FLEET_DATE)</td>
+                        <td>@Html.Raw(data.SEND_TO_EMPLOYEE_BENEFIT_DATE)</td>
+                        <td>@Html.Raw(data.SEND_SURAT_KUASA)</td>
+                        <td>@Html.Raw(data.SEND_AGREEMENT)</td>
+                        <td>@Html.Raw(data.REMARK)</td>
+                        <td>@Html.Raw(data.REPORT_MONTH)</td>
+                        <td>@Html.Raw(data.REPORT_YEAR)</td>
+                        <td>@Html.Raw(data.CREATED_DATE)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+<script type="text/javascript">
+    $(function () {
+        // DataTable
+        var table = $('#tbKpi').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+</script>

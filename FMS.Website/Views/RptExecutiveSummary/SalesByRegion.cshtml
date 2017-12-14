@@ -1,5 +1,5 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.OdometerModel
+@model FMS.Website.Models.SalesByRegionModel
 
 @{
     ViewBag.Title = Model.TitleForm;
@@ -18,13 +18,11 @@
         @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
         @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
         @Html.HiddenFor(model => model.SearchViewExport.YearTo)
-        @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
         @Html.HiddenFor(model => model.SearchViewExport.Region)
-        @Html.HiddenFor(model => model.SearchViewExport.Function)
     }
     <div class="wpanel">
         <div class="row">
-            @using (Ajax.BeginForm("FilterOdometer", "RptExecutiveSummary",
+            @using (Ajax.BeginForm("FilterSalesByRegion", "RptExecutiveSummary",
                 new AjaxOptions
                 {
                     HttpMethod = "POST",
@@ -60,20 +58,8 @@
                 <div class="clearfix"></div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Vehicle Type</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
                         <label for="">Regional</label>
                         @Html.DropDownListFor(model => model.SearchView.Region, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Function</label>
-                        @Html.TextBoxFor(model => model.SearchView.Function, new { @class = "form-control text" })
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -85,7 +71,7 @@
         </div>
     </div>
     <div id="contenttable" class="wpanel">
-        @Html.Partial("_ListOdometer")
+        @Html.Partial("_ListSalesByRegion")
     </div>
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -96,15 +82,13 @@
         $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
         $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
         $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
-        $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
         $('#SearchViewExport_Region').val($('#SearchView_Region').val());
-        $('#SearchViewExport_Function').val($('#SearchView_Function').val());
         $('#ExportToXls').submit();
     }
 
     function setupDataTables() {
         // DataTable
-        var table = $('#tbOdometer').DataTable({
+        var table = $('#tbSalesByRegion').DataTable({
             "dom": 'lf<"table-overflow"t>pi'
         });
 

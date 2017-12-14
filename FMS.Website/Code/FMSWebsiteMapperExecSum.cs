@@ -173,6 +173,52 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 ;
 
+            Mapper.CreateMap<SalesByRegionDto, SalesByRegionData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
+                .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.REGION))
+                .ForMember(dest => dest.TotalKm, opt => opt.MapFrom(src => src.TOTAL_KM))
+                .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TOTAL_COST))
+                .ForMember(dest => dest.Stick, opt => opt.MapFrom(src => src.STICK))
+                .ForMember(dest => dest.ReportMonth, opt => opt.MapFrom(src => src.REPORT_MONTH))
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.REPORT_MONTH.Value)))
+                .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                ;
+
+            Mapper.CreateMap<SalesByRegionData, SalesByRegionDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.REGION, opt => opt.MapFrom(src => src.Region))
+                .ForMember(dest => dest.TOTAL_KM, opt => opt.MapFrom(src => src.TotalKm))
+                .ForMember(dest => dest.TOTAL_COST, opt => opt.MapFrom(src => src.TotalCost))
+                .ForMember(dest => dest.STICK, opt => opt.MapFrom(src => src.Stick))
+                .ForMember(dest => dest.REPORT_MONTH, opt => opt.MapFrom(src => src.ReportMonth))
+                .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+                ;
+
+            Mapper.CreateMap<AccidentDto, AccidentData>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ID))
+                .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.REGION))
+                .ForMember(dest => dest.Function, opt => opt.MapFrom(src => src.FUNCTION))
+                .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
+                .ForMember(dest => dest.AccidentCount, opt => opt.MapFrom(src => src.ACCIDENT_COUNT))
+                .ForMember(dest => dest.ReportMonth, opt => opt.MapFrom(src => src.REPORT_MONTH))
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.REPORT_MONTH.Value)))
+                .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
+                .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+                ;
+
+            Mapper.CreateMap<AccidentData, AccidentDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.REGION, opt => opt.MapFrom(src => src.Region))
+                .ForMember(dest => dest.FUNCTION, opt => opt.MapFrom(src => src.Function))
+                .ForMember(dest => dest.VEHICLE_TYPE, opt => opt.MapFrom(src => src.VehicleType))
+                .ForMember(dest => dest.ACCIDENT_COUNT, opt => opt.MapFrom(src => src.AccidentCount))
+                .ForMember(dest => dest.REPORT_MONTH, opt => opt.MapFrom(src => src.ReportMonth))
+                .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+                ;
+
             Mapper.CreateMap<VehicleSearchView, VehicleGetByParamInput>().IgnoreAllNonExisting();
             Mapper.CreateMap<VehicleSearchViewExport, VehicleGetByParamInput>().IgnoreAllNonExisting();
 
@@ -193,6 +239,12 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<LeaseCostByFuncSearchView, LeaseCostFuncGetByParamInput>().IgnoreAllNonExisting();
             Mapper.CreateMap<LeaseCostByFuncSearchViewExport, LeaseCostFuncGetByParamInput>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<SalesByRegionSearchView, SalesRegionGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SalesByRegionSearchViewExport, SalesRegionGetByParamInput>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<AccidentSearchView, AccidentGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<AccidentSearchViewExport, AccidentGetByParamInput>().IgnoreAllNonExisting();
         }
     }
 }

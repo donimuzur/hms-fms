@@ -44,6 +44,7 @@ namespace FMS.Website.Models
         public int? ReportMonth { get; set; }
         public int? ReportYear { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string Note { get; set; }
     }
     public class CfmIdleSearchView
     {

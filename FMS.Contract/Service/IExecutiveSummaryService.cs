@@ -17,5 +17,7 @@ namespace FMS.Contract.Service
         List<LITER_BY_FUNC_REPORT_DATA> GetAllLiterByFunction(LiterFuncGetByParamInput filter);
         List<FUEL_COST_BY_FUNC_REPORT_DATA> GetAllFuelCostByFunction(FuelCostFuncGetByParamInput filter);
         List<LEASE_COST_BY_FUNC_REPORT_DATA> GetAllLeaseCostByFunction(LeaseCostFuncGetByParamInput filter);
+        List<SALES_BY_REGION_REPORT_DATA> GetAllSalesByRegion(SalesRegionGetByParamInput filter);
+        List<ACCIDENT_REPORT_DATA> GetAllAccident(AccidentGetByParamInput filter);
     }
 }
