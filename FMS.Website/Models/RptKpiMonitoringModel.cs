@@ -16,4 +16,9 @@ namespace FMS.Website.Models
         public List<KPI_REPORT_DATA> KpiReportDatas { get; set; }
         public string TitleForm { get; set; }
     }
+
+    public class KpiReportSearchView 
+    {
+
+    }
 }
