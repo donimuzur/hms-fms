@@ -232,7 +232,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Fuel Report Data");
-            slDocument.MergeWorksheetCells(1, 1, 1, 17);
+            slDocument.MergeWorksheetCells(1, 1, 1, 19);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -276,6 +276,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 15, "Vehicle Usage");
             slDocument.SetCellValue(iRow, 16, "Location");
             slDocument.SetCellValue(iRow, 17, "Regional");
+            slDocument.SetCellValue(iRow, 18, "Report Month");
+            slDocument.SetCellValue(iRow, 19, "Report Year");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -286,7 +288,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 17, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 19, headerStyle);
 
             return slDocument;
 
@@ -339,6 +341,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 15, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 16, data.Location);
                 slDocument.SetCellValue(iRow, 17, data.Regional);
+                slDocument.SetCellValue(iRow, 18, data.ReportMonth);
+                slDocument.SetCellValue(iRow, 19, data.ReportYear);
 
                 iRow++;
             }
@@ -350,8 +354,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 17);
-            slDocument.SetCellStyle(3, 1, iRow - 1,17, valueStyle);
+            slDocument.AutoFitColumn(1, 19);
+            slDocument.SetCellStyle(3, 1, iRow - 1,19, valueStyle);
 
             return slDocument;
         }

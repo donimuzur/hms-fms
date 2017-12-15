@@ -11,6 +11,10 @@ namespace FMS.Website.Models
         public RptPOModel()
         {
             RptPOItem = new List<RptPOItem>();
+            SearchViewExport = new RptPOSearchViewExport();
+            SearchView = new RptPOSearchView();
+            SearchView.PeriodFrom = DateTime.Today;
+            SearchView.PeriodTo = DateTime.Today;
         }
         public List<RptPOItem> RptPOItem { get; set; }
         public RptPOSearchView SearchView { get; set; }
@@ -21,43 +25,51 @@ namespace FMS.Website.Models
 
     public class RptPOItem
     {
-        public int Id { get; set; }
-        public string PoliceNumber { get; set; }
-        public int Liter { get; set; }
-        public Decimal Odometer { get; set; }
-        public Decimal Usage { get; set; }
-        public Decimal kmlt { get; set; }
-        public Decimal Cost { get; set; }
-        public string FuelType { get; set; }
-        public string CostCenter { get; set; }
-        public string Function { get; set; }
-        public string Manufacturer { get; set; }
-        public string Models { get; set; }
-        public string Series { get; set; }
-        public string BodyType { get; set; }
-        public string VehicleType { get; set; }
-        public string VehicleUsage { get; set; }
-        public string Location { get; set; }
-        public string Regional { get; set; }
+
+        public int ID { get; set; }
+        public String PoliceNumber { get; set; }
+        public String SupplyMethod { get; set; }
+        public String EmployeeName { get; set; }
+        public String CostCenter { get; set; }
+        public String Manufacturer { get; set; }
+        public String Models { get; set; }
+        public String Series { get; set; }
+        public String BodyType { get; set; }
+        public String Color { get; set; }
+        public String ChasisNumber { get; set; }
+        public String EngineNumber { get; set; }
+        public String VehicleType { get; set; }
+        public String VehicleUsage { get; set; }
+        public String PoNumber { get; set; }
+        public String PoLine { get; set; }
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public String CreatedDate { get; set; }
+        public String StartContract { get; set; }
+        public String EndContract { get; set; }
+        public String Vendor { get; set; }
+        public Decimal MonthlyInstallment { get; set; }
+        public Decimal Gst { get; set; }
+        public Decimal TotMonthInstallment { get; set; }
+        public long MstFleetId { get; set; }
     }
 
     public class RptPOSearchView
     {
-        public DateTime PeriodFrom { get; set; }
-        public DateTime PeriodTo { get; set; }
+        public DateTime? PeriodFrom { get; set; }
+        public DateTime? PeriodTo { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public string SupplyMethod { get; set; }
         public SelectList SupplyMethodList { get; set; }
+        public SelectList EmployeeNameList { get; set; }
+        public SelectList CostCenterList { get; set; }
     }
 
     public class RptPOSearchViewExport
     {
-        public DateTime PeriodFrom { get; set; }
-        public DateTime PeriodTo { get; set; }
+        public DateTime? PeriodFrom { get; set; }
+        public DateTime? PeriodTo { get; set; }
         public string EmployeeName { get; set; }
         public string CostCenter { get; set; }
         public string SupplyMethod { get; set; }

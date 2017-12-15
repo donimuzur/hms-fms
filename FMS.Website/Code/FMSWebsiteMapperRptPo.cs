@@ -12,12 +12,17 @@ using FMS.Website.Models;
 
 namespace FMS.Website.Code
 {
-    public partial class FMSWebsiteMapperRptPo
+    public partial class FMSWebsiteMapper
     {
         public static void InitializeRptPo()
         {
             Mapper.CreateMap<RptPODto, RptPOItem>().IgnoreAllNonExisting();
 
+            Mapper.CreateMap<RptPOSearchView, RptPoByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<RptPoByParamInput, RptPOSearchView>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<RptPOSearchViewExport, RptPoByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<RptPoByParamInput, RptPOSearchViewExport>().IgnoreAllNonExisting();
         }
     }
 }

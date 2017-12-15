@@ -30,5 +30,12 @@ namespace FMS.BLL.RptPo
             var data = _RptPoService.GetRptPo(filter);
             return Mapper.Map<List<RptPODto>>(data);
         }
+
+        public List<RptPODto> GetRptPoData()
+        {
+            var data = _RptPoService.GetRptPoData();
+            var redata = Mapper.Map<List<RptPODto>>(data);
+            return redata;
+        }
     }
 }

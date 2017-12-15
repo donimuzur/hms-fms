@@ -56,5 +56,10 @@ namespace FMS.DAL.Services
 
             return _rptPoRepository.Get(queryFilter, null, "").ToList();
         }
+
+        public List<PO_REPORT_DATA> GetRptPoData()
+        {
+            return _rptPoRepository.Get().ToList();
+        }
     }
 }

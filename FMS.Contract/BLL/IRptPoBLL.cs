@@ -11,5 +11,6 @@ namespace FMS.Contract.BLL
     public interface IRptPoBLL
     {
         List<RptPODto> GetRptPo(RptPoByParamInput filter);
+        List<RptPODto> GetRptPoData();
     }
 }

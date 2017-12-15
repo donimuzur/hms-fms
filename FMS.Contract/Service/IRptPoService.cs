@@ -10,5 +10,6 @@ namespace FMS.Contract.Service
     public interface IRptPoService
     {
         List<PO_REPORT_DATA> GetRptPo(RptPoByParamInput filter);
+        List<PO_REPORT_DATA> GetRptPoData();
     }
 }
