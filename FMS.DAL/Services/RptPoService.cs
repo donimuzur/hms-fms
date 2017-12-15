@@ -34,11 +34,16 @@ namespace FMS.DAL.Services
             {
                 if (filter.PeriodFrom != null)
                 {
-                    queryFilter = queryFilter.And(c => c.CREATED_DATE >= filter.PeriodFrom);
+                    queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day >= filter.PeriodFrom.Day) &&
+                                                        (c.CREATED_DATE.Month >= filter.PeriodFrom.Month) &&
+                                                        (c.CREATED_DATE.Year >= filter.PeriodFrom.Year));
                 }
                 if (filter.PeriodTo != null)
                 {
-                    queryFilter = queryFilter.And(c => c.CREATED_DATE <= filter.PeriodTo);
+                    queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day <= filter.PeriodTo.Day) &&
+                                                        (c.CREATED_DATE.Month <= filter.PeriodTo.Month) &&
+                                                        (c.CREATED_DATE.Year <= filter.PeriodTo.Year));
+                    //queryFilter = queryFilter.And(c => c.CREATED_DATE <= filter.PeriodTo);
                 }
                 if (!string.IsNullOrEmpty(filter.EmployeeName))
                 {
