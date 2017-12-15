@@ -99,6 +99,7 @@
     <Compile Include="Services\ModulService.cs" />
     <Compile Include="Services\PenaltyLogicService.cs" />
     <Compile Include="Services\RptFuelService.cs" />
+    <Compile Include="Services\RptPoService.cs" />
     <Compile Include="Services\SalesVolumeService.cs" />
     <Compile Include="Services\SettingService .cs" />
     <Compile Include="Services\ReasonService.cs" />

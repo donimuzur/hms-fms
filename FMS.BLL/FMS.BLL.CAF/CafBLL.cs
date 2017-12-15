@@ -310,7 +310,7 @@ namespace FMS.BLL.CAF
             {
                 hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
                 fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
-                creatorQuery = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME like '" + crfData.CreatedBy + "'";
+                creatorQuery = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME like 'PMI\\" + crfData.CreatedBy + "'";
             }
 
             query = new SqlCommand(hrQueryEmail, con);
@@ -349,11 +349,11 @@ namespace FMS.BLL.CAF
             bodyMail.AppendLine();
             bodyMail.Append("Current status of your report : "+ crfData.DocumentStatusString +"<br />");
             bodyMail.AppendLine();
-            bodyMail.Append("Send confirmation by clicking below CAF number:<br />");
+            bodyMail.Append("You can monitor the progress by clicking <a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "?isPersonalDashboard=True'>Here</a><br />");
             bodyMail.AppendLine();
-            bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "?isPersonalDashboard=True'>" +
-                            "CAF Number : "+ crfData.DocumentNumber + "</a> requested by " + crfData.EmployeeName +
-                            "<br /><br />");
+            //bodyMail.Append("<a href='" + webRootUrl + "/TraCaf/Details/" + crfData.TraCafId + "?isPersonalDashboard=True'>" +
+            //                "CAF Number : "+ crfData.DocumentNumber + "</a> requested by " + crfData.EmployeeName +
+            //                "<br /><br />");
             bodyMail.AppendLine();
             bodyMail.Append("Thanks<br /><br />");
             bodyMail.AppendLine();
@@ -424,7 +424,7 @@ namespace FMS.BLL.CAF
 
                 _workflowService.Save(new WorkflowHistoryDto()
                 {
-                    ACTION = Enums.ActionType.Modified,
+                    ACTION = Enums.ActionType.Completed,
                     ACTION_DATE = DateTime.Now,
                     ACTION_BY = CurrentUser.USER_ID,
                     FORM_ID = data.TRA_CAF_ID,

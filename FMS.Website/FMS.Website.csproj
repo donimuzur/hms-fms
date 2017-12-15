@@ -241,6 +241,7 @@
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
+    <Compile Include="Code\FMSWebsiteMapperRptPo.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FMSWebsiteMapperVehicleOverallReport.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
@@ -279,6 +280,7 @@
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
     <Compile Include="Controllers\RptKpiMonitoringController.cs" />
+    <Compile Include="Controllers\RptPoController.cs" />
     <Compile Include="Controllers\RptVehicleOverallController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
@@ -321,6 +323,7 @@
     <Compile Include="Models\RptAutoGrModel.cs" />
     <Compile Include="Models\RptFuelModel.cs" />
     <Compile Include="Models\RptKpiMonitoringModel.cs" />
+    <Compile Include="Models\RptPOModel.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />
@@ -4369,6 +4372,8 @@
     <Content Include="Views\RptExecutiveSummary\_ListAccident.cshtml" />
     <Content Include="Views\RptKpiMonitoring\Index.cshtml" />
     <Content Include="Views\RptFuel\_ListFuel.cshtml" />
+    <Content Include="Views\RptPo\Index.cshtml" />
+    <Content Include="Views\RptPo\_ListPo.cshtml" />
     <Content Include="Views\RptExecutiveSummary\AcVsOb.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListAcVsOb.cshtml" />
   </ItemGroup>
@@ -4517,6 +4522,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.RptFuel\FMS.BLL.RptFuel.csproj">
       <Project>{e0c9f7a0-af7c-4009-97f5-200173cfd8d7}</Project>
       <Name>FMS.BLL.RptFuel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.RptPo\FMS.BLL.RptPo.csproj">
+      <Project>{bba05ea8-7573-4f4f-885a-bb56547231f1}</Project>
+      <Name>FMS.BLL.RptPo</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.SalesVolume\FMS.BLL.SalesVolume.csproj">
       <Project>{9a24fcee-6359-49de-b2dc-9a6cee2e07bf}</Project>

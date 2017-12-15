@@ -302,21 +302,35 @@ namespace FMS.Website.Controllers
             var model = new List<SalesVolumeItem>();
             if (data != null)
             {
-                foreach (var dataRow in data.DataRows)
+                try
                 {
-                    if (dataRow[0] == "" || dataRow[0] == "Type")
+                    foreach (var dataRow in data.DataRows)
                     {
-                        continue;
+                        try
+                        {
+                            if (dataRow[0] == "" || dataRow[0] == "Type")
+                            {
+                                continue;
+                            }
+                            var item = new SalesVolumeItem();
+                            item.Type = dataRow[0].ToString();
+                            item.Region = dataRow[1].ToString();
+                            item.Month = Convert.ToInt32(dataRow[2].ToString());
+                            item.Year = Convert.ToInt32(dataRow[3].ToString());
+                            item.Value = decimal.Parse(dataRow[4].ToString());
+                            item.IsActive = dataRow[5].ToString() == "Active" ? true : false;
+                            item.IsActiveS = dataRow[5].ToString();
+                            model.Add(item);
+                        }
+                        catch(Exception ex)
+                        {
+                            
+                        }
                     }
-                    var item = new SalesVolumeItem();
-                    item.Type = dataRow[0].ToString();
-                    item.Region = dataRow[1].ToString();
-                    item.Month = Convert.ToInt32(dataRow[2].ToString());
-                    item.Year = Convert.ToInt32(dataRow[3].ToString());
-                    item.Value = Convert.ToInt64(dataRow[4].ToString());
-                    item.IsActive = dataRow[5].ToString() == "Active" ? true : false;
-                    item.IsActiveS = dataRow[5].ToString();
-                    model.Add(item);
+                }
+                catch(Exception ex)
+                {
+
                 }
             }
             return Json(model);
