@@ -137,7 +137,7 @@
                                                     @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
                                                     @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                     <h5> &nbsp; </h5>
-                                                    <hr></hr>
+                                                    <hr />
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Date<span class="red">*</span></label>
@@ -429,7 +429,8 @@
             </div>
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" style="display:none" />
+                <a href="#ComplaintAtt" class="btn btn-primary" onclick="save();">Save</a>
                 @if (Model.IsPersonalDashboard == true)
                 {
                     <a href="@Url.Action("PersonalDashboard", "TraCcf")" class="btn btn-default">Back</a>
@@ -599,16 +600,46 @@
     });
 
     function SendCcf(value) {
-        if($('#DetailSave_ComplaintNote').val() == "")
+        var vehType = $("#VehicleType").val();
+        if (vehType == "WTC")
         {
-            alert("Note is Required");
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
         else
         {
-            $('#TraCcfIdSend').val(value);
-            $('#sendmodal').modal('show');
+            if($('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
     }
+    
+    function save() {
+        
+        var vehType = $("#VehicleType").val();
+        
+        if (vehType == "WTC") {
+            $("#ComplaintAtt").attr("required", "required");
+        } else {
+            $("#ComplaintAtt").removeAttr("required");
+        }
+
+        $("#btnSubmit").trigger('click');
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();

@@ -37,7 +37,7 @@ namespace FMS.Website.Controllers
             _fleetBLL = fleetBLL;
             _employeeBLL = employeeBLL;
             _locationMappingBLL = locationMappingBLL;
-            _mainMenu = Enums.MenuList.RptFuel;
+            _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
         #endregion
@@ -49,7 +49,7 @@ namespace FMS.Website.Controllers
                 var model = new RptFuelModel();
                 var input = Mapper.Map<RptFuelByParamInput>(model.SearchView);
                 var data = _rptFuelBLL.GetRptFuel(input);
-                model.MainMenu = Enums.MenuList.RptExecutiveSummary;
+                model.MainMenu = _mainMenu;
                 model.TitleForm = "Fuel Report";
                 model.TitleExport = "ExportFuel";
                 model.CurrentLogin = CurrentUser;
@@ -100,7 +100,7 @@ namespace FMS.Website.Controllers
                 var model = new RptFuelModel();
                 var input = Mapper.Map<RptFuelByParamInput>(model.SearchView);
                 var data = _rptFuelBLL.GetRptFuel(input);
-                model.MainMenu = Enums.MenuList.RptExecutiveSummary;
+                model.MainMenu = _mainMenu;
                 model.TitleForm = "Fuel Report";
                 model.TitleExport = "ExportFuel";
                 model.CurrentLogin = CurrentUser;

@@ -83,7 +83,7 @@
                             <label class="control-label">Vehicle Usage</label>
                             <div class="input-group">
 
-                                @Html.DropDownListFor(model => model.FilterReport.VehicleUsage,  Model.VehicleUsageList, new { @class = "form-control " })
+                                @Html.DropDownListFor(model => model.FilterReport.VehicleUsage,  Model.VehicleUsageList,"ALL", new { @class = "form-control " })
                                 
                             </div>
 
@@ -112,6 +112,7 @@
 
             <input type="submit" value="Filter" style="display: none" class="btn btn-primary" id="btnSubmit" />
             <a href="#" onclick="filter()" class="btn btn-primary">Filter</a>
+            <a href="@Url.Action("ReportGs","MstGs")"  class="btn btn-default">Reset</a>
         </div>
     </div>
 

@@ -4373,6 +4373,8 @@
     <Content Include="Views\RptFuel\_ListFuel.cshtml" />
     <Content Include="Views\RptPo\Index.cshtml" />
     <Content Include="Views\RptPo\_ListPo.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\AcVsOb.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListAcVsOb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

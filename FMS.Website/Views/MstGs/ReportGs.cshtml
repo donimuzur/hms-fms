@@ -75,7 +75,7 @@
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.VehicleUsage)</td>
                         <td>@Html.Raw(data.PoliceNumber)</td>
-                        <td>@Html.Raw(data.GroupLevels)</td>
+                        <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.Location)</td>
 
                         <td>@Html.Raw(data.GsRequestDates)</td>
@@ -85,7 +85,7 @@
                         <td>@Html.Raw(data.StartDates)</td>
                         <td>@Html.Raw(data.EndDates)</td>
                         <td>@Html.Raw(data.LeadTimeS)</td>
-                        @*<th>@Html.Raw(data.EmployeeName)KPI Fulfillment</th>*@
+                        @*<th>@Html.Raw(data.KpiFulfillment)</th>*@
                         <td>@Html.Raw(data.Remark)</td>
 
 
@@ -108,6 +108,10 @@
         function filter() {
             $("#ExportToXls").attr("action", '@Url.Action("ReportGs", "MstGs")');
             $("#btnSubmit").trigger('click');
+        }
+        
+        function reset() {
+            $(".form-control").val("");
         }
 
         $(function () {

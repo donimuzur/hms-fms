@@ -138,10 +138,10 @@
                             <ul class="childmenu collapse" id="CsfMenu" data-parent="#sidemenu">
                                 @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                                 { 
-                                    <li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf", new { IsPersonalDashboard = true })">Dashboard</a></li>
+                                    <li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf", new { IsPersonalDashboard = false })">Dashboard</a></li>
                                 }
-                                <li><a id="CsfOpen" href="@Url.Action("Index", "TraCsf", new { IsPersonalDashboard = true })">Open Documents</a></li>
-                                <li><a id="CsfCompleted" href="@Url.Action("Completed", "TraCsf", new { IsPersonalDashboard = true })">Completed Documents</a></li>
+                                <li><a id="CsfOpen" href="@Url.Action("Index", "TraCsf", new { IsPersonalDashboard = false })">Open Documents</a></li>
+                                <li><a id="CsfCompleted" href="@Url.Action("Completed", "TraCsf", new { IsPersonalDashboard = false })">Completed Documents</a></li>
                             </ul>
 			            </li>
 			            <li>
@@ -318,6 +318,7 @@
                                 <li><a id="LeaseCostByFunction" href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></li>
                                 <li><a id="SalesByRegion" href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></li>
                                 <li><a id="Accident" href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></li>
+                                <li><a id="AcVsOb" href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC Vs OB</a></li>
                             </ul>
                         </li>
 		            </ul>
