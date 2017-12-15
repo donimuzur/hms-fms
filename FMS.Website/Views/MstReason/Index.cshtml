@@ -24,6 +24,7 @@
                 <tr>
                     <th>Action</th>
                     <th>Docyment Type</th>
+                    <th>Vehicle Type</th>
                     <th>Reason</th>
                     <th>Penalty</th>
                     <th style="min-width: 120px" align="center">Penalty For Employee</th>
@@ -53,6 +54,7 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -69,8 +71,8 @@
                         <a href="@Url.Action("Detail", "MstReason", new { @MstReasonId = data.MstReasonId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }
                 </td>
-
                 <td>@Html.Raw(data.MstDocumentType)</td>
+                <td>@Html.Raw(data.VehicleType)</td>
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.IsPenalty == true ? "Yes" : "No")</td>
                 <td>@Html.Raw(data.PenaltyForEmplloyee == true ? "Yes" : "No")</td>

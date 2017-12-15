@@ -83,6 +83,7 @@
     <Compile Include="Dto\GroupCostCenterDto.cs" />
     <Compile Include="Dto\GsDto.cs" />
     <Compile Include="Dto\HolidayCalenderDto.cs" />
+    <Compile Include="Dto\KpiMonitoringDto.cs" />
     <Compile Include="Dto\LdapDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\RptGsInput.cs" />
     <Compile Include="Inputs\RptFuel.cs" />
+    <Compile Include="Inputs\RptKpiMonitoringInput.cs" />
     <Compile Include="Inputs\RptPo.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="Inputs\VehicleOverallReportInput.cs" />
