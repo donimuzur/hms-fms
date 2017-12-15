@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AC_VS_OB_REPORT_DATA">
           <Key>
             <PropertyRef Name="ID" />
@@ -35,17 +35,19 @@
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
           </Key>
-          <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PO_NUMBER" Type="varchar" MaxLength="20" />
           <Property Name="PO_DATE" Type="datetime" />
           <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="IS_POSTED" Type="bit" />
+          <Property Name="LINE_ITEM" Type="int" />
+          <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="AUTO_GR_DETAIL">
           <Key>
             <PropertyRef Name="AUTO_GR_DETAIL_ID" />
           </Key>
-          <Property Name="AUTO_GR_DETAIL_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_DETAIL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
           <Property Name="LINE_ITEM" Type="int" />
           <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
@@ -835,9 +837,9 @@
           <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="VENDOR_PROMISED_DATE" Type="date" />
           <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
+          <Property Name="COORDINATOR_URL" Type="varchar" MaxLength="1000" />
+          <Property Name="VENDOR_URL" Type="varchar" MaxLength="1000" />
           <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
-          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
-          <Property Name="VENDOR_URL" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -1172,7 +1174,7 @@
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
-        <Association Name="FK__PO_REPORT__EMPLO__55DFB4D9">
+        <Association Name="FK__PO_REPORT__EMPLO__73852659">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1413,6 +1415,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1707,7 +1721,7 @@
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__55DFB4D9" Association="Self.FK__PO_REPORT__EMPLO__55DFB4D9">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__73852659" Association="Self.FK__PO_REPORT__EMPLO__73852659">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
@@ -1788,6 +1802,10 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -2125,6 +2143,8 @@
           <Property Name="PO_DATE" Type="DateTime" Precision="3" />
           <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_POSTED" Type="Boolean" />
+          <Property Name="LINE_ITEM" Type="Int32" />
+          <Property Name="QTY_ITEM" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="AUTO_GR_DETAIL">
           <Key>
@@ -2980,8 +3000,8 @@
           <Property Name="VENDOR_PROMISED_DATE" Type="DateTime" Precision="0" />
           <Property Name="VENDOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="COMPLAINT_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="COORDINATOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="VENDOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COORDINATOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="VENDOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF_DETAIL" ToRole="TRA_CCF" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
@@ -3854,6 +3874,8 @@
           <EntitySetMapping Name="AUTO_GR">
             <EntityTypeMapping TypeName="FMSModel.AUTO_GR">
               <MappingFragment StoreEntitySet="AUTO_GR">
+                <ScalarProperty Name="QTY_ITEM" ColumnName="QTY_ITEM" />
+                <ScalarProperty Name="LINE_ITEM" ColumnName="LINE_ITEM" />
                 <ScalarProperty Name="IS_POSTED" ColumnName="IS_POSTED" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="PO_DATE" ColumnName="PO_DATE" />

@@ -14,7 +14,7 @@ namespace FMS.BusinessObject.Dto
 
         public string PoLine { get; set; }
 
-        public DateTime GrDate { get; set; }
+        public DateTime? GrDate { get; set; }
 
         public string PoliceNumber { get; set; }
 
