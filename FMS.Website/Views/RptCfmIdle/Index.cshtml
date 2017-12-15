@@ -43,7 +43,7 @@
                     <div class="form-group">
                         <label class="control-label">Period From</label>
                         <div class="input-group date" id="FromDate">
-                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From" })
+                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id ="From_Date" })
                             <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>
@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label class="control-label">Period To</label>
                         <div class="input-group date" id="ToDate">
-                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" })
+                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" , @id = "To_Date"})
                             <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>
@@ -73,12 +73,13 @@
         @Html.Partial("_ListCfmIdleVehicle")
     </div>
 </section>
+
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/CfmIdle.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#filter_FromDate').val($('#SearchView_FromDate').val());
-        $('#filter_ToDate').val($('#SearchView_ToDate').val());
+        $('#filter_FromDate').val($('#From_Date').val());
+        $('#filter_ToDate').val($('#To_Date').val());
         $('#filter_CostCenter').val($('#SearchView_CostCenter').val());
         $('#filter_PoliceNumber').val($('#SearchView_PoliceNumber').val());
         $('#ExportToXls').submit();
@@ -110,13 +111,18 @@
     $(document).on('click', '#btn-reset', function () {
         var todayDate = new Date();
         todayDate.setHours(00, 00, 00, 00);
-        
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var todayDatestr = todayDate.getDate() + '-' + (months[todayDate.getMonth()]) + '-' + todayDate.getFullYear();
+
         var date = new Date();
         date.setDate(1);
         date.setHours(00, 00, 00, 00);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
 
-        $('#FromDate').val(date);
-        $('#ToDate').val(todayDate);
+
+        $('#From_Date').val(datestr);
+        $('#To_Date').val(todayDatestr);
         $("#SearchView_CostCenter").val('');
         $("#SearchView_PoliceNumber").val('');
 

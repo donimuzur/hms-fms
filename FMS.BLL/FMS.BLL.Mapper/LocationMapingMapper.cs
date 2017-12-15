@@ -27,23 +27,21 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
-               
 
             AutoMapper.Mapper.CreateMap<LocationMappingDto, MST_LOCATION_MAPPING>().IgnoreAllNonExisting()
-                  .ForMember(dest => dest.MST_LOCATION_MAPPING_ID, opt => opt.MapFrom(src => src.MstLocationMappingId))
-                .ForMember(dest => dest.LOCATION, opt => opt.MapFrom(src => src.Location))
+                .ForMember(dest => dest.MST_LOCATION_MAPPING_ID, opt => opt.MapFrom(src => src.MstLocationMappingId))
+                .ForMember(dest => dest.LOCATION, opt => opt.MapFrom(src => src.Location == null ? "" : src.Location))
                 .ForMember(dest => dest.BASETOWN, opt => opt.MapFrom(src => src.Basetown))
                 .ForMember(dest => dest.ADDRESS, opt => opt.MapFrom(src => src.Address))
-                .ForMember(dest => dest.REGION, opt => opt.MapFrom(src => src.Region))
-                .ForMember(dest => dest.ZONE_SALES, opt => opt.MapFrom(src => src.ZoneSales))
-                .ForMember(dest => dest.ZONE_PRICE_LIST, opt => opt.MapFrom(src => src.ZonePriceList))
+                .ForMember(dest => dest.REGION, opt => opt.MapFrom(src => src.Region == null ? "" : src.Region))
+                .ForMember(dest => dest.ZONE_SALES, opt => opt.MapFrom(src => src.ZoneSales == null ? "" : src.ZoneSales))
+                .ForMember(dest => dest.ZONE_PRICE_LIST, opt => opt.MapFrom(src => src.ZonePriceList == null ? "" : src.ZonePriceList))
                 .ForMember(dest => dest.VALIDITY_FROM, opt => opt.MapFrom(src => src.ValidFrom))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
-         
         }
     }
 }

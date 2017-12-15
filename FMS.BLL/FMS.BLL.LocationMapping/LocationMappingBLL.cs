@@ -45,7 +45,10 @@ namespace FMS.BLL.LocationMapping
             _locationMappingService.Save(db);
 
         }
-
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
+        }
         public void Save(LocationMappingDto Dto, Login userLogin)
         {
             var db = Mapper.Map<MST_LOCATION_MAPPING>(Dto);

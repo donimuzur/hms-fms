@@ -192,7 +192,8 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraTempId" id="TraTempId">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:none" />
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
             </div>
         </div>
@@ -204,12 +205,12 @@
             <div class="modal-header">
                 <h4 class="modal-title">Select Vehicle</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 0 15px !important">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="wpanel">
                         <div class="form-group">
                             <input type="hidden" name="IdVehicle" id="IdVehicle">
-                            <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                            <table id="tbCsfVehiclePopup" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -218,6 +219,17 @@
                                         <th>Series</th>
                                         <th>Body Type</th>
                                         <th>Color</th>
+                                    </tr>
+                                </thead>
+                                <thead class="filters">
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tb-body-select-veh"></tbody>
@@ -249,7 +261,17 @@
         $("#btnConfirmSend").click(function () {
             $('#Detail_IsSaveSubmit').val('submit');
             $("#btnSaveTemp").trigger('click');
+
+            $("#imgLoader").css("display", "");
+            $("#btnCloseSend").css("display", "none");
+            $("#btnConfirmSend").css("display", "none");
         });
+
+        $('#sendmodal').on('hidden.bs.modal', function () {
+            $("#imgLoader").css("display", "none");
+            $("#btnCloseSend").css("display", "");
+            $("#btnConfirmSend").css("display", "");
+        })
 
         $('#divEndDate').on('dp.change', function (e) {
             var endDateValue = e.date;
@@ -272,6 +294,15 @@
 
             if (startDateValue > endDateValue) {
                 $('#Detail_StartPeriod').val($("#Detail_EndPeriod").val());
+            }
+        });
+
+        $('#selectvehmodal').on('hidden.bs.modal', function () {
+            var table = null;
+
+            if ($.fn.dataTable.isDataTable('#tbCsfVehiclePopup')) {
+                table = $('#tbCsfVehiclePopup').DataTable();
+                table.destroy();
             }
         });
     });

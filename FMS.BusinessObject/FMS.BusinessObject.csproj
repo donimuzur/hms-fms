@@ -88,6 +88,7 @@
     <Compile Include="Dto\PenaltyLogicDto.cs" />
     <Compile Include="Dto\RptAutoGrDto.cs" />
     <Compile Include="Dto\RptFuelDto.cs" />
+    <Compile Include="Dto\RptPODto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />
     <Compile Include="Dto\SettingDto.cs" />
     <Compile Include="Dto\ReasonDto.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\RptGsInput.cs" />
     <Compile Include="Inputs\RptFuel.cs" />
+    <Compile Include="Inputs\RptPo.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="Inputs\VehicleOverallReportInput.cs" />
     <Compile Include="KPI_REPORT_DATA.cs">

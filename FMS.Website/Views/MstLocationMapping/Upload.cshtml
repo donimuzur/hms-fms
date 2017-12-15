@@ -131,17 +131,21 @@
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
                 createColumnWithHiddenField(uploaditems[i].Address, 'Model.Details[' + i + '].Address') +
-                createColumnWithHiddenField(uploaditems[i].Region, 'Model.Details[' + i + '].Region') +
                 createColumnWithHiddenField(uploaditems[i].Basetown, 'Model.Details[' + i + '].Basetown') +
+                createColumnWithHiddenField(uploaditems[i].Region, 'Model.Details[' + i + '].Region') +
                 createColumnWithHiddenField(uploaditems[i].ZoneSales, 'Model.Details[' + i + '].ZoneSales') +
                 createColumnWithHiddenField(uploaditems[i].ZonePriceList, 'Model.Details[' + i + '].ZonePriceList') +
                 createColumnWithHiddenField(str, 'Model.Details[' + i + '].ValidFrom') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+                if (error == '')
+                {
+                    $('#btnSave').prop('disabled', false);
+                }
+                
             }
         });
     };
