@@ -72,6 +72,25 @@ namespace FMS.Website.Controllers
                 dto.IsActive = true;
                 try
                 {
+                    var exist = _rasonBLL.GetReason().Where(x => x.DocumentType == dto.DocumentType
+                                                            && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (dto.VehicleType == null ? "" : dto.VehicleType.ToUpper())
+                                                            && (x.Reason == null ? "" : x.Reason) == (dto.Reason == null ? "" : dto.Reason.ToUpper())).FirstOrDefault(); 
+                    if(exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exist in Master Reason";
+                        var list1 = _documentTypeBLL.GetDocumentType();
+                        var list2 = new List<SelectListItem>()
+                            {
+                                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
+                                new SelectListItem() {Text = "WTC", Value = "WTC" }
+                            };
+
+                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+                        model.VehicleTypeList = new SelectList(list2, "Text", "Value");
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
                     _rasonBLL.save(dto);
                     
                 }
@@ -268,6 +287,14 @@ namespace FMS.Website.Controllers
                         else if (dataRow[5].ToString() == "No" | dataRow[5].ToString() == "NO" | dataRow[5].ToString() == "False" | dataRow[5].ToString() == "FALSE" | dataRow[5].ToString() == "0")
                         {
                             item.PenaltyForEmplloyee = false;
+                        }
+
+                        var exist = _rasonBLL.GetReason().Where(x => x.DocumentType == item.DocumentType
+                                                           && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
+                                                           && (x.Reason == null ? "" : x.Reason) == (item.Reason == null ? "" : item.Reason.ToUpper())).FirstOrDefault();
+                        if (exist != null)
+                        {
+                            item.ErrorMessage = "Data Already Exist in Master Reason";
                         }
                         model.Add(item);
                     }
