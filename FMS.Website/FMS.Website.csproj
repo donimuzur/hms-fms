@@ -321,6 +321,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\RptAutoGrModel.cs" />
+    <Compile Include="Models\RptCCFModel.cs" />
     <Compile Include="Models\RptFuelModel.cs" />
     <Compile Include="Models\RptKpiMonitoringModel.cs" />
     <Compile Include="Models\RptPOModel.cs" />

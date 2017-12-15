@@ -87,7 +87,7 @@
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
     <Compile Include="Dto\RptAutoGrDto.cs" />
-    <Compile Include="Dto\RptCCF.cs" />
+    <Compile Include="Dto\RptCCFDto.cs" />
     <Compile Include="Dto\RptFuelDto.cs" />
     <Compile Include="Dto\RptPODto.cs" />
     <Compile Include="Dto\SalesVolumeDto.cs" />
