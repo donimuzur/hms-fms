@@ -329,7 +329,7 @@ namespace FMS.Website.Controllers
             //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
             model = InitialIndexModel(model);
             var data = _cafBLL.GetCaf();
-            if (CurrentUser.UserRole == Enums.UserRole.User)
+            if (CurrentUser.UserRole != Enums.UserRole.User)
             {
                 data = data
                     .Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed

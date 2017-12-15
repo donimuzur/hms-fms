@@ -113,7 +113,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Auto GR Report");
-            slDocument.MergeWorksheetCells(1, 1, 1, 12);
+            slDocument.MergeWorksheetCells(1, 1, 1, 9);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);

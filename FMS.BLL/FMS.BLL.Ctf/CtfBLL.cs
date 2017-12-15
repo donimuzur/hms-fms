@@ -169,20 +169,27 @@ namespace FMS.BLL.Ctf
 
             var rentMonth = ((fleetData.END_CONTRACT.Value.Year - CtfDto.EffectiveDate.Value.Year) * 12) + fleetData.END_CONTRACT.Value.Month - CtfDto.EffectiveDate.Value.Month;
 
-            var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetData.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
+            var Vendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (fleetData.VENDOR_NAME == null ? "" : fleetData.VENDOR_NAME.ToUpper() ) && x.IS_ACTIVE).FirstOrDefault();
 
-            var penalty = _penaltyService.GetPenalty().Where(x => x.MANUFACTURER.Contains(fleetData.MANUFACTURER) && x.MODEL.Contains(fleetData.MODEL) && x.SERIES.Contains(fleetData.SERIES)&& x.BODY_TYPE == fleetData.BODY_TYPE && x.YEAR == fleetData.VEHICLE_YEAR
-                                                        && x.VENDOR == Vendor.MST_VENDOR_ID && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+            var penalty = _penaltyService.GetPenalty().Where(x => (x.MANUFACTURER == null ? "" :x.MANUFACTURER.ToUpper()) == (fleetData.MANUFACTURER==null? "" : fleetData.MANUFACTURER.ToUpper()) 
+                                                                   && (x.MODEL == null ? "" : x.MODEL.ToUpper()) == (fleetData.MODEL == null ? "" : fleetData.MODEL.ToUpper()) 
+                                                                   && (x.SERIES == null ? "" : x.SERIES.ToUpper()) == (fleetData.SERIES == null ? "" : fleetData.SERIES.ToUpper())
+                                                                   && (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == (fleetData.BODY_TYPE == null ? "" : fleetData.BODY_TYPE.ToUpper()) 
+                                                                   && x.YEAR == fleetData.VEHICLE_YEAR 
+                                                                   && x.VENDOR == Vendor.MST_VENDOR_ID && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
             if (penalty == null)
             {
-                penalty = _penaltyService.GetPenalty().Where(x => x.BODY_TYPE.Contains(fleetData.BODY_TYPE)  && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.YEAR == fleetData.VEHICLE_YEAR
-                                                        && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+                penalty = _penaltyService.GetPenalty().Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == (fleetData.BODY_TYPE == null ? "" : fleetData.BODY_TYPE.ToUpper())  
+                                                                   && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper() ) == (fleetData.VEHICLE_TYPE == null ? "" : fleetData.VEHICLE_TYPE.ToUpper()) 
+                                                                   && x.YEAR == fleetData.VEHICLE_YEAR
+                                                                   && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
             }
 
             if (penalty == null)
             {
-                penalty = _penaltyService.GetPenalty().Where(x => x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.YEAR == fleetData.VEHICLE_YEAR
-                                                        && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+                penalty = _penaltyService.GetPenalty().Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleetData.VEHICLE_TYPE) 
+                                                             && x.YEAR == fleetData.VEHICLE_YEAR
+                                                             && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
             }
 
             if (penalty == null)
@@ -210,12 +217,15 @@ namespace FMS.BLL.Ctf
         {
             decimal? cost = 0;
             var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
-            var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleet.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
+            var Vendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (fleet.VENDOR_NAME == null ? "" : fleet.VENDOR_NAME.ToUpper()) 
+                                                                && x.IS_ACTIVE).FirstOrDefault();
 
             if (fleet == null) return 0;
 
-            var installmentEmp = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES) 
-                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.VEHICLE_USAGE.Contains(fleet.VEHICLE_USAGE) && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault();
+            var installmentEmp = _pricelistService.GetPriceList().Where(x => (x.MANUFACTURER == null ? "" : x.MANUFACTURER.ToUpper()) == (fleet.MANUFACTURER == null ? "" : fleet.MANUFACTURER.ToUpper()) 
+                                                                        && (x.MODEL == null ? "" : x.MODEL.ToUpper()) == (fleet.MODEL == null ? "" :fleet.MODEL.ToUpper()) 
+                                                                        && (x.SERIES == null ? "" : x.SERIES.ToUpper()) == (fleet.SERIES == null ? "" : fleet.SERIES.ToUpper()) 
+                                                                        && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.VEHICLE_USAGE.Contains(fleet.VEHICLE_USAGE) && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault();
                 
             if (installmentEmp == null) return 0;
             
@@ -236,12 +246,17 @@ namespace FMS.BLL.Ctf
         {
             decimal? cost = 0;
             var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
-            var Vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleet.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
+            var Vendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (fleet.VENDOR_NAME == null ? "" : fleet.VENDOR_NAME.ToUpper()) 
+                                                          && x.IS_ACTIVE).FirstOrDefault();
 
             if (fleet == null) return 0;
 
-            var Price = _pricelistService.GetPriceList().Where(x => x.MANUFACTURER.Contains(fleet.MANUFACTURER) && x.MODEL.Contains(fleet.MODEL) && x.SERIES.Contains(fleet.SERIES)
-                                            && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.VEHICLE_USAGE.Contains(fleet.VEHICLE_USAGE) && x.YEAR == fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID && x.IS_ACTIVE == true).FirstOrDefault();
+            var Price = _pricelistService.GetPriceList().Where(x => (x.MANUFACTURER == null ? "" : x.MANUFACTURER.ToUpper()) == (fleet.MANUFACTURER == null ? "" : fleet.MANUFACTURER.ToUpper()) 
+                                                               && (x.MODEL == null ? "" : x.MODEL.ToUpper()) == (fleet.MODEL == null ? "" : fleet.MODEL.ToUpper()) 
+                                                               && (x.SERIES == null ? "" : x.SERIES.ToUpper()) == (fleet.SERIES == null ? "" : fleet.SERIES.ToUpper())
+                                                               && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleet.VEHICLE_TYPE == null ? "" : fleet.VEHICLE_TYPE.ToUpper()) 
+                                                               && (x.VEHICLE_USAGE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleet.VEHICLE_USAGE == null ? "" : fleet.VEHICLE_USAGE.ToUpper()) 
+                                                               && x.YEAR == fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID && x.IS_ACTIVE == true).FirstOrDefault();
 
             if (Price == null) return 0;
             cost = Price.INSTALLMEN_EMP;

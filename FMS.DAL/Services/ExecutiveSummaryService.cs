@@ -25,6 +25,7 @@ namespace FMS.DAL.Services
         private IGenericRepository<LEASE_COST_BY_FUNC_REPORT_DATA> _leaseCostByFuncRepository;
         private IGenericRepository<SALES_BY_REGION_REPORT_DATA> _salesRegionRepository;
         private IGenericRepository<ACCIDENT_REPORT_DATA> _accidentRepository;
+        private IGenericRepository<AC_VS_OB_REPORT_DATA> _acVsObRepository;
 
         public ExecutiveSummaryService(IUnitOfWork uow)
         {
@@ -38,6 +39,7 @@ namespace FMS.DAL.Services
             _leaseCostByFuncRepository = _uow.GetGenericRepository<LEASE_COST_BY_FUNC_REPORT_DATA>();
             _salesRegionRepository = _uow.GetGenericRepository<SALES_BY_REGION_REPORT_DATA>();
             _accidentRepository = _uow.GetGenericRepository<ACCIDENT_REPORT_DATA>();
+            _acVsObRepository = _uow.GetGenericRepository<AC_VS_OB_REPORT_DATA>();
         }
 
         public List<NO_OF_VEHICLE_REPORT_DATA> GetAllNoVehicle(VehicleGetByParamInput filter)
@@ -373,6 +375,37 @@ namespace FMS.DAL.Services
             }
 
             return _accidentRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<AC_VS_OB_REPORT_DATA> GetAllAcVsOb(AcVsObGetByParamInput filter)
+        {
+            Expression<Func<AC_VS_OB_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<AC_VS_OB_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+            }
+
+            return _acVsObRepository.Get(queryFilter, null, "").ToList();
         }
     }
 }
