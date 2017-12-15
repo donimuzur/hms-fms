@@ -516,6 +516,8 @@ namespace FMS.BLL.Csf
                             {
                                 rc.CC.Add(item);
                             }
+
+                            rc.CC.Add(employeeDataEmail);
                         }
                         else
                         {
@@ -542,6 +544,8 @@ namespace FMS.BLL.Csf
                             {
                                 rc.CC.Add(item);
                             }
+
+                            rc.CC.Add(employeeDataEmail);
                         }
                     }
                     //if submit from EMPLOYEE to Fleet
