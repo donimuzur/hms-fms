@@ -28,6 +28,7 @@ namespace FMS.BusinessObject
             this.TRA_CSF = new HashSet<TRA_CSF>();
             this.TRA_CTF = new HashSet<TRA_CTF>();
             this.TRA_TEMPORARY = new HashSet<TRA_TEMPORARY>();
+            this.PO_REPORT_DATA = new HashSet<PO_REPORT_DATA>();
         }
     
         public string EMPLOYEE_ID { get; set; }
@@ -61,5 +62,6 @@ namespace FMS.BusinessObject
         public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
         public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
         public virtual ICollection<TRA_TEMPORARY> TRA_TEMPORARY { get; set; }
+        public virtual ICollection<PO_REPORT_DATA> PO_REPORT_DATA { get; set; }
     }
 }

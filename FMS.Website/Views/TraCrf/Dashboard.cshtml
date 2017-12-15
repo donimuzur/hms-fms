@@ -1,4 +1,5 @@
 ﻿@using DocumentFormat.OpenXml.Drawing.Charts
+@using FMS.Core
 @model FMS.Website.Models.TraCrfDashboardViewModel
 
 <div class="opt-content clearfloat">
@@ -59,7 +60,7 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            @if(Model.CurrentPageAccess.WriteAccess.HasValue && Model.CurrentPageAccess.WriteAccess.Value){
+                            @if(Model.CurrentLogin.UserRole == Enums.UserRole.HR){
                                 if (data.CrfId.HasValue)
                                 {
                                     <a href="@Url.Action("Edit", "TraCrf", new {@id = data.CrfId})" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
