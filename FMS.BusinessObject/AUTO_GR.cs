@@ -19,5 +19,7 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> PO_DATE { get; set; }
         public Nullable<System.DateTime> CREATED_DATE { get; set; }
         public Nullable<bool> IS_POSTED { get; set; }
+        public Nullable<int> LINE_ITEM { get; set; }
+        public Nullable<decimal> QTY_ITEM { get; set; }
     }
 }
