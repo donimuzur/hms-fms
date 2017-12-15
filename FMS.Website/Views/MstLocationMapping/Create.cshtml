@@ -13,13 +13,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Location, Model.LocationList,"-- Please Select --", new { @class = "form-control",@required = "required" })
+                        @Html.DropDownListFor(model => model.Location, Model.LocationList,"-- Please Select --", new { @class = "form-control",@required = "required", onChange= "GetAddressList()" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control"})
+                        @Html.DropDownListFor(model => model.Address, Model.AddressList, "-- Please Select --", new { @class = "form-control", @required = "required", onChange= "GetBasetown()" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -66,4 +66,52 @@
     </div>
 </section>
 <script type="text/javascript">
+    function GetAddressList() {
+        if ($("#Location").length) {
+            var Location = $("#Location option:selected").text();
+            $('#Address option').remove();
+            $('#Basetown').val('')
+            if (Location == '' || $('#Location').find("option:selected").val() == '') {
+                $('#Address option').append('<option value="">--Please Select--</option>');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetAddressList", "MstLocationMapping")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { Location: Location },
+                    success: function (list) {
+                        $('#Address').append('<option value="">Select</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#Address').append('<option value=' + list[i].ADDRESS.toString() + '>' + list[i].ADDRESS.toString() + '</option>');
+                            }
+                        }
+                        else {
+                            $('#Basetown').val('')
+                        }
+
+                    },
+                    complete: function (data) {
+                        GetBasetown();
+                    }
+                });
+            }
+        }
+    }
+
+    function GetBasetown() {
+        var Location = $("#Location option:selected").text();
+        var Address = $("#Address option:selected").text();
+        alert(Location+ Address);
+        $.ajax({
+            url: '@Url.Action("GetBaseTown", "MstLocationMapping")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Location: Location, Address: Address },
+            success: function (response) {
+                $('#Basetown').val(response);
+            }
+        });
+    }
 </script>
