@@ -211,57 +211,82 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellStyle(iRow, 1, iRow, 7, headerStyle);
 
-            //SLChart chart = slDocument.CreateChart(2, 9, iRow, 15);
-            //chart.SetChartStyle(SLChartStyle.Style1);
-            //chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            //chart.SetChartPosition(7, 1, 22, 8.5);
-            //chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
-            //chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
-            //chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+            #region --------- Chart --------------
 
-            //slDocument.InsertChart(chart);
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 9;
+            var startRowYear = 3;
+            var endRowYear = 3;
 
-            return slDocument;
-        }
-
-        private string createChart()
-        {
-            SLDocument sl = new SLDocument();
-
-            sl.SetCellValue("C2", "Apple");
-            sl.SetCellValue("D2", "Banana");
-            sl.SetCellValue("E2", "Cherry");
-            sl.SetCellValue("F2", "Durian");
-            sl.SetCellValue("G2", "Elderberry");
-            sl.SetCellValue("B3", "North");
-            sl.SetCellValue("B4", "South");
-            sl.SetCellValue("B5", "East");
-            sl.SetCellValue("B6", "West");
-
-            Random rand = new Random();
-            for (int i = 3; i <= 6; ++i)
+            foreach (var year in yearList)
             {
-                for (int j = 3; j <= 7; ++j)
-                {
-                    sl.SetCellValue(i, j, 9000 * rand.NextDouble() + 1000);
-                }
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
             }
 
-            SLChart chart = sl.CreateChart("B2", "G6");
-            chart.SetChartStyle(SLChartStyle.Style1);
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 10;
+            var endColum = 10;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.NoOfVehicle);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 1, 22, 8.5);
+            chart.SetChartPosition(7, 9, 22, 18);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
 
-            sl.InsertChart(chart);
+            slDocument.InsertChart(chart);
 
-            var fileName = "Kpi Monitoring" + DateTime.Now.ToString(" yyyyMMddHHmmss") + ".xlsx";
-            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+            #endregion
 
-            sl.SaveAs(path);
-            return path;
+            return slDocument;
         }
 
         #endregion
@@ -430,6 +455,81 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellStyle(iRow, 1, iRow, 5, headerStyle);
 
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 7;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 8;
+            var endColum = 8;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.NoOfVehicle);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 7, 22, 16);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
             return slDocument;
         }
 
@@ -596,6 +696,81 @@ namespace FMS.Website.Controllers
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
             slDocument.SetCellStyle(iRow, 1, iRow, 5, headerStyle);
+
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 7;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Manufacturer
+            var functionList = listData.OrderBy(x => x.Manufacturer).Select(x => x.Manufacturer).Distinct();
+            var startColum = 8;
+            var endColum = 8;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Manufacturer == item && x.ReportYear == year).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Manufacturer == item).Sum(x => x.NoOfVehicle);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 7, 22, 16);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
 
             return slDocument;
         }
@@ -770,6 +945,81 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
 
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 8;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 9;
+            var endColum = 9;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.TotalKm);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.TotalKm);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 8, 22, 17);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
             return slDocument;
         }
 
@@ -942,6 +1192,81 @@ namespace FMS.Website.Controllers
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
             slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
+
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 8;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 9;
+            var endColum = 9;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.TotalLiter);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.TotalLiter);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 8, 22, 17);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
 
             return slDocument;
         }
@@ -1116,6 +1441,81 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
 
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 8;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 9;
+            var endColum = 9;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.TotalFuelCost);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.TotalFuelCost);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 8, 22, 17);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
             return slDocument;
         }
 
@@ -1284,6 +1684,81 @@ namespace FMS.Website.Controllers
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
             slDocument.SetCellStyle(iRow, 1, iRow, 5, headerStyle);
+
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 7;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 8;
+            var endColum = 8;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.TotalLeaseCost);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.TotalLeaseCost);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 7, 22, 16);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
 
             return slDocument;
         }
@@ -1458,6 +1933,81 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
 
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 8;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Region
+            var functionList = listData.OrderBy(x => x.Region).Select(x => x.Region).Distinct();
+            var startColum = 9;
+            var endColum = 9;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Region == item && x.ReportYear == year).Sum(x => x.TotalCost);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Region == item).Sum(x => x.TotalCost);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 8, 22, 17);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
             return slDocument;
         }
 
@@ -1631,6 +2181,81 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellStyle(iRow, 1, iRow, 6, headerStyle);
 
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 8;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 9;
+            var endColum = 9;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.AccidentCount);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.AccidentCount);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 8, 22, 17);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
             return slDocument;
         }
 
@@ -1798,6 +2423,81 @@ namespace FMS.Website.Controllers
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
             slDocument.SetCellStyle(iRow, 1, iRow, 5, headerStyle);
+
+            #region --------- Chart --------------
+
+            //select distinct year
+            var yearList = listData.OrderBy(x => x.ReportYear).Select(x => x.ReportYear).Distinct();
+            var startColumYear = 7;
+            var startRowYear = 3;
+            var endRowYear = 3;
+
+            foreach (var year in yearList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, year.ToString());
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct Function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColum = 8;
+            var endColum = 8;
+            var startRow = 2;
+            var startRowCount = 3;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(startRow, endColum, item);
+                startRowCount = 3;
+
+                foreach (var year in yearList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == item && x.ReportYear == year).Sum(x => x.CostOb);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.Function == item).Sum(x => x.CostOb);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 7, 22, 16);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
 
             return slDocument;
         }
