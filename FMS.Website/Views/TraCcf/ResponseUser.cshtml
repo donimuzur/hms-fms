@@ -645,6 +645,8 @@
 
     function SendCcf(value) {
         var vehType = $("#VehicleType").val();
+        var roleType = $("#IdComplaintCategory").val();
+
         if (vehType == "WTC")
         {
             if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
@@ -657,7 +659,19 @@
                 $('#sendmodal').modal('show');
             }
         }
-        else
+        else if (vehType == "BENEFIT" && roleType == "Fleet")
+        {
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
+        }
+        else if(vehType == "BENEFIT" && roleType == "HR") 
         {
             if($('#DetailSave_ComplaintNote').val() == "")
             {
