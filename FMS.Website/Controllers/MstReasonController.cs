@@ -47,6 +47,7 @@ namespace FMS.Website.Controllers
         {
             var model = new ReasonItem();
             var list1 = _documentTypeBLL.GetDocumentType();
+
             var list2 = new List<SelectListItem>()
             {
                 new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
@@ -66,17 +67,30 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<ReasonDto>(model);
-                dto.CreatedBy = CurrentUser.USERNAME;
+                dto.CreatedBy = CurrentUser.USER_ID;
                 dto.CreatedDate = DateTime.Now;
                 dto.IsActive = true;
                 try
                 {
                     _rasonBLL.save(dto);
+                    
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    model.ErrorMessage = ex.Message;
+                    var list1 = _documentTypeBLL.GetDocumentType();
+                    var list2 = new List<SelectListItem>()
+                            {
+                                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
+                                new SelectListItem() {Text = "WTC", Value = "WTC" }
+                            };
+                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+                    model.VehicleTypeList = new SelectList(list2, "Text", "Value");
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    return View(model);
                 }
+                _rasonBLL.SaveCanges();
             }
 
             return RedirectToAction("Index", "MstReason");
@@ -109,7 +123,7 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var dto = Mapper.Map<ReasonDto>(model);
-                dto.ModifiedBy = CurrentUser.USERNAME;
+                dto.ModifiedBy = CurrentUser.USER_ID;
                 dto.ModifiedDate = DateTime.Now;
                 try
                 {
@@ -117,8 +131,21 @@ namespace FMS.Website.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    model.ErrorMessage = ex.Message;
+                    var list1 = _documentTypeBLL.GetDocumentType();
+                    var list2 = new List<SelectListItem>()
+                            {
+                                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
+                                new SelectListItem() {Text = "WTC", Value = "WTC" }
+                            };
+
+                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+                    model.VehicleTypeList = new SelectList(list2, "Text", "Value");
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    return View(model);
                 }
+                _rasonBLL.SaveCanges();
             }
 
             return RedirectToAction("Index", "MstReason");
@@ -181,6 +208,7 @@ namespace FMS.Website.Controllers
                         return View(Model);
                     }
                 }
+                _rasonBLL.SaveCanges();
             }
             return RedirectToAction("Index", "MstReason");
         }
@@ -215,7 +243,7 @@ namespace FMS.Website.Controllers
                             item.DocumentType = getdto.MstDocumentTypeId;
                             item.ErrorMessage = "";
                         }
-                        item.VehicleType = dataRow[1].ToString();
+                        item.VehicleType = dataRow[1].ToUpper();
                         item.Reason = dataRow[2].ToString();
                         if (dataRow[3].ToString() == "Yes" | dataRow[3].ToString() == "YES" | dataRow[3].ToString() == "true" | dataRow[3].ToString() == "TRUE" | dataRow[3].ToString() == "1")
                         {
@@ -245,7 +273,7 @@ namespace FMS.Website.Controllers
                     }
                     catch (Exception ex)
                     {
-                        var a = ex.Message;
+                       item.ErrorMessage = ex.Message;
                     }
                 }
             }
