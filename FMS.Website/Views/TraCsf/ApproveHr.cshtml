@@ -341,7 +341,8 @@
                 <div class="modal-footer">
                     @Html.HiddenFor(model => model.IsPersonalDashboard)
                     <input type="hidden" name="TraCsfId" id="TraCsfId">
-                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <img src="~/Content/img/loader2.gif" id="imgLoaderApp" style="display:none" />
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseApp" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
                 </div>
             }
@@ -368,7 +369,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <img src="~/Content/img/loader2.gif" id="imgLoaderReject" style="display:none" />
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseReject" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmReject" />
                 </div>
             }
@@ -377,24 +379,43 @@
 </div>
 <script src="~/Scripts/csfscript.js"></script>
 <script type="text/javascript">
-    function GetEmployee() {
-        var Id = document.getElementById("Detail_EmployeeId").value;
-        $.ajax({
-            url: '@Url.Action("GetEmployee", "TraCsf")',
-            type: "POST",
-            dataType: "JSON",
-            data: { Id: Id },
-            success: function (response) {
-                document.getElementById("Detail_EmployeeName").value = response.FORMAL_NAME;
-                document.getElementById("Detail_CostCenter").value = response.COST_CENTER;
-                document.getElementById("Detail_GroupLevel").value = response.GROUP_LEVEL;
-            }
-        });
-    }
-
     $(document).ready(function () {
         $("#btnBack").click(function () {
             location.href = '@Url.Action("Index", "TraCsf")';
+        });
+
+        $("#btnConfirmApp").click(function () {
+            $("#imgLoaderApp").css("display", "");
+            $("#btnCloseApp").css("display", "none");
+            $("#btnConfirmApp").css("display", "none");
+        });
+
+        $('#appmodal').on('hidden.bs.modal', function () {
+            $("#imgLoaderApp").css("display", "none");
+            $("#btnCloseApp").css("display", "");
+            $("#btnConfirmApp").css("display", "");
+        })
+
+        $("#btnConfirmReject").click(function () {
+            $("#imgLoaderReject").css("display", "");
+            $("#btnCloseReject").css("display", "none");
+            $("#btnConfirmReject").css("display", "none");
+        });
+
+        $('#rejectmodal').on('hidden.bs.modal', function () {
+            $("#imgLoaderReject").css("display", "none");
+            $("#btnCloseReject").css("display", "");
+            $("#btnConfirmReject").css("display", "");
+        })
+
+        $("#RemarkId").change(function () {
+            var str = $('#RemarkId').find("option:selected").text();
+
+            if (str.toLowerCase() != "") {
+                $("#imgLoaderReject").css("display", "none");
+                $("#btnCloseReject").css("display", "");
+                $("#btnConfirmReject").css("display", "");
+            }
         });
     });
 

@@ -11,7 +11,7 @@ namespace FMS.Website.Models
         public RptFuelModel()
         {
             RptFuelItem = new List<RptFuelItem>();
-            //SearchViewExport = new VehicleSearchViewExport();
+            SearchViewExport = new RptFuelSearchViewExport();
             SearchView = new RptFuelSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.YearFrom = DateTime.Now.Year;

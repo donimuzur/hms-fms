@@ -63,6 +63,7 @@
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\IPenaltyLogicBLL.cs" />
     <Compile Include="BLL\IRptFuelBLL.cs" />
+    <Compile Include="BLL\IRptPoBLL.cs" />
     <Compile Include="BLL\ISalesVolumeBLL.cs" />
     <Compile Include="BLL\ISettingBLL.cs" />
     <Compile Include="BLL\IReasonBLL.cs" />
@@ -104,9 +105,11 @@
     <Compile Include="Service\IGroupCostCenterService.cs" />
     <Compile Include="Service\IGsService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
+    <Compile Include="Service\IKpiMonitoringService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\IMessageService.cs" />
     <Compile Include="Service\IPenaltyLogicService.cs" />
+    <Compile Include="Service\IRptPoService.cs" />
     <Compile Include="Service\ISalesVolumeService.cs" />
     <Compile Include="Service\ISettingService.cs" />
     <Compile Include="Service\IReasonService.cs" />

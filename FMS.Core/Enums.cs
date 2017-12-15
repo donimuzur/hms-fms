@@ -49,7 +49,8 @@ namespace FMS.Core
             RptPo = 37,
             RptAutoGr = 38,
             RptGs = 39,
-            RptExecutiveSummary = 40
+            RptExecutiveSummary = 40,
+            RptCcf = 41
 		}
 
 	    public enum DocumentType

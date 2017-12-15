@@ -13,6 +13,7 @@ using FMS.Website.Models;
 using AutoMapper;
 using DocumentFormat.OpenXml.Spreadsheet;
 using SpreadsheetLight;
+using SpreadsheetLight.Charts;
 
 namespace FMS.Website.Controllers
 {
@@ -92,6 +93,7 @@ namespace FMS.Website.Controllers
 
             var input = Mapper.Map<VehicleGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsNoVehicle(input);
+            //pathFile = createChart();
 
             var newFile = new FileInfo(pathFile);
 
@@ -209,7 +211,57 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellStyle(iRow, 1, iRow, 7, headerStyle);
 
+            //SLChart chart = slDocument.CreateChart(2, 9, iRow, 15);
+            //chart.SetChartStyle(SLChartStyle.Style1);
+            //chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            //chart.SetChartPosition(7, 1, 22, 8.5);
+            //chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            //chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            //chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            //slDocument.InsertChart(chart);
+
             return slDocument;
+        }
+
+        private string createChart()
+        {
+            SLDocument sl = new SLDocument();
+
+            sl.SetCellValue("C2", "Apple");
+            sl.SetCellValue("D2", "Banana");
+            sl.SetCellValue("E2", "Cherry");
+            sl.SetCellValue("F2", "Durian");
+            sl.SetCellValue("G2", "Elderberry");
+            sl.SetCellValue("B3", "North");
+            sl.SetCellValue("B4", "South");
+            sl.SetCellValue("B5", "East");
+            sl.SetCellValue("B6", "West");
+
+            Random rand = new Random();
+            for (int i = 3; i <= 6; ++i)
+            {
+                for (int j = 3; j <= 7; ++j)
+                {
+                    sl.SetCellValue(i, j, 9000 * rand.NextDouble() + 1000);
+                }
+            }
+
+            SLChart chart = sl.CreateChart("B2", "G6");
+            chart.SetChartStyle(SLChartStyle.Style1);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(7, 1, 22, 8.5);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            sl.InsertChart(chart);
+
+            var fileName = "Kpi Monitoring" + DateTime.Now.ToString(" yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            sl.SaveAs(path);
+            return path;
         }
 
         #endregion

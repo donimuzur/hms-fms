@@ -10,15 +10,15 @@
                     <th style="min-width: 70px">Description</th>
                 </tr>
             </thead>
-            <thead class="filters">
+            @*<thead class="filters">
                 <tr>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                     <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                 </tr>
-            </thead>
+            </thead>*@
             <tbody>
-                @foreach (var data in Model.DetailsHistory)
+        @foreach (var data in Model.DetailsHistory)
         {
         <tr>
             <td>@Html.Raw(data.Date.HasValue ? data.Date.Value.ToString("yyyy-MMM-dd"): "")</td>
@@ -26,7 +26,7 @@
             <td>@Html.Raw(data.Description)</td>
         </tr>
         }
-            </tbody>
+        </tbody>
         </table>
     </div>
 </div>

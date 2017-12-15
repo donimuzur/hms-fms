@@ -322,13 +322,13 @@ namespace FMS.Website.Controllers
                             item.IsActiveS = dataRow[5].ToString();
                             model.Add(item);
                         }
-                        catch(Exception ex)
+                        catch(Exception)
                         {
                             
                         }
                     }
                 }
-                catch(Exception ex)
+                catch(Exception)
                 {
 
                 }
