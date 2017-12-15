@@ -105,6 +105,7 @@
     <Compile Include="Service\IGroupCostCenterService.cs" />
     <Compile Include="Service\IGsService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
+    <Compile Include="Service\IKpiMonitoringService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\IMessageService.cs" />
     <Compile Include="Service\IModulService.cs" />
