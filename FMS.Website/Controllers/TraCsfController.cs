@@ -1026,7 +1026,7 @@ namespace FMS.Website.Controllers
             if (data != null)
             {
                 var csfData = _csfBLL.GetCsfById(Detail_TraCsfId);
-                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
+                var cfmData = csfData.CFM_IDLE_ID == null ? null : _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
 
                 foreach (var dataRow in data.DataRows)
                 {
