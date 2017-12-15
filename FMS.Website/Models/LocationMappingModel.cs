@@ -33,5 +33,6 @@ namespace FMS.Website.Models
         public bool IsActive { get; set; }
         public string ValidFromS { get; set; }
         public SelectList LocationList { get; set; }
+        public SelectList AddressList { get; set; }
     }
 }
