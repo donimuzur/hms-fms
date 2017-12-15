@@ -346,7 +346,7 @@ namespace FMS.Website.Controllers
                 }
                 else if (data.Note == "SubTotal")
                 {
-                    slDocument.SetCellValue(iRow, 1, data.PoliceNumber);
+                    slDocument.SetCellValue(iRow, 1, "");
                     slDocument.SetCellValue(iRow, 2, "");
                     slDocument.SetCellValue(iRow, 3, "");
                     slDocument.SetCellValue(iRow, 4, "");
@@ -406,8 +406,8 @@ namespace FMS.Website.Controllers
                 iRow++;
             }
 
-            
 
+            slDocument.AutoFitColumn(1, 16);
             return slDocument;
         }
         #endregion

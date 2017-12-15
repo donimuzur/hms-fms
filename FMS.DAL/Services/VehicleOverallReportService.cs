@@ -43,31 +43,31 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.SupplyMethod))
                 {
-                    queryFilter = queryFilter.And(c => c.SUPPLY_METHOD == filter.SupplyMethod);
+                    queryFilter = queryFilter.And(c => (string.IsNullOrEmpty(c.SUPPLY_METHOD) == true ? "" : c.SUPPLY_METHOD.ToUpper()) == filter.SupplyMethod.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.BodyType))
                 {
-                    queryFilter = queryFilter.And(c => c.BODY_TYPE == filter.BodyType);
+                    queryFilter = queryFilter.And(c => (string.IsNullOrEmpty(c.BODY_TYPE) == true ? "" : c.BODY_TYPE.ToUpper()) == filter.BodyType.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
-                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == filter.VehicleType);
+                    queryFilter = queryFilter.And(c => (string.IsNullOrEmpty(c.VEHICLE_TYPE ) == true ? "" : c.VEHICLE_TYPE.ToUpper())== filter.VehicleType.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.Vendor))
                 {
-                    queryFilter = queryFilter.And(c => c.VENDOR == filter.Vendor);
+                    queryFilter = queryFilter.And(c => (string.IsNullOrEmpty(c.VENDOR) == true ? "" :c.VENDOR.ToUpper())== filter.Vendor.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION == filter.Function);
+                    queryFilter = queryFilter.And(c => (string.IsNullOrEmpty(c.FUNCTION )== true ? "" :c.FUNCTION.ToUpper()  )== filter.Function.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.Regional))
                 {
-                    queryFilter = queryFilter.And(c => c.REGIONAL == filter.Regional);
+                    queryFilter = queryFilter.And(c => (string.IsNullOrEmpty(c.REGIONAL) == true ? "" : c.REGIONAL.ToUpper()) == filter.Regional.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.City))
                 {
-                    queryFilter = queryFilter.And(c => c.CITY.ToUpper() == filter.City.ToUpper());
+                    queryFilter = queryFilter.And(c => (string.IsNullOrEmpty(c.CITY) == true ? "" :c.CITY.ToUpper()) == filter.City.ToUpper());
                 }
             }
             return _vehicleReportRepository.Get(queryFilter, null, "").ToList();

@@ -56,6 +56,7 @@ using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
 using FMS.BLL.CfmIdleReport;
 using FMS.BLL.VehicleOverallReport;
+using FMS.BLL.RptPo;
 
 namespace FMS.Website
 {
@@ -132,6 +133,7 @@ namespace FMS.Website
             AutoGRMapper.Initialize();
             CfmIdleReportMapper.Initialize();
             VehicleOverallReportMapper.Initialize();
+            RptPOMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -180,6 +182,7 @@ namespace FMS.Website
             container.Register<IAutoGrBLL, AutoGrBLL>();
             container.Register<ICfmIdleReportBLL, CfmIdleReportBLL>();
             container.Register<IVehicleOverallReportBLL, VehicleOverallReportBLL>();
+            container.Register<IRptPoBLL, RptPoBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

@@ -1,28 +1,32 @@
 ﻿@using FMS.Core
-@model FMS.Website.Models.RptFuelModel
+@model FMS.Website.Models.RptPOModel
 
-<table id="tbRptFuel" class="table table-bordered table-striped">
+<table id="tbRptPo" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Police Number</th>
-            <th>Liter</th>
-            <th>Odometer</th>
-            <th>Usage</th>
-            <th>KM/Lt</th>
-            <th>Cost</th>
-            <th>Fuel Type</th>
+            <th>Supply Method</th>
+            <th>Employee Name</th>
             <th>Cost Center</th>
-            <th>Function</th>
             <th>Manufacturer</th>
             <th>Model</th>
             <th>Series</th>
             <th>Body Type</th>
+            <th>Color</th>
+            <th>Chasis Number</th>
+            <th>Engine Number</th>
             <th>Vehicle Type</th>
             <th>Vehicle Usage</th>
-            <th>Location</th>
-            <th>Regional</th>
+            <th>PO Number</th>
+            <th>PO Line</th>
             <th>Report Month</th>
             <th>Report Year</th>
+            <th>Start Contract</th>
+            <th>End Contract</th>
+            <th>Vendor</th>
+            <th>Monthly Installment</th>
+            <th>Gst</th>
+            <th>TotMonthInstallment</th>
         </tr>
     </thead>
     <thead class="filters">
@@ -46,31 +50,39 @@
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var data in Model.RptFuelItem)
+        @foreach (var data in Model.RptPOItem)
         {
             <tr>
                 <td>@Html.Raw(data.PoliceNumber)</td>
-                <td>@Html.Raw(data.Liter)</td>
-                <td>@Html.Raw(data.Odometer)</td>
-                <td>@Html.Raw(data.Usage)</td>
-                <td>@Html.Raw(data.kmlt)</td>
-                <td>@Html.Raw(data.Cost)</td>
-                <td>@Html.Raw(data.FuelType)</td>
+                <td>@Html.Raw(data.SupplyMethod)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.CostCenter)</td>
-                <td>@Html.Raw(data.Function)</td>
                 <td>@Html.Raw(data.Manufacturer)</td>
                 <td>@Html.Raw(data.Models)</td>
                 <td>@Html.Raw(data.Series)</td>
                 <td>@Html.Raw(data.BodyType)</td>
+                <td>@Html.Raw(data.Color)</td>
+                <td>@Html.Raw(data.ChasisNumber)</td>
+                <td>@Html.Raw(data.EngineNumber)</td>
                 <td>@Html.Raw(data.VehicleType)</td>
                 <td>@Html.Raw(data.VehicleUsage)</td>
-                <td>@Html.Raw(data.Location)</td>
-                <td>@Html.Raw(data.Regional)</td>
+                <td>@Html.Raw(data.PoNumber)</td>
+                <td>@Html.Raw(data.PoLine)</td>
                 <td>@Html.Raw(data.ReportMonth)</td>
                 <td>@Html.Raw(data.ReportYear)</td>
+                <td>@Html.Raw(data.StartContract)</td>
+                <td>@Html.Raw(data.EndContract)</td>
+                <td>@Html.Raw(data.Vendor)</td>
+                <td>@Html.Raw(data.MonthlyInstallment)</td>
+                <td>@Html.Raw(data.Gst)</td>
+                <td>@Html.Raw(data.TotMonthInstallment)</td>
             </tr>
         }
     </tbody>
