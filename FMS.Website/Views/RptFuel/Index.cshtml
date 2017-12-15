@@ -16,6 +16,8 @@
     {
         @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
         @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
+        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
         @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
         @Html.HiddenFor(model => model.SearchViewExport.Function)
         @Html.HiddenFor(model => model.SearchViewExport.Regional)
@@ -43,6 +45,18 @@
                     <div class="form-group">
                         <label for=""> Period Year</label>
                         @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Period Month</label>
+                        @Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for=""> Period Year</label>
+                        @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -92,6 +106,8 @@
     function ExportXls() {
         $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
         $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
+        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
+        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
         $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
         $('#SearchViewExport_Function').val($('#SearchView_Function').val());
         $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
