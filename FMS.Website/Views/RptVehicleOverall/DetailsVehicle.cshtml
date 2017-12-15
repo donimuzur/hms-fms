@@ -8,6 +8,10 @@
     </a>
 </div>
 <section class="content">
+    @using (Html.BeginForm("ExportDetailsVehicle", "RptVehicleOverall", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+        @Html.HiddenFor(model => model.ChasisNumber, new { @id = "filter_ChasisNumber" })
+    }
     <div class="wpanel">
         <div role="tabpanel">
             <ul class="nav nav-tabs" role="tablist">
@@ -27,15 +31,16 @@
                 </div>
             </div>
         </div>
+        <div class="row col-md-12">
+            <a href="@Url.Action("Index", "RptVehicleOverall")" class="btn btn-default">Back</a>
+        </div>
     </div>
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/VehicleOverall.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#SearchViewExport_FromDate').val($('#SearchView_FromDate').val());
-        $('#SearchViewExport_ToDate').val($('#SearchView_ToDate').val());
-
+        $('#filter_ChasisNumber').val($('#ChasisNumber').val());
         $('#ExportToXls').submit();
     }
 
