@@ -74,6 +74,7 @@
     <Compile Include="PenalltyLogicMapper.cs" />
     <Compile Include="PenaltyMapper.cs" />
     <Compile Include="LocationMapingMapper.cs" />
+    <Compile Include="RptCCFMapper.cs" />
     <Compile Include="RptFuelMapper.cs" />
     <Compile Include="RptPOMapper.cs" />
     <Compile Include="SalesVolumeMapper.cs" />

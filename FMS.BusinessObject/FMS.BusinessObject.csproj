@@ -128,6 +128,7 @@
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="Inputs\RptAutoGrInput.cs" />
+    <Compile Include="Inputs\RptCCFInput.cs" />
     <Compile Include="Inputs\RptGsInput.cs" />
     <Compile Include="Inputs\RptFuel.cs" />
     <Compile Include="Inputs\RptPo.cs" />

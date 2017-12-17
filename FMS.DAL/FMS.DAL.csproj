@@ -97,6 +97,7 @@
     <Compile Include="Services\LocationMappingService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\PenaltyLogicService.cs" />
+    <Compile Include="Services\RptCcfService.cs" />
     <Compile Include="Services\RptFuelService.cs" />
     <Compile Include="Services\RptPoService.cs" />
     <Compile Include="Services\SalesVolumeService.cs" />

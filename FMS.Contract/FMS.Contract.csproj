@@ -62,6 +62,7 @@
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\IPenaltyLogicBLL.cs" />
+    <Compile Include="BLL\IRptCcfBLL.cs" />
     <Compile Include="BLL\IRptFuelBLL.cs" />
     <Compile Include="BLL\IRptPoBLL.cs" />
     <Compile Include="BLL\ISalesVolumeBLL.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\IMessageService.cs" />
     <Compile Include="Service\IPenaltyLogicService.cs" />
+    <Compile Include="Service\IRptCCFService.cs" />
     <Compile Include="Service\IRptPoService.cs" />
     <Compile Include="Service\ISalesVolumeService.cs" />
     <Compile Include="Service\ISettingService.cs" />
