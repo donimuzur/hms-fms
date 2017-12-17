@@ -18,7 +18,6 @@ namespace FMS.BLL.KpiMonitoring
     {
         private IKpiMonitoringService _kpiMonitoringService;
         private IUnitOfWork _uow;
-        private IWorkflowHistoryService _workflowHistory;
 
         public KpiMonitoringBLL(IUnitOfWork uow)
         {
@@ -31,6 +30,22 @@ namespace FMS.BLL.KpiMonitoring
             var data = _kpiMonitoringService.GetTransaction(filter);
             var redata = Mapper.Map<List<KpiMonitoringDto>>(data);
             return redata;
+        }
+
+        public int? GetDifferentDays(DateTime? Day1, DateTime? Day2)
+        {
+            int? DiffDays = null;
+            if (Day1 != null && Day2 != null)
+            {
+                var Day2Days = (int)(Day2.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
+
+                var Day1Days = (int)(Day1.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
+
+                DiffDays = Day2Days - Day1Days;
+
+            }
+
+            return DiffDays;
         }
     }
 }

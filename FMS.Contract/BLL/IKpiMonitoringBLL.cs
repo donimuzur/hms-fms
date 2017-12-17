@@ -11,5 +11,6 @@ namespace FMS.Contract.BLL
     public interface IKpiMonitoringBLL
     {
         List<KpiMonitoringDto> GetTransaction(KpiMonitoringGetByParamInput filter);
+        int? GetDifferentDays(DateTime? Day1, DateTime? Day2);
     }
 }
