@@ -60,6 +60,10 @@
       <Project>{214B9099-0AF6-41EF-B03E-315D6561CA1E}</Project>
       <Name>FMS.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FMS.DAL\FMS.DAL.csproj">
+      <Project>{C939E89D-B5A2-4B80-8F9F-CCEF761E26D4}</Project>
+      <Name>FMS.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
