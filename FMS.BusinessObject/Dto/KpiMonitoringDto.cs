@@ -9,6 +9,7 @@ namespace FMS.BusinessObject.Dto
     public class KpiMonitoringDto
     {
         public int Id { get; set; }
+        public long TraId { get; set; }
         public string FormType { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
@@ -16,12 +17,17 @@ namespace FMS.BusinessObject.Dto
         public string Reason { get; set; }
         public string Address { get; set; }
         public string PreviousBaseTown { get; set; }
+        public string NewBaseTown { get; set; }
         public string VehicleUsage { get; set; }
         public int? VehicleGroup { get; set; }
         public string Model { get; set; }
         public string Color { get; set; }
         public string PoliceNumber { get; set; }
         public string Location { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public int? Month { get; set; }
+        public int? Year { get; set; }
+
         public DateTime? TemporaryRequestDate { get; set; }
         public DateTime? EeReceivedTemp { get; set; }
         public DateTime? SendToEmpDate { get; set; }

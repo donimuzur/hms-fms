@@ -1,24 +1,31 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.RptKpiMonitoringModel
+@model FMS.Website.Models.RptCCFModel
 
+@{
+    ViewBag.Title = Model.TitleForm;
+}
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">KPI Monitoring Report</h5>
+    <h5 class="title-page">@ViewBag.Title</h5>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-download"></i> Export
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportKpiMonitoring", "RptKpiMonitoring", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm(Model.TitleExport, "RptCcf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-        @Html.HiddenFor(model => model.SearchView.FormDate, new { @id = "filter_FromDate" })
-        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
-        @Html.HiddenFor(model => model.SearchView.FormType, new { @id = "filter_FormType" })
-        @Html.HiddenFor(model => model.SearchView.VehicleUsage, new { @id = "filter_VehicleUsage" })
+        @Html.HiddenFor(model => model.SearchViewExport.PeriodFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.PeriodTo)
+        @Html.HiddenFor(model => model.SearchViewExport.Category)
+        @Html.HiddenFor(model => model.SearchViewExport.Coordinator)
+        @Html.HiddenFor(model => model.SearchViewExport.Location)
+        @Html.HiddenFor(model => model.SearchViewExport.CoorKPI)
+        @Html.HiddenFor(model => model.SearchViewExport.VendorKPI)
     }
     <div class="wpanel">
-        <div class="row col-md-12">
-            @using (Ajax.BeginForm("ListTransaction", "RptKpiMonitoring",
+        <p>@Model.ErrorMessage</p>
+        <div class="row">
+            @using (Ajax.BeginForm("FilterCCF", "RptCcf",
                 new AjaxOptions
                 {
                     HttpMethod = "POST",
@@ -31,7 +38,7 @@
                     <div class="form-group">
                         <label class="control-label">Period From</label>
                         <div class="input-group date" id="FromDate">
-                            @Html.TextBoxFor(model => model.SearchView.FormDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
+                            @Html.TextBoxFor(model => model.SearchView.PeriodFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "From", @id = "From_Date" })
                             <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>
@@ -41,8 +48,8 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Period To</label>
-                        <div class="input-group date" id="ToDate">
-                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To", @id = "To_Date" })
+                        <div class="input-group date" id="FromDate">
+                            @Html.TextBoxFor(model => model.SearchView.PeriodTo, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "To", @id = "To_Date" })
                             <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>
@@ -51,14 +58,32 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="control-label">Form Type</label>
-                        @Html.TextBoxFor(model => model.SearchView.FormType, new { @class = "form-control "})
+                        <label for="">Complaint Category</label>
+                        @Html.DropDownListFor(model => model.SearchView.Category, Model.SearchView.Categorylist, "ALL", new { @class = "form-control select" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="control-label">Vehicle Usage</label>
-                        @Html.TextBoxFor(model => model.SearchView.VehicleUsage, new { @class = "form-control " })
+                        <label for="">Coordinator Name</label>
+                        @Html.DropDownListFor(model => model.SearchView.Coordinator, Model.SearchView.Coordinatorlist, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Location City</label>
+                        @Html.DropDownListFor(model => model.SearchView.Location, Model.SearchView.Locationlist, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Late Respone Time Coordinator</label>
+                        @Html.TextBoxFor(model => model.SearchView.CoorKPI, new { @class = "form-control text" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Late Respone Time Vendor</label>
+                        @Html.TextBoxFor(model => model.SearchView.VendorKPI, new { @class = "form-control text" })
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -70,31 +95,27 @@
         </div>
     </div>
     <div id="contenttable" class="wpanel">
-        @Html.Partial("_ListTransaction")
+        @Html.Partial("_ListCcf")
     </div>
 </section>
-
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/CfmIdle.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#filter_FromDate').val($('#From_Date').val());
-        $('#filter_ToDate').val($('#To_Date').val());
-        $('#filter_VehicleUsage').val($('#SearchView_VehicleUsage').val());
-        $('#filter_FormType').val($('#SearchView_FormType').val());
+        $('#SearchViewExport_PeriodFrom').val($('#From_Date').val());
+        $('#SearchViewExport_PeriodTo').val($('#To_Date').val());
+        $('#SearchViewExport_Category').val($('#SearchView_Category').val());
+        $('#SearchViewExport_Coordinator').val($('#SearchView_Coordinator').val());
+        $('#SearchViewExport_Location').val($('#SearchView_Location').val());
+        $('#SearchViewExport_CoorKPI').val($('#SearchView_CoorKPI').val());
+        $('#SearchViewExport_VendorKPI').val($('#SearchView_VendorKPI').val());
         $('#ExportToXls').submit();
     }
 
     function setupDataTables() {
         // DataTable
-        var table = $('#tbKpi').DataTable({
-            "sDom": 'lf<"table-overflow"t>pi',
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "info": true,
-            "bInfo": true,
-            "ordering": false
+        var table = $('#tbRptCcf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
         });
 
         // Apply the search
@@ -121,10 +142,11 @@
         var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
 
 
-        $('#From_Date').val(datestr);
+        $('#From_Date').val(todayDatestr);
         $('#To_Date').val(todayDatestr);
-        $("#SearchView_VehicleUsage").val('');
-        $("#SearchView_FormType").val('');
+
+        $(".select").val('');
+        $(".text").val('');
 
         $("#btn-filter").trigger('click');
     });

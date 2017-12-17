@@ -21,5 +21,6 @@ namespace FMS.BusinessObject
         public Nullable<bool> IS_POSTED { get; set; }
         public Nullable<int> LINE_ITEM { get; set; }
         public Nullable<decimal> QTY_ITEM { get; set; }
+        public Nullable<System.DateTime> TERMINATION_DATE { get; set; }
     }
 }
