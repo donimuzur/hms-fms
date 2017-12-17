@@ -97,7 +97,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Cost Center</label>
-                                                            @if (Model.Detail.IsBenefit) {
+                                                            @if (Model.Detail.IsBenefit || Model.CurrentLogin.UserRole == Enums.UserRole.HR) {
                                                                 @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                                             }
                                                             else
@@ -106,7 +106,8 @@
                                                             }
                                                         </div>
                                                     </div>
-                                                    @if (Model.Detail.IsBenefit) { 
+                                                    @if (Model.Detail.IsBenefit || Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                                    { 
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Group Level</label>

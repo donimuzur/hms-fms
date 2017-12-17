@@ -1,5 +1,5 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.NumberVehicleWtcModel
+@model FMS.Website.Models.SumPtdByFunctionModel
 
 @{
     ViewBag.Title = Model.TitleForm;
@@ -18,12 +18,13 @@
         @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
         @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
         @Html.HiddenFor(model => model.SearchViewExport.YearTo)
-        @Html.HiddenFor(model => model.SearchViewExport.Regional)
+        @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
+        @Html.HiddenFor(model => model.SearchViewExport.Region)
         @Html.HiddenFor(model => model.SearchViewExport.Function)
     }
     <div class="wpanel">
         <div class="row">
-            @using (Ajax.BeginForm("FilterNoVehicleWtc", "RptExecutiveSummary",
+            @using (Ajax.BeginForm("FilterSumPtdByFunction", "RptExecutiveSummary",
                 new AjaxOptions
                 {
                     HttpMethod = "POST",
@@ -59,8 +60,14 @@
                 <div class="clearfix"></div>
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label for="">Vehicle Type</label>
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
                         <label for="">Regional</label>
-                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+                        @Html.DropDownListFor(model => model.SearchView.Region, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -78,7 +85,7 @@
         </div>
     </div>
     <div id="contenttable" class="wpanel">
-        @Html.Partial("_ListVehicleWtc")
+        @Html.Partial("_ListSumPtdByFunction")
     </div>
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -89,14 +96,15 @@
         $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
         $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
         $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
-        $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
+        $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#SearchViewExport_Region').val($('#SearchView_Region').val());
         $('#SearchViewExport_Function').val($('#SearchView_Function').val());
         $('#ExportToXls').submit();
     }
 
     function setupDataTables() {
         // DataTable
-        var table = $('#tbVehicleWtc').DataTable({
+        var table = $('#tbSumPtdByFunction').DataTable({
             "dom": 'lf<"table-overflow"t>pi'
         });
 
