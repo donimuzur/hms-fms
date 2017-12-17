@@ -94,6 +94,7 @@
     <Compile Include="Services\GroupCostCenterService.cs" />
     <Compile Include="Services\GsService.cs" />
     <Compile Include="Services\HolidayCalenderService.cs" />
+    <Compile Include="Services\KpiMonitoringService.cs" />
     <Compile Include="Services\LocationMappingService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\PenaltyLogicService.cs" />

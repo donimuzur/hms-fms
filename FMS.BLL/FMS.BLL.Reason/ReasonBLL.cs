@@ -37,7 +37,10 @@ namespace FMS.BLL.Reason
             var dbReason = Mapper.Map<MST_REASON>(ReasonDto);
             _ReasonBLL.save(dbReason);
         }
-
+        public void SaveCanges()
+        {
+            _uow.SaveChanges();
+        }
         public ReasonDto GetReasonById(int MstReasonId)
         {
             var data = _ReasonBLL.GetReasonById(MstReasonId);

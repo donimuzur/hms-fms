@@ -26,6 +26,7 @@ namespace FMS.Website.Code
             InitializeRptFuel();
             InitializeRptPo();
             InitializeRptCCF();
+            InitializeKpiMonitoring();
 
             Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))

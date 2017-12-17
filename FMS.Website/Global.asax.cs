@@ -58,6 +58,7 @@ using FMS.BLL.CfmIdleReport;
 using FMS.BLL.VehicleOverallReport;
 using FMS.BLL.RptPo;
 using FMS.BLL.RptCcf;
+using FMS.BLL.KpiMonitoring;
 
 namespace FMS.Website
 {
@@ -136,6 +137,7 @@ namespace FMS.Website
             VehicleOverallReportMapper.Initialize();
             RptPOMapper.Initialize();
             RptCCFMapper.Initialize();
+            KpiMonitoringMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
@@ -186,6 +188,7 @@ namespace FMS.Website
             container.Register<IVehicleOverallReportBLL, VehicleOverallReportBLL>();
             container.Register<IRptPoBLL, RptPoBLL>();
             container.Register<IRptCcfBLL, RptCcfBLL>();
+            container.Register<IKpiMonitoringBLL, KpiMonitoringBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();

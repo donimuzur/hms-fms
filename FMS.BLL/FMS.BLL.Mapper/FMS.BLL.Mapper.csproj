@@ -71,6 +71,7 @@
     <Compile Include="GroupCostCenterMapper.cs" />
     <Compile Include="GsMapper.cs" />
     <Compile Include="HolidayCalenderMapper.cs" />
+    <Compile Include="KpiMonitoringMapper.cs" />
     <Compile Include="PenalltyLogicMapper.cs" />
     <Compile Include="PenaltyMapper.cs" />
     <Compile Include="LocationMapingMapper.cs" />
