@@ -9,13 +9,13 @@
     </a>
 </div>
 <section class="content">
-    @*@using (Html.BeginForm("ExportCfmIdle", "RptCfmIdle", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("ExportKpiMonitoring", "RptKpiMonitoring", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-        @Html.HiddenFor(model => model.SearchView.FromDate, new { @id = "filter_FromDate" })
+        @Html.HiddenFor(model => model.SearchView.FormDate, new { @id = "filter_FromDate" })
         @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
-        @Html.HiddenFor(model => model.SearchView.CostCenter, new { @id = "filter_CostCenter" })
-        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "filter_PoliceNumber" })
-    }*@
+        @Html.HiddenFor(model => model.SearchView.FormType, new { @id = "filter_FormType" })
+        @Html.HiddenFor(model => model.SearchView.VehicleUsage, new { @id = "filter_VehicleUsage" })
+    }
     <div class="wpanel">
         <div class="row col-md-12">
             @using (Ajax.BeginForm("ListTransaction", "RptKpiMonitoring",
@@ -80,8 +80,8 @@
     function ExportXls() {
         $('#filter_FromDate').val($('#From_Date').val());
         $('#filter_ToDate').val($('#To_Date').val());
-        $('#filter_CostCenter').val($('#SearchView_CostCenter').val());
-        $('#filter_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#filter_VehicleUsage').val($('#SearchView_VehicleUsage').val());
+        $('#filter_FormType').val($('#SearchView_FormType').val());
         $('#ExportToXls').submit();
     }
 
