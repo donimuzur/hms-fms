@@ -59,6 +59,7 @@
     <Compile Include="BLL\IGroupCostCenterBLL.cs" />
     <Compile Include="BLL\IGsBLL.cs" />
     <Compile Include="BLL\IHolidayCalenderBLL.cs" />
+    <Compile Include="BLL\IKpiMonitoringBLL.cs" />
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\IPenaltyLogicBLL.cs" />

@@ -24,55 +24,67 @@ namespace FMS.Website.Controllers
     {
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
-        private IRptFuelBLL _rptFuelBLL;
+        private IKpiMonitoringBLL _kpiMonitoringBLL;
         private ISettingBLL _settingBLL;
 
-        public RptKpiMonitoringController(IPageBLL pageBll, IRptFuelBLL rptFuelBLL, ISettingBLL SettingBLL)
-            : base(pageBll, Core.Enums.MenuList.RptExecutiveSummary)
+        public RptKpiMonitoringController(IPageBLL pageBll, IKpiMonitoringBLL KpiMonitoringBLL, ISettingBLL SettingBLL)
+            : base(pageBll, Core.Enums.MenuList.RptKpiMonitoring)
         {
             _pageBLL = pageBll;
-            _rptFuelBLL = rptFuelBLL;
+            _kpiMonitoringBLL = KpiMonitoringBLL;
             _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
         public ActionResult Index()
         {
-            FMSEntities fms = new FMSEntities();
-            
             var model = new RptKpiMonitoringModel();
+            var filter = new KpiMonitoringGetByParamInput();
+            
             model.MainMenu = _mainMenu;
-            model.TitleForm = "Report Kpi Monitoring";
             model.CurrentLogin = CurrentUser;
-            model.CurrentPageAccess = CurrentPageAccess;
-            model.ReadAccess = CurrentPageAccess.ReadAccess == true ? 1 : 0;
-            model.FormTyps = fms.KPI_REPORT_DATA.Select(x => x.FORM_TYPE).Where(x => x != null).Distinct().ToList();
-            model.VehicleUsages = fms.KPI_REPORT_DATA.Select(x => x.VEHICLE_USAGE).Where(x => x != null).Distinct().ToList();
-            var data = fms.KPI_REPORT_DATA.Where(x => x.FORM_TYPE != null).ToList();
-            
-            string formType = Request["formType"];
-            if (!String.IsNullOrEmpty(formType))
-                data = data.Where(x => x.FORM_TYPE.Equals(formType)).ToList();
-            string effectiveDateFrom = Request["effectiveDateFrom"];
-            string effectiveDateTo = Request["effectiveDateTo"];
-            if (effectiveDateFrom != null)
-            {
-                DateTime enteredDateForm = DateTime.Parse(effectiveDateFrom);
-                DateTime enteredDateTo = DateTime.Parse(effectiveDateTo);
-                data = data.Where(x => (x.EFFECTIVE_DATE.Value.Year >= enteredDateForm.Year && x.EFFECTIVE_DATE.Value.Year <= enteredDateTo.Year) && (x.EFFECTIVE_DATE.Value.Month >= enteredDateForm.Month && x.EFFECTIVE_DATE.Value.Month <= enteredDateTo.Month) && (x.EFFECTIVE_DATE.Value.Day >= enteredDateForm.Day && x.EFFECTIVE_DATE.Value.Day <= enteredDateTo.Day)).ToList();
-            }
-            
-            string vehicleUsage = Request["vehicleUsage"];
-            if (!String.IsNullOrEmpty(vehicleUsage))
-                data = data.Where(x => x.VEHICLE_USAGE == vehicleUsage).ToList();
-            string location = Request["location"];
-            if (location != null)
-                data = data.Where(x => x.ADDRESS.Contains(location)).ToList();
 
-            model.KpiReportDatas = data;
+            model.SearchView.FormDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            model.SearchView.ToDate = DateTime.Today;
+
+            filter.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            filter.ToDate = DateTime.Today;
+            try
+            {
+                var ListTransaction = _kpiMonitoringBLL.GetTransaction(filter);
+                model.ListTransaction = Mapper.Map<List<KpiMonitoringItem>>(ListTransaction);
+            }
+            catch (Exception exp)
+            {
+
+                model.ErrorMessage = exp.Message;
+            }
+           
             return View(model);
         }
 
+        private List<KpiMonitoringItem> GetTransaction(KpiReportSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _kpiMonitoringBLL.GetTransaction(new KpiMonitoringGetByParamInput());
+                return Mapper.Map<List<KpiMonitoringItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<KpiMonitoringGetByParamInput>(filter);
+
+            var dbData = _kpiMonitoringBLL.GetTransaction(input);
+            return Mapper.Map<List<KpiMonitoringItem>>(dbData);
+        }
+
+        [HttpPost]
+        public PartialViewResult ListTransaction(RptKpiMonitoringModel model)
+        {
+            model.ListTransaction = GetTransaction(model.SearchView);
+            return PartialView("_ListTransaction", model);
+        }
         public void ExportKpiMonitoring()
         {
             string pathFile = "";

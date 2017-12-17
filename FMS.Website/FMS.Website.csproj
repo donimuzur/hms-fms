@@ -240,6 +240,7 @@
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
+    <Compile Include="Code\FMSWebsiteMapperKpiMonitoring.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptPo.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
@@ -4375,6 +4376,7 @@
     <Content Include="Views\RptPo\_ListPo.cshtml" />
     <Content Include="Views\RptExecutiveSummary\AcVsOb.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListAcVsOb.cshtml" />
+    <Content Include="Views\RptKpiMonitoring\_ListTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4481,6 +4483,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.HolidayCalender\FMS.BLL.HolidayCalender.csproj">
       <Project>{201b02b9-4963-4e15-843c-b558be342428}</Project>
       <Name>FMS.BLL.HolidayCalender</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.KpiMonitoring\FMS.BLL.KpiMonitoring.csproj">
+      <Project>{e2b26c53-508b-412f-8460-3ab5a915b69f}</Project>
+      <Name>FMS.BLL.KpiMonitoring</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.LocationMapping\FMS.BLL.LocationMapping.csproj">
       <Project>{1f550af5-601a-4e97-9147-2a230888195b}</Project>

@@ -1,179 +1,100 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.RptKpiMonitoringModel
 
-@{
-    ViewBag.Title = Model.TitleForm;
-}
+
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Report KPI Monitoring</h5>
+    <h5 class="title-page">KPI Monitoring Report</h5>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-download"></i> Export
     </a>
 </div>
-
 <section class="content">
-    @using (Html.BeginForm("ExportKpiMonitoring", "RptKpiMonitoring", FormMethod.Post, new { @id = "ExportToXls" }))
+    @*@using (Html.BeginForm("ExportCfmIdle", "RptCfmIdle", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-    }
+        @Html.HiddenFor(model => model.SearchView.FromDate, new { @id = "filter_FromDate" })
+        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
+        @Html.HiddenFor(model => model.SearchView.CostCenter, new { @id = "filter_CostCenter" })
+        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "filter_PoliceNumber" })
+    }*@
     <div class="wpanel">
-        <form method="post" action="@Url.Action("Index", "RptKpiMonitoring")">
-            <div class="row">
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListTransaction", "RptKpiMonitoring",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                }))
+            {
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Form Type</label>
-                        <select class="form-control month" id="formType" name="formType">
-                            <option value="">All</option>
-                            @foreach (var item in Model.FormTyps)
-                            {
-                                <option value="@item">@item</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Vehicle Usage</label>
-                        <select class="form-control month" id="vehicleUsage" name="vehicleUsage">
-                            <option value="">All</option>
-                            @foreach (var item in Model.VehicleUsages)
-                            {
-                                <option value="@item">@item</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Location</label>
-                        <input class="form-control" id="location" placeholder="" />
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Effective Date Form</label>
-                        <div class="input-group date">
-                            <input class="form-control" id="effectiveDateFrom" name="effectiveDateFrom" placeholder="Form" value="@DateTime.Now.ToString("dd-MMM-yyyy")" />
-                            <span class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                        <label class="control-label">Period From</label>
+                        <div class="input-group date" id="FromDate">
+                            @Html.TextBoxFor(model => model.SearchView.FormDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Effective Date To</label>
-                        <div class="input-group date">
-                            <input class="form-control" id="effectiveDateTo" name="effectiveDateTo" placeholder="To" value="@DateTime.Now.ToString("dd-MMM-yyyy")" />
-                            <span class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                        <label class="control-label">Period To</label>
+                        <div class="input-group date" id="ToDate">
+                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To", @id = "To_Date" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Form Type</label>
+                        @Html.TextBoxFor(model => model.SearchView.FormType, new { @class = "form-control "})
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Usage</label>
+                        @Html.TextBoxFor(model => model.SearchView.VehicleUsage, new { @class = "form-control " })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
                 <div class="col-md-12">
-                    <input type="submit" class="btn btn-primary" value="FIlter" />
-                    <input type="reset" class="btn btn-default" value="Reset"/>
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
                 </div>
-            </div>
-        </form>
+            }
+        </div>
     </div>
     <div id="contenttable" class="wpanel">
-        <table id="tbKpi" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Form Type</th>
-                    <th>Employee Id</th>
-                    <th>Employee Name</th>
-                    <th>Effective Date</th>
-                    <th>Reason</th>
-                    <th>Address</th>
-                    <th>Previous Base Town</th>
-                    <th>New Base Town</th>
-                    <th>Vehicle Usage</th>
-                    <th>Vehicle Group Level</th>
-                    <th>Vehicle Model</th>
-                    <th>Color</th>
-                    <th>Police Number</th>
-                    <th>Temporary Request Date</th>
-                    <th>Ee Received Temp</th>
-                    <th>Send To Emp Date</th>
-                    <th>Send Back To Hr</th>
-                    <th>Send To Fleet Date</th>
-                    <th>Send To Employee Benefit Date</th>
-                    <th>Send Surat Kuasa</th>
-                    <th>Send Agreement</th>
-                    <th>Remark</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.KpiReportDatas)
-                {
-                    <tr>
-                        <td>@Html.Raw(data.FORM_TYPE)</td>
-                        <td>@Html.Raw(data.EMPLOYEE_ID)</td>
-                        <td>@Html.Raw(data.EMPLOYEE_NAME)</td>
-                        <td>@Html.Raw(data.EFFECTIVE_DATE.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.REASON)</td>
-                        <td>@Html.Raw(data.ADDRESS)</td>
-                        <td>@Html.Raw(data.PREVIOUS_BASE_TOWN)</td>
-                        <td>@Html.Raw(data.NEW_BASE_TOWN)</td>
-                        <td>@Html.Raw(data.VEHICLE_USAGE)</td>
-                        <td>@Html.Raw(data.VEHICLE_GROUP_LEVEL)</td>
-                        <td>@Html.Raw(data.VEHICLE_MODEL)</td>
-                        <td>@Html.Raw(data.COLOR)</td>
-                        <td>@Html.Raw(data.POLICE_NUMBER)</td>
-                        <td>@Html.Raw((data.TEMPORARY_REQUEST_DATE != null)?data.TEMPORARY_REQUEST_DATE.Value.ToString("dd-MMM-yyyy"):null)</td>
-                        <td>@Html.Raw((data.EE_RECEIVED_TEMP != null) ? data.EE_RECEIVED_TEMP.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                        <td>@Html.Raw((data.SEND_TO_EMP_DATE != null) ? data.SEND_TO_EMP_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                        <td>@Html.Raw((data.SEND_BACK_TO_HR != null) ? data.SEND_BACK_TO_HR.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                        <td>@Html.Raw((data.SEND_TO_FLEET_DATE != null) ? data.SEND_TO_FLEET_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                        <td>@Html.Raw((data.SEND_TO_EMPLOYEE_BENEFIT_DATE != null) ? data.SEND_TO_EMPLOYEE_BENEFIT_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                        <td>@Html.Raw((data.SEND_SURAT_KUASA != null) ? data.SEND_TO_EMPLOYEE_BENEFIT_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                        <td>@Html.Raw((data.SEND_AGREEMENT != null) ? data.SEND_TO_EMPLOYEE_BENEFIT_DATE.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                        <td>@Html.Raw(data.REMARK)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @Html.Partial("_ListTransaction")
     </div>
 </section>
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/CfmIdle.js"></script>
 <script type="text/javascript">
-    $(function () {
+    function ExportXls() {
+        $('#filter_FromDate').val($('#From_Date').val());
+        $('#filter_ToDate').val($('#To_Date').val());
+        $('#filter_CostCenter').val($('#SearchView_CostCenter').val());
+        $('#filter_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#ExportToXls').submit();
+    }
+
+    function setupDataTables() {
         // DataTable
         var table = $('#tbKpi').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": false
         });
 
         // Apply the search
@@ -185,9 +106,30 @@
                     .draw();
             });
         });
+    }
+
+    $(document).on('click', '#btn-reset', function () {
+        var todayDate = new Date();
+        todayDate.setHours(00, 00, 00, 00);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var todayDatestr = todayDate.getDate() + '-' + (months[todayDate.getMonth()]) + '-' + todayDate.getFullYear();
+
+        var date = new Date();
+        date.setDate(1);
+        date.setHours(00, 00, 00, 00);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
+
+
+        $('#From_Date').val(datestr);
+        $('#To_Date').val(todayDatestr);
+        $("#SearchView_VehicleUsage").val('');
+        $("#SearchView_FormType").val('');
+
+        $("#btn-filter").trigger('click');
     });
 
-    function ExportXls() {
-        $('#ExportToXls').submit();
-    }
+    $(function () {
+        setupDataTables();
+    });
 </script>
