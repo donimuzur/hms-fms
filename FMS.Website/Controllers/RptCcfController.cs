@@ -61,7 +61,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Categorylist = new SelectList(listCategory, "MstComplaintCategoryId", "CategoryName");
             model.SearchView.Coordinatorlist = new SelectList(listCoordinator, "CoordinatorName", "CoordinatorName");
             model.SearchView.Locationlist = new SelectList(listLocation, "LocationCity", "LocationCity");
-
+            
             return View(model);
         }
 
