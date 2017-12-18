@@ -227,6 +227,24 @@
                                                             @Html.TextBoxFor(model => model.Detail.LocationAddress, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
+                                                    @if (Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Flexben</label>
+                                                                @Html.TextBoxFor(model => model.Detail.FlexBenefit, new { @class = "form-control", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Assigned To</label>
+                                                                @Html.TextBoxFor(model => model.Detail.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <a href="#" class="btn btn-primary" style="float:right;margin-top:20px"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>

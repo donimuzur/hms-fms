@@ -22,6 +22,7 @@ namespace FMS.BusinessObject.Dto
         public Nullable<int> GROUP_LEVEL { get; set; }
         public Nullable<int> CAR_GROUP_LEVEL { get; set; }
         public Nullable<long> CFM_IDLE_ID { get; set; }
+        public Nullable<int> FLEXBEN { get; set; }
         public string VEHICLE_TYPE { get; set; }
         public string VEHICLE_TYPE_NAME { get; set; }
         public string REGIONAL { get; set; }
@@ -76,5 +77,6 @@ namespace FMS.BusinessObject.Dto
         public string VENDOR_VENDOR { get; set; }
         public string EMPLOYEE_ID_CREATOR { get; set; }
         public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
+        public string ASSIGNED_TO { get; set; }
     }
 }

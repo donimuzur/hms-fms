@@ -1363,6 +1363,22 @@ namespace FMS.BLL.Csf
 
                 CsfWorkflow(input);
 
+                //add flexben to employee
+                if (item.FLEXBEN.HasValue)
+                {
+                    if (item.FLEXBEN.Value > 0)
+                    {
+                        var employeeData = _employeeService.GetEmployeeById(item.EMPLOYEE_ID);
+                        if (employeeData != null) {
+                            var employeeFlexPoint = employeeData.FLEX_POINT == null ? 0 : employeeData.FLEX_POINT.Value;
+
+                            employeeData.FLEX_POINT = employeeFlexPoint + item.FLEXBEN.Value;
+
+                            _employeeService.save(employeeData);
+                        }
+                    }
+                }
+
                 //inactive cfm idle
                 var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
                                                                           && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();

@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.BLL
 {
     public interface IFuelOdometerBLL
     {
         List<FuelOdometerDto> GetFuelOdometer();
+        List<FuelOdometerDto> GetFuelOdometerByParam(FuelOdometerParamInput param);
+        FuelOdometerDto GetByID(long mstFuelOdometerId);
     }
 }

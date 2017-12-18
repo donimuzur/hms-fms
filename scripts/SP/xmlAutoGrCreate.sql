@@ -26,6 +26,7 @@ AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
+	
 	declare @XmlOutput xml;
 	SET NOCOUNT ON;
 
@@ -40,8 +41,8 @@ BEGIN
 			FROM AUTO_GR
 			WHERE AUTO_GR_ID = @auto_gr_id and MONTH(PO_DATE) = MONTH(GETDATE()) and IS_POSTED = 0 FOR XML PATH('HEADER'), TYPE),
 			(SELECT  LINE_ITEM, QTY_ITEM, 'EA' AS UNIT_ENTRY
-			FROM AUTO_GR_DETAIL JOIN
-			AUTO_GR ON AUTO_GR_DETAIL.AUTO_GR_ID = AUTO_GR.AUTO_GR_ID
+			FROM 
+			AUTO_GR
 			WHERE AUTO_GR.AUTO_GR_ID = @auto_gr_id FOR XML PATH('ITEM'), TYPE) FOR XML PATH('GOOD_RECEIPT'), 
 	ROOT('ROOT'))
 	select @XmlOutput as XML_CON;

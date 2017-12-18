@@ -135,12 +135,21 @@ namespace FMS.Website.Models
         public string EngineNumber { get; set; }
         public string ChasisNumber { get; set; }
         public string PositionTitle { get; set; }
+        public string EmployeeName { get; set; }
+        public string EcsRmbTransId { get; set; }
+        public string SeqNumber { get; set; }
+        public string ClaimType { get; set; }
+        public string DateOfCost { get; set; }
+        public string CostCenter { get; set; }
+        public string LastKM { get; set; }
+        public string ClaimComment { get; set; }
+        public string PostedTime { get; set; }
+        public string Status { get; set; }
         public string Division { get; set; }
         public string Directorate { get; set; }
         public string Address { get; set; }
         public string BaseTown { get; set; }
         public string Company { get; set; }
-        public string CostCenter { get; set; }
         public string GroupLevel { get; set; }
         public string EmailAddress { get; set; }
         public string FlexPoint { get; set; }
