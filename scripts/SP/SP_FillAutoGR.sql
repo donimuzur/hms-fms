@@ -31,15 +31,23 @@ BEGIN
 	@auto_gr_id as int = 0,
 	@last_auto_gr_id as int = 0,
 	@po_exist as bit = 0;
+	declare @day_gr as int = 3;
 
+	if day(getdate()) >=3 and day(GETDATE()) < 20 set @day_gr = 20;
+	if day(getdate()) < 3 and day(getdate()) >= 20 set @day_gr = 3;
 
 	declare cursorFillAutoGR cursor for
-	select PO_NUMBER,PO_LINE,dbo.fGetGRDate(START_CONTRACT,MONTH(getdate()),YEAR(getdate())) as PO_DATE,
-	CURRENT_TIMESTAMP as CREATED_DATE,dbo.fGetGRQTY(START_CONTRACT,END_CONTRACT,MONTH(getdate()),YEAR(getdate())) as QTY ,
-	0 as IS_POSTED,START_CONTRACT,END_CONTRACT
-	from MST_FLEET 
-	where IS_ACTIVE = 1 and START_CONTRACT <= GETDATE() and END_CONTRACT >= GETDATE() 
-	and isnull(PO_NUMBER,'') <> '' and isnull(PO_LINE,'') <> '';
+	select PO_NUMBER,PO_LINE,PO_DATE,CREATED_DATE,QTY ,IS_POSTED,START_CONTRACT,END_CONTRACT 
+	from(
+		select PO_NUMBER,PO_LINE,dbo.fGetGRDate(START_CONTRACT,MONTH(getdate()),YEAR(getdate())) as PO_DATE,
+		CURRENT_TIMESTAMP as CREATED_DATE,dbo.fGetGRQTY(START_CONTRACT,END_CONTRACT,MONTH(getdate()),YEAR(getdate())) as QTY ,
+		0 as IS_POSTED,START_CONTRACT,END_CONTRACT
+		from MST_FLEET 
+		where IS_ACTIVE = 1 and START_CONTRACT <= GETDATE() and END_CONTRACT >= GETDATE() 
+		and isnull(PO_NUMBER,'') <> '' and isnull(PO_LINE,'') <> ''
+
+	) as tbl where  day(po_date) = @day_gr;
+
  
 	open cursorFillAutoGR;
 
