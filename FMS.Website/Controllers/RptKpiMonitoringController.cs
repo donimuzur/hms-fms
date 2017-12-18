@@ -140,14 +140,13 @@ namespace FMS.Website.Controllers
 
                 var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
                 if (SendToEmp != null) item.SendToEmpDate = SendToEmp.ActionDate;
-
              
-                    var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
-                    if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
+                var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
+                if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
 
-                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
-                    if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
-             
+                var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
+                if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
+
             }
             else if (item.FormType.ToUpper() == "CRF")
             {

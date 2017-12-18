@@ -74,7 +74,6 @@ namespace FMS.Website.Controllers
                 {
                     item.GroupLevel = Ctf.GroupLevel;
                 }
-
             }
 
             var GrandTotal = new CfmIdleVehicle
