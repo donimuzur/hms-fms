@@ -574,6 +574,8 @@
     <Content Include="Content\App\tps-eproc.css" />
     <Content Include="Content\App\treeGrid.css" />
     <Content Include="Content\bootstrap-select.min.css" />
+    <Content Include="Content\chosen-sprite.png" />
+    <Content Include="Content\chosen.min.css" />
     <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\css\Custom.css" />
     <Content Include="Content\css\easy-autocomplete.min.css" />
@@ -1050,6 +1052,7 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\VehicleOverall.js" />
     <Content Include="Scripts\CfmIdle.js" />
     <Content Include="Scripts\ChangesLog.js" />
@@ -4382,6 +4385,8 @@
     <Content Include="Views\RptCcf\Index.cshtml" />
     <Content Include="Views\RptCcf\_ListCcf.cshtml" />
     <Content Include="Views\RptKpiMonitoring\_ListTransaction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SumPtdByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListSumPtdByFunction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

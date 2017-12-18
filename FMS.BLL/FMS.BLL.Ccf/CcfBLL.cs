@@ -169,6 +169,7 @@ namespace FMS.BLL.Ccf
                         foreach (TRA_CCF dt in query)
                         {
                             dt.DOCUMENT_STATUS = dbTraCcf.DOCUMENT_STATUS;
+                            dt.COORDINATOR_NAME = userLogin.USER_ID;
                         }
                         context.SaveChanges();
                     }
