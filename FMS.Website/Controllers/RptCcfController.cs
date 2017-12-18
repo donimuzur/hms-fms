@@ -122,7 +122,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "CCF Report Data");
-            slDocument.MergeWorksheetCells(1, 1, 1, 13);
+            slDocument.MergeWorksheetCells(1, 1, 1, 14);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -151,17 +151,18 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(iRow, 1, "Complaint Number");
             slDocument.SetCellValue(iRow, 2, "Police Number");
-            slDocument.SetCellValue(iRow, 3, "Location City");
-            slDocument.SetCellValue(iRow, 4, "Category");
-            slDocument.SetCellValue(iRow, 5, "Coordinator");
-            slDocument.SetCellValue(iRow, 6, "Coordinator Name");
-            slDocument.SetCellValue(iRow, 7, "Created By");
-            slDocument.SetCellValue(iRow, 8, "Created Date");
-            slDocument.SetCellValue(iRow, 9, "Close Date");
-            slDocument.SetCellValue(iRow, 10, "Status");
-            slDocument.SetCellValue(iRow, 11, "Vendor Name");
-            slDocument.SetCellValue(iRow, 12, "Late Respon Time Coordinator");
-            slDocument.SetCellValue(iRow, 13, "Late Respon Time Vendor");
+            slDocument.SetCellValue(iRow, 3, "Police Number GS (Ganti Sementara)");
+            slDocument.SetCellValue(iRow, 4, "Location City");
+            slDocument.SetCellValue(iRow, 5, "Category");
+            slDocument.SetCellValue(iRow, 6, "Coordinator");
+            slDocument.SetCellValue(iRow, 7, "Coordinator Name");
+            slDocument.SetCellValue(iRow, 8, "Created By");
+            slDocument.SetCellValue(iRow, 9, "Created Date");
+            slDocument.SetCellValue(iRow, 10, "Close Date");
+            slDocument.SetCellValue(iRow, 11, "Status");
+            slDocument.SetCellValue(iRow, 12, "Vendor Name");
+            slDocument.SetCellValue(iRow, 13, "Late Respon Time Coordinator");
+            slDocument.SetCellValue(iRow, 14, "Late Respon Time Vendor");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -172,7 +173,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 13, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 14, headerStyle);
 
             return slDocument;
 
@@ -186,17 +187,25 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
                 slDocument.SetCellValue(iRow, 2, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 3, data.LocationCity);
-                slDocument.SetCellValue(iRow, 4, data.ComplaintCategoryName);
-                slDocument.SetCellValue(iRow, 5, data.ComplaintCategoryRole);
-                slDocument.SetCellValue(iRow, 6, data.CoordinatorName);
-                slDocument.SetCellValue(iRow, 7, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 8, data.CreatedDate);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 10, data.DocumentStatus.ToString());
-                slDocument.SetCellValue(iRow, 11, data.Vendor);
-                slDocument.SetCellValue(iRow, 12, data.CoordinatorKPI);
-                slDocument.SetCellValue(iRow, 13, data.VendorKPI);
+                slDocument.SetCellValue(iRow, 3, data.PoliceNumberGS);
+                slDocument.SetCellValue(iRow, 4, data.LocationCity);
+                slDocument.SetCellValue(iRow, 5, data.ComplaintCategoryName);
+                slDocument.SetCellValue(iRow, 6, data.ComplaintCategoryRole);
+                slDocument.SetCellValue(iRow, 7, data.CoordinatorName);
+                slDocument.SetCellValue(iRow, 8, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 9, data.CreatedDate.ToString("dd-MMM-yyyy"));
+                if (data.DocumentStatus == Enums.DocumentStatus.Completed)
+                {
+                    slDocument.SetCellValue(iRow, 10, data.ModifiedDate.Value.ToString("dd-MMM-yyyy"));
+                }
+                else
+                {
+                    slDocument.SetCellValue(iRow, 10, "");
+                }
+                slDocument.SetCellValue(iRow, 11, data.DocumentStatus.ToString());
+                slDocument.SetCellValue(iRow, 12, data.Vendor);
+                slDocument.SetCellValue(iRow, 13, data.CoordinatorKPI);
+                slDocument.SetCellValue(iRow, 14, data.VendorKPI);
 
                 iRow++;
             }
@@ -208,8 +217,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 13);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 13, valueStyle);
+            slDocument.AutoFitColumn(1, 14);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 14, valueStyle);
 
             return slDocument;
         }
