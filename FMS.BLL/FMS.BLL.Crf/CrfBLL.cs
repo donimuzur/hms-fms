@@ -786,7 +786,7 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
                         bodyMail.Append("new operational car has been recorded as " + crfData.DOCUMENT_NUMBER + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE</a><br />");
+                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE.</a><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br />");
                         bodyMail.AppendLine();
@@ -830,12 +830,12 @@ namespace FMS.BLL.Crf
                         bodyMail.AppendLine();
                         bodyMail.Append("You have received new car relocation request<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Send confirmation by clicking below CRF number:<br />");
+                        bodyMail.Append("Send confirmation by clicking <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>Here</a>.<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>" +
-                                        crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME +
-                                        "<br /><br />");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>" +
+                        //                crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME +
+                        //                "<br /><br />");
+                        //bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
@@ -959,10 +959,10 @@ namespace FMS.BLL.Crf
                     bodyMail.AppendLine();
                     bodyMail.Append("Your car relocation request has been rejected.<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("Please fix your data and resubmit by clicking below CRF number:<br />");
+                    bodyMail.Append("Please fix your data and resubmit by clicking <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>Here</a>.<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
-                    bodyMail.AppendLine();
+                    //bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>Here</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
+                    //bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Regards,<br />");
@@ -982,10 +982,10 @@ namespace FMS.BLL.Crf
                     bodyMail.AppendLine();
                     bodyMail.Append("Your car relocation request has been completed.<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("If you need to see your request reference click below CRF number:<br />");
+                    bodyMail.Append("If you need to see your request reference click <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>Here</a>.<br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Details/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>" + crfData.DOCUMENT_NUMBER + "</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
-                    bodyMail.AppendLine();
+                    //bodyMail.Append("<a href='" + webRootUrl + "/TraCrf/Details/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>Here</a> requested by " + crfData.EMPLOYEE_NAME + "<br /><br />");
+                    //bodyMail.AppendLine();
                     bodyMail.Append("Thanks<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Regards,<br />");
