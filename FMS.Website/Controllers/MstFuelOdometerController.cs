@@ -53,7 +53,7 @@ namespace FMS.Website.Controllers
             model.SearchView.EmployeeIDList = new SelectList(fleetList, "EmployeeID", "EmployeeID");
             model.SearchView.CostCenterList = new SelectList(costCenterList, "CostCenter", "CostCenter");
             model.SearchView.EcsRmbTransIdList = new SelectList(fuelOdometerList, "EcsRmbTransId", "EcsRmbTransId");
-            model.SearchView.ClaimTypeList = new SelectList(fuelOdometerList.Select(x => x.ClaimType).Distinct().ToList(), "ClaimType", "ClaimType");
+            model.SearchView.ClaimTypeList = new SelectList(fuelOdometerList, "ClaimType", "ClaimType");
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
