@@ -1,24 +1,11 @@
--- ================================================
--- Template generated from Template Explorer using:
--- Create Procedure (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the procedure.
--- ================================================
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+
+
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE dbo.SP_FillAutoGR
+ALTER PROCEDURE [dbo].[SP_FillAutoGR]
 	-- Add the parameters for the stored procedure here
 	
 	
@@ -69,19 +56,20 @@ BEGIN
 			set @gr_exist = 0;
 			
 			select top 1 @gr_exist = 1 from AUTO_GR a 
-			join AUTO_GR_DETAIL b on a.AUTO_GR_ID = b.AUTO_GR_ID
+			--join AUTO_GR_DETAIL b on a.AUTO_GR_ID = b.AUTO_GR_ID
 			where MONTH(a.PO_DATE) = MONTH(@po_date) 
-			and a.PO_NUMBER = @po_number and b.LINE_ITEM = convert(int,@po_line);
+			and a.PO_NUMBER = @po_number and a.LINE_ITEM = convert(int,@po_line);
 			
 			if @gr_exist = 0
 			begin 
 				set @po_exist = 0;
 				set @auto_gr_id = 0;
-				select top 1 @po_exist = 1, @auto_gr_id = AUTO_GR_ID from AUTO_GR where PO_NUMBER like @po_number and PO_DATE = @po_date;
+				select top 1 @po_exist = 1, @auto_gr_id = AUTO_GR_ID 
+				from AUTO_GR where PO_NUMBER like @po_number and LINE_ITEM = @po_line and PO_DATE = @po_date;
 
 				if @po_exist = 0
 				begin
-					INSERT INTO AUTO_GR(PO_NUMBER,PO_DATE,CREATED_DATE,IS_POSTED) VALUES(@po_number,@po_date,CURRENT_TIMESTAMP,0);
+					INSERT INTO AUTO_GR(PO_NUMBER,PO_DATE,CREATED_DATE,IS_POSTED,LINE_ITEM,QTY_ITEM) VALUES(@po_number,@po_date,CURRENT_TIMESTAMP,0,@po_line,@qty);
 					select @auto_gr_id = IDENT_CURRENT('AUTO_GR');
 				end
 				
@@ -90,7 +78,7 @@ BEGIN
 
 
 
-				INSERT INTO AUTO_GR_DETAIL(AUTO_GR_ID,LINE_ITEM,QTY_ITEM) values(@auto_gr_id,@po_line,@qty);
+				--INSERT INTO AUTO_GR_DETAIL(AUTO_GR_ID,LINE_ITEM,QTY_ITEM) values(@auto_gr_id,@po_line,@qty);
 
 				set @last_auto_gr_id = @auto_gr_id;
 			end
@@ -112,4 +100,7 @@ BEGIN
 	deallocate cursorFillAutoGR;
 
 END
+
 GO
+
+

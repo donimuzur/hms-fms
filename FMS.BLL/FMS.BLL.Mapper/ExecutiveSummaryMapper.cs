@@ -48,6 +48,10 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<AC_VS_OB_REPORT_DATA, AcVsObDto>().IgnoreAllNonExisting();
 
             AutoMapper.Mapper.CreateMap<AcVsObDto, AC_VS_OB_REPORT_DATA>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SUM_REPORT_DATA, SumPtdByFunctionDto>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<SumPtdByFunctionDto, SUM_REPORT_DATA>().IgnoreAllNonExisting();
         }
     }
 }

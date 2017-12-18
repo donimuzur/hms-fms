@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AC_VS_OB_REPORT_DATA">
           <Key>
             <PropertyRef Name="ID" />
@@ -35,17 +35,20 @@
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
           </Key>
-          <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PO_NUMBER" Type="varchar" MaxLength="20" />
           <Property Name="PO_DATE" Type="datetime" />
           <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="IS_POSTED" Type="bit" />
+          <Property Name="LINE_ITEM" Type="int" />
+          <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TERMINATION_DATE" Type="datetime" />
         </EntityType>
         <EntityType Name="AUTO_GR_DETAIL">
           <Key>
             <PropertyRef Name="AUTO_GR_DETAIL_ID" />
           </Key>
-          <Property Name="AUTO_GR_DETAIL_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_DETAIL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
           <Property Name="LINE_ITEM" Type="int" />
           <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
@@ -145,6 +148,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="TRA_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="LEASE_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -709,6 +713,7 @@
           <Property Name="MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
           <Property Name="GST" Type="decimal" Precision="18" Scale="2" />
           <Property Name="TOTAL_MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
         </EntityType>
         <EntityType Name="SALES_BY_REGION_REPORT_DATA">
           <Key>
@@ -815,6 +820,7 @@
           <Property Name="END_PERIOD" Type="date" />
           <Property Name="COORDINATOR_KPI" Type="int" />
           <Property Name="VENDOR_KPI" Type="int" />
+          <Property Name="COORDINATOR_NAME" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
@@ -969,8 +975,8 @@
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
-          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
           <Property Name="FLEXBEN" Type="int" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -1170,6 +1176,18 @@
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
+        <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="PO_REPORT_DATA">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="1" />
           <End Role="MST_DELEGATION" Type="Self.MST_DELEGATION" Multiplicity="*" />
@@ -1399,6 +1417,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1693,6 +1723,10 @@
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__1B9317B3" Association="Self.FK__PO_REPORT__EMPLO__1B9317B3">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
+          </AssociationSet>
           <AssociationSet Name="FK_MST_DELEGATION_MST_EMPLOYEE_FROM" Association="Self.FK_MST_DELEGATION_MST_EMPLOYEE_FROM">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="MST_DELEGATION" EntitySet="MST_DELEGATION" />
@@ -1770,6 +1804,10 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -2065,6 +2103,10 @@
             <End Role="TRA_CTF" EntitySet="TRA_CTF" />
             <End Role="TRA_CTF_EXTEND" EntitySet="TRA_CTF_EXTEND" />
           </AssociationSet>
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__55DFB4D9" Association="FMSModel.FK__PO_REPORT__EMPLO__55DFB4D9">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
+          </AssociationSet>
         </EntityContainer>
         <EnumType Name="DocumentType" a:ExternalTypeName="FMS.Core.Enums.DocumentType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="DocumentStatus" a:ExternalTypeName="FMS.Core.Enums.DocumentStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -2103,6 +2145,9 @@
           <Property Name="PO_DATE" Type="DateTime" Precision="3" />
           <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="IS_POSTED" Type="Boolean" />
+          <Property Name="LINE_ITEM" Type="Int32" />
+          <Property Name="QTY_ITEM" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TERMINATION_DATE" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="AUTO_GR_DETAIL">
           <Key>
@@ -2208,6 +2253,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TRA_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="LEASE_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -2334,6 +2380,7 @@
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_CTF" />
           <NavigationProperty Name="TRA_TEMPORARY" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_EMPLOYEE" FromRole="MST_EMPLOYEE" ToRole="TRA_TEMPORARY" />
+          <NavigationProperty Name="PO_REPORT_DATA" Relationship="FMSModel.FK__PO_REPORT__EMPLO__55DFB4D9" FromRole="MST_EMPLOYEE" ToRole="PO_REPORT_DATA" />
         </EntityType>
         <EntityType Name="MST_EPAF">
           <Key>
@@ -2820,6 +2867,8 @@
           <Property Name="MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="GST" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="TOTAL_MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK__PO_REPORT__EMPLO__55DFB4D9" FromRole="PO_REPORT_DATA" ToRole="MST_EMPLOYEE" />
         </EntityType>
         <EntityType Name="SALES_BY_REGION_REPORT_DATA">
           <Key>
@@ -2935,6 +2984,7 @@
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="MST_EMPLOYEE1" Relationship="FMSModel.FK_TRA_CCF_MST_EMPLOYEE_FOR" FromRole="TRA_CCF" ToRole="MST_EMPLOYEE" />
           <NavigationProperty Name="TRA_CCF_DETAIL" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF" ToRole="TRA_CCF_DETAIL" />
+          <Property Name="COORDINATOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_CCF_DETAIL">
           <Key>
@@ -3779,6 +3829,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__PO_REPORT__EMPLO__55DFB4D9">
+          <End Type="FMSModel.MST_EMPLOYEE" Role="MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Type="FMSModel.PO_REPORT_DATA" Role="PO_REPORT_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="PO_REPORT_DATA">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3816,6 +3878,9 @@
           <EntitySetMapping Name="AUTO_GR">
             <EntityTypeMapping TypeName="FMSModel.AUTO_GR">
               <MappingFragment StoreEntitySet="AUTO_GR">
+                <ScalarProperty Name="TERMINATION_DATE" ColumnName="TERMINATION_DATE" />
+                <ScalarProperty Name="QTY_ITEM" ColumnName="QTY_ITEM" />
+                <ScalarProperty Name="LINE_ITEM" ColumnName="LINE_ITEM" />
                 <ScalarProperty Name="IS_POSTED" ColumnName="IS_POSTED" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="PO_DATE" ColumnName="PO_DATE" />
@@ -3905,6 +3970,7 @@
           <EntitySetMapping Name="KPI_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.KPI_REPORT_DATA">
               <MappingFragment StoreEntitySet="KPI_REPORT_DATA">
+                <ScalarProperty Name="TRA_ID" ColumnName="TRA_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />
@@ -4499,6 +4565,7 @@
           <EntitySetMapping Name="PO_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.PO_REPORT_DATA">
               <MappingFragment StoreEntitySet="PO_REPORT_DATA">
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
                 <ScalarProperty Name="TOTAL_MONTHLY_INSTALLMENT" ColumnName="TOTAL_MONTHLY_INSTALLMENT" />
                 <ScalarProperty Name="GST" ColumnName="GST" />
                 <ScalarProperty Name="MONTHLY_INSTALLMENT" ColumnName="MONTHLY_INSTALLMENT" />
@@ -4609,6 +4676,7 @@
           <EntitySetMapping Name="TRA_CCF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CCF">
               <MappingFragment StoreEntitySet="TRA_CCF">
+                <ScalarProperty Name="COORDINATOR_NAME" ColumnName="COORDINATOR_NAME" />
                 <ScalarProperty Name="VENDOR_KPI" ColumnName="VENDOR_KPI" />
                 <ScalarProperty Name="COORDINATOR_KPI" ColumnName="COORDINATOR_KPI" />
                 <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />

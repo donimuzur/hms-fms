@@ -187,6 +187,15 @@
                                                             </div>
                                                         </div>
                                                     }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Assigned To</label>
+                                                                @Html.TextBoxFor(model => model.Detail.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

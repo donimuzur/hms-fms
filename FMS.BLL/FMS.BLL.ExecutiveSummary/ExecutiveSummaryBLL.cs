@@ -93,5 +93,12 @@ namespace FMS.BLL.ExecutiveSummary
 
             return Mapper.Map<List<AcVsObDto>>(data);
         }
+
+        public List<SumPtdByFunctionDto> GetSumPtdByFunctionData(SumPtdFuncGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllSumPtdByFunction(filter);
+
+            return Mapper.Map<List<SumPtdByFunctionDto>>(data);
+        }
     }
 }

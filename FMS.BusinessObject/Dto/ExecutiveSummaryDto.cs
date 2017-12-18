@@ -122,4 +122,22 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
     }
+
+    public class SumPtdByFunctionDto
+    {
+        public int ID { get; set; }
+        public string REGION { get; set; }
+        public string FUNCTION { get; set; }
+        public string VEHICLE_TYPE { get; set; }
+        public int? TOTAL_VEHICLE { get; set; }
+        public decimal? TOTAL_VEHICLE_COST { get; set; }
+        public decimal? TOTAL_FUEL_AMOUNT { get; set; }
+        public int? TOTAL_FUEL_COST { get; set; }
+        public decimal? TOTAL_KM { get; set; }
+        public decimal? TOTAL_OPERATIONAL_COST { get; set; }
+        public int? ACCIDENT_COUNT { get; set; }
+        public int? REPORT_MONTH { get; set; }
+        public int? REPORT_YEAR { get; set; }
+        public DateTime CREATED_DATE { get; set; }
+    }
 }

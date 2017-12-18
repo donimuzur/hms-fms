@@ -63,18 +63,15 @@ namespace FMS.DAL.Services
 
                 if (input.EndDateBegin.HasValue)
                 {
-                    queryFilter = queryFilter.And(x => x.END_DATE >= input.StartDateBegin.Value);
+                    queryFilter = queryFilter.And(x => x.END_DATE >= input.EndDateBegin.Value);
                 }
 
                 if (input.EndDateEnd.HasValue)
                 {
-                    queryFilter = queryFilter.And(x => x.END_DATE <= input.StartDateEnd.Value);
+                    queryFilter = queryFilter.And(x => x.END_DATE <= input.EndDateEnd.Value);
                 }
 
-                if (input.EndDateBegin.HasValue)
-                {
-                    queryFilter = queryFilter.And(x => x.END_DATE >= input.StartDateBegin.Value);
-                }
+                
 
                 if (!string.IsNullOrEmpty(input.VehicleUsage))
                 {

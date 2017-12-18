@@ -1,0 +1,59 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.RptCCFModel
+
+<table id="tbRptCcf" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Complaint Number</th>
+            <th>Police Number</th>
+            <th>Location City</th>
+            <th>Category</th>
+            <th>Coordinator</th>
+            <th>Coordinator Name</th>
+            <th>Created By</th>
+            <th>Created Date</th>
+            <th>Close Date</th>
+            <th>Status</th>
+            <th>Vendor Name</th>
+            <th>Late Respon Time Coordinator</th>
+            <th>Late Respon Time Vendor</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.RptCCFItem)
+        {
+            <tr>
+                <td>@Html.Raw(data.DocumentNumber)</td>
+                <td>@Html.Raw(data.PoliceNumber)</td>
+                <td>@Html.Raw(data.LocationCity)</td>
+                <td>@Html.Raw(data.ComplaintCategoryName)</td>
+                <td>@Html.Raw(data.ComplaintCategoryRole)</td>
+                <td>@Html.Raw(data.CoordinatorName)</td>
+                <td>@Html.Raw(data.CreatedBy)</td>
+                <td>@Html.Raw(data.CreatedDate)</td>
+                <td>@Html.Raw(data.ModifiedDate)</td>
+                <td>@Html.Raw(data.DocumentStatus)</td>
+                <td>@Html.Raw(data.Vendor)</td>
+                <td>@Html.Raw(data.CoordinatorKPI)</td>
+                <td>@Html.Raw(data.VendorKPI)</td>
+            </tr>
+        }
+    </tbody>
+</table>

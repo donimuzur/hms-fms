@@ -993,7 +993,7 @@ namespace FMS.Website.Controllers
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
-                    if (vehCat.ToLower() == "flexy benefit")
+                    if (vehCat.ToLower() == "flexi benefit")
                     {
                         modelCFMIdle = fleetData.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
                     }
@@ -1026,7 +1026,7 @@ namespace FMS.Website.Controllers
             if (data != null)
             {
                 var csfData = _csfBLL.GetCsfById(Detail_TraCsfId);
-                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
+                var cfmData = csfData.CFM_IDLE_ID == null ? null : _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
 
                 foreach (var dataRow in data.DataRows)
                 {
@@ -1108,6 +1108,32 @@ namespace FMS.Website.Controllers
             data = data.Where(x => x.Location == location).ToList();
 
             return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetFlexBen(string vehCat, int? carGroupLevel, int? empGroupLevel)
+        {
+            var flexPoint = 0;
+
+            var data = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == empGroupLevel && x.GroupLevel > 0).FirstOrDefault();
+
+            if (data != null)
+            {
+                if (vehCat.ToLower() == "no car") { 
+                    flexPoint = data.FlexPoint;
+                }
+                else if (vehCat.ToLower() == "flexi benefit")
+                {
+                    var dataFlex = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == carGroupLevel && x.GroupLevel > 0).FirstOrDefault();
+
+                    if (dataFlex != null)
+                    {
+                        flexPoint = data.FlexPoint - dataFlex.FlexPoint;
+                    }
+                }
+            }
+
+            return Json(flexPoint);
         }
 
         [HttpPost]

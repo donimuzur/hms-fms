@@ -38,6 +38,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
                 .ForMember(dest => dest.CarGroupLevel, opt => opt.MapFrom(src => src.CAR_GROUP_LEVEL))
                 .ForMember(dest => dest.CfmIdleId, opt => opt.MapFrom(src => src.CFM_IDLE_ID))
+                .ForMember(dest => dest.FlexBenefit, opt => opt.MapFrom(src => src.FLEXBEN))
                 .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VEHICLE_TYPE))
                 .ForMember(dest => dest.VehicleTypeName, opt => opt.MapFrom(src => src.VEHICLE_TYPE_NAME))
                 .ForMember(dest => dest.Regional, opt => opt.MapFrom(src => src.REGIONAL))
@@ -76,6 +77,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.EndRentDate, opt => opt.MapFrom(src => src.END_RENT_DATE))
                 .ForMember(dest => dest.SupplyMethod, opt => opt.MapFrom(src => src.SUPPLY_METHOD))
                 .ForMember(dest => dest.Project, opt => opt.MapFrom(src => src.PROJECT_NAME))
+                .ForMember(dest => dest.AssignedTo, opt => opt.MapFrom(src => src.ASSIGNED_TO))
                 ;
 
             Mapper.CreateMap<CsfData, TraCsfDto>().IgnoreAllNonExisting()
@@ -89,6 +91,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.CostCenter))
                 .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GroupLevel))
                 .ForMember(dest => dest.CAR_GROUP_LEVEL, opt => opt.MapFrom(src => src.CarGroupLevel))
+                .ForMember(dest => dest.FLEXBEN, opt => opt.MapFrom(src => src.FlexBenefit))
                 .ForMember(dest => dest.CFM_IDLE_ID, opt => opt.MapFrom(src => src.CfmIdleId))
                 .ForMember(dest => dest.REASON_ID, opt => opt.MapFrom(src => src.ReasonId))
                 .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
@@ -134,6 +137,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.END_RENT_DATE, opt => opt.MapFrom(src => src.EndRentDate))
                 .ForMember(dest => dest.SUPPLY_METHOD, opt => opt.MapFrom(src => src.SupplyMethod))
                 .ForMember(dest => dest.PROJECT_NAME, opt => opt.MapFrom(src => src.Project))
+                .ForMember(dest => dest.ASSIGNED_TO, opt => opt.MapFrom(src => src.AssignedTo))
                 ;
 
             Mapper.CreateMap<EpafDto, EpafData>().IgnoreAllNonExisting()

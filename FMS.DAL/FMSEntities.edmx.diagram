@@ -98,6 +98,7 @@
         <AssociationConnector Association="FMSModel.FK_TRA_CAF_PROGRESS_TRA_CAF" />
         <AssociationConnector Association="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" />
         <AssociationConnector Association="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF" />
+        <AssociationConnector Association="FMSModel.FK__PO_REPORT__EMPLO__55DFB4D9" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

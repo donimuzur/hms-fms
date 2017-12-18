@@ -141,5 +141,10 @@ namespace FMS.DAL.Services
             return _employeeRepository.Get().OrderByDescending(x => x.EMPLOYEE_ID).First().EMPLOYEE_ID;
         }
 
+        public void save(MST_EMPLOYEE dbEmployee)
+        {
+            _uow.GetGenericRepository<MST_EMPLOYEE>().InsertOrUpdate(dbEmployee);
+            _uow.SaveChanges();
+        }
     }
 }

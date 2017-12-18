@@ -146,7 +146,7 @@ namespace FMS.BLL.Ctf
         {
             if (Value.ToUpper().Contains("MST_FLEET.END_CONTRACT"))
             {
-                var EndContract = (int)(Fleet.END_CONTRACT.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 2;
+                var EndContract = (int)(Fleet.END_CONTRACT.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 Value = Value.Replace("MST_FLEET.END_CONTRACT", EndContract.ToString());
             }
             if (Value.ToUpper().Contains("MST_FLEET.MONTHLY_HMS_INSTALLMENT"))
@@ -155,7 +155,7 @@ namespace FMS.BLL.Ctf
             }
             if (Value.ToUpper().Contains("TRA_CTF.EFFECTIVE_DATE"))
             {
-                var EffectiveDate = (int)(CtfDto.EffectiveDate.Value.Date - new DateTime(1900, 1, 1)).TotalDays + 2;
+                var EffectiveDate = (int)(CtfDto.EffectiveDate.Value.Date - new DateTime(1900, 1, 1)).TotalDays;
                 Value = Value.Replace("TRA_CTF.EFFECTIVE_DATE", EffectiveDate.ToString());
             }
             return Value;
