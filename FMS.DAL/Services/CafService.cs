@@ -56,7 +56,7 @@ namespace FMS.DAL.Services
                //{
                     dataToSave.TRA_CAF_ID = mainData.TRA_CAF_ID;
                     var count = _traCafProgressRepository.Get(
-                        x => x.TRA_CAF_ID == mainData.TRA_CAF_ID && x.STATUS_ID == dataToSave.STATUS_ID).Count();
+                        x => x.TRA_CAF_ID == mainData.TRA_CAF_ID).Count();
                     var lastStatusData =
                         _traCafProgressRepository.Get(x => x.TRA_CAF_ID == mainData.TRA_CAF_ID, null, "")
                             .OrderByDescending(x => x.TRA_CAF_PROGRESS_ID)

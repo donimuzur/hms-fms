@@ -49,7 +49,7 @@
                                                             @Html.HiddenFor(model => model.TraCcfId)
                                                             @Html.HiddenFor(model => model.CreatedBy)
                                                             @Html.HiddenFor(model => model.CreatedDate)
-                                                            @Html.HiddenFor(model => model.ComplaintCategoryRole)
+                                                            @Html.HiddenFor(model => model.ComplaintCategoryRole, new { @id = "IdComplaintCategory" })
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
@@ -644,14 +644,44 @@
     });
 
     function SendCcf(value) {
-        $('#TraCcfIdSend').val(value);
-        if (document.getElementById('ComplaintAtt').value == "" && document.getElementById('DetailSave_ComplaintNote').value == "")
+        var vehType = $("#VehicleType").val();
+        var roleType = $("#IdComplaintCategory").val();
+
+        if (vehType == "WTC")
         {
-            alert('complaint note & attachment file required');
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
-        else
+        else if (vehType == "BENEFIT" && roleType == "Fleet")
         {
-            $('#sendmodal').modal('show');
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
+        }
+        else if(vehType == "BENEFIT" && roleType == "HR") 
+        {
+            if($('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
         }
     }
     

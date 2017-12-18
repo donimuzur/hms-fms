@@ -22,7 +22,11 @@ namespace FMS.Website.Code
 	        InitializeCAF();
             InitializeExecutiveSummary();
             InitializeCfmIdleReport();
+            InitializeVehicleOverallReport();
             InitializeRptFuel();
+            InitializeRptPo();
+            InitializeRptCCF();
+            InitializeKpiMonitoring();
 
             Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))

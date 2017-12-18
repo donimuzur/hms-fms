@@ -500,7 +500,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Fleet");
-            slDocument.MergeWorksheetCells(1, 1, 1,46);
+            slDocument.MergeWorksheetCells(1, 1, 1,52);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -567,12 +567,18 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 38, "Vehicle Status");
             slDocument.SetCellValue(iRow, 39, "Is Taken");
             slDocument.SetCellValue(iRow, 40, "GR Left Qty");
-            slDocument.SetCellValue(iRow, 41, "Created By");
-            slDocument.SetCellValue(iRow, 42, "Created Date");
-            slDocument.SetCellValue(iRow, 43, "Modified By");
-            slDocument.SetCellValue(iRow, 44, "Modified Date");
-            slDocument.SetCellValue(iRow, 45, "Modified By");
-            slDocument.SetCellValue(iRow, 46, "Status");
+            slDocument.SetCellValue(iRow, 41, "Certificate Of Ownership");
+            slDocument.SetCellValue(iRow, 42, "Comments");
+            slDocument.SetCellValue(iRow, 43, "Asset");
+            slDocument.SetCellValue(iRow, 44, "Total Monthly Charge");
+            slDocument.SetCellValue(iRow, 45, "Function");
+            slDocument.SetCellValue(iRow, 46, "Regional");
+            slDocument.SetCellValue(iRow, 47, "Created By");
+            slDocument.SetCellValue(iRow, 48, "Created Date");
+            slDocument.SetCellValue(iRow, 49, "Modified By");
+            slDocument.SetCellValue(iRow, 50, "Modified Date");
+            slDocument.SetCellValue(iRow, 51, "Modified By");
+            slDocument.SetCellValue(iRow, 52, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -583,7 +589,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 46, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 52, headerStyle);
 
             return slDocument;
 
@@ -635,12 +641,18 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 38, data.VehicleStatus);
                 slDocument.SetCellValue(iRow, 39, data.IsTaken);
                 slDocument.SetCellValue(iRow, 40, data.GrLeftQty);
-                slDocument.SetCellValue(iRow, 41, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 42, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 43, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 44, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 45, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 46, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 41, data.CertificateOwnership);
+                slDocument.SetCellValue(iRow, 42, data.Comments);
+                slDocument.SetCellValue(iRow, 43, data.Assets);
+                slDocument.SetCellValue(iRow, 44, data.TotalMonthlyCharge == null? 0 : (decimal)data.TotalMonthlyCharge);
+                slDocument.SetCellValue(iRow, 45, data.Function);
+                slDocument.SetCellValue(iRow, 46, data.Regional);
+                slDocument.SetCellValue(iRow, 47, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 48, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 49, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 50, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 51, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 52, data.IsActive == true ? "Active" : "InActive");
           
 
                 iRow++;
@@ -653,8 +665,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 46);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 46, valueStyle);
+            slDocument.AutoFitColumn(1, 52);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 52, valueStyle);
 
             return slDocument;
         }

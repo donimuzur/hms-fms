@@ -66,7 +66,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Function</label>
-                        @Html.TextBoxFor(model => model.SearchView.Function, new { @class = "form-control text" })
+                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -97,8 +97,7 @@
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicleWtc').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            "dom": 'lf<"table-overflow"t>pi'
         });
 
         // Apply the search

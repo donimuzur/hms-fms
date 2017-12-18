@@ -187,6 +187,24 @@
                                                             @Html.TextBoxFor(model => model.Detail.LocationAddress, new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
+                                                    @if (Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Flexben</label>
+                                                                @Html.TextBoxFor(model => model.Detail.FlexBenefit, new { @class = "form-control", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Assigned To</label>
+                                                                @Html.TextBoxFor(model => model.Detail.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -356,7 +374,8 @@
                     <input type="hidden" name="expectedDateId" id="expectedDateId">
                     <input type="hidden" name="endRentDateId" id="endRentDateId">
                     <input type="hidden" name="supplyMethodId" id="supplyMethodId">
-                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <img src="~/Content/img/loader2.gif" id="imgLoaderApp" style="display:none" />
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseApp" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
                 </div>
             }
@@ -385,7 +404,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <img src="~/Content/img/loader2.gif" id="imgLoaderReject" style="display:none" />
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseReject" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmReject" />
                 </div>
             }
@@ -466,13 +486,47 @@
         $('#divExpectedDate').on('dp.change', function (e) {
             var expDateValue = e.date;
             var effDateValue = new Date($('#Detail_EffectiveDate').val());
-            
+
             $("#btnTemporaryCar").css("display", "none");
 
             if (expDateValue > effDateValue) {
                 $("#btnTemporaryCar").css("display", "");
             }
+        });
+
+        $("#btnConfirmApp").click(function () {
+            $("#imgLoaderApp").css("display", "");
+            $("#btnCloseApp").css("display", "none");
+            $("#btnConfirmApp").css("display", "none");
+        });
+
+        $('#appmodal').on('hidden.bs.modal', function () {
+            $("#imgLoaderApp").css("display", "none");
+            $("#btnCloseApp").css("display", "");
+            $("#btnConfirmApp").css("display", "");
         })
+
+        $("#btnConfirmReject").click(function () {
+            $("#imgLoaderReject").css("display", "");
+            $("#btnCloseReject").css("display", "none");
+            $("#btnConfirmReject").css("display", "none");
+        });
+
+        $('#rejectmodal').on('hidden.bs.modal', function () {
+            $("#imgLoaderReject").css("display", "none");
+            $("#btnCloseReject").css("display", "");
+            $("#btnConfirmReject").css("display", "");
+        })
+
+        $("#RemarkId").change(function () {
+            var str = $('#RemarkId').find("option:selected").text();
+
+            if (str.toLowerCase() != "") {
+                $("#imgLoaderReject").css("display", "none");
+                $("#btnCloseReject").css("display", "");
+                $("#btnConfirmReject").css("display", "");
+            }
+        });
     });
 
     function AppCsf(value) {

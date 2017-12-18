@@ -81,7 +81,6 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Police Number<span class="red">*</span></label>
-                                                                @*@Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @id = "PoliceNumber" })*@
                                                                 @Html.DropDownListFor(model => model.PoliceNumber, Model.SettingListFleet, "-- Please Select --", new { @class = "form-control", @id = "PoliceNumber" })
                                                             </div>
                                                         </div>
@@ -100,7 +99,7 @@
                                                     @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
                                                     @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                     <h5> &nbsp; </h5>
-                                                    <hr></hr>
+                                                    <hr />
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Date<span class="red">*</span></label>
@@ -112,18 +111,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @*<div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
-                                                            @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
-                                                        </div>
-                                                    </div>*@
-                                                    @*<div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Employee Name<span class="red">*</span></label>
-                                                            @Html.TextBoxFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
-                                                        </div>
-                                                    </div>*@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Employee For<span class="red"></span></label>
@@ -132,7 +119,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <h5>Location</h5>
-                                                        <hr></hr>
+                                                        <hr />
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
@@ -150,7 +137,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <h5>Vehicle Details</h5>
-                                                <hr></hr>
+                                                <hr />
                                             </div>
 
                                             <div class="col-md-6">
@@ -284,7 +271,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="control-label">Attachment *</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" required/>
+                                                        <input type="file" id ="ComplaintAtt" name="ComplaintAtt" class="form-control" required="required"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,8 +284,9 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" style="display:none" />
+                <a href="#ComplaintAtt" class="btn btn-primary" onclick="save();">Save</a>
                 <a href="@Url.Action("Index", "TraCcf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -464,12 +452,73 @@
         });
     });
 
-    function SendCtf(value) {
-        $('#TraCcfIdSend').val(value);
-        $('#sendmodal').modal('show');
+    function SendCcf(value) {
+        var vehType = $("#VehicleType").val();
+        var roleType = $("#IdComplaintCategory").val();
+
+        if (vehType == "WTC")
+        {
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
+        }
+        else if (vehType == "BENEFIT" && roleType == "Fleet")
+        {
+            if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note & Attachmnent is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
+        }
+        else if(vehType == "BENEFIT" && roleType == "HR") 
+        {
+            if($('#DetailSave_ComplaintNote').val() == "")
+            {
+                alert("Note is Required");
+            }
+            else
+            {
+                $('#TraCcfIdSend').val(value);
+                $('#sendmodal').modal('show');
+            }
+        }
     }
+    
+    function save() {
+        
+        var vehType = $("#VehicleType").val();
+        var roleType = $("#IdComplaintCategory").val();
+        
+        if (vehType == "WTC") 
+        {
+            $("#ComplaintAtt").attr("required", "required");
+        } 
+        else if(vehType == "BENEFIT" && roleType == "Fleet") 
+        {
+            $("#ComplaintAtt").attr("required", "required");
+        }
+        else if(vehType == "BENEFIT" && roleType == "HR") 
+        {
+            $("#ComplaintAtt").removeAttr("required");
+        }
+
+        $("#btnSubmit").trigger('click');
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormCreate').submit();
     });
+    
+
 </script>

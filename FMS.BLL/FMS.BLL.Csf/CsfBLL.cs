@@ -300,6 +300,7 @@ namespace FMS.BLL.Csf
             var vehCatNoCar = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
             var vendorData = _vendorService.GetByShortName(csfData.VENDOR_NAME);
             var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
+            var vendorName = vendorData == null ? "Vendor" : vendorData.VENDOR_NAME;
 
             var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
             var isNoCar = csfData.VEHICLE_CATEGORY == vehCatNoCar.ToString() ? true : false;
@@ -488,35 +489,63 @@ namespace FMS.BLL.Csf
                     }
                     //if submit from EMPLOYEE to HR
                     else if (csfData.EMPLOYEE_ID == input.EmployeeId && isBenefit) {
-                        rc.Subject = "CSF - Request Confirmation";
+                        if (isNoCar) {
+                            rc.Subject = csfData.DOCUMENT_NUMBER + " - Completed Document";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have received new car request<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Send confirmation by clicking below CSF number:<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("<a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>" + csfData.DOCUMENT_NUMBER + "</a> requested by "+ csfData.EMPLOYEE_NAME +"<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                            bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been completed by employee<br /><br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Thanks<br /><br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Regards,<br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Fleet Team");
+                            bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                            rc.To.Add(creatorDataEmail);
 
-                        foreach (var item in hrEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
+                            foreach (var item in hrEmailList)
+                            {
+                                rc.CC.Add(item);
+                            }
 
-                        if (isNoCar) { 
                             foreach (var item in fleetEmailList)
                             {
                                 rc.CC.Add(item);
                             }
+
+                            rc.CC.Add(employeeDataEmail);
+                        }
+                        else
+                        {
+                            rc.Subject = "CSF - Request Confirmation";
+
+                            bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("You have received new car request<br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Send confirmation by clicking below CSF number:<br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("<a href='" + webRootUrl + "/TraCsf/Edit/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>" + csfData.DOCUMENT_NUMBER + "</a> requested by " + csfData.EMPLOYEE_NAME + "<br /><br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Thanks<br /><br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Regards,<br />");
+                            bodyMail.AppendLine();
+                            bodyMail.Append("Fleet Team");
+                            bodyMail.AppendLine();
+
+                            rc.To.Add(creatorDataEmail);
+
+                            foreach (var item in hrEmailList)
+                            {
+                                rc.CC.Add(item);
+                            }
+
+                            rc.CC.Add(employeeDataEmail);
                         }
                     }
                     //if submit from EMPLOYEE to Fleet
@@ -577,13 +606,11 @@ namespace FMS.BLL.Csf
                     //if Fleet Approve for benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=False" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
@@ -592,14 +619,41 @@ namespace FMS.BLL.Csf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
+                        //if vendor exists
+                        if (!string.IsNullOrEmpty(vendorEmail))
+                        {
+                            foreach (var item in input.Attachments)
+                            {
+                                rc.Attachments.Add(item);
+                            }
+
+                            rc.To.Add(vendorEmail);
+                        }
+
+                        rc.CC.Add(creatorDataEmail);
 
                         rc.CC.Add(employeeDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
-                        }
+                        }                        
+                    }
+                    //if Fleet Approve for wtc
+                    else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
+                    {
+                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
+
+                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
 
                         //if vendor exists
                         if (!string.IsNullOrEmpty(vendorEmail))
@@ -611,24 +665,6 @@ namespace FMS.BLL.Csf
 
                             rc.CC.Add(vendorEmail);
                         }
-                    }
-                    //if Fleet Approve for wtc
-                    else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
-                    {
-                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Employee Submission";
-
-                        bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been approved by " + fleetApprovalDataName + "<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
 
@@ -636,17 +672,7 @@ namespace FMS.BLL.Csf
                         {
                             rc.CC.Add(item);
                         }
-
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
-
-                            rc.CC.Add(vendorEmail);
-                        }
+                        
                     }
                     rc.IsCCExist = true;
                     break;
@@ -731,27 +757,27 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.Completed:
                     rc.Subject = csfData.DOCUMENT_NUMBER + " - Completed Document";
 
-                        bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                    bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been completed by system<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
 
-                        rc.To.Add(creatorDataEmail);
-                        rc.CC.Add(employeeDataEmail);
-                        rc.CC.Add(fleetApprovalDataEmail);
+                    rc.To.Add(creatorDataEmail);
+                    rc.CC.Add(employeeDataEmail);
+                    rc.CC.Add(fleetApprovalDataEmail);
 
-                        if (isBenefit) { 
-                            var attDoc = UpdateDocAttachment(csfData.TRA_CSF_ID);
-                            rc.Attachments.Add(attDoc);
-                        }
+                    if (isBenefit) { 
+                        var attDoc = UpdateDocAttachment(csfData.TRA_CSF_ID);
+                        rc.Attachments.Add(attDoc);
+                    }
 
                     rc.IsCCExist = true;
                     break;
@@ -1336,6 +1362,22 @@ namespace FMS.BLL.Csf
                 input.DocumentNumber = item.DOCUMENT_NUMBER;
 
                 CsfWorkflow(input);
+
+                //add flexben to employee
+                if (item.FLEXBEN.HasValue)
+                {
+                    if (item.FLEXBEN.Value > 0)
+                    {
+                        var employeeData = _employeeService.GetEmployeeById(item.EMPLOYEE_ID);
+                        if (employeeData != null) {
+                            var employeeFlexPoint = employeeData.FLEX_POINT == null ? 0 : employeeData.FLEX_POINT.Value;
+
+                            employeeData.FLEX_POINT = employeeFlexPoint + item.FLEXBEN.Value;
+
+                            _employeeService.save(employeeData);
+                        }
+                    }
+                }
 
                 //inactive cfm idle
                 var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER

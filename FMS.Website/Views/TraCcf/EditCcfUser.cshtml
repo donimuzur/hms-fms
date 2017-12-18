@@ -49,7 +49,7 @@
                                                             @Html.HiddenFor(model => model.TraCcfId)
                                                             @Html.HiddenFor(model => model.CreatedBy)
                                                             @Html.HiddenFor(model => model.CreatedDate)
-                                                            @Html.HiddenFor(model => model.ComplaintCategoryRole)
+                                                            @Html.HiddenFor(model => model.ComplaintCategoryRole, new { @id = "IdComplaintCategory" })
                                                             @Html.HiddenFor(model => model.IsPersonalDashboard)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
@@ -137,7 +137,7 @@
                                                     @Html.HiddenFor(model => model.EmployeeIdComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeIdComplaintFor" })
                                                     @Html.HiddenFor(model => model.EmployeeNameComplaintFor, new { @class = "form-control", @readonly = "readonly", @id = "EmployeeNameComplaintFor" })
                                                     <h5> &nbsp; </h5>
-                                                    <hr></hr>
+                                                    <hr />
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Request Date<span class="red">*</span></label>
@@ -279,7 +279,15 @@
                                                         </td>
                                                         <td class="ComplaintDate">@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
                                                         <td class="ComplaintNote">@Html.Raw(data_d1.ComplaintNote)</td>
-                                                        <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        @if (data_d1.ComplaintAtt == null)
+                                                        {
+                                                            <td class="ComplaintAtt">&nbsp;</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td hidden class="ComplaintAttFile">@Html.Raw(data_d1.ComplaintAtt)</td>
+                                                            <td class="ComplaintAtt"><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                                                        }
                                                         @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
@@ -358,14 +366,15 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Note</label>
-                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate" })
+                                                        <label class="control-label">Note *</label>
+                                                        @Html.TextBoxFor(model => model.DetailSave.ComplaintNote, new { @class = "form-control relocate", @required = "required" })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label">Attachment</label>
-                                                        <input type="file" name="ComplaintAtt" class="form-control" />
+                                                        <label class="control-label">Attachment *</label>
+                                                        <input type="hidden" id="ComplaintAtt_temp" name="ComplaintAtt_temp" class="form-control" />
+                                                        <input type="file" id="ComplaintAtt" name="ComplaintAtt" class="form-control" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -428,8 +437,9 @@
                 </div>
             </div>
             <div class="row col-md-12">
-                <a href="#" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="#" id="btnsenddetail" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
+                <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" style="display:none" />
+                <a href="#ComplaintAtt" class="btn btn-primary" onclick="save();">Save</a>
                 @if (Model.IsPersonalDashboard == true)
                 {
                     <a href="@Url.Action("PersonalDashboard", "TraCcf")" class="btn btn-default">Back</a>
@@ -465,11 +475,14 @@
         
         var UserComplaintDate = tr.find(".ComplaintDate").html();
         var UserComplaintNote = tr.find(".ComplaintNote").html();
+        var UserComplaintAtt = tr.find(".ComplaintAttFile").html();
         
         $("[name='DetailSave.TraCcfDetilId']").val(ccfdetailId);
         $("[name='DetailSave.ComplaintDate']").val(UserComplaintDate);
         $("[name='DetailSave.ComplaintNote']").val(UserComplaintNote);
+        $("[name='ComplaintAtt_temp']").val(UserComplaintAtt);
         
+        $("#btnsenddetail").attr("hidden",true);
         $("#FormResponse").show();
     }
 
@@ -601,7 +614,83 @@
     function SendCcf(value) {
         $('#TraCcfIdSend').val(value);
         $('#sendmodal').modal('show');
+
+        //var vehType = $("#VehicleType").val();
+        //var roleType = $("#IdComplaintCategory").val();
+
+        //if (vehType == "WTC")
+        //{
+        //    if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+        //    {
+        //        alert("Note & Attachmnent is Required");
+        //    }
+        //    else
+        //    {
+        //        $('#TraCcfIdSend').val(value);
+        //        $('#sendmodal').modal('show');
+        //    }
+        //}
+        //else if (vehType == "BENEFIT" && roleType == "Fleet")
+        //{
+        //    if($('#ComplaintAtt').val() == "" || $('#DetailSave_ComplaintNote').val() == "")
+        //    {
+        //        alert("Note & Attachmnent is Required");
+        //    }
+        //    else
+        //    {
+        //        $('#TraCcfIdSend').val(value);
+        //        $('#sendmodal').modal('show');
+        //    }
+        //}
+        //else if(vehType == "BENEFIT" && roleType == "HR") 
+        //{
+        //    if($('#DetailSave_ComplaintNote').val() == "")
+        //    {
+        //        alert("Note is Required");
+        //    }
+        //    else
+        //    {
+        //        $('#TraCcfIdSend').val(value);
+        //        $('#sendmodal').modal('show');
+        //    }
+        //}
     }
+    
+    function save() {
+        
+        var vehType = $("#VehicleType").val();
+        var roleType = $("#IdComplaintCategory").val();
+        var complaintAtt = $("#ComplaintAtt_temp").val();
+        
+        if (vehType == "WTC") 
+        {
+            if(complaintAtt == "")
+            {
+                $("#ComplaintAtt").attr("required", "required");
+            }
+            else
+            {
+                $("#btnSubmit").trigger('click');
+            }
+        } 
+        else if(vehType == "BENEFIT" && roleType == "Fleet") 
+        {
+            if(complaintAtt == "")
+            {
+                $("#ComplaintAtt").attr("required", "required");
+            }
+            else
+            {
+                $("#btnSubmit").trigger('click');
+            }
+        }
+        else if(vehType == "BENEFIT" && roleType == "HR") 
+        {
+            $("#ComplaintAtt").removeAttr("required");
+            $("#btnSubmit").trigger('click');
+        }
+    }
+
     $("#btnConfirmSend").click(function () {
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();

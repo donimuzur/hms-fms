@@ -16,18 +16,19 @@ namespace FMS.BusinessObject
     {
         public MST_EMPLOYEE()
         {
-            this.TRA_CAF = new HashSet<TRA_CAF>();
-            this.TRA_CSF = new HashSet<TRA_CSF>();
-            this.TRA_CTF = new HashSet<TRA_CTF>();
-            this.TRA_TEMPORARY = new HashSet<TRA_TEMPORARY>();
-            this.MST_FUEL_ODOMETER = new HashSet<MST_FUEL_ODOMETER>();
-            this.MST_FLEET = new HashSet<MST_FLEET>();
-            this.MST_EPAF = new HashSet<MST_EPAF>();
             this.MST_DELEGATION = new HashSet<MST_DELEGATION>();
             this.MST_DELEGATION1 = new HashSet<MST_DELEGATION>();
+            this.MST_EPAF = new HashSet<MST_EPAF>();
+            this.MST_FLEET = new HashSet<MST_FLEET>();
+            this.MST_FUEL_ODOMETER = new HashSet<MST_FUEL_ODOMETER>();
+            this.TRA_CAF = new HashSet<TRA_CAF>();
             this.TRA_CCF = new HashSet<TRA_CCF>();
             this.TRA_CCF1 = new HashSet<TRA_CCF>();
             this.TRA_CRF = new HashSet<TRA_CRF>();
+            this.TRA_CSF = new HashSet<TRA_CSF>();
+            this.TRA_CTF = new HashSet<TRA_CTF>();
+            this.TRA_TEMPORARY = new HashSet<TRA_TEMPORARY>();
+            this.PO_REPORT_DATA = new HashSet<PO_REPORT_DATA>();
         }
     
         public string EMPLOYEE_ID { get; set; }
@@ -49,17 +50,18 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
     
-        public virtual ICollection<TRA_CAF> TRA_CAF { get; set; }
-        public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
-        public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
-        public virtual ICollection<TRA_TEMPORARY> TRA_TEMPORARY { get; set; }
-        public virtual ICollection<MST_FUEL_ODOMETER> MST_FUEL_ODOMETER { get; set; }
-        public virtual ICollection<MST_FLEET> MST_FLEET { get; set; }
-        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
         public virtual ICollection<MST_DELEGATION> MST_DELEGATION { get; set; }
         public virtual ICollection<MST_DELEGATION> MST_DELEGATION1 { get; set; }
+        public virtual ICollection<MST_EPAF> MST_EPAF { get; set; }
+        public virtual ICollection<MST_FLEET> MST_FLEET { get; set; }
+        public virtual ICollection<MST_FUEL_ODOMETER> MST_FUEL_ODOMETER { get; set; }
+        public virtual ICollection<TRA_CAF> TRA_CAF { get; set; }
         public virtual ICollection<TRA_CCF> TRA_CCF { get; set; }
         public virtual ICollection<TRA_CCF> TRA_CCF1 { get; set; }
         public virtual ICollection<TRA_CRF> TRA_CRF { get; set; }
+        public virtual ICollection<TRA_CSF> TRA_CSF { get; set; }
+        public virtual ICollection<TRA_CTF> TRA_CTF { get; set; }
+        public virtual ICollection<TRA_TEMPORARY> TRA_TEMPORARY { get; set; }
+        public virtual ICollection<PO_REPORT_DATA> PO_REPORT_DATA { get; set; }
     }
 }

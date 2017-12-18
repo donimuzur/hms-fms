@@ -4,22 +4,22 @@
 <table id="tbVehicle" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="min-width: 50px">Police Number</th>
-            <th style="min-width: 70px">Manufacturer</th>
-            <th style="min-width: 70px">Model</th>
+            <th style="min-width: 100px">Police Number</th>
+            <th style="min-width: 100px">Manufacturer</th>
+            <th style="min-width: 100px">Model</th>
             <th style="min-width: 120px">Series</th>
-            <th style="min-width: 70px">Body Type</th>
-            <th style="min-width: 70px">Colour</th>
-            <th style="min-width: 50px">Group Level</th>
+            <th style="min-width: 100px">Body Type</th>
+            <th style="min-width: 100px">Colour</th>
+            <th style="min-width: 100px">Group Level</th>
             <th style="min-width: 100px">Start Contract</th>
             <th style="min-width: 100px">End Contract</th>
-            <th style="min-width: 70px">Supplier</th>
-            <th style="min-width: 50px">Cost Center</th>
-            <th style="min-width: 100px">Start Idle</th>
-            <th style="min-width: 100px">End Idle</th>
-            <th style="min-width: 70px">Idle Duration</th>
-            <th style="min-width: 70px">Monthly Installment</th>
-            <th style="min-width: 70px">Total Monthly</th>
+            <th style="min-width: 100px">Supplier</th>
+            <th style="min-width: 100px">Cost Center</th>
+            <th style="min-width: 150px">Start Idle</th>
+            <th style="min-width: 150px">End Idle</th>
+            <th style="min-width: 100px">Idle Duration</th>
+            <th style="min-width: 150px">Monthly Installment</th>
+            <th style="min-width: 100px">Total Monthly</th>
         </tr>
     </thead>
     <thead class="filters">
@@ -45,24 +45,69 @@
     <tbody>
         @foreach (var data in Model.ListCfmIdle)
         {
-            <tr>
-                <td>@Html.Raw(data.PoliceNumber)</td>
-                <td>@Html.Raw(data.Manufacture)</td>
-                <td>@Html.Raw(data.Models)</td>
-                <td>@Html.Raw(data.Series)</td>
-                <td>@Html.Raw(data.BodyType)</td>
-                <td>@Html.Raw(data.Color)</td>
-                <td>@Html.Raw(data.GroupLevel)</td>
-                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("yyyy-MM-dd"))</td>
-                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("yyyy-MM-dd"))</td>
-                <td>@Html.Raw(data.Vendor)</td>
-                <td>@Html.Raw(data.CostCenter)</td>
-                <td>@Html.Raw(data.StartIdle == null ? "" : data.StartIdle.Value.ToString("yyyy-MM-dd"))</td>
-                <td>@Html.Raw(data.EndIdle == null ? "" : data.EndIdle.Value.ToString("yyyy-MM-dd"))</td>
-                <td>@Html.Raw(data.IdleDuration)</td>
-                <td>@Html.Raw(data.MonthlyInstallment)</td>
-                <td>@Html.Raw(data.TotalMonthly)</td>
-            </tr>
+            if (string.IsNullOrEmpty(data.Note))
+            {
+                <tr>
+                    <td>@Html.Raw(data.PoliceNumber)</td>
+                    <td>@Html.Raw(data.Manufacture)</td>
+                    <td>@Html.Raw(data.Models)</td>
+                    <td>@Html.Raw(data.Series)</td>
+                    <td>@Html.Raw(data.BodyType)</td>
+                    <td>@Html.Raw(data.Color)</td>
+                    <td>@Html.Raw(data.GroupLevel)</td>
+                    <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.Vendor)</td>
+                    <td>@Html.Raw(data.CostCenter)</td>
+                    <td>@Html.Raw(data.StartIdle == null ? "" : data.StartIdle.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.EndIdle == null ? "" : data.EndIdle.Value.ToString("dd-MMM-yyyy"))</td>
+                    <td>@Html.Raw(data.IdleDuration)</td>
+                    <td>@Html.Raw(data.MonthlyInstallment)</td>
+                    <td>@Html.Raw(data.TotalMonthly)</td>
+                </tr>
+            }
+            else if (data.Note == "SubTotal")
+            {
+                <tr>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td><b>@Html.Raw("Total Idle Duration")</b></td>
+                    <td>@Html.Raw(data.IdleDuration)</td>
+                    <td><b>@Html.Raw("Total Installment")</b></td>
+                    <td>@Html.Raw(data.TotalMonthly)</td>
+                </tr>
+            }
+            else if (data.Note == "GrandTotal")
+            {
+                <tr>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td>@Html.Raw("")</td>
+                    <td><b>@Html.Raw("Grand Total")</b></td>
+                    <td><b>@Html.Raw("Idle Duration")</b></td>
+                    <td>@Html.Raw(data.IdleDuration)</td>
+                    <td><b>@Html.Raw("Installment")</b></td>
+                    <td>@Html.Raw(data.TotalMonthly)</td>
+                </tr>
+            }
         }
     </tbody>
 </table>

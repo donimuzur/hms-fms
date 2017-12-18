@@ -169,6 +169,7 @@ namespace FMS.Website.Controllers
         {
             var settingData = _settingBLL.GetSetting();
             var allEmployee = _employeeBLL.GetEmployee();
+            var reasonType = "WTC";
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
@@ -179,13 +180,14 @@ namespace FMS.Website.Controllers
             model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
             var paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc);
-            if (model.Detail.IsBenefit)
+            if (model.Detail.IsBenefit || CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit);
+                reasonType = "BENEFIT";
             }
 
             var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.IsActive).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.IsActive && x.VehicleType == reasonType).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVehCat = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleCategory) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVehUsage = settingData.Where(x => x.SettingGroup == paramVehUsage && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
@@ -991,7 +993,7 @@ namespace FMS.Website.Controllers
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
-                    if (vehCat.ToLower() == "flexy benefit")
+                    if (vehCat.ToLower() == "flexi benefit")
                     {
                         modelCFMIdle = fleetData.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
                     }
@@ -1024,7 +1026,7 @@ namespace FMS.Website.Controllers
             if (data != null)
             {
                 var csfData = _csfBLL.GetCsfById(Detail_TraCsfId);
-                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
+                var cfmData = csfData.CFM_IDLE_ID == null ? null : _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
 
                 foreach (var dataRow in data.DataRows)
                 {
@@ -1106,6 +1108,32 @@ namespace FMS.Website.Controllers
             data = data.Where(x => x.Location == location).ToList();
 
             return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetFlexBen(string vehCat, int? carGroupLevel, int? empGroupLevel)
+        {
+            var flexPoint = 0;
+
+            var data = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == empGroupLevel && x.GroupLevel > 0).FirstOrDefault();
+
+            if (data != null)
+            {
+                if (vehCat.ToLower() == "no car") { 
+                    flexPoint = data.FlexPoint;
+                }
+                else if (vehCat.ToLower() == "flexi benefit")
+                {
+                    var dataFlex = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == carGroupLevel && x.GroupLevel > 0).FirstOrDefault();
+
+                    if (dataFlex != null)
+                    {
+                        flexPoint = data.FlexPoint - dataFlex.FlexPoint;
+                    }
+                }
+            }
+
+            return Json(flexPoint);
         }
 
         [HttpPost]
@@ -1390,7 +1418,12 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(2, 23);
-            slDocument.SetCellStyle(4, 2, iRow, 23, valueStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 23, valueStyle);
+
+            SLStyle dateStyle = slDocument.CreateStyle();
+            dateStyle.FormatCode = "dd/MM/yyyy";
+
+            slDocument.SetCellStyle(iRow, 8, iRow, 9, dateStyle);
 
             return slDocument;
         }

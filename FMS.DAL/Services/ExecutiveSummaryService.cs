@@ -20,6 +20,13 @@ namespace FMS.DAL.Services
         private IGenericRepository<NO_OF_WTC_VEHICLE_REPORT_DATA> _noVehWtcRepository;
         private IGenericRepository<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA> _noVehMakeRepository;
         private IGenericRepository<ODOMETER_REPORT_DATA> _odometerRepository;
+        private IGenericRepository<LITER_BY_FUNC_REPORT_DATA> _literByFuncRepository;
+        private IGenericRepository<FUEL_COST_BY_FUNC_REPORT_DATA> _fuelCostByFuncRepository;
+        private IGenericRepository<LEASE_COST_BY_FUNC_REPORT_DATA> _leaseCostByFuncRepository;
+        private IGenericRepository<SALES_BY_REGION_REPORT_DATA> _salesRegionRepository;
+        private IGenericRepository<ACCIDENT_REPORT_DATA> _accidentRepository;
+        private IGenericRepository<AC_VS_OB_REPORT_DATA> _acVsObRepository;
+        private IGenericRepository<SUM_REPORT_DATA> _sumPtdByFuncRepository;
 
         public ExecutiveSummaryService(IUnitOfWork uow)
         {
@@ -28,13 +35,21 @@ namespace FMS.DAL.Services
             _noVehWtcRepository = _uow.GetGenericRepository<NO_OF_WTC_VEHICLE_REPORT_DATA>();
             _noVehMakeRepository = _uow.GetGenericRepository<NO_OF_VEHICLE_MAKE_TYPE_REPORT_DATA>();
             _odometerRepository = _uow.GetGenericRepository<ODOMETER_REPORT_DATA>();
+            _literByFuncRepository = _uow.GetGenericRepository<LITER_BY_FUNC_REPORT_DATA>();
+            _fuelCostByFuncRepository = _uow.GetGenericRepository<FUEL_COST_BY_FUNC_REPORT_DATA>();
+            _leaseCostByFuncRepository = _uow.GetGenericRepository<LEASE_COST_BY_FUNC_REPORT_DATA>();
+            _salesRegionRepository = _uow.GetGenericRepository<SALES_BY_REGION_REPORT_DATA>();
+            _accidentRepository = _uow.GetGenericRepository<ACCIDENT_REPORT_DATA>();
+            _acVsObRepository = _uow.GetGenericRepository<AC_VS_OB_REPORT_DATA>();
+            _sumPtdByFuncRepository = _uow.GetGenericRepository<SUM_REPORT_DATA>();
         }
 
         public List<NO_OF_VEHICLE_REPORT_DATA> GetAllNoVehicle(VehicleGetByParamInput filter)
         {
             Expression<Func<NO_OF_VEHICLE_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<NO_OF_VEHICLE_REPORT_DATA>();
 
-            if (filter != null) {
+            if (filter != null)
+            {
                 if (filter.MonthFrom > 0)
                 {
                     queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
@@ -58,6 +73,10 @@ namespace FMS.DAL.Services
                 if (!string.IsNullOrEmpty(filter.SupplyMethod))
                 {
                     queryFilter = queryFilter.And(c => c.SUPPLY_METHOD.ToUpper() == filter.SupplyMethod.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.Regional))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Regional.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
@@ -175,6 +194,259 @@ namespace FMS.DAL.Services
             }
 
             return _odometerRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<LITER_BY_FUNC_REPORT_DATA> GetAllLiterByFunction(LiterFuncGetByParamInput filter)
+        {
+            Expression<Func<LITER_BY_FUNC_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<LITER_BY_FUNC_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                }
+            }
+
+            return _literByFuncRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<FUEL_COST_BY_FUNC_REPORT_DATA> GetAllFuelCostByFunction(FuelCostFuncGetByParamInput filter)
+        {
+            Expression<Func<FUEL_COST_BY_FUNC_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<FUEL_COST_BY_FUNC_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                }
+            }
+
+            return _fuelCostByFuncRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<LEASE_COST_BY_FUNC_REPORT_DATA> GetAllLeaseCostByFunction(LeaseCostFuncGetByParamInput filter)
+        {
+            Expression<Func<LEASE_COST_BY_FUNC_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<LEASE_COST_BY_FUNC_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+            }
+
+            return _leaseCostByFuncRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<SALES_BY_REGION_REPORT_DATA> GetAllSalesByRegion(SalesRegionGetByParamInput filter)
+        {
+            Expression<Func<SALES_BY_REGION_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<SALES_BY_REGION_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+            }
+
+            return _salesRegionRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<ACCIDENT_REPORT_DATA> GetAllAccident(AccidentGetByParamInput filter)
+        {
+            Expression<Func<ACCIDENT_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<ACCIDENT_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                }
+            }
+
+            return _accidentRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<AC_VS_OB_REPORT_DATA> GetAllAcVsOb(AcVsObGetByParamInput filter)
+        {
+            Expression<Func<AC_VS_OB_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<AC_VS_OB_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+            }
+
+            return _acVsObRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<SUM_REPORT_DATA> GetAllSumPtdByFunction(SumPtdFuncGetByParamInput filter)
+        {
+            Expression<Func<SUM_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<SUM_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                }
+            }
+
+            return _sumPtdByFuncRepository.Get(queryFilter, null, "").ToList();
         }
     }
 }

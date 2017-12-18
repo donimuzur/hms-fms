@@ -59,10 +59,13 @@
     <Compile Include="BLL\IGroupCostCenterBLL.cs" />
     <Compile Include="BLL\IGsBLL.cs" />
     <Compile Include="BLL\IHolidayCalenderBLL.cs" />
+    <Compile Include="BLL\IKpiMonitoringBLL.cs" />
     <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
     <Compile Include="BLL\IPenaltyLogicBLL.cs" />
+    <Compile Include="BLL\IRptCcfBLL.cs" />
     <Compile Include="BLL\IRptFuelBLL.cs" />
+    <Compile Include="BLL\IRptPoBLL.cs" />
     <Compile Include="BLL\ISalesVolumeBLL.cs" />
     <Compile Include="BLL\ISettingBLL.cs" />
     <Compile Include="BLL\IReasonBLL.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="BLL\ITraCsfBLL.cs" />
     <Compile Include="BLL\ITraCtfBLL.cs" />
     <Compile Include="BLL\ITraTemporaryBLL.cs" />
+    <Compile Include="BLL\IVehicleOverallReportBLL.cs" />
     <Compile Include="BLL\IVehicleSpectBLL.cs" />
     <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
@@ -103,9 +107,12 @@
     <Compile Include="Service\IGroupCostCenterService.cs" />
     <Compile Include="Service\IGsService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
+    <Compile Include="Service\IKpiMonitoringService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\IMessageService.cs" />
     <Compile Include="Service\IPenaltyLogicService.cs" />
+    <Compile Include="Service\IRptCCFService.cs" />
+    <Compile Include="Service\IRptPoService.cs" />
     <Compile Include="Service\ISalesVolumeService.cs" />
     <Compile Include="Service\ISettingService.cs" />
     <Compile Include="Service\IReasonService.cs" />
@@ -117,6 +124,7 @@
     <Compile Include="Service\ITemporaryService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\IVehicleOverallReportService.cs" />
     <Compile Include="Service\IVehicleSpectService.cs" />
     <Compile Include="Service\IVendorService.cs" />
     <Compile Include="Service\IWorkflowHistoryService.cs" />

@@ -39,6 +39,7 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> END_PERIOD { get; set; }
         public Nullable<int> VENDOR { get; set; }
         public Nullable<System.DateTime> EXPECTED_DATE { get; set; }
+        public Nullable<System.DateTime> START_RENT_DATE { get; set; }
         public Nullable<System.DateTime> END_RENT_DATE { get; set; }
         public string SUPPLY_METHOD { get; set; }
         public Nullable<bool> IS_PROJECT { get; set; }
@@ -50,7 +51,6 @@ namespace FMS.BusinessObject
         public string MODIFIED_BY { get; set; }
         public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
         public bool IS_ACTIVE { get; set; }
-        public Nullable<System.DateTime> START_RENT_DATE { get; set; }
         public string VENDOR_NAME { get; set; }
         public string APPROVED_FLEET { get; set; }
         public Nullable<System.DateTime> APPROVED_FLEET_DATE { get; set; }
@@ -82,8 +82,8 @@ namespace FMS.BusinessObject
         public Nullable<int> FLEXBEN { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
-        public virtual MST_REMARK MST_REMARK { get; set; }
-        public virtual MST_REASON MST_REASON { get; set; }
         public virtual MST_EPAF MST_EPAF { get; set; }
+        public virtual MST_REASON MST_REASON { get; set; }
+        public virtual MST_REMARK MST_REMARK { get; set; }
     }
 }

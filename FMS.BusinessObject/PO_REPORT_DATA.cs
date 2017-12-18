@@ -40,5 +40,8 @@ namespace FMS.BusinessObject
         public Nullable<decimal> MONTHLY_INSTALLMENT { get; set; }
         public Nullable<decimal> GST { get; set; }
         public Nullable<decimal> TOTAL_MONTHLY_INSTALLMENT { get; set; }
+        public string EMPLOYEE_ID { get; set; }
+    
+        public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
     }
 }

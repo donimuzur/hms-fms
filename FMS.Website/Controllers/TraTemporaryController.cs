@@ -139,12 +139,18 @@ namespace FMS.Website.Controllers
         public TempItemModel InitialModel(TempItemModel model)
         {
             var allEmployee = _employeeBLL.GetEmployee();
+            var reasonType = "WTC";
 
             var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
             model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
+            if (model.Detail.IsBenefit || CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                reasonType = "BENEFIT";
+            }
+
             var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP && x.IsActive).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
+            var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP && x.IsActive && x.VehicleType == reasonType).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
@@ -821,7 +827,12 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(2, 23);
-            slDocument.SetCellStyle(4, 2, iRow, 23, valueStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 23, valueStyle);
+
+            SLStyle dateStyle = slDocument.CreateStyle();
+            dateStyle.FormatCode = "dd/MM/yyyy";
+
+            slDocument.SetCellStyle(iRow, 8, iRow, 9, dateStyle);
 
             return slDocument;
         }

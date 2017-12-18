@@ -57,13 +57,13 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Reason</label>
+                                                            <label class="control-label">Reason<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Effective Date</label>
+                                                            <label class="control-label">Effective Date<span class="red">*</span></label>
                                                             <div class="input-group date">
                                                                 @Html.TextBoxFor(model => model.Detail.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @required = "required" })
                                                                 <span class="input-group-addon">
@@ -82,7 +82,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label">Employee ID</label>
+                                                            <label class="control-label">Employee ID<span class="red">*</span></label>
                                                             @Html.HiddenFor(model => model.Detail.EmployeeId)
                                                             @Html.TextBoxFor(model => model.Detail.EmployeeId, new { @id = "employeeSelect", @class = "form-control", @required = "required" })
                                                         </div>
@@ -97,7 +97,7 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Cost Center</label>
-                                                            @if (Model.Detail.IsBenefit) {
+                                                            @if (Model.Detail.IsBenefit || Model.CurrentLogin.UserRole == Enums.UserRole.HR) {
                                                                 @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
                                                             }
                                                             else
@@ -106,7 +106,8 @@
                                                             }
                                                         </div>
                                                     </div>
-                                                    @if (Model.Detail.IsBenefit) { 
+                                                    @if (Model.Detail.IsBenefit || Model.CurrentLogin.UserRole == Enums.UserRole.HR)
+                                                    { 
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Group Level</label>
@@ -151,7 +152,8 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" name="TraCsfId" id="TraCsfId">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:none"/>
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
             </div>
         </div>
@@ -169,7 +171,17 @@
         $("#btnConfirmSend").click(function () {
             $('#Detail_IsSaveSubmit').val('submit');
             $("#btnCreateCsf").trigger('click');
+
+            $("#imgLoader").css("display", "");
+            $("#btnCloseSend").css("display", "none");
+            $("#btnConfirmSend").css("display", "none");
         });
+
+        $('#sendmodal').on('hidden.bs.modal', function () {
+            $("#imgLoader").css("display", "none");
+            $("#btnCloseSend").css("display", "");
+            $("#btnConfirmSend").css("display", "");
+        })
     });
 
     function SendCsf(value) {

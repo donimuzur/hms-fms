@@ -32,6 +32,7 @@ namespace FMS.Website.Models
     {
         public int Id { get; set; }
         public string VehicleType { get; set; }
+        public string Regional { get; set; }
         public string SupplyMethod { get; set; }
         public string Function { get; set; }
         public int? NoOfVehicle { get; set; }
@@ -48,8 +49,11 @@ namespace FMS.Website.Models
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string VehicleType { get; set; }
+        public string Regional { get; set; }
         public string SupplyMethod { get; set; }
         public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
 
         public SelectList MonthList
         {
@@ -78,6 +82,7 @@ namespace FMS.Website.Models
 
         public SelectList VehicleTypeList { get; set; }
         public SelectList SupplyMethodList { get; set; }
+        public SelectList RegionalList { get; set; }
     }
 
     public class VehicleSearchViewExport
@@ -87,6 +92,7 @@ namespace FMS.Website.Models
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string VehicleType { get; set; }
+        public string Regional { get; set; }
         public string SupplyMethod { get; set; }
         public string Function { get; set; }
     }
@@ -135,6 +141,8 @@ namespace FMS.Website.Models
         public int YearTo { get; set; }
         public string Regional { get; set; }
         public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
 
         public SelectList MonthList
         {
@@ -302,6 +310,8 @@ namespace FMS.Website.Models
         public string Region { get; set; }
         public string Function { get; set; }
 
+        public MultiSelectList Functions { get; set; }
+
         public SelectList MonthList
         {
             get
@@ -332,6 +342,616 @@ namespace FMS.Website.Models
     }
 
     public class OdometerSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+    }
+
+    #endregion
+
+    #region --------- Liter By Function --------------
+
+    public class LiterByFunctionModel : BaseModel
+    {
+        public LiterByFunctionModel()
+        {
+            LiterByFuncDataList = new List<LiterByFunctionData>();
+            SearchViewExport = new LiterByFuncSearchViewExport();
+            SearchView = new LiterByFuncSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<LiterByFunctionData> LiterByFuncDataList { get; set; }
+        public LiterByFuncSearchView SearchView { get; set; }
+        public LiterByFuncSearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class LiterByFunctionData
+    {
+        public int Id { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+        public decimal? TotalLiter { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class LiterByFuncSearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList RegionalList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+    }
+
+    public class LiterByFuncSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+    }
+
+    #endregion
+
+    #region --------- Fuel Cost By Function --------------
+
+    public class FuelCostByFunctionModel : BaseModel
+    {
+        public FuelCostByFunctionModel()
+        {
+            FuelCostByFuncDataList = new List<FuelCostByFunctionData>();
+            SearchViewExport = new FuelCostByFuncSearchViewExport();
+            SearchView = new FuelCostByFuncSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<FuelCostByFunctionData> FuelCostByFuncDataList { get; set; }
+        public FuelCostByFuncSearchView SearchView { get; set; }
+        public FuelCostByFuncSearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class FuelCostByFunctionData
+    {
+        public int Id { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+        public decimal? TotalFuelCost { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class FuelCostByFuncSearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList RegionalList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+    }
+
+    public class FuelCostByFuncSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+    }
+
+    #endregion
+
+    #region --------- Lease Cost By Function --------------
+
+    public class LeaseCostByFunctionModel : BaseModel
+    {
+        public LeaseCostByFunctionModel()
+        {
+            LeaseCostByFuncDataList = new List<LeaseCostByFunctionData>();
+            SearchViewExport = new LeaseCostByFuncSearchViewExport();
+            SearchView = new LeaseCostByFuncSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<LeaseCostByFunctionData> LeaseCostByFuncDataList { get; set; }
+        public LeaseCostByFuncSearchView SearchView { get; set; }
+        public LeaseCostByFuncSearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class LeaseCostByFunctionData
+    {
+        public int Id { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+        public decimal? TotalLeaseCost { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class LeaseCostByFuncSearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList RegionalList { get; set; }
+    }
+
+    public class LeaseCostByFuncSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+    }
+
+    #endregion
+
+    #region --------- Sales By Region --------------
+
+    public class SalesByRegionModel : BaseModel
+    {
+        public SalesByRegionModel()
+        {
+            SalesByRegionDataList = new List<SalesByRegionData>();
+            SearchViewExport = new SalesByRegionSearchViewExport();
+            SearchView = new SalesByRegionSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<SalesByRegionData> SalesByRegionDataList { get; set; }
+        public SalesByRegionSearchView SearchView { get; set; }
+        public SalesByRegionSearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class SalesByRegionData
+    {
+        public int Id { get; set; }
+        public string Region { get; set; }
+        public decimal? TotalKm { get; set; }
+        public decimal? TotalCost { get; set; }
+        public decimal? Stick { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class SalesByRegionSearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Region { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList RegionalList { get; set; }
+    }
+
+    public class SalesByRegionSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Region { get; set; }
+    }
+
+    #endregion
+
+    #region --------- Accident --------------
+
+    public class AccidentModel : BaseModel
+    {
+        public AccidentModel()
+        {
+            AccidentDataList = new List<AccidentData>();
+            SearchViewExport = new AccidentSearchViewExport();
+            SearchView = new AccidentSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<AccidentData> AccidentDataList { get; set; }
+        public AccidentSearchView SearchView { get; set; }
+        public AccidentSearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class AccidentData
+    {
+        public int Id { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+        public int? AccidentCount { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class AccidentSearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList RegionalList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+    }
+
+    public class AccidentSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+    }
+
+    #endregion
+
+    #region --------- AC Vs OB --------------
+
+    public class AcVsObModel : BaseModel
+    {
+        public AcVsObModel()
+        {
+            AcVsObDataList = new List<AcVsObData>();
+            SearchViewExport = new AcVsObSearchViewExport();
+            SearchView = new AcVsObSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<AcVsObData> AcVsObDataList { get; set; }
+        public AcVsObSearchView SearchView { get; set; }
+        public AcVsObSearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class AcVsObData
+    {
+        public int Id { get; set; }
+        public string Function { get; set; }
+        public decimal? ActualCost { get; set; }
+        public decimal? CostOb { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class AcVsObSearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+    }
+
+    public class AcVsObSearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string Function { get; set; }
+    }
+
+    #endregion
+
+    #region --------- Sum PTD By Function --------------
+
+    public class SumPtdByFunctionModel : BaseModel
+    {
+        public SumPtdByFunctionModel()
+        {
+            SumPtdByFuncDataList = new List<SumPtdByFunctionData>();
+            SearchViewExport = new SumPtdByFuncSearchViewExport();
+            SearchView = new SumPtdByFuncSearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.YearTo = DateTime.Now.Year;
+        }
+
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<SumPtdByFunctionData> SumPtdByFuncDataList { get; set; }
+        public SumPtdByFuncSearchView SearchView { get; set; }
+        public SumPtdByFuncSearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class SumPtdByFunctionData
+    {
+        public int Id { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+        public int? TotalVehicle { get; set; }
+        public decimal? TotalVehicleCost { get; set; }
+        public decimal? TotalFuelAmount { get; set; }
+        public int? TotalFuelCost { get; set; }
+        public decimal? TotalKm { get; set; }
+        public decimal? TotalOperationalCost { get; set; }
+        public int? AccidentCount { get; set; }
+        public int? ReportMonth { get; set; }
+        public string Month { get; set; }
+        public int? ReportYear { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+
+    public class SumPtdByFuncSearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
+        public string Function { get; set; }
+
+        public MultiSelectList Functions { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+
+        public SelectList RegionalList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+    }
+
+    public class SumPtdByFuncSearchViewExport
     {
         public int MonthFrom { get; set; }
         public int MonthTo { get; set; }
