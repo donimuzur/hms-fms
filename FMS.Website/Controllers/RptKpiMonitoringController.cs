@@ -25,14 +25,24 @@ namespace FMS.Website.Controllers
         private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
         private IKpiMonitoringBLL _kpiMonitoringBLL;
+        private ITraCtfBLL _ctfBLL;
+        private ITraCsfBLL _csfBLL;
+        private ITraCrfBLL _crfBLL;
+        private IRemarkBLL _remarkBLL;
         private ISettingBLL _settingBLL;
 
-        public RptKpiMonitoringController(IPageBLL pageBll, IKpiMonitoringBLL KpiMonitoringBLL, ISettingBLL SettingBLL)
+        public RptKpiMonitoringController(IPageBLL pageBll, IKpiMonitoringBLL KpiMonitoringBLL,IRemarkBLL RemarkBLL, 
+                                            ITraCtfBLL CtfBLL, ITraCsfBLL CsfBLL, ITraCrfBLL CrfBLL
+                                            ,ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptKpiMonitoring)
         {
             _pageBLL = pageBll;
             _kpiMonitoringBLL = KpiMonitoringBLL;
+            _remarkBLL = RemarkBLL;
             _settingBLL = SettingBLL;
+            _ctfBLL = CtfBLL;
+            _csfBLL = CsfBLL;
+            _crfBLL = CrfBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
@@ -49,10 +59,18 @@ namespace FMS.Website.Controllers
 
             filter.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             filter.ToDate = DateTime.Today;
+
             try
             {
-                var ListTransaction = _kpiMonitoringBLL.GetTransaction(filter);
-                model.ListTransaction = Mapper.Map<List<KpiMonitoringItem>>(ListTransaction);
+                var ListTransactionDto = _kpiMonitoringBLL.GetTransaction(filter);
+                var ListTransaction = Mapper.Map<List<KpiMonitoringItem>>(ListTransactionDto);
+                
+                foreach (var item in ListTransaction)
+                {
+                    var data = GetDaysworkflow(item);
+                    model.ListTransaction.Add(data);
+                }
+               
             }
             catch (Exception exp)
             {
@@ -79,10 +97,64 @@ namespace FMS.Website.Controllers
             return Mapper.Map<List<KpiMonitoringItem>>(dbData);
         }
 
+        public KpiMonitoringItem GetDaysworkflow(KpiMonitoringItem item)
+        {
+
+            if (item.FormType.ToUpper() == "CTF")
+            {
+                var ListWorkflow=  GetWorkflowHistory((int)Enums.MenuList.TraCtf, item.TraId);
+                var traCtf = _ctfBLL.GetCtfById(item.TraId);
+                
+                var Employee = GetRoleUsers().Where(x => x.EmployeeId == (traCtf == null ? "" : traCtf.EmployeeId )).FirstOrDefault();
+                var Creator = GetRoleUsers().Where(x => x.EmployeeId == (traCtf == null ? "" : traCtf.EmployeeIdCreator)).FirstOrDefault();
+                var Fleet  = GetRoleUsers().Where(x => x.EmployeeId == (traCtf == null ? "" : traCtf.EmployeeIdFleetApproval)).FirstOrDefault();
+
+                var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.Login)).FirstOrDefault() ;
+                if(SendToEmp != null)item.SendToEmpDate = SendToEmp.ActionDate;
+
+                if ((traCtf.VehicleUsage == null ? "" : traCtf.VehicleUsage.ToUpper()) == "COP")
+                {
+                    var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.Login)).FirstOrDefault();
+                    if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
+
+                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.Login)).FirstOrDefault();
+                    if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
+                }
+                else if ((traCtf.VehicleUsage == null ? "" : traCtf.VehicleUsage.ToUpper()) == "CFM")
+                {
+                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.Login)).FirstOrDefault();
+                    if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
+                }
+            }
+            else if (item.FormType.ToUpper() == "CSF")
+            {
+            }
+            else if (item.FormType.ToUpper() == "CRF")
+            {
+            }
+
+            return item;
+        }
+
         [HttpPost]
         public PartialViewResult ListTransaction(RptKpiMonitoringModel model)
         {
-            model.ListTransaction = GetTransaction(model.SearchView);
+            try
+            {
+                var ListTransaction = GetTransaction(model.SearchView);
+
+                foreach (var item in ListTransaction)
+                {
+                    var data = GetDaysworkflow(item);
+                    model.ListTransaction.Add(data);
+                }
+            }
+            catch (Exception exp)
+            {
+
+                model.ErrorMessage = exp.Message;
+            }
+
             return PartialView("_ListTransaction", model);
         }
         public void ExportKpiMonitoring(RptKpiMonitoringModel model)
@@ -113,7 +185,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "KPI MONITORING");
-            slDocument.MergeWorksheetCells(1, 1, 1, 19);
+            slDocument.MergeWorksheetCells(1, 1, 1, 20);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -127,7 +199,7 @@ namespace FMS.Website.Controllers
             //create data
             slDocument = CreateDataExcelKpiMonitoring(slDocument, data);
 
-            var fileName = "Kpi Monitoring" + DateTime.Now.ToString(" yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "Kpi_Monitoring" + DateTime.Now.ToString(" yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -155,9 +227,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 14, "POLICE NUMBER");
             slDocument.SetCellValue(iRow, 15, "SEND TO EMP DATE");
             slDocument.SetCellValue(iRow, 16, "SEND BACK TO HR");
-            slDocument.SetCellValue(iRow, 17, "SEND TO FLEET DATE");
-            slDocument.SetCellValue(iRow, 18, "SEND TO EMPLOYEE BENEFIT DATE");
-            slDocument.SetCellValue(iRow, 19, "REMARK");
+            slDocument.SetCellValue(iRow, 17, "DAYS DIFFERENCE");
+            slDocument.SetCellValue(iRow, 18, "SEND TO FLEET DATE");
+            slDocument.SetCellValue(iRow, 19, "SEND TO EMPLOYEE BENEFIT DATE");
+            slDocument.SetCellValue(iRow, 20, "REMARK");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -168,7 +241,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 19, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 20, headerStyle);
 
             return slDocument;
 
@@ -196,9 +269,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 14, data.PoliceNumber);
                 slDocument.SetCellValue(iRow, 15, data.SendToEmpDate == null ?"": data.SendToEmpDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 16, data.SendBackToHr == null ? "":data.SendBackToHr.Value.ToString("dd-MMM-yyyy") );
-                slDocument.SetCellValue(iRow, 17, data.SendToFleetDate == null ?"": data.SendToFleetDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 18, data.SendToEmpBenefit == null ? "":data.SendToEmpBenefit.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 19, data.Remark);
+                slDocument.SetCellValue(iRow, 17, data.Kpi1 == null ? "" : data.Kpi1.Value.ToString());
+                slDocument.SetCellValue(iRow, 18, data.SendToFleetDate == null ?"": data.SendToFleetDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 19, data.SendToEmpBenefit == null ? "":data.SendToEmpBenefit.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 20, data.Remark);
 
                 iRow++;
             }
@@ -211,7 +285,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 19, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 20, valueStyle);
 
             return slDocument;
         }
