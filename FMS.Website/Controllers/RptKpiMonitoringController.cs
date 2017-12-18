@@ -17,6 +17,10 @@ using System.IO;
 using SpreadsheetLight;
 using SpreadsheetLight.Charts;
 using System.Web.Helpers;
+using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
+using FMS.BusinessObject.Business;
 
 namespace FMS.Website.Controllers
 {
@@ -64,10 +68,10 @@ namespace FMS.Website.Controllers
             {
                 var ListTransactionDto = _kpiMonitoringBLL.GetTransaction(filter);
                 var ListTransaction = Mapper.Map<List<KpiMonitoringItem>>(ListTransactionDto);
-                
+                var UserLogin = GetUserLogin();
                 foreach (var item in ListTransaction)
                 {
-                    var data = GetDaysworkflow(item);
+                    var data = GetDaysworkflow(item, UserLogin);
                     model.ListTransaction.Add(data);
                 }
                
@@ -97,40 +101,79 @@ namespace FMS.Website.Controllers
             return Mapper.Map<List<KpiMonitoringItem>>(dbData);
         }
 
-        public KpiMonitoringItem GetDaysworkflow(KpiMonitoringItem item)
+        public KpiMonitoringItem GetDaysworkflow(KpiMonitoringItem item, List<Login> UserLogin)
         {
-
             if (item.FormType.ToUpper() == "CTF")
             {
                 var ListWorkflow=  GetWorkflowHistory((int)Enums.MenuList.TraCtf, item.TraId);
                 var traCtf = _ctfBLL.GetCtfById(item.TraId);
                 
-                var Employee = GetRoleUsers().Where(x => x.EmployeeId == (traCtf == null ? "" : traCtf.EmployeeId )).FirstOrDefault();
-                var Creator = GetRoleUsers().Where(x => x.EmployeeId == (traCtf == null ? "" : traCtf.EmployeeIdCreator)).FirstOrDefault();
-                var Fleet  = GetRoleUsers().Where(x => x.EmployeeId == (traCtf == null ? "" : traCtf.EmployeeIdFleetApproval)).FirstOrDefault();
+                var Employee = UserLogin.Where(x=> x.EMPLOYEE_ID ==  (traCtf == null ? "" : traCtf.EmployeeId )).FirstOrDefault();
+                var Creator = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeIdCreator)).FirstOrDefault();
+                var Fleet  = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeIdFleetApproval)).FirstOrDefault();
 
-                var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.Login)).FirstOrDefault() ;
+                var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault() ;
                 if(SendToEmp != null)item.SendToEmpDate = SendToEmp.ActionDate;
 
                 if ((traCtf.VehicleUsage == null ? "" : traCtf.VehicleUsage.ToUpper()) == "COP")
                 {
-                    var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.Login)).FirstOrDefault();
+                    var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
                     if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
 
-                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.Login)).FirstOrDefault();
+                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
                     if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
                 }
                 else if ((traCtf.VehicleUsage == null ? "" : traCtf.VehicleUsage.ToUpper()) == "CFM")
                 {
-                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.Login)).FirstOrDefault();
+                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
                     if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
                 }
             }
             else if (item.FormType.ToUpper() == "CSF")
             {
+                var ListWorkflow = GetWorkflowHistory((int)Enums.MenuList.TraCsf, item.TraId);
+                var traCsf = _csfBLL.GetCsfById(item.TraId);
+
+                var Employee = UserLogin.Where(x => x.EMPLOYEE_ID == (traCsf == null ? "" : traCsf.EMPLOYEE_ID)).FirstOrDefault();
+                var Creator = UserLogin.Where(x => x.EMPLOYEE_ID == (traCsf == null ? "" : traCsf.EMPLOYEE_ID_CREATOR)).FirstOrDefault();
+                var Fleet = UserLogin.Where(x => x.EMPLOYEE_ID == (traCsf == null ? "" : traCsf.EMPLOYEE_ID_FLEET_APPROVAL)).FirstOrDefault();
+
+                var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
+                if (SendToEmp != null) item.SendToEmpDate = SendToEmp.ActionDate;
+
+             
+                    var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
+                    if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
+
+                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
+                    if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
+             
             }
             else if (item.FormType.ToUpper() == "CRF")
             {
+                var ListWorkflow = GetWorkflowHistory((int)Enums.MenuList.TraCtf, item.TraId);
+                var traCtf = _ctfBLL.GetCtfById(item.TraId);
+
+                var Employee = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeId)).FirstOrDefault();
+                var Creator = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeIdCreator)).FirstOrDefault();
+                var Fleet = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeIdFleetApproval)).FirstOrDefault();
+
+                var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
+                if (SendToEmp != null) item.SendToEmpDate = SendToEmp.ActionDate;
+
+                if ((traCtf.VehicleUsage == null ? "" : traCtf.VehicleUsage.ToUpper()) == "COP")
+                {
+                    var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
+                    if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
+
+                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
+                    if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
+                }
+                else if ((traCtf.VehicleUsage == null ? "" : traCtf.VehicleUsage.ToUpper()) == "CFM")
+                {
+                    var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
+                    if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
+                }
             }
 
             return item;
@@ -142,10 +185,10 @@ namespace FMS.Website.Controllers
             try
             {
                 var ListTransaction = GetTransaction(model.SearchView);
-
+                var UserLogin =GetUserLogin();
                 foreach (var item in ListTransaction)
                 {
-                    var data = GetDaysworkflow(item);
+                    var data = GetDaysworkflow(item, UserLogin);
                     model.ListTransaction.Add(data);
                 }
             }
@@ -157,6 +200,53 @@ namespace FMS.Website.Controllers
 
             return PartialView("_ListTransaction", model);
         }
+
+        private List<Login> GetUserLogin()
+        {
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+            var UserLogin = new List<Login>();
+            string LoginQuery = string.Empty;
+
+            LoginQuery = "SELECT ID,FULL_NAME  INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User]";
+
+            if (typeEnv == "VTI")
+            {
+                LoginQuery = "SELECT EMPLOYEE_ID ,LOGIN FROM LOGIN_FOR_VTI";
+            }
+
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            SqlCommand query = new SqlCommand(LoginQuery, con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+
+                var LoginData = new Login();
+
+                var employeeId = reader[0].ToString();
+                if (employeeId != "")
+                {
+                    employeeId = employeeId.Replace("ID", "");
+                    LoginData.EMPLOYEE_ID = Convert.ToInt32(employeeId).ToString("00000000");
+                }
+
+                var UserId = reader[1].ToString();
+                if (UserId != "")
+                {
+                    UserId = UserId.Replace("PMI\\", "");
+                    LoginData.USER_ID = UserId;
+                }
+                UserLogin.Add(LoginData);
+            }
+            con.Close();
+
+            return UserLogin;
+        }
+        #region -------------- Export Excel ------------------
         public void ExportKpiMonitoring(RptKpiMonitoringModel model)
         {
             string pathFile = "";
@@ -207,7 +297,6 @@ namespace FMS.Website.Controllers
             return path;
 
         }
-        
         private SLDocument CreateHeaderExcelKpiMonitoring(SLDocument slDocument)
         {
             int iRow = 2;
@@ -246,7 +335,6 @@ namespace FMS.Website.Controllers
             return slDocument;
 
         }
-
         private SLDocument CreateDataExcelKpiMonitoring(SLDocument slDocument, List<KpiMonitoringItem> listData)
         {
             int iRow = 3; //starting row data
@@ -289,5 +377,6 @@ namespace FMS.Website.Controllers
 
             return slDocument;
         }
+        #endregion
     }
 }
