@@ -247,8 +247,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 12, data.FuelType);
                 slDocument.SetCellValue(iRow, 13, data.Branding);
                 slDocument.SetCellValue(iRow, 14, data.Colour);
-                slDocument.SetCellValue(iRow, 15, data.Airbag);
-                slDocument.SetCellValue(iRow, 16, data.Abs);
+                slDocument.SetCellValue(iRow, 15, data.Airbag == true? "Yes" : "No");
+                slDocument.SetCellValue(iRow, 16, data.Abs == true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 17, data.VehicleType);
                 slDocument.SetCellValue(iRow, 18, data.StartContract.HasValue? data.StartContract.Value.ToString("dd-MMM-yyyy"):"");
                 slDocument.SetCellValue(iRow, 19, data.EndContract.HasValue ? data.EndContract.Value.ToString("dd-MMM-yyyy") : "");

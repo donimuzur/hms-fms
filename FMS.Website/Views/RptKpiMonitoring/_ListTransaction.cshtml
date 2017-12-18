@@ -21,6 +21,7 @@
                 <th>Police Number</th>
                 <th>Send To Emp Date</th>
                 <th>Send Back To Hr</th>
+                <th>Days Difference</th>
                 <th>Send To Fleet Date</th>
                 <th>Send To Employee Benefit Date</th>
                 <th>Remark</th>
@@ -28,6 +29,7 @@
         </thead>
         <thead class="filters">
             <tr>
+                <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search" /></th>
@@ -65,10 +67,11 @@
                     <td>@Html.Raw(data.Model)</td>
                     <td>@Html.Raw(data.Color)</td>
                     <td>@Html.Raw(data.PoliceNumber)</td>
-                    <td>@Html.Raw((data.SendToEmpDate != null) ? data.SendToEmpDate.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                    <td>@Html.Raw((data.SendBackToHr != null) ? data.SendBackToHr.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                    <td>@Html.Raw((data.SendToFleetDate != null) ? data.SendToFleetDate.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
-                    <td>@Html.Raw((data.SendToEmpBenefit != null) ? data.SendToEmpBenefit.Value.ToString("dd-MMM-yyyy HH:mm:ss") : null)</td>
+                    <td>@Html.Raw((data.SendToEmpDate != null) ? data.SendToEmpDate.Value.ToString("dd-MMM-yyyy") : null)</td>
+                    <td>@Html.Raw((data.SendBackToHr != null) ? data.SendBackToHr.Value.ToString("dd-MMM-yyyy") : null)</td>
+                    <td>@Html.Raw(data.Kpi1 == null?"": data.Kpi1.Value.ToString() )</td>
+                    <td>@Html.Raw((data.SendToFleetDate != null) ? data.SendToFleetDate.Value.ToString("dd-MMM-yyyy") : null)</td>
+                    <td>@Html.Raw((data.SendToEmpBenefit != null) ? data.SendToEmpBenefit.Value.ToString("dd-MMM-yyyy") : null)</td>
                     <td>@Html.Raw(data.Remark)</td>
                 </tr>
             }

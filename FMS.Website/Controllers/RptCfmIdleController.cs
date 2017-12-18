@@ -20,14 +20,16 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private ISettingBLL _settingBLL;
         private ICfmIdleReportBLL _cfmIdleReportBLL;
+        private ITraCtfBLL _ctfBLL;
         private Enums.MenuList _mainMenu;
 
-        public RptCfmIdleController(IPageBLL pageBll, ICfmIdleReportBLL CfmIdleReportBLL, ISettingBLL SettingBLL)
+        public RptCfmIdleController(IPageBLL pageBll, ICfmIdleReportBLL CfmIdleReportBLL, ITraCtfBLL CtfBLL, ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptCfmIdle)
         {
             _pageBLL = pageBll;
             _cfmIdleReportBLL = CfmIdleReportBLL;
             _settingBLL = SettingBLL;
+            _ctfBLL = CtfBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
@@ -67,6 +69,11 @@ namespace FMS.Website.Controllers
 
                 item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * (item.MonthlyInstallment.HasValue ? item.MonthlyInstallment : 0)), 2);
 
+                var Ctf = _ctfBLL.GetCtf().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())).FirstOrDefault();
+                if (Ctf != null)
+                {
+                    item.GroupLevel = Ctf.GroupLevel;
+                }
             }
 
             var GrandTotal = new CfmIdleVehicle
@@ -126,7 +133,13 @@ namespace FMS.Website.Controllers
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
 
                 item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * (item.MonthlyInstallment.HasValue ? item.MonthlyInstallment : 0)), 2);
-                
+
+                var Ctf = _ctfBLL.GetCtf().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())).FirstOrDefault();
+                if (Ctf != null)
+                {
+                    item.GroupLevel = Ctf.GroupLevel;
+                }
+
             }
 
             var GrandTotal = new CfmIdleVehicle
@@ -219,6 +232,11 @@ namespace FMS.Website.Controllers
 
                 item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
 
+                var Ctf = _ctfBLL.GetCtf().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())).FirstOrDefault();
+                if (Ctf != null)
+                {
+                    item.GroupLevel = Ctf.GroupLevel;
+                }
             }
 
             var GrandTotal = new CfmIdleVehicle
@@ -292,7 +310,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 13, "End Idle");
             slDocument.SetCellValue(iRow, 14, "Idle Duration");
             slDocument.SetCellValue(iRow, 15, "Monthly Installment");
-            slDocument.SetCellValue(iRow, 16, "Total Monthly");
+            slDocument.SetCellValue(iRow, 16, "Total");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -324,12 +342,12 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 5, data.BodyType);
                     slDocument.SetCellValue(iRow, 6, data.Color);
                     slDocument.SetCellValue(iRow, 7, data.GroupLevel.HasValue ? data.GroupLevel.Value.ToString() : "");
-                    slDocument.SetCellValue(iRow, 8, data.StartContract.HasValue ? data.StartContract.Value.ToString("yyyy-MMM-dd") : "");
-                    slDocument.SetCellValue(iRow, 9, data.EndContract.HasValue ? data.EndContract.Value.ToString("yyyy-MMM-dd") : "");
+                    slDocument.SetCellValue(iRow, 8, data.StartContract.HasValue ? data.StartContract.Value.ToString("dd-MMM-yyyy") : "");
+                    slDocument.SetCellValue(iRow, 9, data.EndContract.HasValue ? data.EndContract.Value.ToString("dd-MMM-yyyy") : "");
                     slDocument.SetCellValue(iRow, 10, data.Vendor);
                     slDocument.SetCellValue(iRow, 11, data.CostCenter);
-                    slDocument.SetCellValue(iRow, 12, data.StartIdle.HasValue ? data.StartIdle.Value.ToString("yyyy-MMM-dd") : "");
-                    slDocument.SetCellValue(iRow, 13, data.EndIdle.HasValue ? data.EndIdle.Value.ToString("yyyy-MMM-dd") : "");
+                    slDocument.SetCellValue(iRow, 12, data.StartIdle.HasValue ? data.StartIdle.Value.ToString("dd-MMM-yyyy") : "");
+                    slDocument.SetCellValue(iRow, 13, data.EndIdle.HasValue ? data.EndIdle.Value.ToString("dd-MMM-yyyy") : "");
                     slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 15, data.MonthlyInstallment.HasValue ? data.MonthlyInstallment.Value.ToString() : "");
                     slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
