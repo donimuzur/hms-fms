@@ -17,6 +17,7 @@
         @Html.HiddenFor(model => model.SearchView.VehicleUsage, new { @id = "filter_VehicleUsage" })
     }
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         <div class="row col-md-12">
             @using (Ajax.BeginForm("ListTransaction", "RptKpiMonitoring",
                 new AjaxOptions
@@ -75,7 +76,7 @@
 </section>
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/CfmIdle.js"></script>
+<script src="~/Scripts/KpiMonitoring.js"></script>
 <script type="text/javascript">
     function ExportXls() {
         $('#filter_FromDate').val($('#From_Date').val());
