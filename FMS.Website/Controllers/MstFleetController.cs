@@ -5,6 +5,7 @@ using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using FMS.Website.Utility;
 using SpreadsheetLight;
@@ -24,15 +25,19 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         private IGroupCostCenterBLL _groupCostCenterBLL;
         private ILocationMappingBLL _locationMappingBLL;
+        private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL, ILocationMappingBLL LocationMappingBLL) : base(PageBll, Enums.MenuList.MasterFleet )
+        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL
+            , ILocationMappingBLL LocationMappingBLL, ISettingBLL SettingBLL)
+            : base(PageBll, Enums.MenuList.MasterFleet)
         {
             _fleetBLL = FleetBLL;
             _vendorBLL = VendorBLL;
             _pageBLL = PageBll;
             _groupCostCenterBLL = GroupCostCenterBLL;
             _locationMappingBLL = LocationMappingBLL;
+            _settingBLL = SettingBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -48,12 +53,20 @@ namespace FMS.Website.Controllers
             //model.Details = new List<FleetItem>();
 
             var fleetList = _fleetBLL.GetFleet().ToList();
-
-            model.SearchView.PoliceNumberList = new SelectList(fleetList, "PoliceNumber", "PoliceNumber");
-            model.SearchView.EmployeeNameList = new SelectList(fleetList, "EmployeeName", "EmployeeName");
-            model.SearchView.ChasisNumberList = new SelectList(fleetList, "ChasisNumber", "ChasisNumber");
-            model.SearchView.EmployeeIDList = new SelectList(fleetList, "EmployeeID", "EmployeeID");
-            model.SearchView.EngineNumberList = new SelectList(fleetList, "EngineNumber", "EngineNumber");
+                        
+            model.SearchView.PoliceNumberList = new SelectList(fleetList.Select(x => new { x.PoliceNumber }).Distinct().ToList(), "PoliceNumber", "PoliceNumber");
+            model.SearchView.EmployeeNameList = new SelectList(fleetList.Select(x => new { x.EmployeeName }).Distinct().ToList(), "EmployeeName", "EmployeeName");
+            model.SearchView.ChasisNumberList = new SelectList(fleetList.Select(x => new { x.ChasisNumber }).Distinct().ToList(), "ChasisNumber", "ChasisNumber");
+            model.SearchView.EmployeeIDList = new SelectList(fleetList.Select(x => new { x.EmployeeID }).Distinct().ToList(), "EmployeeID", "EmployeeID");
+            model.SearchView.EngineNumberList = new SelectList(fleetList.Select(x => new { x.EngineNumber }).Distinct().ToList(), "EngineNumber", "EngineNumber");
+            model.SearchView.SupplyMethodList = new SelectList(fleetList.Select(x => new { x.SupplyMethod }).Distinct().ToList(), "SupplyMethod", "SupplyMethod");
+            model.SearchView.BodyTypeList = new SelectList(fleetList.Select(x => new { x.BodyType }).Distinct().ToList(), "BodyType", "BodyType");
+            model.SearchView.VehicleTypeList = new SelectList(fleetList.Select(x => new { x.VehicleType }).Distinct().ToList(), "VehicleType", "VehicleType");
+            model.SearchView.VehicleUsageList = new SelectList(fleetList.Select(x => new { x.VehicleUsage }).Distinct().ToList(), "VehicleUsage", "VehicleUsage");
+            model.SearchView.VendorList = new SelectList(fleetList.Select(x => new { x.VendorName }).Distinct().ToList(), "VendorName", "VendorName");
+            model.SearchView.FunctionList = new SelectList(fleetList.Select(x => new { x.Function }).Distinct().ToList(), "Function", "Function");
+            model.SearchView.RegionalList = new SelectList(fleetList.Select(x => new { x.Regional }).Distinct().ToList(), "Regional", "Regional");
+            model.SearchView.CityList = new SelectList(fleetList.Select(x => new { x.City }).Distinct().ToList(), "City", "City");
 
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
