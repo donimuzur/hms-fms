@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Razor.Parser.SyntaxTree;
 
 namespace FMS.Website.Models
 {
@@ -69,7 +70,17 @@ namespace FMS.Website.Models
             }
         }
         public DateTime? EndDate { get; set; }
-        public DateTime? LeadTime { get; set; }
+
+        public DateTime? LeadTime
+        {
+            get
+            {
+                var span = this.EndDate - this.StartDate;
+                
+                return span.HasValue ? new DateTime(span.Value.Ticks) : (DateTime?)null;
+            }
+        }
+
         public string LeadTimeS {
             get
             {

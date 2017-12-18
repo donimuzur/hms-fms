@@ -12,5 +12,7 @@ namespace FMS.Contract.BLL
     {
         List<KpiMonitoringDto> GetTransaction(KpiMonitoringGetByParamInput filter);
         int? GetDifferentDays(DateTime? Day1, DateTime? Day2);
+
+
     }
 }

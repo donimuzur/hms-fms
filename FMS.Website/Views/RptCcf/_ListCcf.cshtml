@@ -6,6 +6,7 @@
         <tr>
             <th>Complaint Number</th>
             <th>Police Number</th>
+            <th>Police Number Non GS (Ganti Sementara)</th>
             <th>Location City</th>
             <th>Category</th>
             <th>Coordinator</th>
@@ -34,6 +35,7 @@
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
         </tr>
     </thead>
     <tbody>
@@ -42,13 +44,21 @@
             <tr>
                 <td>@Html.Raw(data.DocumentNumber)</td>
                 <td>@Html.Raw(data.PoliceNumber)</td>
+                <td>@Html.Raw(data.PoliceNumberGS)</td>
                 <td>@Html.Raw(data.LocationCity)</td>
                 <td>@Html.Raw(data.ComplaintCategoryName)</td>
                 <td>@Html.Raw(data.ComplaintCategoryRole)</td>
                 <td>@Html.Raw(data.CoordinatorName)</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate)</td>
-                <td>@Html.Raw(data.ModifiedDate)</td>
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy"))</td>
+                @if (data.DocumentStatus == Enums.DocumentStatus.Completed)
+                {
+                    <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy"))</td>
+                }
+                else
+                {
+                    <td>&nbsp;</td>
+                }
                 <td>@Html.Raw(data.DocumentStatus)</td>
                 <td>@Html.Raw(data.Vendor)</td>
                 <td>@Html.Raw(data.CoordinatorKPI)</td>

@@ -15,6 +15,8 @@ namespace FMS.Website.Models
             SearchView = new RptFuelSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.YearFrom = DateTime.Now.Year;
+            SearchView.MonthTo = DateTime.Now.Month;
+            SearchView.YearTo = DateTime.Now.Year;
         }
         public List<RptFuelItem> RptFuelItem { get; set; }
         public RptFuelSearchView SearchView { get; set; }
@@ -45,13 +47,16 @@ namespace FMS.Website.Models
         public string Regional { get; set; }
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
+        public string Month { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
 
     public class RptFuelSearchView
     {
         public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
         public int YearFrom { get; set; }
+        public int YearTo { get; set; }
         public string VehicleType { get; set; }
         public string CostCenter { get; set; }
         public string Function { get; set; }
@@ -92,7 +97,9 @@ namespace FMS.Website.Models
     public class RptFuelSearchViewExport
     {
         public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
         public int YearFrom { get; set; }
+        public int YearTo { get; set; }
         public string VehicleType { get; set; }
         public string CostCenter { get; set; }
         public string Function { get; set; }
