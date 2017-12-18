@@ -1,0 +1,157 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.RptCCFModel
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm(Model.TitleExport, "RptCcf", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+        @Html.HiddenFor(model => model.SearchViewExport.PeriodFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.PeriodTo)
+        @Html.HiddenFor(model => model.SearchViewExport.Category)
+        @Html.HiddenFor(model => model.SearchViewExport.Coordinator)
+        @Html.HiddenFor(model => model.SearchViewExport.Location)
+        @Html.HiddenFor(model => model.SearchViewExport.CoorKPI)
+        @Html.HiddenFor(model => model.SearchViewExport.VendorKPI)
+    }
+    <div class="wpanel">
+        <p>@Model.ErrorMessage</p>
+        <div class="row">
+            @using (Ajax.BeginForm("FilterCCF", "RptCcf",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                }))
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Period From</label>
+                        <div class="input-group date" id="FromDate">
+                            @Html.TextBoxFor(model => model.SearchView.PeriodFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "From", @id = "From_Date" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Period To</label>
+                        <div class="input-group date" id="FromDate">
+                            @Html.TextBoxFor(model => model.SearchView.PeriodTo, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "To", @id = "To_Date" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Complaint Category</label>
+                        @Html.DropDownListFor(model => model.SearchView.Category, Model.SearchView.Categorylist, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Coordinator Name</label>
+                        @Html.DropDownListFor(model => model.SearchView.Coordinator, Model.SearchView.Coordinatorlist, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Location City</label>
+                        @Html.DropDownListFor(model => model.SearchView.Location, Model.SearchView.Locationlist, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Late Respone Time Coordinator</label>
+                        @Html.TextBoxFor(model => model.SearchView.CoorKPI, new { @class = "form-control text" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Late Respone Time Vendor</label>
+                        @Html.TextBoxFor(model => model.SearchView.VendorKPI, new { @class = "form-control text" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListCcf")
+    </div>
+</section>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">
+    function ExportXls() {
+        $('#SearchViewExport_PeriodFrom').val($('#From_Date').val());
+        $('#SearchViewExport_PeriodTo').val($('#To_Date').val());
+        $('#SearchViewExport_Category').val($('#SearchView_Category').val());
+        $('#SearchViewExport_Coordinator').val($('#SearchView_Coordinator').val());
+        $('#SearchViewExport_Location').val($('#SearchView_Location').val());
+        $('#SearchViewExport_CoorKPI').val($('#SearchView_CoorKPI').val());
+        $('#SearchViewExport_VendorKPI').val($('#SearchView_VendorKPI').val());
+        $('#ExportToXls').submit();
+    }
+
+    function setupDataTables() {
+        // DataTable
+        var table = $('#tbRptCcf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    }
+
+    $(document).on('click', '#btn-reset', function () {
+        var todayDate = new Date();
+        todayDate.setHours(00, 00, 00, 00);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var todayDatestr = todayDate.getDate() + '-' + (months[todayDate.getMonth()]) + '-' + todayDate.getFullYear();
+
+        var date = new Date();
+        date.setDate(1);
+        date.setHours(00, 00, 00, 00);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
+
+
+        $('#From_Date').val(todayDatestr);
+        $('#To_Date').val(todayDatestr);
+
+        $(".select").val('');
+        $(".text").val('');
+
+        $("#btn-filter").trigger('click');
+    });
+
+    $(function () {
+        setupDataTables();
+    });
+</script>

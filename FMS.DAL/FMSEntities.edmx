@@ -42,6 +42,7 @@
           <Property Name="IS_POSTED" Type="bit" />
           <Property Name="LINE_ITEM" Type="int" />
           <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TERMINATION_DATE" Type="datetime" />
         </EntityType>
         <EntityType Name="AUTO_GR_DETAIL">
           <Key>
@@ -147,6 +148,7 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="TRA_ID" Type="bigint" />
         </EntityType>
         <EntityType Name="LEASE_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -837,9 +839,9 @@
           <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
           <Property Name="VENDOR_PROMISED_DATE" Type="date" />
           <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
-          <Property Name="COORDINATOR_URL" Type="varchar" MaxLength="1000" />
-          <Property Name="VENDOR_URL" Type="varchar" MaxLength="1000" />
           <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="VENDOR_URL" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
           <Key>
@@ -973,8 +975,8 @@
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
-          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
           <Property Name="FLEXBEN" Type="int" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -1174,7 +1176,7 @@
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
-        <Association Name="FK__PO_REPORT__EMPLO__73852659">
+        <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1721,7 +1723,7 @@
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__73852659" Association="Self.FK__PO_REPORT__EMPLO__73852659">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__1B9317B3" Association="Self.FK__PO_REPORT__EMPLO__1B9317B3">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
@@ -2145,6 +2147,7 @@
           <Property Name="IS_POSTED" Type="Boolean" />
           <Property Name="LINE_ITEM" Type="Int32" />
           <Property Name="QTY_ITEM" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TERMINATION_DATE" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="AUTO_GR_DETAIL">
           <Key>
@@ -2250,6 +2253,7 @@
           <Property Name="REPORT_MONTH" Type="Int32" />
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TRA_ID" Type="Int64" />
         </EntityType>
         <EntityType Name="LEASE_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -3000,8 +3004,8 @@
           <Property Name="VENDOR_PROMISED_DATE" Type="DateTime" Precision="0" />
           <Property Name="VENDOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="COMPLAINT_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="COORDINATOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="VENDOR_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="COORDINATOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TRA_CCF" Relationship="FMSModel.FK_TRA_CCF_DETAIL_TRA_CCF" FromRole="TRA_CCF_DETAIL" ToRole="TRA_CCF" />
         </EntityType>
         <EntityType Name="TRA_CHANGES_HISTORY">
@@ -3874,6 +3878,7 @@
           <EntitySetMapping Name="AUTO_GR">
             <EntityTypeMapping TypeName="FMSModel.AUTO_GR">
               <MappingFragment StoreEntitySet="AUTO_GR">
+                <ScalarProperty Name="TERMINATION_DATE" ColumnName="TERMINATION_DATE" />
                 <ScalarProperty Name="QTY_ITEM" ColumnName="QTY_ITEM" />
                 <ScalarProperty Name="LINE_ITEM" ColumnName="LINE_ITEM" />
                 <ScalarProperty Name="IS_POSTED" ColumnName="IS_POSTED" />
@@ -3965,6 +3970,7 @@
           <EntitySetMapping Name="KPI_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.KPI_REPORT_DATA">
               <MappingFragment StoreEntitySet="KPI_REPORT_DATA">
+                <ScalarProperty Name="TRA_ID" ColumnName="TRA_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
                 <ScalarProperty Name="REPORT_MONTH" ColumnName="REPORT_MONTH" />

@@ -102,6 +102,7 @@ namespace FMS.Website.Models
         public string VendorName { get; set; }
         public string Color { get; set; }
         public string Regional { get; set; }
+        public string AssignedTo { get; set; }
         public long? CfmIdleId { get; set; }
         public int? CarGroupLevel { get; set; }
         public int FlexBenefit { get; set; }

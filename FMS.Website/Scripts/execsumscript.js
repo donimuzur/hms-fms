@@ -10,6 +10,7 @@
     $('#SalesByRegion').removeClass('active');
     $('#Accident').removeClass('active');
     $('#AcVsOb').removeClass('active');
+    $('#SumPtdByFunction').removeClass('active');
 
     if ($('.title-page').html() == 'Number Of Vehicle') {
         $('#NumbVehicle').addClass('active');
@@ -31,6 +32,9 @@
         $('#Accident').addClass('active');
     } else if ($('.title-page').html() == 'AC Vs OB') {
         $('#AcVsOb').addClass('active');
+    } else if ($('.title-page').html() == 'Sum PTD By Function') {
+        $('#SumPtdByFunction').addClass('active');
     }
 
+    $(".chosen").chosen();
 });
