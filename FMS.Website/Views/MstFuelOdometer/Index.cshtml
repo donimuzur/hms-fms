@@ -271,12 +271,16 @@
             { "data": null, "orderable" : false },
             { "data": "VehicleType", "orderable": false },
             { "data": "PoliceNumber", "orderable": false },
-            { "data": "EmployeeID", "orderable": false },
+            { "data": "EmployeeId", "orderable": false },
             { "data": "EmployeeName", "orderable": false },
             { "data": "EcsRmbTransId", "orderable": false },
             { "data": "SeqNumber", "orderable": false },
             { "data": "ClaimType", "orderable": false },
-            { "data": "DateOfCost", "orderable": false },
+            {
+                "data": "DateOfCost", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY HH:mm:ss") : "";
+                }
+            },
             { "data": "CostCenter", "orderable": false },
             { "data": "FuelAmount", "orderable": false },
             { "data": "LastKM", "orderable": false },
@@ -284,7 +288,7 @@
             { "data": "ClaimComment", "orderable": false },
             {
                 "data": "PostedTime", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? moment(datum).format("dd-MMM-yyyy HH:mm:ss") : "";
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY HH:mm:ss") : "";
                 }
             },
             { "data": "CreatedBy", "orderable": false },
