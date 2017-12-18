@@ -341,7 +341,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 15, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 16, data.Location);
                 slDocument.SetCellValue(iRow, 17, data.Regional);
-                slDocument.SetCellValue(iRow, 18, data.ReportMonth);
+                slDocument.SetCellValue(iRow, 18, data.Month);
                 slDocument.SetCellValue(iRow, 19, data.ReportYear);
 
                 iRow++;
