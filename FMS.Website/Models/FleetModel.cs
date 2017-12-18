@@ -67,114 +67,14 @@ namespace FMS.Website.Models
 
         }
 
-        public SelectList SupplyMethodList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "Extend", Value = "E"},
-                    new SelectListItem() { Text = "Temporary", Value = "T"},
-                    new SelectListItem() { Text = "Lease", Value = "L" },
-                    new SelectListItem() { Text = "Services", Value = "S" }
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-
-        public SelectList BodyTypeList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "MPV", Value = "MPV"},
-                    new SelectListItem() { Text = "SUV", Value = "SUV"},
-                    new SelectListItem() { Text = "Forklift", Value = "Forklift" },
-                    new SelectListItem() { Text = "Motorcycle", Value = "Motorcycle" },
-                    new SelectListItem() { Text = "Truck", Value = "Truck" }
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-
-        public SelectList VehicleTypeList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "WTC", Value = "WTC"},
-                    new SelectListItem() { Text = "Benefit", Value = "Benefit"}
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-        public SelectList VehicleUsageList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "COP", Value = "COP"},
-                    new SelectListItem() { Text = "CFM", Value = "CFM"}
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-        public SelectList VendorList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "ASSA", Value = "ASSA"},
-                    new SelectListItem() { Text = "TRAC", Value = "TRAC"}
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-        public SelectList FunctionList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "Sales", Value = "Sales"},
-                    new SelectListItem() { Text = "Marketing", Value = "Marketing"},
-                    new SelectListItem() { Text = "Operations", Value = "Operations"},
-                    new SelectListItem() { Text = "IS", Value = "IS"}
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-        public SelectList RegionalList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "Jakarta", Value = "Jakarta"},
-                    new SelectListItem() { Text = "Sumatra 1", Value = "Sumatra1"},
-                    new SelectListItem() { Text = "Sumatra 2", Value = "Sumatra2"}
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-        public SelectList CityList
-        {
-            get
-            {
-                var items = new List<SelectListItem>()
-                {
-                    new SelectListItem() { Text = "Surabaya", Value = "Surabaya"},
-                    new SelectListItem() { Text = "Malang", Value = "Malang"},
-                    new SelectListItem() { Text = "Palembang", Value = "Palembang"}
-                };
-                return new SelectList(items, "Value", "Text");
-            }
-        }
-
+        public SelectList SupplyMethodList { get; set; }
+        public SelectList BodyTypeList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList VendorList { get; set; }
+        public SelectList FunctionList { get; set; }
+        public SelectList RegionalList { get; set; }
+        public SelectList CityList { get; set; }
     }
 
     public class FleetItem : BaseModel

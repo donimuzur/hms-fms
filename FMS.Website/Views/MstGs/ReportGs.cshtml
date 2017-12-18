@@ -31,7 +31,7 @@
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
                 <tr>
-
+                    <th>Employee Id</th>
                     <th>Employee Name</th>
                     <th>Vehicle Usage</th>
                     <th>Police Number</th>
@@ -40,7 +40,10 @@
 
                     <th>GS Request Date</th>
                     <th>GS Fulfillment Date</th>
-                    <th>GS Unit</th>
+                    <th>Gs Manufacturer</th>
+                    <th>Gs Model</th>
+                    <th>Gs Series</th>
+                    <th>Gs Transmission</th>
                     <th>GS Police Number</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -62,7 +65,11 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     @*<th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>*@
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                 </tr>
@@ -71,7 +78,7 @@
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-
+                        <td>@Html.Raw(data.EmployeeId)</td>
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.VehicleUsage)</td>
                         <td>@Html.Raw(data.PoliceNumber)</td>
@@ -80,7 +87,10 @@
 
                         <td>@Html.Raw(data.GsRequestDates)</td>
                         <td>@Html.Raw(data.GsFullfillmentDates)</td>
-                        <td>@Html.Raw(data.GsUnitType)</td>
+                        <td>@Html.Raw(data.GsManufacturer)</td>
+                        <td>@Html.Raw(data.GsModel)</td>
+                        <td>@Html.Raw(data.GsSeries)</td>
+                        <td>@Html.Raw(data.GsTransmission)</td>
                         <td>@Html.Raw(data.GsPoliceNumber)</td>
                         <td>@Html.Raw(data.StartDates)</td>
                         <td>@Html.Raw(data.EndDates)</td>

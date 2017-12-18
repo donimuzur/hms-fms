@@ -22,7 +22,7 @@ namespace FMS.BLL.KpiMonitoring
         public KpiMonitoringBLL(IUnitOfWork uow)
         {
             _uow = uow;
-            _kpiMonitoringService =new  KpiMonitoringService(_uow);
+            _kpiMonitoringService = new KpiMonitoringService(_uow);
         }
 
         public List<KpiMonitoringDto> GetTransaction(KpiMonitoringGetByParamInput filter)

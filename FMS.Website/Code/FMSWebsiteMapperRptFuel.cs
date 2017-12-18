@@ -17,6 +17,7 @@ namespace FMS.Website.Code
         public static void InitializeRptFuel()
         {
             Mapper.CreateMap<RptFuelDto, RptFuelItem>().IgnoreAllNonExisting()
+             .ForMember(dest => dest.Month, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.ReportMonth)))
              .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate == null ? DateTime.Now : src.CreatedDate));
 
             Mapper.CreateMap<RptFuelSearchView, RptFuelByParamInput>().IgnoreAllNonExisting();
