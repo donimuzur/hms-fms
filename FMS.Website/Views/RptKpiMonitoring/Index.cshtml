@@ -53,13 +53,15 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Form Type</label>
-                        @Html.TextBoxFor(model => model.SearchView.FormType, new { @class = "form-control "})
+                        @Html.DropDownListFor(model => model.SearchView.FormType, Model.SearchView.FormTypeList,"ALL",new {@class = "form-control" })
+                        @*@Html.TextBoxFor(model => model.SearchView.FormType, new { @class = "form-control "})*@
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage</label>
-                        @Html.TextBoxFor(model => model.SearchView.VehicleUsage, new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, "ALL", new { @class = "form-control" })
+                        @*@Html.TextBoxFor(model => model.SearchView.VehicleUsage, new { @class = "form-control " })*@
                     </div>
                 </div>
                 <div class="clearfix"></div>
