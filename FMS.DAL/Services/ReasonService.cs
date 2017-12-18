@@ -30,7 +30,6 @@ namespace FMS.DAL.Services
         public void save(MST_REASON dbReason)
         {
             _uow.GetGenericRepository<MST_REASON>().InsertOrUpdate(dbReason);
-            _uow.SaveChanges();
         }
 
         public MST_REASON GetReasonById(int MstReasonId)
@@ -40,7 +39,6 @@ namespace FMS.DAL.Services
         public void save(MST_REASON dbReason, Login userLogin)
         {
             _uow.GetGenericRepository<MST_REASON>().InsertOrUpdate(dbReason, userLogin, Enums.MenuList.MasterReason);
-            _uow.SaveChanges();
         }
     }
 }

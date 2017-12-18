@@ -13,17 +13,25 @@ using System.IO;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.Website.Utility;
+using FMS.BusinessObject.Inputs;
+using FMS.Utils;
 
 namespace FMS.Website.Controllers
 {
     public class MstFuelOdometerController : BaseController
     {
         private IFuelOdometerBLL _fuelodometerBLL;
+        private IFleetBLL _fleetBLL;
+        private ISettingBLL _settingBLL;
+        private IGroupCostCenterBLL _groupCostCenterBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstFuelOdometerController(IPageBLL PageBll, IFuelOdometerBLL FuelOdometerBLL) : base(PageBll, Enums.MenuList.MasterFuelOdoMeter)
+        public MstFuelOdometerController(IPageBLL PageBll, IFuelOdometerBLL FuelOdometerBLL, IFleetBLL FleetBLL, ISettingBLL SettingBLL, IGroupCostCenterBLL GroupCostCenterBLL) : base(PageBll, Enums.MenuList.MasterFuelOdoMeter)
         {
             _fuelodometerBLL = FuelOdometerBLL;
+            _fleetBLL = FleetBLL;
+            _settingBLL = SettingBLL;
+            _groupCostCenterBLL = GroupCostCenterBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -32,24 +40,120 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _fuelodometerBLL.GetFuelOdometer();
             var model = new FuelOdometerModel();
-            model.Details = Mapper.Map<List<FuelOdometerItem>>(data);
+            //model.Details = Mapper.Map<List<FuelOdometerItem>>(data);
+            model.SearchView = new FuelOdometerSearchView();
+            var fleetList = _fleetBLL.GetFleet().ToList();
+            var costCenterList = _groupCostCenterBLL.GetGroupCenter().ToList();
+            var fuelOdometerList = _fuelodometerBLL.GetFuelOdometer().ToList();
+            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+
+            model.SearchView.PoliceNumberList = new SelectList(fleetList, "PoliceNumber", "PoliceNumber");
+            model.SearchView.EmployeeNameList = new SelectList(fleetList, "EmployeeName", "EmployeeName");
+            model.SearchView.EmployeeIDList = new SelectList(fleetList, "EmployeeID", "EmployeeID");
+            model.SearchView.CostCenterList = new SelectList(costCenterList, "CostCenter", "CostCenter");
+            model.SearchView.EcsRmbTransIdList = new SelectList(fuelOdometerList, "EcsRmbTransId", "EcsRmbTransId");
+            model.SearchView.ClaimTypeList = new SelectList(fuelOdometerList.Select(x => x.ClaimType).Distinct().ToList(), "ClaimType", "ClaimType");
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
-        public ActionResult Detail()
+        public ActionResult Detail(long MstFuelOdometerId)
         {
-            var data = _fuelodometerBLL.GetFuelOdometer();
-            var model = new FuelOdometerModel();
-            model.Details = Mapper.Map<List<FuelOdometerItem>>(data);
+            var data = _fuelodometerBLL.GetByID(MstFuelOdometerId);
+            var model = new FuelOdometerItem();
+            model = Mapper.Map<FuelOdometerItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
+
+        #region Filters
+        [HttpPost]
+        public JsonResult SearchFuelOdoMeterAjax(DTParameters<FuelOdometerModel> param)
+        {
+            var model = param;
+
+            var data = model != null ? SearchDataFuelOdometer(model) : SearchDataFuelOdometer();
+            DTResult<FuelOdometerItem> result = new DTResult<FuelOdometerItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+            IEnumerable<FuelOdometerItem> dataordered;
+            dataordered = data;
+            if (param.Order.Length > 0)
+            {
+                foreach (var ordr in param.Order)
+                {
+                    if (ordr.Column == 0)
+                    {
+                        continue;
+                    }
+                    dataordered = FuelOdometerDataOrder(FuelOdometerDataOrderByIndex(ordr.Column), ordr.Dir, dataordered);
+                }
+            }
+            data = dataordered.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
+        }
+
+        private List<FuelOdometerItem> SearchDataFuelOdometer(DTParameters<FuelOdometerModel> searchView = null)
+        {
+            var param = new FuelOdometerParamInput();
+            param.Status = searchView.StatusSource;
+            param.VehicleType = searchView.VehicleType;
+            param.DateOfCost = searchView.DateOfCost;
+            param.PostedTime = searchView.PostedTime;
+            param.EmployeeId = searchView.EmployeeId;
+            param.EmployeeName = searchView.EmployeeName;
+            param.PoliceNumber = searchView.PoliceNumber;
+            param.SeqNumber = searchView.SeqNumber;
+            param.LastKM = searchView.LastKM;
+            param.ClaimComment = searchView.ClaimComment;
+            param.ClaimType = searchView.ClaimType;
+            param.CostCenter = searchView.CostCenter;
+            param.EcsRmbTransId = searchView.EcsRmbTransId;
+
+            var data = _fuelodometerBLL.GetFuelOdometerByParam(param);
+            return Mapper.Map<List<FuelOdometerItem>>(data);
+        }
+
+        private IEnumerable<FuelOdometerItem> FuelOdometerDataOrder(string column, DTOrderDir dir, IEnumerable<FuelOdometerItem> data)
+        {
+
+            switch (column)
+            {
+                case "VehicleType": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.VehicleType).ToList() : data.OrderByDescending(x => x.VehicleType).ToList();
+                case "LastKM": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.LastKM).ToList() : data.OrderByDescending(x => x.LastKM).ToList();
+                case "CostCenter": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.CostCenter).ToList() : data.OrderByDescending(x => x.CostCenter).ToList();
+                case "EcsRmbTransId": return dir == DTOrderDir.ASC ? data.OrderBy(x => x.EcsRmbTransId).ToList() : data.OrderByDescending(x => x.EcsRmbTransId).ToList();
+
+            }
+            return null;
+        }
+
+        private string FuelOdometerDataOrderByIndex(int index)
+        {
+            Dictionary<int, string> columnDict = new Dictionary<int, string>();
+            columnDict.Add(17, "VehicleType");
+            columnDict.Add(18, "LastKM");
+            columnDict.Add(24, "CostCenter");
+            columnDict.Add(9, "EcsRmbTransId");
+
+
+            return columnDict[index];
+        }
+        #endregion
 
         #region ExportExcel
         public void ExportMasterFuelOdometer()

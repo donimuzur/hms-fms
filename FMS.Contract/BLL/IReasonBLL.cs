@@ -14,5 +14,6 @@ namespace FMS.Contract.BLL
         void save(ReasonDto ReasonDto);
         ReasonDto GetReasonById(int MstReasonId);
         void save(ReasonDto dto, Login currentUser);
+        void SaveCanges();
     }
 }
