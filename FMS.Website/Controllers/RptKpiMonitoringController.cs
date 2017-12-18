@@ -34,9 +34,10 @@ namespace FMS.Website.Controllers
         private ITraCrfBLL _crfBLL;
         private IRemarkBLL _remarkBLL;
         private ISettingBLL _settingBLL;
+        private IDocumentTypeBLL _docTypeBLL;
 
         public RptKpiMonitoringController(IPageBLL pageBll, IKpiMonitoringBLL KpiMonitoringBLL,IRemarkBLL RemarkBLL, 
-                                            ITraCtfBLL CtfBLL, ITraCsfBLL CsfBLL, ITraCrfBLL CrfBLL
+                                            ITraCtfBLL CtfBLL, ITraCsfBLL CsfBLL, ITraCrfBLL CrfBLL, IDocumentTypeBLL DocTypeBLL
                                             ,ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptKpiMonitoring)
         {
@@ -44,6 +45,7 @@ namespace FMS.Website.Controllers
             _kpiMonitoringBLL = KpiMonitoringBLL;
             _remarkBLL = RemarkBLL;
             _settingBLL = SettingBLL;
+            _docTypeBLL = DocTypeBLL;
             _ctfBLL = CtfBLL;
             _csfBLL = CsfBLL;
             _crfBLL = CrfBLL;
@@ -58,8 +60,14 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
 
+            var FormTypeList = new Dictionary<string, string> { { "CSF", "CSF" }, { "CTF", "CTF" }, { "CRF", "CRF" } };
+            var VehicleUsageList =_settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").ToList();
+
             model.SearchView.FormDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.ToDate = DateTime.Today;
+
+            model.SearchView.FormTypeList = new SelectList(FormTypeList, "Key", "Value");
+            model.SearchView.VehicleUsageList = new SelectList(VehicleUsageList, "SettingName", "SettingName");
 
             filter.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             filter.ToDate = DateTime.Today;
@@ -254,6 +262,7 @@ namespace FMS.Website.Controllers
 
             return UserLogin;
         }
+
         #region -------------- Export Excel ------------------
         public void ExportKpiMonitoring(RptKpiMonitoringModel model)
         {
