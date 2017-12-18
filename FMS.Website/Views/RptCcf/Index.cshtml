@@ -100,6 +100,7 @@
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+
     function ExportXls() {
         $('#SearchViewExport_PeriodFrom').val($('#From_Date').val());
         $('#SearchViewExport_PeriodTo').val($('#To_Date').val());
@@ -153,5 +154,6 @@
 
     $(function () {
         setupDataTables();
+        $("#btn-reset").trigger('click');
     });
 </script>
