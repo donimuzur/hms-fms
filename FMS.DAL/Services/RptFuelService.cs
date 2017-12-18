@@ -33,11 +33,19 @@ namespace FMS.DAL.Services
             {
                 if (filter.MonthFrom > 0)
                 {
-                    queryFilter = queryFilter.And(c => c.REPORT_MONTH == filter.MonthFrom);
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
                 }
                 if (filter.YearFrom > 0)
                 {
-                    queryFilter = queryFilter.And(c => c.REPORT_YEAR == filter.YearFrom);
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
