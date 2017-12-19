@@ -27,23 +27,12 @@
                     OnComplete = "setupDataTables",
                 }))
             {
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Cost Center</label>
-                        @Html.TextBoxFor(model => model.SearchView.CostCenter, new { @class = "form-control ", @maxlength = "10" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Police Number</label>
-                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control " })
-                    </div>
-                </div>
+
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Period From</label>
                         <div class="input-group date" id="FromDate">
-                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id ="From_Date" })
+                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
                             <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>
@@ -54,11 +43,23 @@
                     <div class="form-group">
                         <label class="control-label">Period To</label>
                         <div class="input-group date" id="ToDate">
-                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" , @id = "To_Date"})
+                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To", @id = "To_Date" })
                             <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Cost Center</label>
+                        @Html.TextBoxFor(model => model.SearchView.CostCenter, new { @class = "form-control ", @maxlength = "10" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Police Number</label>
+                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control " })
                     </div>
                 </div>
                 <div class="clearfix"></div>
