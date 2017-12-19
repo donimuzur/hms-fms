@@ -15,6 +15,8 @@
             <th style="min-width: 100px">End Contract</th>
             <th style="min-width: 100px">Supplier</th>
             <th style="min-width: 100px">Cost Center</th>
+            <th style="min-width: 100px">Supply Method</th>
+            <th style="min-width: 100px">Transmission</th>
             <th style="min-width: 150px">Start Idle</th>
             <th style="min-width: 150px">End Idle</th>
             <th style="min-width: 100px">Idle Duration</th>
@@ -24,6 +26,8 @@
     </thead>
     <thead class="filters">
         <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -59,6 +63,8 @@
                     <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.Vendor)</td>
                     <td>@Html.Raw(data.CostCenter)</td>
+                    <td>@Html.Raw(data.SupplyMethod)</td>
+                    <td>@Html.Raw(data.Transmission)</td>
                     <td>@Html.Raw(data.StartIdle == null ? "" : data.StartIdle.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.EndIdle == null ? "" : data.EndIdle.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.IdleDuration)</td>
