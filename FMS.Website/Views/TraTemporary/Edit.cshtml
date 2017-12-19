@@ -103,6 +103,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Location</label>
+                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -164,6 +170,12 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
                                                             <label class="control-label">Vendor<span class="red">*</span></label>
                                                             @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
@@ -174,6 +186,15 @@
                                                             @Html.DropDownListFor(model => model.Detail.ProjectName, Model.Detail.ProjectList, "-- Please Select --", new { @class = "form-control" })
                                                         </div>
                                                     </div>
+                                                    @if (!Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Assigned To</label>
+                                                                @Html.TextBoxFor(model => model.Detail.AssignedTo, new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <a href="#" class="btn btn-primary" onclick="SelectVeh(@Model.Detail.TraTempId)" style="float:right;margin-top:20px" id="btnSelectVeh"><i class="glyphicon glyphicon-ok"></i> Select Vehicle</a>
