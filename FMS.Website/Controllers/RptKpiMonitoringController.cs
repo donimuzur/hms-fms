@@ -78,11 +78,11 @@ namespace FMS.Website.Controllers
                 var ListTransaction = Mapper.Map<List<KpiMonitoringItem>>(ListTransactionDto);
                 var UserLogin = GetUserLogin();
 
-                foreach (var item in ListTransaction)
-                {
-                    var data = GetDateworkflow(item, UserLogin);
-                    model.ListTransaction.Add(data);
-                }
+                //foreach (var item in ListTransaction)
+                //{
+                //    var data = GetDateworkflow(item, UserLogin);
+                //    model.ListTransaction.Add(data);
+                //}
                
             }
             catch (Exception exp)
@@ -195,11 +195,11 @@ namespace FMS.Website.Controllers
             {
                 var ListTransaction = GetTransaction(model.SearchView);
                 var UserLogin =GetUserLogin();
-                foreach (var item in ListTransaction)
-                {
-                    var data = GetDateworkflow(item, UserLogin);
-                    model.ListTransaction.Add(data);
-                }
+                //foreach (var item in ListTransaction)
+                //{
+                //    var data = GetDateworkflow(item, UserLogin);
+                //    model.ListTransaction.Add(data);
+                //}
             }
             catch (Exception exp)
             {
