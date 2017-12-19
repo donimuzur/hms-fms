@@ -1,3 +1,9 @@
+IF EXISTS(SELECT 1 FROM sys.procedures 
+          WHERE Name = 'GetCFMIdleVehicle')
+BEGIN
+    DROP PROCEDURE [dbo].[GetCFMIdleVehicle]
+END
+GO
 Create procedure [dbo].[GetCFMIdleVehicle]
 AS BEGIN
 
