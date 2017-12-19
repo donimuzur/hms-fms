@@ -393,6 +393,8 @@ namespace FMS.Website.Controllers
 
                 var reasonStr = ReasonData.Reason;
                 var IsPenalty = ReasonData.IsPenalty;
+                var PenaltyForFleet = ReasonData.PenaltyForFleet;
+                var PenaltyForEmployee = ReasonData.PenaltyForEmplloyee;
 
                 var IsBenefit = Model.VehicleType == benefitType;
                 var IsEndRent = reasonStr.ToLower() == "end rent";
@@ -419,8 +421,8 @@ namespace FMS.Website.Controllers
                     }
                     if (IsPenalty)
                     {
-                        CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
-                        CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
+                        if(PenaltyForEmployee == true) CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
+                        if(PenaltyForFleet == true) CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
                     }
                 }
                 var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);

@@ -93,7 +93,8 @@
         $('#filter_ToDate').val($('#To_Date').val());
         $('#filter_VehicleUsage').val($('#SearchView_VehicleUsage').val());
         $('#filter_FormType').val($('#SearchView_FormType').val());
-        $('#filter_Location').val($("#SearchView_Location option:selected").text());
+        $('#filter_Location').val($("#SearchView_Location").val());
+        //$("#SearchView_Location option:selected").text()
         filter_Location
         $('#ExportToXls').submit();
     }
