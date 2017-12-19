@@ -13,6 +13,7 @@ namespace FMS.BusinessObject.Dto
         public string FormType { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string CostCenter { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public string Reason { get; set; }
         public string Address { get; set; }
