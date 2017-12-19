@@ -168,8 +168,8 @@ namespace FMS.Website.Controllers
 
                 var SendVehicleDate = traCsf == null ? null : traCsf.VENDOR_CONTRACT_START_DATE;
                 if (SendVehicleDate != null) item.SendToEmpBenefit = SendVehicleDate;
-
-               
+                
+                item.VehicleUsage = item.VehicleUsage == null ? "" : (_settingBLL.GetByID(Convert.ToInt32(item.VehicleUsage)) == null ? "" : _settingBLL.GetByID(Convert.ToInt32(item.VehicleUsage)).SettingName); 
             }
             else if (item.FormType.ToUpper() == "CRF")
             {
