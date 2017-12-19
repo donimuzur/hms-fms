@@ -27,8 +27,8 @@ namespace FMS.BusinessObject.Dto
         public int ReportMonth { get; set; }
         public int ReportYear { get; set; }
         public String CreatedDate { get; set; }
-        public String StartContract { get; set; }
-        public String EndContract { get; set; }
+        public DateTime StartContract { get; set; }
+        public DateTime EndContract { get; set; }
         public String Vendor { get; set; }
         public Decimal MonthlyInstallment { get; set; }
         public Decimal Gst { get; set; }

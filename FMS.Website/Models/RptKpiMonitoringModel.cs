@@ -27,6 +27,7 @@ namespace FMS.Website.Models
         public string FormType { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string CostCenter { get; set; }
         public DateTime? EffectiveDate { get; set; }
         public string Reason { get; set; }
         public string Address { get; set; }
@@ -67,5 +68,6 @@ namespace FMS.Website.Models
 
         public SelectList FormTypeList { get; set; }
         public SelectList VehicleUsageList { get; set; }
+        public SelectList LocationList { get; set; }
     }
 }
