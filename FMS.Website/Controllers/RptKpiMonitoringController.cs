@@ -32,13 +32,14 @@ namespace FMS.Website.Controllers
         private ITraCtfBLL _ctfBLL;
         private ITraCsfBLL _csfBLL;
         private ITraCrfBLL _crfBLL;
+        private IEmployeeBLL _employeeBLL;
         private IRemarkBLL _remarkBLL;
         private ISettingBLL _settingBLL;
         private IDocumentTypeBLL _docTypeBLL;
 
         public RptKpiMonitoringController(IPageBLL pageBll, IKpiMonitoringBLL KpiMonitoringBLL,IRemarkBLL RemarkBLL, 
-                                            ITraCtfBLL CtfBLL, ITraCsfBLL CsfBLL, ITraCrfBLL CrfBLL, IDocumentTypeBLL DocTypeBLL
-                                            ,ISettingBLL SettingBLL)
+                                            ITraCtfBLL CtfBLL, ITraCsfBLL CsfBLL, ITraCrfBLL CrfBLL, IDocumentTypeBLL DocTypeBLL,
+                                            IEmployeeBLL EmployeeBLL,ISettingBLL SettingBLL)
             : base(pageBll, Core.Enums.MenuList.RptKpiMonitoring)
         {
             _pageBLL = pageBll;
@@ -46,6 +47,7 @@ namespace FMS.Website.Controllers
             _remarkBLL = RemarkBLL;
             _settingBLL = SettingBLL;
             _docTypeBLL = DocTypeBLL;
+            _employeeBLL = EmployeeBLL;
             _ctfBLL = CtfBLL;
             _csfBLL = CsfBLL;
             _crfBLL = CrfBLL;
@@ -62,12 +64,14 @@ namespace FMS.Website.Controllers
 
             var FormTypeList = new Dictionary<string, string> { { "CSF", "CSF" }, { "CTF", "CTF" }, { "CRF", "CRF" } };
             var VehicleUsageList =_settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").ToList();
+            var AddressList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { ADDRESS = x.ADDRESS }).Distinct().ToList();
 
             model.SearchView.FormDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.ToDate = DateTime.Today;
 
             model.SearchView.FormTypeList = new SelectList(FormTypeList, "Key", "Value");
             model.SearchView.VehicleUsageList = new SelectList(VehicleUsageList, "SettingName", "SettingName");
+            model.SearchView.LocationList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
             filter.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             filter.ToDate = DateTime.Today;
