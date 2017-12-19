@@ -78,12 +78,12 @@ namespace FMS.Website.Controllers
                 var ListTransaction = Mapper.Map<List<KpiMonitoringItem>>(ListTransactionDto);
                 var UserLogin = GetUserLogin();
 
-                //foreach (var item in ListTransaction)
-                //{
-                //    var data = GetDateworkflow(item, UserLogin);
-                //    model.ListTransaction.Add(data);
-                //}
-               
+                foreach (var item in ListTransaction)
+                {
+                    var data = GetDateworkflow(item, UserLogin);
+                    model.ListTransaction.Add(data);
+                }
+
             }
             catch (Exception exp)
             {
@@ -122,7 +122,12 @@ namespace FMS.Website.Controllers
                 var Fleet  = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeIdFleetApproval)).FirstOrDefault();
 
                 var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault() ;
-                if(SendToEmp != null)item.SendToEmpDate = SendToEmp.ActionDate;
+                if (SendToEmp != null)
+                {
+                    item.SendToEmpDate = SendToEmp.ActionDate;
+                    var DaysDiff = _kpiMonitoringBLL.GetDifferentDays(item.EffectiveDate, SendToEmp.ActionDate);
+                    if (DaysDiff != null) item.Kpi1 = DaysDiff;
+                }
 
                 if ((traCtf.VehicleUsage == null ? "" : traCtf.VehicleUsage.ToUpper()) == "COP")
                 {
@@ -137,9 +142,6 @@ namespace FMS.Website.Controllers
                     var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
                     if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
                 }
-
-                var DaysDiff = _kpiMonitoringBLL.GetDifferentDays(item.EffectiveDate, SendToEmp.ActionDate);
-                if (DaysDiff != null)  item.Kpi1 = DaysDiff;
             }
             else if (item.FormType.ToUpper() == "CSF")
             {
@@ -151,7 +153,12 @@ namespace FMS.Website.Controllers
                 var Fleet = UserLogin.Where(x => x.EMPLOYEE_ID == (traCsf == null ? "" : traCsf.EMPLOYEE_ID_FLEET_APPROVAL)).FirstOrDefault();
 
                 var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
-                if (SendToEmp != null) item.SendToEmpDate = SendToEmp.ActionDate;
+                if (SendToEmp != null)
+                {
+                    item.SendToEmpDate = SendToEmp.ActionDate;
+                    var DaysDiff = _kpiMonitoringBLL.GetDifferentDays(item.EffectiveDate, SendToEmp.ActionDate);
+                    if (DaysDiff != null) item.Kpi1 = DaysDiff;
+                }
              
                 var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
                 if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
@@ -162,8 +169,7 @@ namespace FMS.Website.Controllers
                 var SendVehicleDate = traCsf == null ? null : traCsf.VENDOR_CONTRACT_START_DATE;
                 if (SendVehicleDate != null) item.SendToEmpBenefit = SendVehicleDate;
 
-                var DaysDiff = _kpiMonitoringBLL.GetDifferentDays(item.EffectiveDate, SendToEmp.ActionDate);
-                if (DaysDiff != null) item.Kpi1 = DaysDiff;
+               
             }
             else if (item.FormType.ToUpper() == "CRF")
             {
@@ -174,15 +180,19 @@ namespace FMS.Website.Controllers
                 //var Fleet = UserLogin.Where(x => x.EMPLOYEE_ID == (TraCrf == null ? "" : TraCrf.EmployeeIdFleetApproval)).FirstOrDefault();
 
                 var SendToEmp = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (TraCrf == null ? "" : TraCrf.CREATED_BY)).FirstOrDefault();
-                if (SendToEmp != null) item.SendToEmpDate = SendToEmp.ActionDate;
+                if (SendToEmp != null)
+                {
+                    item.SendToEmpDate = SendToEmp.ActionDate;
+                    var DaysDiff = _kpiMonitoringBLL.GetDifferentDays(item.EffectiveDate, SendToEmp.ActionDate);
+                    if (DaysDiff != null) item.Kpi1 = DaysDiff;
+                } 
 
                 var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
                 if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
 
                 //var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
                 //if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
-                var DaysDiff = _kpiMonitoringBLL.GetDifferentDays(item.EffectiveDate, SendToEmp.ActionDate);
-                if (DaysDiff != null) item.Kpi1 = DaysDiff;
+                
             }
 
             return item;
@@ -195,11 +205,11 @@ namespace FMS.Website.Controllers
             {
                 var ListTransaction = GetTransaction(model.SearchView);
                 var UserLogin =GetUserLogin();
-                //foreach (var item in ListTransaction)
-                //{
-                //    var data = GetDateworkflow(item, UserLogin);
-                //    model.ListTransaction.Add(data);
-                //}
+                foreach (var item in ListTransaction)
+                {
+                    var data = GetDateworkflow(item, UserLogin);
+                    model.ListTransaction.Add(data);
+                }
             }
             catch (Exception exp)
             {
