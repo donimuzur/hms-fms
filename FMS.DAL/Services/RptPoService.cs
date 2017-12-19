@@ -34,16 +34,21 @@ namespace FMS.DAL.Services
             {
                 if (filter.PeriodFrom != null)
                 {
-                    queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day >= filter.PeriodFrom.Day) &&
-                                                        (c.CREATED_DATE.Month >= filter.PeriodFrom.Month) &&
-                                                        (c.CREATED_DATE.Year >= filter.PeriodFrom.Year));
+                    //queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day >= filter.PeriodFrom.Day) &&
+                    //                                    (c.CREATED_DATE.Month >= filter.PeriodFrom.Month) &&
+                    //                                    (c.CREATED_DATE.Year >= filter.PeriodFrom.Year));
+                    queryFilter = queryFilter.And(c => (c.START_CONTRACT.Value.Day >= filter.PeriodFrom.Day) &&
+                                                       (c.START_CONTRACT.Value.Month >= filter.PeriodFrom.Month) &&
+                                                       (c.START_CONTRACT.Value.Year >= filter.PeriodFrom.Year));
                 }
                 if (filter.PeriodTo != null)
                 {
-                    queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day <= filter.PeriodTo.Day) &&
-                                                        (c.CREATED_DATE.Month <= filter.PeriodTo.Month) &&
-                                                        (c.CREATED_DATE.Year <= filter.PeriodTo.Year));
-                    //queryFilter = queryFilter.And(c => c.CREATED_DATE <= filter.PeriodTo);
+                    //queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day <= filter.PeriodTo.Day) &&
+                    //                                    (c.CREATED_DATE.Month <= filter.PeriodTo.Month) &&
+                    //                                    (c.CREATED_DATE.Year <= filter.PeriodTo.Year));
+                    queryFilter = queryFilter.And(c => (c.END_CONTRACT.Value.Day <= filter.PeriodTo.Day) &&
+                                                        (c.END_CONTRACT.Value.Month <= filter.PeriodTo.Month) &&
+                                                        (c.END_CONTRACT.Value.Year <= filter.PeriodTo.Year));
                 }
                 if (!string.IsNullOrEmpty(filter.EmployeeName))
                 {

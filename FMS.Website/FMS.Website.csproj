@@ -240,6 +240,7 @@
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
+    <Compile Include="Code\FMSWebsiteMapperRptCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperKpiMonitoring.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptPo.cs" />
@@ -277,6 +278,7 @@
     <Compile Include="Controllers\MstVehicleSpectController.cs" />
     <Compile Include="Controllers\MstSalesVolumeController.cs" />
     <Compile Include="Controllers\RptAutoGrController.cs" />
+    <Compile Include="Controllers\RptCcfController.cs" />
     <Compile Include="Controllers\RptCfmIdleController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
@@ -322,6 +324,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\RptAutoGrModel.cs" />
+    <Compile Include="Models\RptCCFModel.cs" />
     <Compile Include="Models\RptFuelModel.cs" />
     <Compile Include="Models\RptKpiMonitoringModel.cs" />
     <Compile Include="Models\RptPOModel.cs" />
@@ -571,6 +574,8 @@
     <Content Include="Content\App\tps-eproc.css" />
     <Content Include="Content\App\treeGrid.css" />
     <Content Include="Content\bootstrap-select.min.css" />
+    <Content Include="Content\chosen-sprite.png" />
+    <Content Include="Content\chosen.min.css" />
     <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\css\Custom.css" />
     <Content Include="Content\css\easy-autocomplete.min.css" />
@@ -1047,6 +1052,7 @@
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\KpiMonitoring.js" />
     <Content Include="Scripts\VehicleOverall.js" />
     <Content Include="Scripts\CfmIdle.js" />
@@ -4377,7 +4383,11 @@
     <Content Include="Views\RptPo\_ListPo.cshtml" />
     <Content Include="Views\RptExecutiveSummary\AcVsOb.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListAcVsOb.cshtml" />
+    <Content Include="Views\RptCcf\Index.cshtml" />
+    <Content Include="Views\RptCcf\_ListCcf.cshtml" />
     <Content Include="Views\RptKpiMonitoring\_ListTransaction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SumPtdByFunction.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\_ListSumPtdByFunction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4524,6 +4534,10 @@
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.Role\FMS.BLL.Role.csproj">
       <Project>{6fc3c1f1-91bc-4521-88f1-ce10399ac544}</Project>
       <Name>FMS.BLL.Role</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.RptCcf\FMS.BLL.RptCcf.csproj">
+      <Project>{8e98d268-868b-44fb-b594-b7a44aa41795}</Project>
+      <Name>FMS.BLL.RptCcf</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.RptFuel\FMS.BLL.RptFuel.csproj">
       <Project>{e0c9f7a0-af7c-4009-97f5-200173cfd8d7}</Project>

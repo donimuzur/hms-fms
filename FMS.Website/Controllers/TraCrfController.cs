@@ -273,7 +273,7 @@ namespace FMS.Website.Controllers
             model.DetailTemporary.StartDate = DateTime.Now;
             model.DetailTemporary.EndDate = DateTime.Now;
 
-            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int) Enums.DocumentType.CRF).ToList();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.IsPersonalDashboard = isPersonalDashboard;
             return View(model);
@@ -295,7 +295,12 @@ namespace FMS.Website.Controllers
             model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
             model.Detail = Mapper.Map<TraCrfItemDetails>(data);
 
-            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+            var RemarkList =
+                _remarkBLL.GetRemark()
+                    .Where(
+                        x =>
+                            x.RoleType == CurrentUser.UserRole.ToString() &&
+                            x.DocumentType == (int) Enums.DocumentType.CRF).ToList();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
@@ -356,7 +361,7 @@ namespace FMS.Website.Controllers
                 model.TemporaryList = Mapper.Map<List<TemporaryData>>(tempData);
                 model.ErrorMessage = ex.Message;
 
-                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int) Enums.DocumentType.CRF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
                 return View(model);
@@ -397,7 +402,7 @@ namespace FMS.Website.Controllers
                 model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
                 model.Detail = Mapper.Map<TraCrfItemDetails>(data);
 
-                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString()).ToList();
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int) Enums.DocumentType.CRF).ToList();
 
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 

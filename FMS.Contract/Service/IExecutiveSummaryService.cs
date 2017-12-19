@@ -20,5 +20,6 @@ namespace FMS.Contract.Service
         List<SALES_BY_REGION_REPORT_DATA> GetAllSalesByRegion(SalesRegionGetByParamInput filter);
         List<ACCIDENT_REPORT_DATA> GetAllAccident(AccidentGetByParamInput filter);
         List<AC_VS_OB_REPORT_DATA> GetAllAcVsOb(AcVsObGetByParamInput filter);
+        List<SUM_REPORT_DATA> GetAllSumPtdByFunction(SumPtdFuncGetByParamInput filter);
     }
 }
