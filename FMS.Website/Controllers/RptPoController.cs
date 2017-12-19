@@ -119,7 +119,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "PO Report Data");
-            slDocument.MergeWorksheetCells(1, 1, 1, 23);
+            slDocument.MergeWorksheetCells(1, 1, 1, 21);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -161,14 +161,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 13, "Vehicle Usage");
             slDocument.SetCellValue(iRow, 14, "PO Number");
             slDocument.SetCellValue(iRow, 15, "PO Line");
-            slDocument.SetCellValue(iRow, 16, "Report Month");
-            slDocument.SetCellValue(iRow, 17, "Report Year");
-            slDocument.SetCellValue(iRow, 18, "Start Contract");
-            slDocument.SetCellValue(iRow, 19, "End Contract");
-            slDocument.SetCellValue(iRow, 20, "Vendor");
-            slDocument.SetCellValue(iRow, 21, "Monthly Installment");
-            slDocument.SetCellValue(iRow, 22, "Gst");
-            slDocument.SetCellValue(iRow, 23, "TotMonthInstallment");
+            slDocument.SetCellValue(iRow, 16, "Start Contract");
+            slDocument.SetCellValue(iRow, 17, "End Contract");
+            slDocument.SetCellValue(iRow, 18, "Vendor");
+            slDocument.SetCellValue(iRow, 19, "Monthly Installment");
+            slDocument.SetCellValue(iRow, 20, "Gst");
+            slDocument.SetCellValue(iRow, 21, "TotMonthInstallment");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -179,7 +177,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 23, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 21, headerStyle);
 
             return slDocument;
 
@@ -206,14 +204,12 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 13, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 14, data.PoNumber);
                 slDocument.SetCellValue(iRow, 15, data.PoLine);
-                slDocument.SetCellValue(iRow, 16, data.ReportMonth);
-                slDocument.SetCellValue(iRow, 17, data.ReportYear);
-                slDocument.SetCellValue(iRow, 18, data.StartContract);
-                slDocument.SetCellValue(iRow, 19, data.EndContract);
-                slDocument.SetCellValue(iRow, 20, data.Vendor);
-                slDocument.SetCellValue(iRow, 21, data.MonthlyInstallment);
-                slDocument.SetCellValue(iRow, 22, data.Gst);
-                slDocument.SetCellValue(iRow, 23, data.TotMonthInstallment);
+                slDocument.SetCellValue(iRow, 16, data.StartContract.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 17, data.EndContract.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 18, data.Vendor);
+                slDocument.SetCellValue(iRow, 19, data.MonthlyInstallment);
+                slDocument.SetCellValue(iRow, 20, data.Gst);
+                slDocument.SetCellValue(iRow, 21, data.TotMonthInstallment);
 
                 iRow++;
             }
@@ -225,8 +221,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 23);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 23, valueStyle);
+            slDocument.AutoFitColumn(1, 21);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 21, valueStyle);
 
             return slDocument;
         }
