@@ -82,7 +82,7 @@ namespace FMS.Website.Controllers
                     model.ErrorMessage = "Data Already Exsit";
 
                     var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS }).Distinct().ToList().OrderBy(x => x.ADDRESS);
+                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
                     model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
                     model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
 
