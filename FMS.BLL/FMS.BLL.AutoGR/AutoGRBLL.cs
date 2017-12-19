@@ -30,15 +30,15 @@ namespace FMS.BLL.AutoGR
         public List<RptAutoGrDto> GetAutoGR(RptAutoGrInput rptAutoGrInput)
         {
             List<AUTO_GR> data = _grService.GetAutoGr(rptAutoGrInput);
-            
-            var dataFleet = _fleetService.GetFleet();
+            var polineList = data.GroupBy(x=> new { x.PO_NUMBER, x.LINE_ITEM }).Select(x => x.Key.PO_NUMBER + "_" + x.Key.LINE_ITEM).ToList();
+            var dataFleet = _fleetService.GetFleet().Where(x=> polineList.Contains(x.PO_NUMBER + "_"+x.PO_LINE)).ToList();
             //var dataFleetTerminated = dataFleet.Where(x => x.END_DATE.HasValue && x.END_DATE.Value < x.END_CONTRACT).ToList();
             
             
 
             var autoGrDto = (from autoGr in data
                             from fleet in dataFleet.Where(x=> autoGr.PO_NUMBER == x.PO_NUMBER 
-                                && autoGr.LINE_ITEM.ToString() == x.PO_LINE ).DefaultIfEmpty()
+                                && autoGr.LINE_ITEM.ToString() == x.PO_LINE )
                             select new RptAutoGrDto()
                             {
                                 
