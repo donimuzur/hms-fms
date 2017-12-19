@@ -19,8 +19,6 @@
             <th>Vehicle Usage</th>
             <th>PO Number</th>
             <th>PO Line</th>
-            <th>Report Month</th>
-            <th>Report Year</th>
             <th>Start Contract</th>
             <th>End Contract</th>
             <th>Vendor</th>
@@ -31,8 +29,6 @@
     </thead>
     <thead class="filters">
         <tr>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -75,10 +71,8 @@
                 <td>@Html.Raw(data.VehicleUsage)</td>
                 <td>@Html.Raw(data.PoNumber)</td>
                 <td>@Html.Raw(data.PoLine)</td>
-                <td>@Html.Raw(data.ReportMonth)</td>
-                <td>@Html.Raw(data.ReportYear)</td>
-                <td>@Html.Raw(data.StartContract)</td>
-                <td>@Html.Raw(data.EndContract)</td>
+                <td>@Html.Raw(data.StartContract.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.EndContract.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.Vendor)</td>
                 <td>@Html.Raw(data.MonthlyInstallment)</td>
                 <td>@Html.Raw(data.Gst)</td>

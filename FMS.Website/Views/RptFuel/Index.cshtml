@@ -16,7 +16,7 @@
     {
         @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
         @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
+       @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
         @Html.HiddenFor(model => model.SearchViewExport.YearTo)
         @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
         @Html.HiddenFor(model => model.SearchViewExport.CostCenter)
@@ -38,25 +38,25 @@
             {
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Period Month</label>
+                        <label for="">Month From</label>
                         @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for=""> Period Year</label>
+                        <label for="">Year From</label>
                         @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Period Month</label>
+                        <label for="">Month To</label>
                         @Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for=""> Period Year</label>
+                        <label for="">Year To</label>
                         @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
                     </div>
                 </div>
