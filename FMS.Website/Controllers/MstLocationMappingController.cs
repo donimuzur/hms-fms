@@ -74,7 +74,9 @@ namespace FMS.Website.Controllers
                     && (x.Location == null ? "" : x.Location.ToLower()) == (data.Location == null ? "" : data.Location.ToLower())
                     && (x.Region == null ? "" : x.Region.ToLower()) == (data.Region == null ? "" : data.Region.ToLower())
                     && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (data.ZoneSales == null ? "" : data.ZoneSales.ToLower())
-                    && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (data.ZonePriceList == null ? "" : data.ZonePriceList.ToLower())).FirstOrDefault();
+                    && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (data.ZonePriceList == null ? "" : data.ZonePriceList.ToLower())
+                    && x.IsActive).FirstOrDefault();
+
                 if (exist != null)
                 {
                     model.ErrorMessage = "Data Already Exsit";
@@ -270,7 +272,9 @@ namespace FMS.Website.Controllers
                            && (x.Location == null ? "" : x.Location.ToLower()) == (item.Location == null ? "" : item.Location.ToLower())
                            && (x.Region == null ? "" : x.Region.ToLower()) == (item.Region == null ? "" : item.Region.ToLower())
                            && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (item.ZoneSales == null ? "" : item.ZoneSales.ToLower())
-                           && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToLower())).FirstOrDefault();
+                           && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToLower())
+                           && x.IsActive).FirstOrDefault();
+
                     if (exist != null) item.ErrorMessage = "Data Already Exist";
                     model.Add(item);
                 }

@@ -48,7 +48,7 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Location))
                 {
-                    //queryFilter = queryFilter.And(c => (c. == null ? "" : c.Location.ToUpper()) == filter.VehicleUsage.ToUpper());
+                    queryFilter = queryFilter.And(c => (c.ADDRESS == null ? "" : c.ADDRESS.ToUpper()) == filter.Location.ToUpper());
                 }
             }
             return _kpiMonitoringRepository.Get(queryFilter, null, "").ToList();
