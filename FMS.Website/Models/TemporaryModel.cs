@@ -51,6 +51,8 @@ namespace FMS.Website.Models
         public int? GroupLevel { get; set; }
         public string VehicleType { get; set; }
         public string VehicleTypeName { get; set; }
+        public string VehicleUsage { get; set; }
+        public string AssignedTo { get; set; }
         public string VendorName { get; set; }
         public string SupplyMethod { get; set; }
         public string LocationCity { get; set; }
@@ -98,6 +100,7 @@ namespace FMS.Website.Models
         public SelectList EmployeeList { get; set; }
         public SelectList ReasonList { get; set; }
         public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
         public SelectList VendorList { get; set; }
         public SelectList SupplyMethodList { get; set; }
         public SelectList LocationCityList { get; set; }
