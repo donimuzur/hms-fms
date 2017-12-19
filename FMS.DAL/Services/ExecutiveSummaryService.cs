@@ -26,6 +26,7 @@ namespace FMS.DAL.Services
         private IGenericRepository<SALES_BY_REGION_REPORT_DATA> _salesRegionRepository;
         private IGenericRepository<ACCIDENT_REPORT_DATA> _accidentRepository;
         private IGenericRepository<AC_VS_OB_REPORT_DATA> _acVsObRepository;
+        private IGenericRepository<SUM_REPORT_DATA> _sumPtdByFuncRepository;
 
         public ExecutiveSummaryService(IUnitOfWork uow)
         {
@@ -40,6 +41,7 @@ namespace FMS.DAL.Services
             _salesRegionRepository = _uow.GetGenericRepository<SALES_BY_REGION_REPORT_DATA>();
             _accidentRepository = _uow.GetGenericRepository<ACCIDENT_REPORT_DATA>();
             _acVsObRepository = _uow.GetGenericRepository<AC_VS_OB_REPORT_DATA>();
+            _sumPtdByFuncRepository = _uow.GetGenericRepository<SUM_REPORT_DATA>();
         }
 
         public List<NO_OF_VEHICLE_REPORT_DATA> GetAllNoVehicle(VehicleGetByParamInput filter)
@@ -406,6 +408,45 @@ namespace FMS.DAL.Services
             }
 
             return _acVsObRepository.Get(queryFilter, null, "").ToList();
+        }
+
+        public List<SUM_REPORT_DATA> GetAllSumPtdByFunction(SumPtdFuncGetByParamInput filter)
+        {
+            Expression<Func<SUM_REPORT_DATA, bool>> queryFilter = PredicateHelper.True<SUM_REPORT_DATA>();
+
+            if (filter != null)
+            {
+                if (filter.MonthFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearFrom > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.Region))
+                {
+                    queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                }
+            }
+
+            return _sumPtdByFuncRepository.Get(queryFilter, null, "").ToList();
         }
     }
 }

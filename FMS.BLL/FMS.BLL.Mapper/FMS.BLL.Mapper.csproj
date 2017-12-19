@@ -71,9 +71,11 @@
     <Compile Include="GroupCostCenterMapper.cs" />
     <Compile Include="GsMapper.cs" />
     <Compile Include="HolidayCalenderMapper.cs" />
+    <Compile Include="KpiMonitoringMapper.cs" />
     <Compile Include="PenalltyLogicMapper.cs" />
     <Compile Include="PenaltyMapper.cs" />
     <Compile Include="LocationMapingMapper.cs" />
+    <Compile Include="RptCCFMapper.cs" />
     <Compile Include="RptFuelMapper.cs" />
     <Compile Include="RptPOMapper.cs" />
     <Compile Include="SalesVolumeMapper.cs" />

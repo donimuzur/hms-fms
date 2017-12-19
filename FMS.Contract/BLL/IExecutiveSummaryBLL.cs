@@ -20,5 +20,6 @@ namespace FMS.Contract.BLL
         List<SalesByRegionDto> GetSalesByRegionData(SalesRegionGetByParamInput filter);
         List<AccidentDto> GetAccidentData(AccidentGetByParamInput filter);
         List<AcVsObDto> GetAcVsObData(AcVsObGetByParamInput filter);
+        List<SumPtdByFunctionDto> GetSumPtdByFunctionData(SumPtdFuncGetByParamInput filter);
     }
 }

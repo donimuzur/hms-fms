@@ -241,8 +241,8 @@ namespace FMS.Website.Controllers
                             data.Series = fleetData.Series;
                         }
 
-                        var span = data.EndDate - data.StartDate;
-                        data.LeadTime = new DateTime(span.Value.Ticks);
+                        //var span = data.EndDate - data.StartDate;
+                        //data.LeadTime = new DateTime(span.Value.Ticks);
                         var dto = Mapper.Map<GsDto>(data);
 
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
@@ -429,13 +429,16 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 5, data.Location);
                 slDocument.SetCellValue(iRow, 6, data.GsRequestDate == null ? "" : data.GsRequestDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 7, data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 8, data.GsUnitType);
-                slDocument.SetCellValue(iRow, 9, data.GsPoliceNumber);
-                slDocument.SetCellValue(iRow, 10, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 11, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 12, data.LeadTimeS);
+                slDocument.SetCellValue(iRow, 8, data.GsManufacturer);
+                slDocument.SetCellValue(iRow, 9, data.GsModel);
+                slDocument.SetCellValue(iRow, 10, data.GsSeries);
+                slDocument.SetCellValue(iRow, 11, data.GsTransmission);
+                slDocument.SetCellValue(iRow, 12, data.GsPoliceNumber);
+                slDocument.SetCellValue(iRow, 13, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 14, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 15, data.LeadTimeS);
                 //slDocument.SetCellValue(iRow, 12, data.KpiFulfillment);
-                slDocument.SetCellValue(iRow, 13, data.Remark);
+                slDocument.SetCellValue(iRow, 16, data.Remark);
                 
                 iRow++;
             }
@@ -447,8 +450,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 17);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 13, valueStyle);
+            slDocument.AutoFitColumn(1, 16);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
 
             return slDocument;
 
@@ -466,13 +469,16 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 5, "Location");
             slDocument.SetCellValue(iRow, 6, "Gs Request Date");
             slDocument.SetCellValue(iRow, 7, "Gs Fullfillment Date");
-            slDocument.SetCellValue(iRow, 8, "Gs Unit Type");
-            slDocument.SetCellValue(iRow, 9, "Gs Police Number");
-            slDocument.SetCellValue(iRow, 10, "Start Date");
-            slDocument.SetCellValue(iRow, 11, "End Date");
-            slDocument.SetCellValue(iRow, 12, "Lead Time");
+            slDocument.SetCellValue(iRow, 8, "Gs Manufacturer");
+            slDocument.SetCellValue(iRow, 9, "Gs Model");
+            slDocument.SetCellValue(iRow, 10, "Gs Series");
+            slDocument.SetCellValue(iRow, 11, "Gs Transmission");
+            slDocument.SetCellValue(iRow, 12, "Gs Police Number");
+            slDocument.SetCellValue(iRow, 13, "Start Date");
+            slDocument.SetCellValue(iRow, 14, "End Date");
+            slDocument.SetCellValue(iRow, 15, "Lead Time");
             //slDocument.SetCellValue(iRow, 12, "KPI Fulfillment");
-            slDocument.SetCellValue(iRow, 13, "Remark");
+            slDocument.SetCellValue(iRow, 16, "Remark");
 
 
             SLStyle headerStyle = slDocument.CreateStyle();
@@ -484,7 +490,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 13, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
 
             return slDocument;
         }
@@ -526,23 +532,24 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Employee Name");
-            slDocument.SetCellValue(iRow, 2, "Vehicle Usage");
-            slDocument.SetCellValue(iRow, 3, "Police Number");
-            slDocument.SetCellValue(iRow, 4, "Group Level");
-            slDocument.SetCellValue(iRow, 5, "Location");
-            slDocument.SetCellValue(iRow, 6, "Gs Request Date");
-            slDocument.SetCellValue(iRow, 7, "Gs Fullfillment Date");
-            slDocument.SetCellValue(iRow, 8, "Gs Unit Type");
-            slDocument.SetCellValue(iRow, 9, "Gs Police Number");
-            slDocument.SetCellValue(iRow, 10, "Start Date");
-            slDocument.SetCellValue(iRow, 11, "End Date");
-            slDocument.SetCellValue(iRow, 12, "Remark");
-            slDocument.SetCellValue(iRow, 13, "Created Date");
-            slDocument.SetCellValue(iRow, 14, "Created By");
-            slDocument.SetCellValue(iRow, 15, "Modified Date");
-            slDocument.SetCellValue(iRow, 16, "Modified By");
-            slDocument.SetCellValue(iRow, 17, "Status");
+            slDocument.SetCellValue(iRow, 1, "Employee Id");
+            slDocument.SetCellValue(iRow, 2, "Employee Name");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 4, "Police Number");
+            slDocument.SetCellValue(iRow, 5, "Group Level");
+            slDocument.SetCellValue(iRow, 6, "Location");
+            slDocument.SetCellValue(iRow, 7, "Gs Request Date");
+            slDocument.SetCellValue(iRow, 8, "Gs Fullfillment Date");
+            slDocument.SetCellValue(iRow, 9, "Gs Unit Type");
+            slDocument.SetCellValue(iRow, 10, "Gs Police Number");
+            slDocument.SetCellValue(iRow, 11, "Start Date");
+            slDocument.SetCellValue(iRow, 12, "End Date");
+            slDocument.SetCellValue(iRow, 13, "Remark");
+            slDocument.SetCellValue(iRow, 14, "Created Date");
+            slDocument.SetCellValue(iRow, 15, "Created By");
+            slDocument.SetCellValue(iRow, 16, "Modified Date");
+            slDocument.SetCellValue(iRow, 17, "Modified By");
+            slDocument.SetCellValue(iRow, 18, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -553,7 +560,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 17, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
 
             return slDocument;
 
@@ -565,23 +572,24 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 2, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 3, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 4, data.GroupLevel == null ? "" : data.GroupLevel.ToString());
-                slDocument.SetCellValue(iRow, 5, data.Location);
-                slDocument.SetCellValue(iRow, 6, data.GsRequestDate == null ? "" : data.GsRequestDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 7, data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 8, data.GsUnitType);
-                slDocument.SetCellValue(iRow, 9, data.GsPoliceNumber);
-                slDocument.SetCellValue(iRow, 10, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 11, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 12, data.Remark);
-                slDocument.SetCellValue(iRow, 13, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 14, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 15, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 16, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 17, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 1, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 2, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 3, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 4, data.PoliceNumber);
+                slDocument.SetCellValue(iRow, 5, data.GroupLevel == null ? "" : data.GroupLevel.ToString());
+                slDocument.SetCellValue(iRow, 6, data.Location);
+                slDocument.SetCellValue(iRow, 7, data.GsRequestDate == null ? "" : data.GsRequestDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 8, data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 9, data.GsUnitType);
+                slDocument.SetCellValue(iRow, 10, data.GsPoliceNumber);
+                slDocument.SetCellValue(iRow, 11, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 12, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 13, data.Remark);
+                slDocument.SetCellValue(iRow, 14, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 15, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 16, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 17, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 18, data.IsActive == true ? "Active" : "InActive");
                 iRow++;
             }
 
@@ -592,8 +600,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 17);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 17, valueStyle);
+            slDocument.AutoFitColumn(1, 18);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 18, valueStyle);
 
             return slDocument;
         }
