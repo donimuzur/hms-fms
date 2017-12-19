@@ -41,6 +41,9 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var model = new RptPOModel();
+            //model.SearchView.PeriodFrom = Convert.ToDateTime("2013-07-15");
+            //model.SearchView.PeriodTo = Convert.ToDateTime("2018-07-14");
+            //model.SearchView.PoliceNumber = "L1976HS";
             var input = Mapper.Map<RptPoByParamInput>(model.SearchView);
             var data = _rptPoBLL.GetRptPo(input);
             model.MainMenu = Enums.MenuList.RptExecutiveSummary;
@@ -65,11 +68,11 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public PartialViewResult FilterPO(RptPOModel model)
         {
-            model.startMonth = 7;
-            model.startYear = 2017;
-            model.toMonth = 12;
-            model.toYear = 2017;
-
+            //model.startMonth = 10;
+            //model.startYear = 2017;
+            //model.toMonth = 12;
+            //model.toYear = 2017;
+            
             model.RptPOItem = GetPOData(model.SearchView);
             var input = Mapper.Map<RptPoByParamInput>(model.SearchView);
             return PartialView("_ListPo", model);
@@ -133,7 +136,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 1, valueStyle);
 
             //create header
-            slDocument = CreateHeaderExcelDashboard(slDocument);
+            slDocument = CreateHeaderExcelDashboard(slDocument, listData);
 
             //create data
             slDocument = CreateDataExcelDashboard(slDocument, listData);
@@ -147,10 +150,10 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateHeaderExcelDashboard(SLDocument slDocument)
+        private SLDocument CreateHeaderExcelDashboard(SLDocument slDocument, List<RptPOItem> listData)
         {
             int iRow = 2;
-
+            int iCol = 21;
             slDocument.SetCellValue(iRow, 1, "Police Number");
             slDocument.SetCellValue(iRow, 2, "Supply Method");
             slDocument.SetCellValue(iRow, 3, "Employee Name");
@@ -172,6 +175,22 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 19, "Monthly Installment");
             slDocument.SetCellValue(iRow, 20, "Gst");
             slDocument.SetCellValue(iRow, 21, "TotMonthInstallment");
+            foreach (var data in listData)
+            {
+                if (data.NopAmount > 0)
+                {
+                    slDocument.SetCellValue(iRow, iCol+1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol+2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol+3, "Total Amount");
+                }
+                if (data.DesAmount > 0)
+                {
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total Amount");
+                }
+                iCol++;
+            }
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -191,6 +210,7 @@ namespace FMS.Website.Controllers
         private SLDocument CreateDataExcelDashboard(SLDocument slDocument, List<RptPOItem> listData)
         {
             int iRow = 3; //starting row data
+            int iCol = 21;
 
             foreach (var data in listData)
             {
@@ -215,7 +235,18 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 19, data.MonthlyInstallment);
                 slDocument.SetCellValue(iRow, 20, data.Gst);
                 slDocument.SetCellValue(iRow, 21, data.TotMonthInstallment);
-
+                if (data.NopAmount > 0)
+                {
+                    slDocument.SetCellValue(iRow, iCol+1, data.NopAmount);
+                    slDocument.SetCellValue(iRow, iCol+2, data.NopPPN);
+                    slDocument.SetCellValue(iRow, iCol+3, data.NopTotal);
+                }
+                if (data.DesAmount > 0)
+                {
+                    slDocument.SetCellValue(iRow, iCol+1, data.DesAmount);
+                    slDocument.SetCellValue(iRow, iCol+2, data.DesPPN);
+                    slDocument.SetCellValue(iRow, iCol+3, data.DesTotal);
+                }
                 iRow++;
             }
 

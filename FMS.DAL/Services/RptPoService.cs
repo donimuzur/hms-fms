@@ -32,23 +32,39 @@ namespace FMS.DAL.Services
 
             if (filter != null)
             {
-                if (filter.PeriodFrom != null)
+                //if (filter.PeriodFrom != null)
+                //{
+                //    //queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day >= filter.PeriodFrom.Day) &&
+                //    //                                    (c.CREATED_DATE.Month >= filter.PeriodFrom.Month) &&
+                //    //                                    (c.CREATED_DATE.Year >= filter.PeriodFrom.Year));
+                //    queryFilter = queryFilter.And(c => (c.START_CONTRACT.Value.Day >= filter.PeriodFrom.Day) &&
+                //                                       (c.START_CONTRACT.Value.Month >= filter.PeriodFrom.Month) &&
+                //                                       (c.START_CONTRACT.Value.Year >= filter.PeriodFrom.Year));
+                //}
+                //if (filter.PeriodTo != null)
+                //{
+                //    //queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day <= filter.PeriodTo.Day) &&
+                //    //                                    (c.CREATED_DATE.Month <= filter.PeriodTo.Month) &&
+                //    //                                    (c.CREATED_DATE.Year <= filter.PeriodTo.Year));
+                //    queryFilter = queryFilter.And(c => (c.END_CONTRACT.Value.Day <= filter.PeriodTo.Day) &&
+                //                                        (c.END_CONTRACT.Value.Month <= filter.PeriodTo.Month) &&
+                //                                        (c.END_CONTRACT.Value.Year <= filter.PeriodTo.Year));
+                //}
+                if (filter.MonthFrom > 0)
                 {
-                    //queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day >= filter.PeriodFrom.Day) &&
-                    //                                    (c.CREATED_DATE.Month >= filter.PeriodFrom.Month) &&
-                    //                                    (c.CREATED_DATE.Year >= filter.PeriodFrom.Year));
-                    queryFilter = queryFilter.And(c => (c.START_CONTRACT.Value.Day >= filter.PeriodFrom.Day) &&
-                                                       (c.START_CONTRACT.Value.Month >= filter.PeriodFrom.Month) &&
-                                                       (c.START_CONTRACT.Value.Year >= filter.PeriodFrom.Year));
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
                 }
-                if (filter.PeriodTo != null)
+                if (filter.YearFrom > 0)
                 {
-                    //queryFilter = queryFilter.And(c => (c.CREATED_DATE.Day <= filter.PeriodTo.Day) &&
-                    //                                    (c.CREATED_DATE.Month <= filter.PeriodTo.Month) &&
-                    //                                    (c.CREATED_DATE.Year <= filter.PeriodTo.Year));
-                    queryFilter = queryFilter.And(c => (c.END_CONTRACT.Value.Day <= filter.PeriodTo.Day) &&
-                                                        (c.END_CONTRACT.Value.Month <= filter.PeriodTo.Month) &&
-                                                        (c.END_CONTRACT.Value.Year <= filter.PeriodTo.Year));
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR >= filter.YearFrom);
+                }
+                if (filter.MonthTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_MONTH <= filter.MonthTo);
+                }
+                if (filter.YearTo > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
                 }
                 if (!string.IsNullOrEmpty(filter.EmployeeName))
                 {
@@ -61,6 +77,10 @@ namespace FMS.DAL.Services
                 if (!string.IsNullOrEmpty(filter.SupplyMethod))
                 {
                     queryFilter = queryFilter.And(c => c.SUPPLY_METHOD.ToUpper() == filter.SupplyMethod.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.PoliceNumber))
+                {
+                    queryFilter = queryFilter.And(c => c.POLICE_NUMBER.ToUpper() == filter.PoliceNumber.ToUpper());
                 }
             }
 
