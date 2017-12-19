@@ -21,6 +21,11 @@ namespace FMS.Website.Models
         public RptPOSearchViewExport SearchViewExport { get; set; }
         public string TitleForm { get; set; }
         public string TitleExport { get; set; }
+
+        public int startMonth { get; set;}
+        public int startYear { get; set; }
+        public int toMonth { get; set; }
+        public int toYear { get; set; }
     }
 
     public class RptPOItem

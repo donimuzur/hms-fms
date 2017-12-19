@@ -65,6 +65,11 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public PartialViewResult FilterPO(RptPOModel model)
         {
+            model.startMonth = 7;
+            model.startYear = 2017;
+            model.toMonth = 12;
+            model.toYear = 2017;
+
             model.RptPOItem = GetPOData(model.SearchView);
             var input = Mapper.Map<RptPoByParamInput>(model.SearchView);
             return PartialView("_ListPo", model);
