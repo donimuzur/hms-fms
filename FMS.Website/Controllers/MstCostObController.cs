@@ -516,12 +516,12 @@ namespace FMS.Website.Controllers
             var qty = string.Empty;
 
             var data = (new ExcelReader()).ReadExcel(upload);
-            var model = new List<CostOBUpload>();
+            var model = new List<CostObItem>();
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
                 {
-                    if (dataRow.Count <= 4)
+                    if (dataRow.Count <= 7)
                     {
                         continue;
                     }
@@ -529,38 +529,60 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    var item = new CostOBUpload();
+                    var item = new CostObItem();
                     try
                     {
-                        item.CostCenter = dataRow[5].ToString();
-                        item.BodyType = dataRow[13].ToString();
-                        item.VehicleType = dataRow[14].ToString();
-                        item.SumOfJan = decimal.Parse(dataRow[28 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfFeb = decimal.Parse(dataRow[29 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfMar = decimal.Parse(dataRow[30 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfApr = decimal.Parse(dataRow[31 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfMay = decimal.Parse(dataRow[32 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfJun = decimal.Parse(dataRow[33 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfJul = decimal.Parse(dataRow[34 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfAug = decimal.Parse(dataRow[35 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfSep = decimal.Parse(dataRow[36 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfOct = decimal.Parse(dataRow[37 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfNov = decimal.Parse(dataRow[38 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfDec = decimal.Parse(dataRow[39 + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyJan = Convert.ToInt32(dataRow[(80 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyFeb = Convert.ToInt32(dataRow[(81 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyMar = Convert.ToInt32(dataRow[(82 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyApr = Convert.ToInt32(dataRow[(83 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyMay = Convert.ToInt32(dataRow[(84 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyJun = Convert.ToInt32(dataRow[(85 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyJul = Convert.ToInt32(dataRow[(86 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyAug = Convert.ToInt32(dataRow[(87 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtySep = Convert.ToInt32(dataRow[(88 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyOct = Convert.ToInt32(dataRow[(89 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyNov = Convert.ToInt32(dataRow[(90 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-                        item.SumOfQtyDec = Convert.ToInt32(dataRow[(91 - DateTime.Now.Month) + (13 - DateTime.Now.Month)].ToString());
-
-                        model.Add(item);
+                        item.CostCenter = dataRow[5];
+                        item.FunctionName= dataRow[6];
+                        item.Regional= dataRow[7];
+                        item.VehicleType = dataRow[14];
+                        for (int i = 8; i <= data.DataRows.Count(); i++)
+                        {
+                            if (data.Headers[i] == "" || data.Headers[i] == null)
+                            {
+                                continue;
+                            }
+                            var Header = data.Headers[i].Split('_');
+                            if (Header.Count() > 1)
+                            {
+                                var Type = Header[0];
+                                
+                                var Time = Header[1].Split('-');
+                                if (Time.Count() > 1)
+                                {
+                                    if (Type.ToUpper() == "QTY")
+                                    {
+                                        item.Type = "QTY";
+                                        try
+                                        {
+                                            item.Qty = Convert.ToInt32(dataRow[i]);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        item.Type = Header[1].ToUpper();
+                                        try
+                                        {
+                                            item.ObCost = Convert.ToDecimal(dataRow[i]);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            
+                                        }
+                                        
+                                    }
+                                    item.Month =Convert.ToInt32(Time[0]);
+                                    item.Year = Convert.ToInt32(Time[1]);
+                                    model.Add(item);
+                                }
+                            }
+                        }
+                       
                     }
                     catch (Exception ex)
                     {
