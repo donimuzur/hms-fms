@@ -176,7 +176,9 @@ namespace FMS.BLL.Ctf
                                                                    && (x.SERIES == null ? "" : x.SERIES.ToUpper()) == (fleetData.SERIES == null ? "" : fleetData.SERIES.ToUpper())
                                                                    && (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == (fleetData.BODY_TYPE == null ? "" : fleetData.BODY_TYPE.ToUpper()) 
                                                                    && x.YEAR == fleetData.VEHICLE_YEAR 
-                                                                   && x.VENDOR == Vendor.MST_VENDOR_ID && x.VEHICLE_TYPE.Contains(fleetData.VEHICLE_TYPE) && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+                                                                   && x.VENDOR == Vendor.MST_VENDOR_ID 
+                                                                   && (x.VEHICLE_TYPE  == null? "" : x.VEHICLE_TYPE.ToUpper()) == (fleetData.VEHICLE_TYPE == null ? "" : fleetData.VEHICLE_TYPE.ToUpper())
+                                                                   && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
             if (penalty == null)
             {
                 penalty = _penaltyService.GetPenalty().Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == (fleetData.BODY_TYPE == null ? "" : fleetData.BODY_TYPE.ToUpper())  
@@ -187,7 +189,7 @@ namespace FMS.BLL.Ctf
 
             if (penalty == null)
             {
-                penalty = _penaltyService.GetPenalty().Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleetData.VEHICLE_TYPE) 
+                penalty = _penaltyService.GetPenalty().Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleetData.VEHICLE_TYPE == null ? "" : fleetData.VEHICLE_TYPE.ToUpper()) 
                                                              && x.YEAR == fleetData.VEHICLE_YEAR
                                                              && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
             }
@@ -225,7 +227,9 @@ namespace FMS.BLL.Ctf
             var installmentEmp = _pricelistService.GetPriceList().Where(x => (x.MANUFACTURER == null ? "" : x.MANUFACTURER.ToUpper()) == (fleet.MANUFACTURER == null ? "" : fleet.MANUFACTURER.ToUpper()) 
                                                                         && (x.MODEL == null ? "" : x.MODEL.ToUpper()) == (fleet.MODEL == null ? "" :fleet.MODEL.ToUpper()) 
                                                                         && (x.SERIES == null ? "" : x.SERIES.ToUpper()) == (fleet.SERIES == null ? "" : fleet.SERIES.ToUpper()) 
-                                                                        && x.VEHICLE_TYPE.Contains(fleet.VEHICLE_TYPE) && x.VEHICLE_USAGE.Contains(fleet.VEHICLE_USAGE) && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault();
+                                                                        && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == ( fleet.VEHICLE_TYPE == null? "" : fleet.VEHICLE_TYPE.ToUpper())
+                                                                        && (x.VEHICLE_USAGE == null ? "" : x.VEHICLE_USAGE.ToUpper()) == (fleet.VEHICLE_USAGE == null ? "" : fleet.VEHICLE_USAGE.ToUpper())
+                                                                        && x.YEAR==fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID  && x.IS_ACTIVE == true).FirstOrDefault();
                 
             if (installmentEmp == null) return 0;
             
@@ -251,12 +255,12 @@ namespace FMS.BLL.Ctf
 
             if (fleet == null) return 0;
 
-            var Price = _pricelistService.GetPriceList().Where(x => (x.MANUFACTURER == null ? "" : x.MANUFACTURER.ToUpper()) == (fleet.MANUFACTURER == null ? "" : fleet.MANUFACTURER.ToUpper()) 
-                                                               && (x.MODEL == null ? "" : x.MODEL.ToUpper()) == (fleet.MODEL == null ? "" : fleet.MODEL.ToUpper()) 
-                                                               && (x.SERIES == null ? "" : x.SERIES.ToUpper()) == (fleet.SERIES == null ? "" : fleet.SERIES.ToUpper())
-                                                               && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleet.VEHICLE_TYPE == null ? "" : fleet.VEHICLE_TYPE.ToUpper()) 
-                                                               && (x.VEHICLE_USAGE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleet.VEHICLE_USAGE == null ? "" : fleet.VEHICLE_USAGE.ToUpper()) 
-                                                               && x.YEAR == fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID && x.IS_ACTIVE == true).FirstOrDefault();
+            var Price = _pricelistService.GetPriceList().Where(x => (x.MANUFACTURER == null ? "" : x.MANUFACTURER.ToUpper()) == (fleet.MANUFACTURER == null ? "" : fleet.MANUFACTURER.ToUpper())
+                                                                          && (x.MODEL == null ? "" : x.MODEL.ToUpper()) == (fleet.MODEL == null ? "" : fleet.MODEL.ToUpper())
+                                                                          && (x.SERIES == null ? "" : x.SERIES.ToUpper()) == (fleet.SERIES == null ? "" : fleet.SERIES.ToUpper())
+                                                                          && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleet.VEHICLE_TYPE == null ? "" : fleet.VEHICLE_TYPE.ToUpper())
+                                                                          && (x.VEHICLE_USAGE == null ? "" : x.VEHICLE_USAGE.ToUpper()) == (fleet.VEHICLE_USAGE == null ? "" : fleet.VEHICLE_USAGE.ToUpper())
+                                                                          && x.YEAR == fleet.VEHICLE_YEAR && x.VENDOR == Vendor.MST_VENDOR_ID && x.IS_ACTIVE == true).FirstOrDefault();
 
             if (Price == null) return 0;
             cost = Price.INSTALLMEN_EMP;
