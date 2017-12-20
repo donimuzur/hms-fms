@@ -65,7 +65,7 @@ namespace FMS.Website.Controllers
             var model = new TemporaryIndexModel();
             model.TitleForm = "Temporary Open Document";
             model.TitleExport = "ExportOpen";
-            model.TempList = Mapper.Map<List<TempData>>(data);
+            model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -81,7 +81,7 @@ namespace FMS.Website.Controllers
             var model = new TemporaryIndexModel();
             model.TitleForm = "Temporary Completed Document";
             model.TitleExport = "ExportCompleted";
-            model.TempList = Mapper.Map<List<TempData>>(data);
+            model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.MODIFIED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
@@ -98,7 +98,7 @@ namespace FMS.Website.Controllers
             var model = new TemporaryIndexModel();
             model.TitleForm = "Temporary Personal Dashboard";
             model.TitleExport = "ExportPersonal";
-            model.TempList = Mapper.Map<List<TempData>>(data);
+            model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;

@@ -72,6 +72,9 @@ namespace FMS.BusinessObject
         public Nullable<long> CFM_IDLE_ID { get; set; }
         public string VEHICLE_USAGE { get; set; }
         public string ASSIGNED_TO { get; set; }
+        public string COMMENTS { get; set; }
+        public Nullable<decimal> PRICE { get; set; }
+        public Nullable<decimal> VAT_DECIMAL { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_REASON MST_REASON { get; set; }
