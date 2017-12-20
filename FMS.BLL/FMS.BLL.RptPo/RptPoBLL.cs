@@ -32,100 +32,138 @@ namespace FMS.BLL.RptPo
         {
             var data = _RptPoService.GetRptPo(filter);
             var retData = Mapper.Map<List<RptPODto>>(data);
+            var dataListPo = new List<RptPODto>();
 
             var dataPo = _RptPoService.GetRptPoData().ToList();
-            
-            foreach (var item in retData)
+
+            var groupList = retData
+                .GroupBy(x => new {x.PoliceNumber, x.SupplyMethod, x.EmployeeName, x.CostCenter, x.Manufacturer, x.Models, x.Series,
+                                    x.BodyType, x.Color, x.ChasisNumber , x.EngineNumber , x.VehicleType , x.VehicleUsage ,x.PoNumber ,
+                                    x.PoLine , x.Vendor, x.StartContract, x.EndContract
+                })
+                .Select(p => new RptPODto()
+                {
+                    PoliceNumber = p.FirstOrDefault().PoliceNumber,
+                    SupplyMethod = p.FirstOrDefault().SupplyMethod,
+                    EmployeeName = p.FirstOrDefault().EmployeeName,
+                    CostCenter = p.FirstOrDefault().CostCenter,
+                    Manufacturer = p.FirstOrDefault().Manufacturer,
+                    Models = p.FirstOrDefault().Models,
+                    Series = p.FirstOrDefault().Series,
+                    BodyType = p.FirstOrDefault().BodyType,
+                    Color = p.FirstOrDefault().Color,
+                    ChasisNumber = p.FirstOrDefault().ChasisNumber,
+                    EngineNumber = p.LastOrDefault().EngineNumber,
+                    VehicleType = p.FirstOrDefault().VehicleType,
+                    VehicleUsage = p.FirstOrDefault().VehicleUsage,
+                    PoNumber = p.FirstOrDefault().PoNumber,
+                    PoLine = p.FirstOrDefault().PoLine,
+                    Vendor = p.FirstOrDefault().Vendor,
+                    StartContract = p.FirstOrDefault().StartContract,
+                    EndContract = p.FirstOrDefault().EndContract
+                });
+
+            foreach (var item in groupList)
             {
-                var retDataPo = dataPo.Where(x => x.ID == item.ID).FirstOrDefault();
-                var retDataFix = retData.Where(x => x.PoliceNumber == item.PoliceNumber).ToList().FirstOrDefault();
-                
-                if (item.ReportMonth == 1)
+                var retDataPo1 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 1).FirstOrDefault();
+                if (retDataPo1 != null)
                 {
-                    retDataFix.JanAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.JanPPN = (Decimal)retDataPo.GST;
-                    retDataFix.JanTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 2)
-                {
-                    retDataFix.PebAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.PebPPN = (Decimal)retDataPo.GST;
-                    retDataFix.PebTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 3)
-                {
-                    retDataFix.MarAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.MarPPN = (Decimal)retDataPo.GST;
-                    retDataFix.MarTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 4)
-                {
-                    retDataFix.AprAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.AprPPN = (Decimal)retDataPo.GST;
-                    retDataFix.AprTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 5)
-                {
-                    retDataFix.MeiAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.MeiPPN = (Decimal)retDataPo.GST;
-                    retDataFix.MeiTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 6)
-                {
-                    retDataFix.JunAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.JunPPN = (Decimal)retDataPo.GST;
-                    retDataFix.JunTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 7)
-                {
-                    retDataFix.JulAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.JulPPN = (Decimal)retDataPo.GST;
-                    retDataFix.JulTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 8)
-                {
-                    retDataFix.AgusAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.AgusPPN = (Decimal)retDataPo.GST;
-                    retDataFix.AgusTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 9)
-                {
-                    retDataFix.SepAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.SepPPN = (Decimal)retDataPo.GST;
-                    retDataFix.SepTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 10)
-                {
-                    retDataFix.OktAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.OktPPN = (Decimal)retDataPo.GST;
-                    retDataFix.OktTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 11)
-                {
-                    retDataFix.NopAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.NopPPN = (Decimal)retDataPo.GST;
-                    retDataFix.NopTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
-                }
-                if (item.ReportMonth == 12)
-                {
-                    retDataFix.DesAmount = (Decimal)retDataPo.MONTHLY_INSTALLMENT;
-                    retDataFix.DesPPN = (Decimal)retDataPo.GST;
-                    retDataFix.DesTotal = (Decimal)retDataPo.TOTAL_MONTHLY_INSTALLMENT;
+                    item.JanAmount = (Decimal)retDataPo1.MONTHLY_INSTALLMENT;
+                    item.JanPPN = (Decimal)retDataPo1.GST;
+                    item.JanTotal = (Decimal)retDataPo1.TOTAL_MONTHLY_INSTALLMENT;
                 }
 
-                item.OktAmount = retDataFix.OktAmount;
-                item.OktPPN = retDataFix.OktPPN;
-                item.OktTotal = retDataFix.OktTotal;
+                var retDataPo2 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 2).FirstOrDefault();
+                if (retDataPo2 != null)
+                {
+                    item.PebAmount = (Decimal)retDataPo2.MONTHLY_INSTALLMENT;
+                    item.PebPPN = (Decimal)retDataPo2.GST;
+                    item.PebTotal = (Decimal)retDataPo2.TOTAL_MONTHLY_INSTALLMENT;
+                }
 
-                item.NopAmount = retDataFix.NopAmount;
-                item.NopPPN = retDataFix.NopPPN;
-                item.NopTotal = retDataFix.NopTotal;
+                var retDataPo3 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 3).FirstOrDefault();
+                if (retDataPo3 != null)
+                {
+                    item.MarAmount = (Decimal)retDataPo3.MONTHLY_INSTALLMENT;
+                    item.MarPPN = (Decimal)retDataPo3.GST;
+                    item.MarTotal = (Decimal)retDataPo3.TOTAL_MONTHLY_INSTALLMENT;
+                }
 
-                item.DesAmount = retDataFix.DesAmount;
-                item.DesPPN = retDataFix.DesPPN;
-                item.DesTotal = retDataFix.DesTotal;
+                var retDataPo4 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 4).FirstOrDefault();
+                if (retDataPo4 != null)
+                {
+                    item.AprAmount = (Decimal)retDataPo4.MONTHLY_INSTALLMENT;
+                    item.AprPPN = (Decimal)retDataPo4.GST;
+                    item.AprTotal = (Decimal)retDataPo4.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo5 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 5).FirstOrDefault();
+                if (retDataPo5 != null)
+                {
+                    item.MeiAmount = (Decimal)retDataPo5.MONTHLY_INSTALLMENT;
+                    item.MeiPPN = (Decimal)retDataPo5.GST;
+                    item.MeiTotal = (Decimal)retDataPo5.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo6 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 6).FirstOrDefault();
+                if (retDataPo6 != null)
+                {
+                    item.JunAmount = (Decimal)retDataPo6.MONTHLY_INSTALLMENT;
+                    item.JunPPN = (Decimal)retDataPo6.GST;
+                    item.JunTotal = (Decimal)retDataPo6.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo7 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 7).FirstOrDefault();
+                if (retDataPo7 != null)
+                {
+                    item.JulAmount = (Decimal)retDataPo7.MONTHLY_INSTALLMENT;
+                    item.JulPPN = (Decimal)retDataPo7.GST;
+                    item.JulTotal = (Decimal)retDataPo7.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo8 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 8).FirstOrDefault();
+                if (retDataPo8 != null)
+                {
+                    item.AgusAmount = (Decimal)retDataPo8.MONTHLY_INSTALLMENT;
+                    item.AgusPPN = (Decimal)retDataPo8.GST;
+                    item.AgusTotal = (Decimal)retDataPo8.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo9 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 9).FirstOrDefault();
+                if (retDataPo9 != null)
+                {
+                    item.SepAmount = (Decimal)retDataPo9.MONTHLY_INSTALLMENT;
+                    item.SepPPN = (Decimal)retDataPo9.GST;
+                    item.SepTotal = (Decimal)retDataPo9.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo10 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 10).FirstOrDefault();
+                if (retDataPo10 != null)
+                {
+                    item.OktAmount = (Decimal)retDataPo10.MONTHLY_INSTALLMENT;
+                    item.OktPPN = (Decimal)retDataPo10.GST;
+                    item.OktTotal = (Decimal)retDataPo10.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo11 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 11).FirstOrDefault();
+                if (retDataPo11 != null)
+                {
+                    item.NopAmount = (Decimal)retDataPo11.MONTHLY_INSTALLMENT;
+                    item.NopPPN = (Decimal)retDataPo11.GST;
+                    item.NopTotal = (Decimal)retDataPo11.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                var retDataPo12 = dataPo.Where(x => x.POLICE_NUMBER == item.PoliceNumber && x.REPORT_MONTH == 12).FirstOrDefault();
+                if (retDataPo12 != null)
+                {
+                    item.DesAmount = (Decimal)retDataPo12.MONTHLY_INSTALLMENT;
+                    item.DesPPN = (Decimal)retDataPo12.GST;
+                    item.DesTotal = (Decimal)retDataPo12.TOTAL_MONTHLY_INSTALLMENT;
+                }
+
+                dataListPo.Add(item);
             }
-            return retData;
+            return dataListPo;
         }
 
         public List<RptPODto> GetRptPoData()

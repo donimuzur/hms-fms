@@ -4,65 +4,6 @@
 <table id="tbRptPo" class="table table-bordered table-striped">
     <thead>
         <tr>
-            @if (@Model.SearchView.MonthFrom <= 1 && @Model.SearchView.MonthTo >= 1)
-            {
-                <th colspan="3" style="text-align:center">Januari</th>
-            }
-           
-            @if (@Model.SearchView.MonthFrom <= 2 && @Model.SearchView.MonthTo >= 2)
-            {
-                <th colspan="3" style="text-align:center">Februari</th>
-            }
-           
-            @if (@Model.SearchView.MonthFrom <= 3 && @Model.SearchView.MonthTo >= 3)
-            {
-                <th colspan="3" style="text-align:center">Maret</th>
-            }
-           
-            @if (@Model.SearchView.MonthFrom <= 4 && @Model.SearchView.MonthTo >= 4)
-            {
-                <th colspan="3" style="text-align:center">April</th>
-            }
-           
-           @if (@Model.SearchView.MonthFrom <= 5 && @Model.SearchView.MonthTo >= 5)
-           {
-                <th colspan="3" style="text-align:center">Mei</th>
-           }
-          
-           @if (@Model.SearchView.MonthFrom <= 6 && @Model.SearchView.MonthTo >= 6)
-           {
-                <th colspan="3" style="text-align:center">Juni</th>
-           }
-            @if (@Model.SearchView.MonthFrom <= 7 && @Model.SearchView.MonthTo >= 7)
-            {
-                <th colspan="3" style="text-align:center">Juli</th>
-            }
-          
-           @if (@Model.SearchView.MonthFrom <= 8 && @Model.SearchView.MonthTo >= 8)
-            {
-                <th colspan="3" style="text-align:center">Agustus</th>
-           }
-          
-            @if (@Model.SearchView.MonthFrom <= 9 && @Model.SearchView.MonthTo >= 9)
-            {
-                <th colspan="3" style="text-align:center">September</th>
-            }
-            
-            @if (@Model.SearchView.MonthFrom <= 10 && @Model.SearchView.MonthTo >= 10)
-            {
-                <th colspan="3" style="text-align:center">Oktober</th>
-            }
-            
-            @if (@Model.SearchView.MonthFrom <= 11 && @Model.SearchView.MonthTo >= 11)
-            {
-                <th colspan="3" style="text-align:center">Nopember</th>
-            }
-            
-           @if (@Model.SearchView.MonthFrom <= 12 && @Model.SearchView.MonthTo >= 12)
-            {
-                <th colspan="3" style="text-align:center">Desember</th>
-           }
-           
             <th rowspan="2" style="text-align:center">Police Number</th>
             <th rowspan="2" style="text-align:center">Supply Method</th>
             <th rowspan="2" style="text-align:center">Employee Name</th>
@@ -81,6 +22,65 @@
             <th rowspan="2" style="text-align:center">Start Contract</th>
             <th rowspan="2" style="text-align:center">End Contract</th>
             <th rowspan="2" style="text-align:center">Vendor</th>
+
+            @if (@Model.SearchView.MonthFrom <= 1 && @Model.SearchView.MonthTo >= 1)
+            {
+                <th colspan="3" style="text-align:center">Januari</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 2 && @Model.SearchView.MonthTo >= 2)
+            {
+                <th colspan="3" style="text-align:center">Februari</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 3 && @Model.SearchView.MonthTo >= 3)
+            {
+                <th colspan="3" style="text-align:center">Maret</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 4 && @Model.SearchView.MonthTo >= 4)
+            {
+                <th colspan="3" style="text-align:center">April</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 5 && @Model.SearchView.MonthTo >= 5)
+            {
+                <th colspan="3" style="text-align:center">Mei</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 6 && @Model.SearchView.MonthTo >= 6)
+            {
+                <th colspan="3" style="text-align:center">Juni</th>
+            }
+            @if (@Model.SearchView.MonthFrom <= 7 && @Model.SearchView.MonthTo >= 7)
+            {
+                <th colspan="3" style="text-align:center">Juli</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 8 && @Model.SearchView.MonthTo >= 8)
+            {
+                <th colspan="3" style="text-align:center">Agustus</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 9 && @Model.SearchView.MonthTo >= 9)
+            {
+                <th colspan="3" style="text-align:center">September</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 10 && @Model.SearchView.MonthTo >= 10)
+            {
+                <th colspan="3" style="text-align:center">Oktober</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 11 && @Model.SearchView.MonthTo >= 11)
+            {
+                <th colspan="3" style="text-align:center">Nopember</th>
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 12 && @Model.SearchView.MonthTo >= 12)
+            {
+                <th colspan="3" style="text-align:center">Desember</th>
+            }
         </tr>
         <tr>
             @if (@Model.SearchView.MonthFrom <= 1 && @Model.SearchView.MonthTo >= 1)
@@ -170,339 +170,113 @@
     </thead>
     <thead class="filters">
         <tr>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             @if (@Model.SearchView.MonthFrom <= 1 && @Model.SearchView.MonthTo >= 1)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-            
-           @if (@Model.SearchView.MonthFrom <= 2 && @Model.SearchView.MonthTo >= 2)
+
+            @if (@Model.SearchView.MonthFrom <= 2 && @Model.SearchView.MonthTo >= 2)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-           }
-           
-           @if (@Model.SearchView.MonthFrom <= 3 && @Model.SearchView.MonthTo >= 3)
+            }
+
+            @if (@Model.SearchView.MonthFrom <= 3 && @Model.SearchView.MonthTo >= 3)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-           }
-          
+            }
+
             @if (@Model.SearchView.MonthFrom <= 4 && @Model.SearchView.MonthTo >= 4)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-           
-           @if (@Model.SearchView.MonthFrom <= 5 && @Model.SearchView.MonthTo >= 5)
+
+            @if (@Model.SearchView.MonthFrom <= 5 && @Model.SearchView.MonthTo >= 5)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-           }
-          
+            }
+
             @if (@Model.SearchView.MonthFrom <= 6 && @Model.SearchView.MonthTo >= 6)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-            
-           @if (@Model.SearchView.MonthFrom <= 7 && @Model.SearchView.MonthTo >= 7)
+
+            @if (@Model.SearchView.MonthFrom <= 7 && @Model.SearchView.MonthTo >= 7)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-           }
-           
+            }
+
             @if (@Model.SearchView.MonthFrom <= 8 && @Model.SearchView.MonthTo >= 8)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-           
+
             @if (@Model.SearchView.MonthFrom <= 9 && @Model.SearchView.MonthTo >= 9)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-            
+
             @if (@Model.SearchView.MonthFrom <= 10 && @Model.SearchView.MonthTo >= 10)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-            
+
             @if (@Model.SearchView.MonthFrom <= 11 && @Model.SearchView.MonthTo >= 11)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-            
+
             @if (@Model.SearchView.MonthFrom <= 12 && @Model.SearchView.MonthTo >= 12)
             {
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             }
-           
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var data in Model.RptPOItem)
         {
             <tr>
-                @if (@Model.SearchView.MonthFrom <= 1 && @Model.SearchView.MonthTo >= 1) { 
-                    if (data.ReportMonth == 1)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.JanAmount)</td>
-                        <td>@Html.Raw(data.JanPPN)</td>
-                        <td>@Html.Raw(data.JanTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-
-               @if (@Model.SearchView.MonthFrom <= 2 && @Model.SearchView.MonthTo >= 2)
-               {
-                    if (data.ReportMonth == 2)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.PebAmount)</td>
-                        <td>@Html.Raw(data.PebPPN)</td>
-                        <td>@Html.Raw(data.PebTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-               }
-
-                @if (@Model.SearchView.MonthFrom <= 3 && @Model.SearchView.MonthTo >= 3)
-                { 
-                    if (data.ReportMonth == 3)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.MarAmount)</td>
-                        <td>@Html.Raw(data.MarPPN)</td>
-                        <td>@Html.Raw(data.MarTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-                @if (@Model.SearchView.MonthFrom <= 4 && @Model.SearchView.MonthTo >= 4)
-                {
-                    if (data.ReportMonth == 4)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.AprAmount)</td>
-                        <td>@Html.Raw(data.AprPPN)</td>
-                        <td>@Html.Raw(data.AprTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-                @if (@Model.SearchView.MonthFrom <= 5 && @Model.SearchView.MonthTo >= 5)
-                {
-                    if (data.ReportMonth == 5)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.MeiAmount)</td>
-                        <td>@Html.Raw(data.MeiPPN)</td>
-                        <td>@Html.Raw(data.MeiTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-
-                @if (@Model.SearchView.MonthFrom <= 6 && @Model.SearchView.MonthTo >= 6)
-                {
-                    if (data.ReportMonth == 6)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.JunAmount)</td>
-                        <td>@Html.Raw(data.JunPPN)</td>
-                        <td>@Html.Raw(data.JunTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                    <td> </td>
-                    <td> </td>
-                    }
-                }
-                
-                @if (@Model.SearchView.MonthFrom <= 7 && @Model.SearchView.MonthTo >= 7)
-                {
-                    if (data.ReportMonth == 7)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.JulAmount)</td>
-                        <td>@Html.Raw(data.JulPPN)</td>
-                        <td>@Html.Raw(data.JulTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-               
-                @if (@Model.SearchView.MonthFrom <= 8 && @Model.SearchView.MonthTo >= 8)
-                {
-                    if (data.ReportMonth == 8)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.AgusAmount)</td>
-                        <td>@Html.Raw(data.AgusPPN)</td>
-                        <td>@Html.Raw(data.AgusTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-                
-                @if (@Model.SearchView.MonthFrom <= 9 && @Model.SearchView.MonthTo >= 9)
-                {
-                    if (data.ReportMonth == 9)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.SepAmount)</td>
-                        <td>@Html.Raw(data.SepPPN)</td>
-                        <td>@Html.Raw(data.SepTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-
-                @if (@Model.SearchView.MonthFrom <= 10 && @Model.SearchView.MonthTo >= 10)
-                {
-                    if (data.ReportMonth == 10)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.OktAmount)</td>
-                        <td>@Html.Raw(data.OktPPN)</td>
-                        <td>@Html.Raw(data.OktTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-                
-                @if (@Model.SearchView.MonthFrom <= 11 && @Model.SearchView.MonthTo >= 11)
-                {
-                    if (data.ReportMonth == 11)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.NopAmount)</td>
-                        <td>@Html.Raw(data.NopPPN)</td>
-                        <td>@Html.Raw(data.NopTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-                
-                @if (@Model.SearchView.MonthFrom <= 12 && @Model.SearchView.MonthTo >= 12)
-                {
-                    if (data.ReportMonth == 12)
-                    {
-                        @*<td>@Html.Raw(data.MonthlyInstallment)</td>
-                        <td>@Html.Raw(data.Gst)</td>
-                        <td>@Html.Raw(data.TotMonthInstallment)</td>*@
-                        <td>@Html.Raw(data.DesAmount)</td>
-                        <td>@Html.Raw(data.DesPPN)</td>
-                        <td>@Html.Raw(data.DesTotal)</td>
-                    }
-                    else
-                    {
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                    }
-                }
-                
                 <td>@Html.Raw(data.PoliceNumber)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
@@ -521,6 +295,100 @@
                 <td>@Html.Raw(data.StartContract.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.EndContract.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.Vendor)</td>
+                @if (@Model.SearchView.MonthFrom <= 1 && @Model.SearchView.MonthTo >= 1)
+                {
+                    <td>@Html.Raw(data.JanAmount)</td>
+                    <td>@Html.Raw(data.JanPPN)</td>
+                    <td>@Html.Raw(data.JanTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 2 && @Model.SearchView.MonthTo >= 2)
+                {
+                    <td>@Html.Raw(data.PebAmount)</td>
+                    <td>@Html.Raw(data.PebPPN)</td>
+                    <td>@Html.Raw(data.PebTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 3 && @Model.SearchView.MonthTo >= 3)
+                {
+                    <td>@Html.Raw(data.MarAmount)</td>
+                    <td>@Html.Raw(data.MarPPN)</td>
+                    <td>@Html.Raw(data.MarTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 4 && @Model.SearchView.MonthTo >= 4)
+                {
+                    <td>@Html.Raw(data.AprAmount)</td>
+                    <td>@Html.Raw(data.AprPPN)</td>
+                    <td>@Html.Raw(data.AprTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 5 && @Model.SearchView.MonthTo >= 5)
+                {
+                    <td>@Html.Raw(data.MeiAmount)</td>
+                    <td>@Html.Raw(data.MeiPPN)</td>
+                    <td>@Html.Raw(data.MeiTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 6 && @Model.SearchView.MonthTo >= 6)
+                {
+                    <td>@Html.Raw(data.JunAmount)</td>
+                    <td>@Html.Raw(data.JunPPN)</td>
+                    <td>@Html.Raw(data.JunTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 7 && @Model.SearchView.MonthTo >= 7)
+                {
+                    <td>@Html.Raw(data.JulAmount)</td>
+                    <td>@Html.Raw(data.JulPPN)</td>
+                    <td>@Html.Raw(data.JulTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 8 && @Model.SearchView.MonthTo >= 8)
+                {
+                    <td>@Html.Raw(data.AgusAmount)</td>
+                    <td>@Html.Raw(data.AgusPPN)</td>
+                    <td>@Html.Raw(data.AgusTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 9 && @Model.SearchView.MonthTo >= 9)
+                {
+                    <td>@Html.Raw(data.SepAmount)</td>
+                    <td>@Html.Raw(data.SepPPN)</td>
+                    <td>@Html.Raw(data.SepTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 10 && @Model.SearchView.MonthTo >= 10)
+                {
+                    <td>@Html.Raw(data.OktAmount)</td>
+                    <td>@Html.Raw(data.OktPPN)</td>
+                    <td>@Html.Raw(data.OktTotal)</td>
+                }
+
+
+                @if (Model.SearchView.MonthFrom <= 11 && Model.SearchView.MonthTo >= 11)
+                {
+                    <td>@Html.Raw(data.NopAmount)</td>
+                    <td>@Html.Raw(data.NopPPN)</td>
+                    <td>@Html.Raw(data.NopTotal)</td>
+                }
+
+
+                @if (@Model.SearchView.MonthFrom <= 12 && @Model.SearchView.MonthTo >= 12)
+                {
+                    <td>@Html.Raw(data.DesAmount)</td>
+                    <td>@Html.Raw(data.DesPPN)</td>
+                    <td>@Html.Raw(data.DesTotal)</td>
+                }
             </tr>
         }
     </tbody>
