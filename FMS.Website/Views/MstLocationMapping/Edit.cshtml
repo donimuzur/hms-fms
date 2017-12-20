@@ -94,8 +94,8 @@
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
     }
-    <script type="text/javascript">
-    function GetBasetownList() {
+
+  function GetBasetownList() {
         if ($("#Location").length) {
             var Location = $("#Location option:selected").text();
             $('#Basetown option').remove();
@@ -113,7 +113,7 @@
                         $('#Basetown').append('<option value="">Select</option>');
                         if (list.length > 0) {
                             for (var i = 0; i < list.length; i++) {
-                                $('#Basetown').append('<option value=' + list[i].BASETOWN.toString() + '>' + list[i].BASETOWN.toString() + '</option>');
+                                $('#Basetown').append('<option value="' + list[i].BASETOWN.toString() + '">' + list[i].BASETOWN.toString() + '</option>');
                             }
                         }
                         else {
@@ -142,5 +142,4 @@
             }
         });
     }
-</script>
 </script>

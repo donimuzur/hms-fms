@@ -82,7 +82,7 @@ namespace FMS.Website.Controllers
                     model.ErrorMessage = "Data Already Exsit";
 
                     var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS }).Distinct().ToList().OrderBy(x => x.ADDRESS);
+                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
                     model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
                     model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
 
@@ -148,10 +148,9 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<LocationMappingDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = CurrentUser.USERNAME;
+                data.ModifiedBy = CurrentUser.USER_ID;
                 try
                 {
-                    _locationMappingBLL.Save(data, CurrentUser);
                     var exist = _locationMappingBLL.GetLocationMapping().Where(x => (x.Address == null ? "" : x.Address.ToUpper()) == (data.Address == null ? "" : data.Address.ToUpper())
                       && (x.Basetown == null ? "" : x.Basetown.ToLower()) == (data.Basetown == null ? "" : data.Basetown.ToLower())
                       && (x.Location == null ? "" : x.Location.ToLower()) == (data.Location == null ? "" : data.Location.ToLower())
@@ -173,6 +172,7 @@ namespace FMS.Website.Controllers
                         model.CurrentLogin = CurrentUser;
                         return View(model);
                     }
+                    _locationMappingBLL.Save(data, CurrentUser);
                     _locationMappingBLL.SaveChanges();
 
                 }
