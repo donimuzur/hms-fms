@@ -1259,6 +1259,134 @@ namespace FMS.BLL.Csf
             return outputList;
         }
 
+        public List<VehicleFromVendorUpload> ValidationUploadDocumentProcessMassUpload(List<VehicleFromVendorUpload> inputs)
+        {
+            var messageList = new List<string>();
+            var messageListStopper = new List<string>();
+            var outputList = new List<VehicleFromVendorUpload>();
+
+            var dataAllCsf = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress);
+
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+
+            foreach (var inputItem in inputs)
+            {
+                messageList.Clear();
+
+                var dataCsf = dataAllCsf.Where(x => x.DOCUMENT_NUMBER.ToLower() == inputItem.CsfNumber.ToLower()).FirstOrDefault();
+
+                //check csf number
+                if (dataCsf == null)
+                {
+                    messageList.Add("CSF Number not valid");
+                    messageListStopper.Add("CSF Number not valid");
+                }
+                else
+                {
+                    //check police number active in mst_fleet
+                    if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()
+                                                    && x.MST_FLEET_ID != dataCsf.CFM_IDLE_ID).FirstOrDefault() != null)
+                    {
+                        messageList.Add("Police number already exists in master fleet");
+                        messageListStopper.Add("Police number already exists in master fleet");
+                    }
+
+                    //check employee name
+                    if (dataCsf.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
+                    {
+                        messageList.Add("Employee name not same as employee name request");
+                        messageListStopper.Add("Employee name not same as employee name request");
+                    }
+
+                    //check manufacturer
+                    if (dataCsf.MANUFACTURER.ToLower() != inputItem.Manufacturer.ToLower())
+                    {
+                        messageList.Add("Manufacturer not same as employee request");
+                        messageListStopper.Add("Manufacturer not same as employee request");
+                    }
+
+                    //check models
+                    if (dataCsf.MODEL.ToLower() != inputItem.Models.ToLower())
+                    {
+                        messageList.Add("Models not same as employee request");
+                        messageListStopper.Add("Models not same as employee request");
+                    }
+
+                    //check series
+                    if (dataCsf.SERIES.ToLower() != inputItem.Series.ToLower())
+                    {
+                        messageList.Add("Series not same as employee request");
+                    }
+
+                    //check body type
+                    if (dataCsf.BODY_TYPE.ToLower() != inputItem.BodyType.ToLower())
+                    {
+                        messageList.Add("Body Type not same as employee request");
+                    }
+
+                    //check color
+                    if (dataCsf.COLOUR.ToLower() != inputItem.Color.ToLower())
+                    {
+                        messageList.Add("Colour not same as employee request");
+                    }
+
+                    //check start contract
+                    if (dataCsf.EFFECTIVE_DATE > inputItem.StartPeriod)
+                    {
+                        messageList.Add("Start contract less than effective date");
+                        messageListStopper.Add("Start contract less than effective date");
+                    }
+
+                    //check end contract
+                    if (inputItem.StartPeriod > inputItem.EndPeriod)
+                    {
+                        messageList.Add("End contract less than Start contract");
+                        messageListStopper.Add("End contract less Start contract");
+                    }
+                }
+
+                #region -------------- Set Message Info if exists ---------------
+
+                if (messageList.Count > 0)
+                {
+                    inputItem.MessageError = "";
+                    foreach (var message in messageList)
+                    {
+                        inputItem.MessageError += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                #region -------------- Set Message Stopper Info if exists ---------------
+
+                if (messageListStopper.Count > 0)
+                {
+                    inputItem.MessageErrorStopper = "";
+                    foreach (var message in messageListStopper)
+                    {
+                        inputItem.MessageErrorStopper += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageErrorStopper = string.Empty;
+                }
+
+                #endregion
+
+                outputList.Add(inputItem);
+            }
+
+            return outputList;
+        }
+
         public List<VehicleFromUserUpload> ValidationUploadVehicleProcess(List<VehicleFromUserUpload> inputs, int id)
         {
             var messageList = new List<string>();

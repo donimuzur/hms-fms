@@ -785,6 +785,120 @@ namespace FMS.BLL.Temporary
             return outputList;
         }
 
+        public List<VehicleFromVendorUpload> ValidationUploadDocumentProcessMassUpload(List<VehicleFromVendorUpload> inputs)
+        {
+            var messageList = new List<string>();
+            var messageListStopper = new List<string>();
+            var outputList = new List<VehicleFromVendorUpload>();
+
+            var dataAllTemp = _TemporaryService.GetAllTemp().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress);
+
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+
+            foreach (var inputItem in inputs)
+            {
+                messageList.Clear();
+
+                var dataTemp = dataAllTemp.Where(x => x.DOCUMENT_NUMBER.ToLower() == inputItem.CsfNumber.ToLower()).FirstOrDefault();
+
+                //check temp number
+                if (dataTemp == null)
+                {
+                    messageList.Add("Temporary Number not valid");
+                    messageListStopper.Add("Temporary Number not valid");
+                }
+                else
+                {
+                    //check police number active in mst_fleet
+                    if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()).FirstOrDefault() != null)
+                    {
+                        messageList.Add("Police number already exists in master fleet");
+                        messageListStopper.Add("Police number already exists in master fleet");
+                    }
+
+                    //check employee name
+                    if (dataTemp.EMPLOYEE_NAME.ToLower() != inputItem.EmployeeName.ToLower())
+                    {
+                        messageList.Add("Employee name not same as employee name request");
+                        messageListStopper.Add("Employee name not same as employee name request");
+                    }
+
+                    //check manufacturer
+                    if (dataTemp.MANUFACTURER.ToLower() != inputItem.Manufacturer.ToLower())
+                    {
+                        messageList.Add("Manufacturer not same as employee request");
+                    }
+
+                    //check models
+                    if (dataTemp.MODEL.ToLower() != inputItem.Models.ToLower())
+                    {
+                        messageList.Add("Models not same as employee request");
+                    }
+
+                    //check series
+                    if (dataTemp.SERIES.ToLower() != inputItem.Series.ToLower())
+                    {
+                        messageList.Add("Series not same as employee request");
+                    }
+
+                    //check body type
+                    if (dataTemp.BODY_TYPE.ToLower() != inputItem.BodyType.ToLower())
+                    {
+                        messageList.Add("Body Type not same as employee request");
+                    }
+
+                    if (dataTemp.COLOR != null)
+                    {
+                        //check color
+                        if (dataTemp.COLOR.ToLower() != inputItem.Color.ToLower())
+                        {
+                            messageList.Add("Colour not same as employee request");
+                        }
+                    }
+                }
+
+                #region -------------- Set Message Info if exists ---------------
+
+                if (messageList.Count > 0)
+                {
+                    inputItem.MessageError = "";
+                    foreach (var message in messageList)
+                    {
+                        inputItem.MessageError += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageError = string.Empty;
+                }
+
+                #endregion
+
+                #region -------------- Set Message Stopper Info if exists ---------------
+
+                if (messageListStopper.Count > 0)
+                {
+                    inputItem.MessageErrorStopper = "";
+                    foreach (var message in messageListStopper)
+                    {
+                        inputItem.MessageErrorStopper += message + ";";
+                    }
+                }
+
+                else
+                {
+                    inputItem.MessageErrorStopper = string.Empty;
+                }
+
+                #endregion
+
+                outputList.Add(inputItem);
+            }
+
+            return outputList;
+        }
+
         public void CheckTempInProgress()
         {
             var dateMinus1 = DateTime.Now.AddDays(-1);
