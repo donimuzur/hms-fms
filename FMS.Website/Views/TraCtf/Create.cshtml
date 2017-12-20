@@ -264,6 +264,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="control-label">Extend Police Number</label>
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoliceNumber, new { @class = "form-control ", @id = "modalExtPoliceNumber" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="control-label">Extend PO Number</label>
                             @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
                         </div>
@@ -625,6 +631,7 @@
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
 
+            $('#modalExtPoliceNumber').prop('required', true);
             $('#modalPoNumber').prop('required', true);
             $('#modalPoLine').prop('required', true);
             $('#modalReason').prop('required', true);
@@ -634,7 +641,7 @@
         else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
-
+            $('#modalExtPoliceNumber').prop('required', false);
             $('#modalPoNumber').prop('required', false);
             $('#modalPoLine').prop('required', false);
             $('#modalReason').prop('required', false);
