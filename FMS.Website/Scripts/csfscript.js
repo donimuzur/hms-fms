@@ -7,13 +7,13 @@
     if ($('.title-page').html() == 'CSF Dashboard') {
         $('#CsfDashboard').addClass('active');
     }
-    else if ($('.title-page').html() == 'CSF Open Document') {
+    else if ($('.title-page').html() == 'CSF Open Document' || $('.title-page').html() == 'Mass upload from Vendor') {
         $('#CsfOpen').addClass('active');
     }
     else if ($('.title-page').html() == 'CSF Completed Document') {
         $('#CsfCompleted').addClass('active');
     }
-    else if ($('.title-page').html() == 'CSF Personal Dashboard') {
+    else if ($('.title-page').html() == 'CSF Personal Dashboard' || $('.title-page').html() == 'Mass upload from Vendor - Personal Dashboard') {
         $('#CsfParent').addClass('active');
     }
     
