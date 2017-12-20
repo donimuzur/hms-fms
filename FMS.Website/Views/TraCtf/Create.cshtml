@@ -133,7 +133,7 @@
                                                             @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly", required = "required" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-12" id="idVehicleUsage">
                                                         <div class="form-group">
                                                             <label class="control-label">Vehicle Usage</label>
                                                             @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly" })
@@ -452,6 +452,7 @@
         }
         else if (reasonval == '')
         {
+            $('#idExtend').show();
             $('#ExtendVehicle').prop('disabled', false);
             $('#idExtend').prop('disabled', false);
             onExtendVehicle();
@@ -476,6 +477,7 @@
         var data = $('#VehicleType').val().toLowerCase();
         if (data == 'wtc') {
             $('#idBuyCost').hide();
+            $('#idVehicleUsage').hide();
             $('#BuyCostTotalStr').prop('required', false);
             $('#idExtend').show();
             $('#idcfmonly').hide();
