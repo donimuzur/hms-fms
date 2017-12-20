@@ -1,0 +1,66 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.SalesVolumeModel
+
+<table id="tbSalesVolume" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 50px">Action</th>
+            <th>Type</th>
+            <th>Region</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Value</th>
+            <th>Created By</th>
+            <th>Created Date</th>
+            <th>Modified By</th>
+            <th>Modified Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th>
+            </th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.Details)
+        {
+            <tr>
+                <td>
+                    @if (Model.CurrentPageAccess.ReadAccess == true)
+                    {
+                        <a href="@Url.Action("Detail", "MstSalesVolume", new { @MstSalesVolumeId = data.MstSalesVolumeId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    }
+                </td>
+                <td>@Html.Raw(data.Type)</td>
+                <td>@Html.Raw(data.Region)</td>
+                <td>@Html.Raw(data.MonthS)</td>
+                <td>@Html.Raw(data.Year)</td>
+                <td>@string.Format("{0:N0}", data.Value)</td>
+                <td>@Html.Raw(data.CreatedBy)</td>
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                <td>@Html.Raw(data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                @if (data.IsActive == true)
+                {
+                    <td>@Html.Raw("Active")</td>
+                }
+                else
+                {
+                    <td>@Html.Raw("InActive")</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

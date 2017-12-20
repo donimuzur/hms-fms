@@ -116,7 +116,7 @@
                         <td>@Html.Raw(data.GsPoliceNumber)</td>
                         <td>@Html.Raw(data.StartDate == null ?  "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.LeadTime.HasValue?data.LeadTime.Value.Year + " year(s) " + data.LeadTime.Value.Month + " month(s) " + data.LeadTime.Value.Day + " day(s) " + data.LeadTime.Value.Hour + " hour(s) " + data.LeadTime.Value.Minute + " minute(s)": "")</td>
+                        <td>@Html.Raw(data.LeadTimeS)</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
