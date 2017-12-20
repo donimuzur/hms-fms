@@ -158,7 +158,7 @@ namespace FMS.Website.Controllers
             var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
             if (employeeData != null)
             {
-                model.Detail.LocationCity = employeeData.CITY;
+                model.Detail.LocationCity = employeeData.BASETOWN;
                 model.Detail.LocationAddress = employeeData.ADDRESS;
             }
 
@@ -213,9 +213,9 @@ namespace FMS.Website.Controllers
             model.Detail.TemporaryId = tempData.Count();
 
             var employeeList = _employeeBLL.GetEmployee();
-            var CityList = employeeList.Select(x => new { x.CITY }).Distinct().ToList();
+            var CityList = employeeList.Select(x => new { x.BASETOWN }).Distinct().ToList();
             var AddressList = employeeList.Select(x => new { x.ADDRESS }).Distinct().ToList();
-            model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
+            model.Detail.LocationCityList = new SelectList(CityList, "BASETOWN", "BASETOWN");
             model.Detail.LocationAddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
             return model;
@@ -1165,7 +1165,7 @@ namespace FMS.Website.Controllers
         {
             var data = _locationMappingBLL.GetLocationMapping();
 
-            data = data.Where(x => x.Location == location).ToList();
+            data = data.Where(x => x.Basetown == location).ToList();
 
             return Json(data);
         }
@@ -1444,7 +1444,7 @@ namespace FMS.Website.Controllers
             slDocument.MergeWorksheetCells(2, 11, 2, 17);
 
             slDocument.SetCellValue(2, 18, "Fleet");
-            slDocument.MergeWorksheetCells(2, 18, 2, 24);
+            slDocument.MergeWorksheetCells(2, 18, 2, 26);
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -1455,7 +1455,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 24, valueStyle);
+            slDocument.SetCellStyle(2, 2, 2, 26, valueStyle);
 
             //create header
             slDocument = CreateHeaderExcelForVendor(slDocument);
@@ -1499,6 +1499,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 22, "PO Line");
             slDocument.SetCellValue(iRow, 23, "Vat");
             slDocument.SetCellValue(iRow, 24, "Restitution");
+            slDocument.SetCellValue(iRow, 25, "Price");
+            slDocument.SetCellValue(iRow, 26, "Comments");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1507,7 +1509,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.SetCellStyle(iRow, 2, iRow, 24, headerStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 26, headerStyle);
 
             return slDocument;
 
@@ -1538,8 +1540,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 20, csfData.CREATED_DATE.Year.ToString());
             slDocument.SetCellValue(iRow, 21, string.Empty);
             slDocument.SetCellValue(iRow, 22, string.Empty);
-            slDocument.SetCellValue(iRow, 23, "YES");
+            slDocument.SetCellValue(iRow, 23, 0);
             slDocument.SetCellValue(iRow, 24, "NO");
+            slDocument.SetCellValue(iRow, 25, 0);
+            slDocument.SetCellValue(iRow, 26, string.Empty);
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -1548,8 +1552,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(2, 24);
-            slDocument.SetCellStyle(iRow, 2, iRow, 24, valueStyle);
+            slDocument.AutoFitColumn(2, 26);
+            slDocument.SetCellStyle(iRow, 2, iRow, 26, valueStyle);
 
             SLStyle dateStyle = slDocument.CreateStyle();
             dateStyle.FormatCode = "dd/MM/yyyy";
@@ -1651,7 +1655,7 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 2, data.LetterSend ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 3, data.Action);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeId);
@@ -1846,7 +1850,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 4, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 5, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 6, data.Reason);
-                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.Regional);
                 slDocument.SetCellValue(iRow, 9, data.CreateBy);
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
