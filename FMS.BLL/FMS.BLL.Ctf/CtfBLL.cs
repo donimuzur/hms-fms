@@ -164,7 +164,7 @@ namespace FMS.BLL.Ctf
         {
             decimal? cost = 0;
             if (CtfDto == null)
-               return 0;
+               return null;
             var fleetData = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfDto.PoliceNumber && x.EMPLOYEE_ID == CtfDto.EmployeeId && x.IS_ACTIVE).FirstOrDefault();
 
             var rentMonth = ((fleetData.END_CONTRACT.Value.Year - CtfDto.EffectiveDate.Value.Year) * 12) + fleetData.END_CONTRACT.Value.Month - CtfDto.EffectiveDate.Value.Month;
@@ -1163,6 +1163,9 @@ namespace FMS.BLL.Ctf
                 FleetDto.VehicleStatus = "LIVE";
                 FleetDto.SupplyMethod = "EXTEND";
                 FleetDto.IsActive = true;
+                FleetDto.PoLine = extendDto.EXTEND_PO_LINE;
+                FleetDto.PoNumber = extendDto.EXTEND_PO_NUMBER;
+                FleetDto.Price = extendDto.EXTEND_PRICE == null ? 0 :extendDto.EXTEND_PRICE.Value;
                 FleetDto.StartContract = vehicle.END_CONTRACT.Value.AddDays(1);
                 FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;
                 FleetDto.MstFleetId = 0;
