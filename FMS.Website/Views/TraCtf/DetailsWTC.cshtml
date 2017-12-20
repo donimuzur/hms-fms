@@ -183,6 +183,12 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
+                                                            <label class="control-label">Police Number</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoliceNumber, new { @class = "form-control", @id = "extNewPoliceNumber", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
                                                             <label class="control-label">New Proposed Date</label>
                                                             @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
                                                         </div>
