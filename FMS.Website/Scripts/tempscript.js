@@ -3,13 +3,13 @@
     $('#TempOpen').removeClass('active');
     $('#TempCompleted').removeClass('active');
 
-    if ($('.title-page').html() == 'Temporary Open Document') {
+    if ($('.title-page').html() == 'Temporary Open Document' || $('.title-page').html() == 'Mass upload from Vendor') {
         $('#TempOpen').addClass('active');
     }
     else if ($('.title-page').html() == 'Temporary Completed Document') {
         $('#TempCompleted').addClass('active');
     }
-    else if ($('.title-page').html() == 'Temporary Personal Dashboard') {
+    else if ($('.title-page').html() == 'Temporary Personal Dashboard' || $('.title-page').html() == 'Mass upload from Vendor - Personal Dashboard') {
         $('#TempParent').addClass('active');
     }
 

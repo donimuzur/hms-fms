@@ -84,10 +84,9 @@ namespace FMS.Website.Models
         public string LeadTimeS {
             get
             {
-                return LeadTime == null ? "" : 
-                    LeadTime.Value.Year + " year(s) " + 
-                    LeadTime.Value.Month + " month(s) " + 
-                    LeadTime.Value.Day + " day(s) " + 
+                return LeadTime == null ? "" :
+
+                    LeadTime.Value.DayOfYear + " day(s) " + 
                     LeadTime.Value.Hour + " hour(s) " + 
                     LeadTime.Value.Minute + " minute(s)";
             }
@@ -111,12 +110,25 @@ namespace FMS.Website.Models
         {
             get
             {
-                var span = this.EndDate - this.StartDate;
+                var span = this.GsFullfillmentDate - this.GsRequestDate;
                 var kpi = new DateTime(span.Value.Ticks);
 
-                return kpi.Year + " year(s) " +
-                    kpi.Month + " month(s) " +
-                    kpi.Day + " day(s) " +
+                return
+                    kpi.DayOfYear + " day(s) " +
+                    kpi.Hour + " hour(s) " +
+                    kpi.Minute + " minute(s)";
+            }
+        }
+
+        public string RentTime
+        {
+            get
+            {
+                var span = this.EndDate - this.GsFullfillmentDate;
+                var kpi = new DateTime(span.Value.Ticks);
+
+                return
+                    kpi.DayOfYear + " day(s) " +
                     kpi.Hour + " hour(s) " +
                     kpi.Minute + " minute(s)";
             }

@@ -13,6 +13,7 @@
             <th>Reason</th>
             <th style="min-width: 120px">Start Date</th>
             <th style="min-width: 120px">End Date</th>
+            <th>PO Number</th>
             <th>Regional</th>
             <th>Updated By</th>
             <th style="min-width: 120px">Updated Date</th>
@@ -29,6 +30,7 @@
                     }
                 }
             </th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -69,6 +71,7 @@
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.StartPeriod.Value.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.EndPeriod.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.PoNumberVendor)</td>
                 <td>@Html.Raw(data.Regional)</td>
                 <td>@Html.Raw(data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
