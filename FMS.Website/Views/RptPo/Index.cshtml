@@ -84,19 +84,19 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Employee Name</label>
-                        @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "ALL", new { @class = "form-control select" })
+                        @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Cost Center</label>
-                        @Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "ALL", new { @class = "form-control select" })
+                        @Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "select", new { @class = "form-control chosen", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Supply Method</label>
-                        @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "ALL", new { @class = "form-control select" })
+                        @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control chosen", @data_live_search = true })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -119,6 +119,10 @@
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    jQuery(function ($) {
+        $(".chosen").chosen();
+    });
+
     function ExportXls() {
         $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
         $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
@@ -161,10 +165,14 @@
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
 
+        var d = new Date();
 
         $('#From_Date').val(todayDatestr);
         $('#To_Date').val(todayDatestr);
 
+        $(".chosen").val('select');
+        $(".month").val(d.getMonth() + 1);
+        $(".year").val(d.getFullYear());
         $(".select").val('');
         $(".text").val('');
 
