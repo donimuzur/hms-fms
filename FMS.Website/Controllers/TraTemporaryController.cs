@@ -138,23 +138,28 @@ namespace FMS.Website.Controllers
 
         public TempItemModel InitialModel(TempItemModel model)
         {
+            var settingData = _settingBLL.GetSetting();
             var allEmployee = _employeeBLL.GetEmployee();
             var reasonType = "WTC";
 
-            var vehTypeBenefit = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
+            var vehTypeBenefit = settingData.Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId;
             model.Detail.IsBenefit = model.Detail.VehicleType == vehTypeBenefit.ToString() ? true : false;
 
+            var paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc);
             if (model.Detail.IsBenefit || CurrentUser.UserRole == Enums.UserRole.HR)
             {
+                paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit);
                 reasonType = "BENEFIT";
             }
 
             var list = allEmployee.Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             var listReason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.TMP && x.IsActive && x.VehicleType == reasonType).Select(x => new { x.MstReasonId, x.Reason }).ToList().OrderBy(x => x.Reason);
-            var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
-            var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listProject = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehUsage = settingData.Where(x => x.SettingGroup == paramVehUsage && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listCity = allEmployee.Select(x => new { x.CITY }).Distinct().ToList();
 
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -162,6 +167,8 @@ namespace FMS.Website.Controllers
             model.Detail.SupplyMethodList = new SelectList(listSupMethod, "MstSettingId", "SettingValue");
             model.Detail.VendorList = new SelectList(listVendor, "ShortName", "ShortName");
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
+            model.Detail.VehicleUsageList = new SelectList(listVehUsage, "MstSettingId", "SettingValue");
+            model.Detail.LocationCityList = new SelectList(listCity, "CITY", "CITY");
 
             var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
             if (employeeData != null)
@@ -598,7 +605,7 @@ namespace FMS.Website.Controllers
         public JsonResult GetVehicleData(string vehType, string groupLevel, DateTime createdDate)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
-            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
+            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive).ToList();
 
             var fleetDto = new List<FleetDto>();
 
@@ -682,13 +689,13 @@ namespace FMS.Website.Controllers
                     item.Transmission = dataRow[13];
                     item.Color = dataRow[14];
                     item.BodyType = dataRow[15];
-                    item.Branding = dataRow[16];
-                    item.Purpose = dataRow[17];
-                    item.VehicleYear = Convert.ToInt32(dataRow[18]);
-                    item.PoNumber = dataRow[19];
-                    item.PoLine = dataRow[20];
-                    item.IsVat = dataRow[21].ToUpper() == "YES" ? true : false;
-                    item.IsRestitution = dataRow[22].ToUpper() == "YES" ? true : false;
+                    item.Branding = dataRow[17];
+                    item.Purpose = dataRow[18];
+                    item.VehicleYear = Convert.ToInt32(dataRow[19]);
+                    item.PoNumber = dataRow[20];
+                    item.PoLine = dataRow[21];
+                    item.IsVat = dataRow[22].ToUpper() == "YES" ? true : false;
+                    item.IsRestitution = dataRow[23].ToUpper() == "YES" ? true : false;
 
                     model.Add(item);
                 }
@@ -700,6 +707,136 @@ namespace FMS.Website.Controllers
             return Json(outputResult);
 
 
+        }
+
+        [HttpPost]
+        public JsonResult MassUploadFile(HttpPostedFileBase itemExcelFile)
+        {
+            var data = (new ExcelReader()).ReadExcel(itemExcelFile);
+            var model = new List<TemporaryData>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[1] == "Request Number" || dataRow[1] == "")
+                    {
+                        continue;
+                    }
+
+                    var item = new TemporaryData();
+
+                    item.CsfNumber = dataRow[1];
+                    item.EmployeeName = dataRow[2];
+                    double dStart = double.Parse(dataRow[7].ToString());
+                    DateTime convStart = DateTime.FromOADate(dStart);
+                    double dEnd = double.Parse(dataRow[8].ToString());
+                    DateTime convEnd = DateTime.FromOADate(dEnd);
+                    item.StartPeriod = convStart;
+                    item.EndPeriod = convEnd;
+                    item.StartPeriodName = convStart.ToString("dd-MMM-yyyy");
+                    item.EndPeriodName = convEnd.ToString("dd-MMM-yyyy");
+                    item.StartPeriodValue = convStart.ToString("MM/dd/yyyy");
+                    item.EndPeriodValue = convEnd.ToString("MM/dd/yyyy");
+                    item.VehicleYear = Convert.ToInt32(dataRow[19]);
+                    item.PoNumber = dataRow[20];
+                    item.PoLine = dataRow[21];
+
+                    item.VendorName = dataRow[3];
+                    item.PoliceNumber = dataRow[4];
+                    item.ChasisNumber = dataRow[5];
+                    item.EngineNumber = dataRow[6];
+                    item.IsAirBag = dataRow[9].ToUpper() == "YES" ? true : false;
+                    item.Manufacturer = dataRow[10];
+                    item.Models = dataRow[11];
+                    item.Series = dataRow[12];
+                    item.Transmission = dataRow[13];
+                    item.Color = dataRow[14];
+                    item.BodyType = dataRow[15];
+                    item.Branding = dataRow[17];
+                    item.Purpose = dataRow[18];
+                    item.IsVat = dataRow[22].ToUpper() == "YES" ? true : false;
+                    item.IsRestitution = dataRow[23].ToUpper() == "YES" ? true : false;
+
+                    model.Add(item);
+                }
+            }
+
+            var input = Mapper.Map<List<VehicleFromVendorUpload>>(model);
+            var outputResult = _tempBLL.ValidationUploadDocumentProcessMassUpload(input);
+
+            return Json(outputResult);
+
+
+        }
+
+        #endregion
+
+        #region --------- Mass Upload From Vendor --------------
+
+        public ActionResult Upload(bool IsPersonalDashboard)
+        {
+            var model = new CsfIndexModel();
+            model.TitleForm = "Mass upload from Vendor";
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.IsPersonalDashboard = IsPersonalDashboard;
+
+            if (IsPersonalDashboard)
+            {
+                model.TitleForm = "Mass upload from Vendor - Personal Dashboard";
+                model.MainMenu = Enums.MenuList.PersonalDashboard;
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Upload(CsfItemModel model)
+        {
+            try
+            {
+                foreach (var data in model.TemporaryList)
+                {
+
+                    var tempData = _tempBLL.GetList().Where(x => x.DOCUMENT_NUMBER_TEMP.ToLower() == data.CsfNumber.ToLower()).FirstOrDefault();
+
+                    if (tempData != null)
+                    {
+                        tempData.VENDOR_POLICE_NUMBER = data.PoliceNumber;
+                        tempData.VENDOR_MANUFACTURER = data.Manufacturer;
+                        tempData.VENDOR_MODEL = data.Models;
+                        tempData.VENDOR_SERIES = data.Series;
+                        tempData.VENDOR_BODY_TYPE = data.BodyType;
+                        tempData.VENDOR_VENDOR = data.VendorName;
+                        tempData.VENDOR_COLOUR = data.Color;
+                        tempData.VENDOR_CONTRACT_START_DATE = data.StartPeriod;
+                        tempData.VENDOR_CONTRACT_END_DATE = data.EndPeriod;
+                        tempData.VENDOR_PO_NUMBER = data.PoNumber;
+                        tempData.VENDOR_CHASIS_NUMBER = data.ChasisNumber;
+                        tempData.VENDOR_ENGINE_NUMBER = data.EngineNumber;
+                        tempData.VENDOR_AIR_BAG = data.IsAirBag;
+                        tempData.VENDOR_TRANSMISSION = data.Transmission;
+                        tempData.VENDOR_BRANDING = data.Branding;
+                        tempData.VENDOR_PURPOSE = data.Purpose;
+                        tempData.VENDOR_PO_LINE = data.PoLine;
+                        tempData.VENDOR_VAT = data.IsVat;
+                        tempData.VENDOR_RESTITUTION = data.IsRestitution;
+
+                        var saveResult = _tempBLL.Save(tempData, CurrentUser);
+                        //send email to user if police number and contract start date is fill
+                    }
+                }
+
+                AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
+
+                return RedirectToAction(model.IsPersonalDashboard ? "PersonalDashboard" : "Index");
+
+            }
+            catch (Exception exception)
+            {
+                AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                return View();
+            }
         }
 
         #endregion
@@ -721,10 +858,10 @@ namespace FMS.Website.Controllers
             slDocument.MergeWorksheetCells(2, 5, 2, 10);
 
             slDocument.SetCellValue(2, 11, "User");
-            slDocument.MergeWorksheetCells(2, 11, 2, 16);
+            slDocument.MergeWorksheetCells(2, 11, 2, 17);
 
-            slDocument.SetCellValue(2, 17, "Fleet");
-            slDocument.MergeWorksheetCells(2, 17, 2, 23);
+            slDocument.SetCellValue(2, 18, "Fleet");
+            slDocument.MergeWorksheetCells(2, 18, 2, 24);
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -735,7 +872,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 23, valueStyle);
+            slDocument.SetCellStyle(2, 2, 2, 24, valueStyle);
 
             //create header
             slDocument = CreateHeaderExcelForVendor(slDocument);
@@ -771,13 +908,14 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 14, "Transmission");
             slDocument.SetCellValue(iRow, 15, "Color");
             slDocument.SetCellValue(iRow, 16, "Body type");
-            slDocument.SetCellValue(iRow, 17, "Branding");
-            slDocument.SetCellValue(iRow, 18, "Purpose");
-            slDocument.SetCellValue(iRow, 19, "Vehicle Year");
-            slDocument.SetCellValue(iRow, 20, "PO");
-            slDocument.SetCellValue(iRow, 21, "PO Line");
-            slDocument.SetCellValue(iRow, 22, "Vat");
-            slDocument.SetCellValue(iRow, 23, "Restitution");
+            slDocument.SetCellValue(iRow, 17, "Location");
+            slDocument.SetCellValue(iRow, 18, "Branding");
+            slDocument.SetCellValue(iRow, 19, "Purpose");
+            slDocument.SetCellValue(iRow, 20, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 21, "PO");
+            slDocument.SetCellValue(iRow, 22, "PO Line");
+            slDocument.SetCellValue(iRow, 23, "Vat");
+            slDocument.SetCellValue(iRow, 24, "Restitution");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -786,7 +924,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.SetCellStyle(iRow, 2, iRow, 23, headerStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 24, headerStyle);
 
             return slDocument;
 
@@ -811,13 +949,14 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 14, string.Empty);
             slDocument.SetCellValue(iRow, 15, tempData.COLOR);
             slDocument.SetCellValue(iRow, 16, tempData.BODY_TYPE);
-            slDocument.SetCellValue(iRow, 17, string.Empty);
+            slDocument.SetCellValue(iRow, 17, tempData.LOCATION_CITY);
             slDocument.SetCellValue(iRow, 18, string.Empty);
-            slDocument.SetCellValue(iRow, 19, tempData.CREATED_DATE.Year.ToString());
-            slDocument.SetCellValue(iRow, 20, string.Empty);
+            slDocument.SetCellValue(iRow, 19, string.Empty);
+            slDocument.SetCellValue(iRow, 20, tempData.CREATED_DATE.Year.ToString());
             slDocument.SetCellValue(iRow, 21, string.Empty);
-            slDocument.SetCellValue(iRow, 22, "YES");
-            slDocument.SetCellValue(iRow, 23, "NO");
+            slDocument.SetCellValue(iRow, 22, string.Empty);
+            slDocument.SetCellValue(iRow, 23, "YES");
+            slDocument.SetCellValue(iRow, 24, "NO");
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -826,8 +965,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(2, 23);
-            slDocument.SetCellStyle(iRow, 2, iRow, 23, valueStyle);
+            slDocument.AutoFitColumn(2, 24);
+            slDocument.SetCellStyle(iRow, 2, iRow, 24, valueStyle);
 
             SLStyle dateStyle = slDocument.CreateStyle();
             dateStyle.FormatCode = "dd/MM/yyyy";
@@ -911,7 +1050,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Personal Dashboard Temporary");
-            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            slDocument.MergeWorksheetCells(1, 1, 1, 12);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -944,7 +1083,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document Temporary" : "Open Document Temporary");
-            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            slDocument.MergeWorksheetCells(1, 1, 1, 12);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -979,9 +1118,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Reason");
             slDocument.SetCellValue(iRow, 7, "Start Date");
             slDocument.SetCellValue(iRow, 8, "End Date");
-            slDocument.SetCellValue(iRow, 9, "Regional");
-            slDocument.SetCellValue(iRow, 10, "Modified By");
-            slDocument.SetCellValue(iRow, 11, "Modified Date");
+            slDocument.SetCellValue(iRow, 9, "PO Number");
+            slDocument.SetCellValue(iRow, 10, "Regional");
+            slDocument.SetCellValue(iRow, 11, "Modified By");
+            slDocument.SetCellValue(iRow, 12, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -992,7 +1132,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 12, headerStyle);
 
             return slDocument;
 
@@ -1012,9 +1152,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.Reason);
                 slDocument.SetCellValue(iRow, 7, data.StartPeriod.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
                 slDocument.SetCellValue(iRow, 8, data.EndPeriod.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 9, data.Regional);
-                slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 11, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.PoNumberVendor);
+                slDocument.SetCellValue(iRow, 10, data.Regional);
+                slDocument.SetCellValue(iRow, 11, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 12, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1026,8 +1167,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
+            slDocument.AutoFitColumn(1, 12);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 12, valueStyle);
 
             return slDocument;
         }

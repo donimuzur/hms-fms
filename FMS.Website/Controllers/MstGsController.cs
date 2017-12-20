@@ -437,8 +437,9 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 13, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 14, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 15, data.LeadTimeS);
-                //slDocument.SetCellValue(iRow, 12, data.KpiFulfillment);
-                slDocument.SetCellValue(iRow, 16, data.Remark);
+                slDocument.SetCellValue(iRow, 16, data.KpiFulfillment);
+                slDocument.SetCellValue(iRow, 17, data.RentTime);
+                slDocument.SetCellValue(iRow, 18, data.Remark);
                 
                 iRow++;
             }
@@ -450,8 +451,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 16);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
+            slDocument.AutoFitColumn(1, 18);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 18, valueStyle);
 
             return slDocument;
 
@@ -477,7 +478,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 13, "Start Date");
             slDocument.SetCellValue(iRow, 14, "End Date");
             slDocument.SetCellValue(iRow, 15, "Lead Time");
-            //slDocument.SetCellValue(iRow, 12, "KPI Fulfillment");
+            slDocument.SetCellValue(iRow, 12, "KPI Fulfillment");
+            slDocument.SetCellValue(iRow, 12, "Rent Time");
             slDocument.SetCellValue(iRow, 16, "Remark");
 
 
