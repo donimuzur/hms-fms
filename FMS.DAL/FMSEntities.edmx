@@ -208,6 +208,9 @@
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
           <Property Name="QTY" Type="int" />
           <Property Name="MONTH" Type="int" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUNCTION_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -2342,6 +2345,9 @@
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="QTY" Type="Int32" />
           <Property Name="MONTH" Type="Int32" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -4085,6 +4091,9 @@
           <EntitySetMapping Name="MST_COST_OB">
             <EntityTypeMapping TypeName="FMSModel.MST_COST_OB">
               <MappingFragment StoreEntitySet="MST_COST_OB">
+                <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
+                <ScalarProperty Name="FUNCTION_NAME" ColumnName="FUNCTION_NAME" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="MONTH" ColumnName="MONTH" />
                 <ScalarProperty Name="QTY" ColumnName="QTY" />
                 <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
