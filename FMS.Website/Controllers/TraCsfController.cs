@@ -90,7 +90,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Personal Dashboard";
             model.TitleExport = "ExportPersonal";
-            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderBy(x => x.CREATED_DATE));
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
@@ -129,7 +129,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
-            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.MODIFIED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;

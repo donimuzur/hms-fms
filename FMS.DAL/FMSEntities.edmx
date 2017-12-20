@@ -341,6 +341,7 @@
           <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PROJECT" Type="bit" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -979,6 +980,9 @@
           <Property Name="CFM_IDLE_ID" Type="bigint" />
           <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
           <Property Name="FLEXBEN" Type="int" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -1112,6 +1116,9 @@
           <Property Name="CFM_IDLE_ID" Type="bigint" />
           <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
           <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -2460,6 +2467,7 @@
           <Property Name="PROJECT" Type="Boolean" />
           <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_FLEET_MST_EMPLOYEE" FromRole="MST_FLEET" ToRole="MST_EMPLOYEE" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -3141,6 +3149,9 @@
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="TRA_CSF" ToRole="MST_EPAF" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CSF_MST_REASON" FromRole="TRA_CSF" ToRole="MST_REASON" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CSF_MST_REMARK" FromRole="TRA_CSF" ToRole="MST_REMARK" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -3283,6 +3294,9 @@
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_REASON" FromRole="TRA_TEMPORARY" ToRole="MST_REASON" />
           <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ASSIGNED_TO" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -4138,6 +4152,7 @@
           <EntitySetMapping Name="MST_FLEET">
             <EntityTypeMapping TypeName="FMSModel.MST_FLEET">
               <MappingFragment StoreEntitySet="MST_FLEET">
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
                 <ScalarProperty Name="PROJECT" ColumnName="PROJECT" />
                 <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
@@ -4792,6 +4807,9 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
                 <ScalarProperty Name="FLEXBEN" ColumnName="FLEXBEN" />
                 <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
                 <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
@@ -4937,6 +4955,9 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
                 <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
                 <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
                 <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
