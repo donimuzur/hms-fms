@@ -11,5 +11,6 @@ namespace FMS.Contract.BLL
     public interface IRptFuelBLL
     {
         List<RptFuelDto> GetRptFuel(RptFuelByParamInput filter);
+        List<RptFuelDto> GetRptFuelData();
     }
 }

@@ -80,7 +80,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
             }
 
@@ -115,7 +125,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
             }
 
@@ -185,7 +205,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
@@ -224,7 +254,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
@@ -263,7 +303,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
@@ -302,7 +352,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
             }
 
@@ -368,7 +428,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
@@ -403,7 +473,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
             }
 
@@ -438,7 +518,17 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
-                    queryFilter = queryFilter.And(c => c.FUNCTION.ToUpper() == filter.Function.ToUpper());
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Contains("OTHERS"))
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()) ||
+                                                            (c.FUNCTION.ToUpper() != "SALES" && c.FUNCTION.ToUpper() != "MARKETING" && c.FUNCTION.ToUpper() != "OPERATIONS"));
+                    }
+                    else
+                    {
+                        queryFilter = queryFilter.And(c => listFunction.Contains(c.FUNCTION.ToUpper()));
+                    }
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {

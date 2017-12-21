@@ -42,6 +42,7 @@ namespace FMS.BLL.Csf
         private ILocationMappingService _locationMappingService;
         private IVehicleSpectService _vehicleSpectService;
         private IVendorService _vendorService;
+        private IGroupCostCenterService _groupCostService;
 
         public CsfBLL(IUnitOfWork uow)
         {
@@ -61,6 +62,7 @@ namespace FMS.BLL.Csf
             _locationMappingService = new LocationMappingService(_uow);
             _vehicleSpectService = new VehicleSpectService(_uow);
             _vendorService = new VendorService(_uow);
+            _groupCostService = new GroupCostCenterService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -1523,7 +1525,7 @@ namespace FMS.BLL.Csf
                 //add new master fleet
                 MST_FLEET dbFleet;
 
-                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.LOCATION == item.LOCATION_CITY
+                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.BASETOWN == item.LOCATION_CITY
                                                                                                  && x.IS_ACTIVE).FirstOrDefault();
 
                 var zonePrice = getZonePriceList == null ? "" : getZonePriceList.ZONE_PRICE_LIST;
@@ -1535,9 +1537,24 @@ namespace FMS.BLL.Csf
                                                                         && x.IS_ACTIVE
                                                                         && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
 
+                var vSpecList = _vehicleSpectService.GetVehicleSpect().Where(x => x.YEAR == item.CREATED_DATE.Year
+                                                                        && x.MANUFACTURER == item.MANUFACTURER
+                                                                        && x.MODEL == item.MODEL
+                                                                        && x.SERIES == item.SERIES
+                                                                        && x.BODY_TYPE == item.BODY_TYPE
+                                                                        && x.IS_ACTIVE).FirstOrDefault();
+
+                var functionList = _groupCostService.GetGroupCostCenter().Where(x => x.COST_CENTER == item.COST_CENTER).FirstOrDefault();
+
                 var vehType = string.Empty;
                 var vehUsage = string.Empty;
                 var suppMethod = string.Empty;
+                var projectName = string.Empty;
+                var isProject = false;
+                var hmsPrice = priceList == null ? 0 : priceList.INSTALLMEN_HMS;
+                var regional = getZonePriceList == null ? "" : getZonePriceList.REGION;
+                var function = functionList == null ? "" : functionList.FUNCTION_NAME;
+                var fuelType = vSpecList == null ? string.Empty : vSpecList.FUEL_TYPE;
 
                 if (!string.IsNullOrEmpty(item.VEHICLE_TYPE))
                 {
@@ -1559,10 +1576,20 @@ namespace FMS.BLL.Csf
 
                 if (!string.IsNullOrEmpty(item.SUPPLY_METHOD))
                 {
-                    var suppMethodData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE));
+                    var suppMethodData = _settingService.GetSettingById(Convert.ToInt32(item.SUPPLY_METHOD));
                     if (suppMethodData != null)
                     {
                         suppMethod = suppMethodData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(item.PROJECT_NAME))
+                {
+                    var projectNameData = _settingService.GetSettingById(Convert.ToInt32(item.PROJECT_NAME));
+                    if (projectNameData != null)
+                    {
+                        projectName = projectNameData.SETTING_VALUE.ToUpper();
+                        isProject = true;
                     }
                 }
 
@@ -1572,8 +1599,14 @@ namespace FMS.BLL.Csf
                 dbFleet.VEHICLE_TYPE = vehType;
                 dbFleet.VEHICLE_USAGE = vehUsage;
                 dbFleet.SUPPLY_METHOD = suppMethod;
-                dbFleet.MONTHLY_HMS_INSTALLMENT = priceList == null ? 0 : priceList.PRICE;
-                dbFleet.FUEL_TYPE = string.Empty;
+                dbFleet.PROJECT = isProject;
+                dbFleet.PROJECT_NAME = projectName;
+                dbFleet.PRICE = priceList == null ? 0 : priceList.PRICE;
+                dbFleet.MONTHLY_HMS_INSTALLMENT = hmsPrice;
+                dbFleet.TOTAL_MONTHLY_CHARGE = hmsPrice + (item.VAT_DECIMAL == null ? 0 : item.VAT_DECIMAL.Value);
+                dbFleet.FUEL_TYPE = fuelType;
+                dbFleet.REGIONAL = regional;
+                dbFleet.VEHICLE_FUNCTION = function;
 
                 _fleetService.save(dbFleet);
 

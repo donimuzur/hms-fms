@@ -30,5 +30,11 @@ namespace FMS.BLL.RptFuel
             var data = _RptFuelService.GetRptFuel(filter);
             return Mapper.Map<List<RptFuelDto>>(data);
         }
+
+        public List<RptFuelDto> GetRptFuelData()
+        {
+            var data = _RptFuelService.GetRptFuelData();
+            return Mapper.Map<List<RptFuelDto>>(data);
+        }
     }
 }

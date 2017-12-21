@@ -141,11 +141,32 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<ReasonDto>(model);
-                dto.ModifiedBy = CurrentUser.USER_ID;
-                dto.ModifiedDate = DateTime.Now;
                 try
                 {
+
+                    var exist = _rasonBLL.GetReason().Where(x => x.DocumentType == model.DocumentType
+                                                          && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper())
+                                                          && (x.Reason == null ? "" : x.Reason) == (model.Reason == null ? "" : model.Reason.ToUpper())).FirstOrDefault();
+                    if (exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exist in Master Reason";
+                        var list1 = _documentTypeBLL.GetDocumentType();
+                        var list2 = new List<SelectListItem>()
+                            {
+                                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
+                                new SelectListItem() {Text = "WTC", Value = "WTC" }
+                            };
+
+                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+                        model.VehicleTypeList = new SelectList(list2, "Text", "Value");
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<ReasonDto>(model);
+                    dto.ModifiedBy = CurrentUser.USER_ID;
+                    dto.ModifiedDate = DateTime.Now;
                     _rasonBLL.save(dto, CurrentUser);
                 }
                 catch (Exception ex)
@@ -212,10 +233,20 @@ namespace FMS.Website.Controllers
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
                         data.IsActive = true;
+
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
-                            var dto = Mapper.Map<ReasonDto>(data);
+                            var Exist = _rasonBLL.GetReason().Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == (data.Reason == null ? "" : data.Reason.ToUpper())
+                                                             && x.DocumentType == data.DocumentType
+                                                             && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (data.VehicleType == null ? "" : data.VehicleType.ToUpper())
+                                                             && x.IsActive).FirstOrDefault();
+                            if (Exist != null)
+                            {
+                                Exist.IsActive = false;
+                                _rasonBLL.save(Exist);
+                            }
 
+                            var dto = Mapper.Map<ReasonDto>(data);
                             _rasonBLL.save(dto);
                         }
 
@@ -249,21 +280,32 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new ReasonItem();
+                    item.ErrorMessage = "";
                     try
                     {
                         var getdto = _documentTypeBLL.GetDocumentType().Where(x => x.DocumentType == dataRow[0]).FirstOrDefault();
                         item.MstDocumentType = dataRow[0];
                         if (getdto == null)
                         {
-                            item.ErrorMessage = "Document " + dataRow[0] + " tidak ada di database";
+                            item.ErrorMessage = "Document " + dataRow[0] + " is not in the Master Document Type";
                         }
                         else if (getdto != null)
                         {
                             item.DocumentType = getdto.MstDocumentTypeId;
-                            item.ErrorMessage = "";
                         }
+                        
                         item.VehicleType = dataRow[1].ToUpper();
+                        if (item.VehicleType == "")
+                        {
+                            item.ErrorMessage = "Vehicle Type Can't be empty";
+                        }
+
                         item.Reason = dataRow[2].ToString();
+                        if (item.Reason == "")
+                        {
+                            item.ErrorMessage = "Reason Can't be empty";
+                        }
+
                         if (dataRow[3].ToString() == "Yes" | dataRow[3].ToString() == "YES" | dataRow[3].ToString() == "true" | dataRow[3].ToString() == "TRUE" | dataRow[3].ToString() == "1")
                         {
                             item.IsPenalty = true;
@@ -272,6 +314,11 @@ namespace FMS.Website.Controllers
                         {
                             item.IsPenalty = false;
                         }
+                        else if (dataRow[3] == "")
+                        {
+                            item.ErrorMessage = "Penalty Can't be empty";
+                        }
+
                         if (dataRow[4].ToString() == "Yes" | dataRow[4].ToString() == "YES" | dataRow[4].ToString() == "true" | dataRow[4].ToString() == "TRUE" | dataRow[4].ToString() == "1")
                         {
                             item.PenaltyForFleet= true;
@@ -288,14 +335,7 @@ namespace FMS.Website.Controllers
                         {
                             item.PenaltyForEmplloyee = false;
                         }
-
-                        var exist = _rasonBLL.GetReason().Where(x => x.DocumentType == item.DocumentType
-                                                           && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
-                                                           && (x.Reason == null ? "" : x.Reason) == (item.Reason == null ? "" : item.Reason.ToUpper())).FirstOrDefault();
-                        if (exist != null)
-                        {
-                            item.ErrorMessage = "Data Already Exist in Master Reason";
-                        }
+                        
                         model.Add(item);
                     }
                     catch (Exception ex)
