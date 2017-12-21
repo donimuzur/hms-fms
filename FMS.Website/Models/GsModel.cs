@@ -29,7 +29,7 @@ namespace FMS.Website.Models
         public string VehicleUsage { get; set; }
         public string Manufacturer { get; set; }
         public string Transmission { get; set; }
-        public string Model { get; set; }
+        public string Models { get; set; }
         public string Series { get; set; }
         public string PoliceNumber { get; set; }
         public int? GroupLevel { get; set; }
@@ -84,11 +84,11 @@ namespace FMS.Website.Models
         public string LeadTimeS {
             get
             {
-                return LeadTime == null ? "" :
+                var span = this.EndDate - this.StartDate;
+                return span.HasValue ? span.Value.Days + " day(s)" : "";
+                //LeadTime == null ? "" :
 
-                    LeadTime.Value.DayOfYear + " day(s) " + 
-                    LeadTime.Value.Hour + " hour(s) " + 
-                    LeadTime.Value.Minute + " minute(s)";
+                //    LeadTime.Value.DayOfYear + " day(s) ";
             }
         }
         public string EndDates
@@ -111,12 +111,9 @@ namespace FMS.Website.Models
             get
             {
                 var span = this.GsFullfillmentDate - this.GsRequestDate;
-                var kpi = new DateTime(span.Value.Ticks);
+                //var kpi = new DateTime(span.Value.Ticks);
 
-                return
-                    kpi.DayOfYear + " day(s) " +
-                    kpi.Hour + " hour(s) " +
-                    kpi.Minute + " minute(s)";
+                return span.HasValue ? span.Value.Days + " day(s) " : "";
             }
         }
 
@@ -125,12 +122,9 @@ namespace FMS.Website.Models
             get
             {
                 var span = this.EndDate - this.GsFullfillmentDate;
-                var kpi = new DateTime(span.Value.Ticks);
-
-                return
-                    kpi.DayOfYear + " day(s) " +
-                    kpi.Hour + " hour(s) " +
-                    kpi.Minute + " minute(s)";
+                //var kpi = new DateTime(span.Value.Ticks);
+                //span.Value.Days
+                return span.HasValue ? span.Value.Days + " day(s) " : "";
             }
         }
 

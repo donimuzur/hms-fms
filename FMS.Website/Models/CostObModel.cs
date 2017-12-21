@@ -50,6 +50,9 @@ namespace FMS.Website.Models
         public SelectList MonthList { get; set; }
         public SelectList TypeList { get; set; }
         public bool IsActive { get; set; }
+        public string VehicleType { get; set; }
+        public string FunctionName { get; set; }
+        public string Regional { get; set; }
 
     }
 

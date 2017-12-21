@@ -277,13 +277,37 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+
                     var item = new LocationMappingItem();
+                    item.ErrorMessage = "";
+
                     item.Location = dataRow[0].ToString();
+                    if (item.Location == "")
+                    {
+                        item.ErrorMessage = "Location list Can't be empty";
+                    }
+
                     item.Address = dataRow[1].ToString();
+                    if (item.Address == "")
+                    {
+                        item.ErrorMessage = "Address list Can't be empty";
+                    }
+
                     item.Basetown = dataRow[2].ToString();
+                    if (item.Basetown== "")
+                    {
+                        item.ErrorMessage = "Basetown list Can't be empty";
+                    }
+
                     item.Region = dataRow[3].ToString();
                     item.ZoneSales = dataRow[4].ToString();
+
                     item.ZonePriceList = dataRow[5].ToString();
+                    if (item.ZonePriceList == "")
+                    {
+                        item.ErrorMessage = "Zone Price list Can't be empty";
+                    }
+
                     try
                     {
                         double dValidfrom = double.Parse(dataRow[6].ToString());
@@ -291,9 +315,9 @@ namespace FMS.Website.Controllers
                         item.ValidFrom = dtValidfrom;
                         item.ErrorMessage = "";
                     }
-                    catch (Exception exp)
+                    catch (Exception)
                     {
-                        item.ErrorMessage = exp.Message;
+                        item.ErrorMessage = "Format Date is not Valid";
                         
                     }
                     var exist = _locationMappingBLL.GetLocationMapping().Where(x => x.Address == item.Address
@@ -310,6 +334,7 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
+
         #region -----------------Json Result ----------------
         [HttpPost]
         public JsonResult GetAddress(string Location, string Basetown)
@@ -327,6 +352,7 @@ namespace FMS.Website.Controllers
             return Json(BasetownList);
         }
         #endregion
+
         #region export xls
         public void ExportMasterLocationMapping()
         {

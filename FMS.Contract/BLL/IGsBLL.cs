@@ -17,5 +17,7 @@ namespace FMS.Contract.BLL
         void Save(GsDto data, Login currentUser);
 
         List<GsDto> GetGsReport(RptGsInput rptGsInput);
+
+        void SaveChanges();
     }
 }
