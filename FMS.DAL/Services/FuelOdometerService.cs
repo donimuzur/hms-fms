@@ -1,4 +1,5 @@
 ﻿using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.Service;
@@ -9,6 +10,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using FMS.Core;
+
 
 namespace FMS.DAL.Services
 {
@@ -148,6 +151,12 @@ namespace FMS.DAL.Services
                 }
             }
             return _FuelOdometerRepository.Get(queryFilterFuelOdometer, null, "").ToList();
+        }
+
+        public void save(MST_FUEL_ODOMETER dbSetting, Login userlogin)
+        {
+            _uow.GetGenericRepository<MST_FUEL_ODOMETER>().InsertOrUpdate(dbSetting, userlogin, Enums.MenuList.MasterFuelOdoMeter);
+            _uow.SaveChanges();
         }
     }
 }
