@@ -60,7 +60,10 @@ namespace FMS.BLL.Vendor
             return retData;
         }
 
-
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
+        }
     }
 }
 
