@@ -78,6 +78,7 @@ namespace FMS.Website.Controllers
                 try
                 {
                     _remarkBLL.Save(dto);
+                    _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -123,6 +124,7 @@ namespace FMS.Website.Controllers
                 try
                 {
                     _remarkBLL.Save(dto, CurrentUser);
+                    _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -178,6 +180,15 @@ namespace FMS.Website.Controllers
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
+                            var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (data.Remark == null ? "" : data.Remark.ToUpper())
+                                                                    && (x.RoleType == null ? ""  : x.RoleType.ToUpper()) == (data.RoleType == null ? "" : data.RoleType.ToUpper())
+                                                                    && x.IsActive).FirstOrDefault();
+                            if (Exist != null)
+                            {
+                                Exist.IsActive = false;
+                                _remarkBLL.Save(Exist);
+                            }
+
                             var dto = Mapper.Map<RemarkDto>(data);
                             _remarkBLL.Save(dto);
                         }
@@ -190,6 +201,7 @@ namespace FMS.Website.Controllers
                         return View(Model);
                     }
                 }
+                _remarkBLL.SaveChanges();
             }
             return RedirectToAction("Index", "MstRemark");
         }
@@ -211,28 +223,37 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new RemarkItem();
+                    item.ErrorMessage = "";
                     try
                     {
                         var getdto = _documentTypeBLL.GetDocumentType().Where(x => x.DocumentType == dataRow[0]).FirstOrDefault();
                         item.MstDocumentType = dataRow[0];
                         if (getdto == null)
                         {
-                            item.ErrorMessage = "Document " + dataRow[0] + " tidak ada di database";
+                            item.ErrorMessage = "Document " + dataRow[0] + " is not in the Master Document Type";
                         }
                         else if (getdto != null)
                         {
                             item.DocumentType = getdto.MstDocumentTypeId;
-                            item.ErrorMessage = "";
                         }
 
                         item.Remark= dataRow[1].ToString();
-                        item.RoleType = dataRow[2].ToString();
+                        if (item.Remark == "")
+                        {
+                            item.ErrorMessage = "Remark Can't be empty";
+                        }
+
+                        item.RoleType = dataRow[2] == null ? "" : dataRow[2].ToUpper();
+                        if (item.RoleType == "")
+                        {
+                            item.ErrorMessage = "Role Type Can't be empty";
+                        }
 
                         model.Add(item);
                     }
                     catch (Exception ex)
                     {
-                        var a = ex.Message;
+                        item.ErrorMessage = ex.Message;
                     }
                 }
             }

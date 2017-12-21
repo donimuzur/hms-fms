@@ -281,8 +281,19 @@ namespace FMS.Website.Controllers
                     var GsRequestDateD = dataRow[10].ToString() == null ? 0 : double.Parse(dataRow[10].ToString());
                     var StartDateD = dataRow[17].ToString() == null ? 0 : double.Parse(dataRow[17].ToString());
                     var EndDateD = dataRow[18].ToString() == null ? 0 : double.Parse(dataRow[18].ToString());
+
                     item.PoliceNumber = dataRow[3].ToString();
+                    if (item.PoliceNumber == "")
+                    {
+                        item.ErrorMessage = "Police Number must be filled";
+                    }
+
                     item.GsRequestDate = DateTime.FromOADate(GsRequestDateD);
+                    if (item.GsRequestDate == null)
+                    {
+
+                    }
+
                     item.GsFullfillmentDate = DateTime.FromOADate(GsFullfillmentDateD);
                     item.GsManufacturer = dataRow[12].ToString();
                     item.GsModel = dataRow[13].ToString();
