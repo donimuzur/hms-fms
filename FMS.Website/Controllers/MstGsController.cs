@@ -60,7 +60,7 @@ namespace FMS.Website.Controllers
             model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
             var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true && x.DocumentType == (int)Enums.DocumentType.GS).ToList();
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
-            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName = "[" + x.EMPLOYEE_ID + "] " + x.FORMAL_NAME }).ToList();
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName =  x.FORMAL_NAME }).ToList();
             model.EmployeeList = new SelectList(EmployeeList, "EmployeeName", "EmployeeName");
             var LocationList = _locationMappingBLL.GetLocationMapping().Select(x => new { location = x.Location }).ToList();
             model.LocationList = new SelectList(LocationList, "location", "location");
@@ -80,20 +80,39 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<GsDto>(model);
-
-                String EmployeeName = model.EmployeeName;
-                int startIndex = (EmployeeName.IndexOf("] ")) + 2;
-                int endIndex = EmployeeName.Length;
-                data.EmployeeName = EmployeeName.Substring(startIndex, endIndex - startIndex);
-
-                data.CreatedBy = CurrentUser.USER_ID;
-                data.CreatedDate = DateTime.Now;
-                model = InitialModel(model);
-                data.IsActive = true;
                 try
                 {
+                    var exist = _gsBLL.GetGs().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (model.PoliceNumber == null ? "" : model.PoliceNumber.ToUpper())
+                          && x.EmployeeId == model.EmployeeId && (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                          && (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (model.EmployeeName == null ? "" : model.EmployeeName.ToUpper()) && x.GsRequestDate == model.GsRequestDate && x.StartDate == model.StartDate
+                          && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == (model.VehicleUsage == null ? "" : model.VehicleUsage.ToUpper()) && x.GsFullfillmentDate == model.GsFullfillmentDate && x.EndDate == model.EndDate
+                          && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (model.Manufacturer == null ? "" : model.Manufacturer.ToUpper()) && (x.GsManufacturer == null ? "" : x.GsManufacturer.ToUpper()) == (model.GsManufacturer == null ? "" : model.GsManufacturer.ToUpper())
+                          && (x.Model == null ? "" : x.Model.ToUpper()) == (model.Models == null ? "" : model.Models.ToUpper()) && (x.GsModel == null ? "" : x.GsModel.ToUpper()) == (model.GsModel == null ? "" : model.GsModel.ToUpper())
+                          && (x.Series == null ? "" : x.Series.ToUpper()) == (model.Series == null ? "" : model.Series.ToUpper()) && (x.GsSeries == null ? "" : x.GsSeries.ToUpper()) == (model.GsSeries == null ? "" : model.GsSeries.ToUpper())
+                          && (x.Transmission == null ? "" : x.Transmission.ToUpper()) == (model.Transmission == null ? "" : model.Transmission.ToUpper()) && (x.GsTransmission == null ? "" : x.GsTransmission.ToUpper()) == (model.GsTransmission == null ? "" : model.GsTransmission.ToUpper())
+                          && (x.Location == null ? "" : x.Location.ToUpper()) == (model.Location == null ? "" : model.Location.ToUpper()) && (x.GsPoliceNumber == null ? "" : x.GsPoliceNumber.ToUpper()) == (model.GsPoliceNumber == null ? "" : model.GsPoliceNumber.ToUpper())
+                          && x.GroupLevel == model.GroupLevel && x.IsActive).FirstOrDefault();
+
+                    if (exist != null)
+                    {
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        model.ErrorMessage = "Data Already exist";
+                        model = InitialModel(model);
+                        return View(model);
+
+                    }
+
+                    var data = Mapper.Map<GsDto>(model);
+
+
+                    data.CreatedBy = CurrentUser.USER_ID;
+                    data.CreatedDate = DateTime.Now;
+                    model = InitialModel(model);
+                    data.IsActive = true;
+
                     _gsBLL.Save(data);
+                    _gsBLL.SaveChanges();
                 }
                 catch (Exception exp)
                 {
@@ -114,7 +133,6 @@ namespace FMS.Website.Controllers
         {
             var data = _gsBLL.GetGsById(MstGsId);
             var model = Mapper.Map<GsItem>(data);
-            model.EmployeeName = "[" + model.EmployeeId + "] " + model.EmployeeName;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             
@@ -127,12 +145,33 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<GsDto>(model);
-                data.ModifiedBy = CurrentUser.USER_ID;
-                data.ModifiedDate = DateTime.Now;
                 try
                 {
+                    var exist = _gsBLL.GetGs().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (model.PoliceNumber == null ? "" : model.PoliceNumber.ToUpper())
+                         && x.EmployeeId == model.EmployeeId && (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                         && (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (model.EmployeeName == null ? "" : model.EmployeeName.ToUpper()) && x.GsRequestDate == model.GsRequestDate && x.StartDate == model.StartDate
+                         && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == (model.VehicleUsage == null ? "" : model.VehicleUsage.ToUpper()) && x.GsFullfillmentDate == model.GsFullfillmentDate && x.EndDate == model.EndDate
+                         && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (model.Manufacturer == null ? "" : model.Manufacturer.ToUpper()) && (x.GsManufacturer == null ? "" : x.GsManufacturer.ToUpper()) == (model.GsManufacturer == null ? "" : model.GsManufacturer.ToUpper())
+                         && (x.Model == null ? "" : x.Model.ToUpper()) == (model.Models == null ? "" : model.Models.ToUpper()) && (x.GsModel == null ? "" : x.GsModel.ToUpper()) == (model.GsModel == null ? "" : model.GsModel.ToUpper())
+                         && (x.Series == null ? "" : x.Series.ToUpper()) == (model.Series == null ? "" : model.Series.ToUpper()) && (x.GsSeries == null ? "" : x.GsSeries.ToUpper()) == (model.GsSeries == null ? "" : model.GsSeries.ToUpper())
+                         && (x.Transmission == null ? "" : x.Transmission.ToUpper()) == (model.Transmission == null ? "" : model.Transmission.ToUpper()) && (x.GsTransmission == null ? "" : x.GsTransmission.ToUpper()) == (model.GsTransmission == null ? "" : model.GsTransmission.ToUpper())
+                         && (x.Location == null ? "" : x.Location.ToUpper()) == (model.Location == null ? "" : model.Location.ToUpper()) && (x.GsPoliceNumber == null ? "" : x.GsPoliceNumber.ToUpper()) == (model.GsPoliceNumber == null ? "" : model.GsPoliceNumber.ToUpper())
+                         && x.GroupLevel == model.GroupLevel && x.IsActive  && x.MstGsId != model.MstGsId).FirstOrDefault();
+
+                    if (exist != null)
+                    {
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        model.ErrorMessage = "Data Already exist";
+                        model = InitialModel(model);
+                        return View(model);
+
+                    }
+                    var data = Mapper.Map<GsDto>(model);
+                    data.ModifiedBy = CurrentUser.USER_ID;
+                    data.ModifiedDate = DateTime.Now;
                     _gsBLL.Save(data, CurrentUser);
+                    _gsBLL.SaveChanges();
                 }
                 catch (Exception exp)
                 {
@@ -223,10 +262,8 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.IsActive = true;
-                        var fleetData = _fleetBLL.GetFleetByParam(new BusinessObject.Inputs.FleetParamInput()
-                        {
-                            PoliceNumber = data.PoliceNumber
-                        }).FirstOrDefault();
+                        var fleetData = _fleetBLL.GetFleet().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (data.PoliceNumber == null ?"" : data.PoliceNumber.ToUpper()) 
+                                                                    && x.IsActive).FirstOrDefault();
 
                         if (fleetData != null)
                         {
@@ -237,12 +274,30 @@ namespace FMS.Website.Controllers
                             data.Manufacturer = fleetData.Manufacturer;
                             data.VehicleUsage = fleetData.VehicleUsage;
                             data.Transmission = fleetData.Transmission;
-                            data.Model = fleetData.Models;
+                            data.Models = fleetData.Models;
                             data.Series = fleetData.Series;
                         }
 
-                        //var span = data.EndDate - data.StartDate;
-                        //data.LeadTime = new DateTime(span.Value.Ticks);
+                        var exist = _gsBLL.GetGs().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (data.PoliceNumber == null ? "" : data.PoliceNumber.ToUpper())
+                           && x.EmployeeId == data.EmployeeId && (x.Remark == null ? "" : x.Remark.ToUpper())==(data.Remark == null ? "" : data.Remark.ToUpper()) 
+                           && (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (data.EmployeeName == null ? "" : data.EmployeeName.ToUpper()) && x.GsRequestDate == data.GsRequestDate && x.StartDate == data.StartDate
+                           && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == (data.VehicleUsage == null ? "" : data.VehicleUsage.ToUpper()) && x.GsFullfillmentDate == data.GsFullfillmentDate && x.EndDate == data.EndDate
+                           && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (data.Manufacturer == null ? "" : data.Manufacturer.ToUpper()) && (x.GsManufacturer == null ? "" : x.GsManufacturer.ToUpper()) == (data.GsManufacturer == null ? "" : data.GsManufacturer.ToUpper())
+                           && (x.Model == null ? "" : x.Model.ToUpper()) == (data.Models == null ? "" : data.Models.ToUpper()) && (x.GsModel == null ? "" : x.GsModel.ToUpper()) == (data.GsModel == null ? "" : data.GsModel.ToUpper())
+                           && (x.Series == null ? "" : x.Series.ToUpper()) == (data.Series == null ? "" : data.Series.ToUpper()) && (x.GsSeries == null ? "" : x.GsSeries.ToUpper()) == (data.GsSeries == null ? "" : data.GsSeries.ToUpper())
+                           && (x.Transmission == null ? "" : x.Transmission.ToUpper()) == (data.Transmission == null ? "" : data.Transmission.ToUpper()) && (x.GsTransmission == null ? "" : x.GsTransmission.ToUpper()) == (data.GsTransmission == null ? "" : data.GsTransmission.ToUpper())
+                           && (x.Location == null ? "" : x.Location.ToUpper()) == (data.Location == null ? "" : data.Location.ToUpper()) && (x.GsPoliceNumber == null ? "" : x.GsPoliceNumber.ToUpper()) == (data.GsPoliceNumber == null ? "" :data.GsPoliceNumber.ToUpper())
+                           && x.GroupLevel == data.GroupLevel && x.IsActive).FirstOrDefault();
+
+                        if (exist != null)
+                        {
+                            exist.IsActive = false;
+                            exist.ModifiedBy = "SYSTEM";
+                            exist.ModifiedDate = DateTime.Now;
+                            _gsBLL.Save(exist);
+
+                        }
+
                         var dto = Mapper.Map<GsDto>(data);
 
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
@@ -259,6 +314,7 @@ namespace FMS.Website.Controllers
                         return View(Model);
                     }
                 }
+                _gsBLL.SaveChanges();
             }
             return RedirectToAction("Index", "MstGs");
         }
@@ -277,22 +333,110 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new GsItem();
-                    var GsFullfillmentDateD = dataRow[11].ToString() == null ? 0 : double.Parse(dataRow[11].ToString());
-                    var GsRequestDateD = dataRow[10].ToString() == null ? 0 : double.Parse(dataRow[10].ToString());
-                    var StartDateD = dataRow[17].ToString() == null ? 0 : double.Parse(dataRow[17].ToString());
-                    var EndDateD = dataRow[18].ToString() == null ? 0 : double.Parse(dataRow[18].ToString());
-                    item.PoliceNumber = dataRow[3].ToString();
-                    item.GsRequestDate = DateTime.FromOADate(GsRequestDateD);
-                    item.GsFullfillmentDate = DateTime.FromOADate(GsFullfillmentDateD);
-                    item.GsManufacturer = dataRow[12].ToString();
-                    item.GsModel = dataRow[13].ToString();
-                    item.GsSeries = dataRow[14].ToString();
-                    item.GsTransmission = dataRow[15].ToString();
-                    item.GsPoliceNumber = dataRow[16].ToString();
-                    item.StartDate = DateTime.FromOADate(StartDateD);
-                    item.EndDate = DateTime.FromOADate(EndDateD);
-                    item.Remark = dataRow[20].ToString();
                     item.ErrorMessage = "";
+                    try
+                    {
+                        var GsFullfillmentDateD = dataRow[11].ToString() == null ? 0 : double.Parse(dataRow[11].ToString());
+                        item.GsFullfillmentDate = DateTime.FromOADate(GsFullfillmentDateD);
+                    }
+                    catch (Exception)
+                    {
+                        item.ErrorMessage = "Gs Fullfillment Date is not valid Format";
+                    }
+
+                    try
+                    {
+                        var GsRequestDateD = dataRow[10].ToString() == null ? 0 : double.Parse(dataRow[10].ToString());
+                        item.GsRequestDate = DateTime.FromOADate(GsRequestDateD);
+                    }
+                    catch (Exception)
+                    {
+                        item.ErrorMessage = "Gs Request Date is not valid Format";
+
+                    }
+
+                    try
+                    {
+                        var StartDateD = dataRow[17].ToString() == null ? 0 : double.Parse(dataRow[17].ToString());
+                        item.StartDate = DateTime.FromOADate(StartDateD);
+                    }
+                    catch (Exception)
+                    {
+                        item.ErrorMessage = "Start Date is not valid Format";
+                        
+                    }
+
+                    try
+                    {
+                        var EndDateD = dataRow[18].ToString() == null ? 0 : double.Parse(dataRow[18].ToString());
+                        item.EndDate = DateTime.FromOADate(EndDateD);
+                    }
+                    catch (Exception)
+                    {
+                        item.ErrorMessage = "End Date is not valid Format";
+                    }
+                    
+
+                    item.PoliceNumber = dataRow[3].ToString();
+                    if (item.PoliceNumber == "")
+                    {
+                        item.ErrorMessage = "Police Number must be filled";
+                    }
+                    else
+                    {
+                        var PoliceNumber = _fleetBLL.GetFleet().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())
+                                                                    && x.IsActive).FirstOrDefault();
+                        if (PoliceNumber == null)
+                        {
+                            item.ErrorMessage = "there is no active Police Number In Master fleet with this Police Number";
+                        }
+                    }
+
+                   
+                    item.GsManufacturer = dataRow[12].ToString();
+                    if (item.GsManufacturer == "")
+                    {
+                        item.ErrorMessage = "GS Manufaturer can't be Empty";
+                    }
+                    
+                    item.GsModel = dataRow[13].ToString();
+                    if (item.GsModel == "")
+                    {
+                        item.ErrorMessage = "GS Model can't be Empty";
+                    }
+
+                    item.GsSeries = dataRow[14].ToString();
+                    if (item.GsSeries == "")
+                    {
+                        item.ErrorMessage = "GS Series can't be Empty";
+                    }
+
+                    item.GsTransmission = dataRow[15].ToString();
+                    if (item.GsTransmission == "")
+                    {
+                        item.ErrorMessage = "GS Transmission can't be Empty";
+                    }
+
+                    item.GsPoliceNumber = dataRow[16].ToString();
+                    if (item.GsPoliceNumber == "")
+                    {
+                        item.ErrorMessage = "GS Police Number can't be Empty";
+                    }
+
+                    item.Remark = dataRow[20].ToString();
+                    if (item.Remark == "")
+                    {
+                        item.ErrorMessage = "Remark Can't be empty";
+                    }
+                    else
+                    {
+                        var Remark = _remarkBLL.GetRemark().Where(x => x.IsActive == true && x.DocumentType == (int)Enums.DocumentType.GS).FirstOrDefault();
+                        if (Remark == null)
+                        {
+                            item.ErrorMessage = "Remark is not in the Master Remark";
+                        }
+                    }
+
                     model.Add(item);
                 }
             }

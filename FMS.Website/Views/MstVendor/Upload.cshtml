@@ -29,6 +29,7 @@
                     <th>Vendor Name</th>
                     <th>Short Name</th>
                     <th>Email Address</th>
+                    <th>Message</th>
                 </tr>
             </thead>
             <tbody id="tb-upload-excel"></tbody>
@@ -43,7 +44,18 @@
     </div>
 </section>
 <script type="text/javascript">
-
+    $(function () {
+        // DataTable
+        var table = $('#example2').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
@@ -98,11 +110,14 @@
                 createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
                 createColumnWithHiddenField(uploaditems[i].ShortName, 'Model.Details[' + i + '].ShortName') +
                 createColumnWithHiddenField(uploaditems[i].EmailAddress, 'Model.Details[' + i + '].EmailAddress') +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
             }
         });
     };
