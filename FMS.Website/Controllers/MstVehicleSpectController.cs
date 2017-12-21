@@ -222,16 +222,34 @@ namespace FMS.Website.Controllers
                 {
                     string imagename = System.IO.Path.GetFileName(image.FileName);
                     image.SaveAs(Server.MapPath("~/files_upload/" + imagename));
-                    string filepathtosave = "files_upload" + imagename;
+                    string filepathtosave = "~/files_upload" + imagename;
                     data.Image = imagename;
                 }
                 else
                 {
                     data.Image = model.Image;
                 }
-                
+                string message = "";
+                _VehicleSpectBLL.ValidateSpect(data, out message,true);
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    AddMessageInfo(message, Enums.MessageInfoType.Error);
+                    
+                    model = Mapper.Map<VehicleSpectItem>(data);
+                    model.MainMenu = _mainMenu;
+                    model = initEdit(model);
+                    var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                    model.ImageS = webRootUrl + "files_upload/" + model.Image;
+                    model.CurrentLogin = CurrentUser;
+                    model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, data.MstVehicleSpectId);
+                    return View(model);
+                    
+                }
+
                 try
                 {
+                    
                     _VehicleSpectBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
@@ -278,6 +296,7 @@ namespace FMS.Website.Controllers
                         data.ModifiedDate = null;
 
                         var dto = Mapper.Map<VehicleSpectDto>(data);
+                        
                         _VehicleSpectBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
@@ -329,6 +348,10 @@ namespace FMS.Website.Controllers
                     item.IsActive = dataRow[15].ToString() == "Active"? true : false;
                     item.IsActiveS = dataRow[15].ToString();
 
+                    string message = "";
+                    var dto = Mapper.Map<VehicleSpectDto>(item);
+                    _VehicleSpectBLL.ValidateSpect(dto, out message);
+                    item.Message = message;
                     model.Add(item);
                 }
             }
