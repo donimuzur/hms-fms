@@ -48,5 +48,7 @@ namespace FMS.Website.Models
         public SelectList GroupLevelList { get; set; }
         public SelectList TransmissionList { get; set; }
         public SelectList FuelTypeList { get; set; }
+
+        public string Message { get; set; }
     }
 }

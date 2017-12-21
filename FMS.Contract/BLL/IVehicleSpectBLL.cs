@@ -15,5 +15,9 @@ namespace FMS.Contract.BLL
         VehicleSpectDto GetVehicleSpectById(int Id);
         void Save(VehicleSpectDto VehicleSpectDto);
         void Save(VehicleSpectDto data, Login currentUser);
+
+        void ValidateSpect(VehicleSpectDto dto, out string message, bool isEdit = false);
+
+        
     }
 }

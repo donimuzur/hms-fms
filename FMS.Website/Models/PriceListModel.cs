@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,6 +21,7 @@ namespace FMS.Website.Models
     {
         public int MstPriceListId { get; set; }
         public int Year { get; set; }
+        [Required]
         public string Manufacture { get; set; }
         public string Model { get; set; }
         public string Series { get; set; }
