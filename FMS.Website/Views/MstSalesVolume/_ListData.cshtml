@@ -50,7 +50,7 @@
                 <td>@string.Format("{0:N0}", data.Value)</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
                 <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                <td>@Html.Raw(data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                 @if (data.IsActive == true)
                 {
