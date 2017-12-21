@@ -70,6 +70,142 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/15/2017 10:03:38</publishTime>
     </File>
     <File Include="bin/FMS.BLL.AutoGR.dll">
+<<<<<<<<< Temporary merge branch 1
+      <publishTime>12/20/2017 14:38:07</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.CAF.dll">
+      <publishTime>12/20/2017 14:38:09</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.CarComplaintForm.dll">
+      <publishTime>12/20/2017 14:38:06</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Ccf.dll">
+      <publishTime>12/20/2017 14:38:08</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.CfmIdleReport.dll">
+      <publishTime>12/20/2017 14:37:32</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.ComplaintCategory.dll">
+      <publishTime>12/20/2017 14:37:41</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.CostOb.dll">
+      <publishTime>12/20/2017 14:38:04</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Crf.dll">
+      <publishTime>12/20/2017 14:38:05</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Csf.dll">
+      <publishTime>12/20/2017 14:38:03</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Ctf.dll">
+      <publishTime>12/20/2017 14:38:07</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.CtfExtend.dll">
+      <publishTime>12/20/2017 14:38:07</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Delegation.dll">
+      <publishTime>12/20/2017 14:37:57</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.DocumentType.dll">
+      <publishTime>12/20/2017 14:37:52</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Employee.dll">
+      <publishTime>12/20/2017 14:37:38</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.EPAF.dll">
+      <publishTime>12/20/2017 14:37:55</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.ExecutiveSummary.dll">
+      <publishTime>12/20/2017 14:38:07</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Fleet.dll">
+      <publishTime>12/20/2017 14:37:45</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.FuelOdometer.dll">
+      <publishTime>12/20/2017 14:37:56</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.GroupCostCenter.dll">
+      <publishTime>12/20/2017 14:37:55</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Gs.dll">
+      <publishTime>12/20/2017 14:38:05</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.HolidayCalender.dll">
+      <publishTime>12/20/2017 14:37:57</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.KpiMonitoring.dll">
+      <publishTime>12/20/2017 14:37:41</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.LocationMapping.dll">
+      <publishTime>12/20/2017 14:37:55</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Mapper.dll">
+      <publishTime>12/20/2017 14:37:25</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Page.dll">
+      <publishTime>12/20/2017 14:37:42</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Penalty.dll">
+      <publishTime>12/20/2017 14:38:05</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.PenaltyLogic.dll">
+      <publishTime>12/20/2017 14:37:56</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Reason.dll">
+      <publishTime>12/20/2017 14:37:53</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Remark.dll">
+      <publishTime>12/20/2017 14:37:48</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Role.dll">
+      <publishTime>12/20/2017 14:37:29</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.RptCcf.dll">
+      <publishTime>12/20/2017 14:37:32</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.RptFuel.dll">
+      <publishTime>12/20/2017 14:38:09</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.RptPo.dll">
+      <publishTime>12/20/2017 14:37:32</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.SalesVolume.dll">
+      <publishTime>12/20/2017 14:38:00</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Setting.dll">
+      <publishTime>12/20/2017 14:37:53</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.SysAccess.dll">
+      <publishTime>12/20/2017 14:38:05</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Temporary.dll">
+      <publishTime>12/20/2017 14:38:06</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.User.dll">
+      <publishTime>12/20/2017 14:37:34</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.VehicleOverallReport.dll">
+      <publishTime>12/20/2017 14:37:32</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.VehicleSpect.dll">
+      <publishTime>12/20/2017 14:37:54</publishTime>
+    </File>
+    <File Include="bin/FMS.BLL.Vendor.dll">
+      <publishTime>12/20/2017 14:37:42</publishTime>
+    </File>
+    <File Include="bin/FMS.BusinessObject.dll">
+      <publishTime>12/20/2017 14:37:23</publishTime>
+    </File>
+    <File Include="bin/FMS.Contract.dll">
+      <publishTime>12/20/2017 14:37:24</publishTime>
+    </File>
+    <File Include="bin/FMS.Core.dll">
+      <publishTime>12/20/2017 14:37:20</publishTime>
+    </File>
+    <File Include="bin/FMS.DAL.dll">
+      <publishTime>12/20/2017 14:37:28</publishTime>
+=========
+      <publishTime>12/19/2017 15:44:20</publishTime>
       <publishTime>12/20/2017 18:24:10</publishTime>
     </File>
     <File Include="bin/FMS.BLL.CAF.dll">

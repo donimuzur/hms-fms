@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Inputs;
 using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.DAL.Services;
@@ -23,9 +24,16 @@ namespace FMS.BLL.SalesVolume
             _SalesVolumeService = new SalesVolumeService(uow);
         }
 
-        public List<SalesVolumeDto> GetSalesVolume()
+        public List<SalesVolumeDto> GetSalesVolume(SalesVolumeParamInput inputs)
         {
-            var data = _SalesVolumeService.GetSalesVolume();
+            var data = _SalesVolumeService.GetSalesVolume(inputs);
+            var retData = Mapper.Map<List<SalesVolumeDto>>(data);
+            return retData;
+        }
+
+        public List<SalesVolumeDto> GetAllSalesVolume()
+        {
+            var data = _SalesVolumeService.GetAllSalesVolume();
             var retData = Mapper.Map<List<SalesVolumeDto>>(data);
             return retData;
         }
