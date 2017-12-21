@@ -95,7 +95,8 @@
                         {
                             <img id="preview" src="@Model.ImageS" alt="image" border="5" width="220" height="250" />
                         }
-                        @Html.TextBoxFor(model => model.Image, new { @type = "file" })
+                        @*@Html.TextBoxFor(model => model.Image, new { @type = "file" })*@
+                        <input type="file" name="image"/>
                     </div>
                 </div>
 

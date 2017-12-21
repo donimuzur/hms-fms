@@ -71,5 +71,10 @@ namespace FMS.DAL.Services
 
             return _rptFuelRepository.Get(queryFilter, null, "").ToList();
         }
+
+        public List<FUEL_REPORT_DATA> GetRptFuelData()
+        {
+            return _rptFuelRepository.Get().ToList();
+        }
     }
 }
