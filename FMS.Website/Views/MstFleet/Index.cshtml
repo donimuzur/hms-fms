@@ -219,26 +219,17 @@
             { "data": "City", "orderable": true },
             { "data": "SupplyMethod", "orderable": true },
             {
-                "data": "TerminationDate", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
-                }
-            },
-            {
                 "data": "Restitution", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? "Yes" : "No";
                 }
             },
+            { "data": "MonthlyHMSInstallment", "orderable": false },
             { "data": "Price", "orderable": false },
-            {
-                "data": "Vat", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? "Yes" : "No";
-                }
-            },
+            { "data": "Vat", "orderable": false },
             { "data": "PoNumber", "orderable": false },
             { "data": "PoLine", "orderable": false },
             { "data": "CarGroupLevel", "orderable": false },
             { "data": "GroupLevel", "orderable": false },
-            { "data": "ActualGroup", "orderable": false },
             { "data": "AssignedTo", "orderable": false },
             { "data": "Address", "orderable": false },
             {
@@ -251,12 +242,17 @@
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
-            { "data": "GrLeftQty", "orderable": false },
             {
                 "data": "IsActive", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? "Active" : "InActive";
                 }
-            }
+            },
+            { "data": "CertificateOwnership", "orderable": false },
+            { "data": "Comments", "orderable": false },
+            { "data": "Assets", "orderable": false },
+            { "data": "TotalMonthlyCharge", "orderable": false },
+            { "data": "Function", "orderable": false },
+            { "data": "Regional", "orderable": false }
         ];
 
         return columns;

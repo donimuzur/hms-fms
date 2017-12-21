@@ -27,14 +27,16 @@ namespace FMS.Website.Controllers
         private IRptPoBLL _rptPoBLL;
         private ISettingBLL _settingBLL;
         private IEmployeeBLL _employeeBLL;
+        private IFleetBLL _fleetBLL;
 
-        public RptPoController(IPageBLL pageBll, IRptPoBLL rptPoBLL, ISettingBLL SettingBLL, IEmployeeBLL employeeBLL) 
+        public RptPoController(IPageBLL pageBll, IRptPoBLL rptPoBLL, ISettingBLL SettingBLL, IEmployeeBLL employeeBLL, IFleetBLL fleetBLL) 
             : base(pageBll, Core.Enums.MenuList.RptPo)
         {
             _pageBLL = pageBll;
             _rptPoBLL = rptPoBLL;
             _settingBLL = SettingBLL;
             _employeeBLL = employeeBLL;
+            _fleetBLL = fleetBLL;
             _mainMenu = Enums.MenuList.RptPo;
         }
 
@@ -58,13 +60,13 @@ namespace FMS.Website.Controllers
 
             model.RptPOItem = Mapper.Map<List<RptPOItem>>(data);
             
-            var listEmployee = _employeeBLL.GetEmployee().Select(x => new { x.FORMAL_NAME }).OrderBy(x => x.FORMAL_NAME).ToList();
-            var listCost = _employeeBLL.GetEmployee().Select(x => new { x.COST_CENTER }).OrderBy(x => x.COST_CENTER).ToList();
-            var listSM = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName}).Distinct().OrderBy(x => x.SettingName).ToList();
+            var listEmployee = _fleetBLL.GetFleet().Select(x => new { x.EmployeeName }).OrderBy(x => x.EmployeeName).ToList();
+            var listCost = _fleetBLL.GetFleet().Select(x => new { x.CostCenter }).OrderBy(x => x.CostCenter).ToList();
+            var listSM = _fleetBLL.GetFleet().Select(x => new { x.SupplyMethod}).Distinct().OrderBy(x => x.SupplyMethod).ToList();
             
-            model.SearchView.EmployeeNameList = new SelectList(listEmployee, "FORMAL_NAME", "FORMAL_NAME");
-            model.SearchView.CostCenterList = new SelectList(listCost, "COST_CENTER", "COST_CENTER");
-            model.SearchView.SupplyMethodList = new SelectList(listSM, "SettingName", "SettingName");
+            model.SearchView.EmployeeNameList = new SelectList(listEmployee, "EmployeeName", "EmployeeName");
+            model.SearchView.CostCenterList = new SelectList(listCost, "CostCenter", "CostCenter");
+            model.SearchView.SupplyMethodList = new SelectList(listSM, "SupplyMethod", "SupplyMethod");
 
             return View(model);
         }
@@ -182,157 +184,169 @@ namespace FMS.Website.Controllers
                 {
                     if (data.JanAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Januari");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "January");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 2 && input.MonthTo >= 2)
                 {
                     if (data.PebAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Pebruari");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                       
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "February");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 3 && input.MonthTo >= 3)
                 {
                     if (data.MarAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Maret");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "March");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 4 && input.MonthTo >= 4)
                 {
                     if (data.AprAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "April");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "April");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 5 && input.MonthTo >= 5)
                 {
                     if (data.MeiAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Mei");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                       
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "May");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 6 && input.MonthTo >= 6)
                 {
                     if (data.JunAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Juni");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "June");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 7 && input.MonthTo >= 7)
                 {
                     if (data.JulAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Juli");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "July");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 8 && input.MonthTo >= 8)
                 {
                     if (data.AgusAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Agustus");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "August");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 9 && input.MonthTo >= 9)
                 {
                     if (data.SepAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "September");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "September");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 10 && input.MonthTo >= 10)
                 {
                     if (data.OktAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Oktober");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                       
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "October");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 11 && input.MonthTo >= 11)
                 {
                     if (data.NopAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Nopember");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "November");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 12 && input.MonthTo >= 12)
                 {
                     if (data.DesAmount > 0)
                     {
-                        slDocument.SetCellValue(2, iCol + 1, "Desember");
-                        slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
-
-                        slDocument.SetCellValue(iRow, iCol + 1, "Amount");
-                        slDocument.SetCellValue(iRow, iCol + 2, "PPN");
-                        slDocument.SetCellValue(iRow, iCol + 3, "Total");
-                        iCol = iCol + 3;
+                       
                     }
+                    slDocument.SetCellValue(2, iCol + 1, "December");
+                    slDocument.MergeWorksheetCells(2, iCol + 1, 2, iCol + 3);
+
+                    slDocument.SetCellValue(iRow, iCol + 1, "Amount");
+                    slDocument.SetCellValue(iRow, iCol + 2, "PPN");
+                    slDocument.SetCellValue(iRow, iCol + 3, "Total");
+                    iCol = iCol + 3;
                 }
             }
 
@@ -381,121 +395,133 @@ namespace FMS.Website.Controllers
                 {
                     if (data.JanAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.JanAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.JanPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.JanTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.JanAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.JanPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.JanTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 2 && input.MonthTo >= 2)
                 {
                     if (data.PebAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.PebAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.PebPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.PebTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.PebAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.PebPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.PebTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 3 && input.MonthTo >= 3)
                 {
                     if (data.MarAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.MarAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.MarPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.MarTotal);
-                        iCol = iCol + 3;
+                       
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.MarAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.MarPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.MarTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 4 && input.MonthTo >= 4)
                 {
                     if (data.AprAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.AprAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.AprPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.AprTotal);
-                        iCol = iCol + 3;
+                       
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.AprAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.AprPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.AprTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 5 && input.MonthTo >= 5)
                 {
                     if (data.MeiAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.MeiAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.MeiPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.MeiTotal);
-                        iCol = iCol + 3;
+                       
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.MeiAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.MeiPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.MeiTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 6 && input.MonthTo >= 6)
                 {
                     if (data.JunAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.JunAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.JunPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.JunTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.JunAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.JunPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.JunTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 7 && input.MonthTo >= 7)
                 {
                     if (data.JulAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.JulAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.JulPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.JulTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.JulAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.JulPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.JulTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 8 && input.MonthTo >= 8)
                 {
                     if (data.AgusAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.AgusAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.AgusPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.AgusTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.AgusAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.AgusPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.AgusTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 9 && input.MonthTo >= 9)
                 {
                     if (data.SepAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.SepAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.SepPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.SepTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.SepAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.SepPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.SepTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 10 && input.MonthTo >= 10)
                 {
                     if (data.OktAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.OktAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.OktPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.OktTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.OktAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.OktPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.OktTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 11 && input.MonthTo >= 11)
                 {
                     if (data.NopAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.NopAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.NopPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.NopTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.NopAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.NopPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.NopTotal);
+                    iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 12 && input.MonthTo >= 12)
                 {
                     if (data.DesAmount > 0)
                     {
-                        slDocument.SetCellValue(iRow, iCol + 1, data.DesAmount);
-                        slDocument.SetCellValue(iRow, iCol + 2, data.DesPPN);
-                        slDocument.SetCellValue(iRow, iCol + 3, data.DesTotal);
-                        iCol = iCol + 3;
+                        
                     }
+                    slDocument.SetCellValue(iRow, iCol + 1, data.DesAmount);
+                    slDocument.SetCellValue(iRow, iCol + 2, data.DesPPN);
+                    slDocument.SetCellValue(iRow, iCol + 3, data.DesTotal);
+                    iCol = iCol + 3;
                 }
                 iRow++;
             }
