@@ -40,6 +40,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.Gst, opt => opt.MapFrom(src => src.GST))
                 .ForMember(dest => dest.TotMonthInstallment, opt => opt.MapFrom(src => src.TOTAL_MONTHLY_INSTALLMENT))
                 .ForMember(dest => dest.MstFleetId, opt => opt.MapFrom(src => src.MST_FLEET_ID))
+                .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.MST_EMPLOYEE.GROUP_LEVEL))
 
                 //.ForMember(dest => dest.JanAmount, opt => opt.MapFrom(src => src.MONTHLY_INSTALLMENT))
                 //.ForMember(dest => dest.JanPPN, opt => opt.MapFrom(src => src.GST))
