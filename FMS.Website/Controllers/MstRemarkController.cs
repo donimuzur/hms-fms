@@ -71,18 +71,59 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<RemarkDto>(model);
-                dto.CreatedBy = CurrentUser.USERNAME;
-                dto.createdDate = DateTime.Now;
-                dto.IsActive = true;
                 try
                 {
+                    var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                                                                  && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                                  && x.DocumentType == model.DocumentType
+                                                                  && x.IsActive).FirstOrDefault();
+                    if (Exist != null)
+                    {
+                        var list1 = _documentTypeBLL.GetDocumentType();
+
+                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                        var list2 = new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "HR", Value = "HR"},
+                            new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                            new SelectListItem { Text = "Admin", Value = "Admin" },
+                        };
+
+                        model.RoleTypeList = new SelectList(list2, "Value", "Text");
+
+                        model.ErrorMessage = "Data Already Exist";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<RemarkDto>(model);
+                    dto.CreatedBy = CurrentUser.USERNAME;
+                    dto.createdDate = DateTime.Now;
+                    dto.IsActive = true;
+                  
                     _remarkBLL.Save(dto);
                     _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    var list1 = _documentTypeBLL.GetDocumentType();
+
+                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                    var list2 = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "HR", Value = "HR"},
+                        new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                        new SelectListItem { Text = "Admin", Value = "Admin" },
+                    };
+
+                    model.RoleTypeList = new SelectList(list2, "Value", "Text");
+                    model.ErrorMessage = ex.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    return View(model);
                 }
             }
             
@@ -117,18 +158,58 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<RemarkDto>(model);
-                dto.ModifiedBy = CurrentUser.USERNAME;
-                dto.ModifiedDate = DateTime.Now;
-               
                 try
                 {
+                    var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                                                              && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                              && x.DocumentType == model.DocumentType
+                                                              && x.IsActive && x.MstRemarkId != model.MstRemarkId).FirstOrDefault();
+                    if (Exist != null)
+                    {
+                        var list1 = _documentTypeBLL.GetDocumentType();
+
+                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                        var list2 = new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "HR", Value = "HR"},
+                            new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                            new SelectListItem { Text = "Admin", Value = "Admin" },
+                        };
+
+                        model.RoleTypeList = new SelectList(list2, "Value", "Text");
+                        model.ErrorMessage = "Data Already Exist";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<RemarkDto>(model);
+                    dto.ModifiedBy = CurrentUser.USERNAME;
+                    dto.ModifiedDate = DateTime.Now;
+
                     _remarkBLL.Save(dto, CurrentUser);
                     _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    var list1 = _documentTypeBLL.GetDocumentType();
+
+                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                    var list2 = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "HR", Value = "HR"},
+                        new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                        new SelectListItem { Text = "Admin", Value = "Admin" },
+                    };
+
+                    model.RoleTypeList = new SelectList(list2, "Value", "Text");
+
+                    model.ErrorMessage = ex.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    return View(model);
                 }
             }
 
@@ -186,6 +267,8 @@ namespace FMS.Website.Controllers
                             if (Exist != null)
                             {
                                 Exist.IsActive = false;
+                                Exist.ModifiedBy = "SYSTEM";
+                                Exist.ModifiedDate = DateTime.Now;
                                 _remarkBLL.Save(Exist);
                             }
 

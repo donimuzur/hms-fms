@@ -157,13 +157,18 @@
     };
 
     function convertDate(date) {
-        var dt = new Date(parseInt(date.substr(6)));
-        var dtStr = dt.toString();
-        var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
-
-        return str;
+        try {
+            var dt = new Date(parseInt(date.substr(6)));
+            var dtStr = dt.toString();
+            var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+            return str;
+        } catch (e) {
+            return '';
+        }
+       
+        
     }
 </script>
 

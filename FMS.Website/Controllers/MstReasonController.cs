@@ -141,11 +141,32 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<ReasonDto>(model);
-                dto.ModifiedBy = CurrentUser.USER_ID;
-                dto.ModifiedDate = DateTime.Now;
                 try
                 {
+
+                    var exist = _rasonBLL.GetReason().Where(x => x.DocumentType == model.DocumentType
+                                                          && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper())
+                                                          && (x.Reason == null ? "" : x.Reason) == (model.Reason == null ? "" : model.Reason.ToUpper())).FirstOrDefault();
+                    if (exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exist in Master Reason";
+                        var list1 = _documentTypeBLL.GetDocumentType();
+                        var list2 = new List<SelectListItem>()
+                            {
+                                new SelectListItem() {Text = "BENEFIT", Value = "BENEFIT" },
+                                new SelectListItem() {Text = "WTC", Value = "WTC" }
+                            };
+
+                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+                        model.VehicleTypeList = new SelectList(list2, "Text", "Value");
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<ReasonDto>(model);
+                    dto.ModifiedBy = CurrentUser.USER_ID;
+                    dto.ModifiedDate = DateTime.Now;
                     _rasonBLL.save(dto, CurrentUser);
                 }
                 catch (Exception ex)
