@@ -254,11 +254,24 @@ namespace FMS.Website.Controllers
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
+                        Model.ErrorMessage = exception.Message;
                         return View(Model);
                     }
                 }
-                _rasonBLL.SaveCanges();
+                try
+                {
+                    _rasonBLL.SaveCanges();
+                }
+                catch (Exception exp)
+                {
+                    Model.MainMenu = _mainMenu;
+                    Model.CurrentLogin = CurrentUser;
+                    Model.ErrorMessage = exp.Message;
+                    return View(Model);
+                }
+                
             }
             return RedirectToAction("Index", "MstReason");
         }
@@ -266,9 +279,6 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
-            var qtyPacked = string.Empty;
-            var qty = string.Empty;
-
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<ReasonItem>();
             if (data != null)
