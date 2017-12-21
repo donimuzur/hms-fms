@@ -27,8 +27,8 @@
                 <td>@Html.Raw(data.Function)</td>
                 <td>@Html.Raw(data.Month)</td>
                 <td>@Html.Raw(data.ReportYear)</td>
-                <td>@Html.Raw(data.CostOb)</td>
-                <td>@Html.Raw(data.ActualCost)</td>
+                <td>@string.Format("{0:N0}", data.CostOb)</td>
+                <td>@string.Format("{0:N0}", data.ActualCost)</td>
             </tr>
         }
     </tbody>
