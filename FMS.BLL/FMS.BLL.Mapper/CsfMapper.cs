@@ -56,6 +56,8 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.END_CONTRACT, opt => opt.MapFrom(src => src.VENDOR_CONTRACT_END_DATE))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => "SYSTEM"))
                 .ForMember(dest => dest.START_DATE, opt => opt.MapFrom(src => src.EFFECTIVE_DATE))
+                .ForMember(dest => dest.CITY, opt => opt.MapFrom(src => src.LOCATION_CITY))
+                .ForMember(dest => dest.ADDRESS, opt => opt.MapFrom(src => src.LOCATION_ADDRESS))
                 ;
         }
     }

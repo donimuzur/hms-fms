@@ -53,15 +53,16 @@ namespace FMS.Core
             RptCcf = 41
 		}
 
-	    public enum DocumentType
-	    {
-	        CSF = 1,
+        public enum DocumentType
+        {
+            CSF = 1,
             TMP = 2,
             CRF = 3,
             CAF = 4,
             CCF = 5,
-            CTF = 6
-	    }
+            CTF = 6,
+            GS = 7
+        }
 
         public enum DocumentStatus
         {
