@@ -194,7 +194,7 @@ namespace FMS.Website.Controllers
                         data.ModifiedDate = null;
 
                         var dto = Mapper.Map<SettingDto>(data);
-                        _settingBLL.Save(dto);
+                        _settingBLL.Save(dto, CurrentUser);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
@@ -231,6 +231,18 @@ namespace FMS.Website.Controllers
                         item.SettingValue = dataRow[2].ToString();
                         item.IsActive = dataRow[3].ToString() == "Active"? true : false;
                         item.IsActiveS = dataRow[3].ToString();
+                        item.ErrorMessage = string.Empty;
+
+                        var exist = _settingBLL.GetSetting().Where(x => x.SettingGroup.ToUpper() == item.SettingGroup.ToUpper()
+                            && x.SettingName.ToUpper() == item.SettingName.ToUpper()
+                            && x.SettingValue.ToUpper() == item.SettingValue.ToUpper()
+                           && x.IsActive).FirstOrDefault();
+
+                        if (string.IsNullOrEmpty(dataRow[0].ToString())) { item.ErrorMessage += "Setting Group empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[1].ToString())) { item.ErrorMessage += "Setting Name empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[2].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (exist != null) { item.ErrorMessage += "Data Already Exist,"; }
+
                         model.Add(item);
                     }
                     catch (Exception ex)
