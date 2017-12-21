@@ -65,7 +65,7 @@ namespace FMS.Website.Controllers
                 model.SearchView.RegionalList = new SelectList(locationMapping, "Region", "Region");
                 model.RptFuelItem = Mapper.Map<List<RptFuelItem>>(data);
 
-                var dataFuel = _rptFuelBLL.GetRptFuel(input);
+                var dataFuel = _rptFuelBLL.GetRptFuelData();
 
                 foreach (var item in model.RptFuelItem)
                 {
@@ -78,10 +78,12 @@ namespace FMS.Website.Controllers
                     {
                         input.MonthFrom = input.MonthFrom - 1;
                     }
+                    
+
 
                     if (item.Odometer != 0)
                     {
-                        var data_temp = dataFuel.Where(x => x.PoliceNumber == item.PoliceNumber).Select(x => x.Odometer).FirstOrDefault();
+                        var data_temp = dataFuel.Where(x => x.PoliceNumber == item.PoliceNumber && x.ReportMonth == input.MonthFrom && x.ReportYear == input.YearFrom).Select(x => x.Odometer).FirstOrDefault();
                         if (data_temp == 0)
                         {
                             item.Usage = data_temp;
