@@ -2872,7 +2872,6 @@
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="VEHCILE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PO_REPORT_DATA">
           <Key>

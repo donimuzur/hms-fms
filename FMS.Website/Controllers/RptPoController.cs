@@ -159,7 +159,7 @@ namespace FMS.Website.Controllers
         private SLDocument CreateHeaderExcelDashboard(SLDocument slDocument, List<RptPOItem> listData, RptPoByParamInput input)
         {
             int iRow = 3;
-            int iCol = 18;
+            int iCol = 19;
             slDocument.SetCellValue(iRow, 1, "Police Number");
             slDocument.SetCellValue(iRow, 2, "Supply Method");
             slDocument.SetCellValue(iRow, 3, "Employee Name");
@@ -480,7 +480,7 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, iCol + 3, data.DesTotal);
                     iCol = iCol + 3;
                 }
-                iCol = 18;
+                iCol = 19;
                 iRow++;
             }
 
