@@ -243,6 +243,8 @@ namespace FMS.Website.Controllers
                             if (Exist != null)
                             {
                                 Exist.IsActive = false;
+                                Exist.ModifiedBy = "SYSTEM";
+                                Exist.ModifiedDate = DateTime.Now;
                                 _rasonBLL.save(Exist);
                             }
 
