@@ -365,8 +365,10 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<SysAccessItem, SysAccessDto>().IgnoreAllNonExisting();
 
-            Mapper.CreateMap<GsDto, GsItem>().IgnoreAllNonExisting();
-            Mapper.CreateMap<GsItem, GsDto>().IgnoreAllNonExisting();
+            Mapper.CreateMap<GsDto, GsItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model)); ;
+            Mapper.CreateMap<GsItem, GsDto>().IgnoreAllNonExisting()
+                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models)); ;
 
             // Start --- Master Data -> CostOb
             Mapper.CreateMap<CostObDto, CostObItem>().IgnoreAllNonExisting()

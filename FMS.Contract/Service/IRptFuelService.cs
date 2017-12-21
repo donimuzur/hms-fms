@@ -11,5 +11,6 @@ namespace FMS.Contract.Service
     public interface IRptFuelService
     {
         List<FUEL_REPORT_DATA> GetRptFuel(RptFuelByParamInput filter);
+        List<FUEL_REPORT_DATA> GetRptFuelData();
     }
 }

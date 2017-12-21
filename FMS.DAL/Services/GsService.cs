@@ -37,12 +37,10 @@ namespace FMS.DAL.Services
         public void Save(MST_GS dbGs)
         {
             _gsRepository.InsertOrUpdate(dbGs);
-            _uow.SaveChanges();
         }
         public void Save(MST_GS dbGs, Login userLogin)
         {
             _gsRepository.InsertOrUpdate(dbGs, userLogin, Enums.MenuList.MasterGS);
-            _uow.SaveChanges();
         }
 
         public List<MST_GS> GetGsByParam(RptGsInput input)
