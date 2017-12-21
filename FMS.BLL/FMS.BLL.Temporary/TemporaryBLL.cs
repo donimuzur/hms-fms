@@ -39,6 +39,7 @@ namespace FMS.BLL.Temporary
         private IPriceListService _priceListService;
         private IVendorService _vendorService;
         private IGroupCostCenterService _groupCostService;
+        private IVehicleSpectService _vehicleSpectService;
 
         public TemporaryBLL(IUnitOfWork uow)
         {
@@ -56,6 +57,7 @@ namespace FMS.BLL.Temporary
             _priceListService = new PriceListService(_uow);
             _vendorService = new VendorService(_uow);
             _groupCostService = new GroupCostCenterService(_uow);
+            _vehicleSpectService = new VehicleSpectService(_uow);
         }
 
         public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted)
@@ -939,6 +941,13 @@ namespace FMS.BLL.Temporary
                                                                         && x.IS_ACTIVE
                                                                         && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
 
+                var vSpecList = _vehicleSpectService.GetVehicleSpect().Where(x => x.YEAR == item.CREATED_DATE.Year
+                                                                        && x.MANUFACTURER == item.MANUFACTURER
+                                                                        && x.MODEL == item.MODEL
+                                                                        && x.SERIES == item.SERIES
+                                                                        && x.BODY_TYPE == item.BODY_TYPE
+                                                                        && x.IS_ACTIVE).FirstOrDefault();
+
                 var functionList = _groupCostService.GetGroupCostCenter().Where(x => x.COST_CENTER == item.COST_CENTER).FirstOrDefault();
 
                 var vehType = string.Empty;
@@ -949,6 +958,7 @@ namespace FMS.BLL.Temporary
                 var address = getZonePriceList == null ? "" : getZonePriceList.ADDRESS;
                 var regional = getZonePriceList == null ? "" : getZonePriceList.REGION;
                 var function = functionList == null ? "" : functionList.FUNCTION_NAME;
+                var fuelType = vSpecList == null ? string.Empty : vSpecList.FUEL_TYPE;
 
                 if (!string.IsNullOrEmpty(item.VEHICLE_TYPE))
                 {
@@ -988,7 +998,7 @@ namespace FMS.BLL.Temporary
                 dbFleet.PROJECT_NAME = projectName;
                 dbFleet.MONTHLY_HMS_INSTALLMENT = hmsPrice;
                 dbFleet.TOTAL_MONTHLY_CHARGE = hmsPrice + (item.VAT_DECIMAL == null ? 0 : item.VAT_DECIMAL.Value);
-                dbFleet.FUEL_TYPE = string.Empty;
+                dbFleet.FUEL_TYPE = fuelType;
                 dbFleet.ADDRESS = address;
                 dbFleet.REGIONAL = regional;
                 dbFleet.VEHICLE_FUNCTION = function;
