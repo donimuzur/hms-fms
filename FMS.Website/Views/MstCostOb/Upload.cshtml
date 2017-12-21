@@ -47,6 +47,18 @@
 
 <script type="text/javascript">
 
+    $(function () {
+        // DataTable
+        var table = $('#example2').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": true
+        });
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
