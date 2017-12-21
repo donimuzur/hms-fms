@@ -58,7 +58,7 @@ namespace FMS.Website.Controllers
         {
             var policeList = _fleetBLL.GetFleet().Where(x => x.IsActive == true).ToList();
             model.PoliceNumberList = new SelectList(policeList, "PoliceNumber", "PoliceNumber");
-            var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true).ToList();
+            var RemarkList = _remarkBLL.GetRemark().Where(x => x.IsActive == true && x.DocumentType == (int)Enums.DocumentType.GS).ToList();
             model.RemarkList = new SelectList(RemarkList, "Remark", "Remark");
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { EmployeeName = "[" + x.EMPLOYEE_ID + "] " + x.FORMAL_NAME }).ToList();
             model.EmployeeList = new SelectList(EmployeeList, "EmployeeName", "EmployeeName");
