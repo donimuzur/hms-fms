@@ -21,7 +21,8 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.ExtedPoLine, opt => opt.MapFrom(src => src.EXTEND_PO_LINE))
              .ForMember(dest => dest.ExtendPrice, opt => opt.MapFrom(src => src.EXTEND_PRICE))
              .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.REASON))
-             .ForMember(dest => dest.MstReason, opt => opt.MapFrom(src => src.MST_REASON));
+             .ForMember(dest => dest.MstReason, opt => opt.MapFrom(src => src.MST_REASON))
+             .ForMember(dest => dest.ExtendPoliceNumber, opt => opt.MapFrom(src => src.EXTEND_POLICE_NUMBER));
 
             AutoMapper.Mapper.CreateMap<CtfExtendDto, TRA_CTF_EXTEND>().IgnoreAllNonExisting()
              .ForMember(dest => dest.TRA_CTF_EXTEND_ID, opt => opt.MapFrom(src => src.CtfExtendId))
@@ -31,7 +32,8 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.EXTEND_PO_LINE, opt => opt.MapFrom(src => src.ExtedPoLine))
              .ForMember(dest => dest.EXTEND_PRICE, opt => opt.MapFrom(src => src.ExtendPrice))
              .ForMember(dest => dest.REASON, opt => opt.MapFrom(src => src.Reason))
-             .ForMember(dest => dest.MST_REASON, opt => opt.MapFrom(src => src.MstReason));
+             .ForMember(dest => dest.MST_REASON, opt => opt.MapFrom(src => src.MstReason))
+             .ForMember(dest => dest.EXTEND_POLICE_NUMBER, opt => opt.MapFrom(src => src.ExtendPoliceNumber));
         }
     }
 }

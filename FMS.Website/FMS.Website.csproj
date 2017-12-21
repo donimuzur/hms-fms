@@ -1047,7 +1047,6 @@
     <Content Include="files_upload\masterVendor.xlsx" />
     <Content Include="files_upload\Accident\EHSTemplate.xlsx" />
     <Content Include="files_upload\Accident\ProgressTemplate.xlsx" />
-    <Content Include="files_upload\excelVendorFor.xlsx" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -4388,6 +4387,7 @@
     <Content Include="Views\RptKpiMonitoring\_ListTransaction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SumPtdByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListSumPtdByFunction.cshtml" />
+    <Content Include="Views\MstSalesVolume\_ListData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

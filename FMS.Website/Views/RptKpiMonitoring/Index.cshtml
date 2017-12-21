@@ -93,9 +93,13 @@
         $('#filter_ToDate').val($('#To_Date').val());
         $('#filter_VehicleUsage').val($('#SearchView_VehicleUsage').val());
         $('#filter_FormType').val($('#SearchView_FormType').val());
-        $('#filter_Location').val($("#SearchView_Location").val());
+        var val = $("#SearchView_Location option:selected").text()
+        $('#filter_Location').val(val);
+        if (val == 'ALL')
+        {
+            $('#filter_Location').val('');
+        }
         //$("#SearchView_Location option:selected").text()
-        filter_Location
         $('#ExportToXls').submit();
     }
 

@@ -24,6 +24,7 @@ namespace FMS.BusinessObject.Dto
         public string ACTUAL_GROUP { get; set; }
         public string SUPPLY_METHOD { get; set; }
         public string VEHICLE_TYPE { get; set; }
+        public string VEHICLE_USAGE { get; set; }
         public string VEHICLE_TYPE_NAME { get; set; }
         public string REGIONAL { get; set; }
         public string POLICE_NUMBER { get; set; }
@@ -65,5 +66,6 @@ namespace FMS.BusinessObject.Dto
         public string VENDOR_VENDOR { get; set; }
         public string EMPLOYEE_ID_CREATOR { get; set; }
         public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
+        public string ASSIGNED_TO { get; set; }
     }
 }

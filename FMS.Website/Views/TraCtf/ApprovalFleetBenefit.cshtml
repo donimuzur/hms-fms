@@ -55,6 +55,7 @@
                                                             @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.IsPenalty)
                                                             @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.Region)
 
                                                             @Html.HiddenFor(model => Model.WithdPic)
                                                             @Html.HiddenFor(model => Model.WithdPhone)
@@ -235,6 +236,12 @@
                                                     <div class="col-md-12">
                                                         <h5>Extend Details</h5>
                                                         <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Police Number</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoliceNumber, new { @class = "form-control", @id = "extNewPoliceNumber", @readonly = "readonly" })
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">

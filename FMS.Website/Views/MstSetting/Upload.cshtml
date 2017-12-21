@@ -31,6 +31,7 @@
                         <th>Setting Name</th>
                         <th>Setting Value</th>
                         <th>Status</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -106,11 +107,14 @@
                 createColumnWithHiddenField(uploaditems[i].SettingName, 'Model.Details[' + i + '].SettingName') +
                 createColumnWithHiddenField(uploaditems[i].SettingValue, 'Model.Details[' + i + '].SettingValue') +
                 createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
             }
         });
     };

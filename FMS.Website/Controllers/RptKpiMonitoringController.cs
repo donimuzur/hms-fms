@@ -64,14 +64,14 @@ namespace FMS.Website.Controllers
 
             var FormTypeList = new Dictionary<string, string> { { "CSF", "CSF" }, { "CTF", "CTF" }, { "CRF", "CRF" } };
             var VehicleUsageList =_settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").ToList();
-            var AddressList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { ADDRESS = x.ADDRESS }).Distinct().OrderBy(x => x.ADDRESS).ToList();
+            var BasetownList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { BASETOWN = x.BASETOWN }).Distinct().OrderBy(x => x.BASETOWN).ToList();
 
             model.SearchView.FormDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.ToDate = DateTime.Today;
 
             model.SearchView.FormTypeList = new SelectList(FormTypeList, "Key", "Value");
             model.SearchView.VehicleUsageList = new SelectList(VehicleUsageList, "SettingName", "SettingName");
-            model.SearchView.LocationList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
+            model.SearchView.LocationList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
 
             filter.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             filter.ToDate = DateTime.Today;
@@ -193,9 +193,9 @@ namespace FMS.Website.Controllers
                 var SendBackToHr = ListWorkflow.Where(x => x.Action == Enums.ActionType.Submit.ToString() && x.UserId == (Employee == null ? "" : Employee.USER_ID)).FirstOrDefault();
                 if (SendBackToHr != null) item.SendBackToHr = SendBackToHr.ActionDate;
 
-                //var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (Creator == null ? "" : Creator.USER_ID)).FirstOrDefault();
-                //if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
-                
+                var SendToFleet = ListWorkflow.Where(x => x.Action == Enums.ActionType.Approve.ToString() && x.UserId == (TraCrf == null ? "" : TraCrf.CREATED_BY)).FirstOrDefault();
+                if (SendToFleet != null) item.SendToFleetDate = SendToFleet.ActionDate;
+
             }
 
             return item;

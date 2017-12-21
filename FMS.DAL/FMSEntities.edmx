@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AC_VS_OB_REPORT_DATA">
           <Key>
             <PropertyRef Name="ID" />
@@ -35,7 +35,7 @@
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
           </Key>
-          <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PO_NUMBER" Type="varchar" MaxLength="20" />
           <Property Name="PO_DATE" Type="datetime" />
           <Property Name="CREATED_DATE" Type="datetime" />
@@ -48,7 +48,7 @@
           <Key>
             <PropertyRef Name="AUTO_GR_DETAIL_ID" />
           </Key>
-          <Property Name="AUTO_GR_DETAIL_ID" Type="int" Nullable="false" />
+          <Property Name="AUTO_GR_DETAIL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
           <Property Name="LINE_ITEM" Type="int" />
           <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
@@ -208,6 +208,9 @@
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
           <Property Name="QTY" Type="int" />
           <Property Name="MONTH" Type="int" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="FUNCTION_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -341,6 +344,7 @@
           <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PROJECT" Type="bit" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -977,8 +981,11 @@
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
-          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
           <Property Name="FLEXBEN" Type="int" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -1039,6 +1046,7 @@
           <Property Name="EXTEND_PO_LINE" Type="nvarchar" MaxLength="50" />
           <Property Name="EXTEND_PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="REASON" Type="int" />
+          <Property Name="EXTEND_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TRA_DOC_NUMBER">
           <Key>
@@ -1112,6 +1120,9 @@
           <Property Name="CFM_IDLE_ID" Type="bigint" />
           <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
           <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1180,7 +1191,19 @@
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
-        <Association Name="FK__PO_REPORT__EMPLO__55DFB4D9">
+        <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="PO_REPORT_DATA">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PO_REPORT__EMPLO__589C25F3">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1421,6 +1444,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
+          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
+          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MST_EMPLOYEE">
+              <PropertyRef Name="EMPLOYEE_ID" />
+            </Principal>
+            <Dependent Role="TRA_CCF">
+              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1715,7 +1750,11 @@
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__55DFB4D9" Association="Self.FK__PO_REPORT__EMPLO__55DFB4D9">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__1B9317B3" Association="Self.FK__PO_REPORT__EMPLO__1B9317B3">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__589C25F3" Association="Self.FK__PO_REPORT__EMPLO__589C25F3">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
@@ -1796,6 +1835,10 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
+            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
+            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -2302,6 +2345,9 @@
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="QTY" Type="Int32" />
           <Property Name="MONTH" Type="Int32" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_DELEGATION">
           <Key>
@@ -2460,6 +2506,7 @@
           <Property Name="PROJECT" Type="Boolean" />
           <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_FLEET_MST_EMPLOYEE" FromRole="MST_FLEET" ToRole="MST_EMPLOYEE" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -3141,6 +3188,9 @@
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CSF_MST_EPAF" FromRole="TRA_CSF" ToRole="MST_EPAF" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CSF_MST_REASON" FromRole="TRA_CSF" ToRole="MST_REASON" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CSF_MST_REMARK" FromRole="TRA_CSF" ToRole="MST_REMARK" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -3208,6 +3258,7 @@
           <Property Name="REASON" Type="Int32" />
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CTF_EXTEND_MST_REASON" FromRole="TRA_CTF_EXTEND" ToRole="MST_REASON" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF" FromRole="TRA_CTF_EXTEND" ToRole="TRA_CTF" />
+          <Property Name="EXTEND_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRA_DOC_NUMBER">
           <Key>
@@ -3283,6 +3334,9 @@
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_TEMPORARY_MST_REASON" FromRole="TRA_TEMPORARY" ToRole="MST_REASON" />
           <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ASSIGNED_TO" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -4037,6 +4091,9 @@
           <EntitySetMapping Name="MST_COST_OB">
             <EntityTypeMapping TypeName="FMSModel.MST_COST_OB">
               <MappingFragment StoreEntitySet="MST_COST_OB">
+                <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
+                <ScalarProperty Name="FUNCTION_NAME" ColumnName="FUNCTION_NAME" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="MONTH" ColumnName="MONTH" />
                 <ScalarProperty Name="QTY" ColumnName="QTY" />
                 <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
@@ -4138,6 +4195,7 @@
           <EntitySetMapping Name="MST_FLEET">
             <EntityTypeMapping TypeName="FMSModel.MST_FLEET">
               <MappingFragment StoreEntitySet="MST_FLEET">
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
                 <ScalarProperty Name="PROJECT" ColumnName="PROJECT" />
                 <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
@@ -4792,6 +4850,9 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
                 <ScalarProperty Name="FLEXBEN" ColumnName="FLEXBEN" />
                 <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
                 <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
@@ -4913,6 +4974,7 @@
           <EntitySetMapping Name="TRA_CTF_EXTEND">
             <EntityTypeMapping TypeName="FMSModel.TRA_CTF_EXTEND">
               <MappingFragment StoreEntitySet="TRA_CTF_EXTEND">
+                <ScalarProperty Name="EXTEND_POLICE_NUMBER" ColumnName="EXTEND_POLICE_NUMBER" />
                 <ScalarProperty Name="REASON" ColumnName="REASON" />
                 <ScalarProperty Name="EXTEND_PRICE" ColumnName="EXTEND_PRICE" />
                 <ScalarProperty Name="EXTEND_PO_LINE" ColumnName="EXTEND_PO_LINE" />
@@ -4937,6 +4999,9 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
                 <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
                 <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
                 <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
