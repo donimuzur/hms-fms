@@ -82,6 +82,7 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -103,7 +104,7 @@
                         <td>@Html.Raw(data.PoliceNumber)</td>
                         <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.Manufacturer)</td>
-                        <td>@Html.Raw(data.Model)</td>
+                        <td>@Html.Raw(data.Models)</td>
                         <td>@Html.Raw(data.Series)</td>
                         <td>@Html.Raw(data.Transmission)</td>
                         <td>@Html.Raw(data.Location)</td>
@@ -116,7 +117,7 @@
                         <td>@Html.Raw(data.GsPoliceNumber)</td>
                         <td>@Html.Raw(data.StartDate == null ?  "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.LeadTime.HasValue?data.LeadTime.Value.Year + " year(s) " + data.LeadTime.Value.Month + " month(s) " + data.LeadTime.Value.Day + " day(s) " + data.LeadTime.Value.Hour + " hour(s) " + data.LeadTime.Value.Minute + " minute(s)": "")</td>
+                        <td>@Html.Raw(data.LeadTimeS)</td>
                         <td>@Html.Raw(data.Remark)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>

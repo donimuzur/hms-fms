@@ -50,9 +50,9 @@ namespace FMS.Website.Controllers
         {
             var model = new LocationMappingItem();
             var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-            var AddressList = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS }).Distinct().ToList().OrderBy(x => x.ADDRESS);
-            model.LocationList = new SelectList(Locationlist, "City", "City");
-            model.AddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
+            var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
+            model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
+            model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
@@ -74,15 +74,17 @@ namespace FMS.Website.Controllers
                     && (x.Location == null ? "" : x.Location.ToLower()) == (data.Location == null ? "" : data.Location.ToLower())
                     && (x.Region == null ? "" : x.Region.ToLower()) == (data.Region == null ? "" : data.Region.ToLower())
                     && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (data.ZoneSales == null ? "" : data.ZoneSales.ToLower())
-                    && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (data.ZonePriceList == null ? "" : data.ZonePriceList.ToLower())).FirstOrDefault();
+                    && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (data.ZonePriceList == null ? "" : data.ZonePriceList.ToLower())
+                    && x.IsActive).FirstOrDefault();
+
                 if (exist != null)
                 {
                     model.ErrorMessage = "Data Already Exsit";
 
                     var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-                    var AddressList = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS }).Distinct().ToList().OrderBy(x => x.ADDRESS);
-                    model.LocationList = new SelectList(Locationlist, "City", "City");
-                    model.AddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
+                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
+                    model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
+                    model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
 
                     model.MainMenu = _mainMenu;
                     model.CurrentLogin = CurrentUser;
@@ -98,9 +100,9 @@ namespace FMS.Website.Controllers
                     model.ErrorMessage = exception.Message;
 
                     var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-                    var AddressList = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS }).Distinct().ToList().OrderBy(x => x.ADDRESS);
-                    model.LocationList = new SelectList(Locationlist, "City", "City");
-                    model.AddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
+                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
+                    model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
+                    model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
 
                     model.MainMenu = _mainMenu;
                     model.CurrentLogin = CurrentUser;
@@ -116,9 +118,9 @@ namespace FMS.Website.Controllers
                     model.MainMenu = _mainMenu;
                     model.CurrentLogin = CurrentUser;
                     var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-                    var AddressList = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS }).Distinct().ToList().OrderBy(x => x.ADDRESS);
-                    model.LocationList = new SelectList(Locationlist, "City", "City");
-                    model.AddressList= new SelectList(AddressList, "ADDRESS", "ADDRESS");
+                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
+                    model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
+                    model.BasetownList= new SelectList(BasetownList, "BASETOWN", "BASETOWN");
                     return View(model);
                 }
             }
@@ -129,8 +131,10 @@ namespace FMS.Website.Controllers
         {
             var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId);
             var model = Mapper.Map<LocationMappingItem>(data);
-            //var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
-            //model.LocationList = new SelectList(list, "City", "City");
+            var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+            var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
+            model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
+            model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterLocationMapping, MstLocationMappingId);
@@ -144,9 +148,30 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<LocationMappingDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = CurrentUser.USERNAME;
+                data.ModifiedBy = CurrentUser.USER_ID;
                 try
                 {
+                    var exist = _locationMappingBLL.GetLocationMapping().Where(x => (x.Address == null ? "" : x.Address.ToUpper()) == (data.Address == null ? "" : data.Address.ToUpper())
+                      && (x.Basetown == null ? "" : x.Basetown.ToLower()) == (data.Basetown == null ? "" : data.Basetown.ToLower())
+                      && (x.Location == null ? "" : x.Location.ToLower()) == (data.Location == null ? "" : data.Location.ToLower())
+                      && (x.Region == null ? "" : x.Region.ToLower()) == (data.Region == null ? "" : data.Region.ToLower())
+                      && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (data.ZoneSales == null ? "" : data.ZoneSales.ToLower())
+                      && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (data.ZonePriceList == null ? "" : data.ZonePriceList.ToLower())
+                      && data.IsActive).FirstOrDefault();
+
+                    if (exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exsit";
+
+                        var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+                        var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
+                        model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
+                        model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
+
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
                     _locationMappingBLL.Save(data, CurrentUser);
                     _locationMappingBLL.SaveChanges();
 
@@ -154,6 +179,12 @@ namespace FMS.Website.Controllers
                 catch (Exception exp)
                 {
                     model.ErrorMessage= exp.Message;
+
+                    var Locationlist = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
+                    var BasetownList = _employeeBLL.GetEmployee().Select(x => new { x.BASETOWN }).Distinct().ToList().OrderBy(x => x.BASETOWN);
+                    model.LocationList = new SelectList(Locationlist, "CITY", "CITY");
+                    model.BasetownList = new SelectList(BasetownList, "BASETOWN", "BASETOWN");
+
                     model.MainMenu = _mainMenu;
                     model.CurrentLogin = CurrentUser;
                     return View(model);
@@ -246,13 +277,37 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+
                     var item = new LocationMappingItem();
+                    item.ErrorMessage = "";
+
                     item.Location = dataRow[0].ToString();
+                    if (item.Location == "")
+                    {
+                        item.ErrorMessage = "Location list Can't be empty";
+                    }
+
                     item.Address = dataRow[1].ToString();
+                    if (item.Address == "")
+                    {
+                        item.ErrorMessage = "Address list Can't be empty";
+                    }
+
                     item.Basetown = dataRow[2].ToString();
+                    if (item.Basetown== "")
+                    {
+                        item.ErrorMessage = "Basetown list Can't be empty";
+                    }
+
                     item.Region = dataRow[3].ToString();
                     item.ZoneSales = dataRow[4].ToString();
+
                     item.ZonePriceList = dataRow[5].ToString();
+                    if (item.ZonePriceList == "")
+                    {
+                        item.ErrorMessage = "Zone Price list Can't be empty";
+                    }
+
                     try
                     {
                         double dValidfrom = double.Parse(dataRow[6].ToString());
@@ -260,9 +315,9 @@ namespace FMS.Website.Controllers
                         item.ValidFrom = dtValidfrom;
                         item.ErrorMessage = "";
                     }
-                    catch (Exception exp)
+                    catch (Exception)
                     {
-                        item.ErrorMessage = exp.Message;
+                        item.ErrorMessage = "Format Date is not Valid";
                         
                     }
                     var exist = _locationMappingBLL.GetLocationMapping().Where(x => x.Address == item.Address
@@ -270,30 +325,34 @@ namespace FMS.Website.Controllers
                            && (x.Location == null ? "" : x.Location.ToLower()) == (item.Location == null ? "" : item.Location.ToLower())
                            && (x.Region == null ? "" : x.Region.ToLower()) == (item.Region == null ? "" : item.Region.ToLower())
                            && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (item.ZoneSales == null ? "" : item.ZoneSales.ToLower())
-                           && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToLower())).FirstOrDefault();
+                           && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToLower())
+                           && x.IsActive).FirstOrDefault();
+
                     if (exist != null) item.ErrorMessage = "Data Already Exist";
                     model.Add(item);
                 }
             }
             return Json(model);
         }
+
         #region -----------------Json Result ----------------
         [HttpPost]
-        public JsonResult GetBaseTown(string Location, string Address)
+        public JsonResult GetAddress(string Location, string Basetown)
         {
-            var GetBaseTown = _employeeBLL.GetEmployee().Where(x => (x.CITY == null ? "" : x.CITY.ToUpper()) == (Location == null ? "" : Location.ToUpper())
-                                                                  && (x.ADDRESS == null ? "" : x.ADDRESS.ToUpper()) == (Address == null ? "" : Address.ToUpper())).FirstOrDefault();
-            var BaseTown = "";
-            if (GetBaseTown != null) BaseTown = GetBaseTown.BASETOWN;
-            return Json(BaseTown);
+            var GetAddress= _employeeBLL.GetEmployee().Where(x => (x.CITY == null ? "" : x.CITY.ToUpper()) == (Location == null ? "" : Location.ToUpper())
+                                                                  && (x.BASETOWN == null ? "" : x.BASETOWN.ToUpper()) == (Basetown == null ? "" : Basetown.ToUpper())).FirstOrDefault();
+            var Address = "";
+            if (GetAddress != null) Address = GetAddress.ADDRESS;
+            return Json(Address);
         }
         [HttpPost]
-        public JsonResult GetAddressList(string Location)
+        public JsonResult GetBasetownList(string Location)
         {
-            var AddressList = _employeeBLL.GetEmployee().Where(x => (x.CITY == null ? "" : x.CITY.ToUpper()) == (Location == null ? "" : Location.ToUpper())).Select(x => new { x.ADDRESS }).Distinct().OrderBy(x => x.ADDRESS).ToList();
-            return Json(AddressList);
+            var BasetownList = _employeeBLL.GetEmployee().Where(x => (x.CITY == null ? "" : x.CITY.ToUpper()) == (Location == null ? "" : Location.ToUpper())).Select(x => new { x.BASETOWN }).Distinct().OrderBy(x => x.BASETOWN).ToList();
+            return Json(BasetownList);
         }
         #endregion
+
         #region export xls
         public void ExportMasterLocationMapping()
         {

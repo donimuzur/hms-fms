@@ -20,13 +20,13 @@ namespace FMS.Website.Controllers
     public class MstVehicleSpectController : BaseController
     {
         private IVehicleSpectBLL _VehicleSpectBLL;
-        private IFleetBLL _FleetBLL;
+        private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstVehicleSpectController(IPageBLL PageBll, IVehicleSpectBLL VehicleSpectBLL, IFleetBLL FleetBLL) : base(PageBll, Enums.MenuList.MasterVehicleSpect)
+        public MstVehicleSpectController(IPageBLL PageBll, IVehicleSpectBLL VehicleSpectBLL, ISettingBLL SettingBll) : base(PageBll, Enums.MenuList.MasterVehicleSpect)
         {
             _VehicleSpectBLL = VehicleSpectBLL;
-            _FleetBLL = FleetBLL;
+            _settingBLL = SettingBll;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -66,8 +66,8 @@ namespace FMS.Website.Controllers
             //    new SelectListItem { Text = "Truck", Value = "Truck" }
             //};
 
-            var list1 = _FleetBLL.GetFleet().ToList();
-            model.BodyTypeList = new SelectList(list1, "BodyType", "BodyType");
+            var list1 = _settingBLL.GetSetting().Where(x=> x.SettingGroup == "BODY_TYPE" && x.IsActive).ToList();
+            model.BodyTypeList = new SelectList(list1, "SettingValue", "SettingValue");
 
             var list2 = new List<SelectListItem>
             {
@@ -147,15 +147,9 @@ namespace FMS.Website.Controllers
 
         public VehicleSpectItem initEdit(VehicleSpectItem model)
         {
-            var list1 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "MPV", Value = "MPV" },
-                new SelectListItem { Text = "SUV", Value = "SUV" },
-                new SelectListItem { Text = "Forklift", Value = "Forklift" },
-                new SelectListItem { Text = "Motorcycle", Value = "Motorcycle" },
-                new SelectListItem { Text = "Truck", Value = "Truck" }
-            };
-            model.BodyTypeList = new SelectList(list1, "Value", "Text", model.BodyType);
+            
+            var list1 = _settingBLL.GetSetting().Where(x => x.SettingGroup == "BODY_TYPE" && x.IsActive).ToList();
+            model.BodyTypeList = new SelectList(list1, "SettingValue", "SettingValue",model.BodyType);
 
             var list2 = new List<SelectListItem>
             {
@@ -228,16 +222,34 @@ namespace FMS.Website.Controllers
                 {
                     string imagename = System.IO.Path.GetFileName(image.FileName);
                     image.SaveAs(Server.MapPath("~/files_upload/" + imagename));
-                    string filepathtosave = "files_upload" + imagename;
+                    string filepathtosave = "~/files_upload" + imagename;
                     data.Image = imagename;
                 }
                 else
                 {
                     data.Image = model.Image;
                 }
-                
+                string message = "";
+                _VehicleSpectBLL.ValidateSpect(data, out message,true);
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    AddMessageInfo(message, Enums.MessageInfoType.Error);
+                    
+                    model = Mapper.Map<VehicleSpectItem>(data);
+                    model.MainMenu = _mainMenu;
+                    model = initEdit(model);
+                    var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                    model.ImageS = webRootUrl + "files_upload/" + model.Image;
+                    model.CurrentLogin = CurrentUser;
+                    model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, data.MstVehicleSpectId);
+                    return View(model);
+                    
+                }
+
                 try
                 {
+                    
                     _VehicleSpectBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
@@ -269,26 +281,30 @@ namespace FMS.Website.Controllers
                     try
                     {
                         string imagename = System.IO.Path.GetFileName(data.Image);
-                        Stream imageStream = System.IO.File.Open(data.Image, FileMode.Open);
-                        byte[] imageBytes;
-                        using (BinaryReader br = new BinaryReader(imageStream))
-                        {
-                            imageBytes = br.ReadBytes(500000);
-                            br.Close();
-                        }
-                        System.IO.File.WriteAllBytes(Server.MapPath("~/files_upload/" + imagename), imageBytes);
-                        data.Image = imagename;
+                        //Stream imageStream = System.IO.File.Open(data.Image, FileMode.Open);
+                        //byte[] imageBytes;
+                        //using (BinaryReader br = new BinaryReader(imageStream))
+                        //{
+                        //    imageBytes = br.ReadBytes(500000);
+                        //    br.Close();
+                        //}
+                        //System.IO.File.WriteAllBytes(Server.MapPath("~/files_upload/" + imagename), imageBytes);
+                        //data.Image = imagename;
 
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
 
                         var dto = Mapper.Map<VehicleSpectDto>(data);
+                        
                         _VehicleSpectBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
                     {
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
+                        Model.ErrorMessage = exception.Message;
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                         return View(Model);
                     }
@@ -332,6 +348,10 @@ namespace FMS.Website.Controllers
                     item.IsActive = dataRow[15].ToString() == "Active"? true : false;
                     item.IsActiveS = dataRow[15].ToString();
 
+                    string message = "";
+                    var dto = Mapper.Map<VehicleSpectDto>(item);
+                    _VehicleSpectBLL.ValidateSpect(dto, out message);
+                    item.Message = message;
                     model.Add(item);
                 }
             }

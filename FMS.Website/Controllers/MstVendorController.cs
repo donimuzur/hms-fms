@@ -59,29 +59,33 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dataexist = _vendorBLL.GetExist(model.VendorName);
+                var dataexist = _vendorBLL.GetVendor().Where(x => (x.VendorName == null ? "" : x.VendorName.ToUpper()) == (model.VendorName == null ? "" : model.VendorName.ToUpper()) 
+                                                            && x.IsActive).FirstOrDefault();
                 if (dataexist != null)
                 {
-                    AddMessageInfo("Data Already Exist", Enums.MessageInfoType.Warning);
+                    model.ErrorMessage = "Data already exist";
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
                 else
                 {
                     var data = Mapper.Map<VendorDto>(model);
-                    data.CreatedBy = CurrentUser.USERNAME;
+                    data.CreatedBy = CurrentUser.USER_ID;
                     data.CreatedDate = DateTime.Today;
                     data.IsActive = true;
                     try
                     {
 
                         _vendorBLL.Save(data);
+                        _vendorBLL.SaveChanges();
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
 
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error
-                                );
+                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        model.ErrorMessage = exception.Message;
                         model.MainMenu = _mainMenu;
                         model.CurrentLogin = CurrentUser;
                         return View(model);
@@ -114,16 +118,18 @@ namespace FMS.Website.Controllers
             {
                 var data = Mapper.Map<VendorDto>(model);
                 data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = CurrentUser.USERNAME;
+                data.ModifiedBy = CurrentUser.USER_ID;
 
                 try
                 {
                     _vendorBLL.Save(data, CurrentUser);
+                    _vendorBLL.SaveChanges();
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
                 {
                     AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                    model.ErrorMessage = exception.Message;
                     model.MainMenu = _mainMenu;
                     model.CurrentLogin = CurrentUser;
                     return View(model);
@@ -157,27 +163,38 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                    foreach (VendorItem data in Model.Details)
+                foreach (VendorItem data in Model.Details)
+                {
+                    try
                     {
-                        try
-                        {
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USERNAME;
+                        data.CreatedBy = CurrentUser.USER_ID;
                         data.ModifiedDate = null;
                         data.IsActive = true;
+                            
+                        var Exist = _vendorBLL.GetVendor().Where(x => (x.VendorName == null ? "" : x.VendorName.ToUpper()) == (data.VendorName == null ? "" : data.VendorName.ToUpper())
+                                                                        && x.IsActive).FirstOrDefault();
+                        if (Exist != null)
+                        {
+                            Exist.IsActive = false;
+                            _vendorBLL.Save(Exist);
+                        }
 
                         var dto = Mapper.Map<VendorDto>(data);
-                            _vendorBLL.Save(dto);
-                            AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
-                        }
-                        catch (Exception exception)
-                        {
-                            AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                            Model.MainMenu = _mainMenu;
-                            Model.CurrentLogin = CurrentUser;
-                        return View(Model);
-                        }
+                        _vendorBLL.Save(dto);
+
+                        _vendorBLL.SaveChanges();
+                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
+                    catch (Exception exception)
+                    {
+                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
+
+                        return View(Model);
+                    }
+                }
             }
             return RedirectToAction("Index", "MstVendor");
         }
@@ -194,6 +211,7 @@ namespace FMS.Website.Controllers
             {
                 foreach (var dataRow in data.DataRows)
                 {
+                    
                     if (dataRow[0] == "")
                     {
                         continue;
@@ -203,11 +221,34 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new VendorUploadItem();
-                    item.VendorName = dataRow[0].ToString();
-                    item.ShortName = dataRow[1].ToString();
-                    item.EmailAddress = dataRow[2].ToString();
-                    item.IsActiveS = dataRow[7].ToString();
-                    item.IsActive = dataRow[7].ToString() == "Active"? true:false;
+                    item.ErrorMessage = "";
+                    try
+                    {
+                        item.VendorName = dataRow[0].ToString();
+                        if (item.VendorName == "")
+                        {
+                            item.ErrorMessage = "Vendor Name Can't be Empty";
+                          
+                        }
+
+                        item.ShortName = dataRow[1].ToString();
+                        if (item.ShortName == "")
+                        {
+                            item.ErrorMessage = "Short Name Can't be Empty";
+                        }
+
+                        item.EmailAddress = dataRow[2].ToString();
+                        if (item.EmailAddress == "")
+                        {
+                            item.ErrorMessage = "Email Address Can't be Empty";
+                        }
+                    }
+                    catch (Exception exp)
+                    {
+
+                        item.ErrorMessage = exp.Message;
+                    }
+                   
                     model.Add(item);
                 }
             }

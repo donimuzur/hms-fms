@@ -7,54 +7,57 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Edit", "MstLocationMapping"))
         {
+            @Html.HiddenFor(model => model.MstLocationMappingId)
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.HiddenFor(model => model.CreatedBy)
             <div class="row col-md-12">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red">*</span></label>
-                        @Html.HiddenFor(model => model.MstLocationMappingId)
-                        @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.HiddenFor(model => model.CreatedBy)
-                        @Html.TextBoxFor(model => model.Location,new { @class = "form-control", @readonly = "readonly" })
+                        @Html.DropDownListFor(model => model.Location, Model.LocationList, "-- Please Select --", new { @class = "form-control", @required = "required", onChange = "GetBasetownList()" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @required = "required" })
+                        @*@Html.DropDownListFor(model => model.Address, Model.AddressList, "-- Please Select --", new { @class = "form-control", @required = "required", onChange= "GetBasetown()" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Basetown<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Basetown, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Basetown, Model.BasetownList, "-- Please Select --", new { @class = "form-control", @required = "required", onChange = "GetAddress()" })
+                        @*@Html.TextBoxFor(model => model.Basetown, new { @class = "form-control" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Region<span class="red">*</span></label>
+                        <label class="control-label">Region</label>
                         @Html.TextBoxFor(model => model.Region, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Zone Sales<span class="red">*</span></label>
+                        <label class="control-label">Zone Sales</label>
                         @Html.TextBoxFor(model => model.ZoneSales, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Zone Price List<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Validity From<span class="red">*</span></label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.ValidFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
-                            <span class="input-group-addon">
+                            @Html.TextBoxFor(model => model.ValidFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control", @required = "required" })
+                            <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>
                         </div>
@@ -90,5 +93,53 @@
         else {
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
+    }
+
+  function GetBasetownList() {
+        if ($("#Location").length) {
+            var Location = $("#Location option:selected").text();
+            $('#Basetown option').remove();
+            $('#Address').val('')
+            if (Location == '' || $('#Location').find("option:selected").val() == '') {
+                $('#Basetown option').append('<option value="">--Please Select--</option>');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetBasetownList", "MstLocationMapping")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { Location: Location },
+                    success: function (list) {
+                        $('#Basetown').append('<option value="">Select</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#Basetown').append('<option value="' + list[i].BASETOWN.toString() + '">' + list[i].BASETOWN.toString() + '</option>');
+                            }
+                        }
+                        else {
+                            $('#Address').val('')
+                        }
+
+                    },
+                    complete: function (data) {
+                        GetAddress();
+                    }
+                });
+            }
+        }
+    }
+
+    function GetAddress() {
+        var Location = $("#Location option:selected").text();
+        var Basetown = $("#Basetown option:selected").text();
+        $.ajax({
+            url: '@Url.Action("GetAddress", "MstLocationMapping")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Location: Location, Basetown: Basetown },
+            success: function (response) {
+                $('#Address').val(response);
+            }
+        });
     }
 </script>

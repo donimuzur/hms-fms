@@ -17,6 +17,7 @@ namespace FMS.Contract.BLL
         void TempWorkflow(TempWorkflowDocumentInput input);
         TemporaryDto GetTempById(long id);
         List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id);
+        List<VehicleFromVendorUpload> ValidationUploadDocumentProcessMassUpload(List<VehicleFromVendorUpload> inputs);
         void CheckTempInProgress();
         bool CheckTempExistsInFleet(TemporaryDto item);
         bool CheckTempOpenExists(TemporaryDto item);

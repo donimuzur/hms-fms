@@ -1,0 +1,158 @@
+﻿@model FMS.Website.Models.FuelOdometerModel
+@using FMS.Core
+
+<<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Fuel Odometer Upload</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Upload", "MstFuelOdometer", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterFuelOdometer.xlsx">here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="tbRemark" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Vehicle Type</th>
+                        <th>Police Number</th>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>ECS RMB TRANSID</th>
+                        <th>SEQ NUMBER</th>
+                        <th>Claim Type</th>
+                        <th>Date OF Cost</th>
+                        <th>Cost Center</th>
+                        <th>Fuel Amount</th>
+                        <th>Last KM</th>
+                        <th>Cost</th>
+                        <th>Claim Comment</th>
+
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action("Index", "MstFuelOdometer")" title="Cancel" class="btn">Cancel</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script type="text/javascript">
+
+    $(function () {
+        var table = $('#tbRemark').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+    $('#btnSave').prop('disabled', true);
+
+    function createColumn(text) {
+        return '<td>' + text + '</td>';
+    }
+    var uploaditems = [];
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDecimal(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+
+    $('#btnupload').click(function () {
+        uploadXmlFile();
+    });
+
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "MstFuelOdometer")';
+        var fileName = $('[name="upload"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("upload").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("upload").files[i];
+            formData.append("upload", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                createColumn(i + 1) +
+                createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
+                createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].EmployeeId, 'Model.Details[' + i + '].EmployeeId') +
+                createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
+                createColumnWithHiddenField(uploaditems[i].EcsRmbTransId, 'Model.Details[' + i + '].EcsRmbTransId') +
+                createColumnWithHiddenField(uploaditems[i].SeqNumber, 'Model.Details[' + i + '].SeqNumber') +
+                createColumnWithHiddenField(uploaditems[i].ClaimType, 'Model.Details[' + i + '].ClaimType') +
+                createColumnWithHiddenField(moment(uploaditems[i].DateOfCost).format("YYYY-MM-DD"), 'Model.Details[' + i + '].DateOfCost') +
+               // createColumnWithHiddenField(uploaditems[i].DateOfCost, 'Model.Details[' + i + '].DateOfCost') +
+                createColumnWithHiddenField(uploaditems[i].CostCenter, 'Model.Details[' + i + '].CostCenter') +
+                createColumnWithHiddenField(uploaditems[i].LastKM, 'Model.Details[' + i + '].LastKM') +
+                createColumnWithHiddenField(uploaditems[i].Cost, 'Model.Details[' + i + '].Cost') +
+                createColumnWithHiddenField( moment(uploaditems[i].PostedTime).format("YYYY-MM-DD HH:mm:ss"),  'Model.Details[' + i + '].PostedTime') +
+                createColumnWithHiddenField(uploaditems[i].ClaimComment, 'Model.Details[' + i + '].ClaimComment') +
+
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
+                '<input type="hidden" name="Model.Details[' + i + '].VehicleType" value="' + uploaditems[i].VehicleType + '">' +
+               '</tr>';
+                    $('#tb-upload-excel').append(tr);
+                    error += uploaditems[i].ErrorMessage;
+                }
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
+            }
+        });
+    };
+</script>

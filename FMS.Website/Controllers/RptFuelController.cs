@@ -65,6 +65,8 @@ namespace FMS.Website.Controllers
                 model.SearchView.RegionalList = new SelectList(locationMapping, "Region", "Region");
                 model.RptFuelItem = Mapper.Map<List<RptFuelItem>>(data);
 
+                var dataFuel = _rptFuelBLL.GetRptFuelData();
+
                 foreach (var item in model.RptFuelItem)
                 {
                     if (input.MonthFrom == 1)
@@ -77,18 +79,26 @@ namespace FMS.Website.Controllers
                         input.MonthFrom = input.MonthFrom - 1;
                     }
 
+
+
                     if (item.Odometer != 0)
                     {
-                        var data_temp = _rptFuelBLL.GetRptFuel(input).Where(x => x.PoliceNumber == item.PoliceNumber).Select(x => x.Odometer).FirstOrDefault();
+                        var data_temp = dataFuel.Where(x => x.PoliceNumber == item.PoliceNumber && x.ReportMonth == input.MonthFrom && x.ReportYear == input.YearFrom).Select(x => x.Odometer).FirstOrDefault();
                         if (data_temp == 0)
                         {
-                            item.Usage = data_temp;
-                            item.kmlt = item.Usage;
+                            item.Usage = item.Odometer;
+                            if (item.Liter != 0)
+                            {
+                                item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                            }
                         }
                         else
                         {
                             item.Usage = item.Odometer - data_temp;
-                            item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                            if (item.Liter != 0)
+                            {
+                                item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                            }
                         }
                     }
                 }
@@ -115,33 +125,7 @@ namespace FMS.Website.Controllers
                 model.SearchView.FunctionList = new SelectList(function, "DIRECTORATE", "DIRECTORATE");
                 model.SearchView.RegionalList = new SelectList(locationMapping, "Region", "Region");
                 model.RptFuelItem = Mapper.Map<List<RptFuelItem>>(data);
-                foreach (var item in model.RptFuelItem)
-                {
-                    if (input.MonthFrom == 1)
-                    {
-                        input.MonthFrom = 12;
-                        input.YearFrom = input.YearFrom - 1;
-                    }
-                    else
-                    {
-                        input.MonthFrom = input.MonthFrom - 1;
-                    }
-
-                    if (item.Odometer != 0)
-                    {
-                        var data_temp = _rptFuelBLL.GetRptFuel(input).Where(x => x.PoliceNumber == item.PoliceNumber).Select(x => x.Odometer).FirstOrDefault();
-                        if (data_temp == 0)
-                        {
-                            item.Usage = data_temp;
-                            item.kmlt = item.Usage;
-                        }
-                        else
-                        {
-                            item.Usage = item.Odometer - data_temp;
-                            item.kmlt = Math.Round(item.Usage / item.Liter, 2);
-                        }
-                    }
-                }
+                
                 model.ErrorMessage = exception.Message;
                 return View(model);
             }
@@ -152,6 +136,8 @@ namespace FMS.Website.Controllers
         {
             model.RptFuelItem = GetFuelData(model.SearchView);
             var input = Mapper.Map<RptFuelByParamInput>(model.SearchView);
+
+            var dataFuel = _rptFuelBLL.GetRptFuelData();
 
             foreach (var item in model.RptFuelItem)
             {
@@ -167,16 +153,22 @@ namespace FMS.Website.Controllers
 
                 if (item.Odometer != 0)
                 {
-                    var data_temp = _rptFuelBLL.GetRptFuel(input).Where(x => x.PoliceNumber == item.PoliceNumber).Select(x => x.Odometer).FirstOrDefault();
+                    var data_temp = dataFuel.Where(x => x.PoliceNumber == item.PoliceNumber && x.ReportMonth == input.MonthFrom && x.ReportYear == input.YearFrom).Select(x => x.Odometer).FirstOrDefault();
                     if (data_temp == 0)
                     {
-                        item.Usage = data_temp;
-                        item.kmlt = item.Usage;
+                        item.Usage = item.Odometer;
+                        if (item.Liter != 0)
+                        {
+                            item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                        }
                     }
                     else
                     {
                         item.Usage = item.Odometer - data_temp;
-                        item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                        if (item.Liter != 0)
+                        {
+                            item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                        }
                     }
                 }
             }
@@ -298,6 +290,8 @@ namespace FMS.Website.Controllers
         {
             int iRow = 3; //starting row data
 
+            var dataFuel = _rptFuelBLL.GetRptFuelData();
+            
             foreach (var data in listData)
             {
                 if (input.MonthFrom == 1)
@@ -312,16 +306,22 @@ namespace FMS.Website.Controllers
 
                 if (data.Odometer != 0)
                 {
-                    var data_temp = _rptFuelBLL.GetRptFuel(input).Where(x => x.PoliceNumber == data.PoliceNumber).Select(x => x.Odometer).FirstOrDefault();
+                    var data_temp = dataFuel.Where(x => x.PoliceNumber == data.PoliceNumber && x.ReportMonth == input.MonthFrom && x.ReportYear == input.YearFrom).Select(x => x.Odometer).FirstOrDefault();
                     if (data_temp == 0)
                     {
-                        data.Usage = data_temp;
-                        data.kmlt = data.Usage;
+                        data.Usage = data.Odometer;
+                        if (data.Liter != 0)
+                        {
+                            data.kmlt = Math.Round(data.Usage / data.Liter, 2);
+                        }
                     }
                     else
                     {
                         data.Usage = data.Odometer - data_temp;
-                        data.kmlt = Math.Round(data.Usage / data.Liter, 2);
+                        if (data.Liter != 0)
+                        {
+                            data.kmlt = Math.Round(data.Usage / data.Liter, 2);
+                        }
                     }
                 }
                 slDocument.SetCellValue(iRow, 1, data.PoliceNumber);

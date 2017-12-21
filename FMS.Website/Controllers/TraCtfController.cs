@@ -244,7 +244,7 @@ namespace FMS.Website.Controllers
             TraCtfDto item = new TraCtfDto();
             var ReasonId = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
             if (ReasonId == 0) ReasonId = 1;
-
+            
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
 
@@ -393,6 +393,8 @@ namespace FMS.Website.Controllers
 
                 var reasonStr = ReasonData.Reason;
                 var IsPenalty = ReasonData.IsPenalty;
+                var PenaltyForFleet = ReasonData.PenaltyForFleet;
+                var PenaltyForEmployee = ReasonData.PenaltyForEmplloyee;
 
                 var IsBenefit = Model.VehicleType == benefitType;
                 var IsEndRent = reasonStr.ToLower() == "end rent";
@@ -419,8 +421,8 @@ namespace FMS.Website.Controllers
                     }
                     if (IsPenalty)
                     {
-                        CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
-                        CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
+                        if(PenaltyForEmployee == true) CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
+                        if(PenaltyForFleet == true) CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
                     }
                 }
                 var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
@@ -711,7 +713,6 @@ namespace FMS.Website.Controllers
                 }
 
                 var dataToSave = Mapper.Map<TraCtfDto>(model);
-                dataToSave.Penalty = _ctfBLL.PenaltyCost(dataToSave);
                 dataToSave.DocumentStatus = Enums.DocumentStatus.Draft;
                 dataToSave.ModifiedBy = CurrentUser.USER_ID;
                 dataToSave.ModifiedDate = DateTime.Now;
@@ -2464,7 +2465,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 9, data.VehicleYear == null ? 0 : data.VehicleYear.Value);
                 slDocument.SetCellValue(iRow, 10, data.VehicleLocation);
 
-                var region = _locationMappingBLL.GetLocationMapping().Where(x => x.Location == data.VehicleLocation).FirstOrDefault();
+                var region = _locationMappingBLL.GetLocationMapping().Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (data.VehicleLocation == null  ? "" : data.VehicleLocation.ToUpper())).FirstOrDefault();
                 slDocument.SetCellValue(iRow, 11, region == null ? "" : region.Region);
                 slDocument.SetCellValue(iRow, 12, data.CostCenter);
                 slDocument.SetCellValue(iRow, 13, data.SupplyMethod);

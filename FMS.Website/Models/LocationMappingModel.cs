@@ -34,5 +34,6 @@ namespace FMS.Website.Models
         public string ValidFromS { get; set; }
         public SelectList LocationList { get; set; }
         public SelectList AddressList { get; set; }
+        public SelectList BasetownList { get; set; }
     }
 }

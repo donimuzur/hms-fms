@@ -23,5 +23,8 @@ namespace FMS.BusinessObject.Dto
         public string CostCenter { get; set; }
         public int Qty { get; set; }
         public int Month { get; set; }
+        public string VehicleType { get; set; }
+        public string FunctionName { get; set; }
+        public string Regional { get; set; }
     }
 }

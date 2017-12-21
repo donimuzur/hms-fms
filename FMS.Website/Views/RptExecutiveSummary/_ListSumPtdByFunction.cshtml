@@ -44,11 +44,11 @@
                 <td>@Html.Raw(data.Month)</td>
                 <td>@Html.Raw(data.ReportYear)</td>
                 <td>@Html.Raw(data.TotalVehicle)</td>
-                <td>@Html.Raw(data.TotalVehicleCost)</td>
-                <td>@Html.Raw(data.TotalFuelAmount)</td>
-                <td>@Html.Raw(data.TotalFuelCost)</td>
-                <td>@Html.Raw(data.TotalKm)</td>
-                <td>@Html.Raw(data.TotalOperationalCost)</td>
+                <td>@string.Format("{0:N0}", data.TotalVehicleCost)</td>
+                <td>@string.Format("{0:N0}", data.TotalFuelAmount)</td>
+                <td>@string.Format("{0:N0}", data.TotalFuelCost)</td>
+                <td>@string.Format("{0:N0}", data.TotalKm)</td>
+                <td>@string.Format("{0:N0}", data.TotalOperationalCost)</td>
                 <td>@Html.Raw(data.AccidentCount)</td>
             </tr>
         }

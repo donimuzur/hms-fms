@@ -13,31 +13,33 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Location, Model.LocationList,"-- Please Select --", new { @class = "form-control",@required = "required", onChange= "GetAddressList()" })
+                        @Html.DropDownListFor(model => model.Location, Model.LocationList,"-- Please Select --", new { @class = "form-control",@required = "required", onChange= "GetBasetownList()" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Address, Model.AddressList, "-- Please Select --", new { @class = "form-control", @required = "required", onChange= "GetBasetown()" })
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" , @required = "required" })
+                        @*@Html.DropDownListFor(model => model.Address, Model.AddressList, "-- Please Select --", new { @class = "form-control", @required = "required", onChange= "GetBasetown()" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Basetown<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Basetown, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Basetown, Model.BasetownList, "-- Please Select --", new { @class = "form-control", @required = "required", onChange = "GetAddress()" })
+                        @*@Html.TextBoxFor(model => model.Basetown, new { @class = "form-control" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Region<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Region, new { @class = "form-control", @required = "required" })
+                        <label class="control-label">Region</label>
+                        @Html.TextBoxFor(model => model.Region, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Zone Sales<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ZoneSales, new { @class = "form-control", @required = "required" })
+                        <label class="control-label">Zone Sales</label>
+                        @Html.TextBoxFor(model => model.ZoneSales, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -66,51 +68,50 @@
     </div>
 </section>
 <script type="text/javascript">
-    function GetAddressList() {
+    function GetBasetownList() {
         if ($("#Location").length) {
             var Location = $("#Location option:selected").text();
-            $('#Address option').remove();
-            $('#Basetown').val('')
+            $('#Basetown option').remove();
+            $('#Address').val('')
             if (Location == '' || $('#Location').find("option:selected").val() == '') {
-                $('#Address option').append('<option value="">--Please Select--</option>');
+                $('#Basetown option').append('<option value="">--Please Select--</option>');
             }
             else {
                 $.ajax({
-                    url: '@Url.Action("GetAddressList", "MstLocationMapping")',
+                    url: '@Url.Action("GetBasetownList", "MstLocationMapping")',
                     type: "POST",
                     dataType: "JSON",
                     data: { Location: Location },
                     success: function (list) {
-                        $('#Address').append('<option value="">Select</option>');
+                        $('#Basetown').append('<option value="">Select</option>');
                         if (list.length > 0) {
                             for (var i = 0; i < list.length; i++) {
-                                $('#Address').append('<option value=' + list[i].ADDRESS.toString() + '>' + list[i].ADDRESS.toString() + '</option>');
+                                $('#Basetown').append('<option value="' + list[i].BASETOWN.toString() + '">' + list[i].BASETOWN.toString() + '</option>');
                             }
                         }
                         else {
-                            $('#Basetown').val('')
+                            $('#Address').val('')
                         }
 
                     },
                     complete: function (data) {
-                        GetBasetown();
+                        GetAddress();
                     }
                 });
             }
         }
     }
 
-    function GetBasetown() {
+    function GetAddress() {
         var Location = $("#Location option:selected").text();
-        var Address = $("#Address option:selected").text();
-        alert(Location+ Address);
+        var Basetown = $("#Basetown option:selected").text();
         $.ajax({
-            url: '@Url.Action("GetBaseTown", "MstLocationMapping")',
+            url: '@Url.Action("GetAddress", "MstLocationMapping")',
             type: "POST",
             dataType: "JSON",
-            data: { Location: Location, Address: Address },
+            data: { Location: Location, Basetown: Basetown },
             success: function (response) {
-                $('#Basetown').val(response);
+                $('#Address').val(response);
             }
         });
     }

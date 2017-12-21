@@ -37,4 +37,17 @@
     }
 
     $(".chosen").chosen();
+
+});
+
+$('.chosen').on('change', function (evt, params) {
+    var theList = "";
+
+    $("li.search-choice span").each(function (e) {
+        theList += $(this).text() + ",";
+    });
+
+    theList = theList.slice(0, -1);
+
+    $('#SearchView_FunctionId').val(theList);
 });

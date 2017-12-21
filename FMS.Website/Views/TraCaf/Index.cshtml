@@ -59,6 +59,9 @@
                     <th>Employee Name</th>
                     <th>Area</th>
                     <th>Vehicle Model</th>
+                    
+                    <th>Vehicle Type</th>
+                    <th>Region</th>
                     <th>Vendor</th>
                     <th>Status</th>
                     <th>Incident Date</th>
@@ -72,6 +75,8 @@
                             <a href="@Url.Action("Create","TraCaf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
                         }*@
                     </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
@@ -110,6 +115,8 @@
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.Area)</td>
                         <td>@Html.Raw(data.VehicleModel)</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.Region)</td>
                         <td>@Html.Raw(data.VendorName)</td>
                         
                         
