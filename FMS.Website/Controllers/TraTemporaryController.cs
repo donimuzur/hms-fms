@@ -159,7 +159,7 @@ namespace FMS.Website.Controllers
             var listVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
             var listProject = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVehUsage = settingData.Where(x => x.SettingGroup == paramVehUsage && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listCity = allEmployee.Select(x => new { x.CITY }).Distinct().ToList();
+            var listCity = allEmployee.Select(x => new { x.BASETOWN }).Distinct().ToList();
 
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");
             model.Detail.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
@@ -168,12 +168,12 @@ namespace FMS.Website.Controllers
             model.Detail.VendorList = new SelectList(listVendor, "ShortName", "ShortName");
             model.Detail.ProjectList = new SelectList(listProject, "MstSettingId", "SettingValue");
             model.Detail.VehicleUsageList = new SelectList(listVehUsage, "MstSettingId", "SettingValue");
-            model.Detail.LocationCityList = new SelectList(listCity, "CITY", "CITY");
+            model.Detail.LocationCityList = new SelectList(listCity, "BASETOWN", "BASETOWN");
 
             var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
             if (employeeData != null)
             {
-                model.Detail.LocationCity = employeeData.CITY;
+                model.Detail.LocationCity = employeeData.BASETOWN;
                 model.Detail.LocationAddress = employeeData.ADDRESS;
             }
 
@@ -861,7 +861,7 @@ namespace FMS.Website.Controllers
             slDocument.MergeWorksheetCells(2, 11, 2, 17);
 
             slDocument.SetCellValue(2, 18, "Fleet");
-            slDocument.MergeWorksheetCells(2, 18, 2, 24);
+            slDocument.MergeWorksheetCells(2, 18, 2, 26);
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -872,7 +872,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 24, valueStyle);
+            slDocument.SetCellStyle(2, 2, 2, 26, valueStyle);
 
             //create header
             slDocument = CreateHeaderExcelForVendor(slDocument);
@@ -916,6 +916,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 22, "PO Line");
             slDocument.SetCellValue(iRow, 23, "Vat");
             slDocument.SetCellValue(iRow, 24, "Restitution");
+            slDocument.SetCellValue(iRow, 25, "Price");
+            slDocument.SetCellValue(iRow, 26, "Comments");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -924,7 +926,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.SetCellStyle(iRow, 2, iRow, 24, headerStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 26, headerStyle);
 
             return slDocument;
 
@@ -955,8 +957,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 20, tempData.CREATED_DATE.Year.ToString());
             slDocument.SetCellValue(iRow, 21, string.Empty);
             slDocument.SetCellValue(iRow, 22, string.Empty);
-            slDocument.SetCellValue(iRow, 23, "YES");
+            slDocument.SetCellValue(iRow, 23, 0);
             slDocument.SetCellValue(iRow, 24, "NO");
+            slDocument.SetCellValue(iRow, 25, 0);
+            slDocument.SetCellValue(iRow, 26, string.Empty);
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -965,8 +969,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(2, 24);
-            slDocument.SetCellStyle(iRow, 2, iRow, 24, valueStyle);
+            slDocument.AutoFitColumn(2, 26);
+            slDocument.SetCellStyle(iRow, 2, iRow, 26, valueStyle);
 
             SLStyle dateStyle = slDocument.CreateStyle();
             dateStyle.FormatCode = "dd/MM/yyyy";
@@ -1150,8 +1154,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 4, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 5, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 6, data.Reason);
-                slDocument.SetCellValue(iRow, 7, data.StartPeriod.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 8, data.EndPeriod.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 7, data.StartPeriod.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 8, data.EndPeriod.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 9, data.PoNumberVendor);
                 slDocument.SetCellValue(iRow, 10, data.Regional);
                 slDocument.SetCellValue(iRow, 11, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
