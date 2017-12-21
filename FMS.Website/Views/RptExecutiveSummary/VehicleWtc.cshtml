@@ -66,6 +66,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Function</label>
+                        @Html.HiddenFor(model => model.SearchView.FunctionId)
                         @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
                     </div>
                 </div>
@@ -85,12 +86,20 @@
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
     function ExportXls() {
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        theList = theList.slice(0, -1);
+
         $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
         $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
         $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
         $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
         $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
-        $('#SearchViewExport_Function').val($('#SearchView_Function').val());
+        $('#SearchViewExport_Function').val(theList);
         $('#ExportToXls').submit();
     }
 

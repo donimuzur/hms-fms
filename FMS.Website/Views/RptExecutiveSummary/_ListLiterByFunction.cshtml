@@ -31,7 +31,7 @@
                 <td>@Html.Raw(data.Function)</td>
                 <td>@Html.Raw(data.Month)</td>
                 <td>@Html.Raw(data.ReportYear)</td>
-                <td>@Html.Raw(data.TotalLiter)</td>
+                <td>@string.Format("{0:N0}", data.TotalLiter)</td>
             </tr>
         }
     </tbody>
