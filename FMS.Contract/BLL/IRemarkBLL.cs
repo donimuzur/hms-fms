@@ -14,5 +14,6 @@ namespace FMS.Contract.BLL
         void Save(RemarkDto RemarkDto);
         RemarkDto GetRemarkById(int MstRemarkId);
         void Save(RemarkDto dto, Login currentUser);
+        void SaveChanges();
     }
 }

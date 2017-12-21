@@ -29,7 +29,7 @@ namespace FMS.Website.Models
         public string VehicleUsage { get; set; }
         public string Manufacturer { get; set; }
         public string Transmission { get; set; }
-        public string Model { get; set; }
+        public string Models { get; set; }
         public string Series { get; set; }
         public string PoliceNumber { get; set; }
         public int? GroupLevel { get; set; }
