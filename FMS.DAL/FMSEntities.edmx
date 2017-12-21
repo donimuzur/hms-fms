@@ -687,7 +687,6 @@
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="VEHCILE_TYPE" Type="nvarchar" MaxLength="50" />
-          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PO_REPORT_DATA">
           <Key>
@@ -720,6 +719,7 @@
           <Property Name="GST" Type="decimal" Precision="18" Scale="2" />
           <Property Name="TOTAL_MONTHLY_INSTALLMENT" Type="decimal" Precision="18" Scale="2" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="VEHICLE_FUNCTION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="SALES_BY_REGION_REPORT_DATA">
           <Key>
@@ -1118,11 +1118,11 @@
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
-          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
-          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
           <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
           <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1191,7 +1191,7 @@
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
-        <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
+        <Association Name="FK__PO_REPORT__EMPLO__03F0984C">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1203,7 +1203,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PO_REPORT__EMPLO__589C25F3">
+        <Association Name="FK__PO_REPORT__EMPLO__04E4BC85">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1750,11 +1750,11 @@
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__1B9317B3" Association="Self.FK__PO_REPORT__EMPLO__1B9317B3">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__03F0984C" Association="Self.FK__PO_REPORT__EMPLO__03F0984C">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__589C25F3" Association="Self.FK__PO_REPORT__EMPLO__589C25F3">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__04E4BC85" Association="Self.FK__PO_REPORT__EMPLO__04E4BC85">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
@@ -2906,6 +2906,7 @@
           <Property Name="TOTAL_MONTHLY_INSTALLMENT" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK__PO_REPORT__EMPLO__55DFB4D9" FromRole="PO_REPORT_DATA" ToRole="MST_EMPLOYEE" />
+          <Property Name="VEHICLE_FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SALES_BY_REGION_REPORT_DATA">
           <Key>
@@ -4602,7 +4603,6 @@
           <EntitySetMapping Name="ODOMETER_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.ODOMETER_REPORT_DATA">
               <MappingFragment StoreEntitySet="ODOMETER_REPORT_DATA">
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="VEHCILE_TYPE" ColumnName="VEHCILE_TYPE" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
@@ -4617,6 +4617,7 @@
           <EntitySetMapping Name="PO_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.PO_REPORT_DATA">
               <MappingFragment StoreEntitySet="PO_REPORT_DATA">
+                <ScalarProperty Name="VEHICLE_FUNCTION" ColumnName="VEHICLE_FUNCTION" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
                 <ScalarProperty Name="TOTAL_MONTHLY_INSTALLMENT" ColumnName="TOTAL_MONTHLY_INSTALLMENT" />
                 <ScalarProperty Name="GST" ColumnName="GST" />

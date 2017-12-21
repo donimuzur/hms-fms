@@ -133,7 +133,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "PO Report Data");
-            slDocument.MergeWorksheetCells(1, 1, 1, 18);
+            slDocument.MergeWorksheetCells(1, 1, 1, 19);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -178,6 +178,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 16, "Start Contract");
             slDocument.SetCellValue(iRow, 17, "End Contract");
             slDocument.SetCellValue(iRow, 18, "Vendor");
+            slDocument.SetCellValue(iRow, 19, "Vehicle Function");
             foreach (var data in listData)
             {
                 
@@ -323,7 +324,7 @@ namespace FMS.Website.Controllers
         private SLDocument CreateDataExcelDashboard(SLDocument slDocument, List<RptPOItem> listData, RptPoByParamInput input)
         {
             int iRow = 4; //starting row data
-            int iCol = 18;
+            int iCol = 19;
 
             foreach (var data in listData)
             {
@@ -345,6 +346,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 16, data.StartContract.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 17, data.EndContract.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 18, data.Vendor);
+                slDocument.SetCellValue(iRow, 19, data.VehicleFunction);
                 
                 if (input.MonthFrom <= 1 && input.MonthTo >= 1)
                 {
