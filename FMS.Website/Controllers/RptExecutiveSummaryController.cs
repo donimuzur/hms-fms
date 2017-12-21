@@ -46,8 +46,15 @@ namespace FMS.Website.Controllers
 
         public MultiSelectList GetFunctionsMultiSelectList()
         {
-            var functionList = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive).Select(x => new { x.FunctionName }).Distinct().ToList();
-            return new MultiSelectList(functionList, "FunctionName", "FunctionName");
+            var items = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "SALES", Value = "Sales" },
+                new SelectListItem() {Text = "MARKETING", Value = "Marketing" },
+                new SelectListItem() {Text = "OPERATIONS", Value = "Operations" },
+                new SelectListItem() {Text = "OTHERS", Value = "Others" }
+            };
+
+            return new MultiSelectList(items, "Value", "Text");
         }
 
         #endregion
@@ -93,6 +100,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<VehicleGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetNoOfVehicleData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -343,6 +351,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<VehicleWtcGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -832,6 +841,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<OdometerGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -1081,6 +1091,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<LiterFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -1330,6 +1341,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -1577,6 +1589,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -2072,6 +2085,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<AccidentGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -2317,6 +2331,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<AcVsObGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -2565,6 +2580,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<SumPtdFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetSumPtdByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
