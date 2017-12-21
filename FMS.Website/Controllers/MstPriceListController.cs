@@ -18,6 +18,8 @@ using System.Web.UI.WebControls;
 using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
+using FMS.DAL;
+using FMS.BusinessObject;
 
 namespace FMS.Website.Controllers
 {
@@ -95,23 +97,82 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Create(PriceListItem item)
         {
-            if (ModelState.IsValid)
-            {
-                var data = Mapper.Map<PriceListDto>(item);
-                data.CreatedBy = CurrentUser.USERNAME;
-                data.CreatedDate = DateTime.Today;
-                data.ModifiedDate = null;
-                try
+            //if (ModelState.IsValid)
+            //{
+                FMSEntities entities = new FMSEntities();
+
+                String message = "";
+                bool valid = true;
+
+                var vehicleSpect = entities.MST_VEHICLE_SPECT.Where(x => (x.YEAR == item.Year) && (x.MANUFACTURER == item.Manufacture) && (x.MODEL == item.Model) && (x.SERIES == item.Series)).ToList();
+                var vendor = entities.MST_VENDOR.Where(X => (X.SHORT_NAME == item.Vendor+"")).ToList();
+                var vehicleType = entities.MST_SETTING.Where(x => (x.SETTING_GROUP == "VEHICLE_TYPE") && (x.SETTING_VALUE == item.VehicleType)).ToList();
+                string vehicleUsageText = "";
+
+                if (item.VehicleType.Equals("WTC"))
                 {
-                    _priceListBLL.Save(data);
+                    vehicleUsageText = "VEHICLE_USAGE_BENEFIT";
                 }
-                catch (Exception ex)
+                else if (item.VehicleType.Equals("Benefit"))
                 {
-                    var msg = ex.Message;
+                    vehicleUsageText = "VEHICLE_USAGE_WTC";
                 }
 
-            }
-            return RedirectToAction("Index", "MstPriceList");
+                var vehicleUsage = entities.MST_SETTING.Where(x => (x.SETTING_GROUP == vehicleUsageText) && (x.SETTING_VALUE == item.VehicleUsage)).ToList();
+
+                if (vehicleSpect.Count == 0)
+                {
+                    valid = false;
+                    ViewData["message"] = "Data not exists in vehicle spect";
+                }
+                else if (vendor.Count == 0)
+                {
+                    valid = false;
+                    ViewData["message"] = "Data not exists in vendor";
+                }
+                else if (vehicleType.Count == 0)
+                {
+                    valid = false;
+                    ViewData["message"] = "Data not exists in vehicle type";
+                }
+                else if (vehicleUsage.Count == 0)
+                {
+                    valid = false;
+                    ViewData["message"] = "Data not exists in vehicle usage";
+                }
+                else
+                {
+                    valid = true;
+                }
+
+                if (valid)
+                {
+                    //var data = Mapper.Map<PriceListDto>(item);
+                    //data.CreatedBy = CurrentUser.USERNAME;
+                    //data.CreatedDate = DateTime.Today;
+                    //data.ModifiedDate = null;
+                    //try
+                    //{
+                    //    _priceListBLL.Save(data);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    var msg = ex.Message;
+                    //}
+
+                    return RedirectToAction("Index", "MstPriceList");
+                }
+                else
+                {
+                    var model = new PriceListItem();
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    model = listdata(model);
+                    var VendorList = _vendorBLL.GetVendor();
+                    model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+                    return View(model);
+                }
+            //}
         }
 
         public ActionResult View(int? MstPriceListid)
