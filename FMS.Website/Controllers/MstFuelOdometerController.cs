@@ -25,14 +25,17 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private IGroupCostCenterBLL _groupCostCenterBLL;
         private Enums.MenuList _mainMenu;
+        private IDocumentTypeBLL _documentTypeBLL;
 
-        public MstFuelOdometerController(IPageBLL PageBll, IFuelOdometerBLL FuelOdometerBLL, IFleetBLL FleetBLL, ISettingBLL SettingBLL, IGroupCostCenterBLL GroupCostCenterBLL) : base(PageBll, Enums.MenuList.MasterFuelOdoMeter)
+        public MstFuelOdometerController(IPageBLL PageBll, IFuelOdometerBLL FuelOdometerBLL, IFleetBLL FleetBLL, ISettingBLL SettingBLL, IGroupCostCenterBLL GroupCostCenterBLL, IDocumentTypeBLL DocTypeBLL)
+            : base(PageBll, Enums.MenuList.MasterFuelOdoMeter)
         {
             _fuelodometerBLL = FuelOdometerBLL;
             _fleetBLL = FleetBLL;
             _settingBLL = SettingBLL;
             _groupCostCenterBLL = GroupCostCenterBLL;
             _mainMenu = Enums.MenuList.MasterData;
+            _documentTypeBLL = DocTypeBLL;
         }
 
         //
@@ -58,6 +61,14 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
+            return View(model);
+        }
+
+        public ActionResult Upload()
+        {
+            var model = new FuelOdometerModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
@@ -297,6 +308,127 @@ namespace FMS.Website.Controllers
             return slDocument;
         }
         #endregion
+
+
+        [HttpPost]
+        public JsonResult UploadFile(HttpPostedFileBase upload)
+        {
+            var qtyPacked = string.Empty;
+            var qty = string.Empty;
+
+            var data = (new ExcelReader()).ReadExcel(upload);
+            var model = new List<FuelOdometerItem>();
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    var item = new FuelOdometerItem();
+                    item.ErrorMessage = "";
+                    try
+                    {
+                        item.VehicleType = dataRow[0].ToString();
+                        item.PoliceNumber = dataRow[1].ToString();
+                        item.EmployeeId = dataRow[2].ToString();
+                        item.EmployeeName = dataRow[3].ToString();
+                        item.EcsRmbTransId = Convert.ToInt32(dataRow[4]);
+                        item.SeqNumber = Convert.ToInt32(dataRow[5]);
+                        item.ClaimType = dataRow[6].ToString();
+                        item.DateOfCost = Convert.ToDateTime(dataRow[7].ToString());
+                        item.CostCenter = dataRow[8].ToString();
+                        item.LastKM = Convert.ToInt32(dataRow[9]);
+                        item.Cost = Convert.ToInt32(dataRow[10]);
+                        item.ClaimComment = dataRow[12].ToString();
+
+                        item.PostedTime = DateTime.Now;
+
+                        item.IsActive = dataRow[13].ToString() == "Active" ? true : false;
+                      
+                        item.ErrorMessage = string.Empty;
+
+                        //var exist = _fuelodometerBLL.GetFuelOdometer().Where(x => x.SettingGroup.ToUpper() == item.SettingGroup.ToUpper()
+                        //    && x.SettingName.ToUpper() == item.SettingName.ToUpper()
+                        //    && x.SettingValue.ToUpper() == item.SettingValue.ToUpper()
+                        //   && x.IsActive).FirstOrDefault();
+
+                        if (string.IsNullOrEmpty(dataRow[0].ToString())) { item.ErrorMessage += "Setting Group empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[1].ToString())) { item.ErrorMessage += "Setting Name empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[2].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[3].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[4].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[5].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[6].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[7].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[8].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[9].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[10].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[11].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[12].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+                        if (string.IsNullOrEmpty(dataRow[13].ToString())) { item.ErrorMessage += "Setting Value empty,"; }
+               
+
+
+
+                       // if (exist != null) { item.ErrorMessage += "Data Already Exist,"; }
+
+                        model.Add(item);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        item.ErrorMessage = ex.Message;
+                    }
+                }
+            }
+            return Json(model);
+        }
+
+        [HttpPost]
+        public ActionResult Upload(FuelOdometerModel Model)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var data in Model.Details)
+                {
+                    try
+                    {
+                        data.CreatedDate = DateTime.Now;
+                        data.CreatedBy = CurrentUser.USERNAME;
+                        data.IsActive = true;
+                        if (data.ErrorMessage == "" | data.ErrorMessage == null)
+                        {
+                            //var Exist = _fuelodometerBLL.GetFuelOdometer().Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (data.VehicleType == null ? "" : data.VehicleType.ToUpper())
+                            //                                        && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (data.RoleType == null ? "" : data.RoleType.ToUpper())
+                            //                                        && x.IsActive).FirstOrDefault();
+                            var Exist = _fuelodometerBLL.GetFuelOdometer().Where( x => x.VehicleType == data.VehicleType && x.PoliceNumber == data.PoliceNumber && x.EmployeeId == data.EmployeeId && x.EcsRmbTransId == data.EcsRmbTransId && x.SeqNumber == data.SeqNumber && x.DateOfCost == data.DateOfCost && x.CostCenter == data.CostCenter && x.IsActive == true).FirstOrDefault();
+                            if (Exist != null)
+                            {
+                                Exist.IsActive = false;
+                                Exist.ModifiedBy = "SYSTEM";
+                                Exist.ModifiedDate = DateTime.Now;
+                                _fuelodometerBLL.Save(Exist, CurrentUser);
+                            }
+
+                            var dto = Mapper.Map<FuelOdometerDto>(data);
+                            _fuelodometerBLL.Save(dto, CurrentUser);
+                        }
+
+                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+                    }
+                    catch (Exception exception)
+                    {
+                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.CurrentLogin = CurrentUser;
+                        return View(Model);
+                    }
+                }
+                _fuelodometerBLL.SaveChanges();
+            }
+            return RedirectToAction("Index", "MstFuelOdometer");
+        }
 
     }
 }

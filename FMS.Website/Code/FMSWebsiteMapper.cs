@@ -342,7 +342,8 @@ namespace FMS.Website.Code
             Mapper.CreateMap<FuelOdometerDto, FuelOdometerItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             //END FuelOdometer
-
+            Mapper.CreateMap<FuelOdometerItem, FuelOdometerDto>().IgnoreAllNonExisting()
+           .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             //BEGIN Delegation
             Mapper.CreateMap<DelegationDto, DelegationItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
