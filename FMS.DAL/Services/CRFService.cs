@@ -73,8 +73,9 @@ namespace FMS.DAL.Services
 
                 if (input.EffectiveDateComplete.HasValue)
                 {
+                    var currentDate = input.EffectiveDateComplete.Value.AddDays(1);
                     queryFilterCrf =
-                        queryFilterCrf.And(c => c.EFFECTIVE_DATE <= input.EffectiveDateComplete.Value.AddDays(1));
+                        queryFilterCrf.And(c => c.EFFECTIVE_DATE <= currentDate);
                     queryFilterCrf = queryFilterCrf.And(c=> c.DOCUMENT_STATUS == (int) Enums.DocumentStatus.InProgress );
                 }
 
