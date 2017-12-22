@@ -51,13 +51,13 @@ namespace FMS.Website.Controllers
             var fuelOdometerList = _fuelodometerBLL.GetFuelOdometer().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
 
-            model.SearchView.PoliceNumberList = new SelectList(fleetList, "PoliceNumber", "PoliceNumber");
-            model.SearchView.EmployeeNameList = new SelectList(fleetList, "EmployeeName", "EmployeeName");
-            model.SearchView.EmployeeIDList = new SelectList(fleetList, "EmployeeID", "EmployeeID");
-            model.SearchView.CostCenterList = new SelectList(costCenterList, "CostCenter", "CostCenter");
-            model.SearchView.EcsRmbTransIdList = new SelectList(fuelOdometerList, "EcsRmbTransId", "EcsRmbTransId");
-            model.SearchView.ClaimTypeList = new SelectList(fuelOdometerList, "ClaimType", "ClaimType");
-            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.SearchView.PoliceNumberList = new SelectList(fleetList.Select(x => new { x.PoliceNumber }).Distinct().ToList(), "PoliceNumber", "PoliceNumber");
+            model.SearchView.EmployeeNameList = new SelectList(fleetList.Select(x => new { x.EmployeeName }).Distinct().ToList(), "EmployeeName", "EmployeeName");
+            model.SearchView.EmployeeIDList = new SelectList(fleetList.Select(x => new { x.EmployeeID }).Distinct().ToList(), "EmployeeID", "EmployeeID");
+            model.SearchView.CostCenterList = new SelectList(costCenterList.Select(x => new { x.CostCenter }).Distinct().ToList(), "CostCenter", "CostCenter");
+            model.SearchView.EcsRmbTransIdList = new SelectList(fuelOdometerList.Select(x => new { x.EcsRmbTransId }).Distinct().ToList(), "EcsRmbTransId", "EcsRmbTransId");
+            model.SearchView.ClaimTypeList = new SelectList(fuelOdometerList.Select(x => new { x.ClaimType }).Distinct().ToList(), "ClaimType", "ClaimType");
+            model.SearchView.VehicleTypeList = new SelectList(listVehType.Select(x => new { x.SettingValue }).Distinct().ToList(), "SettingValue", "SettingValue");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;

@@ -306,6 +306,17 @@ namespace FMS.Website.Controllers
 
                 _fleetBLL.Save(data, CurrentUser);
             }
+            else
+            {
+                var errors = ModelState.Values.Where(c => c.Errors.Count > 0).ToList();
+
+                if (errors.Count > 0)
+                {
+                    //get error details
+                }
+
+                RedirectToAction("Index", "MstFleet");
+            }
             return RedirectToAction("Index","MstFleet");
         }
 
