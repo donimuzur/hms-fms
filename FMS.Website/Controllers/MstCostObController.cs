@@ -533,9 +533,25 @@ namespace FMS.Website.Controllers
                     try
                     {
                         item.CostCenter = dataRow[5];
+                        if(item.CostCenter =="")
+                        {
+                            item.ErrorMessage = "Cost Center can't be empty";
+                        }
+
                         item.FunctionName= dataRow[6];
+                        if(item.FunctionName == "")
+                        {
+                            item.ErrorMessage = "Function Can't be empty";
+                        }
+
                         item.Regional= dataRow[7];
+
                         item.VehicleType = dataRow[14];
+                        if(item.VehicleType=="")
+                        {
+                            item.ErrorMessage = "Vehicle Type Can't be empty";
+                        }
+
                         for (int i = 8; i <= data.DataRows.Count(); i++)
                         {
                             if (data.Headers[i] == "" || data.Headers[i] == null)
@@ -559,7 +575,7 @@ namespace FMS.Website.Controllers
                                         }
                                         catch (Exception)
                                         {
-                                            
+                                            item.ErrorMessage = "Qty must be number";
                                         }
                                         
                                     }
@@ -572,10 +588,11 @@ namespace FMS.Website.Controllers
                                         }
                                         catch (Exception)
                                         {
-                                            
+                                            item.ErrorMessage = "Cost OB must be number";
                                         }
                                         
                                     }
+
                                     item.Month =Convert.ToInt32(Time[0]);
                                     item.Year = Convert.ToInt32(Time[1]);
                                     model.Add(item);

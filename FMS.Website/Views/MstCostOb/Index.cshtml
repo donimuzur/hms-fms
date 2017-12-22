@@ -42,10 +42,10 @@
             <thead class="filters">
                 <tr>
                     <th>
-                        @if (Model.CurrentPageAccess.WriteAccess == true)
+                        @*@if (Model.CurrentPageAccess.WriteAccess == true)
                         {
                             <a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a>
-                        }
+                        }*@
                     </th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -70,7 +70,7 @@
                         <td style="text-align: center;">
                             @if (Model.CurrentPageAccess.WriteAccess == true)
                             {
-                                <a href="@Url.Action("Edit", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                @*<a href="@Url.Action("Edit", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>*@
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
@@ -87,9 +87,9 @@
                         <td>@Html.Raw(data.ObCostS)</td>
                         <td>@Html.Raw(data.Qty)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.ToString("dd-MMM-yyyy") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>
