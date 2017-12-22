@@ -287,6 +287,12 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
             var data = _fleetBLL.GetFleetById(MstFleetId.Value);
+
+            if (data.VehicleType.ToUpper() == "BENEFIT")
+            {
+                return RedirectToAction("Detail", "MstFleet", new { MstFleetId = data.MstFleetId });
+            }
+
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.MainMenu = _mainMenu;
@@ -300,6 +306,21 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+                var exist = _fleetBLL.GetFleet().Where(x => (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (model.EmployeeName == null ? "" : model.EmployeeName.ToUpper())
+                           && (x.EmployeeID == null ? "" : x.EmployeeID.ToUpper()) == (model.EmployeeID == null ? "" : model.EmployeeID.ToUpper())
+                           && (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (model.ChasisNumber == null ? "" : model.ChasisNumber.ToUpper())
+                           && (x.EngineNumber == null ? "" : x.EngineNumber.ToUpper()) == (model.EngineNumber == null ? "" : model.EngineNumber.ToUpper())
+                           && x.IsActive).FirstOrDefault();
+
+                if (exist != null)
+                {
+                    exist.IsActive = false;
+                    exist.ModifiedBy = "SYSTEM";
+                    exist.ModifiedDate = DateTime.Now;
+                    _fleetBLL.Save(exist);
+
+                }
+
                 var data = Mapper.Map<FleetDto>(model);
                 data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
