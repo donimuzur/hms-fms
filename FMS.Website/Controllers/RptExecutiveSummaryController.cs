@@ -64,6 +64,9 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var model = new ExecutiveSummaryModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<VehicleGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var settingData = _settingBLL.GetSetting();
@@ -320,6 +323,9 @@ namespace FMS.Website.Controllers
         public ActionResult VehicleWtc()
         {
             var model = new NumberVehicleWtcModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<VehicleWtcGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -566,6 +572,9 @@ namespace FMS.Website.Controllers
         public ActionResult VehicleMake()
         {
             var model = new NumberVehicleMakeModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<VehicleMakeGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleMakeData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
@@ -808,6 +817,9 @@ namespace FMS.Website.Controllers
         public ActionResult Odometer()
         {
             var model = new OdometerModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<OdometerGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1058,6 +1070,9 @@ namespace FMS.Website.Controllers
         public ActionResult LiterByFunction()
         {
             var model = new LiterByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1308,6 +1323,9 @@ namespace FMS.Website.Controllers
         public ActionResult FuelCostByFunction()
         {
             var model = new FuelCostByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1558,6 +1576,9 @@ namespace FMS.Website.Controllers
         public ActionResult LeaseCostByFunction()
         {
             var model = new LeaseCostByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1804,6 +1825,9 @@ namespace FMS.Website.Controllers
         public ActionResult SalesByRegion()
         {
             var model = new SalesByRegionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetSalesByRegionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -2052,6 +2076,9 @@ namespace FMS.Website.Controllers
         public ActionResult Accident()
         {
             var model = new AccidentModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<AccidentGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -2302,6 +2329,9 @@ namespace FMS.Website.Controllers
         public ActionResult AcVsOb()
         {
             var model = new AcVsObModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<AcVsObGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
@@ -2547,6 +2577,9 @@ namespace FMS.Website.Controllers
         public ActionResult SumPtdByFunction()
         {
             var model = new SumPtdByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<SumPtdFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetSumPtdByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();

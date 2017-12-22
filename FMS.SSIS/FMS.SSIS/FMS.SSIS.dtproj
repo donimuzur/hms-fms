@@ -26,12 +26,13 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">BATNETWORK</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfhtmJiWkMkeOvTvvB5sMKAAAAAACAAAAAAAQZgAAAAEAACAAAAAKctbUm2TC1G/H5RhdwK/xOly3MgcshYdD2X2SAXLHWwAAAAAOgAAAAAIAACAAAABQHFi91gfXIKS3fd/IEWMYMaDWTI583XDRO5kU1kAGWJAAAAArbPSdpMNaDVFhVteJb6KYjK7sVpkePQ3xM3Pcfgv9EgCNHA/BGsDBHH3KXOWolYjV9SoXwJIdzAA8HS2nJ7FURtDRK92GsEaaIz8uMSyW3LSTAlHScNumJ3d9WEjhbRc/aHnTsz4aT+7nE6q1mArBofLuQJsRwlNMWFn1X2MB0LxhlCEYIfxF2tj1XwwUZGJAAAAA7FgV2Flt84dzBro1iytQXTbmfRrMkSEydw3LJo/4zoTN6sKkS8WVK2PnUg6UjoC4oCwTZFx2jeo+qAJW/8zQ3w==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfhtmJiWkMkeOvTvvB5sMKAAAAAACAAAAAAAQZgAAAAEAACAAAACT+qr0vPiBvMGYGL7c0ut2TGZuAZTpSZObeIAGYskJGgAAAAAOgAAAAAIAACAAAABcPe5Ubo24KkHkOYnc5QOP2eZ1mrZURnE7XlXbUkXOKJAAAAAgWesXjPERYBG0hbR0SXEmlp1CfInC/Tkazo6oA6ZV6zkMuME8e9vcUAHw/4C4fUbjpnnfQr9nZQuRkBbzFbaWPRwf1Mtw4YLxgkYToZmCR9xQ1MGYNMre2Ey+1wR0GXRI6fJNW1QvNgMUNq1DOP9xTLMBz5JDJdpEL3hB/29ntqv49jW2m+Pns0G88d0OVnxAAAAAFx9Nm/TcaZCeYZ2bMtnHpmUUBJSFCnNCZpeCz0nKX2JrjPkFPpuGrN+nnGq/wOlird3DP+hfTA6L/U9b5zeRRg==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
           <SSIS:Package SSIS:Name="AutoGR.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="FleetData.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="FMSService.dtsx" SSIS:EntryPoint="1" />
         </SSIS:Packages>
         <SSIS:ConnectionManagers />
         <SSIS:DeploymentInfo>
@@ -43,10 +44,10 @@
                 <SSIS:Property SSIS:Name="Name">AutoGR</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">69</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">75</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{8AC461FD-CD67-4307-BDD2-6385D6A5E817}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{D829D8AD-281C-4830-88AE-21CB646870D9}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">6</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -64,7 +65,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">Data Source=hmssqlfmsprd.id.pmi\PRD;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">Data Source=localhost;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -123,7 +124,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">hmssqlfmsprd.id.pmi\PRD</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">localhost</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -152,7 +153,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">Data Source=hmssqlfmsprd.id.pmi\PRD;Initial Catalog=FMS;Integrated Security=True;Application Name=SSIS-AutoGR-{B92D53E3-F001-48C5-959D-D76BF41AEFCA}hmssqlfmsprd.id.pmi\PRD.FMS;</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">Data Source=localhost;Initial Catalog=FMS;Integrated Security=True;Application Name=SSIS-AutoGR-{B92D53E3-F001-48C5-959D-D76BF41AEFCA}hmssqlfmsprd.id.pmi\PRD.FMS;</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -211,7 +212,7 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">hmssqlfmsprd.id.pmi\PRD</SSIS:Property>
+                    <SSIS:Property SSIS:Name="Value">localhost</SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -336,6 +337,23 @@
                   </SSIS:Properties>
                 </SSIS:Parameter>
               </SSIS:Parameters>
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="FMSService.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{29368EF7-A42F-4B1C-A9F9-EE813924D048}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">FMSService</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">4</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{027CE7DF-6B51-442D-B10F-244AA800F2DA}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">6</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
             </SSIS:PackageMetaData>
           </SSIS:PackageInfo>
         </SSIS:DeploymentInfo>
