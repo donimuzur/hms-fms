@@ -285,6 +285,7 @@
     <Compile Include="Controllers\RptKpiMonitoringController.cs" />
     <Compile Include="Controllers\RptPoController.cs" />
     <Compile Include="Controllers\RptVehicleOverallController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCcfController.cs" />
@@ -4393,6 +4394,7 @@
     <Content Include="Views\MstSalesVolume\_ListData.cshtml" />
     <Content Include="Views\MstFuelOdometer\Upload.cshtml" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
+    <Content Include="Views\Service\CompleteTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
