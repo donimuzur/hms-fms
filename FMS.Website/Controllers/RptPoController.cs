@@ -37,7 +37,7 @@ namespace FMS.Website.Controllers
             _settingBLL = SettingBLL;
             _employeeBLL = employeeBLL;
             _fleetBLL = fleetBLL;
-            _mainMenu = Enums.MenuList.RptPo;
+            _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace FMS.Website.Controllers
             //model.SearchView.PoliceNumber = "L1976HS";
             var input = Mapper.Map<RptPoByParamInput>(model.SearchView);
             var data = _rptPoBLL.GetRptPo(input);
-            model.MainMenu = Enums.MenuList.RptExecutiveSummary;
+            model.MainMenu = _mainMenu;
             model.TitleForm = "PO Report";
             model.TitleExport = "ExportPO";
             model.CurrentLogin = CurrentUser;

@@ -687,6 +687,7 @@
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="VEHCILE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PO_REPORT_DATA">
           <Key>
@@ -2872,6 +2873,7 @@
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="VEHCILE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PO_REPORT_DATA">
           <Key>
@@ -4602,6 +4604,7 @@
           <EntitySetMapping Name="ODOMETER_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.ODOMETER_REPORT_DATA">
               <MappingFragment StoreEntitySet="ODOMETER_REPORT_DATA">
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="VEHCILE_TYPE" ColumnName="VEHCILE_TYPE" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
