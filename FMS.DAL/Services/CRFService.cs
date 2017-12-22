@@ -71,7 +71,12 @@ namespace FMS.DAL.Services
 
                 }
 
-                
+                if (input.EffectiveDateComplete.HasValue)
+                {
+                    queryFilterCrf =
+                        queryFilterCrf.And(c => c.EFFECTIVE_DATE <= input.EffectiveDateComplete.Value.AddDays(1));
+                    queryFilterCrf = queryFilterCrf.And(c=> c.DOCUMENT_STATUS == (int) Enums.DocumentStatus.InProgress );
+                }
 
             }
             return _crfRepository.Get(queryFilterCrf,null,"").ToList();
