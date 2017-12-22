@@ -201,7 +201,11 @@
             { "data": "VehicleYear", "orderable": false },
             { "data": "VehicleType", "orderable": true },
             { "data": "VehicleUsage", "orderable": true },
-            { "data": "Project", "orderable": false },
+            {
+                "data": "Project", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
             { "data": "ProjectName", "orderable": false },
             {
                 "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
@@ -222,8 +226,7 @@
                 }
             },
             { "data": "MonthlyHMSInstallment", "orderable": false },
-            { "data": "Price", "orderable": false },
-            { "data": "Vat", "orderable": false },
+            { "data": "VatDecimal", "orderable": false },
             { "data": "PoNumber", "orderable": false },
             { "data": "PoLine", "orderable": false },
             { "data": "CarGroupLevel", "orderable": false },
