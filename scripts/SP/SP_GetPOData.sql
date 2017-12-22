@@ -1,4 +1,10 @@
-Create procedure [dbo].[GetPOData]
+IF EXISTS(SELECT 1 FROM sys.procedures 
+          WHERE Name = 'GetPOData')
+BEGIN
+    DROP PROCEDURE [dbo].[GetPOData]
+END
+GO
+CREATE procedure [dbo].[GetPOData]
 AS BEGIN
 
 	MERGE PO_REPORT_DATA AS Target
