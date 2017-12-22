@@ -36,7 +36,7 @@ namespace FMS.Website.Controllers
             _rptCcfBLL = rptCcfBLL;
             _rptComplaintBLL = rptComplaintBLL;
             _settingBLL = SettingBLL;
-            _mainMenu = Enums.MenuList.RptCcf;
+            _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace FMS.Website.Controllers
             var model = new RptCCFModel();
             var input = Mapper.Map<RptCCFInput>(model.SearchView);
             var data = _rptCcfBLL.GetRptCcf(input);
-            model.MainMenu = Enums.MenuList.RptExecutiveSummary;
+            model.MainMenu = _mainMenu;
             model.TitleForm = "CCF Report";
             model.TitleExport = "ExportCCF";
             model.CurrentLogin = CurrentUser;
