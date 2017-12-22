@@ -16,6 +16,7 @@ namespace FMS.Website
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.unobtrusive*",
+                        "~/Scripts/jquery.validate.unobtrusive.js*",
                         "~/Scripts/jquery.validate*"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -25,7 +26,8 @@ namespace FMS.Website
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/css/app.css",
-                      "~/Content/css/bootstrap.min.css"
+                      "~/Content/css/bootstrap.min.css",
+                      "~/Scripts/respond.js"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));

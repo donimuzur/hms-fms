@@ -39,6 +39,7 @@
                         <th>Flex Point</th>
                         <th>Image</th>
                         <th>Status</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -112,6 +113,7 @@
                 uploaditems = JSON.parse(response);
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
+                    
                     var tr = '<tr>' +
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Details[' + i + '].Manufacturer') +
@@ -125,12 +127,20 @@
                 createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                 createColumnWithHiddenField(uploaditems[i].FlexPoint, 'Model.Details[' + i + '].FlexPoint') +
                 createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
+                
                 createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
+                createColumnWithHiddenField(uploaditems[i].Message, 'Model.Details[' + i + '].Message') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
                 }
-               $('#btnSave').prop('disabled', false);
+                
+                if (error == "") {
+                    $('#btnSave').removeAttr('disabled');
+                } else {
+                    $('#btnSave').attr('disabled', "disabled");
+                }
+               
             }
         });
     };
