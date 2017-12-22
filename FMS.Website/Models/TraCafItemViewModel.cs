@@ -74,7 +74,8 @@ namespace FMS.Website.Models
 
         public int VendorId {get;set;}
         public string VendorName {get;set;}
-
+        public string VehicleType { get; set; }
+        public string Region { get; set; }
         public string VehicleModel {get;set;}
         public DateTime IncidentDate {get;set;}
         public string IncidentLocation {get;set;}

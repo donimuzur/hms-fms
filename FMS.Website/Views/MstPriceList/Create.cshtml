@@ -13,81 +13,81 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Manufacture<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control ", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Model<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control ", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Series<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Year<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Zone Price List<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control " })
+                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control ", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Price<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Price, new { @class = "form-control ", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.Price, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Installmen HMS<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.InstallmenHMS, new { @class = "form-control ", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.InstallmenHMS, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Installmen Employee<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.InstallmenEMP, new { @class = "form-control ", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.InstallmenEMP, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vendor<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.Vendor, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                        @Html.DropDownListFor(model => model.Vendor, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;", required = (string)null })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @style = "width: 100%;", @onchange = "SetVisibility()" })
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @style = "width: 100%;", @onchange = "SetVisibility()", required = (string)null })
                     </div>
                 </div>
-                @if (Model.VehicleType == "Benefit")
-                {
+                @*@if (Model.VehicleType == "Benefit")
+                {*@
                 <div class="col-md-6" id="VehicleUsageDiv" style="visibility:visible">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                        @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @style = "width: 100%;", required = (string)null })
                     </div>
                 </div>
-                }
+                @*}
                 else
-                {
+                {*@
                     <div class="col-md-6" id="VehicleUsage" style="visibility:hidden">
                         <div class="form-group">
                             <label class="control-label">Vehicle Usage<span class="red"></span></label>
-                            @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                            @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @style = "width: 100%;", required = (string)null })
                         </div>
                     </div>
-                }
+                @*  }*@
                 <div class="col-md-12">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a href="@Url.Action("Index", "MstPriceList" )" class="btn btn-default">Back</a>
@@ -118,3 +118,7 @@
         }
     });
 </script>
+@if (ViewData["message"] != null)
+{
+    <script>alert("@ViewData["message"]");</script>
+}

@@ -1,12 +1,12 @@
-﻿@model FMS.Website.Models.ReasonModel
+﻿@model FMS.Website.Models.FuelOdometerModel
 @using FMS.Core
 
-<div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Reason Upload</h5>
+<<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Fuel Odometer Upload</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Upload", "MstReason", FormMethod.Post))
+        @using (Html.BeginForm("Upload", "MstFuelOdometer", FormMethod.Post))
         {
             <div class="row">
                 <div class="col-md-6">
@@ -18,22 +18,29 @@
                             </span>
                         </div>
                         <div>
-                            Download template <a href="~/files_upload/masterReason.xlsx">here</a>
+                            Download template <a href="~/files_upload/masterFuelOdometer.xlsx">here</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <table id="tbReason" class="table table-bordered table-striped">
+            <table id="tbRemark" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Document Type</th>
                         <th>Vehicle Type</th>
-                        <th>Reason</th>
-                        <th>Penalty</th>
-                        <th>Penalty For Fleet</th>
-                        <th>Penalty For Employee</th>
-                        <th>Message</th>
+                        <th>Police Number</th>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>ECS RMB TRANSID</th>
+                        <th>SEQ NUMBER</th>
+                        <th>Claim Type</th>
+                        <th>Date OF Cost</th>
+                        <th>Cost Center</th>
+                        <th>Fuel Amount</th>
+                        <th>Last KM</th>
+                        <th>Cost</th>
+                        <th>Claim Comment</th>
+
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -41,7 +48,7 @@
             <div class="row mt-2">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
-                    <a href="@Url.Action("Index","MstReason")" title="Cancel" class="btn">Cancel</a>
+                    <a href="@Url.Action("Index", "MstFuelOdometer")" title="Cancel" class="btn">Cancel</a>
                 </div>
             </div>
         }
@@ -50,8 +57,7 @@
 <script type="text/javascript">
 
     $(function () {
-        // DataTable
-        var table = $('#tbReason').DataTable({
+        var table = $('#tbRemark').DataTable({
             "sDom": 'lf<"table-overflow"t>pi',
             "paging": false,
             "lengthChange": false,
@@ -71,7 +77,6 @@
             });
         });
     });
-
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
@@ -92,7 +97,7 @@
     });
 
     function uploadXmlFile() {
-        var postUrl = '@Url.Action("UploadFile", "MstReason")';
+        var postUrl = '@Url.Action("UploadFile", "MstFuelOdometer")';
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
@@ -123,23 +128,29 @@
                 for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
-                createColumnWithHiddenField(uploaditems[i].MstDocumentType, 'Model.Details[' + i + '].MstDocumentType') +
                 createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
-                createColumnWithHiddenField(uploaditems[i].Reason, 'Model.Details[' + i + '].Reason') +
-                createColumnWithHiddenField(uploaditems[i].IsPenalty, 'Model.Details[' + i + '].IsPenalty') +
-                createColumnWithHiddenField(uploaditems[i].PenaltyForFleet, 'Model.Details[' + i + '].PenaltyForFleet') +
-                createColumnWithHiddenField(uploaditems[i].PenaltyForEmplloyee, 'Model.Details[' + i + '].PenaltyForEmplloyee') +
+                createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
+                createColumnWithHiddenField(uploaditems[i].EmployeeId, 'Model.Details[' + i + '].EmployeeId') +
+                createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
+                createColumnWithHiddenField(uploaditems[i].EcsRmbTransId, 'Model.Details[' + i + '].EcsRmbTransId') +
+                createColumnWithHiddenField(uploaditems[i].SeqNumber, 'Model.Details[' + i + '].SeqNumber') +
+                createColumnWithHiddenField(uploaditems[i].ClaimType, 'Model.Details[' + i + '].ClaimType') +
+                createColumnWithHiddenField(moment(uploaditems[i].DateOfCost).format("YYYY-MM-DD"), 'Model.Details[' + i + '].DateOfCost') +
+               // createColumnWithHiddenField(uploaditems[i].DateOfCost, 'Model.Details[' + i + '].DateOfCost') +
+                createColumnWithHiddenField(uploaditems[i].CostCenter, 'Model.Details[' + i + '].CostCenter') +
+                createColumnWithHiddenField(uploaditems[i].LastKM, 'Model.Details[' + i + '].LastKM') +
+                createColumnWithHiddenField(uploaditems[i].Cost, 'Model.Details[' + i + '].Cost') +
+                createColumnWithHiddenField( moment(uploaditems[i].PostedTime).format("YYYY-MM-DD HH:mm:ss"),  'Model.Details[' + i + '].PostedTime') +
+                createColumnWithHiddenField(uploaditems[i].ClaimComment, 'Model.Details[' + i + '].ClaimComment') +
+
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
-                '<input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '">' +
-                '</tr>';
+                '<input type="hidden" name="Model.Details[' + i + '].VehicleType" value="' + uploaditems[i].VehicleType + '">' +
+               '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].ErrorMessage;
                 }
                 if (error == '') {
                     $('#btnSave').prop('disabled', false);
-                }
-                else {
-                    $('#btnSave').prop('disabled', true);
                 }
             }
         });

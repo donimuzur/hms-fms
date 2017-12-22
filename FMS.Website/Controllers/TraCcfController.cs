@@ -1008,8 +1008,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 14, "Model");
             slDocument.SetCellValue(iRow, 15, "Series");
             slDocument.SetCellValue(iRow, 16, "Vendor");
-            slDocument.SetCellValue(iRow, 17, "Start Period");
-            slDocument.SetCellValue(iRow, 18, "End Period");
+            slDocument.SetCellValue(iRow, 17, "Start Contract");
+            slDocument.SetCellValue(iRow, 18, "End Contract");
             slDocument.SetCellValue(iRow, 19, "Coordinator KPI");
             slDocument.SetCellValue(iRow, 20, "Vendor KPI");
             slDocument.SetCellValue(iRow, 21, "Created By");
