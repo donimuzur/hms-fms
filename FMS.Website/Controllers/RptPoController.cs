@@ -60,8 +60,8 @@ namespace FMS.Website.Controllers
 
             model.RptPOItem = Mapper.Map<List<RptPOItem>>(data);
             
-            var listEmployee = _fleetBLL.GetFleet().Select(x => new { x.EmployeeName }).OrderBy(x => x.EmployeeName).ToList();
-            var listCost = _fleetBLL.GetFleet().Select(x => new { x.CostCenter }).OrderBy(x => x.CostCenter).ToList();
+            var listEmployee = _fleetBLL.GetFleet().Select(x => new { x.EmployeeName }).Distinct().OrderBy(x => x.EmployeeName).ToList();
+            var listCost = _fleetBLL.GetFleet().Select(x => new { x.CostCenter }).Distinct().OrderBy(x => x.CostCenter).ToList();
             var listSM = _fleetBLL.GetFleet().Select(x => new { x.SupplyMethod}).Distinct().OrderBy(x => x.SupplyMethod).ToList();
             
             model.SearchView.EmployeeNameList = new SelectList(listEmployee, "EmployeeName", "EmployeeName");
