@@ -184,6 +184,11 @@
         $(".select").val('');
         $(".text").val('');
 
+        //$('#SearchView_EmployeeName').val("");
+        $('#SearchView_MonthFrom').val((d.getMonth() + 1) - 2);
+        $('#SearchView_GroupLevel').val(1);
+        $('#SearchView_EmployeeName').val(1);
+
         $("#btn-filter").trigger('click');
     });
 
