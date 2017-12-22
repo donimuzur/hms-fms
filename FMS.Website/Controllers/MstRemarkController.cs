@@ -275,16 +275,27 @@ namespace FMS.Website.Controllers
                             var dto = Mapper.Map<RemarkDto>(data);
                             _remarkBLL.Save(dto);
                         }
-                        
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.ErrorMessage = exception.Message;
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
                 }
-                _remarkBLL.SaveChanges();
+                try
+                {
+                    _remarkBLL.SaveChanges();
+                }
+                catch (Exception exp)
+                {
+                    Model.ErrorMessage = exp.Message;
+                    Model.MainMenu = _mainMenu;
+                    Model.CurrentLogin = CurrentUser;
+                    return View(Model);
+                }
+                
             }
             return RedirectToAction("Index", "MstRemark");
         }

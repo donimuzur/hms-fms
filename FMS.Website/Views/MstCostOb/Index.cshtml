@@ -28,6 +28,8 @@
                     <th>Cost Center</th>
                     <th>Body Type</th>
                     <th>Vehicle Type</th>
+                    <th>Function</th>
+                    <th>Regional</th>
                     <th>Cost OB</th>
                     <th>Qty</th>
                     <th>Created By</th>
@@ -45,6 +47,8 @@
                             <a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a>
                         }
                     </th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -78,6 +82,8 @@
                         <td>@Html.Raw(data.CostCenter)</td>
                         <td>@Html.Raw(data.Model)</td>
                         <td>@Html.Raw(data.Type)</td>
+                        <td>@Html.Raw(data.FunctionName)</td>
+                        <td>@Html.Raw(data.Regional)</td>
                         <td>@Html.Raw(data.ObCostS)</td>
                         <td>@Html.Raw(data.Qty)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>

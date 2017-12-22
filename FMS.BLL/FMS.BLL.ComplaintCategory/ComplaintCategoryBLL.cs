@@ -54,7 +54,10 @@ namespace FMS.BLL.ComplaintCategory
             return retData;
         }
 
-
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
+        }
     }
 
     

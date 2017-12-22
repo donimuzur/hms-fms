@@ -18,5 +18,6 @@ namespace FMS.BusinessObject.Inputs
         public string CostCenter { get; set; }
         public string SupplyMethod { get; set; }
         public string PoliceNumber { get; set; }
+        public int GroupLevel { get; set; }
     }
 }
