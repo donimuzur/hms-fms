@@ -14,5 +14,6 @@ namespace FMS.Contract.BLL
         PenaltyDto GetByID(int Id);
         void Save(PenaltyDto PenaltyDto);
         void Save(PenaltyDto PenaltyDto, Login userLogin);
+        void SaveChanges();
     }
 }

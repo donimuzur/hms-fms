@@ -71,17 +71,59 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<RemarkDto>(model);
-                dto.CreatedBy = CurrentUser.USERNAME;
-                dto.createdDate = DateTime.Now;
-                dto.IsActive = true;
                 try
                 {
+                    var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                                                                  && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                                  && x.DocumentType == model.DocumentType
+                                                                  && x.IsActive).FirstOrDefault();
+                    if (Exist != null)
+                    {
+                        var list1 = _documentTypeBLL.GetDocumentType();
+
+                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                        var list2 = new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "HR", Value = "HR"},
+                            new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                            new SelectListItem { Text = "Admin", Value = "Admin" },
+                        };
+
+                        model.RoleTypeList = new SelectList(list2, "Value", "Text");
+
+                        model.ErrorMessage = "Data Already Exist";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<RemarkDto>(model);
+                    dto.CreatedBy = CurrentUser.USERNAME;
+                    dto.createdDate = DateTime.Now;
+                    dto.IsActive = true;
+                  
                     _remarkBLL.Save(dto);
+                    _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    var list1 = _documentTypeBLL.GetDocumentType();
+
+                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                    var list2 = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "HR", Value = "HR"},
+                        new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                        new SelectListItem { Text = "Admin", Value = "Admin" },
+                    };
+
+                    model.RoleTypeList = new SelectList(list2, "Value", "Text");
+                    model.ErrorMessage = ex.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    return View(model);
                 }
             }
             
@@ -116,17 +158,58 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<RemarkDto>(model);
-                dto.ModifiedBy = CurrentUser.USERNAME;
-                dto.ModifiedDate = DateTime.Now;
-               
                 try
                 {
+                    var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                                                              && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                              && x.DocumentType == model.DocumentType
+                                                              && x.IsActive && x.MstRemarkId != model.MstRemarkId).FirstOrDefault();
+                    if (Exist != null)
+                    {
+                        var list1 = _documentTypeBLL.GetDocumentType();
+
+                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                        var list2 = new List<SelectListItem>
+                        {
+                            new SelectListItem { Text = "HR", Value = "HR"},
+                            new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                            new SelectListItem { Text = "Admin", Value = "Admin" },
+                        };
+
+                        model.RoleTypeList = new SelectList(list2, "Value", "Text");
+                        model.ErrorMessage = "Data Already Exist";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<RemarkDto>(model);
+                    dto.ModifiedBy = CurrentUser.USERNAME;
+                    dto.ModifiedDate = DateTime.Now;
+
                     _remarkBLL.Save(dto, CurrentUser);
+                    _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    var list1 = _documentTypeBLL.GetDocumentType();
+
+                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
+
+                    var list2 = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "HR", Value = "HR"},
+                        new SelectListItem { Text = "Fleet", Value = "Fleet" },
+                        new SelectListItem { Text = "Admin", Value = "Admin" },
+                    };
+
+                    model.RoleTypeList = new SelectList(list2, "Value", "Text");
+
+                    model.ErrorMessage = ex.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    return View(model);
                 }
             }
 
@@ -178,18 +261,41 @@ namespace FMS.Website.Controllers
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
+                            var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (data.Remark == null ? "" : data.Remark.ToUpper())
+                                                                    && (x.RoleType == null ? ""  : x.RoleType.ToUpper()) == (data.RoleType == null ? "" : data.RoleType.ToUpper())
+                                                                    && x.IsActive).FirstOrDefault();
+                            if (Exist != null)
+                            {
+                                Exist.IsActive = false;
+                                Exist.ModifiedBy = "SYSTEM";
+                                Exist.ModifiedDate = DateTime.Now;
+                                _remarkBLL.Save(Exist);
+                            }
+
                             var dto = Mapper.Map<RemarkDto>(data);
                             _remarkBLL.Save(dto);
                         }
-                        
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.ErrorMessage = exception.Message;
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
                 }
+                try
+                {
+                    _remarkBLL.SaveChanges();
+                }
+                catch (Exception exp)
+                {
+                    Model.ErrorMessage = exp.Message;
+                    Model.MainMenu = _mainMenu;
+                    Model.CurrentLogin = CurrentUser;
+                    return View(Model);
+                }
+                
             }
             return RedirectToAction("Index", "MstRemark");
         }
@@ -211,28 +317,37 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new RemarkItem();
+                    item.ErrorMessage = "";
                     try
                     {
                         var getdto = _documentTypeBLL.GetDocumentType().Where(x => x.DocumentType == dataRow[0]).FirstOrDefault();
                         item.MstDocumentType = dataRow[0];
                         if (getdto == null)
                         {
-                            item.ErrorMessage = "Document " + dataRow[0] + " tidak ada di database";
+                            item.ErrorMessage = "Document " + dataRow[0] + " is not in the Master Document Type";
                         }
                         else if (getdto != null)
                         {
                             item.DocumentType = getdto.MstDocumentTypeId;
-                            item.ErrorMessage = "";
                         }
 
                         item.Remark= dataRow[1].ToString();
-                        item.RoleType = dataRow[2].ToString();
+                        if (item.Remark == "")
+                        {
+                            item.ErrorMessage = "Remark Can't be empty";
+                        }
+
+                        item.RoleType = dataRow[2] == null ? "" : dataRow[2].ToUpper();
+                        if (item.RoleType == "")
+                        {
+                            item.ErrorMessage = "Role Type Can't be empty";
+                        }
 
                         model.Add(item);
                     }
                     catch (Exception ex)
                     {
-                        var a = ex.Message;
+                        item.ErrorMessage = ex.Message;
                     }
                 }
             }

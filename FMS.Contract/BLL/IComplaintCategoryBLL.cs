@@ -14,5 +14,6 @@ namespace FMS.Contract.BLL
         ComplaintDto GetByID(int Id);
         void Save(ComplaintDto ComplaintDto);
         void Save(ComplaintDto data, Login currentUser);
+        void SaveChanges();
     }
 }

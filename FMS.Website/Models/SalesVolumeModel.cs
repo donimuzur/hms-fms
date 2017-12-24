@@ -13,8 +13,6 @@ namespace FMS.Website.Models
             Details = new List<SalesVolumeItem>();
             SearchViewExport = new SearchViewExport();
             SearchView = new SearchView();
-            SearchView.MonthFrom = DateTime.Now.Month;
-            SearchView.MonthTo = DateTime.Now.Month;
             SearchView.YearFrom = DateTime.Now.Year;
             SearchView.YearTo = DateTime.Now.Year;
         }

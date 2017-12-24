@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered table-striped">
+            <table id="tbRemark" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -46,6 +46,27 @@
 </section>
 <script type="text/javascript">
 
+    $(function () {
+        var table = $('#tbRemark').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
@@ -102,11 +123,16 @@
                 createColumnWithHiddenField(uploaditems[i].RoleType, 'Model.Details[' + i + '].RoleType') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '<input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '">' +
-                '</tr>';
+               '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
+                else {
+                    $('#btnSave').prop('disabled', true);
+                }
             }
         });
     };

@@ -55,5 +55,10 @@ namespace FMS.BLL.Gs
             var redata = Mapper.Map<List<GsDto>>(data);
             return redata;
         }
+
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
+        }
     }
 }

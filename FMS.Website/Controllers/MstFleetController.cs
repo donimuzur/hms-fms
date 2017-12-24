@@ -26,10 +26,11 @@ namespace FMS.Website.Controllers
         private IGroupCostCenterBLL _groupCostCenterBLL;
         private ILocationMappingBLL _locationMappingBLL;
         private ISettingBLL _settingBLL;
+        private IEmployeeBLL _employeeBLL;
         private Enums.MenuList _mainMenu;
 
         public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL
-            , ILocationMappingBLL LocationMappingBLL, ISettingBLL SettingBLL)
+            , ILocationMappingBLL LocationMappingBLL, ISettingBLL SettingBLL, IEmployeeBLL EmployeeBLL)
             : base(PageBll, Enums.MenuList.MasterFleet)
         {
             _fleetBLL = FleetBLL;
@@ -38,6 +39,7 @@ namespace FMS.Website.Controllers
             _groupCostCenterBLL = GroupCostCenterBLL;
             _locationMappingBLL = LocationMappingBLL;
             _settingBLL = SettingBLL;
+            _employeeBLL = EmployeeBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
 
@@ -285,6 +287,12 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
             var data = _fleetBLL.GetFleetById(MstFleetId.Value);
+
+            if (data.VehicleType.ToUpper() == "BENEFIT")
+            {
+                return RedirectToAction("Detail", "MstFleet", new { MstFleetId = data.MstFleetId });
+            }
+
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.MainMenu = _mainMenu;
@@ -298,11 +306,37 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+                var exist = _fleetBLL.GetFleet().Where(x => (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (model.EmployeeName == null ? "" : model.EmployeeName.ToUpper())
+                           && (x.EmployeeID == null ? "" : x.EmployeeID.ToUpper()) == (model.EmployeeID == null ? "" : model.EmployeeID.ToUpper())
+                           && (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (model.ChasisNumber == null ? "" : model.ChasisNumber.ToUpper())
+                           && (x.EngineNumber == null ? "" : x.EngineNumber.ToUpper()) == (model.EngineNumber == null ? "" : model.EngineNumber.ToUpper())
+                           && x.IsActive).FirstOrDefault();
+
+                if (exist != null)
+                {
+                    exist.IsActive = false;
+                    exist.ModifiedBy = "SYSTEM";
+                    exist.ModifiedDate = DateTime.Now;
+                    _fleetBLL.Save(exist);
+
+                }
+
                 var data = Mapper.Map<FleetDto>(model);
                 data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
 
                 _fleetBLL.Save(data, CurrentUser);
+            }
+            else
+            {
+                var errors = ModelState.Values.Where(c => c.Errors.Count > 0).ToList();
+
+                if (errors.Count > 0)
+                {
+                    //get error details
+                }
+
+                RedirectToAction("Index", "MstFleet");
             }
             return RedirectToAction("Index","MstFleet");
         }
@@ -342,6 +376,21 @@ namespace FMS.Website.Controllers
                         if (data.EmployeeID == "null" ||  data.EmployeeID == "NULL" || data.EmployeeID == null)
                         {
                             data.EmployeeID = null;
+                        }
+
+                        var exist = _fleetBLL.GetFleet().Where(x => (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (data.EmployeeName == null ? "" : data.EmployeeName.ToUpper())
+                           && (x.EmployeeID == null ? "" : x.EmployeeID.ToUpper()) == (data.EmployeeID == null ? "" : data.EmployeeID.ToUpper())
+                           && (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (data.ChasisNumber == null ? "" : data.ChasisNumber.ToUpper())
+                           && (x.EngineNumber == null ? "" : x.EngineNumber.ToUpper()) == (data.EngineNumber == null ? "" : data.EngineNumber.ToUpper())
+                           && x.IsActive).FirstOrDefault();
+
+                        if (exist != null)
+                        {
+                            exist.IsActive = false;
+                            exist.ModifiedBy = "SYSTEM";
+                            exist.ModifiedDate = DateTime.Now;
+                            _fleetBLL.Save(exist);
+
                         }
 
                         var dto = Mapper.Map<FleetDto>(data);
@@ -428,50 +477,59 @@ namespace FMS.Website.Controllers
                         item.Restitution = dataRow[25] == "Yes" ? true : false;
                         item.RestitutionS = dataRow[25];
                         item.MonthlyHMSInstallment = Convert.ToInt32(dataRow[26]);
-                        item.VatDecimal = Convert.ToInt64(dataRow[27]);
-                        item.PoNumber = dataRow[28];
-                        item.PoLine = dataRow[29];
-                        item.CarGroupLevel = Convert.ToInt32(dataRow[30]);
-                        if(dataRow[31] != "NULL" && dataRow[31] != "")
+                        item.Price = Convert.ToInt32(dataRow[27]);
+                        item.VatDecimal = Convert.ToInt64(dataRow[28]);
+                        item.PoNumber = dataRow[29];
+                        item.PoLine = dataRow[30];
+                        item.CarGroupLevel = Convert.ToInt32(dataRow[31]);
+                        if(dataRow[32] != "NULL" && dataRow[32] != "")
                         {
-                            item.GroupLevel = Convert.ToInt32(dataRow[31]);
+                            item.GroupLevel = Convert.ToInt32(dataRow[32]);
                         }
                         else
                         {
                             item.GroupLevel = 0;
                         }
-                        item.AssignedTo = dataRow[32];
-                        item.Address = dataRow[33];
+                        item.AssignedTo = dataRow[33];
+                        item.Address = dataRow[34];
 
-                        if (dataRow[34] != "NULL" && dataRow[34] != "")
+                        if (dataRow[35] != "NULL" && dataRow[35] != "")
                         {
-                            double dStartContract = double.Parse(dataRow[34].ToString());
+                            double dStartContract = double.Parse(dataRow[35].ToString());
                             DateTime dtStartContract = DateTime.FromOADate(dStartContract);
                             item.StartContract = dtStartContract;
                         }
-                        if (dataRow[35] != "NULL" && dataRow[35] != "")
+                        if (dataRow[36] != "NULL" && dataRow[36] != "")
                         {
-                            double dEndContract = double.Parse(dataRow[35].ToString());
+                            double dEndContract = double.Parse(dataRow[36].ToString());
                             DateTime dtEndContract = DateTime.FromOADate(dEndContract);
                             item.EndContract = dtEndContract;
                         }
 
-                        item.VehicleStatus = dataRow[36];
-                        item.CertificateOwnership = dataRow[37];
-                        item.Comments = dataRow[38];
-                        item.Assets = dataRow[39];
-                        string TotalMonthlyCharge = dataRow[40];
+                        item.VehicleStatus = dataRow[37];
+                        item.CertificateOwnership = dataRow[38];
+                        item.Comments = dataRow[39];
+                        item.Assets = dataRow[40];
+                        string TotalMonthlyCharge = dataRow[41];
                         TotalMonthlyCharge = TotalMonthlyCharge.Trim(',');
                         item.TotalMonthlyCharge = Int64.Parse(String.IsNullOrEmpty(TotalMonthlyCharge) ? "0" : TotalMonthlyCharge);
-                        item.Function = dataRow[41];
-                        if(dataRow.Count<= 42)
+                        item.Function = dataRow[42];
+                        if(dataRow.Count<= 43)
                         {
                             item.Regional = "";
                         }
                         else
                         {
-                            item.Regional = dataRow[42];
+                            item.Regional = dataRow[43];
                         }
+                        item.ErrorMessage = string.Empty;
+
+                        if (item.EmployeeID != null) { 
+                            var existEmp = _employeeBLL.GetByID(dataRow[2]);
+
+                            if (existEmp == null) { item.ErrorMessage += "Data Employee ID Not Exist in master employee,"; }
+                        }
+
                         model.Add(item);
                     }
                     catch (Exception)

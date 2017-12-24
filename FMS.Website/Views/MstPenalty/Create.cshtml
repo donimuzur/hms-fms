@@ -5,8 +5,8 @@
     <h5 class="title-page">Master Data Penalty Create</h5>
 </div>
 <section class="content">
-
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Create", "MstPenalty"))
         {
             <div class="row">
@@ -61,7 +61,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleList, new { @class = "form-control", @required = "required" })
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleList, "--Please Select--", new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">

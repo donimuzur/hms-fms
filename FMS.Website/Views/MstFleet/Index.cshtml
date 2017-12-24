@@ -73,7 +73,6 @@
                     @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
-            <div class="clearfix"></div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
@@ -94,11 +93,22 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
+                    <label for="SearchView_RegionalList">Regional</label>
+                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">City</label>
+                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label for="SearchView_StartRent">Start Rent</label>
                     @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin" })
                 </div>
             </div>
-            <div class="clearfix"></div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_EndRent">End Rent</label>
@@ -109,18 +119,6 @@
                 <div class="form-group">
                     <label for="SearchView_EndRent">End Date</label>
                     @Html.TextBoxFor(model => model.SearchView.EndDate, new { @class = "form-control date-end" })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_RegionalList">Regional</label>
-                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control chosen", @data_live_search = true })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_CityList">City</label>
-                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -203,7 +201,11 @@
             { "data": "VehicleYear", "orderable": false },
             { "data": "VehicleType", "orderable": true },
             { "data": "VehicleUsage", "orderable": true },
-            { "data": "Project", "orderable": false },
+            {
+                "data": "Project", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
             { "data": "ProjectName", "orderable": false },
             {
                 "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
@@ -219,26 +221,16 @@
             { "data": "City", "orderable": true },
             { "data": "SupplyMethod", "orderable": true },
             {
-                "data": "TerminationDate", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
-                }
-            },
-            {
                 "data": "Restitution", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? "Yes" : "No";
                 }
             },
-            { "data": "Price", "orderable": false },
-            {
-                "data": "Vat", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? "Yes" : "No";
-                }
-            },
+            { "data": "MonthlyHMSInstallment", "orderable": false },
+            { "data": "VatDecimal", "orderable": false },
             { "data": "PoNumber", "orderable": false },
             { "data": "PoLine", "orderable": false },
             { "data": "CarGroupLevel", "orderable": false },
             { "data": "GroupLevel", "orderable": false },
-            { "data": "ActualGroup", "orderable": false },
             { "data": "AssignedTo", "orderable": false },
             { "data": "Address", "orderable": false },
             {
@@ -251,12 +243,17 @@
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
-            { "data": "GrLeftQty", "orderable": false },
             {
                 "data": "IsActive", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? "Active" : "InActive";
                 }
-            }
+            },
+            { "data": "CertificateOwnership", "orderable": false },
+            { "data": "Comments", "orderable": false },
+            { "data": "Assets", "orderable": false },
+            { "data": "TotalMonthlyCharge", "orderable": false },
+            { "data": "Function", "orderable": false },
+            { "data": "Regional", "orderable": false }
         ];
 
         return columns;

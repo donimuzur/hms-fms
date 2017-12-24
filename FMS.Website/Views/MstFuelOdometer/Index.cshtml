@@ -14,24 +14,57 @@
     </a>
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
-
     @using (Html.BeginForm("ExportMasterFuelOdometer", "MstFuelOdometer", FormMethod.Post, new { @id = "ExportToXls" }))
     {
-
     }
-
     <div class="wpanel">
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_PoliceNumber">Police Number</label>
-                    @Html.DropDownListFor(model => model.SearchView.PoliceNumber, Model.SearchView.PoliceNumberList, "select", new { @class = "form-control", @data_live_search = true })
+                    @Html.DropDownListFor(model => model.SearchView.PoliceNumber, Model.SearchView.PoliceNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_EmployeeName">Employee Name</label>
-                    @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control", @data_live_search = true })
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EmployeeId">Employee ID</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeId, Model.SearchView.EmployeeIDList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VehicleTypeList">Vehicle Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_Status">Status</label>
+                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CostCenter">Cost Center</label>
+                    @Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EcsRmbTransId">EcsRmbTrans Id</label>
+                    @Html.DropDownListFor(model => model.SearchView.EcsRmbTransId, Model.SearchView.EcsRmbTransIdList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_ClaimType">Claim Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.ClaimType, Model.SearchView.ClaimTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
@@ -40,43 +73,6 @@
                     @Html.TextBoxFor(model => model.SearchView.ClaimComment, new { @class = "form-control", @data_live_search = true })
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_EmployeeId">Employee ID</label>
-                    @Html.DropDownListFor(model => model.SearchView.EmployeeId, Model.SearchView.EmployeeIDList, "select", new { @class = "form-control", @data_live_search = true })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_ClaimType">Claim Type</label>
-                    @Html.DropDownListFor(model => model.SearchView.ClaimType, Model.SearchView.ClaimTypeList, "select", new { @class = "form-control", @data_live_search = true })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_Status">Status</label>
-                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control", @data_live_search = true })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_CostCenter">Cost Center</label>
-                    @Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "select", new { @class = "form-control", @data_live_search = true })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_EcsRmbTransId">EcsRmbTrans Id</label>
-                    @Html.DropDownListFor(model => model.SearchView.EcsRmbTransId, Model.SearchView.EcsRmbTransIdList, "select", new { @class = "form-control", @data_live_search = true })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_VehicleTypeList">Vehicle Type</label>
-                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control", @data_live_search = true })
-                </div>
-            </div>
-            <div class="clearfix"></div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_LastKM">Last KM</label>
@@ -95,7 +91,6 @@
                     @Html.TextBoxFor(model => model.SearchView.PostedTime, new { @class = "form-control date-begin" })
                 </div>
             </div>
-            <div class="clearfix"></div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_DateOfCost">Date Of Cost</label>
@@ -135,30 +130,6 @@
                     <th>Modified By</th>
                     <th>Modified Date</th>
                     <th>Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th>@*<a href="@Url.Action("Create","MstFuelOdometer")" class="btn btn-primary line" ng-click="insEmployee()"><i class="fa fa-plus" id="myModalLabel"></i> New</a>*@</th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -245,6 +216,8 @@
         //            .draw();
         //    });
         //});
+
+        $(".chosen").chosen();
 
         setupDataTables();
 

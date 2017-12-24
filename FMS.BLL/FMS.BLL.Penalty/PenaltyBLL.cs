@@ -46,13 +46,16 @@ namespace FMS.BLL.Penalty
         {
             var dbPenalty = Mapper.Map<MST_PENALTY>(PenaltyDto);
             _uow.GetGenericRepository<MST_PENALTY>().InsertOrUpdate(dbPenalty);
-            _uow.SaveChanges();
         }
 
         public void Save(PenaltyDto PenaltyDto, Login userLogin)
         {
             var dbPenalty = Mapper.Map<MST_PENALTY>(PenaltyDto);
             _uow.GetGenericRepository<MST_PENALTY>().InsertOrUpdate(dbPenalty, userLogin, Enums.MenuList.MasterPenalty);
+        }
+
+        public void SaveChanges()
+        {
             _uow.SaveChanges();
         }
     }

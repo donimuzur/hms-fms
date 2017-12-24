@@ -6,11 +6,9 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Create", "MstGs"))
         {
-            <h5 class="text-info text-red">
-                @Model.ErrorMessage
-            </h5>
             <div class="row col-md-6">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -34,43 +32,43 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", required = "required", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Car Group Level<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", required = "required", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Manufacturer<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Model<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Series<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Transmission<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Location<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
             </div>
@@ -152,7 +150,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="control-label">Lead Time<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.LeadTimeS, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.LeadTimeS, new { @class = "form-control", required = "required", @readonly = "readonly" })
                         @Html.HiddenFor(model => model.LeadTime)
                     </div>
                 </div>
@@ -191,7 +189,7 @@
         if ($("#PoliceNumber").length && $('#PoliceNumber').length) {
             var PoliceNumber = $('#PoliceNumber').find("option:selected").val();
             var EmployeeName = $('#employeeSelect').val();
-            var EmployeeID = EmployeeName.substring(EmployeeName.lastIndexOf("[") + 1, EmployeeName.lastIndexOf("]"));
+            var EmployeeID = $('EmployeeId').val();
 
             var GroupLevel = $('#GroupLevel').val();
             if (PoliceNumber == '' || $('#PoliceNumber').find("option:selected").val() == '') {
@@ -227,9 +225,9 @@
                 $("#Location").val(response.BASETOWN);
 
                 $('#PoliceNumber').append('<option value="">Select</option>');
-
+                $('#PoliceNote').html('');
                 if (response.EmployeeVehicle != null) {
-                    $('#PoliceNumber').append('<option value=' + response.EmployeeVehicle.PoliceNumber + '>' + response.EmployeeVehicle.PoliceNumber + '</option>');
+                    $('#PoliceNumber').val( response.EmployeeVehicle.PoliceNumber );
                     $('#VehicleUsage').val(response.EmployeeVehicle.VehicleUsage);
                     $('#GroupLevel').val(response.EmployeeVehicle.CarGroupLevel);
                     $('#Manufacturer').val(response.EmployeeVehicle.Manufacturer);

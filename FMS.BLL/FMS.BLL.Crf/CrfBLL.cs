@@ -338,6 +338,33 @@ namespace FMS.BLL.Crf
             return success;
         }
 
+        public List<string> CompleteAllDocument()
+        {
+            List<string> message = new List<string>();
+            var dataToComplete = _CrfService.GetList(new TraCrfEpafParamInput()
+            {
+                EffectiveDateComplete = DateTime.Today
+            });
+            var dtoList = Mapper.Map<List<TraCrfDto>>(dataToComplete);
+            foreach (var data in dtoList)
+            {
+                try
+                {
+                    UpdateFleet(data, new Login()
+                    {
+                        USER_ID = "SYSTEM"
+                    });
+                    SendEmailWorkflow(data,Enums.ActionType.Completed);
+                }
+                catch (Exception ex)
+                {
+                    message.Add(ex.Message);
+                }
+            }
+
+            return message;
+        }
+
         private bool UpdateFleet(TraCrfDto data,Login loginFleet)
         {
             var dataFleet = _fleetService.GetFleetByParam(new FleetParamInput()
