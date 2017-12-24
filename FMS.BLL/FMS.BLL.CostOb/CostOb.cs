@@ -11,6 +11,7 @@ using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.CostOb
 {
@@ -51,7 +52,10 @@ namespace FMS.BLL.CostOb
             var dbCostOb = Mapper.Map<MST_COST_OB>(CostObDto);
             _CostObService.save(dbCostOb, userLogin);
         }
-
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
+        }
         public CostObDto GetByID(int Id)
         {
             var data = _CostObService.GetCostObById(Id);
@@ -60,7 +64,12 @@ namespace FMS.BLL.CostOb
             return retData;
         }
 
-
+        public List<CostObDto> GetByFilter(CostObParamInput filter)
+        {
+            var data = _CostObService.GetCostObByFilter(filter);
+            var redata = Mapper.Map<List<CostObDto>>(data);
+            return redata;
+        }
     }
 }
 
