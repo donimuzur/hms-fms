@@ -4388,6 +4388,7 @@
     <Content Include="Views\RptExecutiveSummary\SumPtdByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListSumPtdByFunction.cshtml" />
     <Content Include="Views\MstSalesVolume\_ListData.cshtml" />
+    <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.BLL
 {
@@ -16,5 +17,7 @@ namespace FMS.Contract.BLL
         CostObDto GetByID(int Id);
         void Save(CostObDto CostObDto);
         void Save(CostObDto CostObDto, Login userLogin);
+        void SaveChanges();
+        List<CostObDto> GetByFilter(CostObParamInput filter);
     }
 }
