@@ -4395,6 +4395,7 @@
     <Content Include="Views\MstFuelOdometer\Upload.cshtml" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
     <Content Include="Views\Service\CompleteTransaction.cshtml" />
+    <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
