@@ -1,4 +1,26 @@
-﻿function selectVehicle(urlFunction) {
+﻿$(document).ready(function () {
+    
+    $('#CrfMenu').removeClass('collapse');
+
+    $('#CrfDashboard').removeClass('active');
+    $('#CrfOpen').removeClass('active');
+    $('#CrfCompleted').removeClass('active');
+
+    if ($('.title-page').html() == 'CRF Dashboard') {
+        $('#CrfDashboard').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CRF Open Documents' || $('.title-page').html() == 'Mass upload from Vendor') {
+        $('#CrfOpen').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CRF Completed Documents') {
+        $('#CrfCompleted').addClass('active');
+    }
+    else if ($('.title-page').html() == 'CRF Personal Dashboard' || $('.title-page').html() == 'Mass upload from Vendor - Personal Dashboard') {
+        $('#CrfParent').addClass('active');
+    }
+});
+
+function selectVehicle(urlFunction) {
     
     var vehType = $('#Detail_VehicleType').val();
     var employee = $('[name="Detail.EmployeeId"]').val();
