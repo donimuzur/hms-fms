@@ -313,42 +313,52 @@ namespace FMS.Website.Controllers
         {
             //get data
             var input = Mapper.Map<VehicleGetByParamInput>(inputExport);
+            input.Function = "Sales,Marketing";
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
             var listData = Mapper.Map<List<NoVehicleData>>(data);
 
             var inputWtc = Mapper.Map<VehicleWtcGetByParamInput>(inputExport);
+            inputWtc.Function = "Sales,Marketing";
             List<NoVehicleWtcDto> dataWtc = _execSummBLL.GetNoOfVehicleWtcData(inputWtc);
             var listDataWtc = Mapper.Map<List<NoVehicleWtcData>>(dataWtc);
 
             var inputMake = Mapper.Map<VehicleMakeGetByParamInput>(inputExport);
+            //inputMake.Function = "Sales,Marketing";
             List<NoVehicleMakeDto> dataMake = _execSummBLL.GetNoOfVehicleMakeData(inputMake);
             var listDataMake = Mapper.Map<List<NoVehicleMakeData>>(dataMake);
 
             var inputOdo = Mapper.Map<OdometerGetByParamInput>(inputExport);
+            inputOdo.Function = "Sales,Marketing";
             List<OdometerDto> dataOdo = _execSummBLL.GetOdometerData(inputOdo);
             var listDataOdo = Mapper.Map<List<OdometerData>>(dataOdo);
 
             var inputLiter = Mapper.Map<LiterFuncGetByParamInput>(inputExport);
+            inputLiter.Function = "Sales,Marketing";
             List<LiterByFunctionDto> dataLiter = _execSummBLL.GetLiterByFunctionData(inputLiter);
             var listDataLiter = Mapper.Map<List<LiterByFunctionData>>(dataLiter);
 
             var inputFuel = Mapper.Map<FuelCostFuncGetByParamInput>(inputExport);
+            inputFuel.Function = "Sales,Marketing";
             List<FuelCostByFunctionDto> dataFuel = _execSummBLL.GetFuelCostByFunctionData(inputFuel);
             var listDataFuel = Mapper.Map<List<FuelCostByFunctionData>>(dataFuel);
 
             var inputLease = Mapper.Map<LeaseCostFuncGetByParamInput>(inputExport);
+            inputLease.Function = "Sales,Marketing";
             List<LeaseCostByFunctionDto> dataLease = _execSummBLL.GetLeaseCostByFunctionData(inputLease);
             var listDataLease = Mapper.Map<List<LeaseCostByFunctionData>>(dataLease);
 
             var inputSales = Mapper.Map<SalesRegionGetByParamInput>(inputExport);
+            //inputSales.Function = "Sales,Marketing";
             List<SalesByRegionDto> dataSales = _execSummBLL.GetSalesByRegionData(inputSales);
             var listDataSales = Mapper.Map<List<SalesByRegionData>>(dataSales);
 
             var inputAccident = Mapper.Map<AccidentGetByParamInput>(inputExport);
+            inputAccident.Function = "Sales,Marketing";
             List<AccidentDto> dataAccident = _execSummBLL.GetAccidentData(inputAccident);
             var listDataAccident = Mapper.Map<List<AccidentData>>(dataAccident);
 
             var inputAcOb = Mapper.Map<AcVsObGetByParamInput>(inputExport);
+            inputAcOb.Function = "Sales,Marketing";
             List<AcVsObDto> dataAcOb = _execSummBLL.GetAcVsObData(inputAcOb);
             var listDataAcOb = Mapper.Map<List<AcVsObData>>(dataAcOb);
 
