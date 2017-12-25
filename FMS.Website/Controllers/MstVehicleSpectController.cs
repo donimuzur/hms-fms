@@ -22,6 +22,7 @@ namespace FMS.Website.Controllers
         private IVehicleSpectBLL _VehicleSpectBLL;
         private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
+        private const string pathUpload = "~/files_upload/VehicleSpect/";
 
         public MstVehicleSpectController(IPageBLL PageBll, IVehicleSpectBLL VehicleSpectBLL, ISettingBLL SettingBll) : base(PageBll, Enums.MenuList.MasterVehicleSpect)
         {
@@ -35,6 +36,11 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            if (!System.IO.Directory.Exists(Server.MapPath(pathUpload)))
+            {
+                System.IO.Directory.CreateDirectory(Server.MapPath(pathUpload));
+            }
+
             var data = _VehicleSpectBLL.GetVehicleSpect();
             var model = new VehicleSpectModel();
             model.Details = Mapper.Map<List<VehicleSpectItem>>(data);
@@ -123,8 +129,8 @@ namespace FMS.Website.Controllers
                     if (image != null)
                     {
                         string imagename = System.IO.Path.GetFileName(image.FileName);
-                        image.SaveAs(Server.MapPath("/files_upload/" + imagename));
-                        string filepathtosave = "files_upload" + imagename;
+                        image.SaveAs(Server.MapPath(pathUpload + imagename));
+                        string filepathtosave = pathUpload + imagename;
                         dto.Image = imagename;
                     }
                     else
@@ -185,7 +191,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            model.Image = webRootUrl + "files_upload/" + model.Image;
+            model.Image = webRootUrl + VirtualPathUtility.ToAbsolute(pathUpload) + model.Image;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
@@ -204,7 +210,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            model.ImageS = webRootUrl + "files_upload/" + model.Image;
+            model.Image = webRootUrl + VirtualPathUtility.ToAbsolute(pathUpload) + model.Image;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
@@ -221,8 +227,9 @@ namespace FMS.Website.Controllers
                 if (image != null)
                 {
                     string imagename = System.IO.Path.GetFileName(image.FileName);
-                    image.SaveAs(Server.MapPath("~/files_upload/" + imagename));
-                    string filepathtosave = "~/files_upload" + imagename;
+                    //Uri.
+                    image.SaveAs(Server.MapPath(pathUpload + imagename));
+                    string filepathtosave = VirtualPathUtility.ToAbsolute(pathUpload) + imagename;
                     data.Image = imagename;
                 }
                 else
@@ -239,8 +246,9 @@ namespace FMS.Website.Controllers
                     model = Mapper.Map<VehicleSpectItem>(data);
                     model.MainMenu = _mainMenu;
                     model = initEdit(model);
+                    
                     var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-                    model.ImageS = webRootUrl + "files_upload/" + model.Image;
+                    model.Image = webRootUrl + VirtualPathUtility.ToAbsolute(pathUpload) + model.Image;
                     model.CurrentLogin = CurrentUser;
                     model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, data.MstVehicleSpectId);
                     return View(model);
