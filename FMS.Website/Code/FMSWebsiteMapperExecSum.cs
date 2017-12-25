@@ -307,6 +307,18 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<SumPtdByFuncSearchView, SumPtdFuncGetByParamInput>().IgnoreAllNonExisting();
             Mapper.CreateMap<SumPtdByFuncSearchViewExport, SumPtdFuncGetByParamInput>().IgnoreAllNonExisting();
+
+            //Summary All
+            Mapper.CreateMap<SummarySearchViewExport, VehicleGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, VehicleWtcGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, VehicleMakeGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, OdometerGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, LiterFuncGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, FuelCostFuncGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, LeaseCostFuncGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, SalesRegionGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, AccidentGetByParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SummarySearchViewExport, AcVsObGetByParamInput>().IgnoreAllNonExisting();
         }
     }
 }

@@ -6,16 +6,20 @@
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
     <div class="wpanel">
-        @using (Html.BeginForm("Upload", "MstCostOb", FormMethod.Post))
+        <label class="label-warning">@Model.ErrorMessage</label>
+        @using (Html.BeginForm("Upload", "MstCostOb", FormMethod.Post, new { enctype = "multipart/form-data"}))
         {
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <input type="file" id="upload" name="Model.upload" class="form-control rounded-0 rounded-left" />
                             <span class="input-group-btn">
                                 <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
                             </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterCostOB.xlsx">here</a>
                         </div>
                     </div>
                 </div>
@@ -24,6 +28,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Year</th>
+                        <th>Month</th>
                         <th>Cost Center</th>
                         <th>function Name</th>
                         <th>Regional</th>
@@ -31,6 +37,7 @@
                         <th>Type</th>
                         <th>Qty</th>
                         <th>Cost</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -44,19 +51,29 @@
         }
     </div>
 </section>
-
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" >
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 
     $(function () {
         // DataTable
         var table = $('#example2').DataTable({
             "sDom": 'lf<"table-overflow"t>pi',
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "info": true,
-            "bInfo": true,
-            "ordering": true
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
         });
     });
     $('#btnSave').prop('disabled', true);
@@ -79,8 +96,9 @@
 
 
     function uploadXmlFile() {
+        $('#LoadingModal').show();
         var postUrl = '@Url.Action("UploadFile", "MstCostOb")';
-        var fileName = $('[name="upload"]').val().trim();
+        var fileName = $('[name="Model.upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
         if (extension != '.xlsx' && extension != '.csv') {
@@ -107,26 +125,95 @@
                 $('#tb-upload-excel').html('');
                 uploaditems = JSON.parse(response);
                 var error = "";
-                for (var i = 0; i < uploaditems.length; i++) {
+                
+                for (var i = 0; i < (uploaditems.length > 1000 ? 1000 : uploaditems.length); i++) {
                     var tr = '<tr>' +
                 createColumn(i + 1) +
+                createColumnWithHiddenField(uploaditems[i].Year == null ? "" : uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
+                createColumnWithHiddenField(SetMonthToString(uploaditems[i].Month == null ? 0 : uploaditems[i].Month), 'Model.Details[' + i + '].MonthS') +
+                 '<input type="hidden" name="Model.Details[' + i + '].Month" value=' + uploaditems[i].Month + '>' +
                 createColumnWithHiddenField(uploaditems[i].CostCenter, 'Model.Details[' + i + '].CostCenter') +
                 createColumnWithHiddenField(uploaditems[i].FunctionName, 'Model.Details[' + i + '].FunctionName') +
                 createColumnWithHiddenField(uploaditems[i].Regional, 'Model.Details[' + i + '].Regional') +
                 createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
                 createColumnWithHiddenField(uploaditems[i].Type, 'Model.Details[' + i + '].Type') +
-                createColumnWithHiddenField(uploaditems[i].Qty, 'Model.Details[' + i + '].Qty') +
-                createColumnWithHiddenFieldDecimal(uploaditems[i].ObCost, 'Model.Details[' + i + '].ObCost') +
+                createColumnWithHiddenField(uploaditems[i].Qty == null ? "" : uploaditems[i].Qty, 'Model.Details[' + i + '].Qty') +
+                createColumnWithHiddenField(uploaditems[i].ObCost == null ? "" : uploaditems[i].ObCost, 'Model.Details[' + i + '].ObCost') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].ErrorMessage;
                 }
+                
                 if (error == '') {
                     $('#btnSave').prop('disabled', false);
                 }
+                else {
+                    $('#btnSave').prop('disabled', true);
+                }
+                $('#LoadingModal').hide();
+            },
+            error: function () {
+                $('#LoadingModal').hide();
             }
+
         });
     };
+    function SetMonthToString(Month)
+    {
+        if (Month == 0 || Month == "" || Month == null)
+        {
+            return "Month 0 is not exist";
+        }
+        else if (Month == 1)
+        {
+            return "January";
+        }
+        else if (Month == 2)
+        {
+            return "February";
+        }
+        else if (Month == 3)
+        {
+            return "March";
+        }
+        else if (Month == 4)
+        {
+            return "April";
+        }
+        else if (Month == 5)
+        {
+            return "May";
+        }
+        else if (Month == 6)
+        {
+            return "June";
+        }
+        else if (Month == 7)
+        {
+            return "Juli";
+        }
+        else if (Month == 8)
+        {
+            return "August";
+        }
+        else if (Month == 9)
+        {
+            return "September";
+        }
+        else if (Month == 10)
+        {
+            return "November";
+        }
+        else if (Month == 11)
+        {
+            return "October";
+        }
+        else if (Month == 12)
+        {
+            return "December";
+        }
+    return "An Error Occurred";
+    }
 </script>
 

@@ -16,110 +16,113 @@
 <section class="content">
     @using (Html.BeginForm("ExportMasterCostOb", "MstCostOb", FormMethod.Post, new { @id = "ExportToXls" }))
     {
+        @Html.HiddenFor(model => model.SearchView.Year, new { @id = "filter_Year" })
+        @Html.HiddenFor(model => model.SearchView.Regional, new { @id = "filter_Regional" })
+        @Html.HiddenFor(model => model.SearchView.Function, new { @id = "filter_Function" })
+        @Html.HiddenFor(model => model.SearchView.VehicleType, new { @id = "filter_VehicleType" })
+        @Html.HiddenFor(model => model.SearchView.Status, new { @id = "filter_Status" })
     }
-
     <div class="wpanel">
-        <table id="tbCostOb" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th style="min-width: 50px">Action</th>
-                    <th>Year</th>
-                    <th>Month</th>
-                    <th>Cost Center</th>
-                    <th>Body Type</th>
-                    <th>Vehicle Type</th>
-                    <th>Function</th>
-                    <th>Regional</th>
-                    <th>Cost OB</th>
-                    <th>Qty</th>
-                    <th>Created By</th>
-                    <th>Created Date</th>
-                    <th>Modified By</th>
-                    <th>Modified Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th>
-                        @if (Model.CurrentPageAccess.WriteAccess == true)
-                        {
-                            <a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a>
-                        }
-                    </th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListCostOb", "MstCostOb",
+                new AjaxOptions
                 {
-                    <tr>
-                        <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
-                            {
-                                <a href="@Url.Action("Detail", "MstCostOb", new { @MstCostObId = data.MstCostObId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            }
-                        </td>
-                        <td>@Html.Raw(data.Year)</td>
-                        <td>@Html.Raw(data.MonthS)</td>
-                        <td>@Html.Raw(data.CostCenter)</td>
-                        <td>@Html.Raw(data.Model)</td>
-                        <td>@Html.Raw(data.Type)</td>
-                        <td>@Html.Raw(data.FunctionName)</td>
-                        <td>@Html.Raw(data.Regional)</td>
-                        <td>@Html.Raw(data.ObCostS)</td>
-                        <td>@Html.Raw(data.Qty)</td>
-                        <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        @if (data.IsActive == true)
-                        {
-                            <td>@Html.Raw("Active")</td>
-                        }
-                        else
-                        {
-                            <td>@Html.Raw("InActive")</td>
-                        }
-                    </tr>
-                }
-
-            </tbody>
-        </table>
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                    OnBegin="OnBegin",
+                    OnFailure="OnError"
+                }))
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Year</label>
+                        @Html.TextBoxFor(model => model.SearchView.Year, new { @class = "form-control", @placeholder = "From"})
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type</label>
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList,"ALL",new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Function</label>
+                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "ALL", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Regional</label>
+                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Status</label>
+                        @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "ALL", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListCostOb")
         @Html.HiddenFor(m => m.CurrentPage)
     </div>
 </section>
-
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
     function ExportXls() {
+        $('#filter_Year').val($('#SearchView_Year').val());
+        $('#filter_Regional').val($('#SearchView_Regional').val());
+        $('#filter_Function').val($('#SearchView_Function').val());
+        $('#filter_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#filter_Status').val($('#SearchView_Status').val());
+
+
         $('#ExportToXls').submit();
     }
 
+    function OnBegin()
+    {
+        $('#LoadingModal').show();
+    }
+    function OnEror() {
+        $('#LoadingModal').hide();
+    }
     $(function () {
+        setupDataTables();
+    });
+    function setupDataTables() {
         // DataTable
         var table = $('#tbCostOb').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": true
         });
-
-        //table.page($('#CurrentPage').val());
 
         // Apply the search
         table.columns().eq(0).each(function (colIdx) {
@@ -130,8 +133,6 @@
                     .draw();
             });
         });
-
-        $('#CurrentPage').val(table.page());
-    });
-    $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
+        $('#LoadingModal').hide();
+    }
 </script>
