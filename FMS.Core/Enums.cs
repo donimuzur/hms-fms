@@ -209,6 +209,10 @@ namespace FMS.Core
             BodyType = 9,
             [Description("BODY_MAIL_CSF")]
             BodyMailCsf = 10,
+            [Description("FUEL_TYPE")]
+            FuelType = 11,
+            [Description("TRANSMISSION")]
+            Transmission = 12,
         }
 
 		

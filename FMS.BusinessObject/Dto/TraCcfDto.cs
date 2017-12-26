@@ -55,6 +55,7 @@ namespace FMS.BusinessObject.Dto
         public string VendorUrl { get; set; }
         public string VendorAtt { get; set; }
         public string Region { get; set; }
+        public string CoordinatorName { get; set; }
 
         public TraCcfDetailDto DetailSave { get; set; }
 
