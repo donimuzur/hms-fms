@@ -67,5 +67,8 @@ namespace FMS.BusinessObject.Dto
         public string EMPLOYEE_ID_CREATOR { get; set; }
         public string EMPLOYEE_ID_FLEET_APPROVAL { get; set; }
         public string ASSIGNED_TO { get; set; }
+        public string COMMENTS { get; set; }
+        public decimal PRICE { get; set; }
+        public decimal VAT_DECIMAL { get; set; }
     }
 }
