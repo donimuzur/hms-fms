@@ -77,7 +77,7 @@
     }
 
     function createColumnWithHiddenFieldImage(text, name) {
-        return '<td><input type="file" name="' + name + '" src="' + text + '"><span class="decimal">' + text + '</span></td>';
+        return '<td><input type="file" name="' + name + '" style="width : 95px"></td>';
     }
     $('#btnupload').click(function () {
         uploadXmlFile();
@@ -126,7 +126,7 @@
                 createColumnWithHiddenField(uploaditems[i].Colour, 'Model.Details[' + i + '].Colour') +
                 createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                 createColumnWithHiddenField(uploaditems[i].FlexPoint, 'Model.Details[' + i + '].FlexPoint') +
-                createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
+                //createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
                 createColumnWithHiddenFieldImage(uploaditems[i].Image, 'Model.Details[' + i + '].ImageFile') +
                 createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
                 createColumnWithHiddenField(uploaditems[i].Message, 'Model.Details[' + i + '].Message') +
