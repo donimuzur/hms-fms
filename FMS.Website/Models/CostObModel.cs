@@ -34,7 +34,7 @@ namespace FMS.Website.Models
         public string MonthS { get; set; }
         public string Zone { get; set; }
         [Required]
-        public string Model { get; set; }
+        public string Models { get; set; }
         [Required]
         public string Type { get; set; }
         [Required]

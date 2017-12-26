@@ -1049,6 +1049,7 @@
     <Content Include="files_upload\Accident\EHSTemplate.xlsx" />
     <Content Include="files_upload\Accident\ProgressTemplate.xlsx" />
     <Content Include="files_upload\masterFuelOdometer.xlsx" />
+    <Content Include="files_upload\masterCostOB.xlsx" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
