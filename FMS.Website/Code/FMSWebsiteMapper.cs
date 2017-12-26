@@ -372,8 +372,10 @@ namespace FMS.Website.Code
                  .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models)); ;
 
             // Start --- Master Data -> CostOb
-            Mapper.CreateMap<CostObDto, CostObItem>().IgnoreAllNonExisting();
-            Mapper.CreateMap<CostObItem, CostObDto>().IgnoreAllNonExisting();
+            Mapper.CreateMap<CostObDto, CostObItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model));
+            Mapper.CreateMap<CostObItem, CostObDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models));
 
             Mapper.CreateMap<MST_COST_OB, CostObDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MstCostObId, opt => opt.MapFrom(src => src.MST_COST_OB_ID))

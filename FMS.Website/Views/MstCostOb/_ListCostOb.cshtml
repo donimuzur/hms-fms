@@ -6,6 +6,7 @@
             <th style="min-width: 50px">Action</th>
             <th>Year</th>
             <th>Month</th>
+            <th>Body Type</th>
             <th>Cost Center</th>
             <th>Vehicle Type</th>
             <th>Type</th>
@@ -42,6 +43,7 @@
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
         </tr>
     </thead>
     <tbody>
@@ -60,13 +62,14 @@
                 </td>
                 <td>@Html.Raw(data.Year == null ? "" : data.Year.Value.ToString() )</td>
                 <td>@Html.Raw(data.MonthS)</td>
+                <td>@Html.Raw(data.Models)</td>
                 <td>@Html.Raw(data.CostCenter)</td>
                 <td>@Html.Raw(data.VehicleType)</td>
                 <td>@Html.Raw(data.Type)</td>
                 <td>@Html.Raw(data.FunctionName)</td>
                 <td>@Html.Raw(data.Regional)</td>
-                <td>@Html.Raw(data.ObCost == null ? "" : string.Format("{0:N0}", data.ObCost))</td>
-                <td>@Html.Raw(data.Qty == null ? "" : data.Qty.Value.ToString())</td>
+                <td>@Html.Raw(data.ObCost == null || data.ObCost == 0? "" : string.Format("{0:N0}", data.ObCost))</td>
+                <td>@Html.Raw(data.Qty == null || data.Qty == 0 ? "" : data.Qty.Value.ToString())</td>
                 <td>@Html.Raw(data.CreatedBy)</td>
                 <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
