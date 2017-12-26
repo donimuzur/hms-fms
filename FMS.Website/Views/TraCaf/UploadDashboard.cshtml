@@ -1,6 +1,6 @@
 ﻿@model  FMS.Website.Models.TraCafUploadViewModel
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Car Accident Dashboard</h5>
+    <h5 class="title-page">CAF Dashboard</h5>
     @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
             <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
                 <i class="glyphicon glyphicon-floppy-save"></i> Save
@@ -78,6 +78,24 @@
     @*<script src="~/Scripts/CafScripts.js"></script>*@
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#CafMenu').removeClass('collapse');
+
+            $('#CafDashboard').removeClass('active');
+            $('#CafOpen').removeClass('active');
+            $('#CafCompleted').removeClass('active');
+
+            if ($('.title-page').html() == 'CAF Dashboard') {
+                $('#CafDashboard').addClass('active');
+            }
+            else if ($('.title-page').html() == 'CAF Open Documents' || $('.title-page').html() == 'Mass upload from Vendor') {
+                $('#CafOpen').addClass('active');
+            }
+            else if ($('.title-page').html() == 'CAF Completed Documents') {
+                $('#CafCompleted').addClass('active');
+            }
+            else if ($('.title-page').html() == 'CAF Personal Dashboard' || $('.title-page').html() == 'Mass upload from Vendor - Personal Dashboard') {
+                $('#CafParent').addClass('active');
+            }
             //$('#MenuCK5FileDocuments').addClass('active');
             //var table = $('#tbEpaf').DataTable({
             //    "dom": 'lf<"table-overflow"t>pi',
