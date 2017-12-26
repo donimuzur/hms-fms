@@ -1636,8 +1636,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 5, "Employee Name");
             slDocument.SetCellValue(iRow, 6, "Cost Centre");
             slDocument.SetCellValue(iRow, 7, "Group Level");
-            slDocument.SetCellValue(iRow, 8, "Modified By");
-            slDocument.SetCellValue(iRow, 9, "Modified Date");
+            slDocument.SetCellValue(iRow, 8, "Updated By");
+            slDocument.SetCellValue(iRow, 9, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1825,8 +1825,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 7, "Effective Date");
             slDocument.SetCellValue(iRow, 8, "Regional");
             slDocument.SetCellValue(iRow, 9, "Coordinator");
-            slDocument.SetCellValue(iRow, 10, "Modified By");
-            slDocument.SetCellValue(iRow, 11, "Modified Date");
+            slDocument.SetCellValue(iRow, 10, "Updated By");
+            slDocument.SetCellValue(iRow, 11, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;

@@ -609,6 +609,8 @@
     <Content Include="Content\images\hammer.png" />
     <Content Include="Content\images\key-mini.png" />
     <Content Include="Content\images\key.png" />
+    <Content Include="Content\images\logo-hms-mini.png" />
+    <Content Include="Content\images\logo-hms.png" />
     <Content Include="Content\images\logo-mini.png" />
     <Content Include="Content\images\logo-new.png" />
     <Content Include="Content\images\paper.png" />

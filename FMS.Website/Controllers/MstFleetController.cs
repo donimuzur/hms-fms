@@ -302,6 +302,7 @@ namespace FMS.Website.Controllers
                     exist.ModifiedDate = DateTime.Now;
                     _fleetBLL.Save(exist);
 
+                    model.MstFleetId = 0;
                 }
 
                 if (model.MonthlyHMSInstallmentStr != null)
