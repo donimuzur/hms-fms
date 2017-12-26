@@ -44,6 +44,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.VendorKPI, opt => opt.MapFrom(src => src.VENDOR_KPI))
                 .ForMember(dest => dest.ComplaintCategoryName, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.CATEGORY_NAME))
                 .ForMember(dest => dest.ComplaintCategoryRole, opt => opt.MapFrom(src => src.MST_COMPLAINT_CATEGORY.ROLE_TYPE))
+                .ForMember(dest => dest.CoordinatorName, opt => opt.MapFrom(src => src.COORDINATOR_NAME))
                 ;
 
             AutoMapper.Mapper.CreateMap<TraCcfDto, TRA_CCF>().IgnoreAllNonExisting()
@@ -74,6 +75,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.END_PERIOD, opt => opt.MapFrom(src => src.EndPeriod))
                 .ForMember(dest => dest.COORDINATOR_KPI, opt => opt.MapFrom(src => src.CoordinatorKPI))
                 .ForMember(dest => dest.VENDOR_KPI, opt => opt.MapFrom(src => src.VendorKPI))
+                .ForMember(dest => dest.COORDINATOR_NAME, opt => opt.MapFrom(src => src.CoordinatorName))
                 ;
 
             AutoMapper.Mapper.CreateMap<TraCcfDto, TRA_CCF_DETAIL>().IgnoreAllNonExisting()
