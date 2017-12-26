@@ -7,6 +7,8 @@ using FMS.BusinessObject;
 using FMS.Contract;
 using FMS.Contract.Service;
 using NLog;
+using FMS.BusinessObject.Business;
+using FMS.Core;
 
 namespace FMS.DAL.Services
 {
@@ -35,7 +37,11 @@ namespace FMS.DAL.Services
         public void save(MST_PENALTY dbPenalty)
         {
             _penaltyRepository.InsertOrUpdate(dbPenalty);
-            _uow.SaveChanges();
+            
+        }
+        public void save(MST_PENALTY dbPenalty, Login userLogin)
+        {
+            _uow.GetGenericRepository<MST_PENALTY>().InsertOrUpdate(dbPenalty, userLogin, Enums.MenuList.MasterRemark);
         }
     }
 }

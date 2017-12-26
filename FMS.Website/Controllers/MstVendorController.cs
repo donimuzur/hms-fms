@@ -101,8 +101,9 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
-            
             var data = _vendorBLL.GetByID(MstVendorid.Value);
+
+
             var model = new VendorItem();
             model = Mapper.Map<VendorItem>(data);
             model.MainMenu = _mainMenu;
@@ -116,12 +117,22 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<VendorDto>(model);
-                data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = CurrentUser.USER_ID;
-
                 try
                 {
+                    var dataexist = _vendorBLL.GetVendor().Where(x => (x.VendorName == null ? "" : x.VendorName.ToUpper()) == (model.VendorName == null ? "" : model.VendorName.ToUpper())
+                                                          && x.IsActive && x.MstVendorId != model.MstVendorId).FirstOrDefault();
+                    if (dataexist != null)
+                    {
+                        model.ErrorMessage = "Data already exist";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        return View(model);
+                    }
+
+                    var data = Mapper.Map<VendorDto>(model);
+                    data.ModifiedDate = DateTime.Now;
+                    data.ModifiedBy = CurrentUser.USER_ID;
+
                     _vendorBLL.Save(data, CurrentUser);
                     _vendorBLL.SaveChanges();
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
@@ -177,6 +188,8 @@ namespace FMS.Website.Controllers
                         if (Exist != null)
                         {
                             Exist.IsActive = false;
+                            Exist.ModifiedBy = "SYSTEM";
+                            Exist.ModifiedDate = DateTime.Now;
                             _vendorBLL.Save(Exist);
                         }
 

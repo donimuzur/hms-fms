@@ -40,13 +40,11 @@ namespace FMS.DAL.Services
         public void save(MST_COMPLAINT_CATEGORY dbComplaint)
         {
             _uow.GetGenericRepository<MST_COMPLAINT_CATEGORY>().InsertOrUpdate(dbComplaint);
-            _uow.SaveChanges();
         }
 
         public void save(MST_COMPLAINT_CATEGORY dbComplaint, Login userLogin)
         {
             _uow.GetGenericRepository<MST_COMPLAINT_CATEGORY>().InsertOrUpdate(dbComplaint, userLogin, Enums.MenuList.MasterComplaintCategory);
-            _uow.SaveChanges();
         }
     }
 }

@@ -71,6 +71,9 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.IsRestitutionVendor, opt => opt.MapFrom(src => src.VENDOR_RESTITUTION))
                 .ForMember(dest => dest.StartPeriodVendor, opt => opt.MapFrom(src => src.VENDOR_CONTRACT_START_DATE))
                 .ForMember(dest => dest.EndPeriodVendor, opt => opt.MapFrom(src => src.VENDOR_CONTRACT_END_DATE))
+                .ForMember(dest => dest.VatDecimalVendor, opt => opt.MapFrom(src => src.VAT_DECIMAL))
+                .ForMember(dest => dest.PriceVendor, opt => opt.MapFrom(src => src.PRICE))
+                .ForMember(dest => dest.CommentsVendor, opt => opt.MapFrom(src => src.COMMENTS))
                 ;
 
             Mapper.CreateMap<TempData, TemporaryDto>().IgnoreAllNonExisting()
@@ -125,6 +128,9 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.VENDOR_AIR_BAG, opt => opt.MapFrom(src => src.IsAirBagVendor))
                 .ForMember(dest => dest.VENDOR_VAT, opt => opt.MapFrom(src => src.IsVatVendor))
                 .ForMember(dest => dest.VENDOR_RESTITUTION, opt => opt.MapFrom(src => src.IsRestitutionVendor))
+                .ForMember(dest => dest.VAT_DECIMAL, opt => opt.MapFrom(src => src.VatDecimalVendor))
+                .ForMember(dest => dest.PRICE, opt => opt.MapFrom(src => src.PriceVendor))
+                .ForMember(dest => dest.COMMENTS, opt => opt.MapFrom(src => src.CommentsVendor))
                 ;
         }
     }

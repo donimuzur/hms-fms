@@ -87,13 +87,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Image <span class="red"></span></label>
-                        @if (Model.ImageS == "" || Model.ImageS == null)
+                        @if (Model.Image == "" || Model.Image == null)
                         {
                             <img id="preview" src="/files_upload/noimage.jpeg" alt="image" border="5" width="220" height="250" />
                         }
                         else
                         {
-                            <img id="preview" src="@Model.ImageS" alt="image" border="5" width="220" height="250" />
+                            <img id="preview" src="@Model.Image" alt="image" border="5" width="220" height="250" />
                         }
                         @*@Html.TextBoxFor(model => model.Image, new { @type = "file" })*@
                         <input type="file" name="image"/>

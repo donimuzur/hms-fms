@@ -82,6 +82,10 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.POLICE_NUMBER.ToUpper() == filter.PoliceNumber.ToUpper());
                 }
+                if (filter.GroupLevel > 0)
+                {
+                    queryFilter = queryFilter.And(c => c.MST_EMPLOYEE.GROUP_LEVEL == filter.GroupLevel);
+                }
             }
 
             return _rptPoRepository.Get(queryFilter, null, "").ToList();

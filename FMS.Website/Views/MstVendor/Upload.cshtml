@@ -5,10 +5,11 @@
 </div>
 <section class="content">
     <div class="wpanel">
+    <label class="label-warning">@Model.ErrorMessage</label>
     @using (Html.BeginForm("Upload", "MstVendor"))
     {
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <div class="input-group">
                         <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
@@ -117,6 +118,9 @@
                 }
                 if (error == '') {
                     $('#btnSave').prop('disabled', false);
+                }
+                else {
+                    $('#btnSave').prop('disabled', true);
                 }
             }
         });

@@ -65,11 +65,37 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+                var Exist = _complaintCategoryBLL.GetComplaints().Where(x => (x.CategoryName == null ? "" : x.CategoryName.ToUpper()) == (model.CategoryName == null ? "" : model.CategoryName.ToUpper())
+                                                                        && (x.RoleType == null ? "" : x.RoleType.ToUpper()) ==(model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                                        && x.IsActive).FirstOrDefault();
+                if (Exist != null)
+                {
+                    model.ErrorMessage = "Data Already Exist in Master Complaint Category";
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    var RoleTypeList = new Dictionary<string, string> { { "HR", "HR" }, { "FLEET", "FLEET" } };
+                    model.RoleTypeList = new SelectList(RoleTypeList, "Key", "Value");
+                    return View(model);
+                }
+
                 var data = Mapper.Map<ComplaintDto>(model);
-                data.CreatedBy = CurrentUser.USERNAME;
+                data.CreatedBy = CurrentUser.USER_ID;
                 data.CreatedDate = DateTime.Now;
                 data.ModifiedDate = null;
-                _complaintCategoryBLL.Save(data);
+                try
+                {
+                    _complaintCategoryBLL.Save(data);
+                    _complaintCategoryBLL.SaveChanges();
+                }
+                catch (Exception exp)
+                {
+                    model.ErrorMessage = exp.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    var RoleTypeList = new Dictionary<string, string> { { "HR", "HR" }, { "FLEET", "FLEET" } };
+                    model.RoleTypeList = new SelectList(RoleTypeList, "Key", "Value");
+                    return View(model);
+                }
             }
             return RedirectToAction("Index", "MstComplaint");
         }
@@ -97,18 +123,36 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<ComplaintDto>(model);
-                data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = CurrentUser.USERNAME;
-
                 try
                 {
+                    var Exist = _complaintCategoryBLL.GetComplaints().Where(x => (x.CategoryName == null ? "" : x.CategoryName.ToUpper()) == (model.CategoryName == null ? "" : model.CategoryName.ToUpper())
+                                                                      && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                                      && x.IsActive && x.MstComplaintCategoryId !=model.MstComplaintCategoryId).FirstOrDefault();
+                    if (Exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exist in Master Complaint Category";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        var RoleTypeList = new Dictionary<string, string> { { "HR", "HR" }, { "FLEET", "FLEET" } };
+                        model.RoleTypeList = new SelectList(RoleTypeList, "Key", "Value");
+                        return View(model);
+                    }
+                    var data = Mapper.Map<ComplaintDto>(model);
+                    data.ModifiedDate = DateTime.Now;
+                    data.ModifiedBy = CurrentUser.USER_ID;
+
                     _complaintCategoryBLL.Save(data, CurrentUser);
+                    _complaintCategoryBLL.SaveChanges();
+
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
                 {
-                    AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                    model.ErrorMessage = exception.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    var RoleTypeList = new Dictionary<string, string> { { "HR", "HR" }, { "FLEET", "FLEET" } };
+                    model.RoleTypeList = new SelectList(RoleTypeList, "Key", "Value");
                     return View(model);
                 }
             }
@@ -146,20 +190,46 @@ namespace FMS.Website.Controllers
                 {
                     try
                     {
+                        var exist = _complaintCategoryBLL.GetComplaints().Where(x => (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (data.RoleType == null ? "" : data.RoleType.ToUpper())
+                                                                                && (x.CategoryName == null ? "" : x.CategoryName.ToUpper()) == (data.CategoryName == null ? "" : data.CategoryName.ToUpper())
+                                                                                && x.IsActive).FirstOrDefault();
+                        if (exist != null)
+                        {
+                            exist.IsActive = false;
+                            exist.ModifiedBy = "SYSTEM";
+                            exist.ModifiedDate = DateTime.Now;
+                            _complaintCategoryBLL.Save(exist, CurrentUser);
+                        }
+
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USERNAME;
+                        data.CreatedBy = CurrentUser.USER_ID;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
                         var dto = Mapper.Map<ComplaintDto>(data);
                         _complaintCategoryBLL.Save(dto);
+                        
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.ErrorMessage = exception.Message;
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
+                }
+                try
+                {
+                    _complaintCategoryBLL.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+
+                    Model.ErrorMessage = exception.Message;
+                    Model.MainMenu = _mainMenu;
+                    Model.CurrentLogin = CurrentUser;
+                    return View(Model);
                 }
             }
             return RedirectToAction("Index", "MstComplaint");
@@ -168,9 +238,6 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
-            var qtyPacked = string.Empty;
-            var qty = string.Empty;
-
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<ComplaintCategoryItem>();
             if (data != null)
@@ -182,8 +249,27 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new ComplaintCategoryItem();
+                    item.ErrorMessage = "";
+
                     item.CategoryName = dataRow[0].ToString();
-                    item.RoleType = dataRow[1].ToString();
+                    if (item.CategoryName == "")
+                    {
+                        item.ErrorMessage = "Category Name Can't be Empty";
+                    }
+
+                    item.RoleType = (dataRow[1] == null ? "" :dataRow[1].ToUpper());
+                    if (item.RoleType == "")
+                    {
+                        item.ErrorMessage = "Role Type Can't be Empty";
+                    }
+                    else
+                    {
+                        if (item.RoleType != "HR" && item.RoleType != "FLEET")
+                        {
+                            item.ErrorMessage = "Role Type is not Valid";
+                        }
+                    }
+
                     model.Add(item);
                 }
             }
