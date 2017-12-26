@@ -67,7 +67,7 @@ namespace FMS.Website.Controllers
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
-            var listLocation = _employeeBLL.GetCityLocation();
+            var listLocation = _employeeBLL.GetCityLocation().OrderBy(x=> x.City).ToList();
             
 
             
@@ -616,7 +616,7 @@ namespace FMS.Website.Controllers
             {
                 Text = x.Location,
                 Value = x.Location
-            }).ToList();
+            }).OrderBy(x=> x.Text).ToList();
 
             return Json(data);
         }
