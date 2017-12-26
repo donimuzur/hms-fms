@@ -287,12 +287,14 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="row">
+                                                    @if (!Model.Detail.IsBenefit) {
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Project</label>
                                                             @Html.DropDownListFor(model => model.Detail.Project, Model.Detail.ProjectList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
                                                         </div>
                                                     </div>
+                                                    }
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Temporary Car</label>

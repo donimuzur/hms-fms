@@ -26,14 +26,18 @@ namespace FMS.Website.Controllers
     public class MstPriceListController : BaseController
     {
         private IPriceListBLL _priceListBLL;
+        private IVehicleSpectBLL _vehicleSpect;
+        private ILocationMappingBLL _locationMapping;
         private IPageBLL _pageBLL;
         private IVendorBLL _vendorBLL;
         private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL, IVendorBLL VendorBLL, ISettingBLL SettingBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
+        public MstPriceListController(IPageBLL PageBll, IPriceListBLL PriceListBLL, IVehicleSpectBLL VehicleSpect, ILocationMappingBLL LocationMapping, IVendorBLL VendorBLL, ISettingBLL SettingBLL) : base(PageBll, Enums.MenuList.MasterPriceList)
         {
             _priceListBLL = PriceListBLL;
+            _vehicleSpect = VehicleSpect;
+            _locationMapping = LocationMapping;
             _vendorBLL = VendorBLL;
             _settingBLL = SettingBLL;
             _pageBLL = PageBll;
@@ -43,11 +47,31 @@ namespace FMS.Website.Controllers
 
         public PriceListItem listdata(PriceListItem model)
         {
-            var listvehicleType = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_TYPE").Distinct().OrderBy(x => x.SettingValue);
-            model.VehicleTypeList = new SelectList(listvehicleType, "SettingName", "SettingValue");
+            var VehicleSpect = _vehicleSpect.GetVehicleSpect().Where(x => x.IsActive).ToList();
 
-            var listvehicleUsage = _settingBLL.GetSetting().Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").Distinct().OrderBy(x => x.SettingValue);
-            model.VehicleUsageList = new SelectList(listvehicleUsage, "SettingName", "SettingValue");
+            var ManufacturerList = VehicleSpect.Select(x =>  new { x.Manufacturer }).Distinct().OrderBy(x => x.Manufacturer).ToList();
+            model.ManufactureList = new SelectList(ManufacturerList, "Manufacturer", "Manufacturer");
+
+            var ModelList = VehicleSpect.Select(x => new { x.Models }).Distinct().OrderBy(x => x.Models).ToList();
+            model.ModelList = new SelectList(ModelList, "Models", "Models");
+
+            var SeriesList = VehicleSpect.Select(x => new { x.Series }).Distinct().OrderBy(x => x.Series).ToList();
+            model.SeriesList = new SelectList(SeriesList, "Series", "Series");
+
+            var VendorList = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new { x.VendorName, x.MstVendorId }).Distinct().OrderBy(x=> x.VendorName).ToList();
+            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+
+            var listvehicleType = _settingBLL.GetSetting().Where(x=> x.IsActive).Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_TYPE").Distinct().OrderBy(x => x.SettingName);
+            model.VehicleTypeList = new SelectList(listvehicleType, "SettingName", "SettingName");
+
+            var listvehicleUsage = _settingBLL.GetSetting().Where(x => x.IsActive).Select(x => new { x.SettingGroup, x.SettingName, x.SettingValue }).ToList().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").Distinct().OrderBy(x => x.SettingName);
+            model.VehicleUsageList = new SelectList(listvehicleUsage, "SettingName", "SettingName");
+
+            var ZoneList = _locationMapping.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZonePriceList }).Distinct().OrderBy(x => x.ZonePriceList).ToList();
+            model.ZoneList = new SelectList(ZoneList, "ZonePriceList", "ZonePriceList");
+
+            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, model.MstPriceListId);
+
             return model;
         }
         
@@ -87,8 +111,6 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = listdata(model);
-            var VendorList = _vendorBLL.GetVendor();
-            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
 
             return View(model);
         }
@@ -97,82 +119,64 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult Create(PriceListItem item)
         {
-            //if (ModelState.IsValid)
-            //{
-                FMSEntities entities = new FMSEntities();
-
-                //String message = "";
-                bool valid = true;
-
-                var vehicleSpect = entities.MST_VEHICLE_SPECT.Where(x => (x.YEAR == item.Year) && (x.MANUFACTURER == item.Manufacture) && (x.MODEL == item.Model) && (x.SERIES == item.Series)).ToList();
-                var vendor = entities.MST_VENDOR.Where(X => (X.SHORT_NAME == item.Vendor+"")).ToList();
-                var vehicleType = entities.MST_SETTING.Where(x => (x.SETTING_GROUP == "VEHICLE_TYPE") && (x.SETTING_VALUE == item.VehicleType)).ToList();
-                string vehicleUsageText = "";
-
-                if (item.VehicleType.Equals("WTC"))
+            if (ModelState.IsValid)
+            {
+                var dataexist = _priceListBLL.GetPriceList().Where(x => ((x.Manufacture == null  ? "" : x.Manufacture.ToUpper())== (item.Manufacture == null  ? "" : item.Manufacture.ToUpper()))
+                                                                && (x.Model == null ? "" : x.Model.ToUpper()) == (item.Models == null ? "" : item.Models.ToUpper())
+                                                                && (x.Series == null ? "" : x.Series.ToUpper()) == (item.Series == null ? "" : item.Series.ToUpper())
+                                                                && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
+                                                                && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == (item.VehicleUsage == null ? "" : item.VehicleUsage.ToUpper())
+                                                                && (x.ZonePriceList == null? "" : x.ZonePriceList.ToUpper()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToUpper())
+                                                                && x.Year == item.Year && x.Vendor == item.Vendor && x.IsActive).FirstOrDefault();
+                if (dataexist != null)
                 {
-                    vehicleUsageText = "VEHICLE_USAGE_BENEFIT";
-                }
-                else if (item.VehicleType.Equals("Benefit"))
-                {
-                    vehicleUsageText = "VEHICLE_USAGE_WTC";
-                }
-
-                var vehicleUsage = entities.MST_SETTING.Where(x => (x.SETTING_GROUP == vehicleUsageText) && (x.SETTING_VALUE == item.VehicleUsage)).ToList();
-
-                if (vehicleSpect.Count == 0)
-                {
-                    valid = false;
-                    ViewData["message"] = "Data not exists in vehicle spect";
-                }
-                else if (vendor.Count == 0)
-                {
-                    valid = false;
-                    ViewData["message"] = "Data not exists in vendor";
-                }
-                else if (vehicleType.Count == 0)
-                {
-                    valid = false;
-                    ViewData["message"] = "Data not exists in vehicle type";
-                }
-                else if (vehicleUsage.Count == 0)
-                {
-                    valid = false;
-                    ViewData["message"] = "Data not exists in vehicle usage";
+                    item.ErrorMessage = "Data already exist";
+                    item.MainMenu = _mainMenu;
+                    item.CurrentLogin = CurrentUser;
+                    item = listdata(item);
+                    return View(item);
                 }
                 else
                 {
-                    valid = true;
-                }
+                    if (item.InstallmenEMPStr != null)
+                    {
+                        item.InstallmenEMP = Convert.ToDecimal(item.InstallmenEMPStr.Replace(",", ""));
+                    }
+                    if (item.InstallmenHMSStr != null)
+                    {
+                        item.InstallmenHMS = Convert.ToDecimal(item.InstallmenHMSStr.Replace(",", ""));
+                    }
+                    if (item.PriceStr != null)
+                    {
+                        item.Price = Convert.ToDecimal(item.PriceStr.Replace(",", ""));
+                    }
 
-                if (valid)
-                {
-                    //var data = Mapper.Map<PriceListDto>(item);
-                    //data.CreatedBy = CurrentUser.USERNAME;
-                    //data.CreatedDate = DateTime.Today;
-                    //data.ModifiedDate = null;
-                    //try
-                    //{
-                    //    _priceListBLL.Save(data);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    var msg = ex.Message;
-                    //}
+                    var data = Mapper.Map<PriceListDto>(item);
+                    
+                    data.CreatedBy = CurrentUser.USER_ID;
+                    data.CreatedDate = DateTime.Today;
+                    data.IsActive = true;
+                    try
+                    {
 
-                    return RedirectToAction("Index", "MstPriceList");
+                        _priceListBLL.Save(data);
+                        _priceListBLL.SaveChanges();
+                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+
+                    }
+                    catch (Exception exception)
+                    {
+                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        item.ErrorMessage = exception.Message;
+                        item.MainMenu = _mainMenu;
+                        item.CurrentLogin = CurrentUser;
+                        item = listdata(item);
+                        return View(item);
+                    }
+
                 }
-                else
-                {
-                    var model = new PriceListItem();
-                    model.MainMenu = _mainMenu;
-                    model.CurrentLogin = CurrentUser;
-                    model = listdata(model);
-                    var VendorList = _vendorBLL.GetVendor();
-                    model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
-                    return View(model);
-                }
-            //}
+            }
+            return RedirectToAction("Index", "MstPriceList");
         }
 
         public ActionResult View(int? MstPriceListid)
@@ -187,9 +191,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = listdata(model);
-
-            var VendorList = _vendorBLL.GetVendor();
-            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+            
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, MstPriceListid.Value);
 
             return View(model);
@@ -211,9 +213,8 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = listdata(model);
-            var VendorList = _vendorBLL.GetVendor();
-            model.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
-            model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, MstPriceListid.Value);
+          
+          
 
             return View(model);
         }
@@ -223,28 +224,60 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<PriceListDto>(item);
+                var dataexist = _priceListBLL.GetPriceList().Where(x => ((x.Manufacture == null ? "" : x.Manufacture.ToUpper()) == (item.Manufacture == null ? "" : item.Manufacture.ToUpper()))
+                                                            && (x.Model == null ? "" : x.Model.ToUpper()) == (item.Models == null ? "" : item.Models.ToUpper())
+                                                            && (x.Series == null ? "" : x.Series.ToUpper()) == (item.Series == null ? "" : item.Series.ToUpper())
+                                                            && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
+                                                            && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == (item.VehicleUsage == null ? "" : item.VehicleUsage.ToUpper())
+                                                            && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToUpper()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToUpper())
+                                                            && x.Year == item.Year && x.Vendor == item.Vendor && x.IsActive && x.MstPriceListId != item.MstPriceListId).FirstOrDefault();
 
-                data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = CurrentUser.USERNAME;
+                if (dataexist != null)
+                {
+                    item.ErrorMessage = "Data already exist";
+                    item.MainMenu = _mainMenu;
+                    item.CurrentLogin = CurrentUser;
+                    item = listdata(item);
+                    return View(item);
+                }
+                else
+                {
+                    if (item.InstallmenEMPStr != null)
+                    {
+                        item.InstallmenEMP = Convert.ToDecimal(item.InstallmenEMPStr.Replace(",", ""));
+                    }
+                    if (item.InstallmenHMSStr != null)
+                    {
+                        item.InstallmenHMS = Convert.ToDecimal(item.InstallmenHMSStr.Replace(",", ""));
+                    }
+                    if (item.PriceStr != null)
+                    {
+                        item.Price = Convert.ToDecimal(item.PriceStr.Replace(",", ""));
+                    }
 
-                try
-                {
-                    _priceListBLL.Save(data, CurrentUser);
+                    var data = Mapper.Map<PriceListDto>(item);
+                    data.ModifiedBy = CurrentUser.USER_ID;
+                    data.ModifiedDate = DateTime.Today;
+                    data.IsActive = true;
+                    try
+                    {
+                        _priceListBLL.Save(data);
+                        _priceListBLL.SaveChanges();
+                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+
+                    }
+                    catch (Exception exception)
+                    {
+                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        item.ErrorMessage = exception.Message;
+                        item.MainMenu = _mainMenu;
+                        item.CurrentLogin = CurrentUser;
+                        item = listdata(item);
+                        return View(item);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    var msg = ex.Message;
-                }
-                return RedirectToAction("Index", "MstPriceList");
             }
-            item.MainMenu = _mainMenu;
-            item.CurrentLogin = CurrentUser;
-            item = listdata(item);
-            var VendorList = _vendorBLL.GetVendor();
-            item.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
-            item.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, item.MstPriceListId);
-            return View(item);
+            return RedirectToAction("Index", "MstPriceList");
         }
 
         public ActionResult Upload()
@@ -265,33 +298,46 @@ namespace FMS.Website.Controllers
                 {
                     try
                     {
-                        data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USERNAME;
-                        data.ModifiedDate = null;
+                        var dataexist = _priceListBLL.GetPriceList().Where(x => ((x.Manufacture == null ? "" : x.Manufacture.ToUpper()) == (data.Manufacture == null ? "" : data.Manufacture.ToUpper()))
+                                                           && (x.Model == null ? "" : x.Model.ToUpper()) == (data.Models == null ? "" : data.Models.ToUpper())
+                                                           && (x.Series == null ? "" : x.Series.ToUpper()) == (data.Series == null ? "" : data.Series.ToUpper())
+                                                           && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (data.VehicleType == null ? "" : data.VehicleType.ToUpper())
+                                                           && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == (data.VehicleUsage == null ? "" : data.VehicleUsage.ToUpper())
+                                                           && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToUpper()) == (data.ZonePriceList == null ? "" : data.ZonePriceList.ToUpper())
+                                                           && x.Year == data.Year && x.Vendor == data.Vendor && x.IsActive ).FirstOrDefault();
 
+                        if (dataexist != null)
+                        {
+                            dataexist.IsActive = false;
+                            dataexist.ModifiedBy = "SYSTEM";
+                            dataexist.ModifiedDate = DateTime.Now;
+                            _priceListBLL.Save(dataexist);
+                        }
+
+                        data.CreatedDate = DateTime.Now;
+                        data.CreatedBy = CurrentUser.USER_ID;
+                        data.ModifiedDate = null;
+                        data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
                             var dto = Mapper.Map<PriceListDto>(data);
 
                             _priceListBLL.Save(dto);
                         }
-                        else
-                        {
-                            throw new HttpException();
-                        }
 
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
-                    }
-                    catch(HttpException)
-                    {
-                        AddMessageInfo(data.ErrorMessage, Enums.MessageInfoType.Error);
                     }
                     catch (Exception exception)
                     {
                         AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.ErrorMessage = exception.Message;
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
                 }
+
+                _priceListBLL.SaveChanges();
             }
             return RedirectToAction("Index", "MstPriceList");
         }
@@ -299,13 +345,11 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
-            var qtyPacked = string.Empty;
-            var qty = string.Empty;
-
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<PriceListItem>();
             if (data != null)
             {
+                var Vendor = _vendorBLL.GetVendor().Where(x => x.IsActive);
                 foreach (var dataRow in data.DataRows)
                 {
                     if (dataRow[0] == "")
@@ -313,32 +357,107 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new PriceListItem();
+                    item.ErrorMessage = "";
                     try
                     {
-                        string VendorName = dataRow[0].ToString();
-                        string Status = dataRow[14].ToString();
-                        string InstallmentHMS = dataRow[8].ToString();
-                        InstallmentHMS = InstallmentHMS.Trim(',');
-                        decimal InstallmentHMSDec = decimal.Parse(String.IsNullOrEmpty(InstallmentHMS)? "0" : InstallmentHMS);
-                        string InstallmentEMP = dataRow[9].ToString();
-                        InstallmentEMP = InstallmentEMP.Trim(',');
-                        decimal InstallmentEMPDec = decimal.Parse(String.IsNullOrEmpty(InstallmentEMP) ? "0" : InstallmentEMP);
-                        VendorDto vendor = _vendorBLL.GetExist(VendorName);
+                        item.VendorName = dataRow[0];
+                        if(item.VendorName == "" )
+                        {
+                            item.ErrorMessage = "Vendor Can't be Empty";
+                        }
+                        var VendorId = Vendor.Where(x => (x.VendorName == null ? "" : x.VendorName.ToUpper()) == (item.VendorName == null ? "" : item.VendorName.ToUpper())).FirstOrDefault();
 
-                        item.Vendor = vendor == null? 0 : vendor.MstVendorId;
-                        item.VendorName = vendor == null? "Not Registered" : VendorName;
-                        item.VehicleType = dataRow[1].ToString();
-                        item.VehicleUsage = dataRow[2].ToString();
-                        item.ZonePriceList = dataRow[3].ToString();
-                        item.Manufacture = dataRow[4].ToString();
-                        item.Model = dataRow[5].ToString();
-                        item.Series = dataRow[6].ToString();
-                        item.Year = Int32.Parse(dataRow[7].ToString());
-                        item.InstallmenHMS = Math.Round(InstallmentHMSDec);
-                        item.InstallmenEMP = Math.Round(InstallmentEMPDec);
-                        item.IsActive = Status.Equals("Active") ? true : false;
-                        item.IsActiveS = Status;
-                        item.ErrorMessage = "";
+                        if(VendorId == null )
+                        {
+                            item.ErrorMessage = "Vendor is not in Master Vendor";
+                        }
+                        else
+                        {
+                            item.Vendor = VendorId.MstVendorId;
+                        }
+
+                        item.VehicleType = dataRow[1] == null ? "" : dataRow[1].ToUpper();
+                        if (item.VehicleType =="")
+                        {
+                            item.ErrorMessage = "Vehicle Type Can't be empty"; 
+                        }
+                        if((item.VehicleType == null  ? "" : item.VehicleType.ToUpper()) == "BENEFIT")
+                        {
+                            item.VehicleUsage = dataRow[2] == null ? "" : dataRow[2].ToUpper();
+                            if (item.VehicleUsage == "")
+                            {
+                                item.ErrorMessage = "Vehicle Usage Can't be empty";
+                            }
+                        }
+                        else
+                        {
+                            item.VehicleUsage = dataRow[2] == null ? "" : dataRow[2].ToUpper();
+                        }
+
+                        item.ZonePriceList = dataRow[3];
+
+                        item.Manufacture = dataRow[4];
+                        if(item.Manufacture == "")
+                        {
+                            item.ErrorMessage = "Manufacture Can't be empty";
+                        }
+
+                        item.Models = dataRow[5];
+                        if(item.Models == "")
+                        {
+                            item.ErrorMessage = "Model Can't be empty";
+                        }
+
+                        item.Series = dataRow[6];
+                        if (item.Series == "")
+                        {
+                            item.ErrorMessage = "Series Can't be empty";
+                        }
+
+                        try
+                        {
+                            item.Year = Convert.ToInt32(dataRow[7]);
+                        }
+                        catch (Exception)
+                        {
+
+                            item.ErrorMessage = "Request Year is not valid";
+                        }
+
+                        try
+                        {
+                            item.InstallmenHMS = Convert.ToInt32(dataRow[8]);
+                        }
+                        catch (Exception)
+                        {
+
+                            item.ErrorMessage = "Installment HMS  is not valid";
+                        }
+
+                        try
+                        {
+                            item.InstallmenEMP = Convert.ToInt32(dataRow[9]);
+                        }
+                        catch (Exception)
+                        {
+
+                            item.ErrorMessage = "Installment Employee is not valid";
+                        }
+
+                        try
+                        {
+                            item.Price = Convert.ToInt32(dataRow[10]);
+                        }
+                        catch (Exception)
+                        {
+
+                            item.ErrorMessage = "Price is not valid";
+                        }
+                        var VehicleSpect = _vehicleSpect.GetVehicleSpect().Where(x => (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (item.Manufacture == null ? "" : item.Manufacture.ToUpper())
+                                                                                && (x.Models == null ? "" : x.Models.ToUpper()) == (item.Models == null ? "" : item.Models.ToUpper())
+                                                                                && (x.Series == null ? "" : x.Series.ToUpper()) == (item.Series == null ? "" : item.Series.ToUpper())
+                                                                                && x.IsActive).FirstOrDefault();
+                        if (VehicleSpect == null) item.ErrorMessage = "There is no description spect in Master Vehicle Spect";
                         model.Add(item);
                     }
                     catch (Exception ex)
@@ -349,6 +468,23 @@ namespace FMS.Website.Controllers
             }
             return Json(model);
         }
+
+        #region --------------- Get Json ----------------
+        public JsonResult GetModelList(string Manufacture)
+        {
+            var ModelList= _vehicleSpect.GetVehicleSpect().Where(x => (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (Manufacture == null ? "" : Manufacture.ToUpper())
+                                                                     && x.IsActive).Select(x=> new {x.Models}).Distinct().OrderBy(x => x.Models).ToList();
+            return Json(ModelList);
+        }
+        public JsonResult GetSeriesList(string Manufacture, string Models)
+        {
+            var SeriesList = _vehicleSpect.GetVehicleSpect().Where(x => (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (Manufacture == null ? "" : Manufacture.ToUpper())
+                                                                        && (x.Models == null ? "" : x.Models.ToUpper()) == (Models == null ? "" : Models.ToUpper())
+                                                                        && x.IsActive).Select(x => new { x.Series}).Distinct().OrderBy(x => x.Series).ToList();
+            
+            return Json(SeriesList);
+        }
+        #endregion
 
         #region export xls
         public void ExportMasterPriceList()
@@ -418,11 +554,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 8, "Request Year");
             slDocument.SetCellValue(iRow, 9, "Installment HMS");
             slDocument.SetCellValue(iRow, 10, "Installment EMP");
-            slDocument.SetCellValue(iRow, 11, "Created Date");
-            slDocument.SetCellValue(iRow, 12, "Created By");
-            slDocument.SetCellValue(iRow, 13, "Modified Date");
-            slDocument.SetCellValue(iRow, 14, "Modified By");
-            slDocument.SetCellValue(iRow, 15, "Status");
+            slDocument.SetCellValue(iRow, 11, "Price");
+            slDocument.SetCellValue(iRow, 12, "Created Date");
+            slDocument.SetCellValue(iRow, 13, "Created By");
+            slDocument.SetCellValue(iRow, 14, "Modified Date");
+            slDocument.SetCellValue(iRow, 15, "Modified By");
+            slDocument.SetCellValue(iRow, 16, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -433,7 +570,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
 
             return slDocument;
 
@@ -451,22 +588,23 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 4, data.ZonePriceList);
                 slDocument.SetCellValue(iRow, 5, data.Manufacture);
-                slDocument.SetCellValue(iRow, 6, data.Model);
+                slDocument.SetCellValue(iRow, 6, data.Models);
                 slDocument.SetCellValue(iRow, 7, data.Series);
                 slDocument.SetCellValue(iRow, 8, data.Year);
                 slDocument.SetCellValue(iRow, 9, data.InstallmenHMS);
                 slDocument.SetCellValue(iRow, 10, data.InstallmenEMP);
-                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 13, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.Price);
+                slDocument.SetCellValue(iRow, 12, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 13, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 14, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 15, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 15, "Active");
+                    slDocument.SetCellValue(iRow, 16, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 15, "InActive");
+                    slDocument.SetCellValue(iRow, 16, "InActive");
                 }
 
                 iRow++;
@@ -479,8 +617,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 12);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
+            slDocument.AutoFitColumn(1, 16);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
 
             return slDocument;
         }

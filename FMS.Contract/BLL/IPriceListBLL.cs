@@ -16,5 +16,6 @@ namespace FMS.Contract.BLL
         PriceListDto GetByID(int Id);
         void Save(PriceListDto PriceListDto);
         void Save(PriceListDto data, Login currentUser);
+        void SaveChanges();
     }
 }

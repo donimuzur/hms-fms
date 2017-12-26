@@ -1798,7 +1798,7 @@ namespace FMS.Website.Controllers
             {
                 var item = new CtfItem();
                 item.EPafData = data;
-                var traCtf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId).FirstOrDefault();
+                var traCtf = _ctfBLL.GetCtf().Where(x => x.EpafId == data.MstEpafId && x.DocumentStatus != Enums.DocumentStatus.Cancelled).FirstOrDefault();
                 if (traCtf != null)
                 {
                     item.EPafData.CtfNumber = traCtf == null ? "" : traCtf.DocumentNumber;
@@ -1837,6 +1837,23 @@ namespace FMS.Website.Controllers
             if (ModelState.IsValid)
             {
                 var data = _epafBLL.GetEpaf().Where(x => x.MstEpafId == MstEpafId).FirstOrDefault();
+                var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+                var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+                var allCtfData = _ctfBLL.GetCtf().Where(x => x.VehicleType == benefitType);
+                var existsCtf = allCtfData.Where(x => x.EmployeeId == data.EmployeeId && x.DocumentStatus != Enums.DocumentStatus.Cancelled
+                                                           && x.EffectiveDate.Value.Day == data.EfectiveDate.Value.Day
+                                                           && x.EffectiveDate.Value.Month == data.EfectiveDate.Value.Month
+                                                           && x.EffectiveDate.Value.Year == data.EfectiveDate.Value.Year).FirstOrDefault();
+
+                if (existsCtf != null)
+                {
+                    //update epaf id
+                    existsCtf.EpafId = data.MstEpafId;
+
+                    var csfDataExists = _ctfBLL.Save(existsCtf, CurrentUser);
+                    AddMessageInfo("Success Update Epaf Data", Enums.MessageInfoType.Success);
+                    return RedirectToAction("Dashboard", "TraCtf");
+                }
 
                 if (data == null)
                     throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
@@ -1854,8 +1871,7 @@ namespace FMS.Website.Controllers
                         AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
                         return RedirectToAction("DashboardEpaf", "TraCtf");
                     }
-                    var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
-                    var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+                  
 
                     var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true && (x.VehicleType == benefitType)).FirstOrDefault();
 
@@ -2255,8 +2271,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Employee Name");
             slDocument.SetCellValue(iRow, 7, "Cost Centre");
             slDocument.SetCellValue(iRow, 8, "Group Level");
-            slDocument.SetCellValue(iRow, 9, "CSF No");
-            slDocument.SetCellValue(iRow, 10, "CSF Status");
+            slDocument.SetCellValue(iRow, 9, "CTF No");
+            slDocument.SetCellValue(iRow, 10, "CTF Status");
             slDocument.SetCellValue(iRow, 11, "Modified By");
             slDocument.SetCellValue(iRow, 12, "Modified Date");
 
