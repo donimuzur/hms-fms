@@ -147,19 +147,19 @@
                             </ul>
 			            </li>
 			            <li>
-				            <a href="#childmenu2" data-toggle="collapse"  >
+				            <a href="#CrfMenu" id="CrfParent" data-toggle="collapse"  >
 					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
 					            <h5>Car Relocation</h5>
 				            </a>
-			                <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
-			                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                            <ul class="childmenu collapse" id="CrfMenu" data-parent="#sidemenu">
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                                 {
-                                    <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
+                                    <li><a id="CrfDahsboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
                                 }
-			                    
-			                    <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
-			                    <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
-			                </ul>
+
+                                <li><a id="CrfOpen" href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
+                                <li><a id="CrfCompleted" href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
+                            </ul>
 			            </li>
 			            <li>
                             <a href="#CafMenu" data-toggle="collapse">
@@ -317,6 +317,8 @@
                                 <h5>Executive Summary</h5>
                             </a>
                             <ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
+                                <li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary All</a></li>
+                                <li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary By Region</a></li>
                                 <li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
                                 <li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></li>
                                 <li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
