@@ -201,7 +201,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">VAT<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -245,7 +245,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Monthly HMS Installment<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.MonthlyHMSInstallment, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -312,7 +312,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -378,9 +378,9 @@
         return true;
 
     }
-    $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
-    $('#MonthlyHMSInstallment').val(ThausandSeperator($('#MonthlyHMSInstallment').val(), 2));
-    $('#TotalMonthlyCharge').val(ThausandSeperator($('#TotalMonthlyCharge').val(), 2));
+    $('#VatDecimalStr').val(ThausandSeperator($('#VatDecimalStr').val(), 2));
+    $('#MonthlyHMSInstallmentStr').val(ThausandSeperator($('#MonthlyHMSInstallmentStr').val(), 2));
+    $('#TotalMonthlyChargeStr').val(ThausandSeperator($('#TotalMonthlyChargeStr').val(), 2));
 
     function calculateVAT() {
         $('#VatDecimal').val($('MonthlyHMSInstallment').val()*10/100);
