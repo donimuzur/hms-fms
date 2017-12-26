@@ -92,9 +92,9 @@
                         <td>@Html.Raw(data.InstallmenHMS)</td>
                         <td>@Html.Raw(data.InstallmenEMP)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy HH:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.HasValue ? data.ModifiedDate.Value.ToString("dd-MM-yyyy HH:mm") : data.CreatedDate.ToString("dd-MM-yyyy HH:mm"))</td>
+                        <td>@Html.Raw(data.ModifiedDate.HasValue ? data.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "")</td>
                         @if (data.IsActive == true)
                         {
                             <td>@Html.Raw("Active")</td>

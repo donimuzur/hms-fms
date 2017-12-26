@@ -39,6 +39,8 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
         public string IsActiveS { get; set; }
+
+        public SelectList ZoneList { get; set; }
         public SelectList VendorList { get; set; }
         public SelectList VehicleTypeList { get; set; }
         public SelectList VehicleUsageList { get; set; }

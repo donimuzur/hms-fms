@@ -50,7 +50,10 @@ namespace FMS.BLL.PriceList
             var dbPriceList = Mapper.Map<MST_PRICELIST>(PriceListDto);
             _PriceListService.save(dbPriceList, userLogin);
         }
-
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
+        }
         public PriceListDto GetByID(int Id)
         {
             var data = _PriceListService.GetPriceListById(Id);

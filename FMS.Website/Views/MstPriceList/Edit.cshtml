@@ -8,7 +8,6 @@
     <div class="wpanel">
         @using (Html.BeginForm("Edit", "MstPriceList"))
         {
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -51,13 +50,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Installmen HMS<span class="red">*</span></label>
+                        <label class="control-label">Installment HMS<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.InstallmenHMS, new { @class = "form-control ", onkeypress = "return IsAngka(event)", required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Installmen Employee<span class="red">*</span></label>
+                        <label class="control-label">Installment Employee<span class="red">*</span></label>
                         @Html.TextBoxFor(model => model.InstallmenEMP, new { @class = "form-control ", onkeypress = "return IsAngka(event)", required = "required" })
                     </div>
                 </div>
