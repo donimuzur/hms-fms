@@ -325,11 +325,11 @@ namespace FMS.Website.Controllers
                     }
                 }
                 slDocument.SetCellValue(iRow, 1, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 2, data.Liter);
-                slDocument.SetCellValue(iRow, 3, data.Odometer);
-                slDocument.SetCellValue(iRow, 4, data.Usage);
-                slDocument.SetCellValue(iRow, 5, data.kmlt);
-                slDocument.SetCellValue(iRow, 6, data.Cost);
+                slDocument.SetCellValue(iRow, 2, string.Format("{0:N0}", data.Liter));
+                slDocument.SetCellValue(iRow, 3, string.Format("{0:N0}", data.Odometer));
+                slDocument.SetCellValue(iRow, 4, string.Format("{0:N0}", data.Usage));
+                slDocument.SetCellValue(iRow, 5, string.Format("{0:N0}", data.kmlt));
+                slDocument.SetCellValue(iRow, 6, string.Format("{0:N0}", data.Cost));
                 slDocument.SetCellValue(iRow, 7, data.FuelType);
                 slDocument.SetCellValue(iRow, 8, data.CostCenter);
                 slDocument.SetCellValue(iRow, 9, data.Function);
