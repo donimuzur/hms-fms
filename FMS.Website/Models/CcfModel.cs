@@ -86,6 +86,7 @@ namespace FMS.Website.Models
         public string ConfigUrl { get; set; }
         public string StsTraCcfId { get; set; }
         public DateTime StsVndrDate { get; set; }
+        public string CoordinatorName { get; set; }
         public List<CcfItemDetil> Details_d1 { get; set; }
 
         public CcfItemDetil DetailSave { get; set; }
