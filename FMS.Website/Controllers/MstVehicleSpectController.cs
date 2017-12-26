@@ -3,6 +3,7 @@ using FMS.BusinessObject;
 using FMS.Contract.BLL;
 using FMS.BusinessObject.Dto;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace FMS.Website.Controllers
         private IVehicleSpectBLL _VehicleSpectBLL;
         private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
+        private const string pathUpload = "/files_upload/VehicleSpect/";
 
         public MstVehicleSpectController(IPageBLL PageBll, IVehicleSpectBLL VehicleSpectBLL, ISettingBLL SettingBll) : base(PageBll, Enums.MenuList.MasterVehicleSpect)
         {
@@ -35,6 +37,11 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            if (!System.IO.Directory.Exists(Server.MapPath("~" + pathUpload)))
+            {
+                System.IO.Directory.CreateDirectory(Server.MapPath("~" + pathUpload));
+            }
+
             var data = _VehicleSpectBLL.GetVehicleSpect();
             var model = new VehicleSpectModel();
             model.Details = Mapper.Map<List<VehicleSpectItem>>(data);
@@ -66,7 +73,7 @@ namespace FMS.Website.Controllers
             //    new SelectListItem { Text = "Truck", Value = "Truck" }
             //};
 
-            var list1 = _settingBLL.GetSetting().Where(x=> x.SettingGroup == "BODY_TYPE" && x.IsActive).ToList();
+            var list1 = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType) && x.IsActive).ToList();
             model.BodyTypeList = new SelectList(list1, "SettingValue", "SettingValue");
 
             var list2 = new List<SelectListItem>
@@ -79,19 +86,19 @@ namespace FMS.Website.Controllers
             };
             model.GroupLevelList = new SelectList(list2, "Value", "Text");
 
-            var list3 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Automatic", Value = "Automatic" },
-                new SelectListItem { Text = "Manual", Value = "Manual" },
-            };
-            model.TransmissionList = new SelectList(list3, "Value", "Text");
+            var list3 =
+                _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Transmission) && x.IsActive)
+                    .ToList();
 
-            var list4 = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
-                new SelectListItem {Text = "Diesel", Value = "Diesel" }
-            };
-            model.FuelTypeList = new SelectList(list4, "Value", "Text");
+            model.TransmissionList = new SelectList(list3, "SettingValue", "SettingValue");
+
+            var list4 = _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.FuelType) && x.IsActive)
+                    .ToList();
+            model.FuelTypeList = new SelectList(list4, "SettingValue", "SettingValue");
 
             return model;
         }
@@ -120,11 +127,11 @@ namespace FMS.Website.Controllers
                     dto.CreatedBy = CurrentUser.USERNAME; 
                     dto.ModifiedDate = null;
 
-                    if (image != null)
+                    if (Model.ImageFile != null)
                     {
-                        string imagename = System.IO.Path.GetFileName(image.FileName);
-                        image.SaveAs(Server.MapPath("/files_upload/" + imagename));
-                        string filepathtosave = "files_upload" + imagename;
+                        string imagename = System.IO.Path.GetFileName(Model.ImageFile.FileName);
+                        Model.ImageFile.SaveAs(Server.MapPath("~" + pathUpload + imagename));
+                        string filepathtosave = pathUpload + imagename;
                         dto.Image = imagename;
                     }
                     else
@@ -148,7 +155,7 @@ namespace FMS.Website.Controllers
         public VehicleSpectItem initEdit(VehicleSpectItem model)
         {
             
-            var list1 = _settingBLL.GetSetting().Where(x => x.SettingGroup == "BODY_TYPE" && x.IsActive).ToList();
+            var list1 = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType) && x.IsActive).ToList();
             model.BodyTypeList = new SelectList(list1, "SettingValue", "SettingValue",model.BodyType);
 
             var list2 = new List<SelectListItem>
@@ -161,19 +168,19 @@ namespace FMS.Website.Controllers
             };
             model.GroupLevelList = new SelectList(list2, "Value", "Text", model.GroupLevel);
 
-            var list3 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Automatic", Value = "Automatic" },
-                new SelectListItem { Text = "Manual", Value = "Manual" },
-            };
-            model.TransmissionList = new SelectList(list3, "Value", "Text", model.Transmission);
+            var list3 =
+                _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Transmission) && x.IsActive)
+                    .ToList();
             
-            var list4 = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
-                new SelectListItem {Text = "Diesel", Value = "Diesel" }
-            };
-            model.FuelTypeList = new SelectList(list4, "Value", "Text", model.FuelTypeSpect);
+            model.TransmissionList = new SelectList(list3, "SettingValue", "SettingValue", model.Transmission);
+
+            var list4 = _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.FuelType) && x.IsActive)
+                    .ToList();
+            model.FuelTypeList = new SelectList(list4, "SettingValue", "SettingValue", model.FuelTypeSpect);
 
             return model;
         }
@@ -185,7 +192,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            model.Image = webRootUrl + "files_upload/" + model.Image;
+            model.Image = webRootUrl + pathUpload + model.Image;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
@@ -204,7 +211,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            model.ImageS = webRootUrl + "files_upload/" + model.Image;
+            model.Image = webRootUrl + pathUpload + model.Image;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
@@ -218,11 +225,12 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<VehicleSpectDto>(model);
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
-                if (image != null)
+                if (model.ImageFile != null)
                 {
-                    string imagename = System.IO.Path.GetFileName(image.FileName);
-                    image.SaveAs(Server.MapPath("~/files_upload/" + imagename));
-                    string filepathtosave = "~/files_upload" + imagename;
+                    string imagename = System.IO.Path.GetFileName(model.ImageFile.FileName);
+                    //Uri.
+                    model.ImageFile.SaveAs(Server.MapPath("~" + pathUpload + imagename));
+                    string filepathtosave = VirtualPathUtility.ToAbsolute(pathUpload) + imagename;
                     data.Image = imagename;
                 }
                 else
@@ -239,8 +247,9 @@ namespace FMS.Website.Controllers
                     model = Mapper.Map<VehicleSpectItem>(data);
                     model.MainMenu = _mainMenu;
                     model = initEdit(model);
+                    
                     var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-                    model.ImageS = webRootUrl + "files_upload/" + model.Image;
+                    model.Image = webRootUrl + pathUpload + model.Image;
                     model.CurrentLogin = CurrentUser;
                     model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, data.MstVehicleSpectId);
                     return View(model);
@@ -280,7 +289,15 @@ namespace FMS.Website.Controllers
                 {
                     try
                     {
-                        string imagename = System.IO.Path.GetFileName(data.Image);
+                        string imagename = "";
+                        if (data.ImageFile != null)
+                        {
+                            imagename = System.IO.Path.GetFileName(data.ImageFile.FileName);
+                            data.Image = imagename;
+                            data.ImageFile.SaveAs(Server.MapPath("~" + pathUpload + imagename));
+                            //string filepathtosave = VirtualPathUtility.ToAbsolute(pathUpload) + imagename;
+                            data.Image = imagename;
+                        }
                         //Stream imageStream = System.IO.File.Open(data.Image, FileMode.Open);
                         //byte[] imageBytes;
                         //using (BinaryReader br = new BinaryReader(imageStream))
@@ -294,7 +311,7 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME;
                         data.ModifiedDate = null;
-
+                        data.IsActive = true;
                         var dto = Mapper.Map<VehicleSpectDto>(data);
                         
                         _VehicleSpectBLL.Save(dto);
@@ -347,7 +364,7 @@ namespace FMS.Website.Controllers
                     item.Image = dataRow[10].ToString();
                     item.IsActive = dataRow[15].ToString() == "Active"? true : false;
                     item.IsActiveS = dataRow[15].ToString();
-
+                    
                     string message = "";
                     var dto = Mapper.Map<VehicleSpectDto>(item);
                     _VehicleSpectBLL.ValidateSpect(dto, out message);

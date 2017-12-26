@@ -372,8 +372,7 @@ namespace FMS.Website.Code
                  .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models)); ;
 
             // Start --- Master Data -> CostOb
-            Mapper.CreateMap<CostObDto, CostObItem>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            Mapper.CreateMap<CostObDto, CostObItem>().IgnoreAllNonExisting();
             Mapper.CreateMap<CostObItem, CostObDto>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<MST_COST_OB, CostObDto>().IgnoreAllNonExisting()
@@ -404,6 +403,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
+            Mapper.CreateMap<CostObSearchView, CostObParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<CostObParamInput, CostObSearchView>().IgnoreAllNonExisting();
             // End --- Master Data -> CostOb
 
             #region AutoGR

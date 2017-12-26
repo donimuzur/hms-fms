@@ -53,11 +53,11 @@
         {
             <tr>
                 <td>@Html.Raw(data.PoliceNumber)</td>
-                <td>@Html.Raw(data.Liter)</td>
-                <td>@Html.Raw(data.Odometer)</td>
-                <td>@Html.Raw(data.Usage)</td>
-                <td>@Html.Raw(data.kmlt)</td>
-                <td>@Html.Raw(data.Cost)</td>
+                <td>@string.Format("{0:N0}", data.Liter)</td>
+                <td>@string.Format("{0:N0}", data.Odometer)</td>
+                <td>@string.Format("{0:N0}", data.Usage)</td>
+                <td>@string.Format("{0:N0}", data.kmlt)</td>
+                <td>@string.Format("{0:N0}", data.Cost)</td>
                 <td>@Html.Raw(data.FuelType)</td>
                 <td>@Html.Raw(data.CostCenter)</td>
                 <td>@Html.Raw(data.Function)</td>

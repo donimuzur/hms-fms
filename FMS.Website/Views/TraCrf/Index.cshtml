@@ -4,10 +4,7 @@
 
            
 <div class="opt-content clearfloat">
-    <h5 class="title-page">
-        @(Model.IsPersonalDashboard ? Html.Raw("CRF Personal Dashboard") : Html.Raw("CRF Open Documents"))
-        
-    </h5>
+    <h5 class="title-page">@(Model.IsPersonalDashboard ? Html.Raw("CRF Personal Dashboard") : Html.Raw("CRF Open Documents"))</h5>
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@
@@ -51,11 +48,12 @@
             </thead>
             <thead class="filters">
                 <tr>
-                    <th>@if ((Model.CurrentLogin.UserRole != Enums.UserRole.Viewer && Model.CurrentLogin.UserRole != Enums.UserRole.Administrator)
-                            && (Model.CurrentPageAccess.WriteAccess == true || !Model.IsPersonalDashboard))
-                    {
-                        <a href="@Url.Action("Create","TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
-                    }</th>
+                    <th style="min-width: 50px">@if ((Model.CurrentLogin.UserRole != Enums.UserRole.Viewer && Model.CurrentLogin.UserRole != Enums.UserRole.Administrator)
+                             && (Model.CurrentPageAccess.WriteAccess == true || !Model.IsPersonalDashboard))
+                        {
+                            <a href="@Url.Action("Create", "TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
+                        }
+                        </th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
@@ -77,11 +75,11 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true || Model.IsPersonalDashboard)
+                            @if (data.AllowEdit)
                             {
                                 <a href="@Url.Action("Edit", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             }
-                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId && data.DocumentStatus == (int)Enums.DocumentStatus.AssignedForUser || Model.IsPersonalDashboard)
+                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId && data.DocumentStatus == (int)Enums.DocumentStatus.AssignedForUser)
                             {
                                 <a href="@Url.Action("Edit", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                             }
@@ -100,12 +98,12 @@
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
                         <td>@Html.Raw(data.DocumentStatusString)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy"))</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.VehicleUsage)</td>
                         @if (data.EffectiveDate.HasValue)
                         {
-                        <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy"))</td>
                         }
                         else
                         {
@@ -136,7 +134,7 @@
             </tbody>
         </table>
     </div>
-
+    <script src="~/Scripts/crfscript.js"></script>
     <script type="text/javascript">
         function ExportXls() {
             $('#ExportToXls').submit();

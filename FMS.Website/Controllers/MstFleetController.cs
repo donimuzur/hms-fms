@@ -235,47 +235,27 @@ namespace FMS.Website.Controllers
         public FleetItem initEdit(FleetItem model)
         {
             var data = _vendorBLL.GetVendor().Where(x => x.IsActive == true);
-
-            model.VendorList = new SelectList(data, "VendorName", "VendorName", model.VendorName);
-
-            var list1 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Extend", Value = "Extend" },
-                new SelectListItem { Text = "Temporary", Value = "Temporary" },
-                new SelectListItem { Text = "Lease", Value = "Lease" },
-                new SelectListItem { Text = "Services", Value = "Services" }
-            };
-            model.SupplyMethodList = new SelectList(list1, "Value", "Text",model.SupplyMethod);
-
-            list1 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Automatic", Value = "Automatic" },
-                new SelectListItem { Text = "Manual", Value = "Manual" }
-            };
-            model.TransmissionList = new SelectList(list1, "Value", "Text", model.Transmission);
-
-            list1 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "MPV", Value = "MPV" },
-                new SelectListItem { Text = "SUV", Value = "SUV" },
-                new SelectListItem { Text = "Forklift", Value = "Forklift" },
-                new SelectListItem { Text = "Motorcycle", Value = "Motorcycle" },
-                new SelectListItem { Text = "Truck", Value = "Truck" }
-            };
-            model.BodyTypeList = new SelectList(list1, "Value", "Text",model.BodyType);
-
-            list1 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Gasoline", Value = "Gasoline" },
-                new SelectListItem { Text = "Diesel", Value = "Diesel" }
-            };
-            model.FuelTypeList = new SelectList(list1, "Value", "Text", model.FuelType);
-
+            var settingData = _settingBLL.GetSetting().Where(x => x.IsActive);
+            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.SettingValue }).ToList();
             var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
-            model.FunctionList = new SelectList(groupCostData, "FunctionName", "FunctionName", model.Function);
-
             var locationMappingData = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true);
-            model.RegionalList = new SelectList(locationMappingData, "Region", "Region", model.Regional);
+            var listBodType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType)).Select(x => new { x.SettingValue }).ToList();
+            var listFuelType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.FuelType)).Select(x => new { x.SettingValue }).ToList();
+            var listTransmission = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Transmission)).Select(x => new { x.SettingValue }).ToList();
+            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.SettingValue }).ToList();
+            var listVehUsage = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit)).Select(x => new { x.SettingValue }).ToList();
+            var listProject = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project)).Select(x => new { x.SettingValue }).ToList();
+
+            model.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.VehicleUsageList = new SelectList(listVehUsage, "SettingValue", "SettingValue");
+            model.ProjectList = new SelectList(listProject, "SettingValue", "SettingValue");
+            model.VendorList = new SelectList(data, "VendorName", "VendorName", model.VendorName);
+            model.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
+            model.TransmissionList = new SelectList(listTransmission, "SettingValue", "SettingValue");
+            model.BodyTypeList = new SelectList(listBodType, "SettingValue", "SettingValue");
+            model.FuelTypeList = new SelectList(listFuelType, "SettingValue", "SettingValue");            
+            model.FunctionList = new SelectList(groupCostData.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName", model.Function);
+            model.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region", model.Regional);
 
             return model;
         }
@@ -287,6 +267,12 @@ namespace FMS.Website.Controllers
                 return HttpNotFound();
             }
             var data = _fleetBLL.GetFleetById(MstFleetId.Value);
+
+            if (data.VehicleType.ToUpper() == "BENEFIT")
+            {
+                return RedirectToAction("Detail", "MstFleet", new { MstFleetId = data.MstFleetId });
+            }
+
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.MainMenu = _mainMenu;
@@ -300,11 +286,37 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+                var exist = _fleetBLL.GetFleet().Where(x => (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (model.EmployeeName == null ? "" : model.EmployeeName.ToUpper())
+                           && (x.EmployeeID == null ? "" : x.EmployeeID.ToUpper()) == (model.EmployeeID == null ? "" : model.EmployeeID.ToUpper())
+                           && (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (model.ChasisNumber == null ? "" : model.ChasisNumber.ToUpper())
+                           && (x.EngineNumber == null ? "" : x.EngineNumber.ToUpper()) == (model.EngineNumber == null ? "" : model.EngineNumber.ToUpper())
+                           && x.IsActive).FirstOrDefault();
+
+                if (exist != null)
+                {
+                    exist.IsActive = false;
+                    exist.ModifiedBy = "SYSTEM";
+                    exist.ModifiedDate = DateTime.Now;
+                    _fleetBLL.Save(exist);
+
+                }
+
                 var data = Mapper.Map<FleetDto>(model);
                 data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
 
                 _fleetBLL.Save(data, CurrentUser);
+            }
+            else
+            {
+                var errors = ModelState.Values.Where(c => c.Errors.Count > 0).ToList();
+
+                if (errors.Count > 0)
+                {
+                    //get error details
+                }
+
+                RedirectToAction("Index", "MstFleet");
             }
             return RedirectToAction("Index","MstFleet");
         }
@@ -346,45 +358,11 @@ namespace FMS.Website.Controllers
                             data.EmployeeID = null;
                         }
 
-                        var exist = _fleetBLL.GetFleet().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (data.PoliceNumber == null ? "" : data.PoliceNumber.ToUpper())
-                           && (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (data.EmployeeName == null ? "" : data.EmployeeName.ToUpper())
+                        var exist = _fleetBLL.GetFleet().Where(x => (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (data.EmployeeName == null ? "" : data.EmployeeName.ToUpper())
                            && (x.EmployeeID == null ? "" : x.EmployeeID.ToUpper()) == (data.EmployeeID == null ? "" : data.EmployeeID.ToUpper())
-                           && (x.CostCenter == null ? "" : x.CostCenter.ToUpper()) == (data.CostCenter == null ? "" : data.CostCenter.ToUpper())
-                           && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (data.Manufacturer == null ? "" : data.Manufacturer.ToUpper())
-                           && (x.Models == null ? "" : x.Models.ToUpper()) == (data.Models == null ? "" : data.Models.ToUpper())
-                           && (x.Series == null ? "" : x.Series.ToUpper()) == (data.Series == null ? "" : data.Series.ToUpper())
-                           && (x.Transmission == null ? "" : x.Transmission.ToUpper()) == (data.Transmission == null ? "" : data.Transmission.ToUpper())
-                           && (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (data.BodyType == null ? "" : data.BodyType.ToUpper())
-                           && (x.FuelType == null ? "" : x.FuelType.ToUpper()) == (data.FuelType == null ? "" : data.FuelType.ToUpper())
-                           && (x.Branding == null ? "" : x.Branding.ToUpper()) == (data.Branding == null ? "" : data.Branding.ToUpper())
-                           && (x.Color == null ? "" : x.Color.ToUpper()) == (data.Color == null ? "" : data.Color.ToUpper())
-                           && (x.Airbag == null ? false : x.Airbag) == (data.Airbag == null ? false : data.Airbag)
                            && (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (data.ChasisNumber == null ? "" : data.ChasisNumber.ToUpper())
                            && (x.EngineNumber == null ? "" : x.EngineNumber.ToUpper()) == (data.EngineNumber == null ? "" : data.EngineNumber.ToUpper())
-                           && (x.VehicleYear) == (data.VehicleYear)
-                           && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (data.VehicleType == null ? "" : data.VehicleType.ToUpper())
-                           && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == (data.VehicleUsage == null ? "" : data.VehicleUsage.ToUpper())
-                           && (x.Project == null ? false : x.Project) == (data.Project == null ? false : data.Project)
-                           && (x.ProjectName == null ? "" : x.ProjectName.ToUpper()) == (data.ProjectName == null ? "" : data.ProjectName.ToUpper())
-                           && (x.StartDate) == (data.StartDate)
-                           && (x.EndDate) == (data.EndDate)
-                           && (x.VendorName == null ? "" : x.VendorName.ToUpper()) == (data.VendorName == null ? "" : data.VendorName.ToUpper())
-                           && (x.City == null ? "" : x.City.ToUpper()) == (data.City == null ? "" : data.City.ToUpper())
-                           && (x.SupplyMethod == null ? "" : x.SupplyMethod.ToUpper()) == (data.SupplyMethod == null ? "" : data.SupplyMethod.ToUpper())
-                           && (x.Restitution == null ? false : x.Restitution) == (data.Restitution == null ? false : data.Restitution)
-                           && (x.PoNumber == null ? "" : x.PoNumber.ToUpper()) == (data.PoNumber == null ? "" : data.PoNumber.ToUpper())
-                           && (x.PoLine == null ? "" : x.PoLine.ToUpper()) == (data.PoLine == null ? "" : data.PoLine.ToUpper())
-                           && (x.CarGroupLevel) == (data.CarGroupLevel)
-                           && (x.AssignedTo == null ? "" : x.AssignedTo.ToUpper()) == (data.AssignedTo == null ? "" : data.AssignedTo.ToUpper())
-                           && (x.Address == null ? "" : x.Address.ToUpper()) == (data.Address == null ? "" : data.Address.ToUpper())
-                           && (x.StartContract) == (data.StartContract)
-                           && (x.EndContract) == (data.EndContract)
-                           && (x.CertificateOwnership == null ? "" : x.CertificateOwnership.ToUpper()) == (data.CertificateOwnership == null ? "" : data.CertificateOwnership.ToUpper())
-                           && (x.Assets == null ? "" : x.Assets.ToUpper()) == (data.Assets == null ? "" : data.Assets.ToUpper())
-                           && (x.Comments == null ? "" : x.Comments.ToUpper()) == (data.Comments == null ? "" : data.Comments.ToUpper())
-                           && (x.Function == null ? "" : x.Function.ToUpper()) == (data.Function == null ? "" : data.Function.ToUpper())
-                           && (x.Regional == null ? "" : x.Regional.ToUpper()) == (data.Regional == null ? "" : data.Regional.ToUpper())
-                           && x.GroupLevel == data.GroupLevel && x.IsActive).FirstOrDefault();
+                           && x.IsActive).FirstOrDefault();
 
                         if (exist != null)
                         {
@@ -542,6 +520,21 @@ namespace FMS.Website.Controllers
             return Json(model);
         }
 
+        [HttpPost]
+        public JsonResult GetVehUsageByVehType(string vehType)
+        {
+            var paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc);
+
+            if (vehType.ToUpper() == "BENEFIT")
+            {
+                paramVehUsage = EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageBenefit);
+            }
+
+            var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage && x.IsActive).ToList();
+
+            return Json(listVehUsage);
+        }
+
         #region export xls
         public void ExportMasterFleet()
         {
@@ -573,7 +566,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Fleet");
-            slDocument.MergeWorksheetCells(1, 1, 1,52);
+            slDocument.MergeWorksheetCells(1, 1, 1,50);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -601,57 +594,52 @@ namespace FMS.Website.Controllers
             int iRow = 2;
 
             slDocument.SetCellValue(iRow, 1, "Police Number");
-            slDocument.SetCellValue(iRow, 2, "Chasis Number");
-            slDocument.SetCellValue(iRow, 3, "Engine Number");
-            slDocument.SetCellValue(iRow, 4, "Employee ID");
-            slDocument.SetCellValue(iRow, 5, "Employee Name");
-            slDocument.SetCellValue(iRow, 6, "Group Level");
-            slDocument.SetCellValue(iRow, 7, "Actual Group");
-            slDocument.SetCellValue(iRow, 8, "Assigned To");
-            slDocument.SetCellValue(iRow, 9, "Cost Center");
-            slDocument.SetCellValue(iRow, 10, "Vendor Name");
-            slDocument.SetCellValue(iRow, 11, "Manufacturer");
-            slDocument.SetCellValue(iRow, 12, "Models");
-            slDocument.SetCellValue(iRow, 13, "Series");
-            slDocument.SetCellValue(iRow, 14, "Body Type");
-            slDocument.SetCellValue(iRow, 15, "Color");
-            slDocument.SetCellValue(iRow, 16, "Transmission");
-            slDocument.SetCellValue(iRow, 17, "Car Group Level");
-            slDocument.SetCellValue(iRow, 18, "Fuel Type");
-            slDocument.SetCellValue(iRow, 19, "Branding");
-            slDocument.SetCellValue(iRow, 20, "Airbag");
-            slDocument.SetCellValue(iRow, 21, "Vehicle Year");
-            slDocument.SetCellValue(iRow, 22, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 23, "Vehicle Usage");
-            slDocument.SetCellValue(iRow, 24, "Supply Method");
-            slDocument.SetCellValue(iRow, 25, "City");
-            slDocument.SetCellValue(iRow, 26, "Address");
-            slDocument.SetCellValue(iRow, 27, "Purpose");
+            slDocument.SetCellValue(iRow, 2, "Employee Name");
+            slDocument.SetCellValue(iRow, 3, "Employee ID");
+            slDocument.SetCellValue(iRow, 4, "Cost Center");
+            slDocument.SetCellValue(iRow, 5, "Manufacturer");
+            slDocument.SetCellValue(iRow, 6, "Model");
+            slDocument.SetCellValue(iRow, 7, "Series");
+            slDocument.SetCellValue(iRow, 8, "Transmission");
+            slDocument.SetCellValue(iRow, 9, "Body Type");
+            slDocument.SetCellValue(iRow, 10, "Fuel Type");
+            slDocument.SetCellValue(iRow, 11, "Branding");
+            slDocument.SetCellValue(iRow, 12, "Color");
+            slDocument.SetCellValue(iRow, 13, "Airbag");
+            slDocument.SetCellValue(iRow, 14, "Chasis Number");
+            slDocument.SetCellValue(iRow, 15, "Engine Number");
+            slDocument.SetCellValue(iRow, 16, "Request Year");
+            slDocument.SetCellValue(iRow, 17, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 18, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 19, "Project");
+            slDocument.SetCellValue(iRow, 20, "Project Name");
+            slDocument.SetCellValue(iRow, 21, "Start Date");
+            slDocument.SetCellValue(iRow, 22, "End Date");
+            slDocument.SetCellValue(iRow, 23, "Vendor Name");
+            slDocument.SetCellValue(iRow, 24, "City");
+            slDocument.SetCellValue(iRow, 25, "Supply Method");
+            slDocument.SetCellValue(iRow, 26, "Restitution");
+            slDocument.SetCellValue(iRow, 27, "Monthly HMS Installment");
             slDocument.SetCellValue(iRow, 28, "Vat");
-            slDocument.SetCellValue(iRow, 29, "Restitution");
-            slDocument.SetCellValue(iRow, 30, "Star tDate");
-            slDocument.SetCellValue(iRow, 31, "End Date");
-            slDocument.SetCellValue(iRow, 32, "Termination Date");
-            slDocument.SetCellValue(iRow, 33, "PO Number");
-            slDocument.SetCellValue(iRow, 34, "PO Line");
+            slDocument.SetCellValue(iRow, 29, "PO Number");
+            slDocument.SetCellValue(iRow, 30, "PO Line");
+            slDocument.SetCellValue(iRow, 31, "Car Group Level");
+            slDocument.SetCellValue(iRow, 32, "Employee Group Level");
+            slDocument.SetCellValue(iRow, 33, "Assigned To");
+            slDocument.SetCellValue(iRow, 34, "Address");
             slDocument.SetCellValue(iRow, 35, "Start Contract");
             slDocument.SetCellValue(iRow, 36, "End Contract");
-            slDocument.SetCellValue(iRow, 37, "Price");
-            slDocument.SetCellValue(iRow, 38, "Vehicle Status");
-            slDocument.SetCellValue(iRow, 39, "Is Taken");
-            slDocument.SetCellValue(iRow, 40, "GR Left Qty");
-            slDocument.SetCellValue(iRow, 41, "Certificate Of Ownership");
-            slDocument.SetCellValue(iRow, 42, "Comments");
-            slDocument.SetCellValue(iRow, 43, "Asset");
-            slDocument.SetCellValue(iRow, 44, "Total Monthly Charge");
-            slDocument.SetCellValue(iRow, 45, "Function");
-            slDocument.SetCellValue(iRow, 46, "Regional");
-            slDocument.SetCellValue(iRow, 47, "Created By");
-            slDocument.SetCellValue(iRow, 48, "Created Date");
-            slDocument.SetCellValue(iRow, 49, "Modified By");
-            slDocument.SetCellValue(iRow, 50, "Modified Date");
-            slDocument.SetCellValue(iRow, 51, "Modified By");
-            slDocument.SetCellValue(iRow, 52, "Status");
+            slDocument.SetCellValue(iRow, 37, "Vehicle Status");
+            slDocument.SetCellValue(iRow, 38, "Certificate of Ownership");
+            slDocument.SetCellValue(iRow, 39, "Comments");
+            slDocument.SetCellValue(iRow, 40, "Assets");
+            slDocument.SetCellValue(iRow, 41, "Total Monthly Charge");
+            slDocument.SetCellValue(iRow, 42, "Function");
+            slDocument.SetCellValue(iRow, 43, "Regional");
+            slDocument.SetCellValue(iRow, 44, "Created By");
+            slDocument.SetCellValue(iRow, 45, "Created Date");
+            slDocument.SetCellValue(iRow, 46, "Modified By");
+            slDocument.SetCellValue(iRow, 47, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -662,7 +650,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 52, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 50, headerStyle);
 
             return slDocument;
 
@@ -675,57 +663,55 @@ namespace FMS.Website.Controllers
             foreach (var data in listData)
             {
                 slDocument.SetCellValue(iRow, 1, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 2, data.ChasisNumber);
-                slDocument.SetCellValue(iRow, 3, data.EngineNumber);
-                slDocument.SetCellValue(iRow, 4, data.EmployeeID);
-                slDocument.SetCellValue(iRow, 5, data.EmployeeName );
-                slDocument.SetCellValue(iRow, 6, data.GroupLevel);
-                slDocument.SetCellValue(iRow, 7, data.ActualGroup);
-                slDocument.SetCellValue(iRow, 8, data.AssignedTo);
-                slDocument.SetCellValue(iRow, 9, data.CostCenter);
-                slDocument.SetCellValue(iRow, 10, data.VendorName);
-                slDocument.SetCellValue(iRow, 11, data.Manufacturer);
-                slDocument.SetCellValue(iRow, 12, data.Models);
-                slDocument.SetCellValue(iRow, 13, data.Series);
-                slDocument.SetCellValue(iRow, 14, data.BodyType);
-                slDocument.SetCellValue(iRow, 15, data.Color);
-                slDocument.SetCellValue(iRow, 16, data.Transmission);
-                slDocument.SetCellValue(iRow, 17, data.CarGroupLevel);
-                slDocument.SetCellValue(iRow, 18, data.FuelType);
-                slDocument.SetCellValue(iRow, 19, data.Branding);
-                slDocument.SetCellValue(iRow, 20, data.Airbag);
-                slDocument.SetCellValue(iRow, 21, data.VehicleYear);
-                slDocument.SetCellValue(iRow, 22, data.VehicleType);
-                slDocument.SetCellValue(iRow, 23, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 24, data.SupplyMethod);
-                slDocument.SetCellValue(iRow, 25, data.City);
-                slDocument.SetCellValue(iRow, 26, data.Address);
-                slDocument.SetCellValue(iRow, 27, data.Purpose);
-                slDocument.SetCellValue(iRow, 28, data.Vat);
-                slDocument.SetCellValue(iRow, 29, data.Restitution);
-                slDocument.SetCellValue(iRow, 30, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 31, data.EndDate == null ? "" :  data.EndDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 32, data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy hh: mm"));
-                slDocument.SetCellValue(iRow, 33, data.PoNumber);
-                slDocument.SetCellValue(iRow, 34, data.PoLine);
-                slDocument.SetCellValue(iRow, 35, data.StartContract== null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 36, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 37, data.Price);
-                slDocument.SetCellValue(iRow, 38, data.VehicleStatus);
-                slDocument.SetCellValue(iRow, 39, data.IsTaken);
-                slDocument.SetCellValue(iRow, 40, data.GrLeftQty);
-                slDocument.SetCellValue(iRow, 41, data.CertificateOwnership);
-                slDocument.SetCellValue(iRow, 42, data.Comments);
-                slDocument.SetCellValue(iRow, 43, data.Assets);
-                slDocument.SetCellValue(iRow, 44, data.TotalMonthlyCharge == null? 0 : (decimal)data.TotalMonthlyCharge);
-                slDocument.SetCellValue(iRow, 45, data.Function);
-                slDocument.SetCellValue(iRow, 46, data.Regional);
-                slDocument.SetCellValue(iRow, 47, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 48, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 2, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 3, data.EmployeeID);
+                slDocument.SetCellValue(iRow, 4, data.CostCenter);
+                slDocument.SetCellValue(iRow, 5, data.Manufacturer);
+                slDocument.SetCellValue(iRow, 6, data.Models);
+                slDocument.SetCellValue(iRow, 7, data.Series);
+                slDocument.SetCellValue(iRow, 8, data.Transmission);
+                slDocument.SetCellValue(iRow, 9, data.BodyType);
+                slDocument.SetCellValue(iRow, 10, data.FuelType);
+                slDocument.SetCellValue(iRow, 11, data.Branding);
+                slDocument.SetCellValue(iRow, 12, data.Color);
+                slDocument.SetCellValue(iRow, 13, data.Airbag);
+                slDocument.SetCellValue(iRow, 14, data.ChasisNumber);
+                slDocument.SetCellValue(iRow, 15, data.EngineNumber);
+                slDocument.SetCellValue(iRow, 16, data.VehicleYear);
+                slDocument.SetCellValue(iRow, 17, data.VehicleType);
+                slDocument.SetCellValue(iRow, 18, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 19, data.Airbag);
+                slDocument.SetCellValue(iRow, 20, data.VehicleYear);
+                slDocument.SetCellValue(iRow, 21, data.VehicleType);
+                slDocument.SetCellValue(iRow, 22, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 23, data.Project);
+                slDocument.SetCellValue(iRow, 24, data.ProjectName);
+                slDocument.SetCellValue(iRow, 25, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 26, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 27, data.VendorName);
+                slDocument.SetCellValue(iRow, 28, data.City);
+                slDocument.SetCellValue(iRow, 29, data.SupplyMethod);
+                slDocument.SetCellValue(iRow, 30, data.Restitution);
+                slDocument.SetCellValue(iRow, 31, data.MonthlyHMSInstallment);
+                slDocument.SetCellValue(iRow, 32, data.PoLine);
+                slDocument.SetCellValue(iRow, 33, data.StartContract== null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 34, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 35, data.Price);
+                slDocument.SetCellValue(iRow, 36, data.VehicleStatus);
+                slDocument.SetCellValue(iRow, 37, data.IsTaken);
+                slDocument.SetCellValue(iRow, 38, data.GrLeftQty);
+                slDocument.SetCellValue(iRow, 39, data.CertificateOwnership);
+                slDocument.SetCellValue(iRow, 40, data.Comments);
+                slDocument.SetCellValue(iRow, 41, data.Assets);
+                slDocument.SetCellValue(iRow, 42, data.TotalMonthlyCharge == null? 0 : (decimal)data.TotalMonthlyCharge);
+                slDocument.SetCellValue(iRow, 43, data.Function);
+                slDocument.SetCellValue(iRow, 44, data.Regional);
+                slDocument.SetCellValue(iRow, 45, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 46, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 47, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 48, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 49, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 50, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 51, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 52, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 50, data.IsActive == true ? "Active" : "InActive");
           
 
                 iRow++;
@@ -738,8 +724,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 52);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 52, valueStyle);
+            slDocument.AutoFitColumn(1, 50);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 50, valueStyle);
 
             return slDocument;
         }

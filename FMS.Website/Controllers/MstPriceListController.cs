@@ -101,7 +101,7 @@ namespace FMS.Website.Controllers
             //{
                 FMSEntities entities = new FMSEntities();
 
-                String message = "";
+                //String message = "";
                 bool valid = true;
 
                 var vehicleSpect = entities.MST_VEHICLE_SPECT.Where(x => (x.YEAR == item.Year) && (x.MANUFACTURER == item.Manufacture) && (x.MODEL == item.Model) && (x.SERIES == item.Series)).ToList();
