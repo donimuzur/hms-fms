@@ -143,6 +143,26 @@
 </section>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#CafMenu').removeClass('collapse');
+
+        $('#CafDashboard').removeClass('active');
+        $('#CafOpen').removeClass('active');
+        $('#CafCompleted').removeClass('active');
+
+        if ($('.title-page').html() == 'CAF Dashboard') {
+            $('#CafDashboard').addClass('active');
+        }
+        else if ($('.title-page').html() == 'CAF Open Documents' || $('.title-page').html() == 'Mass upload from Vendor') {
+            $('#CafOpen').addClass('active');
+        }
+        else if ($('.title-page').html() == 'CAF Completed Documents') {
+            $('#CafCompleted').addClass('active');
+        }
+        else if ($('.title-page').html() == 'CAF Personal Dashboard' || $('.title-page').html() == 'Mass upload from Vendor - Personal Dashboard') {
+            $('#CafParent').addClass('active');
+        }
+    });
     function ExportXls() {
         $('#ExportToXls').submit();
     }

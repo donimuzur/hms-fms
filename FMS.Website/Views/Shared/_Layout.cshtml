@@ -162,15 +162,15 @@
                             </ul>
 			            </li>
 			            <li>
-                            <a href="#CafMenu" data-toggle="collapse">
+                            <a href="#CafMenu" id="CafParent" data-toggle="collapse">
                                 <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
                                 <h5>Car Accident</h5>
                             </a>
                             <ul class="childmenu collapse" id="CafMenu" data-parent="#sidemenu">
                                 
 
-                                <li><a href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
-                                <li><a href="@Url.Action("Completed","TraCaf")">Completed Documents</a></li>
+                                <li><a id="CafOpen" href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
+                                <li><a id="CafCompleted" href="@Url.Action("Completed","TraCaf")">Completed Documents</a></li>
                             </ul>
 			            </li>
 			            <li>

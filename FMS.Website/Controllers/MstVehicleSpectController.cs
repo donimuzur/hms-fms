@@ -126,10 +126,10 @@ namespace FMS.Website.Controllers
                     dto.CreatedBy = CurrentUser.USERNAME; 
                     dto.ModifiedDate = null;
 
-                    if (image != null)
+                    if (Model.ImageFile != null)
                     {
-                        string imagename = System.IO.Path.GetFileName(image.FileName);
-                        image.SaveAs(Server.MapPath(pathUpload + imagename));
+                        string imagename = System.IO.Path.GetFileName(Model.ImageFile.FileName);
+                        Model.ImageFile.SaveAs(Server.MapPath(pathUpload + imagename));
                         string filepathtosave = pathUpload + imagename;
                         dto.Image = imagename;
                     }
@@ -224,11 +224,11 @@ namespace FMS.Website.Controllers
                 var data = Mapper.Map<VehicleSpectDto>(model);
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USERNAME;
-                if (image != null)
+                if (model.ImageFile != null)
                 {
-                    string imagename = System.IO.Path.GetFileName(image.FileName);
+                    string imagename = System.IO.Path.GetFileName(model.ImageFile.FileName);
                     //Uri.
-                    image.SaveAs(Server.MapPath(pathUpload + imagename));
+                    model.ImageFile.SaveAs(Server.MapPath(pathUpload + imagename));
                     string filepathtosave = VirtualPathUtility.ToAbsolute(pathUpload) + imagename;
                     data.Image = imagename;
                 }
@@ -288,7 +288,15 @@ namespace FMS.Website.Controllers
                 {
                     try
                     {
-                        string imagename = System.IO.Path.GetFileName(data.Image);
+                        string imagename = "";
+                        if (data.ImageFile != null)
+                        {
+                            imagename = System.IO.Path.GetFileName(data.ImageFile.FileName);
+                            data.Image = imagename;
+                            data.ImageFile.SaveAs(Server.MapPath(pathUpload + imagename));
+                            //string filepathtosave = VirtualPathUtility.ToAbsolute(pathUpload) + imagename;
+                            data.Image = imagename;
+                        }
                         //Stream imageStream = System.IO.File.Open(data.Image, FileMode.Open);
                         //byte[] imageBytes;
                         //using (BinaryReader br = new BinaryReader(imageStream))
@@ -355,7 +363,7 @@ namespace FMS.Website.Controllers
                     item.Image = dataRow[10].ToString();
                     item.IsActive = dataRow[15].ToString() == "Active"? true : false;
                     item.IsActiveS = dataRow[15].ToString();
-
+                    
                     string message = "";
                     var dto = Mapper.Map<VehicleSpectDto>(item);
                     _VehicleSpectBLL.ValidateSpect(dto, out message);
