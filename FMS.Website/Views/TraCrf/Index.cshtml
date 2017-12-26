@@ -98,12 +98,12 @@
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
                         <td>@Html.Raw(data.DocumentStatusString)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy"))</td>
                         <td>@Html.Raw(data.VehicleType)</td>
                         <td>@Html.Raw(data.VehicleUsage)</td>
                         @if (data.EffectiveDate.HasValue)
                         {
-                        <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy"))</td>
                         }
                         else
                         {

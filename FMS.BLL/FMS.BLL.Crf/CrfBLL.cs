@@ -57,7 +57,7 @@ namespace FMS.BLL.Crf
         {
             var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
                 && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
-                && x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft
+                //&& x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft
                 //|| (x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Draft 
                 //&& x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
                 //&& x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Completed
@@ -372,7 +372,7 @@ namespace FMS.BLL.Crf
                 EmployeeId = data.EMPLOYEE_ID,
                 VehicleType = data.VEHICLE_TYPE,
                 VehicleUsage = data.VEHICLE_USAGE,
-                VehicleStatus = "ACTIVE",
+                
                 PoliceNumber = data.POLICE_NUMBER
             }).FirstOrDefault();
 
@@ -380,18 +380,36 @@ namespace FMS.BLL.Crf
             {
                 return false;
             }
-            if (data.CHANGE_POLICE_NUMBER.HasValue && data.CHANGE_POLICE_NUMBER.Value)
+            else
             {
-                dataFleet.POLICE_NUMBER = data.NEW_POLICE_NUMBER;
+                dataFleet.IS_ACTIVE = false;
+                try
+                {
+                    _fleetService.save(dataFleet);
+                 
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
 
-            dataFleet.CITY = data.LOCATION_CITY_NEW;
-            dataFleet.MODIFIED_BY = loginFleet.USER_ID;
-            dataFleet.MODIFIED_DATE = DateTime.Now;
-            dataFleet.COST_CENTER = data.COST_CENTER_NEW;
+            var dataToSave = Mapper.Map<MST_FLEET>(dataFleet);
+
+            if (data.CHANGE_POLICE_NUMBER.HasValue && data.CHANGE_POLICE_NUMBER.Value)
+            {
+                dataToSave.POLICE_NUMBER = data.NEW_POLICE_NUMBER;
+            }
+
+            dataToSave.CITY = data.LOCATION_CITY_NEW;
+            dataToSave.MODIFIED_BY = loginFleet.USER_ID;
+            dataToSave.MODIFIED_DATE = DateTime.Now;
+            dataToSave.COST_CENTER = data.COST_CENTER_NEW;
+            dataToSave.IS_ACTIVE = true;
             try
             {
-                _fleetService.save(dataFleet);
+                
+                _fleetService.save(dataToSave);
                 return true;
             }
             catch (Exception)
