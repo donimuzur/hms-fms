@@ -225,6 +225,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.CurrentLogin = CurrentUser;
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
                 dataToSave.CREATED_BY = CurrentUser.USER_ID;
                 dataToSave.CREATED_DATE = DateTime.Now;
@@ -238,6 +239,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.Detail.CurrentLogin = CurrentUser;
                 model.ErrorMessage = ex.Message;
                 model.LocationNewList = new SelectList(new List<SelectListItem>());
                 return View(model);
@@ -337,6 +339,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.CurrentLogin = CurrentUser;
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
                 dataToSave.IS_ACTIVE = true;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
@@ -348,6 +351,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.Detail.CurrentLogin = CurrentUser;
                 model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
                 if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
                 {
@@ -401,6 +405,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                
                 model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, TraCrfId);
                 model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
                 var data = _CRFBLL.GetDataById(TraCrfId);
@@ -409,7 +414,7 @@ namespace FMS.Website.Controllers
 
                 model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
                 model.Detail = Mapper.Map<TraCrfItemDetails>(data);
-
+                model.Detail.CurrentLogin = CurrentUser;
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int) Enums.DocumentType.CRF).ToList();
 
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -428,7 +433,7 @@ namespace FMS.Website.Controllers
             
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
+            model.Detail.CurrentLogin = CurrentUser;
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)model.Detail.TraCrfId);
             //var data = _CRFBLL.GetDataById((int)model.Detail.TraCrfId);
@@ -445,6 +450,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.Detail.CurrentLogin = CurrentUser;
                 model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
                 if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
                 {
