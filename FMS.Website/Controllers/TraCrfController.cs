@@ -101,6 +101,10 @@ namespace FMS.Website.Controllers
                 model.CurrentPageAccess.WriteAccess = true;
             }
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
+            foreach (var traCrfDto in model.Details)
+            {
+                traCrfDto.CurrentLogin = CurrentUser;
+            }
             return View(model);
         }
 
@@ -119,6 +123,10 @@ namespace FMS.Website.Controllers
                 },
                 IsPersonalDashboard = true
             };
+            foreach (var traCrfDto in model.Details)
+            {
+                traCrfDto.CurrentLogin = CurrentUser;
+            }
             //model.TitleForm = "CRF Personal Dashboard";
            // model.TitleExport = "ExportOpen";
             return View("Index", model);
@@ -759,7 +767,9 @@ namespace FMS.Website.Controllers
             Response.WriteFile(newFile.FullName);
             Response.Flush();
             newFile.Delete();
+            
             Response.End();
+            
         }
 
         public void ExportCompleted()
@@ -819,7 +829,7 @@ namespace FMS.Website.Controllers
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
-
+           
             return path;
 
         }
