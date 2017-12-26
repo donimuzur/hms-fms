@@ -285,6 +285,7 @@
     <Compile Include="Controllers\RptKpiMonitoringController.cs" />
     <Compile Include="Controllers\RptPoController.cs" />
     <Compile Include="Controllers\RptVehicleOverallController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCcfController.cs" />
@@ -1047,11 +1048,14 @@
     <Content Include="files_upload\masterVendor.xlsx" />
     <Content Include="files_upload\Accident\EHSTemplate.xlsx" />
     <Content Include="files_upload\Accident\ProgressTemplate.xlsx" />
+    <Content Include="files_upload\masterFuelOdometer.xlsx" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
     <Content Include="Scripts\KpiMonitoring.js" />
     <Content Include="Scripts\VehicleOverall.js" />
     <Content Include="Scripts\CfmIdle.js" />
@@ -4388,7 +4392,11 @@
     <Content Include="Views\RptExecutiveSummary\SumPtdByFunction.cshtml" />
     <Content Include="Views\RptExecutiveSummary\_ListSumPtdByFunction.cshtml" />
     <Content Include="Views\MstSalesVolume\_ListData.cshtml" />
+    <Content Include="Views\MstFuelOdometer\Upload.cshtml" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
+    <Content Include="Views\Service\CompleteTransaction.cshtml" />
     <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SummaryAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

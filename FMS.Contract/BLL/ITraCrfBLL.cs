@@ -33,5 +33,7 @@ namespace FMS.Contract.BLL
         TemporaryDto SaveTemp(TemporaryDto item,DateTime expectedDate, Login CurrentUser);
 
         List<TemporaryDto> GetTempByCsf(string p);
+
+        List<string> CompleteAllDocument();
     }
 }

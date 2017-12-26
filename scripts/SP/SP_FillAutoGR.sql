@@ -31,10 +31,11 @@ BEGIN
 	@auto_gr_id as int = 0,
 	@last_auto_gr_id as int = 0,
 	@po_exist as bit = 0;
-	declare @day_gr as int = 3;
+	declare @day_gr as int = 0;
 
-	if day(getdate()) >=3 and day(GETDATE()) < 20 set @day_gr = 20;
-	if day(getdate()) < 3 and day(getdate()) >= 20 set @day_gr = 3;
+	if day(getdate()) >=3 and day(getdate()) < 20 set @day_gr = 3;
+	if day(getdate()) < 3 or day(getdate()) >= 20 set @day_gr = 20;
+
 
 	declare cursorFillAutoGR cursor for
 	select PO_NUMBER,PO_LINE,PO_DATE,CREATED_DATE,QTY ,IS_POSTED,START_CONTRACT,END_CONTRACT 
@@ -77,7 +78,7 @@ BEGIN
 
 				if @po_exist = 0
 				begin
-					INSERT INTO AUTO_GR(PO_NUMBER,PO_DATE,CREATED_DATE,IS_POSTED,LINE_ITEM,QTY_ITEM) VALUES(@po_number,@po_date,CURRENT_TIMESTAMP,0,@po_line,@qty);
+					INSERT INTO AUTO_GR(PO_NUMBER,PO_DATE,CREATED_DATE,IS_POSTED,LINE_ITEM,QTY_ITEM) VALUES(@po_number,getdate(),CURRENT_TIMESTAMP,0,@po_line,@qty);
 					select @auto_gr_id = IDENT_CURRENT('AUTO_GR');
 				end
 				

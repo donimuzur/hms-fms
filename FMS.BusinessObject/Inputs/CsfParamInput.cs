@@ -53,6 +53,9 @@ namespace FMS.BusinessObject.Inputs
         public string Purpose { get; set; }
         public int VehicleYear { get; set; }
         public string PoLine { get; set; }
+        public string Comments { get; set; }
+        public decimal VatDecimal { get; set; }
+        public decimal Price { get; set; }
 
         public int ReasonIdTemp { get; set; }
         public string ReasonTemp { get; set; }

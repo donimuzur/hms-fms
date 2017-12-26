@@ -147,6 +147,9 @@ namespace FMS.Website.Models
         public string DeliveryAddress { get; set; }
         public string DeliveryPic { get; set; }
         public string DeliveryPhone { get; set; }
+
+        
+        public string Region { get; set; }
         public bool ChangePoliceNumber { get; set; }
         public DateTime? ExpectedDate { get; set; }
         public string PoNumber { get; set; }

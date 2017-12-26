@@ -22,13 +22,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Function Name<span class="red">*</span></label>
-                            @Html.TextBoxFor(model => model.SettingName, new { @class = "form-control " })
+                            @Html.TextBoxFor(model => model.SettingName, new { @class = "form-control ", @required = "required" })
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Function Value<span class="red">*</span></label>
-                            @Html.TextBoxFor(model => model.SettingValue, new { @class = "form-control " })
+                            @Html.TextBoxFor(model => model.SettingValue, new { @class = "form-control ", @required = "required" })
                         </div>
                     </div>
 

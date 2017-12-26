@@ -34,6 +34,7 @@
                         <th>Date From</th>
                         <th>Date To Type</th>
                         <th>Is Complaint Form</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -113,11 +114,14 @@
                 createColumnWithHiddenField(convertDate(uploaditems[i].DateFrom), 'Model.Details[' + i + '].DateFrom') +
                 createColumnWithHiddenField(convertDate(uploaditems[i].DateTo), 'Model.Details[' + i + '].DateTo') +
                 createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsComplaintFromS, 'Model.Details[' + i + '].IsComplaintForm', uploaditems[i].IsComplaintForm) +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage;
                 }
-               $('#btnSave').prop('disabled', false);
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
             }
         });
     };

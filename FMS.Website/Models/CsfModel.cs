@@ -121,6 +121,9 @@ namespace FMS.Website.Models
         public string BrandingVendor { get; set; }
         public string PurposeVendor { get; set; }
         public string PoLineVendor { get; set; }
+        public string CommentsVendor { get; set; }
+        public decimal VatDecimalVendor { get; set; }
+        public decimal PriceVendor { get; set; }
         public bool IsAirBagVendor { get; set; }
         public bool IsVatVendor { get; set; }
         public bool IsRestitutionVendor { get; set; }
@@ -194,6 +197,9 @@ namespace FMS.Website.Models
         public string Purpose { get; set; }
         public int VehicleYear { get; set; }
         public string PoLine { get; set; }
+        public string Comments { get; set; }
+        public decimal VatDecimal { get; set; }
+        public decimal Price { get; set; }
 
         public int ReasonIdTemp { get; set; }
         public string ReasonTemp { get; set; }

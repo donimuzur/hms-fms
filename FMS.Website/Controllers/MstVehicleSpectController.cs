@@ -22,6 +22,7 @@ namespace FMS.Website.Controllers
         private IVehicleSpectBLL _VehicleSpectBLL;
         private ISettingBLL _settingBLL;
         private Enums.MenuList _mainMenu;
+        private const string pathUpload = "~/files_upload/VehicleSpect/";
 
         public MstVehicleSpectController(IPageBLL PageBll, IVehicleSpectBLL VehicleSpectBLL, ISettingBLL SettingBll) : base(PageBll, Enums.MenuList.MasterVehicleSpect)
         {
@@ -35,6 +36,11 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            if (!System.IO.Directory.Exists(Server.MapPath(pathUpload)))
+            {
+                System.IO.Directory.CreateDirectory(Server.MapPath(pathUpload));
+            }
+
             var data = _VehicleSpectBLL.GetVehicleSpect();
             var model = new VehicleSpectModel();
             model.Details = Mapper.Map<List<VehicleSpectItem>>(data);
@@ -123,8 +129,8 @@ namespace FMS.Website.Controllers
                     if (image != null)
                     {
                         string imagename = System.IO.Path.GetFileName(image.FileName);
-                        image.SaveAs(Server.MapPath("/files_upload/" + imagename));
-                        string filepathtosave = "files_upload" + imagename;
+                        image.SaveAs(Server.MapPath(pathUpload + imagename));
+                        string filepathtosave = pathUpload + imagename;
                         dto.Image = imagename;
                     }
                     else
@@ -185,7 +191,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            model.Image = webRootUrl + "files_upload/" + model.Image;
+            model.Image = webRootUrl + VirtualPathUtility.ToAbsolute(pathUpload) + model.Image;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
@@ -204,7 +210,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            model.ImageS = webRootUrl + "files_upload/" + model.Image;
+            model.Image = webRootUrl + VirtualPathUtility.ToAbsolute(pathUpload) + model.Image;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
             return View(model);
@@ -221,17 +227,37 @@ namespace FMS.Website.Controllers
                 if (image != null)
                 {
                     string imagename = System.IO.Path.GetFileName(image.FileName);
-                    image.SaveAs(Server.MapPath("~/files_upload/" + imagename));
-                    string filepathtosave = "files_upload" + imagename;
+                    //Uri.
+                    image.SaveAs(Server.MapPath(pathUpload + imagename));
+                    string filepathtosave = VirtualPathUtility.ToAbsolute(pathUpload) + imagename;
                     data.Image = imagename;
                 }
                 else
                 {
                     data.Image = model.Image;
                 }
-                
+                string message = "";
+                _VehicleSpectBLL.ValidateSpect(data, out message,true);
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    AddMessageInfo(message, Enums.MessageInfoType.Error);
+                    
+                    model = Mapper.Map<VehicleSpectItem>(data);
+                    model.MainMenu = _mainMenu;
+                    model = initEdit(model);
+                    
+                    var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                    model.Image = webRootUrl + VirtualPathUtility.ToAbsolute(pathUpload) + model.Image;
+                    model.CurrentLogin = CurrentUser;
+                    model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, data.MstVehicleSpectId);
+                    return View(model);
+                    
+                }
+
                 try
                 {
+                    
                     _VehicleSpectBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
@@ -278,6 +304,7 @@ namespace FMS.Website.Controllers
                         data.ModifiedDate = null;
 
                         var dto = Mapper.Map<VehicleSpectDto>(data);
+                        
                         _VehicleSpectBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
@@ -329,6 +356,10 @@ namespace FMS.Website.Controllers
                     item.IsActive = dataRow[15].ToString() == "Active"? true : false;
                     item.IsActiveS = dataRow[15].ToString();
 
+                    string message = "";
+                    var dto = Mapper.Map<VehicleSpectDto>(item);
+                    _VehicleSpectBLL.ValidateSpect(dto, out message);
+                    item.Message = message;
                     model.Add(item);
                 }
             }

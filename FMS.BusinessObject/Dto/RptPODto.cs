@@ -22,6 +22,7 @@ namespace FMS.BusinessObject.Dto
         public String EngineNumber { get; set; }
         public String VehicleType { get; set; }
         public String VehicleUsage { get; set; }
+        public String VehicleFunction { get; set; }
         public String PoNumber { get; set; }
         public String PoLine { get; set; }
         public int ReportMonth { get; set; }
@@ -34,7 +35,7 @@ namespace FMS.BusinessObject.Dto
         public Decimal Gst { get; set; }
         public Decimal TotMonthInstallment { get; set; }
         public long MstFleetId { get; set; }
-
+        public string GroupLevel { get; set; }
 
         public Decimal JanAmount { get; set; }
         public Decimal JanPPN { get; set; }

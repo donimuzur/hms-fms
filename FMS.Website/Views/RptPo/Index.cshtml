@@ -22,6 +22,7 @@
         @Html.HiddenFor(model => model.SearchViewExport.CostCenter)
         @Html.HiddenFor(model => model.SearchViewExport.SupplyMethod)
         @Html.HiddenFor(model => model.SearchViewExport.PoliceNumber)
+        @Html.HiddenFor(model => model.SearchViewExport.GroupLevel)
     }
     <div class="wpanel">
         <p>@Model.ErrorMessage</p>
@@ -105,6 +106,12 @@
                         @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control text" })
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Group Level</label>
+                        @Html.TextBoxFor(model => model.SearchView.GroupLevel, new { @class = "form-control text" })
+                    </div>
+                </div>
                 <div class="clearfix"></div>
                     <div class="col-md-12">
                         <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
@@ -132,6 +139,7 @@
         $('#SearchViewExport_CostCenter').val($('#SearchView_CostCenter').val());
         $('#SearchViewExport_SupplyMethod').val($('#SearchView_SupplyMethod').val());
         $('#SearchViewExport_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#SearchViewExport_GroupLevel').val($('#SearchView_GroupLevel').val());
         $('#ExportToXls').submit();
     }
 
@@ -176,11 +184,16 @@
         $(".select").val('');
         $(".text").val('');
 
+        //$('#SearchView_EmployeeName').val("");
+        $('#SearchView_MonthFrom').val((d.getMonth() + 1) - 2);
+        $('#SearchView_GroupLevel').val(1);
+        $('#SearchView_EmployeeName').val(1);
+
         $("#btn-filter").trigger('click');
     });
 
     $(function () {
         setupDataTables();
-        $("#btn-reset").trigger('click');
+        //$("#btn-reset").trigger('click');
     });
 </script>

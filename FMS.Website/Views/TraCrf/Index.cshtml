@@ -4,10 +4,7 @@
 
            
 <div class="opt-content clearfloat">
-    <h5 class="title-page">
-        @(Model.IsPersonalDashboard ? Html.Raw("CRF Personal Dashboard") : Html.Raw("CRF Open Documents"))
-        
-    </h5>
+    <h5 class="title-page">@(Model.IsPersonalDashboard ? Html.Raw("CRF Personal Dashboard") : Html.Raw("CRF Open Documents"))</h5>
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@
@@ -33,6 +30,7 @@
                     <th>CRF Number</th>
                     <th>CRF Status</th>
                     <th>Document Date</th>
+                    <th>Vehice Type</th>
                     <th>Vehice Usage</th>
                     <th>Effective Date</th>
 
@@ -40,6 +38,7 @@
                     <th>Employee Name</th>
                     <th>Current Location</th>
                     <th>Relocate Location</th>
+                    <th>Region</th>
                     <th>Reason</th>
                     
                     <th>Updated By</th>
@@ -54,6 +53,8 @@
                     {
                         <a href="@Url.Action("Create","TraCrf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
                     }</th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
@@ -98,6 +99,7 @@
                         <td>@Html.Raw(data.DocumentStatusString)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MM-yyyy hh:mm"))</td>
                         <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
                         @if (data.EffectiveDate.HasValue)
                         {
                         <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
@@ -111,6 +113,7 @@
                         <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.LocationCity)</td>
                         <td>@Html.Raw(data.LocationCityNew)</td>
+                        <td>@Html.Raw(data.Region)</td>
                         <td>@Html.Raw(data.RelocationType)</td>
                         
                         <td>@Html.Raw(data.ModifiedBy)</td>
@@ -130,7 +133,7 @@
             </tbody>
         </table>
     </div>
-
+    <script src="~/Scripts/crfscript.js"></script>
     <script type="text/javascript">
         function ExportXls() {
             $('#ExportToXls').submit();
