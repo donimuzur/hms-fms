@@ -275,6 +275,9 @@ namespace FMS.Website.Controllers
 
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
+            model.VatDecimalStr = model.VatDecimal == null ? "" : string.Format("{0:n0}", model.VatDecimal);
+            model.MonthlyHMSInstallmentStr = model.MonthlyHMSInstallment == null ? "" : string.Format("{0:n0}", model.MonthlyHMSInstallment);
+            model.TotalMonthlyChargeStr = model.TotalMonthlyCharge == null ? "" : string.Format("{0:n0}", model.TotalMonthlyCharge);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId.Value);
@@ -301,7 +304,35 @@ namespace FMS.Website.Controllers
 
                 }
 
+                if (model.MonthlyHMSInstallmentStr != null)
+                {
+                    model.MonthlyHMSInstallment = Convert.ToDecimal(model.MonthlyHMSInstallmentStr.Replace(",", ""));
+                }
+                if (model.VatDecimalStr != null)
+                {
+                    model.VatDecimal = Convert.ToDecimal(model.VatDecimalStr.Replace(",", ""));
+                }
+
                 var data = Mapper.Map<FleetDto>(model);
+                data.Project = false;
+                data.Restitution = true;
+                data.TotalMonthlyCharge = 0;
+                if (!string.IsNullOrEmpty(data.ProjectName))
+                {
+                    data.Project = true;
+                }
+                if (data.VatDecimal.Value > 0)
+                {
+                    data.Restitution = false;
+                }
+                if (data.MonthlyHMSInstallment > 0)
+                {
+                    data.TotalMonthlyCharge = data.MonthlyHMSInstallment;
+                    if (data.VatDecimal > 0)
+                    {
+                        data.TotalMonthlyCharge = data.MonthlyHMSInstallment + data.VatDecimal;
+                    }
+                }
                 data.ModifiedBy = CurrentUser.USERNAME;
                 data.ModifiedDate = DateTime.Now;
 
@@ -566,7 +597,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Fleet");
-            slDocument.MergeWorksheetCells(1, 1, 1,50);
+            slDocument.MergeWorksheetCells(1, 1, 1,47);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -650,7 +681,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 50, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 47, headerStyle);
 
             return slDocument;
 
@@ -680,38 +711,35 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 16, data.VehicleYear);
                 slDocument.SetCellValue(iRow, 17, data.VehicleType);
                 slDocument.SetCellValue(iRow, 18, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 19, data.Airbag);
-                slDocument.SetCellValue(iRow, 20, data.VehicleYear);
-                slDocument.SetCellValue(iRow, 21, data.VehicleType);
-                slDocument.SetCellValue(iRow, 22, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 23, data.Project);
-                slDocument.SetCellValue(iRow, 24, data.ProjectName);
-                slDocument.SetCellValue(iRow, 25, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 26, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 27, data.VendorName);
-                slDocument.SetCellValue(iRow, 28, data.City);
-                slDocument.SetCellValue(iRow, 29, data.SupplyMethod);
-                slDocument.SetCellValue(iRow, 30, data.Restitution);
-                slDocument.SetCellValue(iRow, 31, data.MonthlyHMSInstallment);
-                slDocument.SetCellValue(iRow, 32, data.PoLine);
-                slDocument.SetCellValue(iRow, 33, data.StartContract== null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 34, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 35, data.Price);
-                slDocument.SetCellValue(iRow, 36, data.VehicleStatus);
-                slDocument.SetCellValue(iRow, 37, data.IsTaken);
-                slDocument.SetCellValue(iRow, 38, data.GrLeftQty);
-                slDocument.SetCellValue(iRow, 39, data.CertificateOwnership);
-                slDocument.SetCellValue(iRow, 40, data.Comments);
-                slDocument.SetCellValue(iRow, 41, data.Assets);
-                slDocument.SetCellValue(iRow, 42, data.TotalMonthlyCharge == null? 0 : (decimal)data.TotalMonthlyCharge);
-                slDocument.SetCellValue(iRow, 43, data.Function);
-                slDocument.SetCellValue(iRow, 44, data.Regional);
-                slDocument.SetCellValue(iRow, 45, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 46, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 47, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 48, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 49, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 50, data.IsActive == true ? "Active" : "InActive");
+                slDocument.SetCellValue(iRow, 19, data.Project);
+                slDocument.SetCellValue(iRow, 20, data.ProjectName);
+                slDocument.SetCellValue(iRow, 21, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 22, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 23, data.VendorName);
+                slDocument.SetCellValue(iRow, 24, data.City);
+                slDocument.SetCellValue(iRow, 25, data.SupplyMethod);
+                slDocument.SetCellValue(iRow, 26, data.Restitution);
+                slDocument.SetCellValue(iRow, 27, data.MonthlyHMSInstallment);
+                slDocument.SetCellValue(iRow, 28, data.VatDecimal == null ? 0 : data.VatDecimal.Value);
+                slDocument.SetCellValue(iRow, 29, data.PoNumber);
+                slDocument.SetCellValue(iRow, 30, data.PoLine);
+                slDocument.SetCellValue(iRow, 31, data.CarGroupLevel);
+                slDocument.SetCellValue(iRow, 32, data.GroupLevel);
+                slDocument.SetCellValue(iRow, 33, data.AssignedTo);
+                slDocument.SetCellValue(iRow, 34, data.Address);
+                slDocument.SetCellValue(iRow, 35, data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 36, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 37, data.IsActive ? "Active" : "Not Active");
+                slDocument.SetCellValue(iRow, 38, data.CertificateOwnership);
+                slDocument.SetCellValue(iRow, 39, data.Comments);
+                slDocument.SetCellValue(iRow, 40, data.Assets);
+                slDocument.SetCellValue(iRow, 41, data.TotalMonthlyCharge == null ? 0 : data.TotalMonthlyCharge.Value);
+                slDocument.SetCellValue(iRow, 42, data.Function);
+                slDocument.SetCellValue(iRow, 43, data.Regional);
+                slDocument.SetCellValue(iRow, 44, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 45, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 46, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 47, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
           
 
                 iRow++;
@@ -724,8 +752,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 50);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 50, valueStyle);
+            slDocument.AutoFitColumn(1, 47);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 47, valueStyle);
 
             return slDocument;
         }

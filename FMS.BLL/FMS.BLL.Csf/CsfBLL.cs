@@ -1555,6 +1555,7 @@ namespace FMS.BLL.Csf
                 var regional = getZonePriceList == null ? "" : getZonePriceList.REGION;
                 var function = functionList == null ? "" : functionList.FUNCTION_NAME;
                 var fuelType = vSpecList == null ? string.Empty : vSpecList.FUEL_TYPE;
+                var transmission = vSpecList == null ? string.Empty : vSpecList.TRANSMISSION;
 
                 if (!string.IsNullOrEmpty(item.VEHICLE_TYPE))
                 {
@@ -1607,6 +1608,7 @@ namespace FMS.BLL.Csf
                 dbFleet.FUEL_TYPE = fuelType;
                 dbFleet.REGIONAL = regional;
                 dbFleet.VEHICLE_FUNCTION = function;
+                dbFleet.TRANSMISSION = transmission;
 
                 _fleetService.save(dbFleet);
 
