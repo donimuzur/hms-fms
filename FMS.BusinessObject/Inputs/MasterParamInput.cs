@@ -15,4 +15,13 @@ namespace FMS.BusinessObject.Inputs
         public string Type { get; set; }
         public string Regional { get; set; }
     }
+
+    public class CostObParamInput
+    {
+        public bool? Status { get; set; }
+        public string VehicleType { get; set; }
+        public string Function { get; set; }
+        public string Regional { get; set; }
+        public int? Year { get; set; }
+    }
 }

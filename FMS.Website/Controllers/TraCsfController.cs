@@ -282,7 +282,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -420,7 +420,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -567,7 +567,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -772,8 +772,9 @@ namespace FMS.Website.Controllers
                         model.Detail.TransmissionVendor = cfmData.Transmission;
                         model.Detail.BrandingVendor = cfmData.Branding;
                         model.Detail.PurposeVendor = cfmData.Purpose;
-                        model.Detail.IsVatVendor = cfmData.Vat;
+                        model.Detail.VatDecimalVendor = cfmData.VatDecimal == null ? 0 : cfmData.VatDecimal.Value;
                         model.Detail.IsRestitutionVendor = cfmData.Restitution;
+                        model.Detail.CommentsVendor = cfmData.Comments;
 
                         model.Detail.StartPeriodVendor = model.Detail.EffectiveDate;
                         model.Detail.EndRentDate = cfmData.EndContract;
@@ -814,8 +815,9 @@ namespace FMS.Website.Controllers
                 csfData.VENDOR_BRANDING = model.Detail.BrandingVendor;
                 csfData.VENDOR_PURPOSE = model.Detail.PurposeVendor;
                 csfData.VENDOR_PO_LINE = model.Detail.PoLineVendor;
-                csfData.VENDOR_VAT = model.Detail.IsVatVendor;
+                csfData.VAT_DECIMAL = model.Detail.VatDecimalVendor;
                 csfData.VENDOR_RESTITUTION = model.Detail.IsRestitutionVendor;
+                csfData.COMMENTS = model.Detail.CommentsVendor;
 
                 csfData.EXPECTED_DATE = model.Detail.ExpectedDate;
                 csfData.END_RENT_DATE = model.Detail.EndRentDate;
@@ -1066,8 +1068,9 @@ namespace FMS.Website.Controllers
                     item.BodyType = dataRow[15];
                     item.Branding = dataRow[17];
                     item.Purpose = dataRow[18];
-                    item.IsVat = dataRow[22].ToUpper() == "YES" ? true : false;
+                    item.VatDecimal = Convert.ToDecimal(dataRow[22]);
                     item.IsRestitution = dataRow[23].ToUpper() == "YES" ? true : false;
+                    item.Comments = dataRow[25];
 
                     if (cfmData != null)
                     {
@@ -1084,8 +1087,9 @@ namespace FMS.Website.Controllers
                         item.BodyType = cfmData.BodyType;
                         item.Branding = cfmData.Branding;
                         item.Purpose = cfmData.Purpose;
-                        item.IsVat = cfmData.Vat;
+                        item.VatDecimal = cfmData.VatDecimal == null ? 0 : cfmData.VatDecimal.Value;
                         item.IsRestitution = cfmData.Restitution;
+                        item.Comments = cfmData.Comments;
                     }
 
                     model.Add(item);
@@ -1402,8 +1406,9 @@ namespace FMS.Website.Controllers
                         csfData.VENDOR_BRANDING = data.Branding;
                         csfData.VENDOR_PURPOSE = data.Purpose;
                         csfData.VENDOR_PO_LINE = data.PoLine;
-                        csfData.VENDOR_VAT = data.IsVat;
+                        csfData.VAT_DECIMAL = data.VatDecimal;
                         csfData.VENDOR_RESTITUTION = data.IsRestitution;
+                        csfData.COMMENTS = data.Comments;
 
                         var saveResult = _csfBLL.Save(csfData, CurrentUser);
                         //send email to user if police number and contract start date is fill
