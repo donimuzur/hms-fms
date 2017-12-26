@@ -153,8 +153,10 @@ namespace FMS.Website.Models
         public SelectList BodyTypeList { get; set; }
         public SelectList FuelTypeList { get; set; }
         public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
         public SelectList TransmissionList { get; set; }
         public SelectList RegionalList { get; set; }
         public SelectList FunctionList { get; set; }
+        public SelectList ProjectList { get; set; }
     }
 }    
