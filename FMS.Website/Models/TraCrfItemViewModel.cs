@@ -180,7 +180,10 @@ namespace FMS.Website.Models
             get
             {
                 bool isAllowed = false;
-
+                if (this.CurrentLogin == null)
+                {
+                    return false;
+                }
                 switch (this.DocumentStatus)
                 {
                     case (int)Enums.DocumentStatus.WaitingHRApproval:

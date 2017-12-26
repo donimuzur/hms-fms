@@ -3,6 +3,7 @@ using FMS.BusinessObject;
 using FMS.Contract.BLL;
 using FMS.BusinessObject.Dto;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace FMS.Website.Controllers
             //    new SelectListItem { Text = "Truck", Value = "Truck" }
             //};
 
-            var list1 = _settingBLL.GetSetting().Where(x=> x.SettingGroup == "BODY_TYPE" && x.IsActive).ToList();
+            var list1 = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType) && x.IsActive).ToList();
             model.BodyTypeList = new SelectList(list1, "SettingValue", "SettingValue");
 
             var list2 = new List<SelectListItem>
@@ -85,19 +86,19 @@ namespace FMS.Website.Controllers
             };
             model.GroupLevelList = new SelectList(list2, "Value", "Text");
 
-            var list3 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Automatic", Value = "Automatic" },
-                new SelectListItem { Text = "Manual", Value = "Manual" },
-            };
-            model.TransmissionList = new SelectList(list3, "Value", "Text");
+            var list3 =
+                _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Transmission) && x.IsActive)
+                    .ToList();
 
-            var list4 = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
-                new SelectListItem {Text = "Diesel", Value = "Diesel" }
-            };
-            model.FuelTypeList = new SelectList(list4, "Value", "Text");
+            model.TransmissionList = new SelectList(list3, "SettingValue", "SettingValue");
+
+            var list4 = _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.FuelType) && x.IsActive)
+                    .ToList();
+            model.FuelTypeList = new SelectList(list4, "SettingValue", "SettingValue");
 
             return model;
         }
@@ -154,7 +155,7 @@ namespace FMS.Website.Controllers
         public VehicleSpectItem initEdit(VehicleSpectItem model)
         {
             
-            var list1 = _settingBLL.GetSetting().Where(x => x.SettingGroup == "BODY_TYPE" && x.IsActive).ToList();
+            var list1 = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType) && x.IsActive).ToList();
             model.BodyTypeList = new SelectList(list1, "SettingValue", "SettingValue",model.BodyType);
 
             var list2 = new List<SelectListItem>
@@ -167,19 +168,19 @@ namespace FMS.Website.Controllers
             };
             model.GroupLevelList = new SelectList(list2, "Value", "Text", model.GroupLevel);
 
-            var list3 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Automatic", Value = "Automatic" },
-                new SelectListItem { Text = "Manual", Value = "Manual" },
-            };
-            model.TransmissionList = new SelectList(list3, "Value", "Text", model.Transmission);
+            var list3 =
+                _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Transmission) && x.IsActive)
+                    .ToList();
             
-            var list4 = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Gasoline", Value = "Gasoline" },
-                new SelectListItem {Text = "Diesel", Value = "Diesel" }
-            };
-            model.FuelTypeList = new SelectList(list4, "Value", "Text", model.FuelTypeSpect);
+            model.TransmissionList = new SelectList(list3, "SettingValue", "SettingValue", model.Transmission);
+
+            var list4 = _settingBLL.GetSetting()
+                    .Where(
+                        x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.FuelType) && x.IsActive)
+                    .ToList();
+            model.FuelTypeList = new SelectList(list4, "SettingValue", "SettingValue", model.FuelTypeSpect);
 
             return model;
         }
