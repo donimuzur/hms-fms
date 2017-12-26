@@ -246,7 +246,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -366,7 +366,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -515,8 +515,10 @@ namespace FMS.Website.Controllers
                 tempData.VENDOR_BRANDING = model.Detail.BrandingVendor;
                 tempData.VENDOR_PURPOSE = model.Detail.PurposeVendor;
                 tempData.VENDOR_PO_LINE = model.Detail.PoLineVendor;
-                tempData.VENDOR_VAT = model.Detail.IsVatVendor;
+                tempData.VAT_DECIMAL = model.Detail.VatDecimalVendor;
                 tempData.VENDOR_RESTITUTION = model.Detail.IsRestitutionVendor;
+                tempData.PRICE = model.Detail.PriceVendor;
+                tempData.COMMENTS = model.Detail.CommentsVendor;
 
                 var saveResult = _tempBLL.Save(tempData, CurrentUser);
 
@@ -694,8 +696,10 @@ namespace FMS.Website.Controllers
                     item.VehicleYear = Convert.ToInt32(dataRow[19]);
                     item.PoNumber = dataRow[20];
                     item.PoLine = dataRow[21];
-                    item.IsVat = dataRow[22].ToUpper() == "YES" ? true : false;
+                    item.VatDecimal = Convert.ToDecimal(dataRow[22]);
                     item.IsRestitution = dataRow[23].ToUpper() == "YES" ? true : false;
+                    item.Price = Convert.ToDecimal(dataRow[24]);
+                    item.Comments = dataRow[25];
 
                     model.Add(item);
                 }
@@ -819,8 +823,10 @@ namespace FMS.Website.Controllers
                         tempData.VENDOR_BRANDING = data.Branding;
                         tempData.VENDOR_PURPOSE = data.Purpose;
                         tempData.VENDOR_PO_LINE = data.PoLine;
-                        tempData.VENDOR_VAT = data.IsVat;
+                        tempData.VAT_DECIMAL = data.VatDecimal;
                         tempData.VENDOR_RESTITUTION = data.IsRestitution;
+                        tempData.PRICE = data.Price;
+                        tempData.COMMENTS = data.Comments;
 
                         var saveResult = _tempBLL.Save(tempData, CurrentUser);
                         //send email to user if police number and contract start date is fill

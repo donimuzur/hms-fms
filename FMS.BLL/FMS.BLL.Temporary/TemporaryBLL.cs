@@ -932,15 +932,6 @@ namespace FMS.BLL.Temporary
                 var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.BASETOWN == item.LOCATION_CITY
                                                                                                  && x.IS_ACTIVE).FirstOrDefault();
 
-                var zonePrice = getZonePriceList == null ? "" : getZonePriceList.ZONE_PRICE_LIST;
-
-                var priceList = _priceListService.GetPriceList().Where(x => x.YEAR == item.CREATED_DATE.Year
-                                                                        && x.MANUFACTURER == item.VENDOR_MANUFACTURER
-                                                                        && x.MODEL == item.VENDOR_MODEL
-                                                                        && x.SERIES == item.VENDOR_SERIES
-                                                                        && x.IS_ACTIVE
-                                                                        && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
-
                 var vSpecList = _vehicleSpectService.GetVehicleSpect().Where(x => x.YEAR == item.CREATED_DATE.Year
                                                                         && x.MANUFACTURER == item.MANUFACTURER
                                                                         && x.MODEL == item.MODEL
@@ -954,7 +945,7 @@ namespace FMS.BLL.Temporary
                 var vehUsage = string.Empty;
                 var projectName = string.Empty;
                 var isProject = false;
-                var hmsPrice = priceList == null ? 0 : priceList.INSTALLMEN_HMS;
+                var hmsPrice = item.PRICE == null ? 0 : item.PRICE;
                 var address = getZonePriceList == null ? "" : getZonePriceList.ADDRESS;
                 var regional = getZonePriceList == null ? "" : getZonePriceList.REGION;
                 var function = functionList == null ? "" : functionList.FUNCTION_NAME;
