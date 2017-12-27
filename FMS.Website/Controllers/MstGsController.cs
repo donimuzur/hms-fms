@@ -622,9 +622,9 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 13, "Start Date");
             slDocument.SetCellValue(iRow, 14, "End Date");
             slDocument.SetCellValue(iRow, 15, "Lead Time");
-            slDocument.SetCellValue(iRow, 12, "KPI Fulfillment");
-            slDocument.SetCellValue(iRow, 12, "Rent Time");
-            slDocument.SetCellValue(iRow, 16, "Remark");
+            slDocument.SetCellValue(iRow, 16, "KPI Fulfillment");
+            slDocument.SetCellValue(iRow, 17, "Rent Time");
+            slDocument.SetCellValue(iRow, 18, "Remark");
 
 
             SLStyle headerStyle = slDocument.CreateStyle();

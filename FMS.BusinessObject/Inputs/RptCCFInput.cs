@@ -13,7 +13,7 @@ namespace FMS.BusinessObject.Inputs
         public int Category { get; set; }
         public string Coordinator { get; set; }
         public string Location { get; set; }
-        public int CoorKPI { get; set; }
-        public int VendorKPI { get; set; }
+        public int? CoorKPI { get; set; }
+        public int? VendorKPI { get; set; }
     }
 }
