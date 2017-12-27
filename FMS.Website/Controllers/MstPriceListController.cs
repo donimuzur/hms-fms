@@ -443,16 +443,6 @@ namespace FMS.Website.Controllers
 
                             item.ErrorMessage = "Installment Employee is not valid";
                         }
-
-                        try
-                        {
-                            item.Price = Convert.ToInt32(dataRow[10]);
-                        }
-                        catch (Exception)
-                        {
-
-                            item.ErrorMessage = "Price is not valid";
-                        }
                         var VehicleSpect = _vehicleSpect.GetVehicleSpect().Where(x => (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (item.Manufacture == null ? "" : item.Manufacture.ToUpper())
                                                                                 && (x.Models == null ? "" : x.Models.ToUpper()) == (item.Models == null ? "" : item.Models.ToUpper())
                                                                                 && (x.Series == null ? "" : x.Series.ToUpper()) == (item.Series == null ? "" : item.Series.ToUpper())
@@ -554,12 +544,11 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 8, "Request Year");
             slDocument.SetCellValue(iRow, 9, "Installment HMS");
             slDocument.SetCellValue(iRow, 10, "Installment EMP");
-            slDocument.SetCellValue(iRow, 11, "Price");
-            slDocument.SetCellValue(iRow, 12, "Created Date");
-            slDocument.SetCellValue(iRow, 13, "Created By");
-            slDocument.SetCellValue(iRow, 14, "Modified Date");
-            slDocument.SetCellValue(iRow, 15, "Modified By");
-            slDocument.SetCellValue(iRow, 16, "Status");
+            slDocument.SetCellValue(iRow, 11, "Created Date");
+            slDocument.SetCellValue(iRow, 12, "Created By");
+            slDocument.SetCellValue(iRow, 13, "Modified Date");
+            slDocument.SetCellValue(iRow, 14, "Modified By");
+            slDocument.SetCellValue(iRow, 15, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -570,7 +559,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
 
             return slDocument;
 
@@ -593,18 +582,17 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 8, data.Year);
                 slDocument.SetCellValue(iRow, 9, data.InstallmenHMS);
                 slDocument.SetCellValue(iRow, 10, data.InstallmenEMP);
-                slDocument.SetCellValue(iRow, 11, data.Price);
-                slDocument.SetCellValue(iRow, 12, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 13, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 14, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 15, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 13, data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 16, "Active");
+                    slDocument.SetCellValue(iRow, 15, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 16, "InActive");
+                    slDocument.SetCellValue(iRow, 15, "InActive");
                 }
 
                 iRow++;
@@ -617,8 +605,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 16);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
+            slDocument.AutoFitColumn(1, 15);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
 
             return slDocument;
         }

@@ -6,6 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("UploadCtf", "TraCtf", FormMethod.Post))
             {
             <div class="row">
@@ -23,104 +24,31 @@
                     </div>
                 </div>
             </div>
-            <div id="information" class="tab-pane active" role="tabpanel">
-                <div class="tab-wrapper">
-                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
-                        <div class="panel panel-default">
-                            <div id="headingOne" role="tab" class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
-                                        Information
-                                        <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
-                                <div class="panel-body">
-                                    <div role="form" class="form-excise">
-                                        <div class="panel-body">
-                                            <div role="form" class="form-excise">
-                                                <div class="row col-md-6">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Terminate Reason</label>
-                                                            @*@Html.HiddenFor(model => model.IsSubmit, new { @id = "isSubmit" })*@
-                                                            @Html.DropDownListFor(model => model.Reason, Model.ReasonList, "-- Please Select--", new { @class = "form-control", required = "required" })
-                                                        </div>
-                                                    </div>    
-                                                </div>
-                                                <div class="row col-md-6">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Vehicle Extend</label>
-                                                            @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", required = "required", onchange = "onExtendVehicle()" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row col-md-12" id="idExtend">
-                                                    <div class="col-md-12">
-                                                        <hr />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Number</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend PO Line</label>
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend Price</label>
-                                                            @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
-                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Extend Reason</label>
-                                                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="panel-body">
-                                            <div role="form" class="form-excise">
-                                                <div class="row col-md-12">
-                                                    <h5 class="panel-title">View Upload</h5>
-                                                    <table id="tbUpload" class="table table-bordered dataTables table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>Employee ID</th>
-                                                                <th>Employee Name</th>
-                                                                <th>Cost Cemter</th>
-                                                                <th>Police Number</th>
-                                                                <th>Vehicle Type</th>
-                                                                <th>Vehicle Year</th>
-                                                                <th>Supply Method</th>
-                                                                <th>Effective Date</th>
-                                                                <th>Message</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="tb-upload-excel"></tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <table id="tbUpload" class="table table-bordered dataTables table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Reason</th>
+                        <th>Termination Date</th>
+                        <th>Police Number</th>
+                        <th>Cost Center</th>
+                        <th>Vehicle Type</th>
+                        <th>Vehicle Year</th>
+                        <th>Supply Method</th>
+                        <th>Extend Vehicle</th>
+                        <th>Extend New Proposed Date</th>
+                        <th>Extend Police Number</th>
+                        <th>Extend PO Number</th>
+                        <th>Extend PO Line</th>
+                        <th>Extend PO Price</th>
+                        <th>Extend Reason</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
@@ -133,8 +61,6 @@
 
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
-
-    $('#modalPrice').val(ThausandSeperator($('#modalPrice').val(), 2));
     $(document).ready()
     {
         onExtendVehicle();
