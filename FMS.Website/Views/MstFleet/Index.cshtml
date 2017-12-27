@@ -255,9 +255,17 @@
             { "data": "Function", "orderable": false },
             { "data": "Regional", "orderable": false },
             { "data": "CreatedBy", "orderable": false },
-            { "data": "CreatedDate", "orderable": false },
+            {
+                "data": "CreatedDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
             { "data": "ModifiedBy", "orderable": false },
-            { "data": "ModifiedDate", "orderable": false }
+            {
+                "data": "ModifiedDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            }
         ];
 
         return columns;
