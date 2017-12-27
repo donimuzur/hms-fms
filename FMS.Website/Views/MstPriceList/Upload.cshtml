@@ -38,7 +38,6 @@
                         <th>Request Year</th>
                         <th>Monthly Installement HMS</th>
                         <th>Monthly Installement EMP</th>
-                        <th>Price</th>
                         <th>Message</th>
                     </tr>
                 </thead>
@@ -147,7 +146,6 @@
                 createColumnWithHiddenField(uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
                 createColumnWithHiddenFieldDecimal(uploaditems[i].InstallmenHMS, 'Model.Details[' + i + '].InstallmenHMS') +
                 createColumnWithHiddenFieldDecimal(uploaditems[i].InstallmenEMP, 'Model.Details[' + i + '].InstallmenEMP') +
-                createColumnWithHiddenFieldDecimal(uploaditems[i].Price, 'Model.Details[' + i + '].Price') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage == null ? "" : uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
