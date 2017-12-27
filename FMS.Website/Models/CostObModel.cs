@@ -12,8 +12,11 @@ namespace FMS.Website.Models
         public CostObModel()
         {
             Details = new List<CostObItem>();
+            SearchView = new CostObSearchView();
         }
 
+        public CostObSearchView SearchView { get; set; }
+        public HttpPostedFileBase upload{ get; set; }
         public List<CostObItem> Details { get; set; }
         public List<CostOBUpload> UploadedData { get; set; }
 
@@ -26,12 +29,12 @@ namespace FMS.Website.Models
         [Required]
         public int? Year { get; set; }
         public string CostCenter { get; set; }
-        public int Qty { get; set; }
-        public int Month { get; set; }
+        public int? Qty { get; set; }
+        public int? Month { get; set; }
         public string MonthS { get; set; }
         public string Zone { get; set; }
         [Required]
-        public string Model { get; set; }
+        public string Models { get; set; }
         [Required]
         public string Type { get; set; }
         [Required]
@@ -55,7 +58,26 @@ namespace FMS.Website.Models
         public string Regional { get; set; }
 
     }
+    public class CostObSearchView
+    {
+        public bool? Status { get; set; }
+        public string VehicleType { get; set; }
+        public string Function { get; set; }
+        public string Regional { get; set; }
+        public int? Year { get; set; }
 
+        public SelectList VehicleTypeList { get;set;}
+        public SelectList FunctionList { get; set; }
+        public SelectList RegionalList { get; set; }
+        public SelectList StatusList
+        {
+            get
+            {
+                var listStatus = new Dictionary<bool, string> { { true, "Active" }, { false, "InActive" } };
+                return new SelectList(listStatus, "Key", "Value");
+            }
+        }
+    }
     public class CostOBUpload
     {
         public string CostCenter { get; set; }

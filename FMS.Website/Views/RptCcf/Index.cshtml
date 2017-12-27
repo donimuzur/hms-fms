@@ -77,13 +77,13 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Late Respone Time Coordinator</label>
-                        @Html.TextBoxFor(model => model.SearchView.CoorKPI, new { @class = "form-control text" })
+                        @Html.TextBoxFor(model => model.SearchView.CoorKPI, new { @class = "form-control text", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Late Respone Time Vendor</label>
-                        @Html.TextBoxFor(model => model.SearchView.VendorKPI, new { @class = "form-control text" })
+                        @Html.TextBoxFor(model => model.SearchView.VendorKPI, new { @class = "form-control text", @required = "required" })
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -147,7 +147,7 @@
         $('#To_Date').val(todayDatestr);
 
         $(".select").val('');
-        $(".text").val('');
+        $(".text").val('0');
 
         $("#btn-filter").trigger('click');
     });

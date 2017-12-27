@@ -6,7 +6,7 @@
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
     <div class="wpanel">
-        @using (Html.BeginForm("Upload", "MstVehicleSpect", FormMethod.Post))
+        @using (Html.BeginForm("Upload", "MstVehicleSpect", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="row">
                 <div class="col-md-6">
@@ -75,9 +75,13 @@
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
+    
+    function createColumnHiddenField(text, name) {
+        return '<td style="display : none"><input type="hidden" name="' + name + '" value="' + text + '"></td>';
+    }
 
     function createColumnWithHiddenFieldImage(text, name) {
-        return '<td><input type="file" name="' + name + '" src="' + text + '"><span class="decimal">' + text + '</span></td>';
+        return '<td><input type="file" name="' + name + '" style="width : 95px"></td>';
     }
     $('#btnupload').click(function () {
         uploadXmlFile();
@@ -126,10 +130,12 @@
                 createColumnWithHiddenField(uploaditems[i].Colour, 'Model.Details[' + i + '].Colour') +
                 createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                 createColumnWithHiddenField(uploaditems[i].FlexPoint, 'Model.Details[' + i + '].FlexPoint') +
-                createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
+                //createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
                 
+                createColumnWithHiddenFieldImage(uploaditems[i].Image, 'Model.Details[' + i + '].ImageFile') +
                 createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
                 createColumnWithHiddenField(uploaditems[i].Message, 'Model.Details[' + i + '].Message') +
+                createColumnHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;

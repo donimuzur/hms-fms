@@ -11,16 +11,9 @@
     else if ($('.title-page').html() == 'CCF Open Document Benefit') {
         $('#CCFOpenBenefit').addClass('active');
     }
-    //else if ($('.title-page').html() == 'Car Termination Form Benefit') {
-    //    $('#CCFOpenBenefit').addClass('active');
-    //}
     else if ($('.title-page').html() == 'CCF Open Document WTC') {
         $('#CCFOpenWTC').addClass('active');
     }
-    //else if ($('.title-page').html() == 'Car Termination Form WTC')
-    //{
-    //    $('#CCFOpenWTC').addClass('active');
-    //}
     else if ($('.title-page').html() == 'CCF Completed Document') {
         $('#CCFCompleted').addClass('active');
     }

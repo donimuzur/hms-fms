@@ -60,8 +60,8 @@ namespace FMS.Website.Controllers
 
             model.RptPOItem = Mapper.Map<List<RptPOItem>>(data);
             
-            var listEmployee = _fleetBLL.GetFleet().Select(x => new { x.EmployeeName }).OrderBy(x => x.EmployeeName).ToList();
-            var listCost = _fleetBLL.GetFleet().Select(x => new { x.CostCenter }).OrderBy(x => x.CostCenter).ToList();
+            var listEmployee = _fleetBLL.GetFleet().Select(x => new { x.EmployeeName }).Distinct().OrderBy(x => x.EmployeeName).ToList();
+            var listCost = _fleetBLL.GetFleet().Select(x => new { x.CostCenter }).Distinct().OrderBy(x => x.CostCenter).ToList();
             var listSM = _fleetBLL.GetFleet().Select(x => new { x.SupplyMethod}).Distinct().OrderBy(x => x.SupplyMethod).ToList();
             
             model.SearchView.EmployeeNameList = new SelectList(listEmployee, "EmployeeName", "EmployeeName");
@@ -325,6 +325,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 4; //starting row data
             int iCol = 19;
+            int iColBorder = iCol;
 
             foreach (var data in listData)
             {
@@ -350,136 +351,89 @@ namespace FMS.Website.Controllers
                 
                 if (input.MonthFrom <= 1 && input.MonthTo >= 1)
                 {
-                    //if (data.JanAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.JanAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.JanPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.JanTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.JanAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.JanPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.JanTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 2 && input.MonthTo >= 2)
                 {
-                    //if (data.PebAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.PebAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.PebPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.PebTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.PebAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.PebPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.PebTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 3 && input.MonthTo >= 3)
                 {
-                    //if (data.MarAmount > 0)
-                    //{
-                       
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.MarAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.MarPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.MarTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.MarAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.MarPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.MarTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 4 && input.MonthTo >= 4)
                 {
-                    //if (data.AprAmount > 0)
-                    //{
-                       
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.AprAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.AprPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.AprTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.AprAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.AprPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.AprTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 5 && input.MonthTo >= 5)
                 {
-                    //if (data.MeiAmount > 0)
-                    //{
-                       
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.MeiAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.MeiPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.MeiTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.MeiAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.MeiPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.MeiTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 6 && input.MonthTo >= 6)
                 {
-                    //if (data.JunAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.JunAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.JunPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.JunTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.JunAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.JunPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.JunTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 7 && input.MonthTo >= 7)
                 {
-                    //if (data.JulAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.JulAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.JulPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.JulTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.JulAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.JulPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.JulTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 8 && input.MonthTo >= 8)
                 {
-                    //if (data.AgusAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.AgusAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.AgusPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.AgusTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.AgusAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.AgusPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.AgusTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 9 && input.MonthTo >= 9)
                 {
-                    //if (data.SepAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.SepAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.SepPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.SepTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.SepAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.SepPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.SepTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 10 && input.MonthTo >= 10)
                 {
-                    //if (data.OktAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.OktAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.OktPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.OktTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.OktAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.OktPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.OktTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 11 && input.MonthTo >= 11)
                 {
-                    //if (data.NopAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.NopAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.NopPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.NopTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.NopAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.NopPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.NopTotal));
                     iCol = iCol + 3;
                 }
                 if (input.MonthFrom <= 12 && input.MonthTo >= 12)
                 {
-                    //if (data.DesAmount > 0)
-                    //{
-                        
-                    //}
-                    slDocument.SetCellValue(iRow, iCol + 1, data.DesAmount);
-                    slDocument.SetCellValue(iRow, iCol + 2, data.DesPPN);
-                    slDocument.SetCellValue(iRow, iCol + 3, data.DesTotal);
+                    slDocument.SetCellValue(iRow, iCol + 1, string.Format("{0:N0}", data.DesAmount));
+                    slDocument.SetCellValue(iRow, iCol + 2, string.Format("{0:N0}", data.DesPPN));
+                    slDocument.SetCellValue(iRow, iCol + 3, string.Format("{0:N0}", data.DesTotal));
                     iCol = iCol + 3;
                 }
+                iColBorder = iCol;
                 iCol = 19;
                 iRow++;
             }
@@ -492,7 +446,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, iCol);
-            slDocument.SetCellStyle(3, 1, iRow - 1, iCol, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, iColBorder, valueStyle);
 
             return slDocument;
         }

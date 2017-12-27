@@ -285,6 +285,7 @@
     <Compile Include="Controllers\RptKpiMonitoringController.cs" />
     <Compile Include="Controllers\RptPoController.cs" />
     <Compile Include="Controllers\RptVehicleOverallController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\TraCafController.cs" />
     <Compile Include="Controllers\TraCarComplaintFormController.cs" />
     <Compile Include="Controllers\TraCcfController.cs" />
@@ -608,6 +609,8 @@
     <Content Include="Content\images\hammer.png" />
     <Content Include="Content\images\key-mini.png" />
     <Content Include="Content\images\key.png" />
+    <Content Include="Content\images\logo-hms-mini.png" />
+    <Content Include="Content\images\logo-hms.png" />
     <Content Include="Content\images\logo-mini.png" />
     <Content Include="Content\images\logo-new.png" />
     <Content Include="Content\images\paper.png" />
@@ -1048,11 +1051,13 @@
     <Content Include="files_upload\Accident\EHSTemplate.xlsx" />
     <Content Include="files_upload\Accident\ProgressTemplate.xlsx" />
     <Content Include="files_upload\masterFuelOdometer.xlsx" />
+    <Content Include="files_upload\masterCostOB.xlsx" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Properties\PublishProfiles\Sampoerna.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\ccfscript.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
@@ -4394,6 +4399,9 @@
     <Content Include="Views\MstSalesVolume\_ListData.cshtml" />
     <Content Include="Views\MstFuelOdometer\Upload.cshtml" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
+    <Content Include="Views\Service\CompleteTransaction.cshtml" />
+    <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SummaryAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

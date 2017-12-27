@@ -67,7 +67,7 @@ namespace FMS.Website.Controllers
             var listSupMethod = _settingBLL.GetSetting().Where(x => x.SettingGroup == "SUPPLY_METHOD").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listProject = _settingBLL.GetSetting().Where(x => x.SettingGroup == "PROJECT").Select(x => new { x.SettingName, x.SettingValue }).ToList();
             var listRelocate = _settingBLL.GetSetting().Where(x => x.SettingGroup == "RELOCATION_TYPE").Select(x => new { x.SettingName, x.SettingValue }).ToList();
-            var listLocation = _employeeBLL.GetCityLocation();
+            var listLocation = _employeeBLL.GetCityLocation().OrderBy(x=> x.City).ToList();
             
 
             
@@ -101,6 +101,10 @@ namespace FMS.Website.Controllers
                 model.CurrentPageAccess.WriteAccess = true;
             }
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
+            foreach (var traCrfDto in model.Details)
+            {
+                traCrfDto.CurrentLogin = CurrentUser;
+            }
             return View(model);
         }
 
@@ -119,6 +123,10 @@ namespace FMS.Website.Controllers
                 },
                 IsPersonalDashboard = true
             };
+            foreach (var traCrfDto in model.Details)
+            {
+                traCrfDto.CurrentLogin = CurrentUser;
+            }
             //model.TitleForm = "CRF Personal Dashboard";
            // model.TitleExport = "ExportOpen";
             return View("Index", model);
@@ -217,6 +225,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.CurrentLogin = CurrentUser;
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
                 dataToSave.CREATED_BY = CurrentUser.USER_ID;
                 dataToSave.CREATED_DATE = DateTime.Now;
@@ -230,6 +239,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.Detail.CurrentLogin = CurrentUser;
                 model.ErrorMessage = ex.Message;
                 model.LocationNewList = new SelectList(new List<SelectListItem>());
                 return View(model);
@@ -329,6 +339,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.CurrentLogin = CurrentUser;
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
                 dataToSave.IS_ACTIVE = true;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
@@ -340,6 +351,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.Detail.CurrentLogin = CurrentUser;
                 model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
                 if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
                 {
@@ -393,6 +405,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                
                 model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, TraCrfId);
                 model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
                 var data = _CRFBLL.GetDataById(TraCrfId);
@@ -401,7 +414,7 @@ namespace FMS.Website.Controllers
 
                 model.IsAllowedApprove = _CRFBLL.IsAllowedApprove(CurrentUser, data);
                 model.Detail = Mapper.Map<TraCrfItemDetails>(data);
-
+                model.Detail.CurrentLogin = CurrentUser;
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int) Enums.DocumentType.CRF).ToList();
 
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -420,7 +433,7 @@ namespace FMS.Website.Controllers
             
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
+            model.Detail.CurrentLogin = CurrentUser;
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, (int)model.Detail.TraCrfId);
             //var data = _CRFBLL.GetDataById((int)model.Detail.TraCrfId);
@@ -437,6 +450,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
+                model.Detail.CurrentLogin = CurrentUser;
                 model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, model.Detail.TraCrfId);
                 if (!string.IsNullOrEmpty(model.Detail.LocationCityNew))
                 {
@@ -608,7 +622,7 @@ namespace FMS.Website.Controllers
             {
                 Text = x.Location,
                 Value = x.Location
-            }).ToList();
+            }).OrderBy(x=> x.Text).ToList();
 
             return Json(data);
         }
@@ -759,7 +773,9 @@ namespace FMS.Website.Controllers
             Response.WriteFile(newFile.FullName);
             Response.Flush();
             newFile.Delete();
+            
             Response.End();
+            
         }
 
         public void ExportCompleted()
@@ -819,7 +835,7 @@ namespace FMS.Website.Controllers
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
-
+           
             return path;
 
         }

@@ -23,12 +23,19 @@ namespace FMS.Website.Models
         public int Year { get; set; }
         [Required]
         public string Manufacture { get; set; }
-        public string Model { get; set; }
+        public string Models { get; set; }
         public string Series { get; set; }
         public string ZonePriceList { get; set; }
+
         public decimal Price { get; set; }
+        public string PriceStr { get; set; }
+
         public decimal InstallmenHMS { get; set; }
+        public string InstallmenHMSStr { get; set; }
+
         public decimal InstallmenEMP { get; set; }
+        public string InstallmenEMPStr { get; set; }
+
         public int Vendor { get; set; }
         public string VendorName { get; set; }
         public string VehicleType { get; set; }
@@ -39,9 +46,14 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
         public string IsActiveS { get; set; }
+
+        public SelectList ZoneList { get; set; }
         public SelectList VendorList { get; set; }
         public SelectList VehicleTypeList { get; set; }
         public SelectList VehicleUsageList { get; set; }
+        public SelectList ManufactureList { get; set; }
+        public SelectList ModelList { get; set; }
+        public SelectList SeriesList { get; set; }
 
     }
 

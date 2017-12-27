@@ -115,6 +115,7 @@ namespace FMS.Website.Models
         public bool Restitution { get; set; }
         public string RestitutionS { get; set; }
         public decimal MonthlyHMSInstallment { get; set; }
+        public string MonthlyHMSInstallmentStr { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? TerminationDate { get; set; }
@@ -133,7 +134,9 @@ namespace FMS.Website.Models
         public bool IsActive { get; set; }
 
         public Decimal? VatDecimal { get; set; }
+        public string VatDecimalStr { get; set; }
         public Decimal? TotalMonthlyCharge { get; set; }
+        public string TotalMonthlyChargeStr { get; set; }
         public string Assets { get; set; }
         public string Function { get; set; }
         public string Regional { get; set; }
@@ -153,8 +156,10 @@ namespace FMS.Website.Models
         public SelectList BodyTypeList { get; set; }
         public SelectList FuelTypeList { get; set; }
         public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
         public SelectList TransmissionList { get; set; }
         public SelectList RegionalList { get; set; }
         public SelectList FunctionList { get; set; }
+        public SelectList ProjectList { get; set; }
     }
 }    
