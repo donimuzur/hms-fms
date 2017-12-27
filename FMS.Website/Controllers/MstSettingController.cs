@@ -192,7 +192,7 @@ namespace FMS.Website.Controllers
                         data.CreatedDate = DateTime.Now;
                         data.CreatedBy = CurrentUser.USERNAME; ;
                         data.ModifiedDate = null;
-
+                        data.IsActive = true;
                         var dto = Mapper.Map<SettingDto>(data);
                         _settingBLL.Save(dto, CurrentUser);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);

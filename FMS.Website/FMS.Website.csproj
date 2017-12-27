@@ -609,6 +609,8 @@
     <Content Include="Content\images\hammer.png" />
     <Content Include="Content\images\key-mini.png" />
     <Content Include="Content\images\key.png" />
+    <Content Include="Content\images\logo-hms-mini.png" />
+    <Content Include="Content\images\logo-hms.png" />
     <Content Include="Content\images\logo-mini.png" />
     <Content Include="Content\images\logo-new.png" />
     <Content Include="Content\images\paper.png" />
@@ -1049,6 +1051,7 @@
     <Content Include="files_upload\Accident\EHSTemplate.xlsx" />
     <Content Include="files_upload\Accident\ProgressTemplate.xlsx" />
     <Content Include="files_upload\masterFuelOdometer.xlsx" />
+    <Content Include="files_upload\masterCostOB.xlsx" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
