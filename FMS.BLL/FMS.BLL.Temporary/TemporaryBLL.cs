@@ -977,6 +977,10 @@ namespace FMS.BLL.Temporary
                     {
                         projectName = projectNameData.SETTING_VALUE.ToUpper();
                         isProject = true;
+                        if (projectName == "NO PROJECT")
+                        {
+                            isProject = false;
+                        }
                     }
                 }
 

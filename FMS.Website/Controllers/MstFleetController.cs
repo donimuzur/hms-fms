@@ -328,6 +328,10 @@ namespace FMS.Website.Controllers
                 if (!string.IsNullOrEmpty(data.ProjectName))
                 {
                     data.Project = true;
+                    if (data.ProjectName.ToLower() == "no project")
+                    {
+                        data.Project = false;
+                    }
                 }
                 if (data.VatDecimal.Value > 0)
                 {
