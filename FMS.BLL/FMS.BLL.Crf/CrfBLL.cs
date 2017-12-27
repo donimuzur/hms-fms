@@ -394,22 +394,23 @@ namespace FMS.BLL.Crf
                 }
             }
 
-            var dataToSave = Mapper.Map<MST_FLEET>(dataFleet);
+            var dataToSave = Mapper.Map<FleetDto>(dataFleet);
 
             if (data.CHANGE_POLICE_NUMBER.HasValue && data.CHANGE_POLICE_NUMBER.Value)
             {
-                dataToSave.POLICE_NUMBER = data.NEW_POLICE_NUMBER;
+                dataToSave.PoliceNumber = data.NEW_POLICE_NUMBER;
             }
-
-            dataToSave.CITY = data.LOCATION_CITY_NEW;
-            dataToSave.MODIFIED_BY = loginFleet.USER_ID;
-            dataToSave.MODIFIED_DATE = DateTime.Now;
-            dataToSave.COST_CENTER = data.COST_CENTER_NEW;
-            dataToSave.IS_ACTIVE = true;
+            
+            dataToSave.City = data.LOCATION_CITY_NEW;
+            dataToSave.ModifiedBy = loginFleet.USER_ID;
+            dataToSave.ModifiedDate = DateTime.Now;
+            dataToSave.CostCenter = data.COST_CENTER_NEW;
+            dataToSave.IsActive = true;
+            dataToSave.MstFleetId = 0;
             try
             {
-                
-                _fleetService.save(dataToSave);
+                var dataSaveFromDto = Mapper.Map<MST_FLEET>(dataToSave);
+                _fleetService.save(dataSaveFromDto);
                 return true;
             }
             catch (Exception)
