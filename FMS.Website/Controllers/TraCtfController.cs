@@ -2088,9 +2088,26 @@ namespace FMS.Website.Controllers
                     {
                        
                         item.EmployeeId = dataRow[0];
+                        if(item.EmployeeId == "")
+                        {
+                            item.ErrorMessage = "Employee ID can't be empty";
+                        }
+
                         item.EmployeeName = dataRow[1];
-                        item.CostCenter = dataRow[2];
+                        if(item.EmployeeName == "")
+                        {
+                            item.ErrorMessage = "Employee Name can't be empty"; 
+                        }
+
+                        
+                        if(item.CostCenter == "" )
+                        {
+                            item.ErrorMessage = "Cost Center Can't be empty";
+                        }
+
                         item.PoliceNumber = dataRow[3];
+
+
                         item.VehicleType = dataRow[4];
                         item.VehicleYear= dataRow[5] != "" && dataRow[5] != null ? 0: Convert.ToInt32(dataRow[5]);
                         item.SupplyMethod = dataRow[6];

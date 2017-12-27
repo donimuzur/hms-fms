@@ -1,9 +1,4 @@
-IF EXISTS(SELECT 1 FROM sys.procedures 
-          WHERE Name = 'GetVehicleData')
-BEGIN
-    DROP PROCEDURE [dbo].[GetVehicleData]
-END
-GO
+
 Create procedure [dbo].[GetVehicleData]
 AS BEGIN
 
