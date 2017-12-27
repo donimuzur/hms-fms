@@ -6,6 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Upload", "MstPriceList", FormMethod.Post))
         {
             <div class="row">
@@ -18,7 +19,7 @@
                             </span>
                         </div>
                         <div>
-                            Download template <a href="~/files_upload/masterVehicleSpect.xlsx">here</a>
+                            Download template <a href="~/files_upload/masterPriceList.xlsx">here</a>
                         </div>
                     </div>
                 </div>
@@ -33,11 +34,12 @@
                         <th>Zone Price List</th>
                         <th>Manufacture</th>
                         <th>Model</th>
-                        <th>Series</th>
+                        <th style="min-width: 150px">Series</th>
                         <th>Request Year</th>
                         <th>Monthly Installement HMS</th>
                         <th>Monthly Installement EMP</th>
-                        <th>Status</th>
+                        <th>Price</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -51,9 +53,32 @@
         }
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
-
+    $(function () {
+        // DataTable
+        var table = $('#example2').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
@@ -71,7 +96,7 @@
     }
 
     function createColumnWithHiddenFieldDecimal(text, name) {
-        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + ThausandSeperator(text) + '</span></td>';
     }
     $('#btnupload').click(function () {
         uploadXmlFile();
@@ -79,12 +104,14 @@
 
 
     function uploadXmlFile() {
+        $('#LoadingModal').show();
         var postUrl = '@Url.Action("UploadFile", "MstPriceList")';
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
         if (extension != '.xlsx' && extension != '.csv') {
             alert('Please browse a correct excel file to upload');
+            $('#LoadingModal').hide();
             return false;
         }
 
@@ -115,18 +142,29 @@
                 createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
                 createColumnWithHiddenField(uploaditems[i].ZonePriceList, 'Model.Details[' + i + '].ZonePriceList') +
                 createColumnWithHiddenField(uploaditems[i].Manufacture, 'Model.Details[' + i + '].Manufacture') +
-                createColumnWithHiddenField(uploaditems[i].Model, 'Model.Details[' + i + '].Model') +
+                createColumnWithHiddenField(uploaditems[i].Models, 'Model.Details[' + i + '].Models') +
                 createColumnWithHiddenField(uploaditems[i].Series, 'Model.Details[' + i + '].Series') +
                 createColumnWithHiddenField(uploaditems[i].Year, 'Model.Details[' + i + '].Year') +
-                createColumnWithHiddenField(uploaditems[i].InstallmenHMS, 'Model.Details[' + i + '].InstallmenHMS') +
-                createColumnWithHiddenField(uploaditems[i].InstallmenEMP, 'Model.Details[' + i + '].InstallmenEMP') +
-                createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
+                createColumnWithHiddenFieldDecimal(uploaditems[i].InstallmenHMS, 'Model.Details[' + i + '].InstallmenHMS') +
+                createColumnWithHiddenFieldDecimal(uploaditems[i].InstallmenEMP, 'Model.Details[' + i + '].InstallmenEMP') +
+                createColumnWithHiddenFieldDecimal(uploaditems[i].Price, 'Model.Details[' + i + '].Price') +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage == null ? "" : uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage == null ? "" : uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
+                else {
+                    $('#btnSave').prop('disabled', true);
+                }
+                $('#LoadingModal').hide();
+            },
+            error: function () {
+                $('#LoadingModal').hide();
             }
         });
-    };
+    }
 </script>

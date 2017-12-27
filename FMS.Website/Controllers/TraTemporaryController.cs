@@ -1130,8 +1130,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 8, "End Date");
             slDocument.SetCellValue(iRow, 9, "PO Number");
             slDocument.SetCellValue(iRow, 10, "Regional");
-            slDocument.SetCellValue(iRow, 11, "Modified By");
-            slDocument.SetCellValue(iRow, 12, "Modified Date");
+            slDocument.SetCellValue(iRow, 11, "Updated By");
+            slDocument.SetCellValue(iRow, 12, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
