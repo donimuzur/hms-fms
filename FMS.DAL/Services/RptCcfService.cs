@@ -55,11 +55,11 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.LOCATION_CITY.ToUpper() == filter.Location.ToUpper());
                 }
-                if (filter.CoorKPI > 0)
+                if (filter.CoorKPI >= 0)
                 {
                     queryFilter = queryFilter.And(c => c.COORDINATOR_KPI == filter.CoorKPI);
                 }
-                if (filter.VendorKPI > 0)
+                if (filter.VendorKPI >= 0)
                 {
                     queryFilter = queryFilter.And(c => c.VENDOR_KPI == filter.VendorKPI);
                 }

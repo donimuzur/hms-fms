@@ -1120,7 +1120,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Temporary No");
+            slDocument.SetCellValue(iRow, 1, "Temporary Number");
             slDocument.SetCellValue(iRow, 2, "Temporary Status");
             slDocument.SetCellValue(iRow, 3, "Vehicle Type");
             slDocument.SetCellValue(iRow, 4, "Employee ID");

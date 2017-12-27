@@ -448,7 +448,7 @@ namespace FMS.BLL.Ctf
                     //if submit from HR to EMPLOYEE
                     if (ctfData.EmployeeIdCreator == input.EmployeeId && isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
+                        rc.Subject = ctfData.DocumentNumber + " - Benefit Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -478,7 +478,7 @@ namespace FMS.BLL.Ctf
                     else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && !input.EndRent.Value)
                     {
 
-                        rc.Subject = ctfData.DocumentNumber + " - Car Termination";
+                        rc.Subject = ctfData.DocumentNumber + " - WTC Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -507,7 +507,7 @@ namespace FMS.BLL.Ctf
                     //if submit from FLEET to EMPLOYEE WTC END RENT
                     else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && input.EndRent.Value)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " -  Car Termination";
+                        rc.Subject = ctfData.DocumentNumber + " - WTC Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -533,7 +533,7 @@ namespace FMS.BLL.Ctf
                     //if submit from EMPLOYEE to Fleet Benefit
                     else if (ctfData.EmployeeId == input.EmployeeId && isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber+" -  Car Termination";
+                        rc.Subject = ctfData.DocumentNumber+ " - Employee Submission";
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
@@ -562,7 +562,7 @@ namespace FMS.BLL.Ctf
                     //if submit from EMPLOYEE to Fleet WTC
                     else if (ctfData.EmployeeId == input.EmployeeId && !isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " -  Car Termination";
+                        rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
 
                         bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
                         bodyMail.AppendLine();
