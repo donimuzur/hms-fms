@@ -166,8 +166,7 @@
 
         $(document).on('click', '#btn-reset', function () {
             $('input[type=text]').val('');
-            $("select").val('');
-            $("select").selectpicker("refresh");
+            $('.chosen-single > span').html('select');
             setupDataTables();
         });
     });
