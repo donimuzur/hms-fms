@@ -69,7 +69,7 @@ namespace FMS.Website.Controllers
             var model = new CcfModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            model.TitleForm = "Car Complaint Form";
+            model.TitleForm = "CCF Open Document";
 
             if (CurrentUser.EMPLOYEE_ID == "")
             {
@@ -366,7 +366,7 @@ namespace FMS.Website.Controllers
                 model.LocationAddress = data.ADDRESS;
                 model.LocationCity = data.CITY;
                 model.IsPersonalDashboard = IsPersonalDashboard;
-                model.TitleForm = "Create Car Complaint Form";
+                model.TitleForm = "Car Complaint Form";
                 model = listdata(model, model.EmployeeID);
                 model.DocumentStatus = Enums.DocumentStatus.Draft;
                 model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();

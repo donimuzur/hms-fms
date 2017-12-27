@@ -1591,6 +1591,10 @@ namespace FMS.BLL.Csf
                     {
                         projectName = projectNameData.SETTING_VALUE.ToUpper();
                         isProject = true;
+                        if (projectName == "NO PROJECT")
+                        {
+                            isProject = false;
+                        }
                     }
                 }
 
