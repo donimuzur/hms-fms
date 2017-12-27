@@ -636,7 +636,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
 
             return slDocument;
         }
