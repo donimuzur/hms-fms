@@ -55,20 +55,27 @@ namespace FMS.Website.Controllers
             //model.Details = new List<FleetItem>();
 
             var fleetList = _fleetBLL.GetFleet().ToList();
+            var settingData = _settingBLL.GetSetting().Where(x => x.IsActive);
+            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.SettingValue }).ToList();
+            var listBodType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType)).Select(x => new { x.SettingValue }).ToList();
+            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.SettingValue }).ToList();
+            var locationMappingData = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true);
+            var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
+            var data = _vendorBLL.GetVendor().Where(x => x.IsActive == true);
                         
             model.SearchView.PoliceNumberList = new SelectList(fleetList.Select(x => new { x.PoliceNumber }).Distinct().ToList(), "PoliceNumber", "PoliceNumber");
             model.SearchView.EmployeeNameList = new SelectList(fleetList.Select(x => new { x.EmployeeName }).Distinct().ToList(), "EmployeeName", "EmployeeName");
             model.SearchView.ChasisNumberList = new SelectList(fleetList.Select(x => new { x.ChasisNumber }).Distinct().ToList(), "ChasisNumber", "ChasisNumber");
             model.SearchView.EmployeeIDList = new SelectList(fleetList.Select(x => new { x.EmployeeID }).Distinct().ToList(), "EmployeeID", "EmployeeID");
             model.SearchView.EngineNumberList = new SelectList(fleetList.Select(x => new { x.EngineNumber }).Distinct().ToList(), "EngineNumber", "EngineNumber");
-            model.SearchView.SupplyMethodList = new SelectList(fleetList.Select(x => new { x.SupplyMethod }).Distinct().ToList(), "SupplyMethod", "SupplyMethod");
-            model.SearchView.BodyTypeList = new SelectList(fleetList.Select(x => new { x.BodyType }).Distinct().ToList(), "BodyType", "BodyType");
-            model.SearchView.VehicleTypeList = new SelectList(fleetList.Select(x => new { x.VehicleType }).Distinct().ToList(), "VehicleType", "VehicleType");
+            model.SearchView.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
+            model.SearchView.BodyTypeList = new SelectList(listBodType, "SettingValue", "SettingValue");
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.VehicleUsageList = new SelectList(fleetList.Select(x => new { x.VehicleUsage }).Distinct().ToList(), "VehicleUsage", "VehicleUsage");
-            model.SearchView.VendorList = new SelectList(fleetList.Select(x => new { x.VendorName }).Distinct().ToList(), "VendorName", "VendorName");
-            model.SearchView.FunctionList = new SelectList(fleetList.Select(x => new { x.Function }).Distinct().ToList(), "Function", "Function");
-            model.SearchView.RegionalList = new SelectList(fleetList.Select(x => new { x.Regional }).Distinct().ToList(), "Regional", "Regional");
-            model.SearchView.CityList = new SelectList(fleetList.Select(x => new { x.City }).Distinct().ToList(), "City", "City");
+            model.SearchView.VendorList = new SelectList(data, "ShortName", "ShortName");
+            model.SearchView.FunctionList = new SelectList(groupCostData.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName");
+            model.SearchView.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region");
+            model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().ToList(), "Basetown", "Basetown");
 
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
