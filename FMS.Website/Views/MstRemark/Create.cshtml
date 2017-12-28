@@ -28,12 +28,6 @@
                         @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, "Select", new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @required = "required" })
-                    </div>
-                </div>
                 <div class="col-md-12">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a href="@Url.Action("Index", "MstRemark" )" class="btn btn-default">Back</a>

@@ -521,14 +521,20 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "CAF No");
-            slDocument.SetCellValue(iRow, 2, "CRF Status");
-            slDocument.SetCellValue(iRow, 3, "Employee ID");
-            slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "SIRS Number");
-            slDocument.SetCellValue(iRow, 6, "Police Number");
-            slDocument.SetCellValue(iRow, 7, "Modified By");
-            slDocument.SetCellValue(iRow, 8, "Modified Date");
+            slDocument.SetCellValue(iRow, 1, "CAF Number");
+            slDocument.SetCellValue(iRow, 2, "CAF Status");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Employee ID");
+            slDocument.SetCellValue(iRow, 5, "Employee Name");
+            slDocument.SetCellValue(iRow, 6, "SIRS Number");
+            slDocument.SetCellValue(iRow, 7, "Police Number");
+            slDocument.SetCellValue(iRow, 8, "Vehicle Model");
+            slDocument.SetCellValue(iRow, 9, "Region");
+            slDocument.SetCellValue(iRow, 10, "Vendor Name");
+            slDocument.SetCellValue(iRow, 11, "Incident Date");
+            slDocument.SetCellValue(iRow, 12, "Coordinator");
+            slDocument.SetCellValue(iRow, 13, "Modified By");
+            slDocument.SetCellValue(iRow, 14, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -539,7 +545,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 8, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 14, headerStyle);
 
             return slDocument;
 
@@ -553,14 +559,20 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
                 slDocument.SetCellValue(iRow, 2, data.DocumentStatusString);
-                slDocument.SetCellValue(iRow, 3, data.EmployeeId);
-                slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                slDocument.SetCellValue(iRow, 5, data.SirsNumber);
-                slDocument.SetCellValue(iRow, 6, data.PoliceNumber);
+                slDocument.SetCellValue(iRow, 3, data.VehicleType);
+                slDocument.SetCellValue(iRow, 4, data.EmployeeId);
+                slDocument.SetCellValue(iRow, 5, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 6, data.SirsNumber);
+                slDocument.SetCellValue(iRow, 7, data.PoliceNumber);
+                slDocument.SetCellValue(iRow, 8, data.VehicleModel);
+                slDocument.SetCellValue(iRow, 9, data.Region);
+                slDocument.SetCellValue(iRow, 10, data.VendorName);
+                slDocument.SetCellValue(iRow, 11, data.IncidentDateString);
+                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
                 //slDocument.SetCellValue(iRow, 6, data.VehicleUsage);
                 //slDocument.SetCellValue(iRow, 7, data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy hh:mm:ss") : "");
-                slDocument.SetCellValue(iRow, 7, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 8, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 13, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 14, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
 
                 iRow++;
             }
@@ -572,8 +584,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 8, valueStyle);
+            slDocument.AutoFitColumn(1, 14);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 14, valueStyle);
 
             return slDocument;
         }

@@ -225,12 +225,12 @@
             },
             { "data": "ProjectName", "orderable": false },
             {
-                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
+                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
             {
-                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
+                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
@@ -251,12 +251,12 @@
             { "data": "AssignedTo", "orderable": false },
             { "data": "Address", "orderable": false },
             {
-                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
+                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
             {
-                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
+                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
