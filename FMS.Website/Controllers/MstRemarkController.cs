@@ -61,10 +61,7 @@ namespace FMS.Website.Controllers
             };
 
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
-
-            var VehicleTypeList =  _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).ToList();
-            model.VehicleTypeList = new SelectList(VehicleTypeList, "SettingName", "SettingName");
-
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return model;
@@ -86,7 +83,6 @@ namespace FMS.Website.Controllers
                 {
                     var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
                                                                   && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
-                                                                  && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper())
                                                                   && x.DocumentType == model.DocumentType
                                                                   && x.IsActive).FirstOrDefault();
                     if (Exist != null)
@@ -133,7 +129,6 @@ namespace FMS.Website.Controllers
                 {
                     var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
                                                               && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
-                                                              && ((x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper()))
                                                               && x.DocumentType == model.DocumentType
                                                               && x.IsActive && x.MstRemarkId != model.MstRemarkId).FirstOrDefault();
                     if (Exist != null)
@@ -193,7 +188,6 @@ namespace FMS.Website.Controllers
                         {
                             var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (data.Remark == null ? "" : data.Remark.ToUpper())
                                                                     && (x.RoleType == null ? ""  : x.RoleType.ToUpper()) == (data.RoleType == null ? "" : data.RoleType.ToUpper())
-                                                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (data.VehicleType == null ? "" : data.VehicleType.ToUpper())
                                                                     && x.DocumentType == data.DocumentType && x.IsActive).FirstOrDefault();
                             if (Exist != null)
                             {
@@ -272,12 +266,6 @@ namespace FMS.Website.Controllers
                         if (item.RoleType == "")
                         {
                             item.ErrorMessage = "Role Type Can't be empty";
-                        }
-
-                        item.VehicleType = dataRow[3] == null ? "" : dataRow[3].ToUpper();
-                        if (item.VehicleType == "")
-                        {
-                            item.ErrorMessage = "Vehicle Type Can't be empty";
                         }
 
                         model.Add(item);
