@@ -992,18 +992,18 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "CCF No");
+            slDocument.SetCellValue(iRow, 1, "CCF Number");
             slDocument.SetCellValue(iRow, 2, "CCF Status");
-            slDocument.SetCellValue(iRow, 3, "Complaint Category");
-            slDocument.SetCellValue(iRow, 4, "Employee ID");
-            slDocument.SetCellValue(iRow, 5, "Employee Name");
-            slDocument.SetCellValue(iRow, 6, "Employee ID Complaint For");
-            slDocument.SetCellValue(iRow, 7, "Employee Name Complaint For");
-            slDocument.SetCellValue(iRow, 8, "Police Number");
-            slDocument.SetCellValue(iRow, 9, "Police Number GS");
-            slDocument.SetCellValue(iRow, 10, "Location City");
-            slDocument.SetCellValue(iRow, 11, "Location Address");
-            slDocument.SetCellValue(iRow, 12, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Complaint Category");
+            slDocument.SetCellValue(iRow, 5, "Employee ID");
+            slDocument.SetCellValue(iRow, 6, "Employee Name");
+            slDocument.SetCellValue(iRow, 7, "Employee ID Complaint For");
+            slDocument.SetCellValue(iRow, 8, "Employee Name Complaint For");
+            slDocument.SetCellValue(iRow, 9, "Police Number");
+            slDocument.SetCellValue(iRow, 10, "Police Number GS");
+            slDocument.SetCellValue(iRow, 11, "Location City");
+            slDocument.SetCellValue(iRow, 12, "Location Address");
             slDocument.SetCellValue(iRow, 13, "Vehicle Usage");
             slDocument.SetCellValue(iRow, 14, "Manufacture");
             slDocument.SetCellValue(iRow, 15, "Model");
@@ -1043,16 +1043,16 @@ namespace FMS.Website.Controllers
                 {
                     slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
                     slDocument.SetCellValue(iRow, 2, data.DocumentStatus.ToString());
-                    slDocument.SetCellValue(iRow, 3, data.ComplaintCategoryName);
-                    slDocument.SetCellValue(iRow, 4, data.EmployeeID);
-                    slDocument.SetCellValue(iRow, 5, data.EmployeeName);
-                    slDocument.SetCellValue(iRow, 6, data.EmployeeIdComplaintFor);
-                    slDocument.SetCellValue(iRow, 7, data.EmployeeNameComplaintFor);
-                    slDocument.SetCellValue(iRow, 8, data.PoliceNumber);
-                    slDocument.SetCellValue(iRow, 9, data.PoliceNumberGS);
-                    slDocument.SetCellValue(iRow, 10, data.LocationCity);
-                    slDocument.SetCellValue(iRow, 11, data.LocationAddress);
-                    slDocument.SetCellValue(iRow, 12, data.VehicleType);
+                    slDocument.SetCellValue(iRow, 3, data.VehicleType);
+                    slDocument.SetCellValue(iRow, 4, data.ComplaintCategoryName);
+                    slDocument.SetCellValue(iRow, 5, data.EmployeeID);
+                    slDocument.SetCellValue(iRow, 6, data.EmployeeName);
+                    slDocument.SetCellValue(iRow, 7, data.EmployeeIdComplaintFor);
+                    slDocument.SetCellValue(iRow, 8, data.EmployeeNameComplaintFor);
+                    slDocument.SetCellValue(iRow, 9, data.PoliceNumber);
+                    slDocument.SetCellValue(iRow, 10, data.PoliceNumberGS);
+                    slDocument.SetCellValue(iRow, 11, data.LocationCity);
+                    slDocument.SetCellValue(iRow, 12, data.LocationAddress);
                     slDocument.SetCellValue(iRow, 13, data.VehicleUsage);
                     slDocument.SetCellValue(iRow, 14, data.Manufacturer);
                     slDocument.SetCellValue(iRow, 15, data.Models);

@@ -426,7 +426,7 @@ namespace FMS.Website.Controllers
 
                         try
                         {
-                            item.InstallmenHMS = Convert.ToInt32(dataRow[8]);
+                            item.InstallmenHMS = Convert.ToDecimal(dataRow[8]);
                         }
                         catch (Exception)
                         {
@@ -436,7 +436,7 @@ namespace FMS.Website.Controllers
 
                         try
                         {
-                            item.InstallmenEMP = Convert.ToInt32(dataRow[9]);
+                            item.InstallmenEMP = Convert.ToDecimal(dataRow[9]);
                         }
                         catch (Exception)
                         {
