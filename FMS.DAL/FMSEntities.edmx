@@ -553,7 +553,6 @@
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
-          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="MST_SALES_VOLUME">
           <Key>
@@ -2736,7 +2735,6 @@
           <NavigationProperty Name="TRA_CSF" Relationship="FMSModel.FK_TRA_CSF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CSF" />
           <NavigationProperty Name="TRA_CTF" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_CTF" />
           <NavigationProperty Name="TRA_WORKFLOW_HISTORY" Relationship="FMSModel.FK_TRA_WORKFLOW_HISTORY_MST_REMARK" FromRole="MST_REMARK" ToRole="TRA_WORKFLOW_HISTORY" />
-          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MST_SALES_VOLUME">
           <Key>
@@ -4462,7 +4460,6 @@
           <EntitySetMapping Name="MST_REMARK">
             <EntityTypeMapping TypeName="FMSModel.MST_REMARK">
               <MappingFragment StoreEntitySet="MST_REMARK">
-                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
