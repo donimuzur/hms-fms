@@ -297,7 +297,13 @@ namespace FMS.Website.Controllers
         public CtfItem initCreate(CtfItem model)
         {
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME }).Distinct().ToList().OrderBy(x => x.EMPLOYEE_ID);
-            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).ToList().OrderBy(x => x.Reason);
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).OrderBy(x => x.Reason).ToList();
+
+            if(!string.IsNullOrEmpty(model.VehicleType))
+            {
+                ReasonList = ReasonList.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == model.VehicleType.ToUpper()).ToList();
+            }
+
             var VehicleLocationList = _locationMappingBLL.GetLocationMapping().Select(x => new { City = x.Location }).Distinct().OrderBy(x => x.City);
             var UserDecisionList = new Dictionary<int, string> { { 1, "Buy" }, { 2, "Refund" } };
             var PoliceNumberList = new List<FleetDto>();
@@ -311,7 +317,12 @@ namespace FMS.Website.Controllers
             }
 
             var ExtendList = new Dictionary<bool, string> { { false, "No" }, { true, "Yes" } };
-            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
+
+            var RemarkList = _remarkBLL.GetRemark().Where(x => (x.RoleType == null  ? "" :x.RoleType.ToUpper())== CurrentUser.UserRole.ToString().ToUpper() && x.DocumentType == (int)Enums.DocumentType.CTF && x.IsActive).ToList();
+            if (!string.IsNullOrEmpty(model.VehicleType))
+            {
+                RemarkList = RemarkList.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == model.VehicleType.ToUpper()).ToList();
+            }
 
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.ExtendList = new SelectList(ExtendList, "Key", "Value");
@@ -1225,7 +1236,11 @@ namespace FMS.Website.Controllers
                 model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
 
 
-                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
+                var RemarkList = _remarkBLL.GetRemark().Where(x => (x.RoleType == null ? "" : x.RoleType.ToUpper()) == CurrentUser.UserRole.ToString().ToUpper() && x.DocumentType == (int)Enums.DocumentType.CTF && x.IsActive).ToList();
+                if (!string.IsNullOrEmpty(model.VehicleType))
+                {
+                    RemarkList = RemarkList.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == model.VehicleType.ToUpper()).ToList();
+                }
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
                 return View(model);
@@ -1343,7 +1358,11 @@ namespace FMS.Website.Controllers
                 model.RefundCostStr = model.RefundCost == null ? "" : string.Format("{0:n0}", model.RefundCost);
 
 
-                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
+                var RemarkList = _remarkBLL.GetRemark().Where(x => (x.RoleType == null ? "" : x.RoleType.ToUpper()) == CurrentUser.UserRole.ToString().ToUpper() && x.DocumentType == (int)Enums.DocumentType.CTF && x.IsActive).ToList();
+                if (!string.IsNullOrEmpty(model.VehicleType))
+                {
+                    RemarkList = RemarkList.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == model.VehicleType.ToUpper()).ToList();
+                }
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
                 return View(model);
@@ -1790,7 +1809,12 @@ namespace FMS.Website.Controllers
             }
 
             var EpafData = _epafBLL.GetEpafByDocType(Enums.DocumentType.CTF).ToList();
-            var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CTF).ToList();
+            var RemarkList = _remarkBLL.GetRemark().Where(x => (x.RoleType == null ? "" : x.RoleType.ToUpper()) == CurrentUser.UserRole.ToString().ToUpper() && x.DocumentType == (int)Enums.DocumentType.CTF && x.IsActive).ToList();
+            var VehicleType = "BENEFIT";
+            if (!string.IsNullOrEmpty(VehicleType))
+            {
+                RemarkList = RemarkList.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == VehicleType.ToUpper()).ToList();
+            }
 
             var model = new CtfModel();
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -2150,6 +2174,17 @@ namespace FMS.Website.Controllers
                 }
             }
             return Json(model);
+        }
+        [HttpPost]
+        public JsonResult GetReasonByVehicleType(string VehicleType)
+        {
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).OrderBy(x => x.Reason).ToList();
+
+            if (!string.IsNullOrEmpty(VehicleType))
+            {
+                ReasonList = ReasonList.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == VehicleType.ToUpper()).ToList();
+            }
+            return Json(ReasonList);
         }
         #endregion
 
