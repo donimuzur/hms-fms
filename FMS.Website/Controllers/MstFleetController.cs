@@ -132,7 +132,11 @@ namespace FMS.Website.Controllers
             param.Vendor = searchView.Vendor;
             param.Function = searchView.Function;
             param.StartRent = searchView.StartRent;
+            param.StartRentTo = searchView.StartRentTo;
             param.EndRent = searchView.EndRent;
+            param.EndRentTo = searchView.EndRentTo;
+            param.EndDate = searchView.EndDate;
+            param.EndDateTo = searchView.EndDateTo;
             param.Regional = searchView.Regional;
             param.City = searchView.City;
             param.EmployeeId = searchView.EmployeeId;
