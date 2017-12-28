@@ -287,7 +287,7 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.VatDecimalStr = model.VatDecimal == null ? "" : string.Format("{0:n0}", model.VatDecimal);
-            model.MonthlyHMSInstallmentStr = model.MonthlyHMSInstallment == null ? "" : string.Format("{0:n0}", model.MonthlyHMSInstallment);
+            model.MonthlyHMSInstallmentStr = string.Format("{0:n0}", model.MonthlyHMSInstallment);
             model.TotalMonthlyChargeStr = model.TotalMonthlyCharge == null ? "" : string.Format("{0:n0}", model.TotalMonthlyCharge);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
