@@ -183,9 +183,9 @@ namespace FMS.BLL.Ctf
             {
                 penalty = _penaltyService.GetPenalty().Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == (fleetData.BODY_TYPE == null ? "" : fleetData.BODY_TYPE.ToUpper())  
                                                                     && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper() ) == (fleetData.VEHICLE_TYPE == null ? "" : fleetData.VEHICLE_TYPE.ToUpper())
-                                                                    && (x.MANUFACTURER == null ? "" : x.MANUFACTURER) == ""
-                                                                    && (x.MODEL == null ? "" : x.MODEL) == ""
-                                                                    && (x.SERIES == null ? "" : x.SERIES) == ""
+                                                                    && (x.MANUFACTURER == null || x.MANUFACTURER == "")
+                                                                    && (x.MODEL == null || x.MODEL == "")
+                                                                    && (x.SERIES == null || x.SERIES == "")
                                                                     && x.YEAR == fleetData.VEHICLE_YEAR
                                                                     && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
             }
@@ -194,9 +194,9 @@ namespace FMS.BLL.Ctf
             {
                 penalty = _penaltyService.GetPenalty().Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleetData.VEHICLE_TYPE == null ? "" : fleetData.VEHICLE_TYPE.ToUpper()) 
                                                              && x.YEAR == fleetData.VEHICLE_YEAR
-                                                             && (x.MANUFACTURER ==  null ? "" : x.MANUFACTURER) == ""
-                                                             && (x.MODEL == null ? "" : x.MODEL) == ""
-                                                             && (x.SERIES == null ? "" : x.SERIES) == ""
+                                                             && (x.MANUFACTURER ==  null || x.MANUFACTURER == "")
+                                                             && (x.MODEL == null || x.MODEL == "") 
+                                                             && (x.SERIES == null || x.SERIES == "") 
                                                              && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
             }
 
