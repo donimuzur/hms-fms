@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.IO.Compression;
+using System.IO.Packaging;
+using AutoMapper;
 using FMS.BusinessObject;
 using FMS.Contract.BLL;
 using FMS.BusinessObject.Dto;
@@ -373,6 +375,64 @@ namespace FMS.Website.Controllers
                 }
             }
             return Json(model);
+        }
+
+        [HttpPost]
+        public ActionResult UploadImageBatch(HttpPostedFileBase file)
+        {
+            var model = new VehicleSpectModel();
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            
+            if (file != null)
+            {
+
+
+
+                if (file.ContentType != "application/zip")
+                {
+
+
+                    model.ErrorMessage = "Only zip file allowed (.zip)";
+                    
+                }
+                else
+                {
+                    try
+                    {
+                        using (ZipArchive archive = new ZipArchive(file.InputStream, ZipArchiveMode.Read))
+                        {
+                            foreach (var entry in archive.Entries)
+                            {
+                                var destPath = Server.MapPath("~" + pathUpload + entry.FullName);
+                                var destStream = new FileStream(destPath, FileMode.Create);
+
+                                entry.Open().CopyTo(destStream);
+                                destStream.Close();
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        model.ErrorMessage = ex.Message;
+                    }
+                    
+                    
+                    
+                    
+                }
+            }
+            else
+            {
+                model.ErrorMessage = "Please upload a file.";
+            }
+
+
+            
+            
+            return View("Upload", model);
         }
 
         public void ExportMasterVehicleSpect()

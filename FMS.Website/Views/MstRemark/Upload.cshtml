@@ -31,6 +31,7 @@
                         <th>Document Type</th>
                         <th>Remark</th>
                         <th>Role Type</th>
+                        <th>Vehicle Type</th>
                         <th>Message</th>
                     </tr>
                 </thead>
@@ -122,6 +123,7 @@
                 createColumnWithHiddenField(uploaditems[i].MstDocumentType, 'Model.Details[' + i + '].MstDocumentType') +
                 createColumnWithHiddenField(uploaditems[i].Remark, 'Model.Details[' + i + '].Remark') +
                 createColumnWithHiddenField(uploaditems[i].RoleType, 'Model.Details[' + i + '].RoleType') +
+                createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '<input type="hidden" name="Model.Details[' + i + '].DocumentType" value="' + uploaditems[i].DocumentType + '">' +
                '</tr>';

@@ -558,6 +558,7 @@
                 }
             },
             complete: function (data) {
+                GetReasonList();
                 checkVehicletype();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
                 CheckEndrent(data);
@@ -596,6 +597,7 @@
                 }
             },
             complete: function (data) {
+                GetReasonList();
                 CheckEndrent();
             }
         });
@@ -663,4 +665,30 @@
         $('#isSubmit').val('submit');
         $("#btnSubmit").trigger('click');
     });
+    function GetReasonList() {
+        if ($("#VehicleType").length) {
+            var VehicleType = $('#VehicleType').val();
+            $('#Reason option').remove();
+            if (VehicleType == '' || $('#VehicleType').find("option:selected").val() == '') {
+                $('#Reason').append('<option value="">-- Please Select --</option>');
+
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetReasonByVehicleType", "TraCtf")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { VehicleType: VehicleType },
+                    success: function (list) {
+                        $('#Reason').append('<option value="">-- Please Select --</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#Reason').append('<option value=' + list[i].MstReasonId + '>' + list[i].Reason + '</option>');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
 </script>
