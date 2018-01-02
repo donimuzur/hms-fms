@@ -644,7 +644,30 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Series : " + (fleetdata == null ? "" : fleetdata.SERIES.ToUpper()) + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
+                        bodyMail.Append("Employee Name : " + (ctfData == null ? "" : ctfData.EmployeeName) + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Vehicle Usage : " + (ctfData == null ? "" : ctfData.VehicleUsage.ToUpper()) + "<br />");
+                        bodyMail.AppendLine();
+                        if((ctfData.VehicleUsage == null ? "" : ctfData.VehicleUsage.ToUpper()) == "CFM")
+                        {
+                            bodyMail.Append("Transfer To CFM Idle : " + (ctfData == null ? "" : ctfData.IsTransferToIdle.Value == true ? "Yes" : "No") + "<br />");
+                            bodyMail.AppendLine();
+                        }
+                        bodyMail.Append("Contract End Date : " + fleetdata.END_CONTRACT.Value.ToString("dd-MMM-yyyy") + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Withdrawal Detail : " + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("PIC : " + ctfData.WithdPic+" <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Date : " + ctfData.WithdDate.Value.ToString("dd-MMM-yyyy HH:mm")+" <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Phone Number : " + ctfData.WithdPhone + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Address : " + ctfData.WithdAddress +" <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("City: " + ctfData.WithdAddress + " <br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
@@ -689,7 +712,23 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Series : " + (fleetdata == null ? "" : fleetdata.SERIES.ToUpper()) + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
+                        bodyMail.Append("Employee Name : " + (ctfData == null ? "" : ctfData.EmployeeName) + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Contract End Date : " + fleetdata.END_CONTRACT.Value.ToString("dd-MMM-yyyy") + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Withdrawal Detail : " + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("PIC : " + ctfData.WithdPic + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Date : " + ctfData.WithdDate.Value.ToString("dd-MMM-yyyy HH:mm") + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Phone Number : " + ctfData.WithdPhone + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Address : " + ctfData.WithdAddress + " <br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("City: " + ctfData.WithdAddress + " <br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
