@@ -1996,7 +1996,7 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper() )== (benefitType == null ? "" : benefitType.ToUpper()) && x.EmployeeID == Id).FirstOrDefault();
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
@@ -2041,7 +2041,7 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType && x.PoliceNumber == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.PoliceNumber == Id).FirstOrDefault();
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
@@ -2077,12 +2077,12 @@ namespace FMS.Website.Controllers
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == benefitType).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper())).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.VehicleType == wtcType).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
         }
