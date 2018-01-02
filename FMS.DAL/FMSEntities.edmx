@@ -1013,7 +1013,7 @@
           <Property Name="EXTEND_VEHICLE" Type="bit" />
           <Property Name="WITHD_PIC" Type="nvarchar" MaxLength="50" />
           <Property Name="WITHD_PHONE" Type="nvarchar" MaxLength="50" />
-          <Property Name="WITHD_DATE" Type="date" />
+          <Property Name="WITHD_DATE" Type="datetime" />
           <Property Name="WITHD_CITY" Type="nvarchar" MaxLength="50" />
           <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="decimal" Precision="18" Scale="2" />
@@ -3219,7 +3219,7 @@
           <Property Name="EXTEND_VEHICLE" Type="Boolean" />
           <Property Name="WITHD_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WITHD_DATE" Type="DateTime" Precision="0" />
+          <Property Name="WITHD_DATE" Type="DateTime" Precision="3" />
           <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="Decimal" Precision="18" Scale="2" />
