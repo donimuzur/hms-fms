@@ -239,6 +239,11 @@ namespace FMS.BLL.Ctf
             var fleet = _fleetService.GetFleet().Where(x => x.EMPLOYEE_ID == CtfDto.EmployeeId && x.POLICE_NUMBER == CtfDto.PoliceNumber && x.IS_ACTIVE).FirstOrDefault();
             var Vendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (fleet.VENDOR_NAME == null ? "" : fleet.VENDOR_NAME.ToUpper()) 
                                                                 && x.IS_ACTIVE).FirstOrDefault();
+            var ReasonData = _reasonService.GetReasonById(CtfDto.Reason.Value);
+            var reasonStr = ReasonData.REASON;
+            var IsPenalty = ReasonData.IS_PENALTY;
+            var PenaltyForFleet = ReasonData.PENALTY_FOR_FLEET;
+            var PenaltyForEmployee = ReasonData.PENALTY_FOR_EMPLOYEE;
 
             if (fleet == null) return 0;
 
@@ -251,9 +256,9 @@ namespace FMS.BLL.Ctf
                 
             if (installmentEmp == null) return 0;
             
-            var rentMonth = ((fleet.END_CONTRACT.Value.Year - CtfDto.EffectiveDate.Value.Year) * 12) + fleet.END_CONTRACT.Value.Month - CtfDto.EffectiveDate.Value.Month;
+            var rentMonth = ((CtfDto.EffectiveDate.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + CtfDto.EffectiveDate.Value.Month - fleet.START_CONTRACT.Value.Month ;
 
-            if (CtfDto.IsPenalty)
+            if (CtfDto.IsPenalty && PenaltyForEmployee.Value)
             {
                 cost = (rentMonth * installmentEmp.INSTALLMEN_EMP)/(decimal)1.1 - CtfDto.Penalty.Value;
             }
