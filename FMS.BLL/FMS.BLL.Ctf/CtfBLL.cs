@@ -649,15 +649,18 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
-
-                        rc.To.Add(employeeDataEmail);
+                        
+                        if (!string.IsNullOrEmpty(vendorDataEmail))
+                        {
+                            rc.To.Add(vendorDataEmail);
+                        }
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
                         }
-                        if (!string.IsNullOrEmpty(vendorDataEmail))
+                        if (!string.IsNullOrEmpty(employeeDataEmail))
                         {
-                            rc.CC.Add(vendorDataEmail);
+                            rc.CC.Add(employeeDataEmail);
                         }
                         foreach (var item in hrEmailList)
                         {
@@ -692,14 +695,17 @@ namespace FMS.BLL.Ctf
                         bodyMail.Append("Fleet Team");
                         bodyMail.AppendLine();
 
-                        rc.To.Add(employeeDataEmail);
                         if (!string.IsNullOrEmpty(vendorDataEmail))
                         {
-                            rc.CC.Add(vendorDataEmail);
+                            rc.To.Add(vendorDataEmail);
                         }
                         foreach (var item in fleetEmailList)
                         {
                             rc.CC.Add(item);
+                        }
+                        if (!string.IsNullOrEmpty(employeeDataEmail))
+                        {
+                            rc.CC.Add(employeeDataEmail);
                         }
                     }
                     rc.IsCCExist = true;
