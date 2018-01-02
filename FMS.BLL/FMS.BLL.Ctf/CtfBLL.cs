@@ -179,6 +179,18 @@ namespace FMS.BLL.Ctf
                                                                    && x.VENDOR == Vendor.MST_VENDOR_ID 
                                                                    && (x.VEHICLE_TYPE  == null? "" : x.VEHICLE_TYPE.ToUpper()) == (fleetData.VEHICLE_TYPE == null ? "" : fleetData.VEHICLE_TYPE.ToUpper())
                                                                    && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+
+            if (penalty == null)
+            {
+                penalty = _penaltyService.GetPenalty().Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (fleetData.VEHICLE_TYPE == null ? "" : fleetData.VEHICLE_TYPE.ToUpper())
+                                                             && x.YEAR == fleetData.VEHICLE_YEAR
+                                                             && (x.MANUFACTURER == null ? "" : x.MANUFACTURER.ToUpper()) == (fleetData.MANUFACTURER == null ? "" : fleetData.MANUFACTURER.ToUpper())
+                                                             && (x.MODEL == null ? "" : x.MODEL.ToUpper()) == (fleetData.MODEL == null ? "" : fleetData.MODEL.ToUpper())
+                                                             && (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == (fleetData.BODY_TYPE == null ? "" : fleetData.BODY_TYPE.ToUpper())
+                                                             && (x.SERIES == null || x.SERIES == "")
+                                                             && x.VENDOR == Vendor.MST_VENDOR_ID && x.MONTH_START <= rentMonth && x.MONTH_END >= rentMonth && x.IS_ACTIVE).FirstOrDefault();
+            }
+
             if (penalty == null)
             {
                 penalty = _penaltyService.GetPenalty().Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == (fleetData.BODY_TYPE == null ? "" : fleetData.BODY_TYPE.ToUpper())  
