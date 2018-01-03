@@ -419,7 +419,7 @@ namespace FMS.Website.Controllers
                 }
                 if (!Model.IsTransferToIdle)
                 {
-                    if (Model.VehicleUsage == CopUsage)
+                    if ((Model.VehicleUsage == null ? "" : Model.VehicleUsage.ToUpper()) == (CopUsage == null ? "" :CopUsage.ToUpper()))
                     {
                         CtfDto.RefundCost = _ctfBLL.RefundCost(CtfDto);
                         CtfDto.BuyCostTotal = CtfDto.BuyCostTotal;
@@ -1894,7 +1894,9 @@ namespace FMS.Website.Controllers
                     }
                   
 
-                    var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true && (x.VehicleType == benefitType) && (x.SupplyMethod == null ? "" : x.SupplyMethod.ToUpper()) != "TEMPORARY").FirstOrDefault();
+                    var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true 
+                                                                && (x.VehicleType== null ? "" : x.VehicleType.ToUpper() )== (benefitType == null ? "" : benefitType.ToUpper()) 
+                                                                && (x.SupplyMethod == null ? "" : x.SupplyMethod.ToUpper()) != "TEMPORARY").FirstOrDefault();
 
                     item.Reason = reason.MstReasonId;
                     item.CreatedBy = CurrentUser.USER_ID;
@@ -1914,6 +1916,19 @@ namespace FMS.Website.Controllers
                         item.SupplyMethod = FleetData.SupplyMethod;
                         item.EndRendDate = FleetData.EndContract;
                     }
+                    
+                    if ((item.VehicleUsage == null  ?"" : item.VehicleUsage.ToUpper()) == "COP" )
+                    {
+                        item.RefundCost = _ctfBLL.RefundCost(item);
+                        item.EmployeeContribution = _ctfBLL.EmployeeContribution(item);
+
+                    }
+                    if (reason.IsPenalty)
+                    {
+                        if (reason.PenaltyForEmplloyee== true) item.Penalty = _ctfBLL.PenaltyCost(item);
+                        if (reason.PenaltyForFleet == true) item.PenaltyPrice = _ctfBLL.PenaltyCost(item);
+                    }
+
                     CtfData = _ctfBLL.Save(item, CurrentUser);
 
                     AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
