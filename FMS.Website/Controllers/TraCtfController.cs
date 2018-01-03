@@ -1885,7 +1885,7 @@ namespace FMS.Website.Controllers
 
                     item = Mapper.Map<TraCtfDto>(data);
 
-                    var reason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CTF && x.Reason.ToLower() == data.EpafAction.ToLower()).FirstOrDefault();
+                    var reason = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CTF && (x.Reason == null ? "" : x.Reason.ToLower()) == (data.EpafAction == null ?"" : data.EpafAction.ToLower())).FirstOrDefault();
 
                     if (reason == null)
                     {
