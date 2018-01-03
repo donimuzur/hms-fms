@@ -262,7 +262,7 @@ namespace FMS.BLL.Ctf
 
             if (CtfDto.IsPenalty && PenaltyForEmployee.Value)
             {
-                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP) / (decimal)1.1 - CtfDto.Penalty.Value;
+                cost = ((rentMonth * installmentEmp.INSTALLMEN_EMP) / (decimal)1.1) - CtfDto.Penalty.Value;
             }
             else
             {

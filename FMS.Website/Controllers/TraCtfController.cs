@@ -419,17 +419,17 @@ namespace FMS.Website.Controllers
                 }
                 if (!Model.IsTransferToIdle)
                 {
-                    if ((Model.VehicleUsage == null ? "" : Model.VehicleUsage.ToUpper()) == (CopUsage == null ? "" :CopUsage.ToUpper()))
+                    if (IsPenalty)
+                    {
+                        if(PenaltyForEmployee == true) CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
+                        if(PenaltyForFleet == true) CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
+                    }
+                    if ((Model.VehicleUsage == null ? "" : Model.VehicleUsage.ToUpper()) == (CopUsage == null ? "" : CopUsage.ToUpper()))
                     {
                         CtfDto.RefundCost = _ctfBLL.RefundCost(CtfDto);
                         CtfDto.BuyCostTotal = CtfDto.BuyCostTotal;
                         CtfDto.BuyCost = CtfDto.BuyCostTotal;
                         CtfDto.EmployeeContribution = _ctfBLL.EmployeeContribution(CtfDto);
-                    }
-                    if (IsPenalty)
-                    {
-                        if(PenaltyForEmployee == true) CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
-                        if(PenaltyForFleet == true) CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
                     }
                 }
                 var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
@@ -1892,7 +1892,6 @@ namespace FMS.Website.Controllers
                         AddMessageInfo("Please Add Reason In Master Data", Enums.MessageInfoType.Warning);
                         return RedirectToAction("DashboardEpaf", "TraCtf");
                     }
-                  
 
                     var FleetData = _fleetBLL.GetFleet().Where(x => x.EmployeeID == item.EmployeeId && x.IsActive == true 
                                                                 && (x.VehicleType== null ? "" : x.VehicleType.ToUpper() )== (benefitType == null ? "" : benefitType.ToUpper()) 
@@ -1916,17 +1915,15 @@ namespace FMS.Website.Controllers
                         item.SupplyMethod = FleetData.SupplyMethod;
                         item.EndRendDate = FleetData.EndContract;
                     }
-                    
+                    if (reason.IsPenalty)
+                    {
+                        if (reason.PenaltyForEmplloyee == true) item.Penalty = _ctfBLL.PenaltyCost(item);
+                        if (reason.PenaltyForFleet == true) item.PenaltyPrice = _ctfBLL.PenaltyCost(item);
+                    }
                     if ((item.VehicleUsage == null  ?"" : item.VehicleUsage.ToUpper()) == "COP" )
                     {
                         item.RefundCost = _ctfBLL.RefundCost(item);
                         item.EmployeeContribution = _ctfBLL.EmployeeContribution(item);
-
-                    }
-                    if (reason.IsPenalty)
-                    {
-                        if (reason.PenaltyForEmplloyee== true) item.Penalty = _ctfBLL.PenaltyCost(item);
-                        if (reason.PenaltyForFleet == true) item.PenaltyPrice = _ctfBLL.PenaltyCost(item);
                     }
 
                     CtfData = _ctfBLL.Save(item, CurrentUser);
@@ -2034,7 +2031,6 @@ namespace FMS.Website.Controllers
         }
         public JsonResult GetEmployeeList()
         {
-
             var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
