@@ -613,7 +613,7 @@ namespace FMS.Website.Controllers
 
             if (vehicleType == "benefit")
             {
-                var modelVehicle = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
+                var modelVehicle = vehicleData.Where(x => x.GroupLevel > 0 && x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
 
                 //get selectedCfmIdle temp
                 var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
@@ -626,8 +626,10 @@ namespace FMS.Website.Controllers
                 //get selectedCfmIdle crf
                 var cfmIdleListSelectedCrf = _crfBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
                                                                         && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
-                
-                var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
+
+                var fleetDataGood = _fleetBLL.GetFleet().Where(x => x.VehicleUsage != null);
+
+                var fleetData = fleetDataGood.Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
                                                                 x.IsActive &&
                                                                 !cfmIdleListSelected.Contains(x.MstFleetId) &&
                                                                 !cfmIdleListSelectedCsf.Contains(x.MstFleetId) &&
