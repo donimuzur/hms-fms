@@ -367,8 +367,8 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            <div class="input-group date" id="empDate">
-                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                            <div class="input-group datetime" id="empDate">
+                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy HH:mm}", new { @class = "form-control", @readonly = "readonly" })
                                                                 <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>

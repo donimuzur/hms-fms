@@ -622,9 +622,9 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 13, "Start Date");
             slDocument.SetCellValue(iRow, 14, "End Date");
             slDocument.SetCellValue(iRow, 15, "Lead Time");
-            slDocument.SetCellValue(iRow, 12, "KPI Fulfillment");
-            slDocument.SetCellValue(iRow, 12, "Rent Time");
-            slDocument.SetCellValue(iRow, 16, "Remark");
+            slDocument.SetCellValue(iRow, 16, "KPI Fulfillment");
+            slDocument.SetCellValue(iRow, 17, "Rent Time");
+            slDocument.SetCellValue(iRow, 18, "Remark");
 
 
             SLStyle headerStyle = slDocument.CreateStyle();
@@ -636,7 +636,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
 
             return slDocument;
         }

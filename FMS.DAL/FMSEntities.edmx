@@ -1013,7 +1013,7 @@
           <Property Name="EXTEND_VEHICLE" Type="bit" />
           <Property Name="WITHD_PIC" Type="nvarchar" MaxLength="50" />
           <Property Name="WITHD_PHONE" Type="nvarchar" MaxLength="50" />
-          <Property Name="WITHD_DATE" Type="date" />
+          <Property Name="WITHD_DATE" Type="datetime" />
           <Property Name="WITHD_CITY" Type="nvarchar" MaxLength="50" />
           <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="decimal" Precision="18" Scale="2" />
@@ -1119,11 +1119,11 @@
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
           <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
           <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
-          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1192,7 +1192,7 @@
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
-        <Association Name="FK__PO_REPORT__EMPLO__03F0984C">
+        <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1204,7 +1204,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PO_REPORT__EMPLO__04E4BC85">
+        <Association Name="FK__PO_REPORT__EMPLO__589C25F3">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1751,11 +1751,11 @@
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__03F0984C" Association="Self.FK__PO_REPORT__EMPLO__03F0984C">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__1B9317B3" Association="Self.FK__PO_REPORT__EMPLO__1B9317B3">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__04E4BC85" Association="Self.FK__PO_REPORT__EMPLO__04E4BC85">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__589C25F3" Association="Self.FK__PO_REPORT__EMPLO__589C25F3">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
@@ -3219,7 +3219,7 @@
           <Property Name="EXTEND_VEHICLE" Type="Boolean" />
           <Property Name="WITHD_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WITHD_DATE" Type="DateTime" Precision="0" />
+          <Property Name="WITHD_DATE" Type="DateTime" Precision="3" />
           <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="Decimal" Precision="18" Scale="2" />

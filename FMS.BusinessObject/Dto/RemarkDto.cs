@@ -12,6 +12,7 @@ namespace FMS.BusinessObject.Dto
         public int DocumentType { get; set; }
         public string Remark { get; set; }
         public string RoleType { get; set; }
+        public string VehicleType { get; set; }
         public string CreatedBy { get; set; }
         public DateTime createdDate { get; set; }
         public string ModifiedBy { get; set; }

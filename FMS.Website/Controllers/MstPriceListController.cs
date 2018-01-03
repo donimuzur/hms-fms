@@ -426,7 +426,7 @@ namespace FMS.Website.Controllers
 
                         try
                         {
-                            item.InstallmenHMS = Convert.ToInt32(dataRow[8]);
+                            item.InstallmenHMS = Convert.ToDecimal(dataRow[8]);
                         }
                         catch (Exception)
                         {
@@ -436,7 +436,7 @@ namespace FMS.Website.Controllers
 
                         try
                         {
-                            item.InstallmenEMP = Convert.ToInt32(dataRow[9]);
+                            item.InstallmenEMP = Convert.ToDecimal(dataRow[9]);
                         }
                         catch (Exception)
                         {
@@ -571,8 +571,8 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                var vendorName = _vendorBLL.GetByID(data.Vendor).VendorName;
-                slDocument.SetCellValue(iRow, 1, vendorName);
+                var vendor = _vendorBLL.GetByID(data.Vendor);
+                slDocument.SetCellValue(iRow, 1, vendor == null ? "" : vendor.VendorName);
                 slDocument.SetCellValue(iRow, 2, data.VehicleType);
                 slDocument.SetCellValue(iRow, 3, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 4, data.ZonePriceList);
