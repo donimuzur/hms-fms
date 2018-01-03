@@ -16,10 +16,9 @@
             <th style="min-width: 120px" align="center">Police Number</th>
             <th style="min-width: 120px" align="center">Police Number GS</th>
             <th style="min-width: 120px" align="center">Region</th>
-            <th style="min-width: 120px" align="center">Created By</th>
-            <th style="min-width: 120px" align="center">Created Date</th>
-            <th style="min-width: 120px" align="center">Modified By</th>
-            <th style="min-width: 120px" align="center">Modified Date</th>
+            <th style="min-width: 120px" align="center">Coordinator</th>
+            <th style="min-width: 120px" align="center">Update By</th>
+            <th style="min-width: 120px" align="center">Update Date</th>
         </tr>
     </thead>
     <thead class="filters">
@@ -27,7 +26,6 @@
             <th>
                 &nbsp;
             </th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -73,8 +71,7 @@
                 <td>@Html.Raw(data.PoliceNumber)</td>
                 <td>@Html.Raw(data.PoliceNumberGS)</td>
                 <td>@Html.Raw(data.Region)</td>
-                <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm"))</td>
+                <td>@Html.Raw(data.CoordinatorName)</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm"))</td>
             </tr>
