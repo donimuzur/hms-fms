@@ -47,8 +47,8 @@
             </div>
         </div>
     </div>
-    <div id="contenttable" class="wpanel">
-        <table id="tbSummary" class="table table-bordered table-striped">
+    <div class="wpanel">
+        @*<table id="tbSummary" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Menu</th>
@@ -66,12 +66,509 @@
                 <tr><td><a href="@Url.Action("Accident", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Accident</a></td></tr>
                 <tr><td><a href="@Url.Action("AcVsOb", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">AC Vs OB</a></td></tr>
             </tbody>
-        </table>
+        </table>*@
+        <!-- summary grid -->
+        <div class="chart-summary">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-bullseye"></i> AC Vs OB</h5>
+                            <canvas id="lineChart"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-compress"></i> Accident</h5>
+                            <canvas id="mybarChart"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-credit-card"></i> Fuel Cost By Function</h5>
+                            <canvas id="canvasDoughnut"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-credit-card"></i> Lease Cost By Function</h5>
+                            <canvas id="canvasRadar"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> Liter By Function</h5>
+                            <canvas id="polarArea"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-car"></i> Number Of Vehicle</h5>
+                            <canvas id="lineChart2"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-car"></i> Number Of Vehicle Make</h5>
+                            <canvas id="mybarChart2"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-car"></i> Number Of Vehicle WTC</h5>
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-tachometer"></i> Odometer</h5>
+                            <canvas id="pieChart2"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-area-chart"></i> Sales By Region</h5>
+                            <canvas id="pieChart3"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end summary grid -->
     </div>
 </section>
+<script src="~/Scripts/js/Chart.bundle.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
+    function init_charts() {
+
+        console.log('run_charts  typeof [' + typeof (Chart) + ']');
+
+        if (typeof (Chart) === 'undefined') { return; }
+
+        console.log('init_charts');
+
+
+        Chart.defaults.global.legend = {
+            enabled: false
+        };
+
+        // Line chart
+
+        if ($('#lineChart').length) {
+
+            var ctx = document.getElementById("lineChart");
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [{
+                        label: "My First dataset",
+                        backgroundColor: "rgba(130, 130, 130, 0.31)",
+                        borderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(130,130,130,1)",
+                        pointBorderWidth: 1,
+                        data: [31, 74, 6, 39, 20, 85, 7]
+                    }, {
+                        label: "My Second dataset",
+                        backgroundColor: "rgba(33, 164, 255, 0.3)",
+                        borderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                        pointBorderWidth: 1,
+                        data: [82, 23, 66, 9, 99, 4, 2]
+                    }]
+                },
+            });
+
+        }
+
+        // Line chart
+
+        if ($('#lineChart2').length) {
+
+            var ctx = document.getElementById("lineChart2");
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [{
+                        label: "My First dataset",
+                        backgroundColor: "rgba(130, 130, 130, 0.31)",
+                        borderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(130,130,130,1)",
+                        pointBorderWidth: 1,
+                        data: [31, 74, 6, 39, 20, 85, 7]
+                    }, {
+                        label: "My Second dataset",
+                        backgroundColor: "rgba(33, 164, 255, 0.3)",
+                        borderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                        pointBorderWidth: 1,
+                        data: [82, 23, 66, 9, 99, 4, 2]
+                    }]
+                },
+            });
+
+        }
+
+        // Bar chart
+
+        if ($('#mybarChart').length) {
+
+            var ctx = document.getElementById("mybarChart");
+            var mybarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [{
+                        label: '# of Votes',
+                        backgroundColor: "#21A4FF",
+                        data: [51, 30, 40, 28, 92, 50, 45]
+                    }, {
+                        label: '# of Votes',
+                        backgroundColor: "#828282",
+                        data: [41, 56, 25, 48, 72, 34, 12]
+                    }]
+                },
+
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+        }
+
+        // Bar chart
+
+        if ($('#mybarChart2').length) {
+
+            var ctx = document.getElementById("mybarChart2");
+            var mybarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July"],
+                    datasets: [{
+                        label: '# of Votes',
+                        backgroundColor: "#21A4FF",
+                        data: [51, 30, 40, 28, 92, 50, 45]
+                    }, {
+                        label: '# of Votes',
+                        backgroundColor: "#828282",
+                        data: [41, 56, 25, 48, 72, 34, 12]
+                    }]
+                },
+
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+        }
+
+
+        // Doughnut chart
+
+        if ($('#canvasDoughnut').length) {
+
+            var ctx = document.getElementById("canvasDoughnut");
+            var data = {
+                labels: [
+                "Dark Grey",
+                "Red Color",
+                "Gray Color",
+                "Dark Blue Color",
+                "Blue Color"
+                ],
+                datasets: [{
+                    data: [120, 50, 140, 180, 100],
+                    backgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ],
+                    hoverBackgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ]
+
+                }]
+            };
+
+            var canvasDoughnut = new Chart(ctx, {
+                type: 'doughnut',
+                tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+                data: data
+            });
+
+        }
+
+        // Radar chart
+
+        if ($('#canvasRadar').length) {
+
+            var ctx = document.getElementById("canvasRadar");
+            var data = {
+                labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: "rgba(130, 130, 130, 0.31)",
+                    borderColor: "rgba(130, 130, 130, 0.7)",
+                    pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                    pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(130,130,130,1)",
+                    pointBorderWidth: 1,
+                    data: [31, 74, 6, 39, 20, 85, 7]
+                }, {
+                    label: "My Second dataset",
+                    backgroundColor: "rgba(33, 164, 255, 0.3)",
+                    borderColor: "rgba(33, 164, 255, 0.70)",
+                    pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                    pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                    pointBorderWidth: 1,
+                    data: [82, 23, 66, 9, 99, 4, 2]
+                }]
+            };
+
+            var canvasRadar = new Chart(ctx, {
+                type: 'radar',
+                data: data,
+            });
+
+        }
+
+
+        // Pie chart
+        if ($('#pieChart').length) {
+
+            var ctx = document.getElementById("pieChart");
+            var data = {
+                labels: [
+                "Dark Grey",
+                "Red Color",
+                "Gray Color",
+                "Dark Blue Color",
+                "Blue Color"
+                ],
+                datasets: [{
+                    data: [120, 50, 140, 180, 100],
+                    backgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ],
+                    hoverBackgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ]
+
+                }]
+            };
+
+            var pieChart = new Chart(ctx, {
+                data: data,
+                type: 'pie',
+                otpions: {
+                    legend: false
+                }
+            });
+
+        }
+
+        // Pie chart
+        if ($('#pieChart2').length) {
+
+            var ctx = document.getElementById("pieChart2");
+            var data = {
+                labels: [
+                "Dark Grey",
+                "Red Color",
+                "Gray Color",
+                "Dark Blue Color",
+                "Blue Color"
+                ],
+                datasets: [{
+                    data: [120, 50, 140, 180, 100],
+                    backgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ],
+                    hoverBackgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ]
+
+                }]
+            };
+
+            var pieChart = new Chart(ctx, {
+                data: data,
+                type: 'pie',
+                otpions: {
+                    legend: false
+                }
+            });
+
+        }
+
+        // Pie chart
+        if ($('#pieChart3').length) {
+
+            var ctx = document.getElementById("pieChart3");
+            var data = {
+                labels: [
+                "Dark Grey",
+                "Red Color",
+                "Gray Color",
+                "Drak Blue Color",
+                "Blue Color"
+                ],
+                datasets: [{
+                    data: [120, 50, 140, 180, 100],
+                    backgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ],
+                    hoverBackgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ]
+
+                }]
+            };
+
+            var pieChart = new Chart(ctx, {
+                data: data,
+                type: 'pie',
+                otpions: {
+                    legend: false
+                }
+            });
+
+        }
+
+        // PolarArea chart
+
+        if ($('#polarArea').length) {
+
+            var ctx = document.getElementById("polarArea");
+            var data = {
+                datasets: [{
+                    data: [120, 50, 140, 180, 100],
+                    backgroundColor: [
+                    "#828282",
+                    "#B21B1B",
+                    "#BDC3C7",
+                    "#344F67",
+                    "#21A4FF"
+                    ],
+                    label: 'My dataset'
+                }],
+                labels: [
+                    "Dark Grey",
+                    "Red Color",
+                    "Gray Color",
+                    "Dark Blue Color",
+                    "Blue Color"
+                ]
+            };
+
+            var polarArea = new Chart(ctx, {
+                data: data,
+                type: 'polarArea',
+                options: {
+                    scale: {
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        }
+    }
+
+    $(document).ready(function () {
+        init_charts();
+    });
+
     function ExportXls() {
         $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
         $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
