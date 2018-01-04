@@ -260,9 +260,9 @@ namespace FMS.BLL.Ctf
 
             var rentMonth = ((CtfDto.EffectiveDate.Value.Year - fleet.START_CONTRACT.Value.Year) * 12) + CtfDto.EffectiveDate.Value.Month - fleet.START_CONTRACT.Value.Month;
 
-            if (CtfDto.IsPenalty && PenaltyForEmployee.Value)
+            if (PenaltyForEmployee.Value == true)
             {
-                cost = (rentMonth * installmentEmp.INSTALLMEN_EMP) / (decimal)1.1 - CtfDto.Penalty.Value;
+                cost = ((rentMonth * installmentEmp.INSTALLMEN_EMP) / (decimal)1.1) - CtfDto.Penalty.Value;
             }
             else
             {
@@ -857,7 +857,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
+                        bodyMail.Append("Termination Date : " + ctfData == null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
@@ -894,7 +894,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate + " <br />");
+                        bodyMail.Append("Termination Date : " + ctfData== null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
@@ -957,7 +957,7 @@ namespace FMS.BLL.Ctf
                     bodyMail.AppendLine();
                     bodyMail.Append("Reason : " + _reasonService.GetReasonById(extend.REASON.Value).REASON + " <br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("New End Contract Date  : " + extend.NEW_PROPOSED_DATE + " <br />");
+                    bodyMail.Append("New End Contract Date  : " + extend == null ? "" : extend.NEW_PROPOSED_DATE.Value.ToString("dd-MMM-yyyy") + " <br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                     bodyMail.AppendLine();
@@ -968,14 +968,13 @@ namespace FMS.BLL.Ctf
                     bodyMail.Append("Fleet Team");
                     bodyMail.AppendLine();
 
-
-                    rc.To.Add(employeeDataEmail);
-
                     if (!string.IsNullOrEmpty(vendorDataEmail))
                     {
-                        rc.CC.Add(vendorDataEmail);
+                        rc.To.Add(vendorDataEmail);
                     }
 
+                    rc.CC.Add(employeeDataEmail);
+                   
                     foreach (var item in fleetEmailList)
                     {
                         rc.CC.Add(item);
@@ -1272,6 +1271,7 @@ namespace FMS.BLL.Ctf
                 FleetDto.IsActive = true;
                 FleetDto.PoLine = extendDto.EXTEND_PO_LINE;
                 FleetDto.PoNumber = extendDto.EXTEND_PO_NUMBER;
+                FleetDto.PoliceNumber = extendDto.EXTEND_POLICE_NUMBER;
                 FleetDto.Price = extendDto.EXTEND_PRICE == null ? 0 : extendDto.EXTEND_PRICE.Value;
                 FleetDto.StartContract = vehicle.END_CONTRACT.Value.AddDays(1);
                 FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;

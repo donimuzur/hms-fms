@@ -84,7 +84,6 @@ namespace FMS.Website.Models
         public string ApprovedFleet { get; set; }
         public DateTime? ApprovedFleetDate { get; set; }
 
-
         public string TitleForm { get; set; }
         public string isSubmit { get; set; }
         public bool IsPersonalDashboard { get; set; }
@@ -97,6 +96,7 @@ namespace FMS.Website.Models
         public SelectList ExtendList { get; set; }
         public SelectList EmployeeIdList { get; set; }
         public SelectList ReasonList { get; set; }
+        public SelectList ReasonExtendList { get; set; }
         public SelectList RemarkList{ get; set; }
         public SelectList PoliceNumberList { get; set; }
         public SelectList UserDecisionList { get; set; }
