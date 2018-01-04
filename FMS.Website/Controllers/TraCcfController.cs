@@ -114,7 +114,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.DocumentStatus = "Completed";
-            model.TitleForm = "Car Complaint Form";
+            model.TitleForm = "CCF Completed Document";
             if (CurrentUser.EMPLOYEE_ID == "")
             {
                 return RedirectToAction("Unauthorized", "Error");
@@ -366,7 +366,7 @@ namespace FMS.Website.Controllers
                 model.LocationAddress = data.ADDRESS;
                 model.LocationCity = data.CITY;
                 model.IsPersonalDashboard = IsPersonalDashboard;
-                model.TitleForm = "Car Complaint Form";
+                model.TitleForm = "CCF Create";
                 model = listdata(model, model.EmployeeID);
                 model.DocumentStatus = Enums.DocumentStatus.Draft;
                 model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
@@ -375,7 +375,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = listdata(model, model.EmployeeID);
-                model.TitleForm = "Car Complaint Form Create";
+                model.TitleForm = "CCF Create";
                 model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
                 return View(model);
