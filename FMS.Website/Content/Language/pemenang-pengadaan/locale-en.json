@@ -1,0 +1,11 @@
+{
+    "JUDUL": "Procurement Winner",
+    "TEXT_SEARCH" : "Search Procurement Name",
+    "BTN_SEARCH" : "Search",
+    "TABLE" : {
+        "NO" : "NO",
+        "NAMA_TENDER" : "Procurement Name",
+        "PEMENANG" : "Winner"
+    },
+    "PAGE_TITLE" : "Procurement Winner Announcement"
+}

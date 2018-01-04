@@ -1,0 +1,22 @@
+﻿<div id="tambahKriteria" class="modal-content" ng-init="FormScoringTechnicalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormScoringTechnicalCtrl.batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Ubah Score {{FormScoringTechnicalCtrl.detail.CriteriaName}}</h3>
+    </div>
+    <form role="form" name="formAdd">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label>Score {{FormScoringTechnicalCtrl.detail.CriteriaName}} (1 - 5)</label>
+                        <input type="number" min="1" max="5" ng-model="FormScoringTechnicalCtrl.detail.Score" class="form-control" placeholder="Score 0 - 5">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="FormScoringTechnicalCtrl.batal()" title="Batal"><i class="fa fa-reply"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="FormScoringTechnicalCtrl.save()" title="Simpan"><i class="fa fa-save"></i> </button>
+        </div>
+    </form>
+</div>

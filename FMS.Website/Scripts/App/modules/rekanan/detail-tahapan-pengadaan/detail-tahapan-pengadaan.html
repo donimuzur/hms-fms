@@ -1,0 +1,51 @@
+﻿<div class="container-fluid" ng-init="dtvCtrl.init()">
+    <ol class="breadcrumb" style='margin-top: 10px'>
+        <li><a href='#/dashboard-vendor'>{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.DETAIL_TAHAPAN_PENGADAAN'|translate}}</a></li>
+    </ol>
+    <div class="col-md-12">
+        <h3 class="text-center afta-font" style="padding-bottom: 20px;">{{dtvCtrl.namaLelang}}</h3>
+    </div>
+    <br />
+    <br />
+    <div class="col-md-12">
+        <div class="col-md-12" style="padding-bottom: 8px;">
+            <div ng-if="dtvCtrl.tenderReg.IsSurvive === false" style="padding-bottom: 8px;">
+                <label class="label label-sm label-warning center-block" style="display: inline-block;  font-size: 14px; width:100%">
+                    {{'INFO.SURVIVE'|translate}} {{dtvCtrl.tenderReg.StepName}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="table table-responsive">
+            <table id="tabelTahapan" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="center-vertical" style="width: 15px;">{{'TABLE.NO'|translate}}</th>
+                        <th class="center-vertical">{{'TABLE.NAMA_TAHAPAN'|translate}}</th>
+                        <th class="center-vertical" style="width: 150px;">{{'TABLE.TGL_MULAI'|translate}}</th>
+                        <th class="center-vertical" style="width: 150px;">{{'TABLE.TGL_SELESAI'|translate}}</th>
+                        <th class="center-vertical" style="width: 80px;" ng-if="dtvCtrl.tenderReg.IsSurvive === true"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="fl in dtvCtrl.step">
+                        <td class="center-vertical">{{$index +1}}</td>
+                        <td style="vertical-align: middle;">{{fl.step.TenderStepName}}</td>
+                        <td class="center-vertical">{{fl.StartDateConverted}}</td>
+                        <td class="center-vertical">{{fl.EndDateConverted}}</td>
+                        <td class="center-vertical" ng-if="dtvCtrl.tenderReg.IsSurvive === true">
+                            <a ng-if="!fl.IsOvertime" ng-click="dtvCtrl.menujuTahapan(fl)" class="btn btn-flat btn-sm btn-primary" title="Lihat Detail">
+                                <i class="fa fa-external-link"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12 center-block text-right">
+        <a class="btn btn-flat btn-primary" ng-click="dtvCtrl.kembali()" title="{{'KEMBALI'|translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>
+    </div>
+</div>

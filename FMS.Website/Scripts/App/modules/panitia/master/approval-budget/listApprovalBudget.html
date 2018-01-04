@@ -1,0 +1,66 @@
+﻿<section class="content" ng-init="ApprovalBudgetCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#" class="active">{{ 'BREADCRUMB.MASTER_APPBUD' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <!--notife flow-->
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel">{{ 'DATA_APPBUD' | translate}}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="5%">{{ 'TABLE.NO' | translate}}</th>
+                                            <th class="text-center">{{ 'TABLE.AUTHORIZE' | translate}}</th>
+                                            <th class="text-center">{{ 'TABLE.BUDGETVALUE' | translate}}</th>
+                                            <th class="text-center" width="20%">{{ 'TABLE.STARTDATE' | translate}}</th>
+                                            <th class="text-center" width="20%">{{ 'TABLE.ENDDATE' | translate}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rt in ApprovalBudgetCtrl.listData">
+                                            <td style="vertical-align: middle;">{{ApprovalBudgetCtrl.currentPage > 1 ? (ApprovalBudgetCtrl.maxSize * (ApprovalBudgetCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{rt.SysReference.Value}}</td>
+                                            <td class="text-right">{{rt.BudgetValue}}</td>
+                                            <td style="vertical-align: middle;">{{rt.StartDate}}</td>
+                                            <td style="vertical-align: middle;">{{rt.FinishDate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="asosiasiCtrl.totalItems" ng-model="ApprovalBudgetCtrl.currentPage"
+                                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                ng-change="ApprovalBudgetCtrl.jLoad(ApprovalBudgetCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{ApprovalBudgetCtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5 margintop20">
+                            <div class="pull-right">
+                                <!--
+                                <button class="btn btn-sm btn-primary" ng-click="ApprovalBudgetCtrl.formRate()">
+                                    <i class="fa fa-plus-circle"></i> {{ 'TAMBAH' | translate}}
+                                </button>
+                                    -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

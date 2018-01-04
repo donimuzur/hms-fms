@@ -1,0 +1,1139 @@
+﻿<section class="content-header">
+    <h1>
+        Car Selection Form
+    </h1>
+</section>
+<section class="content" ng-init="CSFWCtrl.init()">
+    <div class="row">
+        <form role="form">
+            <!-- left column -->
+            <div ng-if="CSFWCtrl.dataCSF.length==null">
+                <div class="col-md-12">
+                    <div class="box-tools pull-right" style="margin-top:-50px">
+                        <h4>
+                            <label for="" class="control-label">Status:</label>
+                            <label class="control-label">Draft</label>
+                        </h4>
+                    </div>
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">CSF Info</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label for="inputEmail3" class="control-label">CSF Number</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" value="" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label class="control-label">CSF Date</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" value="{{CSFWCtrl.dateFormat(CSFWCtrl.csf_date)}}" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label class="control-label">Coordinator</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="CSFWCtrl.coordinator" readonly="">
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label class="control-label">Reason</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group has-feedback" ng-init="CSFWCtrl.getReasonCSF()">
+                                                <select class="form-control" ng-model="CSFWCtrl.reason" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'" required>
+                                                    <option ng-repeat="reason in CSFWCtrl.reasonCSF" value="{{reason.reason_id}}">{{reason.reason1}}</option>
+                                                </select>
+                                                <span class="glyphicon glyphicon-exclamation-sign form-control-feedback "></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label class="control-label">Effective Date</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
+                                                <input required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="CSFWCtrl.isCalendarOpened[1]" ng-model="CSFWCtrl.effective_date" ng-click="CSFWCtrl.openCalendar(1)" ng-change="CSFWCtrl.Temp(csf.effective_date)" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'" />
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-exclamation-sign" ng-click="CSFWCtrl.openCalendar(1)"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label class="control-label">Reference Number</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="CSFWCtrl.Reference"value="" >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="box-header" style="margin-top: -51px">
+                                        <h3 class="box-title">Assigned Employee</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label for="Vtype" class="control-label">Employee ID</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <div class="form-group has-feedback">
+                                            <input type="text" class="form-control" ng-model="CSFWCtrl.employee_id" data-toggle=" modal" ng-click="CSFWCtrl.openEmployee()" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'" required>
+                                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback "></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label for="Vtype" class="control-label">Employee Name</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-model="CSFWCtrl.employee" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label for="Vtype" class="control-label">Cost Center</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <div class="form-group has-feedback">
+                                            <input type="text" class="form-control" name="" ng-model="CSFWCtrl.cc" ng-click="CSFWCtrl.openCC()" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'" required>
+                                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback "></span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label for="Vtype" class="control-label">Assigned To</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <div class="form-group has-feedback">
+                                            <input type="text" class="form-control" ng-model="CSFWCtrl.assignedTo" ng-click="CSFWCtrl.openEmployee2()" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                                            <!--<span class="glyphicon glyphicon-exclamation-sign form-control-feedback "></span>-->
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+                    <button class="btn bg-blue" style="margin-top:5px;" ng-click="CSFWCtrl.saveDraft()" ng-if="CSFWCtrl.dataCSF.length==null" ng-show="CSFWCtrl.roles=='SYSTEM.ROLE_FLEET'">
+                        <i class="glyphicon glyphicon-floppy-save"></i> Save
+                    </button>
+                    <button class="btn bg-blue" style="margin-top:5px; " ng-click="CSFWCtrl.sendDraft()" ng-if="CSFWCtrl.dataCSF.length==null" ng-show="CSFWCtrl.roles=='SYSTEM.ROLE_FLEET'">
+                        <i class="glyphicon glyphicon-ok"></i> Send
+                    </button>
+                </div>
+            </div>
+            <div ng-if="CSFWCtrl.dataCSF.length>0">
+                <div ng-repeat="csf in CSFWCtrl.dataCSF">
+                    <div class="col-md-12">
+                        <div class="box-tools pull-right" style="margin-top:-50px" ng-init="CSFWCtrl.getStatus(csf.csf_status_id)">
+                            <h4>
+                                <label for="" class="control-label">Status:</label>
+                                <label class="control-label">{{CSFWCtrl.statusCSF}}</label>
+                            </h4>
+                        </div>
+                        <input type="text" style="visibility:hidden" id="csfID" value="{{csf.csf_id}}" disabled>
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">CSF Info</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- form start -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="inputEmail3" class="control-label">CSF Number</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" id="csfNumber" class="form-control" value="{{csf.request_number}}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label class="control-label">CSF Date</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text"  class="form-control" value="{{CSFWCtrl.dateFormat(csf.request_date)}}" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label class="control-label">Coordinator</label>
+                                            </div>
+                                            <div class="col-md-8" ng-init="CSFWCtrl.getCoord(csf.coordinator)">
+                                                <input type="text" class="form-control" ng-model="CSFWCtrl.coordinator" disabled/>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label class="control-label">Reason</label>
+                                            </div>
+                                            <div class="col-md-8" ng-init="CSFWCtrl.getReasonCSF()">
+                                                <select class="form-control" id="reasonCSF" ng-disabled="CSFWCtrl.id_coordinator!=csf.coordinator || csf.csf_status_id!=4" required>
+                                                    <option ng-repeat="reason in CSFWCtrl.reasonCSF" ng-if="reason.reason_id==csf.reason_id" value=" {{reason.reason_id}}" selected>{{reason.reason1}}</option>
+                                                    <option ng-repeat="reason in CSFWCtrl.reasonCSF" ng-if="reason.reason_id!=csf.reason_id" value=" {{reason.reason_id}}">{{reason.reason1}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label class="control-label">Effective Date</label>
+                                            </div>
+                                            <div class="col-sm-8" ng-init="CSFWCtrl.setDate(csf)">
+                                                <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
+                                                    <input required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="CSFWCtrl.isCalendarOpened[1]" ng-model="CSFWCtrl.effective_date" ng-click="CSFWCtrl.openCalendar(1)" ng-disabled="CSFWCtrl.id_coordinator!=csf.coordinator || csf.csf_status_id!=4"/>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="CSFWCtrl.openCalendar(1)"></span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label class="control-label">Reference Number</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" value="{{csf.reference_number}}" ng-disabled="csf.reference_number!=null">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="box-header" style="margin-top: -51px">
+                                            <h3 class="box-title">Assigned Employee</h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="Vtype" class="control-label">Employee ID</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="empID" value="{{csf.employee_id}}" data-toggle="modal" ng-click="CSFWCtrl.openEmployee()" ng-style="csf.status.id === 4 && {'input':'read-only',}" ng-disabled=" csfwctrl.id_coordinator!=csf.coordinator || csf.csf_status_id!=4">
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="Vtype" class="control-label">Employee Name</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" id="empName" class="form-control" value="{{csf.employee_name}}" disabled >
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="Vtype"  class="control-label">Cost Center</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" id="empCC" class="form-control" name="" value="{{csf.cost_center}}" ng-click="CSFWCtrl.openCC()" ng-disabled="CSFWCtrl.id_coordinator!=csf.coordinator || csf.csf_status_id!=4" />
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="Vtype"  class="control-label">Assigned To</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="assignTo" value="{{csf.assigned_to}}" ng-click="CSFWCtrl.openEmployee2()" ng-disabled="CSFWCtrl.id_coordinator!=csf.coordinator || csf.csf_status_id!=4" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box box-primary" ng-show="{{csf.csf_status_id}}==5||{{csf.csf_status_id}}==19">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Vehicle Request</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body" ng-init="CSFWCtrl.getChild(csf)">
+                                <!-- form start -->
+                                    <div class="col-md-6">
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="" class="control-label">Vehicle Type</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <select class="form-control" id="Vtype" disabled="disabled">
+                                                    <option value="WTC">WTC</option>
+                                                    <option value="Benefit">Benefit</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-body" ng-init="CSFWCtrl.getLocation(csf.location_id)">
+                                        <div class="col-md-6">
+                                            <div class="box-header" style="margin-top: -51px">
+                                                <h3 class="box-title">Location</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="col-md-4">
+                                                    <label for="inputEmail3" class="control-label">City</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group has-feedback">
+                                                        <input type="text" class="form-control" ng-model="CSFWCtrl.kota" ng-click="CSFWCtrl.openCity()" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_USER'" required>
+                                                        <span class="glyphicon glyphicon-exclamation-sign form-control-feedback "></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="col-md-4">
+                                                    <label for="Vtype" class="control-label">Address</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" ng-model="CSFWCtrl.alamat" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="box-header with-border" ng-init="CSFWCtrl.insertVehicle(csf)">
+                                            <h3 class="box-title" style="margin-left: -10px">Vehicle(s)</h3>
+                                            <div class="box-tools pull-right" style="margin-bottom: 10px; margin-right: 20px">
+                                                <button class="btn bg-blue" ng-click="CSFWCtrl.selectVehicle()" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_USER'">
+                                                    <i class="glyphicon glyphicon-check" id="myModalLabel" data-toggle="modal" data-target="#Vehicle"></i>  Select Vehicle
+                                                </button>
+                                                <button class="btn bg-blue" ng-click="CSFWCtrl.uploadVehicle()" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_USER'">
+                                                    <i class="glyphicon glyphicon-upload" id="myModalLabel2" data-toggle="modal" data-target="#massupload"></i>  Upload & View
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>Manufacturer</th>
+                                                <th>Model</th>
+                                                <th>Series</th>
+                                                <th>Body Type</th>
+                                                <th>Vendor</th>
+                                                <th>Color</th>
+                                            </tr>
+                                            <tr ng-repeat="vehicle in CSFWCtrl.selectedVehicle">
+                                                <td>{{vehicle.manufacturer}}</td>
+                                                <td>{{vehicle.model}}</td>
+                                                <td>{{vehicle.series}}</td>
+                                                <td>{{vehicle.body_type}}</td>
+                                                <td>{{vehicle.vendor}}</td>
+                                                <td>{{vehicle.color}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="box-footer"></div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-if="csf.csf_status_id>5&&csf.csf_status_id!=19">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Vehicle Request</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-toggle="collapse" data-target="#collapseTwo">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body" id="collapseTwo">
+                                <div class="col-md-6">
+                                    <div class="box-body">
+                                        <div class="col-md-4">
+                                            <label for="" class="control-label">Vehicle Type</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select class="form-control" id="Vtype" disabled="disabled">
+                                                <option value="WTC">WTC</option>
+                                                <option value="Benefit">Benefit</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box-header" style="margin-top: -51px">
+                                        <h3 class="box-title">Location</h3>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="Vtype" class="control-label">City</label>
+                                    </div>
+                                    <div class="col-md-8" ng-init="CSFWCtrl.getLocation(csf.location_id)">
+                                        <input type="text" class="form-control" ng-model="CSFWCtrl.kota" disabled>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="Vtype" class="control-label">Address</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-model="CSFWCtrl.alamat" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th>Manufacturer</th>
+                                            <th>Model</th>
+                                            <th>Series</th>
+                                            <th>Body Type</th>
+                                            <th>Vendor</th>
+                                            <th>Color</th>
+                                            <th>Start Period</th>
+                                            <th>End Period</th>
+                                        </tr>
+                                        <tr>
+                                            <td>{{csf.manufacturer}}</td>
+                                            <td>{{csf.model}}</td>
+                                            <td>{{csf.series}}</td>
+                                            <td>{{csf.body_type}}</td>
+                                            <td>{{csf.vendor_id}}</td>
+                                            <td>{{csf.color}}</td>
+                                            <td>{{csf.contract_start}}</td>
+                                            <td>{{csf.contract_end}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="box-footer"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-if="csf.csf_status_id>6&&csf.csf_status_id!=19">
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Vehicle Detail Information</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- form start -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="box-body">
+                                                <div class="col-md-4">
+                                                    <label for="" class="control-label">Expected Date</label>
+                                                </div>
+                                                <div class="col-md-8" style="padding-bottom: 11px;" ng-init="CSFWCtrl.Temp(csf)">
+                                                    <div class="input-group date">
+                                                        <input required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="CSFWCtrl.isCalendarOpened[2]" ng-model="CSFWCtrl.expected_date" ng-click="CSFWCtrl.openCalendar(2)" ng-change="CSFWCtrl.Temp(csf)" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'" />
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="CSFWCtrl.openCalendar(2)"></span></span>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="col-md-4">
+                                                    <label for="Vtype" class="control-label">Supply Method</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <select class="form-control" id="sm" ng-model="csf.supply_method" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                                                        <option ng-repeat="data in CSFWCtrl.dataSuply" ng-if="csf.supply_method==data.supply_method1" selected>{{data.supply_method1}}</option>
+                                                        <option ng-repeat="data in CSFWCtrl.dataSuply" ng-if=" csf.supply_method!=data.supply_method1">{{data.supply_method1}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="col-md-4">
+                                                    <label>Vehicle Detail</label>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <button class="btn bg-blue" ng-click="CSFWCtrl.uploadDetailVehicle()">
+                                                        <i class="glyphicon glyphicon-upload"></i>  Upload & View
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="" class="control-label">Project</label>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <select class="form-control" id="ipj" ng-model="csf.Is_project" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                                                    <option ng-repeat="data in CSFWCtrl.dataIsProject" ng-if="data.is!=csf.Is_project" value="{{data.value}}">{{data.name}}</option>
+                                                    <option ng-repeat="data in CSFWCtrl.dataIsProject" ng-if="data.is==csf.Is_project" value="{{data.value}}" selected>{{data.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" ng-if="csf.Is_project==1">
+                                        <div class="box-body">
+                                            <div class="col-md-4">
+                                                <label for="" class="control-label">Project Name</label>
+                                            </div>
+                                            <div class="col-md-8" ng-init="CSFWCtrl.getProject()">
+                                                <!--<select2 ng-model="csf.project_id" s2-options="data.project_id as data.project_name for data in CSFWCtrl.dataProject"></select2>-->
+                                                <select ng-model="csf.project_id" class="form-control" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                                                    <option ng-repeat="data in CSFWCtrl.dataProject" ng-if="csf.project_id!=data.project_id" value="{{data.project_id}}">{{data.project_name}}</option>
+                                                    <option ng-repeat="data in CSFWCtrl.dataProject" ng-if="csf.project_id==data.project_id" value="{{data.project_id}}" selected>{{data.project_name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right" ng-show="CSFWCtrl.temp">
+                                        <button class="btn bg-blue" ng-click="CSFWCtrl.openTemporary(csf)" style="object-position: right; margin-right: 40px" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                                            <i class="glyphicon glyphicon-plus" id="myModalLabel2" data-toggle="modal" data-target="#adddate"></i>Temporary Car
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" ng-if="csf.csf_status_id==9">
+                        <div class=" box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Temporary Car</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body" ng-init="CSFWCtrl.getTemporary(csf.request_number)">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>New Start Date</th>
+                                                <th>New End Date</th>
+                                                <th>Reason</th>
+                                                <th>Detail Temporary Car</th>
+                                            </tr>
+                                            <tr ng-repeat="temp in CSFWCtrl.dataTemporary">
+                                                <td>{{CSFWCtrl.dateFormat(temp.start_rent)}}</td>
+                                                <td>{{CSFWCtrl.dateFormat(temp.end_rent)}}</td>
+                                                <td>{{temp.reason_id}}</td>
+                                                <td><a ng-href="#/temporary/{{CSFWCtrl.tempLink(temp.request_number)}}">{{temp.request_number}}</a></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+                        <button class="btn bg-blue" style="margin-top:5px;" ng-click="CSFWCtrl.cancel(csf.csf_id)" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                            <i class="glyphicon glyphicon-ban-circle"></i> Cancel
+                        </button>
+                        <button class="btn bg-blue" style="margin-top:5px;" ng-click="CSFWCtrl.saveDraft()" ng-if="CSFWCtrl.dataCSF.length==null" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                            <i class="glyphicon glyphicon-floppy-save"></i> Save
+                        </button>
+                        <button class="btn bg-blue" style="margin-top:5px; " ng-click="CSFWCtrl.sendDraft()" ng-if="CSFWCtrl.dataCSF.length==null" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                            <i class="glyphicon glyphicon-ok"></i> Send
+                        </button>
+                        <button class="btn bg-blue" style="margin-top:5px;" ng-click="CSFWCtrl.saveDraft()" ng-if="csf.csf_status_id==4" ng-hide="CSFWCtrl.id_coordinator!=csf.coordinator">
+                            <i class="glyphicon glyphicon-floppy-save"></i> Save
+                        </button>
+                        <button class="btn bg-blue" style="margin-top:5px; " ng-click="CSFWCtrl.sendDraft()" ng-if="csf.csf_status_id==4" ng-hide="CSFWCtrl.id_coordinator!=csf.coordinator">
+                            <i class="glyphicon glyphicon-ok"></i> Send
+                        </button>
+                        <button class="btn bg-blue" style="margin-top:5px;" ng-click="CSFWCtrl.saveAssigned(csf)" ng-if="csf.csf_status_id==5||csf.csf_status_id==19" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_USER'">
+                            <i class="glyphicon glyphicon-floppy-save"></i> Save
+                        </button>
+                        <button class="btn bg-blue" style="margin-top:5px; " ng-click="CSFWCtrl.sendAssigned(csf)" ng-if="csf.csf_status_id==5||csf.csf_status_id==19" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_USER'">
+                            <i class=" glyphicon glyphicon-ok">
+                            </i> Send
+                        </button>
+                        <button class="btn bg-blue" style="margin-top:5px;" ng-click="CSFWCtrl.saveFleet(csf)" ng-if="csf.csf_status_id==9" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                            <i class="glyphicon glyphicon-floppy-save"></i> Save
+                        </button>
+                        <button class="btn bg-red" ng-if="csf.csf_status_id==6" style="margin-top:5px;" ng-click="CSFWCtrl.declineFleet(csf.csf_id)" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                            <i class="glyphicon glyphicon-remove"></i> Reject
+                        </button>
+                        <button class="btn bg-green" ng-if="csf.csf_status_id==6" style="margin-top:5px;" ng-click="CSFWCtrl.progress(csf.csf_id)" ng-hide="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">
+                            <i class="glyphicon glyphicon-ok"></i> Approve
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Change Log</h3>
+                    </div>
+                    <div class="box-body" ng-repeat="csf in CSFWCtrl.dataCSF" ng-init="CSFWCtrl.getLog(csf.csf_id)">
+                        <div style="overflow-y: scroll; max-height: 150px; ">
+                            <table id=" log" class="table table-bordered table-hover" style="table-layout: fixed;">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                        <th>Date</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="log in CSFWCtrl.log">
+                                    <tr>
+                                        <th>{{log.user_name}}</th>
+                                        <th>{{log.role.substr(12)}}</th>
+                                        <th>{{log.status}}</th>
+                                        <th>{{CSFWCtrl.dateFormatLog(log.log_date)}}</th>
+                                        <th>{{log.remark1}}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- /.row -->
+</section>
+
+<script type="text/ng-template" id="selectCC.html">
+    <div class="modal-header" ng-init="getCC(currentPage)">
+        <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Select Cost Center</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Cost Center</th>
+                                    <th>CC Description</th>
+                                    <th>CC Function</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="costCenter" ng-change="getCC(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="description" ng-change="getCC(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="function" ng-change="getCC(currentPage)"></td>
+                                </tr>
+                                <tr ng-repeat="cc in cc | filter:search:data">
+                                    <td><input ng-click="selectCC(cc)" type="radio" name="emp" id="option2" autocomplete="off" checked></td>
+                                    <td>{{cc.cost_center1}}</td>
+                                    <td>{{cc.txt_hcc_name}}</td>
+                                    <td>{{cc.function}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getCC(currentPage)"></ul>
+                            <label class="pull-right">{{'Total Records' | translate}} : {{totalRecords}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="selectEmployee.html">
+    <div class="modal-header" ng-init="getEmployee(currentPage)">
+        <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Select Employee</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Employee Id</th>
+                                    <th>Employee Name</th>
+                                    <th>Position Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeeID" ng-change="getEmployee(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeeName" ng-change="getEmployee(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeePosition" ng-change="getEmployee(currentPage)"></td>
+                                </tr>
+                                <tr ng-repeat="employee in employees | filter:search:data">
+                                    <td><input type="radio" name="emp" ng-click="selectManager(employee)" autocomplete="off"></td>
+                                    <td>{{employee.employee_id}}</td>
+                                    <td>{{employee.employee_name}}</td>
+                                    <td>{{employee.title_name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-7">
+                            <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getEmployee(currentPage)"></ul>
+                            
+                            <br />
+                            <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="selectEmployee2.html">
+    <div class="modal-header" ng-init="getEmployee(currentPage)">
+        <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Select Employee</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Employee Id</th>
+                                    <th>Employee Name</th>
+                                    <th>Position Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeeID" ng-change="getEmployee(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeeName" ng-change="getEmployee(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="EmployeePosition" ng-change="getEmployee(currentPage)"></td>
+                                </tr>
+                                <tr ng-repeat="employee in employees | filter:search:data">
+                                    <td><input type="radio" name="emp" ng-click="select(employee)" autocomplete="off"></td>
+                                    <td>{{employee.employee_id}}</td>
+                                    <td>{{employee.employee_name}}</td>
+                                    <td>{{employee.title_name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-7">
+                            <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getEmployee(currentPage)"></ul>
+                            <br/>
+                            <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="csfSelectCity.html">
+    <div class="modal-content">
+        <div class="modal-header" ng-init="getCC(currentPage)">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Select City & Address</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>City</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="city" ng-change="getCC(currentPage)"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="address" ng-change="getCC(currentPage)"></td>
+                                    </tr>
+                                    <tr ng-repeat="cc in CostCenter | filter:search:data">
+                                        <td><input type="radio" ng-click="Kota(cc.location_id,cc.city,cc.address)" name="emp" id="option2" autocomplete="off"></td>
+                                        <td>{{cc.city}}</td>
+                                        <td>{{cc.address}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-md-7">
+                                <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getCC(currentPage)"></ul>
+                                <br />
+                                <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="modal-footer">
+                        <button type="button" ng-click="batal()"  class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="csfSelectVehicle.html">
+    <div class="modal-content">
+        <div class="modal-header" ng-init="loadFleet(currentPage)">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Select Vehicle</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box" style="overflow-y: auto;">
+                       <table class="table table-bordered table-striped" style="width: 80%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Manufacturer</th>
+                                    <th>Model</th>
+                                    <th>Series</th>
+                                    <th>Body Type</th>
+                                    <th>Color</th>
+                                    <th>Image</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="manufacturer" ng-change="loadFleet(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="model" ng-change="loadFleet(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="series" ng-change="loadFleet(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="bodyType" ng-change="loadFleet(currentPage)"></td>
+                                    <td><input style="border-radius: 7px; text-align: center;" type="text" ng-model="color" ng-change="loadFleet(currentPage)"></td>
+                                    <td></td>
+                                </tr>
+                                <tr ng-repeat="vehicle in DataVehicle | filter:search:data">
+                                    <td><input type="radio" ng-click="simpan(vehicle)" name="emp" id="option2" autocomplete="off"></td>
+                                    <td>{{vehicle.manufacturer}}</td>
+                                    <td>{{vehicle.model}}</td>
+                                    <td>{{vehicle.series}}</td>
+                                    <td>{{vehicle.body_type}}</td>
+                                    <td>{{vehicle.color}}</td>
+                                    <td><a href="">image1</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-7">
+                            <ul uib-pagination max-size="5" boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="loadFleet(currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
+                        </div>
+                    <!-- nav-tabs-custom -->
+                </div>
+                <!--<div class="modal-footer">
+                    <button type="button" ng-click="batal()"  class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Select</button>
+                </div>-->
+            </div>
+        </div>
+    </div>
+        </div>
+</script>
+
+<script type="text/ng-template" id="csfUploadVehicle.html">
+    <div class="modal-content">
+        <div class="modal-header" ng-init="getVehicle()">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Select Vehicle</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="nav-tabs-custom">
+                            <div class="input-group">
+                                <input type="file" class="form-control" ng-model="filevehicle" ng-file-select="select(filevehicle)" accept=".xls,.xlsx"/>
+                                <div class="input-group-btn">
+                                    <button ng-disabled="!filevehicle" class="btn btn-success" ng-click="uploadFile()"><i class="fa fa-upload"></i></button>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <table class="table table-bordered table-striped" style="width: 80%">
+                                    <thead>
+                                        <tr>
+                                            <th>Manufacturer</th>
+                                            <th>Model</th>
+                                            <th>Series</th>
+                                            <th>Body Type</th>
+                                            <th>Color</th>
+                                            <th>Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.manufacturer"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.model"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.series"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.body_type"></td>
+                                            <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="search.color"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr ng-repeat="vehicle in data | filter:search:data">
+                                            <td>{{vehicle.manufacturer}}</td>
+                                            <td>{{vehicle.model}}</td>
+                                            <td>{{vehicle.series}}</td>
+                                            <td>{{vehicle.body_type}}</td>
+                                            <td>{{vehicle.color}}</td>
+                                            <td><a href="">image1</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.tab-content -->
+                        </div>
+                        <!-- nav-tabs-custom -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" ng-click="pilih()" class="btn btn-primary" data-dismiss="modal">Select</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="uploadDetailVehicle.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Upload & View Vehicle</h4>
+        </div>
+        <div class="input-group">
+            <input type="file" class="form-control" ng-model="filevehicle" ng-file-select="select(filevehicle)" accept=".xls,.xlsx" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'" />
+            <div class="input-group-btn">
+                <button ng-disabled="!filevehicle" class="btn btn-success" ng-click="uploadFile()"><i class="fa fa-upload"></i>Upload</button>
+            </div>
+        </div>
+        <div class="modal-body" ng-init="getfleet()">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <h4>Preview of Uploaded File</h4>
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+
+                                    <tr>
+                                        <th>EMPLOYEE NAME</th>
+                                        <th>POLICE NUMBER</th>
+                                        <th>CHASSIS NUMBER</th>
+                                        <th>ENGINE NUMBER</th>
+                                        <th>CONTRACT START DATE</th>
+                                        <th>CONTRACT END DATE</th>
+                                        <th>MAKE</th>
+                                        <th>MODEL</th>
+                                        <th>SERIES</th>
+                                        <th>TRANSMISSION</th>
+                                        <th>COLOR</th>
+                                        <th>BODY TYPE</th>
+                                        <th>AIRBAG</th>
+                                        <th>BRANDING</th>
+                                        <th>PURPOSE</th>
+                                        <th>VEHICLE YEAR</th>
+                                        <th>PO</th>
+                                        <th>PO LINE</th>
+                                        <th>VAT</th>
+                                        <th>RESTITUTION</th>
+                                        <th>VENDOR</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr ng-repeat="data in fleetcsf">
+                                        <td>{{data.employee_name}}</td>
+                                        <td>{{data.police_number}}</td>
+                                        <td>{{data.chasis_number}}</td>
+                                        <td>{{data.engine_number}}</td>
+                                        <td>{{data.start_contract}}</td>
+                                        <td>{{data.end_contract}}</td>
+                                        <td>{{data.manufacturer}}</td>
+                                        <td>{{data.model}}</td>
+                                        <td>{{data.series}}</td>
+                                        <td>{{data.transmission}}</td>
+                                        <td>{{data.color}}</td>
+                                        <td>{{data.body_type}}</td>
+                                        <td>{{data.airbag}}</td>
+                                        <td>{{data.branding}}</td>
+                                        <td>{{data.purpose}}</td>
+                                        <td>{{data.vehicle_year}}</td>
+                                        <td>{{data.po_number}}</td>
+                                        <td>{{data.po_line}}</td>
+                                        <td>{{data.vat}}</td>
+                                        <td>{{data.restitution}}</td>
+                                        <td>{{data.vendor_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr ng-repeat="vehicle in data | filter:search:data">
+                                        <td>{{vehicle.employeeName}}</td>
+                                        <td>{{vehicle.policeNumber}}</td>
+                                        <td>{{vehicle.chasisNumber}}</td>
+                                        <td>{{vehicle.engineNumber}}</td>
+                                        <td>{{vehicle.contractStart.substring(0, 10)}}</td>
+                                        <td>{{vehicle.contractEnd.substring(0, 10)}}</td>
+                                        <td>{{vehicle.make}}</td>
+                                        <td>{{vehicle.model}}</td>
+                                        <td>{{vehicle.series}}</td>
+                                        <td>{{vehicle.transmission}}</td>
+                                        <td>{{vehicle.color}}</td>
+                                        <td>{{vehicle.bodyType}}</td>
+                                        <td>{{vehicle.airbag}}</td>
+                                        <td>{{vehicle.branding}}</td>
+                                        <td>{{vehicle.purpose}}</td>
+                                        <td>{{vehicle.vehicleYear}}</td>
+                                        <td>{{vehicle.po}}</td>
+                                        <td>{{vehicle.poLine}}</td>
+                                        <td>{{vehicle.vat}}</td>
+                                        <td>{{vehicle.restituion}}</td>
+                                        <td>{{vehicle.vendor}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="simpan()" data-dismiss="modal" ng-disabled="CSFWCtrl.roles!='SYSTEM.ROLE_FLEET'">Submit</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="temporary.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button ng-click="batal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add Temporary Car</h4>
+        </div>
+        <div class="modal-body" ng-init="getReason()">
+            <div class="box box-primary">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box" style="overflow-y:auto;">
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label>New Start Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
+                                        <input required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[1]" ng-model="start_date" ng-click="openCalendar(1)" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="openCalendar(1)"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label>New End Date</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group" style="background-color: #ffffff;padding-bottom: 11px;">
+                                        <input required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="isCalendarOpened[2]" ng-model="end_date" ng-click="openCalendar(2)" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="openCalendar(2)"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="col-md-4">
+                                    <label class="control-label">Reason</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control" ng-model="reason">
+                                        <option ng-repeat="data in datareason" value="{{data.reason_id}}">{{data.reason1}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" ng-click="simpan()" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="remark.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Remark</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div class="col-md-12">
+            <div class="box" style="overflow-y:auto;">
+                <div class="box-body">
+                    <div class="col-md-4">
+                        <label>Remark</label>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group " ng-init="getRemark()">
+                            <select class="form-control" ng-model="remark" required>
+                                <option ng-repeat="remark in dataRemark" value="{{remark.remark_id}}">{{remark.remark1}}</option>
+                            </select>
+                            <span class="form-control-feedback "></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="batal()" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="simpan()" class="btn btn-primary">Save</button>
+    </div>
+</script>
+    

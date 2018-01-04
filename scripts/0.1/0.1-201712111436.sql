@@ -1,0 +1,7 @@
+ALTER TABLE [dbo].[PO_REPORT_DATA] ADD
+	[START_CONTRACT] [datetime] NULL,
+	[END_CONTRACT] [datetime] NULL,
+	[VENDOR] [nvarchar](100) NULL,
+	[MONTHLY_INSTALLMENT] [decimal](18,2) NULL,
+	[GST] [decimal](18,2) NULL,
+	[TOTAL_MONTHLY_INSTALLMENT] [decimal](18,2) NULL

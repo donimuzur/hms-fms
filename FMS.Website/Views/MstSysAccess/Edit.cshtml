@@ -1,0 +1,151 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.SysAccessItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data SysAccess Edit</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstSysAccess"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Role Name<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.MstSysAccessId)
+                        @Html.DropDownListFor(model => model.RoleName, Model.RoleNameList, "Select", new { @class = "form-control", @onchange = "FillAlias()" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Role Name Alias<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.RoleNameAlias, new { @class = "form-control", @id = "lblRoleNameAlias", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Modul Name<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.ModulId, Model.ModulList, "Select", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Read Access<span class="red">*</span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.ReadAccessData, new { @id = "ChkReadAccess", onclick = "checkReadAccess()" })
+                            @if (Model.ReadAccessData == true)
+                            {
+                                @Html.Label("Yes", new { @id = "lblReadAccess" })
+                            }
+                            else
+                            {
+                                @Html.Label("No", new { @id = "lblReadAccess" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Write Access<span class="red">*</span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.WriteAccessData, new { @id = "ChkWriteAccess", onclick = "checkkWriteAccess()" })
+                            @if (Model.WriteAccessData == true)
+                            {
+                                @Html.Label("Yes", new { @id = "lblWriteAccess" })
+                            }
+                            else
+                            {
+                                @Html.Label("No", new { @id = "lblWriteAccess" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Upload Access<span class="red">*</span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.UploadAccess, new { @id = "ChkUploadAccess", onclick = "checkkUploadAccess()" })
+                            @if (Model.UploadAccess == true)
+                            {
+                                @Html.Label("Yes", new { @id = "lblUploadAccess" })
+                            }
+                            else
+                            {
+                                @Html.Label("No", new { @id = "lblUploadAccess" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Status<span class="red">*</span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.IsActive)
+                            @Html.Label("Active", new { @id = "lblStatus" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstSysAccess" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="changes">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>
+<script type="text/javascript">
+    function FillAlias() {
+        var data = $('#RoleName').val();
+        var postUrl = '@Url.Action("onChangeRoleName", "MstSysAccess")';
+        $.ajax({
+            url: postUrl,
+            type: "POST",
+            dataType: "JSON",
+            data: { RoleName: data },
+            success: function (data) {
+                document.getElementById('lblRoleNameAlias').value = data;
+            }
+        });
+    }
+
+    function checkReadAccess() {
+        if (document.getElementById('ChkReadAccess').checked == true) {
+            document.getElementById('lblReadAccess').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblReadAccess').innerHTML = "No";
+        }
+    }
+
+    function checkkWriteAccess() {
+        if (document.getElementById('ChkWriteAccess').checked == true) {
+            document.getElementById('lblWriteAccess').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblWriteAccess').innerHTML = "No";
+        }
+    }
+
+    function checkkUploadAccess() {
+        if (document.getElementById('ChkUploadAccess').checked == true) {
+            document.getElementById('lblUploadAccess').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblUploadAccess').innerHTML = "No";
+        }
+    }
+
+    function CheckIsActive() {
+        if (document.getElementById('CheckIsActive').checked == true) {
+            document.getElementById('lblStatus').innerHTML = "Active";
+        }
+        else {
+            document.getElementById('lblStatus').innerHTML = "InActive";
+        }
+    }
+</script>

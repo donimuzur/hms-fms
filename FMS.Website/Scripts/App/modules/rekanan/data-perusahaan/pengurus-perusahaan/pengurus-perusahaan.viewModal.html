@@ -1,0 +1,42 @@
+﻿<div class="modal-content" ng-init="viewPPCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="viewPPCtrl.close()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{'DATA_PENGURUS_PERUSAHAAN'|translate}}</h3>
+    </div>
+    <div class="modal-body" ng-init="init()">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>{{'NAMA'|translate}}</dt>
+                            <dd>{{viewPPCtrl.compPerson.PersonName}}</dd>
+                            <dt>{{'TGL_LAHIR'|translate}}</dt>
+                            <dd>{{viewPPCtrl.compPerson.DateOfBirth}}</dd>
+                            <dt>{{'NO_KTP'|translate}}</dt>
+                            <dd>{{viewPPCtrl.compPerson.NoID}}</dd>
+                            <dt>{{'ALAMAT'|translate}}</dt>
+                            <dd>{{viewPPCtrl.compPerson.Address.AddressInfo}} </dd>
+                            <dt></dt>
+                            <dd>{{viewPPCtrl.compPerson.Address.AddressDetail}}, {{viewPPCtrl.compPerson.Country}}</dd>
+                            <dt>{{'JABATAN'|translate}}</dt>
+                            <dd>{{('POSITION.' + viewPPCtrl.compPerson.PositionRef) | translate}}</dd>
+                            <dt>{{'VERSIVENDOR'|translate}}</dt>
+                            <dd>{{viewPPCtrl.compPerson.CompanyPosition}}</dd>
+                            <dt>{{'MENJABAT_SEJAK'|translate}}</dt>
+                            <dd><span>{{viewPPCtrl.compPerson.ServiceStartDate}}</span></dd>
+                            <dt>{{'SAMPAI'|translate}}</dt>
+                            <dd ng-if="viewPPCtrl.compPerson.ServiceEndDate != null">{{viewPPCtrl.compPerson.ServiceEndDate}}</dd>
+                            <dd ng-if="viewPPCtrl.compPerson.ServiceEndDate == null">{{'MASIH_MENJABAT' | translate}}</dd>
+                            <dt>{{'SCAN_KTP'|translate}}</dt>
+                            <dd><a href="{{viewPPCtrl.folderFile + viewPPCtrl.compPerson.IDUrl}}" target="_BLANK" class="label label-sm label-primary" title="{{'DOWNLOAD'|translate}}"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="viewPPCtrl.close()" title="{{'TUTUP'|translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+    </div>
+</div>

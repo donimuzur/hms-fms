@@ -1,0 +1,209 @@
+<div class="container-fluid" ng-init="DataPerlengkapanCtrl.init()">
+	<ol class="breadcrumb">
+		<li>
+			<a href="#/dashboard-vendor">Beranda</a>
+		</li>
+		<li>
+			<a class="active">Data Perlengkapan</a>
+		</li>
+	</ol>
+	<div class="row">
+		<div class="col-md-6 ">
+			<h3 class="afta-font">Data Bangunan dan Infrastruktur</h3>
+		</div>
+		<div class="col-md-2 pull-right" ng-if="DataPerlengkapanCtrl.isApprovedCR === true">
+			<a href="" class="btn btn-flat btn btn-primary turun-15" ng-click="DataPerlengkapanCtrl.openForm('building',null,true,DataPerlengkapanCtrl.isApprovedCR)" title="Tambah Data">
+				<i class="fa fa-plus-circle"></i>&nbsp;
+			</a>
+		</div>
+		<!--<div class="col-md-2 pull-right" ng-if="DataPerlengkapanCtrl.isApprovedCR === true">
+			<a href="" class="btn btn-flat btn btn-primary turun-15" ng-click="DataPerlengkapanCtrl.openForm('building',null,true,DataPerlengkapanCtrl.isApprovedCR)" title="Tambah Data">
+				<i class="fa fa-plus-circle"></i>&nbsp;
+			</a>
+		</div>-->
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="center-vertical">No</th>
+							<th class="center-vertical">Kategori</th>
+							<th class="center-vertical">Luas(M<sup>2</sup>)</th>
+							<th class="center-vertical" width="30%">Alamat</th>
+							<th class="center-vertical">Status Kepemilikan(Sewa/Milik Sendiri *)</th>
+							<th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="obj in DataPerlengkapanCtrl.listBuilding" ng-class="{'bg-danger': obj.IsTemporary === true}">
+							<td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+							<td style="vertical-align: middle;">{{obj.category.Value}}</td>
+							<td class="center-vertical">{{obj.BuildingArea}}</td>
+							<td class="middle-vertical">{{obj.address.AddressInfo}} {{obj.address.AddressDetail}}</td>
+							<td class="middle-vertical">{{obj.ownershipStatus.Value}}</td>
+							<td class="center-vertical">
+								<a ng-click="DataPerlengkapanCtrl.detailForm('building',obj, false)" class="label label-flat label-sm label-warning" title="Lihat Detail">
+									<i class="fa fa-external-link"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.openForm('building',obj,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.editActiveBuilding(obj,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>
+								<!--change request data -->
+								<!--<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.openForm('building',obj,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.editActiveBuilding(obj,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>-->
+							</td>
+						</tr>
+						<tr ng-if="DataPerlengkapanCtrl.listBuilding.length === 0">
+							<td colspan="6">Data Tidak ada</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<h3 class="afta-font">Data Kendaraan</h3>
+		</div>
+		<div class="col-md-2 pull-right" ng-if="DataPerlengkapanCtrl.isApprovedCR === true">
+			<a href="" class="btn btn-flat btn btn-primary turun-15" ng-click="DataPerlengkapanCtrl.openForm('vehicle',null,true,DataPerlengkapanCtrl.isApprovedCR)" title="Tambah Data">
+				<i class="fa fa-plus-circle"></i>&nbsp;
+			</a>
+		</div>
+		<!--<div class="col-md-2 pull-right" ng-if="DataPerlengkapanCtrl.isApprovedCR === true">
+			<a href="" class="btn btn-flat btn btn-primary turun-15" ng-click="DataPerlengkapanCtrl.openForm('vehicle',null,true,DataPerlengkapanCtrl.isApprovedCR)" title="Tambah Data">
+				<i class="fa fa-plus-circle"></i>&nbsp;
+			</a>
+		</div>-->
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="center-vertical">No</th>
+							<th class="center-vertical">Nama Alat</th>
+							<th class="center-vertical">Merk/Type</th>
+							<th class="center-vertical">Tahun Pembuatan</th>
+							<th class="center-vertical">No.Seri/No.Polisi</th>
+							<th class="center-vertical">Kapasitas (Orang)</th>
+							<th class="center-vertical">Kondisi</th>
+							<th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+							<th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="objc in DataPerlengkapanCtrl.listVehicle" ng-class="{'bg-danger': objc.IsTemporary === true}">
+							<td class="text-center">{{DataPerlengkapanCtrl.currentPage > 1 ? (DataPerlengkapanCtrl.pageSize * (DataPerlengkapanCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+							<td>{{objc.Name}}</td>
+							<td class="center-vertical">{{objc.Brand}}</td>
+							<td class="middle-vertical">{{objc.MfgDate | date:'yyyy'}}</td>
+							<td class="middle-vertical">{{objc.SerialNo}}</td>
+							<td class="center-vertical">{{objc.Capacity}}</td>
+							<td class="middle-vertical">{{objc.ConditionRef.Value}} </td>
+							<td class="text-center">{{objc.OwnershipRef.Value}}</td>
+							<td class="center-vertical">
+								<a ng-click="DataPerlengkapanCtrl.detailForm('vehicle',objc, false)" class="label label-flat label-sm label-warning" title="Lihat Detail">
+									<i class="fa fa-external-link"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.openForm('vehicle',objc,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.editActiveNonBuilding(objc,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>
+								<!--change request-->
+								<!--<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.openForm('vehicle',objc,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.editActiveNonBuilding(objc,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>-->
+							</td>
+						</tr>
+						<tr ng-if="DataPerlengkapanCtrl.listVehicle.length === 0">
+							<td colspan="9">Data Tidak ada</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 ">
+			<h3 class="afta-font">Data Peralatan (Alat Berat)</h3>
+		</div>
+		<div class="col-md-2 pull-right" ng-if="DataPerlengkapanCtrl.isApprovedCR === true">
+			<a href="" class="btn btn-flat btn btn-primary turun-15" ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.openForm('equipment',null,true)" title="Tambah Data">
+				<i class="fa fa-plus-circle"></i>&nbsp;
+			</a>
+		</div>
+		<!--<div class="col-md-2 pull-right" ng-if="DataPerlengkapanCtrl.isApprovedCR === true">
+			<a href="" class="btn btn-flat btn btn-primary turun-15 pull-right" ng-click="DataPerlengkapanCtrl.openForm('equipment',null,true,DataPerlengkapanCtrl.isApprovedCR)" title="Tambah Data">
+				<i class="fa fa-plus-circle"></i>&nbsp;
+			</a>
+		</div>-->
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="table table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="center-vertical">No</th>
+							<th class="center-vertical">Nama Alat</th>
+							<th class="center-vertical">Merk/Type</th>
+							<th class="center-vertical">Tahun Pembuatan</th>
+							<th class="center-vertical">No.Seri/No.Polisi</th>
+							<th class="center-vertical">Kapasitas (Tonase)</th>
+							<th class="center-vertical">Kondisi</th>
+							<th class="center-vertical" style="width: 160px; min-width: 160px;">Status Kepemilikan</th>
+							<th class="center-vertical" style="width: 120px; min-width: 120px;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="objc in DataPerlengkapanCtrl.listEquipmentTools" ng-class="{'bg-danger': objc.IsTemporary === true}">
+							<td class="text-center" style="vertical-align: middle;">{{DataPerlengkapanCtrl.currentPage > 1 ? (DataPerlengkapanCtrl.pageSize * (DataPerlengkapanCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+							<td style="vertical-align: middle;">{{objc.Name}}</td>
+							<td class="center-vertical">{{objc.Brand}}</td>
+							<td class="middle-vertical">{{objc.MfgDate}}</td>
+							<td class="middle-vertical">{{objc.SerialNo}}</td>
+							<td class="center-vertical">{{objc.Capacity}}</td>
+							<td class="middle-vertical">{{objc.ConditionRef.Value}} </td>
+							<td class="text-center">{{objc.OwnershipRef.Value}}</td>
+							<td class="center-vertical">
+								<a ng-click="DataPerlengkapanCtrl.detailForm('equipment',objc, false)" class="label label-flat label-sm label-warning" title="Lihat Detail">
+									<i class="fa fa-external-link"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.openForm('equipment',objc,false)" class="label label-flat label-sm label-primary" title="Ubah">
+									<i class="fa fa-edit"></i>
+								</a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.editActiveNonBuilding(objc,false)" class="label label-flat label-sm label-danger" title="Hapus">
+									<i class="fa fa-trash-o"></i>
+								</a>
+								<!--change request-->
+								<!--<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.openForm('equipment',objc,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-primary" title="Ubah"><i class="fa fa-edit"></i></a>
+								<a ng-if="DataPerlengkapanCtrl.isApprovedCR === true" ng-click="DataPerlengkapanCtrl.editActiveNonBuilding(objc,false,DataPerlengkapanCtrl.isApprovedCR)" class="label label-flat label-sm label-danger" title="Hapus"><i class="fa fa-trash-o"></i></a>-->
+							</td>
+						</tr>
+						<tr ng-if="DataPerlengkapanCtrl.listEquipmentTools.length === 0">
+							<td colspan="9">Data Tidak ada</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+

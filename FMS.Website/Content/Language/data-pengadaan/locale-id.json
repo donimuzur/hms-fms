@@ -1,0 +1,56 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "PROSES_PENGADAAN": "Proses Pengadaan",
+    "DATA_PENGADAAN": "Data Pengadaan",
+    "DETAIL_TAHAPAN_PENGADAAN": "Detail Tahapan Pengadaan"
+  },
+  "DATA_PENGADAAN": "Data Pengadaan",
+  "TAHAP_PENGADAAN": "Tahapan Pengadaan",
+  "NAMA_PENGADAAN": "Nama Pengadaan",
+  "NAMA_TAHAPAN": "Nama Tahapan",
+  "ATUR_TAHAPAN": "Atur Tahapan",
+  "FILTER": {
+    "KODE": "Kode",
+    "NAMA_PENGADAAN": "Nama Pengadaan",
+    "STATUS_TAHAPAN": "Status Tahapan"
+  },
+  "TABLE": {
+    "NO": "No",
+    "NAMA_PENGADAAN": "Nama Pengadaan",
+    "KODE": "Kode",
+    "TGL_MULAI": "Tanggal Mulai",
+    "TGL_SELESAI": "Tanggal Selesai",
+    "TAHAPAN": "Tahapan",
+    "STATUS": "Status",
+    "ACTION": "Action"
+  },
+  "ATUR_TAHAPAN": "Atur Tanggal Tahapan",
+  "SEBELUMNYA": "Sebelumnya",
+  "SELANJUTNYA": "Selanjutnya",
+  "BELUM_MULAI": "Belum mulai",
+  "PROSES": "Proses",
+  "SELESAI": "Selesai",
+  "PROCUREMENT_TYPE_NOTSTARTED": "Belum mulai",
+  "PROCUREMENT_TYPE_PROCESS": "Proses",
+  "PROCUREMENT_TYPE_END": "Selesai",
+  "CARI": "Cari",
+  "ISI_CARI": "Masukkan pencarian..",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data",
+  "DETAIL": "Detail",
+  "KEMBALI": "Kembali",
+  "BATAL": "Batal",
+  "SIMPAN": "Simpan",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data pengadaan",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar tahapan",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_NO_DATE": "Tanggal mulai dan selesai harus diisi",
+    "ERR_RANGE_DATE": "Tanggal selesai tidak boleh sebelum tanggal mulai",
+    "SUCC_SAVE_STEP": "Berhasil menyimpan pengaturan tahapan",
+    "ERR_SAVE_STEP": "Gagal menyimpan pengaturan tahapan"
+  }
+}

@@ -1,0 +1,22 @@
+<div id="tambahKriteria" class="modal-content" ng-init="formKriteriaEvaluasiCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close"  ng-click="formKriteriaEvaluasiCtrl.cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{formKriteriaEvaluasiCtrl.title | translate}} {{formKriteriaEvaluasiCtrl.placeHolder | translate}}</h3>
+    </div>
+    <form role="form" name="formAdd">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label>{{formKriteriaEvaluasiCtrl.placeHolder | translate}}</label>
+                        <input type="text" ng-model="formKriteriaEvaluasiCtrl.nama" class="form-control" placeholder="{{formKriteriaEvaluasiCtrl.placeHolder | translate}}">
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="formKriteriaEvaluasiCtrl.cancel()" title="{{ "MODAL.BATAL" | translate}}"><i class="fa fa-reply"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="formKriteriaEvaluasiCtrl.save()" title="{{ "MODAL.SIMPAN" | translate}}"><i class="fa fa-save"></i> </button>
+        </div>
+    </form>
+</div>

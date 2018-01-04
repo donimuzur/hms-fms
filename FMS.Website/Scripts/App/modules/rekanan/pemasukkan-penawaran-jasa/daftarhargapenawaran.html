@@ -1,0 +1,225 @@
+﻿<div class="content" ng-init="ploCtrl.init()">
+	<div class="box">
+		<div class="box-body">
+			<div ng-show="ploCtrl.habisTanggal === false">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="text-center afta-font" style="margin-top: 0px; margin-bottom: 5px;">
+							Pemasukan Harga
+						</h2>
+					</div>
+
+					<!--ini tidak dipakai divale
+					<div class="row" ng-if="ploCtrl.showterendah == true">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label>
+									Harga Penawaran Terendah
+								</label>
+								{{hargaterendah | currency: ""+ labelcurr +" "}}
+							</div>
+						</div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label>Download Dokumen Penawaran Terendah</label><br>
+								<a ng-show="adafile_terendah" href="{{$root.url_api + url_dokumen_terendah}}" class="btn btn-primary btn-xs" target="_BLANK"><i class="fa fa-download"></i>&nbsp; Download</a>
+								<label>Download Dokumen Penawaran Terendah</label>
+								<label ng-show="!(adafile_terendah)" class="label label-xs label-default"><i class="fa fa-download"></i>&nbsp;Tidak Ada File</label>
+							</div>
+						</div>
+					</div>-->
+					<!--
+					<div class="row" style="margin-top: 50px">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Download Dokumen Penawaran</label><br>
+								<a ng-show="adafile" href="{{$root.url_api + url_dokumen}}" class="btn btn-primary btn-xs" target="_BLANK"><i class="fa fa-download"></i>&nbsp; Download</a>
+								<label ng-show="!(adafile)" class="label label-xs label-default"><i class="fa fa-download"></i>&nbsp;Tidak Ada File</label>
+							</div>
+						</div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label>
+									Unggah Dokumen Penawaran Harga
+									<small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small>
+								</label>
+								<div class="input-group">
+									<input id="uploadFile" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm upload-file" data-max-size="{{$root.filemaksimal}}" />
+									<span class="input-group-btn">
+										<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-primary"><i class="fa fa-upload"></i> &nbsp; Upload</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" style="padding-bottom: 20px;" ng-show="filesToUpload.length > 0">
+						<div class="col-md-8 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+							<div class="table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">Nama File</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Ukuran File</th>
+											<th class="text-center" style="width: 120px; min-width: 100px;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="fl in filesToUpload">
+											<td style="word-wrap: break-word!important;">{{fl.fileName}}</td>
+											<td class="text-center" style="word-wrap: break-word!important;">{{fl.fileSize}} KB</td>
+											<td class="text-center" style="word-wrap: break-word!important;">
+												<button class="btn btn-xs red center-block" ng-click="removeFile(fl.fileName)">
+													Hapus <i class="fa fa-minus-circle"></i>
+												</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>-->
+					<div class="row">
+						<div class="col-md-6"></div>
+						<div class="col-md-6">
+							<span class="pull-right text-right">
+								<h4>Total Penawaran : {{ploCtrl.subPekerjaan.OfferTotalCostStr}}</h4>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div ng-repeat="sp in ploCtrl.subPekerjaan.ServiceOfferEntryPricelists" class="row">
+					<hr style="height:1px;border:none;color:#333;background-color:#333;" />
+					<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;" ng-class="{'indent-right': !(sp.parent === null)}">
+						<div class="row">
+							<div class="col-md-6">
+								<span class="pull-left text-left">
+									<label>{{sp.Name}}</label>
+									<button ng-click="sp.show = !sp.show" class="btn btn-default btn-xs" ng-if="sp.Childs.length !== 0">
+										<i class="fa" ng-class="{'fa-chevron-up': !sp.show, 'fa-chevron-down': sp.show}"></i>
+									</button>
+									<button ng-click="sp.showDetail = !sp.showDetail" class="btn btn-default btn-xs" ng-if="sp.Childs.length === 0">
+										<i class="fa" ng-class="{'fa-chevron-up': !sp.showDetail, 'fa-chevron-down': sp.showDetail}"></i>
+									</button>
+									<input type="number" class="fa form-control input-sm" ng-if="sp.Childs.length === 0" ng-model="sp.Duration" style="width:150px;" />
+								</span>
+							</div>
+							<div class="col-md-6">
+								<span class="pull-right text-right">
+									<!--<label>Total Jumlah Harga : {{sp.total_line| currency: ""+ labelcurr +" "}}</label>-->
+									<label>Total Jumlah Harga : {{sp.TotalPriceStr}}</label>
+								</span>
+							</div>
+							<div class="col-md-12">
+								<div ng-show="sp.Childs.length === 0 && sp.showDetail" class="row">
+									<div class="table-responsive">
+										<table class="table table-striped table-bordered">
+											<thead>
+												<tr>
+													<th class="text-center" style="font-weight: bolder;">No</th>
+													<th class="text-center" style="font-weight: bolder;">Uraian Pekerjaan</th>
+													<th class="text-center" style="width: 10%; font-weight: bolder;">Qty</th>
+													<th class="text-center" style="width: 10%; font-weight: bolder;">Satuan</th>
+													<th class="text-center" style="width: 15%; font-weight: bolder;">Harga Satuan</th>
+													<th class="text-center" style="width: 15%; font-weight: bolder;">Jumlah Harga</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="pr in sp.ServiceOfferEntryPricelistDetails">
+													<td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+													<td style="vertical-align: middle;">{{pr.Name}}</td>
+													<td class="text-center" style="vertical-align: middle;">{{pr.Quantity}}</td>
+													<td class="text-center" style="vertical-align: middle;">{{pr.OrderUnit}}</td>
+													<td style="vertical-align: middle;">
+														<input ng-blur="ploCtrl.priceChange($parent.$index, $index)" type="text" class="form-control input-sm" style="text-align:right;" currency-mask ng-model="pr.UnitPrice" />
+													</td>
+													<td style="vertical-align: middle;">
+														<input currency-mask disabled type="text" class="form-control input-sm" ng-model="pr.TotalPrice" style="text-align: right;" />
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Durasi Pengerjaan</label>
+									<div class="input-group">
+										<input class="form-control" size="16" ng-model="sp.durasi" type="text" ng-required="true">
+										<span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></span>
+									</div>
+								</div>
+							</div>
+						</div>-->
+						<div ng-show="sp.Childs.length > 0 && sp.show" class="row" ng-repeat="spChild in sp.Childs" style="margin-left:10px!important">
+							<div class="col-md-12">
+								<label>
+									<i class="fa fa-arrow-circle-o-right"></i>{{spChild.Name}}
+								</label>
+								<button ng-click="spChild.show = !spChild.show" class="btn btn-default btn-xs" ng-if="spChild.Childs.length > 0">
+									<i class="fa" ng-class="{'fa-chevron-up': !spChild.show, 'fa-chevron-down': spChild.show}"></i>
+								</button>
+								<button ng-click="spChild.showDetail = !spChild.showDetail" class="btn btn-default btn-xs" ng-if="spChild.Childs.length === 0">
+									<i class="fa" ng-class="{'fa-chevron-up': !spChild.showDetail, 'fa-chevron-down': spChild.showDetail}"></i>
+								</button>
+								<input type="number" class="fa form-control input-sm" ng-if="spChild.Childs.length === 0" ng-model="spChild.Duration" style="width:150px;" />
+							</div>
+							<div class="col-md-12">
+								<div ng-show="spChild.Childs.length === 0 && spChild.showDetail" class="row">
+									<div class="table-responsive">
+										<table class="table table-striped table-bordered">
+											<thead>
+												<tr>
+													<th class="text-center" style="font-weight: bolder;">No</th>
+													<th class="text-center" style="font-weight: bolder;">Uraian Pekerjaan</th>
+													<th class="text-center" style="width: 10%; font-weight: bolder;">Qty</th>
+													<th class="text-center" style="width: 10%; font-weight: bolder;">Satuan</th>
+													<th class="text-center" style="width: 15%; font-weight: bolder;">Harga Satuan</th>
+													<th class="text-center" style="width: 15%; font-weight: bolder;">Jumlah Harga</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="prChild in spChild.ServiceOfferEntryPricelistDetails">
+													<td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+													<td style="vertical-align: middle;">{{prChild.Name}}</td>
+													<td class="text-center" style="vertical-align: middle;">{{prChild.Quantity}}</td>
+													<td class="text-center" style="vertical-align: middle;">{{prChild.OrderUnit}}</td>
+													<td style="vertical-align: middle;">
+														<input ng-blur="ploCtrl.priceChangeChild($parent, $index)" type="text" class="form-control input-sm" ng-model="prChild.UnitPrice" currency-mask />
+													</td>
+													<td style="vertical-align: middle;">
+														<input currency-mask disabled type="text" class="form-control input-sm" ng-model="prChild.TotalPrice" style="text-align: right;" />
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="text-center center-block">
+							<a class="btn btn-sm btn-danger" ng-click="ploCtrl.back()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</a>&nbsp;
+							<a ng-click="ploCtrl.savePricelist()" class="btn btn-sm btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp;</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-show="ploCtrl.habisTanggal === true">
+		<div class="row">
+			<div class="col-md-12">
+				<h2 class="text-center afta-font" style="margin-top: 0px; margin-bottom: 25px;">
+					Sudah melewati batas waktu tahapan
+				</h2>
+			</div>
+		</div>
+	</div>
+</div>

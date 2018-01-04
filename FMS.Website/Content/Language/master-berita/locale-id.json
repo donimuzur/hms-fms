@@ -1,0 +1,20 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_BERITA" : "Master Berita"
+    },
+    "DATA_BERITA" : "Data Berita",
+    "CARI_JUDUL_ISI" : "Cari Judul / Isi Berita",
+    "CARI" : "Cari",
+    "TAMBAH_DATA" : "Tambah Data",
+    "TABLE" : {
+        "NO" : "No",
+        "JUDUL" : "Judul",
+        "ISI_BERITA" : "Isi Berita",
+        "TANGGAL" : "Tanggal"
+    },
+    "TOTAL_DATA" : "Total Data",
+    "UBAH" : "Ubah",
+    "HAPUS" : "Hapus"
+}

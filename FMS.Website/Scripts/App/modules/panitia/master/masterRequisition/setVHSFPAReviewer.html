@@ -1,0 +1,97 @@
+﻿<div id="idTambahVerifiedData" class="modal-content" ng-init="CommitteeModalCtrl.init()">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="CommitteeModalCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+		<h3 class="modal-title afta-font" id="myModalLabel">Buat Susunan Panitia ( Contract Engineer )</h3>
+	</div>
+	<div class="modal-body">
+		<div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>Project Title: {{CommitteeModalCtrl.project}} </label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row" ng-if="CommitteeModalCtrl.flagEmp !== 0">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Jabatan Panitia</label>
+						<select ng-disabled="CommitteeModalCtrl.detailPosition.length === 1" class="form-control input-sm" ng-model="CommitteeModalCtrl.selectedPosition"
+								ng-options="item as item.PositionName | translate for item in CommitteeModalCtrl.detailPosition"
+								ng-change="CommitteeModalCtrl.load(selectedPosition)">
+							<option ng-if="CommitteeModalCtrl.detailPosition.length > 1" value="" selected disabled>-- Jabatan Panitia --</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>&nbsp;</label>
+						<input class="form-control" type="text" ng-model="CommitteeModalCtrl.datapegawai.Name" disabled>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label>&nbsp;</label>
+						<a class="btn btn-primary btn-flat form-control" ng-click="CommitteeModalCtrl.tambah()">
+							<i class="fa fa-edit"></i> Pilih Pegawai
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-if="CommitteeModalCtrl.flagEmp !== 0">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-12" align="center">
+							<a ng-click="CommitteeModalCtrl.addEmployee()" class="btn btn-flat btn-sm btn-primary text-center"><i class="fa fa-plus-circle"></i>  Tambah ke Daftar Panitia</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<!--<div align="right" ng-if="CommitteeModalCtrl.flagEmp !== 0">
+							<a ng-click="CommitteeModalCtrl.addTemplate2()" class="btn btn-flat btn-sm btn-primary text-center"><i class="fa fa-plus-circle"></i>&nbsp;  Generate Template Susunan Panitia</a>
+							<a ng-click="CommitteeModalCtrl.addTemplate()" class="btn btn-flat btn-sm btn-primary text-center"><i class="fa fa-plus-circle"></i>&nbsp;  Salin Susunan Panitia Pengadaan Lain</a>
+						</div>-->
+						<div class="table table-responsive">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th class="text-center">No</th>
+										<th class="text-center">Jabatan Tender</th>
+										<th class="text-center">Nama</th>
+										<th class="text-center">Jabatan</th>
+										<th width="10" class="text-center" ng-if="CommitteeModalCtrl.flagEmp !== 0">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="dt in CommitteeModalCtrl.detail">
+										<td ng-if="dt.IsActive === true" class="text-center">{{$index+1}}</td>
+										<td ng-if="dt.IsActive === true">{{dt.PositionName}}</td>
+										<td ng-if="dt.IsActive === true">{{dt.EmployeeName}}</td>
+										<td ng-if="dt.IsActive === true" class="text-center">{{dt.EmployeePosition}}</td>
+										<td ng-if="dt.IsActive === true && CommitteeModalCtrl.flagEmp !== 0" class="text-center">
+											<button ng-click="CommitteeModalCtrl.deleteRow(dt, $index+1)" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
+										</td>
+									</tr>
+									<tr ng-if="CommitteeModalCtrl.detail.length == 0">
+										<td colspan="5"> Data Tidak ada</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="pull-right">
+			<button class="btn btn-sm btn-danger" ng-click="CommitteeModalCtrl.cancel()"><i class="fa fa-arrow-left"></i> Kembali</button>
+			<button ng-if="CommitteeModalCtrl.flagEmp !== 0" class="btn btn-sm btn-primary" ng-click="CommitteeModalCtrl.addCommiteEmployee()"><i class="fa fa-plus-circle"></i> Simpan</button>
+		</div>
+	</div>
+</div>

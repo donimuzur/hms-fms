@@ -1,0 +1,34 @@
+{
+  "TITLE": "Data CPR",
+  "HOLDER": "Tender Name",
+  "ADD_DATA": "Add Data",
+  "SEARCH": "Search",
+  "TABLE": {
+    "COL_NO": "No.",
+    "COL_NAME": "Tender Name",
+    "COL_DATE": "Date CPR",
+    "COL_DEP": "Department Holder",
+    "COL_CONT": "Contract Engineer",
+    "COL_TYPE": "CPR Type",
+    "COL_ACT": "Action"
+  },
+
+  "DATE": "Date",
+  "VENDOR": "Vendor",
+  "SPONSOR": "Advertisement",
+  "CONTRACT": "Contract Engineer",
+  "NOMOR": "Contract Number",
+  "DEPT_OWN": "Department Owner",
+  "PROJ_MAN": "Project Manager",
+  "KPI": "KPI Description",
+  "SCORE": "Score",
+  "REMARKS": "Remark",
+  "NOTE": "Notes for increase performance",
+  "TABLE2": {
+    "COL_NO2": "No.",
+    "COL_CRIT": "Criteria",
+    "COL_SCORE": "Score",
+    "COL_NOTE": "Note",
+    "COL_ACT": "Action"
+  }
+}

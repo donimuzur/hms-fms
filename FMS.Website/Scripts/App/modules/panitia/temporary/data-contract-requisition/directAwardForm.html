@@ -1,0 +1,164 @@
+<section class="content">
+    <div class="container">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="text-center afta-font">DIRECT AWARD REQUEST FORM</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <label class="control-label">Your approval is requested to initiate a direct award action:</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label">Requestor Name and Title</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label">Requestor Dept:</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-11">
+                        <div class="form-group">
+                            <label class="control-label afta-font"><b>Recommended Direct Award with :</b></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label">Company Name</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label">Contact Name</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label">Telephone</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label class="control-label">Address</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">City, State, Zip</label>
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label">Description of  Requested Service</label>
+                            <input type="text" class="form-control input-sm" />
+                            <i>Describe the full scope of work contemplated including installation if required; items should include brand, model and part number if applicable</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label">Schedule</label>
+                            <input type="text" class="form-control input-sm" />
+                            <i>Identify the date you need services/ items to be delivered OR number of week/months work is to be performed or items delivered. Prepare all document within 3 weeks</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label">Estimated Cost : &nbsp;&nbsp;</label>
+                                <input type="radio" /> US$ &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" /> IDR &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" /> Others &nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label class="control-label">Project Manager</label>
+                            <input type="text" class="form-control input-sm" />
+                            <i>Identify the date you need services/ items to be delivered OR number of week/months work is to be performed or items delivered. Prepare all document within 3 weeks</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label afta-font"><u>SOLE SOURCE RATIONALE</u></label>
+                            <div class="form-control-static text-justify">
+                                Explain why the recommended company is the only company who can perform the service.  
+                                Address the following:  Are there any other companies who can do this job?  What 
+                                condition (e.g. technological superiority, or performance risks, etc.) 
+                                exists so that the recommended company has a significant advantage over any other 
+                                company who can do this job?
+                                It is important to sufficiently address the major reasons for conducting 
+                                noncompetitive procurement, avoiding peripheral issues which detract from the main 
+                                reasons and reduce the credibility of the justification.  The rational must be clear 
+                                and convincing, avoiding generalities and unsupported conclusions.  Use one or 
+                                more of the following as applicable. 
+                                Use additional sheets if necessary.
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-bold">A specific contractor is the only source of the required item because 
+                                                (check all that apply):</td>
+                                            <td class="text-center" width="50"><input type="checkbox" /></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dt in directaward_list">
+                                            <td>{{dt.ques}}
+                                                <ul class="list-unstyled marginleft20">
+                                                    <li ng-repeat="sub in dt.sub">
+                                                        <input type="checkbox" /> {{sub.s_ques}}
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td class="text-center"><input type="checkbox" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,214 @@
+﻿<section class="content" ng-init="DashHRCtrl.init()">
+    <div class="row">
+        <div class="col-xs-12" style=" ">
+            <div class="box">
+                  
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <uib-tabset active="activeJustified" justified="true">
+                        <uib-tab index="0" heading="Car Selection (CSF)">
+                            <uib-tabset active="activeJustified" justified="true" >
+                                <uib-tab index="0" heading="HR Dashboard" >
+                                    <div class="box-body">
+                                        <div class="control-group" id="fields">
+                                            <table id="example2" class="table table-bordered table-striped" datatable="ng" dt-options="dtOptions">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Request Number</th>
+                                                        <th>Effective Date</th>
+                                                        <th>Employee Name</th>
+                                                        <th>Form Status</th>
+                                                        <th>Last Update Date</th>
+                                                        <th>Last Update By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr data-ng-repeat="csf in DashHRCtrl.dataCSF | filter:search:kolom">
+                                                        <td ng-click="DashHRCtrl.go(csf.request_number)">{{$index+1}}</td>
+                                                        <td>{{csf.request_number}}</td>
+                                                        <td>{{DashHRCtrl.dateFormat(csf.effective_date)}}</td>
+                                                        <td>{{csf.employee_name}}</td>
+                                                        <td>{{csf.csf_status_id}}</td>
+                                                        <td>{{DashHRCtrl.dateFormat(csf.last_modified)}}</td>
+                                                        <td>{{csf.modified_by}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>-->
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                                <uib-tab index="1" heading="User Dashboard">
+                                    <div class="box-body">
+                                        <div class="control-group" id="fields">
+                                            <table id="example2" class="table table-bordered table-striped" datatable="ng" dt-options="dtOptions">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Request Number</th>
+                                                        <th>Effective Date</th>
+                                                        <th>Employee Name</th>
+                                                        <th>Form Status</th>
+                                                        <th>Last Update Date</th>
+                                                        <th>Last Update By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr data-ng-repeat=""></tr>
+                                                </tbody>
+                                            </table>
+                                            <!--<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>-->
+                                        </div>
+                                    </div>
+                                </uib-tab>
+                            </uib-tabset>
+                        </uib-tab>
+                        <uib-tab index="1" heading="Temporary Car">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab index="2" heading="Car Relocation (CRF)">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <table id="example3" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>CRF/2016/08/11</td>
+                                                <td>Submitted</td>
+                                                <td>11-Aug-2016</td>
+                                                <td>Nana, Amalia</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CRF/2017/03/21</td>
+                                                <td>Approved</td>
+                                                <td>11-Mar-2017</td>
+                                                <td>Christianty, Happy</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CRF/2016/08/11</td>
+                                                <td>Submitted</td>
+                                                <td>11-Aug-2016</td>
+                                                <td>Nana, Amalia</td>
+                                            </tr>
+                                            <tr>
+                                                <td>CRF/2016/07/181</td>
+                                                <td>Completed</td>
+                                                <td>11-Aug-2016</td>
+                                                <td>Christianty, Happy</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab index="3" heading="Car Termination (CTF)">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <table id="example4" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab index="4" heading="Car Accident (CAF)">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <table id="example5" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>CAF/2017/01/112</td>
+                                                <td>In-Progress</td>
+                                                <td>08-Jan-2017</td>
+                                                <td>Christianty, Happy</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                        <uib-tab index="5" heading="Car Complaint (CCF)">
+                            <div class="box-body">
+                                <div class="control-group" id="fields">
+                                    <table id="example6" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Request Number</th>
+                                                <th>Form Status</th>
+                                                <th>Last Update Date</th>
+                                                <th>Last Update By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>CCF/2017/01/112</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </uib-tab>
+                    </uib-tabset>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+        </div>
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->

@@ -1,0 +1,76 @@
+<div class="model-content" ng-init="FormNonBuildingCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormNonBuildingCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font">{{FormNonBuildingCtrl.title}}</h3>
+    </div>
+    <div class="modal-body" >
+        <div class="row" style="padding-top: 20px!important;">
+            <div class="col-md-12 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label>Nama Alat *</label>
+                            <input type="text" class="form-control" ng-model="FormNonBuildingCtrl.dataForm.Name" />
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Merk/Tipe *</label>
+                            <input type="text" class="form-control" ng-model="FormNonBuildingCtrl.dataForm.Brand"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tahun Pembuatan </label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="yyyy" datepicker-mode="'year'" datepicker-options="{minMode: 'year'}" close-text="{{'TUTUP'|translate}}"
+                                       is-open="FormNonBuildingCtrl.isCalendarOpened[0]" ng-model="FormNonBuildingCtrl.dataForm.MfgDate"
+                                       ng-click="FormNonBuildingCtrl.openCalendar(0)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="FormNonBuildingCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>No.Seri / No.Polisi </label>
+                            <input type="text" class="form-control" ng-model="FormNonBuildingCtrl.dataForm.SerialNo" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label ng-if="FormNonBuildingCtrl.isCategory == 'vehicle'">Kapasitas/Spesifikasi (Orang)</label>
+							<label ng-if="FormNonBuildingCtrl.isCategory == 'equipment'">Kapasitas/Spesifikasi (Tonase) </label>
+                            <input type="text" class="form-control" ng-model="FormNonBuildingCtrl.dataForm.Capacity" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Kondisi *</label>
+                            <label>Kategori</label>
+                            <select class="form-control input-sm" required ng-model="FormNonBuildingCtrl.selectedConditional"
+                                    ng-options="item as item.Value for item in FormNonBuildingCtrl.listConditional"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Status Kepemilikan *</label>
+                            <select class="form-control input-sm" required ng-model="FormNonBuildingCtrl.selectedKepemilikan"
+                                    ng-options="item as item.Value for item in FormNonBuildingCtrl.listKepemilikan"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="FormNonBuildingCtrl.batal()" class="btn btn-flat btn-danger" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" ng-click="FormNonBuildingCtrl.saveData()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

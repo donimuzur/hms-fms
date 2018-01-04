@@ -1,0 +1,43 @@
+<div class="container-fluid"  ng-init="init()">
+    <div class="row">
+        <div class="col-md-12 center-block">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="afta-font text-center" style="margin-bottom: 15px;">
+                        TENDER LETTER 
+                    </h3>
+                </div>
+                <div class="col-md-11" style="line-height: 30px;" >
+                    <div class="table table-responsive">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <td width="10" class="text-center">NO</td>
+                                    <td class="text-center">Nama Rekanan</td>
+                                    <td width="200" class="text-center">Persetujuan</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="dt in agreementTender">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{dt.nama_rek}}</td>
+                                    <td ng-if="dt.agree===1">Setuju</td>
+                                    <td ng-if="dt.agree===0">Tidak Setuju</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> 
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a ui-sref="temporary">
+            <button class="btn btn-sm btn-primary pull-left" title="Kembali"><i class="fa fa-arrow-circle-left"></i> </button>
+            </a>
+            <a ui-sref="temp-exception-tender">
+                <button class="btn btn-sm btn-primary pull-right" title="Selanjutnya"><i class="fa fa-arrow-circle-right"></i> </button></a>
+        </div>
+    </div>
+</div>

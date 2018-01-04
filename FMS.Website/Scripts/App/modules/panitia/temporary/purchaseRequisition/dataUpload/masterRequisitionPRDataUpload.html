@@ -1,0 +1,94 @@
+<section class="content" ng-init="init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a>Master Requisition</a></li>
+        <li><a>Purchase Requisition</a></li>
+        <li><a class="active">Data Upload</a></li>
+    </ol>
+    
+    <div class="row">
+        
+        <h2 class="text-center">Data Upload SAP</h2><br>
+                <fieldset>
+				
+                    <div class="col-md-12">
+
+                      
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                    <button type="button" class="btn btn-flat btn-success turun-15" title="Pilih File" style="float:left" ng-click="addRFQ('lg')" data-toggle="modal" data-target="#myModal">
+                                    <!--  ng-if="userBisaMenambah" -->
+                                    <i class="fa fa fa-search"></i>
+                                    </button> 
+                               
+                               <button type="button" class="btn btn-flat btn-primary turun-15" style="float:left" title="Data Upload" ng-click="" data-toggle="modal" data-target="#myModal">
+                                        <!--  ng-if="userBisaMenambah" -->
+                                        <i class="fa fa-upload"></i>
+                               </button>
+                            </div>
+                            
+                            <div class="col-md-3">
+
+                            </div>
+                            <div class="col-md-1">
+                                   <label class="turun-15" style="float: right;">Filter:</label><br />
+                            </div>
+                            <div class="col-md-2">
+                                    <select class="form-control turun-15" style="float: left;">
+                                            <option value="" disabled selected>Pilih Filter...</option>
+                                    </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control turun-15" >
+                            </div>
+                        </div><br>
+                        
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center-vertical">No</th>
+                                        <th class="center-vertical">PIC</th>
+                                        <th class="center-vertical">Storage Location</th>
+                                        <th class="center-vertical">Posting Date</th>
+                                        <th class="center-vertical">Resertvation</th>
+                                        <th class="center-vertical">Movement Tipe</th>
+                                        <th class="center-vertical">Special Stock</th>
+                                        <th class="center-vertical">Vendor</th>
+                                        <th class="center-vertical">Vendor Name</th>
+                                        <th class="center-vertical">Material Dokument</th>
+                                        <th class="center-vertical">Material Dok. item</th>
+                                        <th class="center-vertical">Materilal</th>
+                                        <th class="center-vertical">Material Description</th>
+                                        <th class="center-vertical">QTY</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td class="center-vertical">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div></div>
+                        </div>
+                    </div>
+
+                </fieldset>
+                </div>
+
+</section>

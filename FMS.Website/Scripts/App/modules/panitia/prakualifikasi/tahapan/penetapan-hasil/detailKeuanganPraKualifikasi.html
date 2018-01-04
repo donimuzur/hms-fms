@@ -1,0 +1,358 @@
+<section class="content" ng-init="init()" style="overflow: visible;">
+<ol class="breadcrumb">
+    <li><a href="#/home-admin" >Home</a></li>
+    <li><a  class="active" >Detail Keuangan {{detailRekanans[0].nama_perusahaan}}</a></li>
+</ol>
+
+<div class="box">
+    <div class="box-body center-block">
+        <div class="row">
+            <div class="col-md-12">                
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <tabset justified="true"> 
+                                <tab heading="Kekayaan" >
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4 class="afta-font text-center">PT. ........</h4>
+                                                <h4 class="afta-font text-center">Data Keuangan</h4>
+                                            </div>
+                                        </div>
+>                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11"  style="padding-left: 30px!important;">
+                                            <div class="form-group">
+                                                <label class="control-label text-bold">A. Kekayaan</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="table table-responsive">
+                                                    <table class="table table-bordered table-striped" id="example2">
+                                                        <thead>
+                                                            <tr>
+                                                                <td width="50">Nomor</td>
+                                                                <td>Jenis Harta</td>
+                                                                <td width="100">Jumlah</td>
+                                                                <td width="200">Nilai</td>
+                                                                <td>Keterangan</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="lk in list_kekayaan">
+                                                                <td class="text-center">{{lk.no}}</td>
+                                                                <td>{{lk.jenis_harta}}</td>
+                                                                <td class="text-center">{{lk.jumlah}}</td>
+                                                                <td  class="text-right">Rp. {{lk.nilai}}</td>
+                                                                <td>{{lk.ket}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="3" class="text-right">Total Kekayaan</td>
+                                                                <td class="text-right">Rp.1491940880   </td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11"  style="padding-left: 30px!important;">
+                                            <div class="form-group">
+                                                <label class="control-label text-bold">B. Hutang</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="table table-responsive">
+                                                    <table class="table table-bordered table-striped" id="example2">
+                                                        <thead>
+                                                            <tr>
+                                                                <td width="50">No</td>
+                                                                <td  width="400">Hutang Usaha</td>
+                                                                <td width="200">Nilai (Rp)</td>
+                                                                <td>Keterangan</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="lk in list_hutang">
+                                                                <td class="text-center">{{lk.no}}</td>
+                                                                <td>{{lk.jenis_harta}}</td>
+                                                                <td  class="text-right">Rp. {{lk.nilai}}</td>
+                                                                <td>{{lk.ket}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="2" class="text-right">Total Hutang</td>
+                                                                <td class="text-right">Rp. 1.491.940.800   </td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11"  style="padding-left: 30px!important;">
+                                            <div class="form-group">
+                                                <label class="control-label text-bold">Total Modal Usaha (Kekayaan - Hutang)&nbsp; 
+                                                    : &nbsp;&nbsp; Rp. 2.400.940.800</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 pull-right">
+                                            <button ng-click="kuesioner_k3l()" class="btn btn-sm btn-primary pull-right" title="Kuesioner K3L"><i class='fa fa-arrow-circle-o-right'></i> 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="Kendaraan">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4 class="afta-font text-center">PT. ........</h4>
+                                                <h4 class="afta-font text-center">Data Kendaraan</h4>
+                                            </div>
+                                        </div>
+>                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right paddingtopbot10" >
+                                            <button ng-click="aturIndeksKendaraan()" class='btn btn-sm btn-primary' title="Atur Indeks Kendaraan"><i class='fa fa-plus-square'></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" >
+                                            <div class="form-group">
+                                                <div class="table table-responsive">
+                                                    <table class="table table-bordered table-striped" id="example2">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <td width="50">No</td>
+                                                                <td width="400">Jenis</td>
+                                                                <td width="150">Tahun Pembuatan</td>
+                                                                <td width="150">Nilai Pembelian</td>
+                                                                <td width="150">Masa Berlaku</td>
+                                                                <td width="150">Depresiasi</td>
+                                                                <td width="150">Prosentanse Depresiasi</td>
+                                                                <td>Nilai Terdepresiasi</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="lk in list_kendaraan">
+                                                                <td class="text-center">{{lk.no}}</td>
+                                                                <td>{{lk.jenis}}</td>
+                                                                <td>{{lk.tahun}}</td>
+                                                                <td  class="text-right">Rp. {{lk.nilai}}</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <button  class="btn btn-sm btn-success" title="Simpan"><i class='fa fa-save'></i> 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="Peralatan">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <h4 class="afta-font text-center">PT. ........</h4>
+                                                <h4 class="afta-font text-center">Data Alat Berat, Mesin dan / atau Peralatan Lain</h4>
+                                            </div>
+                                        </div>
+>                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right paddingtopbot10" >
+                                            <button ng-click="aturIndeksPeralatan()" class='btn btn-sm btn-primary' title="Atur Indeks Alat Berat"><i class='fa fa-plus-square'></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" >
+                                            <div class="form-group">
+                                                <div class="table table-responsive">
+                                                    <table class="table table-bordered table-striped" id="example2">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <td width="50">No</td>
+                                                                <td width="400">Jenis</td>
+                                                                <td width="150">Tahun Pembuatan</td>
+                                                                <td width="200">Nilai Pembelian</td>
+                                                                <td width="70">Masa Berlaku</td>
+                                                                <td width="200">Depresiasi</td>
+                                                                <td width="100">Prosentanse Depresiasi</td>
+                                                                <td>Nilai Terdepresiasi</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="lk in list_peralatan">
+                                                                <td class="text-center">{{lk.no}}</td>
+                                                                <td>{{lk.jenis}}</td>
+                                                                <td>{{lk.tahun}}</td>
+                                                                <td  class="text-right">Rp. {{lk.nilai}}</td>
+                                                                <td class="text-center">{{lk.masa}}</td>
+                                                                <td class="text-right">Rp. {{lk.nil_dep}}</td>
+                                                                <td class="text-center">{{lk.dep}}%</td>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <button  class="btn btn-sm btn-success" title="Simpan"><i class='fa fa-save'></i> 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<script type="text/ng-template" id="aturIndeksKendaraan.html"> 
+    <div class="modal-content" ng-init="init()" style="width:1000px!important;">
+        <div class="modal-header">
+            <button type="button" class="close"  ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Atur Indeks Kendaraan</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label ">Jenis Kendaraan</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Tahun</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Harga</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button class='btn btn-sm btn-primary' title="Tambah"><i class='fa fa-plus-square'></i> </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped" id="example2">
+                            <thead>
+                                <tr>
+                                    <td width="50">No.</td>
+                                    <td width="150">Jenis Kendaraan</td>
+                                    <td>Jenis Ijin</td>
+                                    <td width="100" class="text-center">Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><button class='btn btn-xs btn-danger'><i class='fa fa-times'></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="batal()" class="btn btn-flat btn-default" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-primary" ><i class="fa fa-save" title="Simpan"></i>&nbsp;</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="aturIndeksPeralatan.html"> 
+    <div class="modal-content" ng-init="init()" style="width:1000px!important;">
+        <div class="modal-header">
+            <button type="button" class="close"  ng-click="batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Atur Indeks Peralatan</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label ">Jenis Peralatan</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Tahun</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Harga</label>
+                            <input type="text" class="form-control input-sm" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button class='btn btn-sm btn-primary' title="Tambah"><i class='fa fa-plus-square'></i> </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped" id="example2">
+                            <thead>
+                                <tr>
+                                    <td width="50">No.</td>
+                                    <td width="150">Jenis Peralatan</td>
+                                    <td>Jenis Ijin</td>
+                                    <td width="100" class="text-center">Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><button class='btn btn-xs btn-danger'><i class='fa fa-times'></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="batal()" class="btn btn-flat btn-default" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-primary" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </div>
+</script>

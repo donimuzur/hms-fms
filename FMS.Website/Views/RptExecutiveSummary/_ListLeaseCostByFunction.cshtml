@@ -1,0 +1,35 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.LeaseCostByFunctionModel
+
+<table id="tbLeaseCostByFunction" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Regional</th>
+            <th>Function</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Total Lease Cost</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.LeaseCostByFuncDataList)
+        {
+            <tr>
+                <td>@Html.Raw(data.Region)</td>
+                <td>@Html.Raw(data.Function)</td>
+                <td>@Html.Raw(data.Month)</td>
+                <td>@Html.Raw(data.ReportYear)</td>
+                <td>@string.Format("{0:N0}", data.TotalLeaseCost)</td>
+            </tr>
+        }
+    </tbody>
+</table>

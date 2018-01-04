@@ -1,0 +1,75 @@
+<link rel="stylesheet" type="text/css" href="assets/css/rolas-design.css" />
+<section class="content" ng-init="tambahMEPrakualCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a  class="active" >Tambah Metode Prakualifikasi</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-md-12">
+                            <div >
+                                <h3 class="afta-font" style="font-size: 1.6em; margin-top: 0px;">
+                                    {{tambahMEPrakualCtrl.isEdit ? 'Ubah Metode Prakualifikasi' : 'Tambah Metode Prakualifikasi' }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 col-sm-12 col-xs-12 ">
+                            <div class="form-group">
+                                <label>Nama Metode Prakualifikasi</label>
+                                <input ng-model="tambahMEPrakualCtrl.namaMetode" type="text" class="form-control" placeholder="Nama Metode Prakualifikasi . . .">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 " style="float: none!important;">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" style="width: 30px; min-width: 30px; vertical-align: middle;"></th>
+                                            <th class="center-vertical">Kriteria Prakualifikasi</th>
+                                            <th class="center-vertical" style="width: 120px; min-width: 120px;">Bobot %</th>
+                                            <th class="center-vertical" style="width: 80px; min-width: 80px;" ng-show="tambahMEPrakualCtrl.isEdit">Action</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="kr in tambahMEPrakualCtrl.kriteriaList">
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <input type="checkbox" ng-model="kr.checked"/>
+                                            </td>
+                                            <td style="vertical-align: middle;">
+                                                {{kr.kriteria_nama}}
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-show="kr.checked" ng-model="kr.bobot" type="number" min="0" max="100" class="form-control input-sm" />
+                                            </td>
+                                            <td style="vertical-align: middle;" ng-show="kr.checked && tambahMEPrakualCtrl.isEdit && kr.kriteria_nama !== 'Harga'">
+                                                <button class="btn btn-xs btn-primary" ng-click="tambahMEPrakualCtrl.detail(kr.id)" title="Detail"><i class="fa fa-external-link"></i> </button></td>
+                                        </tr>                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="center-block text-right">
+                                <a class="btn btn-flat  btn-primary" ng-click="tambahMEPrakualCtrl.back()" style="margin-top: 15px;" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>
+                                <a ng-click="tambahMEPrakualCtrl.tambah()" class="btn btn-success btn-flat" style="margin-top: 15px;" title="Simpan"><i class="fa fa-save"></i>&nbsp;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>

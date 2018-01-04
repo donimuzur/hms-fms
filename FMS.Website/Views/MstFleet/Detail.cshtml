@@ -1,0 +1,356 @@
+﻿@model FMS.Website.Models.FleetItem
+@using FMS.Core
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Fleet Edit</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+    @using (Html.BeginForm("Edit", "MstFleet"))
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Police Number<span class="red">*</span></label>
+                    @Html.HiddenFor(model => model.MstFleetId)
+                    @Html.HiddenFor(model => model.CreatedDate)
+                    @Html.HiddenFor(model => model.CreatedBy)
+                    @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Chasis Number<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Engine Number<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.EngineNumber, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Employee ID</label>
+                    @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Employee Name</label>
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Car Group Level<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Employee Group Level</label>
+                    @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Assigned To<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Cost Center<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vendor Name<span class="red">*</span></label>
+                    @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Manufacturer<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Models<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Series<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Body Type<span class="red">*</span></label>
+                    @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, new { @class = "form-control ", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Exterior Color<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Color, new { @class = "form-control ", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Transmision<span class="red">*</span></label>
+                    @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                </div>
+            </div>
+             <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Car Group Level<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Fuel Type<span class="red">*</span></label>
+                    @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Branding<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Branding, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">AirBag<span class="red">*</span></label>
+                    <div class="form-control" disabled = "disabled">
+                        @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()", @disabled = "disabled" })
+                        @if (Model.Airbag == true)
+                        {
+                            <span>@Html.Label("Yes", new { @id = "lblAirbag" })</span>
+                        }
+                        else
+                        {
+                           <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Request Year<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Usage<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Project<span class="red">*</span></label>
+                    @Html.CheckBoxFor(model => model.Project, new { @id = "ChkProject", onclick = "checkProject()", @disabled = "disabled" })
+                    @if (Model.Project == true)
+                    {
+                        @Html.Label("Yes", new { @id = "lblProject" })
+                    }
+                    else
+                    {
+                        @Html.Label("No", new { @id = "lblProject" })
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Project Name<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Supply Method<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">City<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Address<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">VAT<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Restitution<span class="red">*</span></label>
+                    <div class="form-control" disabled="disabled">
+                        @Html.CheckBoxFor(model => model.Restitution, new { @id = "ChkRestitution", onclick = "checkRestitution()", @disabled = "disabled" })
+                        @if (Model.Restitution == true)
+                        {
+                            @Html.Label("Yes", new { @id = "lblRestitution" })
+                        }
+                        else
+                        {
+                            @Html.Label("No", new { @id = "lblRestitution" })
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Start Date</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(model => model.StartDate, new {@class = "form-control", @disabled = "disabled" })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">End Date</label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @disabled = "disabled" })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Monthly HMS Installment<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.MonthlyHMSInstallment, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">PO Number<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">PO Line<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Status<span class="red">*</span></label>
+                    <div class="form-control" disabled="disabled">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                        @Html.Label("Active", new { @id = "lblStatus" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Certificate of Ownership<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Comments<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Asset<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.Assets, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
+                    @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Function<span class="red">*</span></label>
+                    @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Regional<span class="red">*</span></label>
+                    @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <a href="@Url.Action("Index", "MstFleet" )" class="btn btn-default">Back</a>
+            </div>
+        </div>
+    }
+    </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>
+<script src="~/Scripts/thousand-separator.js"></script>
+<script type="text/javascript">
+    function check() {
+        if (document.getElementById('ChkisActive').checked == true) {
+            document.getElementById('lblStatus').innerHTML = "Active";
+        }
+        else
+        {
+            document.getElementById('lblStatus').innerHTML = "InActive";
+        }
+    }
+    function checkAirbag() {
+        if (document.getElementById('ChkAirbag').checked == true) {
+            document.getElementById('lblAirbag').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblAirbag').innerHTML = "No";
+        }
+    }
+    function checkRestitution() {
+        if (document.getElementById('ChkRestitution').checked == true) {
+            document.getElementById('lblRestitution').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblRestitution').innerHTML = "No";
+        }
+    }
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+
+    }
+    $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
+    $('#MonthlyHMSInstallment').val(ThausandSeperator($('#MonthlyHMSInstallment').val(), 2));
+    $('#TotalMonthlyCharge').val(ThausandSeperator($('#TotalMonthlyCharge').val(), 2));
+</script>

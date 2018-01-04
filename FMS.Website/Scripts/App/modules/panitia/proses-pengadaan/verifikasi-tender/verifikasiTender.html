@@ -1,0 +1,87 @@
+<section class="content" ng-init="tenderVerCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.VERIFIKASI_TENDER' | translate}}</a></li>
+    </ol>
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">                
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{'DATA_VERIFIKASI' | translate}}</h3>
+                        </div>
+                    </div>                    
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label col-lg-1">Filter &nbsp; </label>
+                                <div class="col-md-4">
+                                    <select class="form-control input-sm" ng-change="tenderVerCtrl.onFilterTypeChange(column)" ng-model="column">
+                                        <option value="1" ng-selected="true">{{'FILTER.NOMOR_TENDER' | translate}}</option>
+                                        <option value="2">{{'FILTER.RFQ' | translate}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <form ng-submit="tenderVerCtrl.onSearchClick(keyword)">
+                                        <input type="text" class="form-control input-sm" ng-model="keyword" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" width="10">{{'TABLE.NO' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.NOMOR_TENDER' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.RFQ' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.JENIS_CR' | translate}}</th>
+                                            <th class="center-vertical" width="60">{{'TABLE.TANGGAL_REVIEW' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.STATUS' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.KETERANGAN' | translate}}</th>
+                                            <th class="center-vertical" width="300"></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="dt in tenderVerCtrl.contractRequisition">
+                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1 + (tenderVerCtrl.pageSize * (tenderVerCtrl.currentPage - 1))}}</td>
+                                            <td style="vertical-align: middle;">{{dt.TenderCode}}</td>
+                                            <td style="vertical-align: middle;">{{dt.ProjectTitle}}</td>
+                                            <td style="vertical-align: middle;">{{dt.IsCSMS === true ? 'CSMS' : (dt.IsCSMS === false ? 'Non CSMS' : '')}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{tenderVerCtrl.convertDate(dt.ReviewedDate)}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{tenderVerCtrl.statusLabels[dt.StatusName] | translate}}</td>
+                                            <td style="vertical-align: middle;">{{dt.Information}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">       
+                                                <a class="btn btn-flat btn-xs btn-primary" ng-click="tenderVerCtrl.detailContract(dt)" title="{{'TABLE.DETAIL' | translate}}"><i class='fa fa-external-link'></i></a>
+                                                <a class="btn btn-flat btn-xs btn-warning" ng-click="tenderVerCtrl.menujuDokumen(dt)" title="{{'TABLE.DOKUMEN' | translate}}"><i class="fa fa-file-o"></i></a>
+                                                <a class="btn btn-flat btn-xs btn-success" ng-click="tenderVerCtrl.detailApproval(dt)" title="{{'TABLE.DETAIL_APPROVAL' | translate}}"><i class="fa fa-sitemap"></i></a>
+                                                <a class="btn btn-flat btn-xs btn-info" ng-if="dt.StatusName === 'CR_PROCESS_2'" ng-click="tenderVerCtrl.aturApproval(dt)" title="{{'TABLE.ATUR_APPROVAL' | translate}}"><i class="fa fa-link"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="tenderVerCtrl.totalItems === 0">
+                                            <td colspan="8">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-sd-4 col-md-10" >
+                                        <ul uib-pagination total-items="tenderVerCtrl.totalItems"
+                                            ng-model="tenderVerCtrl.currentPage" items-per-page="tenderVerCtrl.pageSize"
+                                            previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="tenderVerCtrl.loadContracts()"></ul>
+                                        <br /><label>{{'TOTAL_DATA' | translate}} : {{tenderVerCtrl.totalItems}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,82 @@
+<section class="content" ng-init="init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a>Master Requisition</a></li>
+        <li><a>Contract Requisition</a></li>
+        <li><a class="active">Detail Cost Estimate</a></li>
+    </ol>
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">                
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">FORM DETAIL COST ESTIMATE</h3>
+                        </div>
+                    </div>                    
+                    <!--button Tambah PR-->
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-sm" placeholder="detailed_cost_estimate.xls" />
+                                        <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-success" title="Upload"><i class="fa fa-upload"></i> </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button ng-click="aturSubCost()" class="btn btn-sm btn-primary pull-right" title="Atur Sub Cost"><i class="fa fa-pencil-square-o"></i> </button>
+                            <button class="btn btn-sm btn-success pull-right" title="Detail Sub"><i class="fa fa-list"></i> </button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="7"><h4 class="afta-font">Pekerjaan Pemboran Infiil dan Geotek</h4></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center" width="10">Line</th>
+                                            <th class="text-center" width="200">Description</th>
+                                            <th class="text-center" width="80">Quantity</th>
+                                            <th class="text-center" width="60">Order Unit</th>
+                                            <th class="text-center" >Unit Cost</th>
+                                            <th class="text-center" width="140">Line Cost</th>
+                                            <th class="text-center" width="100">Tax</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="dt in monitoring_list">
+                                            <td class="text-center" style="vertical-align: middle;">{{ $index + 1}}</td>
+                                            <td  style="vertical-align: middle;">{{dt.desc}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.qty}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.unit}}</td>
+                                            <td style="vertical-align: middle;">{{dt.ucost}}</td>
+                                            <td class="text-right" style="vertical-align: middle;">{{dt.lcost}}</td>
+                                            <td class="text-right" style="vertical-align: middle;">{{dt.tax}}</td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <br />
+                            <button ng-click="back()" class="btn btn-sm btn-primary" title="Kembali"><i class="fa fa-arrow-left"></i> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

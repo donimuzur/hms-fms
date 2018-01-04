@@ -1,0 +1,54 @@
+<div class="modal-header" ng-init="formExpCtrl.init()">
+    <button type="button" ng-click="formExpCtrl.batal()" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+    <h3 class="modal-title afta-font">View Detail Pengalaman</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-10 center-block" style="float: none!important;">
+            <div class="row well">
+                <div class="col-md-12">
+                    <dl class="dl-horizontal">
+                        <dt>Nama Kontrak</dt>
+                        <dd>{{formExpCtrl.dataExp.ContractName}}</dd>
+                        <dt>Lokasi </dt>
+                        <dd>
+                            {{formExpCtrl.lokasidetail}}
+                        </dd>
+                        <dt>Instansi</dt>
+                        <dd>{{formExpCtrl.dataExp.Agency}}</dd>
+                        <dt>Alamat</dt>
+                        <dd>{{formExpCtrl.dataExp.Address}}</dd>
+                        <dt>Telepon Instansi</dt>
+                        <dd>{{formExpCtrl.dataExp.AgencyTelpNo}}</dd>
+                        <dt>No. Kontrak</dt>
+                        <dd>{{formExpCtrl.dataExp.ContractNo}}</dd>
+                        <dt>Nilai Kontrak</dt>
+                        <dd>{{formExpCtrl.dataExp.ContractValue | currency:"Rp."}}</dd>
+                        <dt>Tanggal Pelaksanaan</dt>
+                        <dd>{{formExpCtrl.datepelaksanaan}}</dd>
+                        <dt>Selesai Kontrak</dt>
+                        <dd>{{formExpCtrl.dateselesai}}</dd>
+                        <dt>Download Dokumen Kontrak</dt>
+                        <dd ng-show="!(formExpCtrl.dataExp.DocumentURL === null || formExpCtrl.dataExp.DocumentURL === '')">
+                            <a href="{{formExpCtrl.folderFile + formExpCtrl.dataExp.DocumentURL}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download File">
+                                <i class="fa fa-download"></i>&nbsp;
+                            </a>
+                        </dd>
+                        <dd ng-show="(formExpCtrl.dataExp.DocumentURL === null || formExpCtrl.dataExp.DocumentURL === '')">
+                            <button class="btn btn-sm btn-default" title="belum ada file yang diupload"><i class="fa fa-download"></i></button>
+                        </dd>
+                        <dt>Keterangan</dt>
+                        <dd>
+                            <p>
+                               {{formExpCtrl.dataExp.Remark}}
+                            </p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="formExpCtrl.batal()" class="btn btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+</div>

@@ -1,0 +1,194 @@
+<div class="modal-content" ng-init="detailApprovalSignOffCtrl.init()" >
+    <div class="modal-header">
+        <button type="button" class="close"  ng-click="detailApprovalSignOffCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail {{'APPROVAL'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-8">
+                <label>Requestor: {{detailApprovalSignOffCtrl.list[0].requestor.FullName}} {{detailApprovalSignOffCtrl.list[0].requestor.SurName}}</label>
+            </div>
+            <div class="col-md-4">
+                <label>Contract Engineer: {{detailApprovalSignOffCtrl.employeeFullNameCE}}</label>
+            </div>
+            <!--
+        <div class="col-md-9">
+            <label>Tender: {{ContractSignOffController.detail[0].TenderName}}</label>
+        </div>-->
+        </div>
+        <div>
+            <div class="row" ng-if="detailApprovalSignOffCtrl.Status == 1">
+                <div class="col-md-12">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">{{'TABLE.KETERANGAN'|translate}} : </label>
+                                    <input class="form-control input-sm" ng-model="detailApprovalSignOffCtrl.information" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <button class="btn btn-sm btn-success" ng-click="detailApprovalSignOffCtrl.approve()"><i class="fa fa-check"></i> {{'APPROVE' | translate}}</button>
+                                    <button class="btn btn-sm btn-danger" ng-click="detailApprovalSignOffCtrl.reject()"><i class="fa fa-times"></i> {{'REJECT' | translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">{{'TABLE.NO' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.APPROVAL' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.JABATAN' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.TANGGAL_APPROVE' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.STATUS' | translate}}</th>
+                                        <th class="text-center">{{'TABLE.KETERANGAN' | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in detailApprovalSignOffCtrl.crApps">
+                                        <td class="text-center">{{$index + 1}}</td>
+                                        <td ng-class="{'text-bold':dt.EmployeeID == detailApprovalSignOffCtrl.employeeID}">{{dt.EmployeeFullName}}</td>
+                                        <td>{{dt.EmployeePositionName}}</td>
+                                        <td class="text-center">{{dt.ApprovalDate| date: "dd-MM-yyyy"}}</td>
+                                        <td ng-if="dt.ApprovalStatus === null" class="text-center" ></td>
+                                        <td ng-if="dt.ApprovalStatus === 1" class="text-center" >Approve</td>
+                                        <td ng-if="dt.ApprovalStatus === 0" class="text-center" >Reject</td>
+                                        <td>{{dt.Remark}}</td>
+                                    </tr>
+                                    <tr ng-if="detailApprovalSignOffCtrl.crApps.length === 0">
+                                        <td colspan="6">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                       
+        </div>
+    </div>
+    <!--
+    <div class="row" id="exportthis">
+        <div class="col-md-12">
+            <div ng-show="detailApprovalSignOffCtrl.visible">cobi</div>
+            <button ng-click="detailApprovalSignOffCtrl.printForm()">export</button>
+        </div>
+    </div>
+        -->
+    <div class="modal-footer">
+        <div class="col-md-6">
+            <div class="pull-left">
+                <button class="btn btn-flat btn-default" title="Cetak Form EEC" ng-click="detailApprovalSignOffCtrl.printForm('formEEC')"><i class="glyphicon glyphicon-print"></i></button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right">
+                <button class="btn btn-flat btn-primary" title="Batal" ng-click="detailApprovalSignOffCtrl.cancel()"><i class="fa fa-reply"></i></button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="formEEC" class="formEEC-container" ng-hide="true" style="background-color:#ffffff;">
+        <div class="row" style="width:100%;">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <img src="assets/img/logo_vale2.png" class="img-responsive pull-right" style="padding-top:10px;padding-left:690px;padding-bottom: 20px;display:block;text-align:right;" width="100px" height="40px" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="formEEC-title">
+                    EXECUTION OF EXPENDITURE COMMITMENT  -   APPROVAL ROUTING
+                </div>
+                <br />
+                <div class="formEEC-content">
+                    <div class="formEEC-contentOutside">
+                        <p>This document is to ensure that the necessary approvals to support the decision to engage in a contract for work have been obtained in accordance with the contract management accountability prior to contract commitment and issue.</p>
+                        <div class="row">
+                            <div class="formEEC-col3">
+                                CONTRACT   REFERENCE <br />
+                                CONTRACTOR NAME <br />
+                                CONTRACT   TITLE <br />
+                            </div>
+                            <div class="formEEC-col9">
+                                : {{detailApprovalSignOffCtrl.list[0].ContractSignOff1.ContractNo}}<br />
+                                : {{detailApprovalSignOffCtrl.list[0].ContractSignOff1.VendorName}}<br />
+                                : {{detailApprovalSignOffCtrl.list[0].ContractSignOff1.TenderStepData.tender.TenderName}}<br />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row formEEC-box">
+                        <div class="formEEC-col3">
+                            Value of this Commitment<br />
+                            Approved Contingency Value<br />
+                            Total Commitment to date including this commitment<br />
+                        </div>
+                        <div class="formEEC-col9">
+                            : IDR 80,000<br />
+                            : -<br /><br />
+                            : IDR 80,000<br />
+                        </div>
+                    </div>
+                    <div class="formEEC-contentOutside">
+                        <div class="row">
+                            <div class="formEEC-col3">
+                                APPROVAL DOCUMENT
+                            </div>
+                            <div class="formEEC-col9">
+                                : CONTRACT DOCUMENT
+                            </div>
+                        </div>
+                    </div>
+                    <table class="formEEC-table">
+                        <tr>
+                            <th style="vertical-align:middle;"></th>
+                            <th>Accountability</th>
+                            <th>Responsibility</th>
+                            <th>Approval</th>
+                            <th>Date</th>
+                        </tr>
+                        <tr ng-repeat="dt in detailApprovalSignOffCtrl.crApps">
+                            <th width="50px" style="vertical-align:middle;">{{dt.EmployeeDepartmentName}}</th>
+                            <td>{{dt.EmployeeFullName}}<br /><br />{{dt.EmployeePositionName}}</td>
+                            <td></td>
+                            <td>Approve</td>
+                            <td>{{dt.ApprovalDate| date: "dd-MM-yyyy"}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="formEEC-col6">
+                                    Budget Approval : Operating Expense<br />
+                                    Business Case Review : Capital Project
+                                </div>
+                                <div class="formEEC-col6">
+                                    Cost Centre : Change to PMO<br />
+                                    CAR :
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                Comments : 1 USD = IDR 13.620
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="formEEC-contentOutside">
+                        All commitments must be signed in accordance with the limits set in the Authority Matrix for Expenditure Commitments based on the total cumulative value of the contract.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

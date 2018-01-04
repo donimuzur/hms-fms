@@ -1,0 +1,16 @@
+﻿<div class="modal-content" ng-init="FormSureQuestionnaireCtrl.init()" id="divInfo">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="FormSureQuestionnaireCtrl.batal()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <h3 class="text-center afta-font">{{'SURE_QUEST' | translate}}</h3>
+           </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="FormSureQuestionnaireCtrl.batal()" title="{{'CANCEL' | translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-success" ng-click="FormSureQuestionnaireCtrl.oke()" title="{{'SAVE' | translate}}"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;</button>
+    </div>
+</div>

@@ -1,0 +1,143 @@
+﻿<div class="modal-content" ng-init="modalDMECtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="modalDMECtrl.keluar()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar{{''|translate}}</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Detail&nbsp;{{modalDMECtrl.nama}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid" ng-if="modalDMECtrl.bobotAdministrasi > 0">
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <h5 class="afta-font">{{'TIPE.ADMINISTRASI'|translate}} : {{modalDMECtrl.bobotAdministrasi}}%</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <ul>
+                        <li ng-repeat="kri in modalDMECtrl.Administrasi">
+                            {{kri.CriteriaName}} <span class="pull-right text-center" style="right: 10px;">{{kri.Weight}}%</span>
+                            <ul>
+                                <li ng-repeat="level2 in kri.sub">
+                                    {{level2.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level2.Weight}}%</span>
+                                    <ul>
+                                        <li ng-repeat="level3 in level2.sub">
+                                            {{level3.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level3.Weight}}%</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="container-fluid" ng-if="modalDMECtrl.bobotTeknis > 0">
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <h5 class="afta-font">{{'TIPE.TEKNIS'|translate}} {{modalDMECtrl.bobotTeknis}}%</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <ul>
+                        <li ng-repeat="kri in modalDMECtrl.Teknis">
+                            {{kri.CriteriaName}} <span class="pull-right text-center text-bold" style="right: 10px;">{{kri.Weight}}%|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <ul>
+                                <li ng-repeat="level2 in kri.sub">
+                                    {{level2.CriteriaName}} <span class="pull-right text-center text-blue" style="right: 10px;">{{level2.Weight}}%|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    <ul>
+                                        <li ng-repeat="level3 in level2.sub">
+                                            {{level3.CriteriaName}}  <span class="pull-right text-center text-green" style="right: 10px;">{{level3.Weight}}%</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="container-fluid" ng-if="modalDMECtrl.bobotHarga > 0">
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <h5 class="afta-font">{{'TIPE.HARGA'|translate}} {{modalDMECtrl.bobotHarga}}%</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <ul>
+                        <li ng-repeat="kri in modalDMECtrl.Harga">
+                            {{kri.CriteriaName}} <span class="pull-right text-center" style="right: 10px;">{{kri.Weight}}%</span>
+                            <ul>
+                                <li ng-repeat="level2 in kri.sub">
+                                    {{level2.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level2.Weight}}%</span>
+                                    <ul>
+                                        <li ng-repeat="level3 in level2.sub">
+                                            {{level3.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level3.Weight}}%</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" ng-if="modalDMECtrl.bobotBarang > 0">
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <h5 class="afta-font">{{'TIPE.BARANG'|translate}} {{modalDMECtrl.bobotBarang}}%</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <ul>
+                        <li ng-repeat="kri in modalDMECtrl.Barang">
+                            {{kri.CriteriaName}} <span class="pull-right text-center" style="right: 10px;">{{kri.Weight}}%</span>
+                            <ul>
+                                <li ng-repeat="level2 in kri.sub">
+                                    {{level2.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level2.Weight}}%</span>
+                                    <ul>
+                                        <li ng-repeat="level3 in level2.sub">
+                                            {{level3.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level3.Weight}}%</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" ng-if="modalDMECtrl.bobotVHS > 0">
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <h5 class="afta-font">{{'TIPE.VHS'|translate}} {{modalDMECtrl.bobotVHS}}%</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <ul>
+                        <li ng-repeat="kri in modalDMECtrl.VHS">
+                            {{kri.CriteriaName}} <span class="pull-right text-center" style="right: 10px;">{{kri.Weight}}%</span>
+                            <ul>
+                                <li ng-repeat="level2 in kri.sub">
+                                    {{level2.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level2.Weight}}%</span>
+                                    <ul>
+                                        <li ng-repeat="level3 in level2.sub">
+                                            {{level3.CriteriaName}}  <span class="pull-right text-center" style="right: 10px;">{{level3.Weight}}%</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="modalDMECtrl.keluar()" title="Batal{{''|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

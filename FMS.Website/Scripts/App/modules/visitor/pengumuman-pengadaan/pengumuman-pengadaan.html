@@ -1,0 +1,100 @@
+<div ng-init="pengumumanCtrl.init()" class="container" style="margin-top: 30px;">
+    <div class="box">
+        <div class="box-body table-responsive">
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <h3 class="box-title afta-font">{{"JUDUL" | translate}}</h3>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <form ng-submit="pengumumanCtrl.loadData()">
+                        <div class="input-group" style="padding-top: 15px;">
+                            <div class="input-cont">
+                                <input type="text" ng-model="pengumumanCtrl.txtSearch" placeholder="{{'TEXT_SEARCH' | translate}}" class="form-control">
+                            </div>
+                            <span class="input-group-btn">
+                                <button ng-click="pengumumanCtrl.loadData()" type="button" class="btn btn-default" title="{{'BTN_SEARCH' | translate}}">
+                                     &nbsp; <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>             
+                </div>
+            </div>
+            <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center " style="width: 20px; min-width: 20px; text-align: center;">{{"TABLE.NO" | translate}}</th>
+                        <th class="text-center " width="15%">{{"TABLE.DATE" | translate}}</th>
+                        <th class="text-center " width="15%">{{"TABLE.KODE_TENDER" | translate}}</th>
+                        <th class="text-center ">{{"TABLE.NAMA_TENDER" | translate}}</th>
+                        <th class="text-center " width="15%">{{"TABLE.MASA_BERLAKU" | translate}}</th>
+                        <th class="text-center " width="105">{{"TABLE.SISA_HARI" | translate}}</th>
+                        <th class="text-center" style="width: 60px; min-width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="pgm in pengumumanCtrl.listPengumuman">
+                        <td class="text-center">{{PemenangPengadaanCtrl.currentPage > 1 ? (PemenangPengadaanCtrl.maxSize * (PemenangPengadaanCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                        <td class="text-center">{{pgm.TenderStepData.ConvertedStartDate}}</td>
+                        <td class="text-center">{{pgm.TenderStepData.tender.TenderCode}}</td>
+                        <td>{{pgm.TenderStepData.tender.TenderName}}</td>
+                        <td class="text-center">{{pgm.TenderStepData.ConvertedEndDate}}</td>
+                        <td class="text-center"> 
+                            <span ng-show="pgm.expired === false && pgm.masa_berlaku>=0">{{pgm.masa_berlaku}} hari lagi</span>
+                            <span ng-show="pgm.expired === false && pgm.masa_berlaku===-1">0 hari lagi</span>
+                            <span ng-show="pgm.masa_berlaku<-1">Kadaluarsa</span>
+                        </td>
+                        <td class="text-center">
+                            <a ng-click="pengumumanCtrl.detailData(pgm)" class="btn btn-xs btn-primary" role="button" title="Detail"><i class="fa fa-eye"></i> </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="pengumumanCtrl.totalItems > 10">
+                <ul uib-pagination boundary-links="true" total-items="pengumumanCtrl.totalItems" ng-model="pengumumanCtrl.currentPage"
+                    class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                    ng-change="pengumumanCtrl.jLoad(pengumumanCtrl.currentPage)"></ul>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div>
+</div>
+
+ <script type="text/ng-template" id="detail-pengumuman-pengadaan.html">
+    <div class="modal-content" ng-init="detailPPController.init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="detailPPController.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">{{"DESKRIPSI" | translate}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <dl class="dl-horizontal">
+                        <dt>{{"TABLE.KODE_TENDER" | translate}}</dt>
+                        <dd> : &nbsp; {{detailPPController.TenderCode}}</dd>
+                        <dt>{{"TABLE.NAMA_TENDER" | translate}}</dt>
+                        <dd> : &nbsp; {{detailPPController.TenderName}}</dd>
+                        <dt>{{"TABLE.DETAIL" | translate}}</dt>
+                        <dd> : &nbsp; {{detailPPController.Description}}</dd>
+                        <!--<dt>{{"TABLE.KOMODITI" | translate}}</dt>
+                        <dd> : &nbsp; {{detailPPController.selectedComodity.Name}}</dd>
+                        <dt>{{"TABLE.KUALIFIKASI" | translate}}</dt>
+                        <dd> : &nbsp; {{detailPPController.selectedClasification.Value}}</dd>
+                        <dt>{{"TABLE.TEHNIKAL" | translate}}</dt>
+                        <dd> : &nbsp; {{detailPPController.selectedTechnical.Value}}</dd>
+                        <dt>{{"TABLE.AREA" | translate}}</dt>
+                        <dd>
+                            : &nbsp; <span ng-if="detailPPController.IsLocal === true">Lokal </span>
+                            <span ng-if="detailPPController.IsNational === true">, National </span>
+                            <span ng-if="detailPPController.IsInternational === true">, International </span>
+                        </dd>-->
+                    </dl>
+                </div>
+            </div>
+           
+        </div>
+        <div class="modal-footer">
+            <button ng-click="detailPPController.batal()" type="button" class="btn btn-flat btn-primary" title="{{"BTN_BACK" | translate}}"><i class="fa fa-reply"></i></button>
+        </div>
+    </div>
+
+</script>

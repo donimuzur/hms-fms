@@ -1,0 +1,146 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.VehicleSpectModel
+<!-- Main content -->
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Vehicle Spec</h5>
+    @if (Model.CurrentPageAccess.UploadAccess == true)
+    {
+        <a href="@Url.Action("Upload", "MstVehicleSpect")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm("ExportMasterVehicleSpect", "MstVehicleSpect", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+    }
+
+    <div class="wpanel">
+        <table id="tbVehicleSpect" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="min-width: 50px">Action</th>
+                    @*<th>Vehicle Spect ID</th>*@
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Series</th>
+                    <th>Transmission</th>
+                    <th>Fuel Type</th>
+                    <th>Body Type</th>
+                    <th>Request Year</th>
+                    <th>Colour</th>
+                    <th>Car Group Level</th>
+                    <th>Flex Point</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    @if (Model.CurrentPageAccess.WriteAccess == true)
+                    {
+                        <th><a href="@Url.Action("Create","MstVehicleSpect")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                    }
+                    else
+                    {
+                        <th> &nbsp; </th>
+                    }
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+
+                        <td style="text-align: center;">
+                            @if (Model.CurrentPageAccess.WriteAccess == true)
+                            {
+                                <a href="@Url.Action("Edit", "MstVehicleSpect", new { MstVehicleSpectid = data.MstVehicleSpectId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("View", "MstVehicleSpect", new { MstVehicleSpectid = data.MstVehicleSpectId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                        </td>
+                        @*<td>@Html.Raw(data.MstVehicleSpectId)</td>*@
+                        <td>@Html.Raw(data.Manufacturer)</td>
+                        <td>@Html.Raw(data.Models)</td>
+                        <td>@Html.Raw(data.Series)</td>
+                        <td>@Html.Raw(data.Transmission)</td>
+                        <td>@Html.Raw(data.FuelTypeSpect)</td>
+                        <td>@Html.Raw(data.BodyType)</td>
+                        <td>@Html.Raw(data.Year)</td>
+                        <td>@Html.Raw(data.Colour)</td>
+                        <td>@Html.Raw(data.GroupLevel)</td>
+                        <td>@Html.Raw(data.FlexPoint)</td>
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        @if (data.ModifiedDate == data.CreatedDate)
+                        {
+                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        }
+                        else
+                        {
+                            <td> &nbsp;</td>
+                        }
+                        @if (data.IsActive == true)
+                        {
+                            <td>@Html.Raw("Active")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("InActive")</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script type="text/javascript">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    $(function () {
+        // DataTable
+        var table = $('#tbVehicleSpect').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+</script>
+

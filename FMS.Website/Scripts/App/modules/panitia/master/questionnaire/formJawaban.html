@@ -1,0 +1,138 @@
+﻿<div class="modal-content" ng-init="jawabanModalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="jawabanModalCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel"> {{'FORMJAWABAN.TITLE' | translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-3">{{'FORMJAWABAN.NAME_CATEGORY' | translate}} </label>
+                    <div class="col-md-1">:</div>
+                    <div class="col-md-8">{{jawabanModalCtrl.data.Category}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-3">{{'FORMJAWABAN.QUESTION' | translate}} </label>
+                    <div class="col-md-1">:</div>
+                    <div class="col-md-8">{{jawabanModalCtrl.data.Description}}</div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-3">{{'FORMJAWABAN.TYPE_JAWABAN' | translate}}</label>
+                    <div class="col-md-1">:</div>
+                    <div class="col-md-7">
+                        <select class="form-control input-sm" ng-model="jawabanModalCtrl.tipejawaban" 
+                            ng-options="item as item.Name | translate for item in jawabanModalCtrl.listOption" 
+                                ng-change="jawabanModalCtrl.changeType()"
+                                >
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div ng-if="jawabanModalCtrl.tipejawaban.RefID <> 28">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="control-label">{{'FORMJAWABAN.LABEL_JWB_YES' | translate}}</label>
+                        <input type="text" class="form-control input-sm" ng-model="jawabanModalCtrl.opsi_yes" />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="control-label"> {{'FORMJAWABAN.LABEL_BOBOT' | translate}}</label>
+                        <input type="text" class="form-control input-sm" ng-model="jawabanModalCtrl.bobot_yes" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="control-label">{{'FORMJAWABAN.LABEL_JWB_NO' | translate}}</label>
+                        <input type="text" class="form-control input-sm" ng-model="jawabanModalCtrl.opsi_no" />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="control-label">{{'FORMJAWABAN.LABEL_BOBOT' | translate}}</label>
+                        <input type="text" class="form-control input-sm" ng-model="jawabanModalCtrl.bobot_no" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+        <div >
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="control-label">{{'FORMJAWABAN.LABEL_FRM_OPSI' | translate}}</label>
+                        <textarea class="form-control input-sm" ng-model="jawabanModalCtrl.opsi"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">{{'FORMJAWABAN.LABEL_FRM_BOBOT' | translate}}</label>
+                        <input type="text" class="form-control input-sm" ng-model="jawabanModalCtrl.bobot" />
+                    </div>
+                </div>
+                <div class="col-md-2 margintop20">
+                    <button class="btn btn-sm btn-primary" ng-click="jawabanModalCtrl.addOpsi()" title="Tambah"><i class="fa fa-plus-square-o"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center" width="7%">{{'FORMJAWABAN.TABEL_COL_NO' | translate}}</td>
+                                        <td class="text-center">{{'FORMJAWABAN.TABEL_COL_OPSI' | translate}}</td>
+                                        <td width="15%" class="text-center">{{'FORMJAWABAN.TABEL_COL_BOBOT' | translate}}</td>
+                                        <td width="10%" class="text-center">{{'FORMJAWABAN.TABEL_COL_ACT' | translate}}</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="op in jawabanModalCtrl.listJawaban">
+                                        <td class="text-center">{{$index+1}}</td>
+                                        <td class="text-left">{{op.Value}}</td>
+                                        <td class="text-center">{{op.WeightFactor}}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-xs btn-danger" ng-click="jawabanModalCtrl.deleteRow(op)" title="Hapus">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="jawabanModalCtrl.batal()" title="Batal">
+            <i class="fa fa-reply"></i>
+        </button>
+        <button type="button" class="btn btn-flat btn-success" ng-click="jawabanModalCtrl.simpanJawaban()" title="Simpan">
+            <i class="fa fa-save"></i>
+        </button>
+    </div>
+</div>

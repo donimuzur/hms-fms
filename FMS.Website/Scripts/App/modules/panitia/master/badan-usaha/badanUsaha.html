@@ -1,0 +1,84 @@
+<section class="content" ng-init="badanUsahaCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.DATA_BADAN_USAHA' | translate}}</a></li>
+    </ol>
+<div id="utama" class="row" style="padding-top: 25px;">
+    <div class="col-md-12 center-block" style="float: none!important;">
+        <div class="box">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <h3 class="afta-font judul-datatabel">{{'DATA_BADAN_USAHA' | translate}}</h3>
+                    </div>
+                    <div class="col-md-5">
+                        <form method="post" role="form" ng-submit="badanUsahaCtrl.cariBadanUsaha()">
+                        <div class="input-group">
+                           <input type="text" class="form-control" placeholder="{{'CARI_BADAN_USAHA' | translate}}..." ng-model="badanUsahaCtrl.txtSearch">
+                            <span class="input-group-btn">
+                                <button ng-click="badanUsahaCtrl.cariBadanUsaha()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+                                    <i class="fa fa-search"></i>&nbsp;</button>
+                            </span>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="vertical-align: middle; width: 40px; min-width: 40px">{{'TABLE.NO' | translate}}</th>
+                                        <th class="text-center" style="vertical-align: middle; width: 80px; min-width: 80px">{{'TABLE.BADAN_USAHA' | translate}}</th>
+                                        <th class="text-center" style="vertical-align: middle; width: 100px; min-width: 100px;">{{'TABLE.KETERANGAN' | translate}}</th>
+                                        <th class="text-center" style="vertical-align: middle; width: 60px; min-width: 60px;">{{'TABLE.STATUS' | translate}}</th>
+                                        <th ng-if="badanUsahaCtrl.userBisaMenghapus == true || badanUsahaCtrl.userBisaMengubah == true" class="text-center" style="width: 140px; min-width: 140px; vertical-align: middle;"></th>
+                                    </tr>
+                                </thead> 
+                                <tbody>	
+                                    <tr ng-repeat="ba in badanUsahaCtrl.badanList">
+                                        <td class="text-center">{{badanUsahaCtrl.currentPage > 1 ? (badanUsahaCtrl.maxSize * (badanUsahaCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td class="middle-vertical">{{ba.Name}}</td>
+                                        <td class="middle-vertical">{{ba.Description}}</td>
+                                        <td ng-if="ba.IsActive == true" class="text-center" style="vertical-align: middle;"><label class="label label-sm label-primary" title="Aktif"><i class="fa fa-check"></i>&nbsp;</label></td>
+                                        <td ng-if="ba.IsActive == false" class="text-center" style="vertical-align: middle;"><label class="label label-sm label-danger" title="Tidak Aktif"><i class="fa fa-times"></i>&nbsp;</label></td>
+                                        <td ng-if="badanUsahaCtrl.userBisaMenghapus == true || badanUsahaCtrl.userBisaMengubah == true" class="text-center" style="vertical-align: middle;">
+                                            <a ng-if="badanUsahaCtrl.userBisaMengubah == true" ng-click="badanUsahaCtrl.forminput(ba, false)" class="btn btn-flat btn-sm btn-primary" title="Ubah" ><i class='fa fa-edit'></i>&nbsp;</a>
+                                            <a ng-if="ba.IsActive === true && badanUsahaCtrl.userBisaMenghapus == true" ng-click="badanUsahaCtrl.ubah_aktif(ba,false)" class="btn btn-flat btn-sm btn-danger" title="NonAktifkan" ><i class='fa fa-times'></i>&nbsp;</a>
+                                            <a ng-if="ba.IsActive === false && badanUsahaCtrl.userBisaMenghapus == true" ng-click="badanUsahaCtrl.ubah_aktif(ba, true)" class="btn btn-flat btn-sm btn-success" title="Aktifkan" ><i class='fa fa-check-circle-o'></i>&nbsp;</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <ul uib-pagination boundary-links="true" total-items="badanUsahaCtrl.totalItems" ng-model="badanUsahaCtrl.currentPage" 
+                            class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" 
+                            ng-change="badanUsahaCtrl.jLoad(badanUsahaCtrl.currentPage)"></ul>
+                        <br />
+                        <label>{{'TOTAL_DATA' | translate}} : {{badanUsahaCtrl.totalItems}}</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div ng-if="departemenCtrl.allowAdd" class="pull-right">
+                            <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="departemenCtrl.tambah()" title="Tambah Data">
+                                <i class='fa fa-plus-circle'></i>&nbsp;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12 text-center center-block">
+                        <button type="button" class="btn btn-flat btn-primary turun-15" ng-click="badanUsahaCtrl.forminput(ba, true)" title="Tambah Data">
+                            <i class='fa fa-plus-circle'></i>&nbsp;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>

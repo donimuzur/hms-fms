@@ -1,0 +1,155 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.TraCrfItemViewModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Car Relocation</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+        <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
+            <i class="glyphicon glyphicon-floppy-save"></i> Save
+        </button>
+        <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+            <i class="glyphicon glyphicon-ok"></i> Send
+        </button>
+    </div>*@
+</div>
+<section class="content">
+    
+    <div class="wpanel">
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
+                        @*<li role="presentation"><a href="#changes" aria-controls="changes" role="tab" data-toggle="tab">Changes logs</a></li>*@
+                    </ul>
+                    
+                    <div class="tab-content">
+                        @using (Html.BeginForm("Create", "TraCrf",FormMethod.Post,new { @id = "formCreate" }))
+                            {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.IsSend, new { @id = "isSend" })
+                        <div id="information" class="tab-pane active" role="tabpanel">
+                            
+                            <div class="tab-wrapper">
+                                <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                                    @Html.Partial("_CreateInformation")
+                                    @Html.Partial("_RelocationVehicleInfoReadonly")
+                                    @*@if (@Model.Detail.DocumentStatus != (int) FMS.Core.Enums.DocumentStatus.Draft)
+                                    {
+                                        
+                                        @Html.Partial("_FleetConfirmation")
+
+                                        @Html.Partial("_TemporaryCarInfo")
+                                    }*@
+                                        
+
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row col-md-12">
+                            <a href="#" onclick="Send()" class="btn btn-primary">Send</a>
+                            <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" />
+                            <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                        </div>
+                            }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+        
+        
+            
+    </div>
+    <div id="selectvehmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Select Vehicle</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Police Number</th>
+                                            <th>Manufacturer</th>
+                                            <th>Model</th>
+                                            <th>Series</th>
+                                            <th>Body Type</th>
+                                            <th>Vendor</th>
+                                            <th>Color</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tb-body-select-veh"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="button" class="btn btn-danger" value="OK" id="btnSelectVehicle" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</section>
+<script src="~/Scripts/crfscript.js"></script>
+<script type="text/javascript">
+
+    function SelectVeh(value) {
+        $('#TraCrfIdVeh').val(value);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCrf")');
+        $('#selectvehmodal').modal('show');
+    }
+    function changeCity(obj) {
+        var cityParam = $(obj).val();
+        if (cityParam != null) {
+            fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        }
+    }
+
+    function GetRelocation(obj) {
+        var relType = $(obj).val();
+
+        if (relType == "RELOCATE_UNIT") {
+            $("#changeUnitButton").hide();
+        } else if (relType == "CHANGE_UNIT") {
+            $("#changeUnitButton").show();
+        } else {
+            $("#changeUnitButton").hide();
+        }
+    }
+
+    function changePoliceNumberCheck() {
+        if ($("#changePolice").is(":checked")) {
+            $("#changePoliceNumber").removeAttr("readonly");
+        }
+    }
+
+    $(function() {
+        
+        InitEmployee('@Url.Action("GetEmployeeList","TraCrf")', '@Url.Action("GetEmployee","TraCrf")');
+    });
+    
+    function Send() {
+        $("#isSend").val(true);
+        $("#btnSubmit").trigger("click");
+    }
+
+</script>

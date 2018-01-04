@@ -1,0 +1,80 @@
+﻿<div id="idTambahVerifiedData" class="modal-content" ng-init="FrmActivedVendorCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="FrmActivedVendorCtrl.cancel()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Data Vendor</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-xs-12 col-sm-10 center-block well"
+                     style="float: none!important">
+                    <dl class="dl-horizontal">
+                        <dt>Username</dt>
+                        <dd>{{FrmActivedVendorCtrl.detail[1].Vendor.user.Username}}</dd>
+                        <dt>Email User</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[1].Contact.Email !== null">{{FrmActivedVendorCtrl.detail[1].Contact.Email}}</dd>
+                        <dt>Kode Tender (ROI)</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[1].Vendor.TenderCodeTemp !== null">{{FrmActivedVendorCtrl.detail[1].Vendor.TenderCodeTemp}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[1].Vendor.TenderCodeTemp === null">Tidak Ada</dd>
+                        <dt>Nama Tender (ROI)</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.TenderName !== null">{{FrmActivedVendorCtrl.TenderName}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.TenderName === null">Tidak Ada</dd>
+                        <dt>Nama Perusahaan</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[1].Vendor.VendorName !== null">{{FrmActivedVendorCtrl.detail[1].Vendor.VendorName}}</dd>
+                        <dt ng-if="FrmActivedVendorCtrl.State === 'IDN'">Jenis Perusahaan</dt>
+                        <dd ng-if="(FrmActivedVendorCtrl.State === 'IDN' && FrmActivedVendorCtrl.detail[1].Vendor.business.Name !== null)">{{FrmActivedVendorCtrl.detail[1].Vendor.business.Name}}</dd>
+                        <dt ng-if="FrmActivedVendorCtrl.State === 'IDN'">Nomor NPWP</dt>
+                        <dt ng-if="FrmActivedVendorCtrl.State !=='IDN'">Company Registration</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[1].Vendor.Npwp !== null">{{FrmActivedVendorCtrl.detail[1].Vendor.Npwp}}</dd>
+                        <dt ng-if="FrmActivedVendorCtrl.State === 'IDN'">File NPWP</dt>
+                        <dd ng-if="(FrmActivedVendorCtrl.State === 'IDN' && !(FrmActivedVendorCtrl.detail[1].Vendor.NpwpUrl ==='' || FrmActivedVendorCtrl.detail[1].Vendor.NpwpUrl ==null))">
+                            <a href="{{FrmActivedVendorCtrl.folderFile+FrmActivedVendorCtrl.detail[1].Vendor.NpwpUrl}}" class="btn btn-xs btn-primary" target="_BLANK" title="Download Dokumen NPWP">
+                                <i class="fa fa-download"></i>&nbsp;&nbsp;
+                            </a>
+                        </dd>
+                        <dt ng-if="FrmActivedVendorCtrl.State === 'IDN'">Nomor SKT/IUJP/IUP</dt>
+                        <dd ng-if="(FrmActivedVendorCtrl.State === 'IDN' && FrmActivedVendorCtrl.detail[1].Vendor.LegalNumber !== null)">{{FrmActivedVendorCtrl.detail[1].Vendor.LegalNumber}}</dd>
+                        <dt ng-if="FrmActivedVendorCtrl.State === 'IDN'">File SKT/IUJP/IUP</dt>
+                        <dd ng-if="(FrmActivedVendorCtrl.State === 'IDN' && !(FrmActivedVendorCtrl.detail[1].Vendor.LegalDocument==='' || FrmActivedVendorCtrl.detail[1].Vendor.LegalDocument==null))">
+                            <a href="{{FrmActivedVendorCtrl.folderFile+FrmActivedVendorCtrl.detail[1].Vendor.LegalDocument}}" class="btn btn-xs btn-primary" target="_BLANK" title="Download Dokumen Ijin Usaha">
+                                <i class="fa fa-download"></i>&nbsp;&nbsp;
+                            </a>
+                        </dd>
+                        <dt ng-if="FrmActivedVendorCtrl.addressMain !== ''">Kantor Pusat </dt>
+                        <dd ng-if="FrmActivedVendorCtrl.addressMain !== ''">{{FrmActivedVendorCtrl.addressMain}}</dd>
+                        <dt ng-if="FrmActivedVendorCtrl.addressBranch !==''">Kantor Cabang </dt>
+                        <dd ng-if="FrmActivedVendorCtrl.addressBranch !==''">{{FrmActivedVendorCtrl.addressBranch}}</dd>
+                        
+                        <!--<dt>Provinsi</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Address.State.Name !== null">{{FrmActivedVendorCtrl.detail[0].Contact.Address.State.Name}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Address.State.Name === null">Tidak Ada</dd>-->
+                        <!--
+                        <dt ng-if="FrmActivedVendorCtrl.State === 'IDN'">Kabupaten/Kota</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.State === 'IDN' && FrmActivedVendorCtrl.detail[0].Contact.Address.City.Name !== null">{{FrmActivedVendorCtrl.detail[0].Contact.Address.City.Name}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.State === 'IDN' && FrmActivedVendorCtrl.detail[0].Contact.Address.City.Name === null">Tidak Ada</dd>-->
+                        <dt>Telepon</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Phone !== null">{{FrmActivedVendorCtrl.detail[0].Contact.Phone}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Phone === null">Tidak Ada</dd>
+                        <dt>Fax</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.ld !== undefined">{{FrmActivedVendorCtrl.ld}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.ld === undefined">Tidak Ada</dd>
+                        <dt>Email Perusahaan</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Email !== null">{{FrmActivedVendorCtrl.detail[0].Contact.Email}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Email === null">Tidak Ada</dd>
+                        <dt>Website</dt>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Website !== null">{{FrmActivedVendorCtrl.detail[0].Contact.Website}}</dd>
+                        <dd ng-if="FrmActivedVendorCtrl.detail[0].Contact.Website === null">Tidak Ada</dd>
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="FrmActivedVendorCtrl.cancel()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-danger" ng-if="FrmActivedVendorCtrl.act === 0" ng-click="FrmActivedVendorCtrl.tolakactived()" title="Aktivasi Ditolak"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-success" ng-if="FrmActivedVendorCtrl.act === 0" ng-click="FrmActivedVendorCtrl.acceptactived()" title="Aktivasi Akun"><i class="fa fa-check-square-o"></i>&nbsp;&nbsp;</button>
+    </div>
+</div>

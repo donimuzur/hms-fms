@@ -1,0 +1,93 @@
+<section ng-init="freightCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#/purchase-requisition/synchronize" class="active">{{'BREADCRUMB.MASTER_FREIGHT' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <!--notife flow-->
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">{{'DATA_FREIGHT' | translate}}</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form" ng-submit="freightCtrl.searchData()">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'CARI_JUDUL_ISI' | translate}}..." ng-model="freightCtrl.txtSearch">
+                                    <span class="input-group-btn">
+                                        <button ng-click="freightCtrl.searchData()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+                                            <i class="fa fa-search"></i>&nbsp;</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">{{'TABLE.NO' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.TUJUAN' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.WAKTU' | translate}} ({{'AIR' | translate}})</th>
+                                            <th class="text-center">{{'TABLE.BIAYA' | translate}} ({{'AIR' | translate}})</th>
+                                            <th class="text-center">{{'TABLE.WAKTU' | translate}} ({{'LAND' | translate}})</th>
+                                            <th class="text-center">{{'TABLE.BIAYA' | translate}} ({{'LAND' | translate}})</th>
+                                            <th class="text-center">{{'TABLE.WAKTU' | translate}} ({{'SEA' | translate}})</th>
+                                            <th class="text-center">{{'TABLE.BIAYA' | translate}} ({{'SEA' | translate}})</th>
+                                            <th class="text-center">{{'TABLE.TIPE_WILAYAH' | translate}}</th>
+                                            <!--<th class="text-center">{{'TABLE.TIPE_PENGIRIMAN' | translate}}</th>-->
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="fg in freightCtrl.freight_list">
+                                            <td class="text-center" style="vertical-align: middle;">{{freightCtrl.currentPage > 1 ? (freightCtrl.maxSize * (freightCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.DeliveryState}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.DeliveryTimeAir}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.FreightCostAir}}%</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.DeliveryTimeLand}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.FreightCostLand}}%</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.DeliveryTimeSea}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.FreightCostSea}}%</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{fg.FreightCostType.Name  | translate }}</td>
+                                            <!--td class="text-center" style="vertical-align: middle;">{{fg.DeliveryTransport.Name | translate }}</td>-->
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a ng-if="fg.IsActive === true" ng-click="freightCtrl.forminput(fg,false)" class="btn btn-flat btn-xs btn-primary" title="Ubah"><i class="fa fa-pencil"></i>&nbsp;</a>
+                                                &nbsp;
+                                                <a ng-if="fg.IsActive === true" ng-click="freightCtrl.ubah_aktif(fg,false)" class="btn btn-flat btn-xs btn-danger" title="Non Aktifkan Data"><i class="fa fa-trash-o"></i>&nbsp;</a>
+                                                &nbsp;
+                                                <a ng-if="fg.IsActive === false" ng-click="freightCtrl.ubah_aktif(fg,true)" class="btn btn-flat btn-xs btn-success" title="Aktifkan Data"><i class="fa fa-check"></i>&nbsp;</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="freightCtrl.totalItems" ng-model="freightCtrl.currentPage"
+                                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                ng-change="freightCtrl.jLoad(freightCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{freightCtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-flat btn-primary turun-15" title="Tambah" ng-click="freightCtrl.forminput('',true)">
+                                    <i class='fa fa-plus-circle'></i>&nbsp;
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

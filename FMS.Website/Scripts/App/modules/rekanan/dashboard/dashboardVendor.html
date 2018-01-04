@@ -1,0 +1,208 @@
+<ol class="breadcrumb" style="padding-top:0px!important;">
+    <li ><a  class="active" href="#/dashboard-vendor">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+</ol>
+<div class="container-fluid" ng-init="DVCtrl.init()" style="margin-top: 0px!important;">
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="panel panel-default panel-marginbot2">
+                <div class="panel-heading">
+                    <span class="pull-left">
+                        <h3 class="panel-title"><i class="fa fa-info-circle"></i> {{'NOTIFIKASI'|translate}}</h3>
+                    </span>
+                    <span class="pull-right">
+                        <strong>[ 10 ]</strong> &nbsp;<button ng-click="show_notif = !show_notif" class="btn btn-default btn-xs"><i class="fa" ng-class="{'fa-chevron-up': !show_notif, 'fa-chevron-down': show_notif}"></i></button>
+                    </span>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body"  ng-show="show_notif">
+                    <div class="list-group">
+                        <a class="list-group-item">
+                            <h4 class="list-group-item-heading">Permintaan Ubah data</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table table-responsive">
+                                        <table id="example1" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="vertical-align: middle;max-width: 20px; min-width: 20px;">No.</th>
+                                                    <th class="text-center" style="vertical-align: middle;">Tipe Perubahan</th>
+                                                    <th class="text-center">Tanggal Permintaan</th>
+                                                    <th class="text-center">Batas Perubahan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="req in DVCtrl.listVendors">
+                                                    <td style="vertical-align: top;">{{$index + 1}}</td>
+                                                    <td style="vertical-align: middle;">
+                                                        {{req.Remark | translate}}
+                                                    </td>
+                                                    <td class="text-center">{{req.ChangeRequestDate | date : 'dd/MM/yyyy'}}</td>
+                                                    <td class="text-center">{{req.EndChangeDate | date : 'dd/MM/yyyy'}}</td>
+
+                                                </tr>
+                                                <tr ng-if="DVCtrl.listVendors.length === 0"><td colspan="4">Data tidak ada</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+</div>
+                </div>
+            </div>
+            <div class="panel panel-success panel-marginbot2">
+                <div class="panel-heading">
+                    <span class="pull-left">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> {{'PRAKUALIFIKASI'|translate}} (Periode: - s/d -)</h3>
+                    </span>
+                    <span class="pull-right">
+                        <strong>[ 10 ]</strong> &nbsp;<button ng-click="show_pra = !show_pra" class="btn btn-success btn-xs"><i class="fa" ng-class="{'fa-chevron-up': !show_pra, 'fa-chevron-down': show_pra}"></i></button>
+                    </span>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body"  ng-show="show_pra">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                            <tr>
+                                                <th style="width: 50px; min-width: 30px; text-align: center;">No.{{''|translate}}</th>
+                                                <th class="text-center">Tahap{{''|translate}}</th>
+                                                <th class="text-center" style="width: 190px; min-width: 190px;">Tanggal Mulai{{''|translate}}</th>
+                                                <th class="text-center" style="width: 190px; min-width: 190px;">Tanggal Selesai{{''|translate}}</th>
+                                                <th class="text-center" style="width: 180px; min-width: 180px;">Action{{''|translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="fl in DVCtrl.flow">
+                                                <td class="text-center" style="vertical-align: middle;">{{fl.urutan+1}}</td>
+                                                <td style="vertical-align: middle;">{{fl.nama_tahapan}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{$index+2}}-juni-2016</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{$index+7}}-juni-2016</td> 
+                                                <td class="text-center">
+                                                    <button ng-click="DVCtrl.detailtahapan(fl.flowpaket_id,fl.jenis_form_url)" ng-if="!(fl.jenis_form_url === '' || fl.jenis_form_url === 'pendaftaran-prakualifikasi')"
+                                                        class="btn btn-xs btn-primary" title="{{'DETAIL_TAHAPAN'|translate}}"><i class="fa fa-external-link"></i></button>
+                                                    <button ng-if="fl.jenis_form_url === 'pendaftaran-prakualifikasi'" class="btn btn-xs btn-warning" title="Daftar Prakualifikasi{{''|translate}}"><i class="fa fa-check-circle-o"></i> Daftar{{''|translate}}</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default panel-marginbot2">
+                <div class="panel-heading">
+                    <span class="pull-left">
+                        <h3 class="panel-title"><i class="fa fa-dashboard"></i> {{'TENDER_YANG_DIIKUTI'|translate}}</h3>
+                    </span>
+                    <span class="pull-right">
+                        <strong>[ {{DVCtrl.paket.totalItems}} ]</strong> &nbsp;<button ng-click="show_reg = !show_reg" class="btn btn-default btn-xs"><i class="fa" ng-class="{'fa-chevron-up': !show_reg, 'fa-chevron-down': show_reg}"></i></button>
+                    </span>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body"  ng-show="show_reg">
+                    <div class="table table-responsive">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px; min-width: 30px; text-align: center;">{{'TABLE.NO'|translate}}</th>
+                                    <th class="text-center">{{'TABLE.NAMA_PENGADAAN'|translate}}</th>
+                                    <th class="text-center" style="width: 180px; min-width: 180px;">{{'TABLE.ACTION'|translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="td in DVCtrl.paket.list">
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        {{$index + 1 + (DVCtrl.paket.pageSize * (DVCtrl.paket.currentPage - 1))}}
+                                    </td>
+                                    <td style="vertical-align: middle;">{{td.TenderName}}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-xs btn-primary" title="{{'DETAIL_TAHAPAN'|translate}}" ng-click="DVCtrl.detailtahapan(td)">
+                                            <i class="fa fa-external-link"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr ng-if="DVCtrl.paket.totalItems === 0">
+                                    <td colspan="6">{{'TIDAK_ADA_LELANG'|translate}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul uib-pagination total-items="DVCtrl.paket.totalItems"
+                        ng-model="DVCtrl.paket.currentPage" items-per-page="DVCtrl.paket.pageSize"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="DVCtrl.reloadPaket()"></ul>
+                </div>
+            </div>
+            <div class="panel panel-success panel-marginbot2">
+                <div class="panel-heading">
+                    <span class="pull-left">
+                        <h3 class="panel-title"><i class="fa fa-files-o "></i> {{'PENGUMUMAN_TENDER'|translate}}</h3>
+                    </span>
+                    <span class="pull-right">
+                        <strong>[ {{DVCtrl.pengumuman.totalItems}} ]</strong> &nbsp;<button ng-click="show_tender = !show_tender" class="btn btn-success btn-xs"><i class="fa" ng-class="{'fa-chevron-up': !show_tender, 'fa-chevron-down': show_tender}"></i></button>
+                    </span>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body" ng-show="show_tender">
+                    <div class="table table-responsive">
+                        <table id="tabelPengumuman" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 20px; min-width: 20px; text-align: center; vertical-align: middle;">{{'TABLE.NO'|translate}}</th>
+                                    <th class="text-center" style="width: 195px; min-width: 195px; text-align: center; vertical-align: middle;">{{'TABLE.TANGGAL'|translate}}</th>
+                                    <th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA_PENGADAAN'|translate}}</th>
+                                    <th class="text-center" style="vertical-align: middle; width: 195px; min-width: 195px;">{{'TABLE.KADALUARSA'|translate}}</th>
+                                    <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">{{'TABLE.STATUS'|translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="pen in DVCtrl.pengumuman.list">
+                                    <td class="text-center" style="vertical-align: middle;">{{PPVCtrl.currentPage > 1 ? (PPVCtrl.maxSize * (PPVCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                    <td class="text-center" style="vertical-align: middle;">{{pen.RegistrationStartDate| date: "dd/MM/yyyy"}}</td>
+                                    <td style="vertical-align: middle;">{{pen.TenderStepData.tender.TenderName}}</td>
+                                    <td class="text-center" style="vertical-align: middle;">{{pen.RegistrationEndDate| date: "dd/MM/yyyy"}}</td>
+                                    <td ng-if="pen.IsAlreadyRegistered === true" class="text-center" style="vertical-align: middle;"> Terdaftar
+                                    <td ng-if="pen.IsAlreadyRegistered === false" class="text-center" style="vertical-align: middle;"> Belum Terdaftar
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="pull-right" href="#/pengumuman-pengadaan-vendor-all">{{'SELENGKAPNYA'|translate}}...</a>
+                </div>
+            </div>
+            <div class="panel panel-default panel-marginbot2">
+                <div class="panel-heading">
+                    <span class="pull-left">
+                        <h3 class="panel-title"><i class="fa fa-tasks"></i> {{'BERITA'|translate}}</h3>
+                    </span>
+                    <span class="pull-right">
+                        <strong>[ 10 ]</strong> &nbsp;<button ng-click="show_news = !show_news" class="btn btn-default btn-xs"><i class="fa" ng-class="{'fa-chevron-up': !show_news, 'fa-chevron-down': show_news}"></i></button>
+                    </span>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="panel-body"  ng-show="show_news">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <h4 class="list-group-item-heading">Meeting Lelang</h4>
+                                    <p class="list-group-item-text">meeting lelang akan di laksanakan pada....</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<script type="text/ng-template" id="formApproval.html"> 
+    <div class="modal-content" ng-init="init()" style="width:1000px!important;">
+        <div class="modal-header">
+        fhskdhfhsk
+        </div>
+    </div>
+</script>-->

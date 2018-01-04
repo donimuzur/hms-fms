@@ -1,0 +1,146 @@
+<div ng-init="init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/home-admin" >Home</a></li>
+            <li><a  class="active" >Pendaftaran Prakualifikasi</a></li>
+
+        </ol>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-left afta-font" style="padding-bottom: 20px;">Pendaftaran Prakualifikasi</h3>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table table-responsive" style="padding-bottom: 20px;">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle!important;width:20px">No.</th>
+                                                <th class="text-center" style="vertical-align: middle!important;">Judul Prakualifikasi</th>
+                                                <th class="text-center" style="width: 270px; min-width: 270px!important;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="pen in pendaftaran">
+                                                <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{pen.nama_paket}}</td>
+                                                <td class="text-center" style="vertical-align: middle!important;">
+                                                    <a ng-if="is_created == true" ng-click="lihatPendaftaranLelang(pen)" class="btn btn-flat btn-sm btn-warning" title="Lihat" ><i class="fa fa-external-link"></i></a>
+                                                    <a ng-click="uploadDokumen(pen)" ng-if="userBisaNgatur == true" ng-disabled="!(status == 1)" class="btn btn-flat btn-sm btn-primary" title="Upload Dokumen" ><i class="fa fa-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <h5 class="afta-font" style="margin-top: 0px;">*) Upload Dokumen Khusus Untuk Dokumen Kualifikasi</h5> 
+                            </div>
+                            <br/><br/>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-left afta-font" style="padding-bottom: 20px;">Rekanan Yang Sudah Mendaftar</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle!important; width:20px">No.</th>
+                                                <th class="text-center" style="vertical-align: middle!important;">Nama Perusahaan</th>
+                                                <th class="text-center" style="width: 270px; min-width: 270px!important;">Tanggal Daftar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="pe in peserta">
+                                                <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle;">
+                                                    {{pe.nama_perusahaan}}
+                                                </td>
+                                                <td class="text-center" style="vertical-align: middle!important;">
+                                                    {{pe.tgl_daftar}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script type="text/ng-template" id="upload-dokumen.html">
+    <div class="modal-content">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+    <h3 class="modal-title afta-font" id="myModalLabel">Pendaftaran Prakualifikasi</h3>
+    </div>
+    <div class="modal-body">
+
+    <div class="row">
+    <div class="col-md-12 center-block" style="float: none!important;">
+    <div class="row">
+    <div class="col-md-10 center-block" style="float: none!important;">
+    <div class="form-group">
+    <label>Upload Dokumen
+    &nbsp;<small> 
+    ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small>
+    </label>
+    <input type="file" class="form-control input-sm upload-file" data-max-size="{{$root.filemaksimal}}" onchange="angular.element(this).scope().filesTChanged(this)" >
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>   
+    </div>
+    <div class="modal-footer">
+    <button ng-click="cancel()" type="button" class="btn btn-flat btn-danger" title="Batal"><i class="fa fa-reply"></i> </button>
+    <button ng-click="simpan()" type="button" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i> </button> 
+    </div>
+    </div>
+</script>
+
+
+
+<script type="text/ng-template" id="lihat-pendaftaran-lelang.html">
+    <div class="modal-content">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+    <h3 class="modal-title afta-font" id="myModalLabel">Pendaftaran Prakualifikasi</h3>
+    </div>
+    <div class="modal-body">
+    <div class="row">
+    <div class="col-md-10 center-block" style="float: none!important;">
+    <div class="row well">
+    <div class="col-md-12">
+    <dl class="dl-horizontal">
+    <dt>Nama Prakualifikasi</dt>
+    <dd>{{pendaftaran.nama_paket}}</dd>
+    <dt>File Dokumen</dt>
+    <dd ng-if="pendaftaran.dokumen_file !== '' || pendaftaran.dokumen_file !== null">
+    <a ng-if="pendaftaran.dokumen_file !== '' || pendaftaran.dokumen_file !== null" href="{{$root.url_api + pendaftaran.dokumen_file}}" target="_blank" class="label label-sm label-primary" title="Download Dokumen Pendaftaran"><i class="fa fa-download"></i>&nbsp;&nbsp;</a>
+    </dd>
+    </dl>
+    </div>
+    </div>
+    </div>
+    </div>   
+    </div>
+    <div class="modal-footer">
+    <button ng-click="cancel()" type="button" class="btn btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i> </button>
+    </div>
+    </div>
+    </div>
+    </div>
+</script>

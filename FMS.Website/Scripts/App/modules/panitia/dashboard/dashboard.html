@@ -1,0 +1,86 @@
+<section ng-init="dashCtrl.init()" class="content">
+	<breadcrumbs></breadcrumbs>
+	<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+		<div class="box box-info">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-md-5" style="padding-top: 10px;">
+						<h3 class="afta-font" style="margin-top: 0px;">{{'HEAD1' | translate}}</h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" style="padding-top: 10px;">
+						<h1 class="afta-font" style="margin-top: 0px;">{{'HEAD2' | translate}}</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box box-info" ng-show="dashCtrl.appCount > 0">
+			<div class="box-body">
+				<div class="row">
+					<form method="post" role="form" ng-submit="dashCtrl.onSearchClick(dashCtrl.appSrcText)">
+						<div class="col-md-8">
+							<h3 class="afta-font judul-datatabel">{{'APP_PENGADAAN' | translate}}</h3>
+						</div>
+						<div class="col-md-4">
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="dashCtrl.appSrcText" placeholder="{{SRC_PLACEHOLDER | translate}}">
+								<span class="input-group-btn">
+									<button ng-click="dashCtrl.onSearchClick(dashCtrl.appSrcText)" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'SRC_BUTTON' | translate}}">
+										<i class="fa fa-search"></i>&nbsp; 
+									</button>
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="row">
+					<div class="col-md-7">
+						<pagination ng-show="dashCtrl.appCount > 10" total-items="dashCtrl.appCount" page="dashCtrl.page" items-per-page="dashCtrl.appPageSize"
+									max-size="10" on-select-page="dashCtrl.loadApproval(page)"></pagination>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="table table-responsive">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th class="text-center" style="vertical-align: middle; width: 20px; min-width: 20px;">{{'TABLE.NO' | translate}}</th>
+										<th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA_PENGADAAN' | translate}}</th>
+										<th class="text-center" style="vertical-align: middle;">{{'TABLE.TAHAPAN' | translate}}</th>
+										<th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">{{'TABLE.MULAI' | translate}}</th>
+										<th class="text-center" style="vertical-align: middle; width: 120px; min-width: 120px;">{{'TABLE.SELESAI' | translate}}</th>
+										<th class="text-center" style="vertical-align: middle; width: 100px; min-width: 100px;">{{'TABLE.STATUS' | translate}}</th>
+										<th class="text-center" style="width: 20px; min-width: 20px; vertical-align: middle;"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="a in dashCtrl.approval">
+										<td class="text-center" style="vertical-align: middle;">{{dashCtrl.appPageSize * (dashCtrl.appCurrPage - 1) + $index + 1}}</td>
+										<td style="vertical-align: middle;">{{a.nama_paket}}</td>
+										<td style="vertical-align: middle;">{{a.nama_tahapan}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{a.tgl_mulai}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{a.tgl_selesai}}</td>
+										<td class="text-center" style="vertical-align: middle;">{{a.status}}</td>
+										<td class="text-center" style="vertical-align: middle;">
+											<a class="btn btn-flat btn-sm btn-warning" ng-click="dashCtrl.onMenujuAppClick(a)"><i class='fa fa-external-link' title="{{'MENUJU_HALAMAN_APPROVAL' | translate}}"></i></a>
+										</td>
+									</tr>
+									<tr ng-if="dashCtrl.appCount === 0"><td colspan="5">{{'TIDAK_ADA_DATA' | translate}}</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-7">
+						<pagination ng-show="dashCtrl.appCount > 10" total-items="dashCtrl.appCount" page="dashCtrl.page" items-per-page="dashCtrl.appPageSize"
+									max-size="10" on-select-page="dashCtrl.loadApproval(page)"></pagination>
+						<br /><label>{{'TOTAL_DATA' | translate}} : {{dashCtrl.appCount}}</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

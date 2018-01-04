@@ -115,7 +115,7 @@ namespace FMS.Utils
             {
                 return Convert.ToInt32(value);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -135,7 +135,7 @@ namespace FMS.Utils
 
                 return "";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "";
             }

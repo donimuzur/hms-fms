@@ -1,0 +1,114 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.FuelOdometerItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Fuel Odometer Detail</h5>
+</div>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstFuelOdometer"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Police Number<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Employee ID<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control", @maxlength = "9", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Employee Name<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">ECS RMB Trans ID<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EcsRmbTransId, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">SEQ Number<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.SeqNumber, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Claim Type<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.ClaimType, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Date of Cost<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.DateOfCost, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost Center<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @autocomplete = "off", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Fuel Amount<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.FuelAmount, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Last KM<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.LastKM, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Cost, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Claim Comment<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.ClaimComment, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Posted Time<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.PostedTime, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group" disabled = "disabled" >
+                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                        @Html.Label("Active", new { @id = "lblStatus" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <a href="@Url.Action("Index", "MstEmployee" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>

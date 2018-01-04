@@ -1,0 +1,87 @@
+﻿<section class="content-header">
+    <h1>
+        Car Selection Form (CSF) Dashboard
+    </h1>
+</section>
+<section class="content" ng-init="CSFDashboardCtrl.init()">
+   <div class="row">
+		<div class="col-xs-12">
+			<div class="box" style="overflow-y: auto;">
+				<div class="box-body">
+                    <button class="btn bg-blue" title="Assign" ng-click="CSFDashboardCtrl.assign()" ng-disabled="CSFDashboardCtrl.roles!='SYSTEM.ROLE_HR'"><i class="glyphicon glyphicon-envelope"></i></button>
+                    <button class="btn bg-blue" title="Export to Excel" ng-click="CSFDashboardCtrl.toExcel('#tabelEpaf')"><i class="fa fa-file-excel-o"></i></button>
+                    <!-- <input type="text" class="form-control" placeholder="Search" ng-model="search"> -->
+                    <table id="tabelEpaf" class="table table-bordered table-striped ">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>ePAF Effective Date</th>
+                                <th>ePAF Approved Date</th>
+                                <th>Employee Name</th>
+                                <th>eLetter sent</th>
+                                <th>Action</th>
+                                <th colspan="2">ePAF No & CSF Number</th>
+                                <th>CSF Status</th>
+                                <th>COP < 3 Years</th>
+                            </tr>
+                        </thead>
+                        <tbody style="word-wrap:break-word">
+                            <tr>
+                                <td></td>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="CSFDashboardCtrl.isCalendarOpened[1]" ng-click="CSFDashboardCtrl.openCalendar(1)" ng-model="effdate" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" uib-datepicker-popup="dd-MMM-yyyy" close-text="Tutup" is-open="CSFDashboardCtrl.isCalendarOpened[2]" ng-click="CSFDashboardCtrl.openCalendar(2)" ng-model="appdate" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="empName" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="eletter" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="act" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="epf" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="csf" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="stat" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                                <th><input style="border-radius: 7px; text-align: center;" type="text" class="form-control" placeholder="Search" ng-model="cop" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></th>
+                            </tr>
+                            <tr ng-repeat="epaf in CSFDashboardCtrl.epaf | filter:search:kolom" ng-mouseover="hoverIn($event)" ng-mouseleave="hoverOut()">
+                                <td>
+                                    <input type="checkbox" ng-show="epaf.ref=='-'&&epaf.COP_3=='No'"  ng-click="CSFDashboardCtrl.changeStatus(epaf)" ng-disabled="CSFDashboardCtrl.roles!='SYSTEM.ROLE_HR'">
+                                    <a title="View CSF Form" ng-show="epaf.ref!='-'" ng-href="#/csf/{{CSFDashboardCtrl.link(epaf.ref)}}">
+                                        <i class="glyphicon glyphicon-eye-open" id="myModalLabel" data-toggle="modal" data-target="#Vehicle"></i>
+                                    </a>
+                                    <a title="Close ePAF CSF"><i class="glyphicon glyphicon-remove-sign" ng-show="epaf.ref=='-'" id=" mymodallabel" ng-click="CSFDashboardCtrl.hapus(epaf.epaf_id)" data-toggle=" modal" data-target="#remark"></i></a>
+                                </td>
+                                <td>{{CSFDashboardCtrl.dateFormat(epaf.effective_date)}}</td>
+                                <td>{{CSFDashboardCtrl.dateFormat(epaf.approved_date)}}</td>
+                                <td>
+                                    <div ng-show="hover" style="display: inline-block; background-color: lightyellow; position: absolute;">
+                                        Employee ID:{{epaf.employee_id}}
+                                        <br>Cost Center:{{epaf.cost_center}}
+                                        <br>Group Level:{{epaf.group_level}}
+                                        <br>Updated By: {{epaf.modified_by}}
+                                        <br>Updated Date:{{CSFDashboardCtrl.dateFormat(epaf.last_modified)}}
+                                    </div>
+                                    {{epaf.employee_name}}
+                                </td>
+                                <td>{{epaf.eletter_sent}}</td>
+                                <td>{{epaf.epaf_action}}</td>
+                                <td>{{epaf.epaf_number}}</td>
+                                <td>
+                                    <a>{{epaf.ref}}</a>
+                                </td>
+                                <td>{{epaf.Sts}}</td>
+                                <td>{{epaf.COP_3}}</td>
+                                <!--<th>{{epaf.employee_id}}</th>
+                <td >{{epaf.cost_center}}</td>
+                <td>{{epaf.group_level}}</td>
+                <td></td>
+                <td></td>-->
+                            </tr>
+                            <tr ng-if="CSFDashboardCtrl.epaf.length === 0"><th colspan="10">Data Tidak Ada</th></tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <ul uib-pagination boundary-links="true" total-items="CSFDashboardCtrl.totalRecords" ng-model="currentPage" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="CSFDashboardCtrl.jLoad(currentPage)"></ul>
+                        <br/>
+                        <label class="pull-right">{{'Total Records' | translate}} : {{CSFDashboardCtrl.totalRecords}}</label>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

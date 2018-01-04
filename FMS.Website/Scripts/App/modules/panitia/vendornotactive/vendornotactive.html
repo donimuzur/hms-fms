@@ -1,0 +1,82 @@
+﻿<section class="content" ng-init="VendorNotActiveCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.VENDOR_DATA' | translate}}</a></li>
+        <li><a>Rekanan Tidak Aktif</a></li>
+
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">Data Rekanan Tidak Aktif</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Cari Berdasarkan Nama Vendor" ng-model="VendorNotActiveCtrl.Keyword">
+                                    <span class="input-group-btn">
+                                        <button ng-click="VendorNotActiveCtrl.jLoad(1)" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="Cari">
+                                            <i class="fa fa-search"></i>&nbsp;
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom:20px;">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical">No.</th>
+                                            <th class="center-vertical">Nama Vendor</th>
+                                            <th class="center-vertical">Status</th>
+                                            <th class="center-vertical">Keterangan</th>
+                                            <th class="center-vertical"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="detail in VendorNotActiveCtrl.listVendor">
+                                            <td class="text-center" style="vertical-align: middle;">{{VendorNotActiveCtrl.currentPage > 1 ? (VendorNotActiveCtrl.pageSize * (VendorNotActiveCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{detail.VendorName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">Tidak Aktif {{detail.YearNotActive}} tahun</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                {{detail.Description}}
+                                            </td>
+                                            <td class="text-center" style="vertical-align: auto;">
+                                                <a ng-if="detail.IsActiveVendor === true" ng-click="VendorNotActiveCtrl.openform(false, detail)" class="btn btn-flat btn-xs btn-danger" title="{{'TABLE.REJECT' | translate }}">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                                <a ng-if="detail.IsActiveVendor === false" ng-click="VendorNotActiveCtrl.openform(true, detail)" class="btn btn-flat btn-xs btn-primary" title="{{'TABLE.REJECT' | translate }}">
+                                                    <i class="fa fa-check-circle-o"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="VendorNotActiveCtrl.totalItems === 0"><td colspan="5">Data Tidak ada</tr>
+                                    </tbody>
+                                </table>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11"></div>
+                        <div class="col-md-1 right">
+                            <button type="button" class="btn btn-flat btn-sm btn-default" ng-click="VendorNotActiveCtrl.cancel()"><i class="fa fa-arrow-circle-left"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <ul uib-pagination boundary-links="true" total-items="VendorNotActiveCtrl.totalItems" ng-model="VendorNotActiveCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="VendorNotActiveCtrl.pageChanged()"></ul><br />
+                            <label>{{'TOTAL_DATA' | translate }} : {{VendorNotActiveCtrl.totalItems}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

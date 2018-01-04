@@ -1,0 +1,42 @@
+﻿@model FMS.Website.Models.BaseModel
+
+    <!-- /.box-header -->
+    <!-- form start -->
+    <div aria-labelledby="headingFive" role="tabpanel" class="panel-collapse collapse show" id="collapseFive">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                <div class="col-md-12">
+                    <table id=" log" class="table table-bordered table-hover" style="table-layout: fixed;">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                        
+                                        
+                            </tr>
+                        </thead>
+                        <tbody >
+                            @foreach (var data in Model.ChangesLogs)
+                            {
+                                <tr>
+                                    <td>@Html.Raw(data.ActionDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                                    <td>@Html.Raw(data.UserName)</td>
+                                    <td>@Html.Raw(data.Action)</td>
+                                            
+                                            
+                                </tr>
+                            }
+                                    
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="box-footer"></div>
+    </div>

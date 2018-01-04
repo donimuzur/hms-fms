@@ -1,0 +1,25 @@
+﻿{
+    "KONF_FILE_UPLOAD" : "Konfigurasi File Upload",
+    "FILTER" : "Filter",
+    "OPSI_FILTER" : {
+        "SISI_HALAMAN" : "Sisi Halaman",
+        "NAMA_HALAMAN" : "Nama Halaman",
+        "FILE_TYPE" : "File Type"
+    },
+    "STATUS" : "Status",
+    "CARI" : "Cari",
+    "CARI_NM_HALAMAN" : "Cari Nama Halaman",
+    "CARI_FILE_TYPE" : "Cari File Type",
+    "TABLE" : {
+        "NO" : "No",
+        "SISI_HALAMAN" : "Sisi Halaman",
+        "NAMA_HALAMAN" : "Nama Halaman",
+        "BATAS_UKURAN" : "Batas Ukuran",
+        "TYPE" : "File Type"
+    },
+    "TOTAL_DATA" : "Total Data",
+    "REKANAN" : "Rekanan",
+    "BACKEND" : "Panitia",
+    "UBAH_UKURAN_FILE" : "Ubah Ukuran File",
+    "ATUR_KONF_FILE_TYPE" : "Atur Konfigurasi File Type"
+}

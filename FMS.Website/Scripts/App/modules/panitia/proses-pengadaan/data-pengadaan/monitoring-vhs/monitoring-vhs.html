@@ -1,0 +1,115 @@
+﻿<!-- Main content -->
+<div ng-init="MonVHSCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.MONITORING_TENDER' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_MON' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    Filter :
+                                    <select class="input-sm" ng-model="MonVHSCtrl.searchBy" required>
+                                        <option value="" disabled selected>{{'FILTER.SEARCH' | translate }}</option>
+                                        <option value="1">{{'TABLE.KODE_VENDOR' | translate }}</option>
+                                        <option value="2">{{'TABLE.NAMA_VENDOR' | translate }}</option>
+
+                                    </select>
+                                    <input type="text" placeholder="{{'FILTER.KEYWORD' | translate}}" class="input-sm" ng-model="MonVHSCtrl.keyword" />
+                                    <span class="">
+                                        <button ng-click="MonVHSCtrl.loadPaket()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'SEARCH' | translate}}">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.LOKASI_PENYIMPANAN' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO_KONTRAK' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA_DOKUMEN' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle; ">{{'TABLE.NAMA_VENDOR' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.KODE_VENDOR' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.MULAI_KONTRAK' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.SELESAI_KONTRAK' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.BUDGET_KONTRAK' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ORIGINAL_CONTRACT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.SPENDING_CONTRACT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.REMAINING_CONTRACT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.REMAKS' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ACTION' | translate }}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="data in MonVHSCtrl.listVHS">
+
+                                                <td style="vertical-align: middle;">{{MonVHSCtrl.currentPage > 1 ? (MonVHSCtrl.maxSize * (MonVHSCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.SAPContractNo}}</td>
+                                                <td style="vertical-align: middle;">{{data.TitleDoc}}</td>
+                                                <td style="vertical-align: middle;">{{data.VendorName}}</td>
+                                                <td style="vertical-align: middle;">{{data.VendorCode}}</td>
+                                                <td style="vertical-align: middle;">{{MonVHSCtrl.convertDate(data.StartContractDate)}}</td>
+                                                <td style="vertical-align: middle;">{{MonVHSCtrl.convertDate (data.FinishContractDate)}}</td>
+                                                <td ng-if="data.Budget_Val === null || data.Budget_Val === 0" style="vertical-align: middle;">
+                                                    <input type="number" class="input-sm" name="budget" ng-model="MonVHSCtrl.Budget_Val" />
+                                                    <a ng-click="MonVHSCtrl.insertBudget(data.ID)" title="save" class="btn btn-block"><i class="fa fa-save"></i>&nbsp;</a>
+                                                </td>
+                                                <td ng-if="data.Budget_Val !== null" style="vertical-align: middle;">
+                                                    {{data.Budget_Val | currency :"IDR"}}
+                                                </td>
+                                                <td style="vertical-align: middle;">{{data.OriginalVal | currency :"IDR"}}</td>
+                                                <td style="vertical-align: middle;">{{data.SpendingVal | currency :"IDR" }}</td>
+                                                <td style="vertical-align: middle;">{{data.RemainingVal | currency :"IDR"}}</td>
+                                                <td style="vertical-align: middle;">{{data.Remark}}</td>
+                                                <td style="vertical-align: middle;">
+                                                    <a ng-click="#" title="{{'ADENDUM' | translate}}" class="btn btn-success"><i class="fa fa-file-o"></i>&nbsp;</a>
+                                                    <a ng-click="MonVHSCtrl.viewAddendum(data.ID)" title="{{'DETAIL' | translate}}" class="btn btn-primary"><i class="fa fa-list-ol"></i>&nbsp;</a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="MonVHSCtrl.totalItems === 0">
+                                                <td colspan="13">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center text-center">
+                                <ul uib-pagination boundary-links="true" total-items="MonVHSCtrl.totalItems" ng-model="MonVHSCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="MonVHSCtrl.pageChanged()"></ul><br />
+                                <pagination ng-show="MonVHSCtrl.totalItems > 10" total-items="MonVHSCtrl.totalItems" page="MonVHSCtrl.currentPage" items-per-page="10" max-size="MonVHSCtrl.maxSize" on-select-page="MonVHSCtrl.loadSteps(page)"></pagination><br />
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <label>{{'TOTAL_DATA' | translate }} : {{MonVHSCtrl.totalItems}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,54 @@
+{
+  "DISTRIBUSI": "Distribusi",
+  "BATAL": "Batal",
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_KONTRAK": "Data Monitoring Kontrak Jasa"
+  },
+  "CANCEL": "Batal",
+  "DETAIL": "Detail Kontrak",
+  "DRAFT": "Draf",
+  "FILTER": {
+    "KEYWORD": "Masukkan Kata Pencarian",
+    "SEARCH": "Cari Berdasarkan",
+    "TENDER_NUMBER": "Nomor Tender",
+    "TENDER_NAME": "Nama Tender",
+    "NO_KONTRAK": "Nomor Kontrak",
+    "VENDOR_NAME": "Nama Vendor"
+  },
+  "JUDUL_MON": "MONITORING KONTRAK JASA",
+  "KEMBALI": "Kembali",
+  "MESSAGE": {
+    "TITLE_SUCCESS": "Berhasil",
+    "TITLE_FAILED": "Gagal",
+    "MESSAGE_SUCCESS": "Berhasil Menyimpan data",
+    "MESSAGE_FAILED": "Gagal Menyimpan data",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar List",
+    "LOADING": "Silahkan Tunggu..."
+
+  },
+  "SIMPAN": "Simpan",
+  "TABLE": {
+    "TENDER": "Tender",
+    "NOMOR_TENDER": "Nomor Tender",
+    "NOMOR_KONTRAK": "Nomor Kontrak",
+    "NAMA_VENDOR": "Nama Vendor",
+    "NO": "No",
+    "BUDGET_VALUE": "Budget Value",
+    "OE_VALUE": "OE Value",
+    "PRICE_QUOTATION": "Price Quotation",
+    "VARIATION_VALUE": "Variation Value",
+    "TOTAL_VALUE": "Total Value",
+    "NILAI_KONTRAK": "Original Value",
+    "SISA_KONTRAK": "Remaining Value",
+    "TOTAL_DISTRIBUSI": "Total Disribusi",
+    "KETERANGAN": "Remark",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data"
+}

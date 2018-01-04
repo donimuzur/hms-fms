@@ -1,0 +1,133 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.SalesVolumeModel
+<!-- Main content -->
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Sales Volume</h5>
+    @if (Model.CurrentPageAccess.UploadAccess == true)
+    {
+        <a href="@Url.Action("Upload", "MstSalesVolume")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+</div>
+<section class="content">
+
+    @using (Html.BeginForm("ExportMasterSalesVolume", "MstSalesVolume", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
+        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
+        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
+        @Html.HiddenFor(model => model.SearchViewExport.Type)
+        @Html.HiddenFor(model => model.SearchViewExport.Regional)
+    }
+    <div class="wpanel">
+        <div class="row">
+            @using (Ajax.BeginForm("FilterData", "MstSalesVolume",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                }))
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Month From</label>
+                        @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Year From</label>
+                        @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Month To</label>
+                        @Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Year To</label>
+                        @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Type</label>
+                        @Html.DropDownListFor(model => model.SearchView.Type, Model.SearchView.TypeList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="">Regional</label>
+                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListData")
+    </div>
+</section>
+<!-- /.content -->
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">
+    function ExportXls() {
+        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
+        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
+        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
+        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
+        $('#SearchViewExport_Type').val($('#SearchView_Type').val());
+        $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
+        $('#ExportToXls').submit();
+    }
+
+    $(document).on('click', '#btn-reset', function () {
+        var d = new Date();
+
+        $('.month').val(d.getMonth() + 1);
+        $(".year").val(d.getFullYear());
+        $(".select").val('');
+        $(".text").val('');
+
+        $("#btn-filter").trigger('click');
+    });
+
+    function setupDataTables() {
+        // DataTable
+        var table = $('#tbSalesVolume').DataTable({
+            "dom": 'lf<"table-overflow"t>pi'
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    }
+
+    $(function () {
+        setupDataTables();
+    });
+</script>
+

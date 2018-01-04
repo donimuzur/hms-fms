@@ -1,0 +1,121 @@
+<div class="content" ng-init="PengumumanTenderVendorCtrl.init()">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <ol class="breadcrumb">
+                        <li><a href="#/dashboard-vendor">Beranda</a></li>
+                        <li><a class="active">Pengumuman Pengadaan</a></li>
+                    </ol>
+                </div>
+                <div class="box-body">                        
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="box-title afta-font text-center">Pengumuman Pengadaan</h3>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong>Nama Pegadaan: {{PengumumanTenderVendorCtrl.dataTender.TenderName}}</strong>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table ng-if="PengumumanTenderVendorCtrl.GoodsOrService===1" class="table table-bordered table-striped" id="tabelPesertaNegosiasi">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="20px">No.</th>
+                                            <th class="text-center">Persyaratan</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="data in PengumumanTenderVendorCtrl.dataOfferEntry">
+                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{data.DocName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+
+                                                <a ng-if="data.TenderDocTypeID === 21" ng-click="PengumumanTenderVendorCtrl.downloadExcel(data)" class="btn btn-flat btn-sm btn-warning" title="Download Template">
+                                                    <i class='fa fa-download'></i>&nbsp;
+                                                </a>
+                                                <a ng-if="(data.TenderDocTypeID === 10|| data.TenderDocTypeID === 11 || data.TenderDocTypeID === 12) && data.DocumentUrl !== null " href="{{PengumumanTenderVendorCtrl.folderFile+data.DocumentUrl}}" target="_blank" class="btn btn-flat btn-sm btn-success" title="Download File">
+                                                    <i class='fa fa-download'></i>&nbsp;
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="PengumumanTenderVendorCtrl.dataOfferEntry.length === 0"><td colspan="6">Data Tidak Ada</td></tr>
+                                    </tbody>
+                                </table>
+                                <table ng-if="PengumumanTenderVendorCtrl.GoodsOrService===2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" colspan="7">Kelengkapan Tender</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center" width="5%">No.</th>
+                                            <th class="text-center" width="10%">Kode </th>
+                                            <th class="text-center">Nama Form </th>
+                                            <th class="text-center" width="10%">Tanggal Submit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pgm in PengumumanTenderVendorCtrl.listKelengkapan">
+                                            <td class="text-center">{{$index + 1}}</td>
+                                            <td class="text-center">{{pgm.DocumentCode}}</td>
+                                            <td>{{pgm.DocumentName}}</td>
+                                            <td class="text-center">{{pgm.ApproveDate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="detail-pengumuman-pengadaan-vendor.html">
+    <div class="modal-content" ng-init="detailPPVendorController.init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="detailPPVendorController.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Detail Pengumuman Pengadaan</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <dl class="dl-horizontal">
+                        <dt>Kode Tender</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.TenderCode}}</dd>
+                        <dt>Nama Tender</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.TenderName}}</dd>
+                        <dt>Pengumuman</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.Description}}</dd>
+                        <!--
+                        <dt>Komoditas</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.selectedComodity.Name}}</dd>
+                        <dt>Klasifikasi</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.selectedClasification.Value}}</dd>
+                        <dt>Tehnikal</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.selectedTechnical.Value}}</dd>
+                        <dt>Area</dt>
+                        <dd>
+                            : &nbsp; <span ng-if="detailPPVendorController.IsLocal === true">Lokal </span>
+                            <span ng-if="detailPPVendorController.IsNational === true">, National </span>
+                            <span ng-if="detailPPVendorController.IsInternational === true">, International </span>
+                        </dd>
+                            -->
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button ng-click="detailPPVendorController.batal()" type="button" class="btn btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button>
+        </div>
+    </div>
+</script>

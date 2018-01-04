@@ -1,0 +1,93 @@
+﻿<section class="content" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/dashboard-vendor">Beranda</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li><a class="active">Forum Negosiasi</a></li>
+    </ol>
+    <div class="container-fluid" ng-init="NegosiasiVHSChatVCtrl.init()">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row" style="padding-bottom: 20px;">
+                            <div class="col-md-12" style="padding-top: 15px;">
+                                <div class="col-md-10 center-block" style="float: none!important;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h2 class="afta-font text-center">Forum Negosiasi VHS/FPA</h2>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="text-center">
+                                                <p>Dengan Calon Rekanan : {{NegosiasiVHSChatVCtrl.VendorName}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center-block">
+                                <div class="col-md-6">
+                                    <div class="center-block text-left">
+                                        <a class="btn btn-sm btn-warning btn-flat" ng-click="NegosiasiVHSChatVCtrl.detailpenawaran()" style="margin-bottom: 15px;" title="Detail Penawaran"><i class="fa fa-eye"></i>&nbsp;</a>
+                                       </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="center-block text-right">
+                                        <a ng-click="NegosiasiVHSChatVCtrl.tulis()" class="text-right btn btn-sm btn-flat btn-primary" style="margin-bottom: 15px;" title="Tulis">
+                                            <i class="fa fa-pencil"></i>&nbsp;
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row" style="padding-top: 3px!important; padding-bottom: 5px!important;">
+                                            <div class="col-md-12">
+                                                <div class="message-wrap col-md-11 center-block" style="float: none!important;" >
+                                                    <div class="msg-wrap"  >
+                                                        <div id="divChat" class="media msg" ng-if="NegosiasiVHSChatVCtrl.nego.length === 1 && NegosiasiVHSChatVCtrl.nego[0].Description !== null || NegosiasiVHSChatVCtrl.nego.length > 1" ng-repeat="chat in NegosiasiVHSChatVCtrl.nego"  >
+                                                            <div class="media-body">
+                                                                <div >
+                                                                    <small class="pull-right time"><i class="fa fa-clock-o"></i> {{chat.ChatDate | date: "dd-MM-yyyy"}}</small>
+                                                                    <h5 ng-if="(chat.EvaluatorID)" class="media-heading afta-font">Panitia</h5>
+                                                                    <h5 ng-if="!(chat.EvaluatorID)" class="media-heading afta-font" style="color: red;">{{chat.VendorName}}</h5>
+                                                                    <p class="col-lg-10" style="margin-top: 10px;" ng-bind-html="chat.Description"></p>
+                                                                </div>
+                                                                <br />
+                                                            </div>
+                                                            <pagination total-items="NegosiasiChatCtrl.totalItems" page="NegosiasiChatCtrl.currentPage" items-per-page="10"
+                                                                        max-size="NegosiasiChatCtrl.maxSize" on-select-page="jLoad(page)"></pagination>
+                                                        </div>
+                                                        <div id="divChat" class="media msg" ng-if="NegosiasiVHSChatVCtrl.nego.length === 1 && NegosiasiVHSChatVCtrl.nego[0].Description === null">
+                                                           <h4> Tidak ada percakapan </h4>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- paging -->
+                                    <hr />
+                                </div>
+                        <div class="row">
+                            <br />
+                            <hr />
+
+                            <div class="col-md-12">
+
+                                <div class="text-right">
+                                    <a ng-click="NegosiasiVHSChatVCtrl.back()" class="btn btn-sm btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+</section>

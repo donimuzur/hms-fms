@@ -1,0 +1,73 @@
+﻿<section ng-init="ApprovalMin3Ctrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a class="active">Approval</a></li>
+    </ol>
+
+    <!-- tampilan pertama muncul -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Approval</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row" style="padding-top: 10px!important;">
+                            <br />
+                            <div class="col-md-12">
+                                <pagination total-items="ApprovalMin3Ctrl.totalItems" page="ApprovalMin3Ctrl.currentPage" items-per-page="10" ng-show="ApprovalMin3Ctrl.totalItems > 10"
+                                            max-size="ApprovalMin3Ctrl.maxSize" on-select-page="ApprovalMin3Ctrl.loadDataApproval(page)"></pagination>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped" id="tabelApprovalForMin3">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width="20px">No.</th>
+                                                <th class="text-center">Nama Tender</th>
+                                                <th class="text-center">Tahapan</th>
+                                                <th class="text-center">Jenis Approval</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tbody>
+                                            <tr ng-repeat="data in ApprovalMin3Ctrl.dataApproval">
+                                                <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{data.TenderName}}</td>
+                                                <td style="vertical-align: middle;">{{data.TenderStepName}}</td>
+                                                <td style="vertical-align: middle;">{{data.ApprvTypeName | translate}}</td>
+                                                
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a class="btn btn-sm btn-flat btn-success" ng-click="ApprovalMin3Ctrl.approve(data)" title="Approve"><i class="glyphicon glyphicon-ok"></i></a>
+                                                    <a class="btn btn-sm btn-flat btn-danger"ng-click="ApprovalMin3Ctrl.approvalModal(data,0)" title="Reject"><i class="glyphicon glyphicon-remove"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="ApprovalMin3Ctrl.dataApproval.Count === 0"><td colspan="6">Data Tidak Ada</td></tr>
+                                        </tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <ul uib-pagination boundary-links="true" total-items="ApprovalMin3Ctrl.totalItems" ng-model="ApprovalMin3Ctrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="ApprovalMin3Ctrl.loadDataApproval(ApprovalMin3Ctrl.currentPage)"></ul>
+                                <br />
+                                <label>Total Data: {{ApprovalMin3Ctrl.totalItems}}</label>
+                            </div>
+                        </div>
+                        <!--tombol
+                        <div class="box-footer">
+                            <label class="text-center"><b><button type="button" ng-click="ApprovalMin3Ctrl.backpengadaan()" class="btn btn-xs btn-default" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button></b></label>
+                        </div>
+                            -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

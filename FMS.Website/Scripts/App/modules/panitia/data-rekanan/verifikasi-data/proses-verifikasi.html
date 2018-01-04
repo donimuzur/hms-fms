@@ -1,0 +1,1228 @@
+﻿<section class="content" ng-init="VerifiedProcessCtrl.init()" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin">{{'BREADCRUMB.HOME' | translate}}</a></li>
+        <li><a >{{'BREADCRUMB.DATA_VENDOR_MANAGE' | translate}}</a></li>
+    </ol>
+    <div id="halamanVerifikasi" class="container-fluid">
+        <div class="box">
+            <div class="box-header text-center" style="padding: 10px!important;">
+                    <button class="btn btn-flat btn-primary" ng-click="VerifiedProcessCtrl.cancel()" title="Kembali"><i class="fa fa-reply"></i></button>
+                <button type="button" class="btn btn-flat btn-danger" ng-click="VerifiedProcessCtrl.addVerifikasi(false,VerifiedProcessCtrl.verified[0].Contact.Email)" ng-if="((VerifiedProcessCtrl.verified[0].Vendor.IsActived === true && VerifiedProcessCtrl.verified[0].Vendor.VerifiedSendDate !== null) && VerifiedProcessCtrl.verified[0].Vendor.Isverified === null)" title="Verifikasi Ditolak">
+                    <i class="fa fa-exclamation-circle"></i>
+                </button>
+                <button type="button" class="btn btn-flat btn-success" ng-click="VerifiedProcessCtrl.addVerifikasi(true,VerifiedProcessCtrl.verified[0].Contact.Email)" ng-if="((VerifiedProcessCtrl.verified[0].Vendor.IsActived === true && VerifiedProcessCtrl.verified[0].Vendor.VerifiedSendDate !== null) && VerifiedProcessCtrl.verified[0].Vendor.Isverified === null)" title="Verifikasi Diterima">
+                    <i class="fa fa-check-square-o"></i>
+                </button>
+                <hr style="margin-bottom: 0px;" />
+            </div>
+            <div class="box-body">
+                <div class="row" style="padding-left: 15px;">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-3 control-label" style="  font-size: 1.5em; padding-top: 0px; text-align: left;">Nama Perusahaan <span class="pull-right text-right"> :</span></label>
+                                    <div class="col-sm-9">
+                                        <label style="font-size: 1.5em;">{{VerifiedProcessCtrl.verified[0].Vendor.VendorName}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <uib-tabset>
+                    <uib-tab ng-click="VerifiedProcessCtrl.addFlag()">
+                        <uib-tab-heading>
+                            {{'SURAT.TITLE' | translate}}
+                        </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>{{'SURAT.TITLE' | translate}}</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="width: 5px; min-width: 5px; vertical-align: middle;">No</th>
+                                                <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">Judul</th>
+                                                <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center">1.</td>
+                                                <td class="text-center">Business Conduct</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-flat btn-sm btn-warning" ng-click="VerifiedProcessCtrl.openForm(null, 17,true)" title="Baca"><i class="fa fa-file-o"></i></a>
+                                                    <a ng-if="VerifiedProcessCtrl.DocType === 4225" href="{{VerifiedProcessCtrl.folderFile + VerifiedProcessCtrl.urlBusinessConduct}}" target="_BLANK"  class="btn btn-flat btn-sm btn-primary" title="Download"><i class="fa fa-download"></i></a>
+                                                    <a ng-if="VerifiedProcessCtrl.DocType === 4232" href="{{VerifiedProcessCtrl.folderFile + VerifiedProcessCtrl.urlBusinessConduct}}" target="_BLANK" class="btn btn-flat btn-sm btn-primary" title="Downloads"><i class="fa fa-download"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="VerifiedProcessCtrl.cek === true">
+                                                <td class="text-center">2.</td>
+                                                <td class="text-center">Surat Pernyataan</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-flat btn-sm btn-warning" ng-click="VerifiedProcessCtrl.openForm(null, 18,true)" title="Baca"><i class="fa fa-file-o"></i></a>
+                                                    <a href="{{VerifiedProcessCtrl.folderFile + VerifiedProcessCtrl.urlAggrement}}" target="_BLANK" class="btn btn-flat btn-sm btn-primary" title="Downloads"><i class="fa fa-download"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()">
+                        <uib-tab-heading>
+                            {{'BREADCRUMB.ADMINISTRATION_DATA' | translate}}
+                        </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>{{'BREADCRUMB.ADMINISTRATION_DATA' | translate}}</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11 center-block" style="float: none!important;margin-top: 10px!important;">
+                                <div class="row">
+                                    <div class="col-md-8 col-xs-12 col-sm-10 center-block well" style="float: none!important;">   
+                                        <dl class="dl-horizontal">
+                                            <dt>{{'USERNAME_VENDOR' | translate}}</dt>
+                                            <dd>{{VerifiedProcessCtrl.verified[1].Vendor.user.Username}}</dd>
+                                            <dt>{{'EMAIL_USER' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[1].Contact.Email !== null">{{VerifiedProcessCtrl.verified[1].Contact.Email}}</dd>
+                                            <dt>{{'TENDER_CODE' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[1].Vendor.TenderCodeTemp !== null">{{VerifiedProcessCtrl.verified[1].Vendor.TenderCodeTemp}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[1].Vendor.TenderCodeTemp === null">{{'No' | translate}}</dd>
+                                            <dt>{{'TENDER_NAME' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.TenderName !== null">{{VerifiedProcessCtrl.TenderName}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.TenderName === null">{{'No' | translate}}</dd>
+                                            <dt>{{'VENDOR_NAME' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[1].Vendor.VendorName !== null">{{VerifiedProcessCtrl.verified[1].Vendor.VendorName}}</dd>
+                                            <dt ng-if="VerifiedProcessCtrl.State === 'IDN'">{{'COMPANY_TYPE' | translate}}</dt>
+                                            <dd ng-if="(VerifiedProcessCtrl.State === 'IDN' && VerifiedProcessCtrl.verified[1].Vendor.business.Name !== null)">{{VerifiedProcessCtrl.verified[1].Vendor.business.Name}}</dd>
+                                            <dt ng-if="VerifiedProcessCtrl.State === 'IDN'">{{'NOMOR_NPWP' | translate}}</dt>
+                                            <dt ng-if="VerifiedProcessCtrl.State !=='IDN'">Company Registration</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[1].Vendor.Npwp !== null">{{VerifiedProcessCtrl.verified[1].Vendor.Npwp}}</dd>
+                                            <dt ng-if="VerifiedProcessCtrl.State === 'IDN'">File NPWP</dt>
+                                            <dd ng-if="(VerifiedProcessCtrl.State === 'IDN' && !(VerifiedProcessCtrl.verified[1].Vendor.NpwpUrl ==='' || VerifiedProcessCtrl.verified[1].Vendor.NpwpUrl ==null))">
+                                                <a href="{{VerifiedProcessCtrl.folderFile+VerifiedProcessCtrl.verified[1].Vendor.NpwpUrl}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download Dokumen NPWP">
+                                                    <i class="fa fa-download"></i>&nbsp;&nbsp;
+                                                </a>
+                                            </dd>
+                                            <dt ng-if="VerifiedProcessCtrl.State === 'IDN'">Nomor SKT/IUJP/IUP</dt>
+                                            <dd ng-if="(VerifiedProcessCtrl.State === 'IDN' && VerifiedProcessCtrl.verified[1].Vendor.LegalNumber !== null)">{{VerifiedProcessCtrl.verified[1].Vendor.LegalNumber}}</dd>
+                                            <dt ng-if="VerifiedProcessCtrl.State === 'IDN'">File SKT/IUJP/IUP</dt>
+                                            <dd ng-if="(VerifiedProcessCtrl.State === 'IDN' && !(VerifiedProcessCtrl.verified[1].Vendor.LegalDocument==='' || VerifiedProcessCtrl.verified[1].Vendor.LegalDocument==null))">
+                                                <a href="{{VerifiedProcessCtrl.folderFile+VerifiedProcessCtrl.verified[1].Vendor.LegalDocument}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download Dokumen Ijin Usaha">
+                                                    <i class="fa fa-download"></i>&nbsp;&nbsp;
+                                                </a>
+                                            </dd>
+                                            <dt ng-if="VerifiedProcessCtrl.addressMain !== ''">{{'MAIN_OFFICE' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.addressMain !== ''">{{VerifiedProcessCtrl.addressMain}}</dd>
+                                            <dt ng-if="VerifiedProcessCtrl.addressBranch !==''">{{'BRANCH_OFFICE' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.addressBranch !==''">{{VerifiedProcessCtrl.addressBranch}}</dd>
+
+                                            <dt>{{'STATE_TYPE' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Address.State.Name !== null">{{VerifiedProcessCtrl.verified[0].Contact.Address.State.Name}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Address.State.Name === null">{{'No' | translate}}</dd>
+                                            <dt ng-if="VerifiedProcessCtrl.State === 'IDN'">{{'CITY_TYPE' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.State === 'IDN' && VerifiedProcessCtrl.verified[0].Contact.Address.City.Name !== null">{{VerifiedProcessCtrl.verified[0].Contact.Address.City.Name}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.State === 'IDN' && VerifiedProcessCtrl.verified[0].Contact.Address.City.Name === null">{{'No' | translate}}</dd>
+                                            <dt>{{'NO_TELP' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Phone !== null">{{VerifiedProcessCtrl.verified[0].Contact.Phone}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Phone === null">{{'No' | translate}}</dd>
+                                            <dt>Fax</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.ld[1] !== ''">{{VerifiedProcessCtrl.ld[1]}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.ld[1] === ''">{{'No' | translate}}</dd>
+                                            <dt>{{'EMAIL_VENDOR' | translate}}</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Email !== null">{{VerifiedProcessCtrl.verified[0].Contact.Email}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Email === null">{{'No' | translate}}</dd>
+                                            <dt>Website</dt>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Website !== null">{{VerifiedProcessCtrl.verified[0].Contact.Website}}</dd>
+                                            <dd ng-if="VerifiedProcessCtrl.verified[0].Contact.Website === null">{{'No' | translate}}</dd>
+                                            
+                                        </dl>
+                                        <button type="button" class="btn btn-flat btn-sm btn-success center-block" ng-click="VerifiedProcessCtrl.openForm(VerifiedProcessCtrl.verified[0].Vendor.VendorID,0,true)" ><i class="fa fa-edit"></i>Edit Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()" ng-if="VerifiedProcessCtrl.verified[0].Contact.Address.State.Country.Code === 'IDN'">
+                        <uib-tab-heading>
+                            {{'LICENSE_DATA'| translate}}
+                        </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>{{'LICENSE_DATA'| translate}}</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">No</th>
+                                                        <th class="text-center">{{'LICENSE_TYPE' | translate}}</th>
+                                                        <th class="text-center">{{'NOMOR' | translate}}</th>
+                                                        <th class="text-center">{{'OUTDATE'| translate}}</th>
+                                                        <th class="text-center">{{'EXPIRED_DATA' | translate}}</th>
+                                                        <th class="text-center">{{'GIVE_VENDOR' | translate}}</th>
+                                                        <th class="text-center"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-if="VerifiedProcessCtrl.license.List.length <= 0">
+                                                        <td colspan="6" cellpadding="0">
+                                                            <div class="alert alert-info text-center">
+                                                                <span>{{'No'| translate}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="obj in VerifiedProcessCtrl.license.List">
+                                                        <td class="text-center" style="vertical-align: middle;">{{IzinUsahaController.currentPage > 1 ? (IzinUsahaController.pageSize * (IzinUsahaController.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                        <td style="vertical-align: middle;">{{obj.LicenseName}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.LicenseNo}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">
+                                                            <span ng-if="!(obj.IssuedDate === null)">{{obj.IssuedDate | date: "dd-MM-yyyy"}}</span>
+                                                        </td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.ExpiredDate | date: "dd-MM-yyyy"}}</td>
+                                                        <td style="vertical-align: middle;">{{obj.IssuedBy}}</td>
+                                                        <td class="text-center" style="vertical-align: middle!important;">
+                                                            <a ng-click="VerifiedProcessCtrl.detail(1, obj)" class="btn btn-sm btn-success"><i class="fa fa-eye"></i>&nbsp;</a>
+                                                            <a ng-click="VerifiedProcessCtrl.openForm(obj,1,true)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                            <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 1)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()" ng-if="VerifiedProcessCtrl.verified[0].Contact.Address.State.Country.Code === 'IDN'">
+                        <uib-tab-heading>
+                            {{'DATA_AKTA_PENDIRIAN' | translate}}
+                         </uib-tab-heading>
+                        <div class="container-fluid">
+                            <div class="row" style="padding-top: 15px!important;">
+                                <div class="col-md-6 center-block" style="float: none!important;">
+                                    <h3 class="text-center afta-font">{{'DATA_PEMILIK_SAHAM' | translate}}</h3>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 20px!important;">
+                                <div class="col-sm-12 center-block well" style="float: none!important;">
+                                    <div class="center-block">
+                                        <div class="form-group">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover"
+                                                       style="table-layout: fixed!important;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="font-weight: bolder;">No.</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'NAMA' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'TGL_LAHIR' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">Nominal</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'SATUAN' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'NO_KTP' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">File</th>
+                                                            <th class="text-center" style="font-weight: bolder;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-if="VerifiedProcessCtrl.verifiedSaham.length <= 0">
+                                                            <td colspan="8" cellpadding="0">
+                                                                <div class="alert alert-info text-center">
+                                                                    <span>{{'No' | translate}}</span>
+                                                                </div>
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="dt in VerifiedProcessCtrl.verifiedSaham">
+                                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                                            <td class="text-center" style="vertical-align: middle;">{{dt.OwnerName}}</td>
+                                                            <td class="text-center" style="vertical-align: middle;">{{dt.OwnerDOB | date: "dd-MM-yyyy"}}</td>
+                                                            <td class="text-center" style="vertical-align: middle;">{{dt.Quantity}}</td>
+                                                            <td class="text-center" style="vertical-align: middle;">{{(dt.Unit.Value != 'STOCK_UNIT_CURRENCY') ? dt.Unit.Value : dt.CurrencySymbol  | translate}}</td>
+                                                            <td class="text-center" style="vertical-align: middle;">{{dt.OwnerID}}</td>
+                                                            <td class="text-center" style="vertical-align: middle;"><a href="{{VerifiedProcessCtrl.folderFile + dt.OwnerIDUrl}}" target="_BLANK" class="btn btn-sm btn-success" title="{{'DOWNLOAD' | translate}}"><i class="fa fa-download"></i>&nbsp;</a></td>
+                                                            <td class="text-center" style="vertical-align: middle;">
+                                                                <a ng-click="VerifiedProcessCtrl.openForm(dt,2,true)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                                <a ng-if="dt.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(dt, 2)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr>
+                            <div class="row" style="padding-top: 15px!important;">
+                                <div class="col-md-6 center-block" style="float: none!important;">
+                                    <h3 class="text-center afta-font">{{'DATA_AKTA_PENDIRIAN' | translate}}</h3>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 20px!important;">
+                                <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                                    <div class="center-block">
+                                        <div class="form-group">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover"
+                                                       style="table-layout: fixed!important;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="font-weight: bolder;">No</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'TANGGAL_SURAT' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'NOTARIS' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'TEMPAT_NOTARIS' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">File</th>
+                                                            <th class="text-center" style="font-weight: bolder;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-if="VerifiedProcessCtrl.countPendirian == 0">
+                                                            <td colspan="6" cellpadding="0">
+                                                                <div class="alert alert-info text-center">
+                                                                    <span>{{'No' | translate}}</span>
+                                                                </div>
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="fl in VerifiedProcessCtrl.Akta">
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENDIRIAN'" class="text-center" style="vertical-align: middle;">{{fl.DocumentNo}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENDIRIAN'" class="text-center" style="vertical-align: middle;">{{fl.DocumentDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENDIRIAN'" class="text-center" style="vertical-align: middle;">{{fl.NotaryName}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENDIRIAN'" class="text-center" style="vertical-align: middle;">{{fl.NotaryLocationName}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENDIRIAN' && fl.DocumentURL" class="text-center" style="vertical-align: middle;"><a href="{{VerifiedProcessCtrl.folderFile + fl.DocumentURL}}" class="btn btn-sm btn-success" target="_BLANK" title="Download"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENDIRIAN'" class="text-center" style="vertical-align: middle;">
+                                                                <a ng-click="VerifiedProcessCtrl.openForm(fl,3,true)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                                <a ng-if="fl.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(fl, 3)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                           </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6 center-block" style="float: none!important;">
+                                    <h3 class="text-center afta-font">{{'DATA_AKTA_PERUBAHAN_TERAKHIR' | translate}}</h3>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 20px!important;">
+                                <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                                    <div class="center-block">
+                                        <div class="form-group">
+                                            <div class="uib-table-responsive">
+                                                <table class="table table-striped table-bordered table-hover"
+                                                       style="table-layout: fixed!important;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="font-weight: bolder;">No</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'TANGGAL_SURAT' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'NOTARIS' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">File</th>
+                                                            <th class="text-center" style="font-weight: bolder;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-if="VerifiedProcessCtrl.countPerubahaan === 0">
+                                                            <td colspan="5" cellpadding="0">
+                                                                <div class="alert alert-info text-center">
+                                                                    <span>{{'No' | translate}}</span>
+                                                                </div>
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="fl in VerifiedProcessCtrl.Akta">
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PERUBAHAN'" class="text-center" style="vertical-align: middle;">{{fl.DocumentNo}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PERUBAHAN'" class="text-center" style="vertical-align: middle;">{{fl.DocumentDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PERUBAHAN'" class="text-center" style="vertical-align: middle;">{{fl.NotaryName}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PERUBAHAN' && fl.DocumentURL" class="text-center" style="vertical-align: middle;"><a href="{{VerifiedProcessCtrl.folderFile + fl.DocumentURL}}" class="btn btn-sm btn-success" target="_BLANK" title="Download"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PERUBAHAN'" class="text-center" style="vertical-align: middle;">
+                                                                <a ng-click="VerifiedProcessCtrl.openForm(fl,4,true)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                                <a ng-if="fl.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(fl, 3)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6 center-block" style="float: none!important;">
+                                    <h3 class="text-center afta-font">{{'DATA_PENGESAHAN_KEMENKUMHAM' | translate}}</h3>
+                                    <h5 class="text-center"><em>{{'KHUSUS_PT' | translate}}</em></h5>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 20px!important;">
+                                <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                                    <div class="center-block">
+                                        <div class="form-group">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover"
+                                                       style="table-layout: fixed!important;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="font-weight: bolder;">No</th>
+                                                            <th class="text-center" style="font-weight: bolder;">{{'TANGGAL_SURAT' | translate}}</th>
+                                                            <th class="text-center" style="font-weight: bolder;">File</th>
+                                                            <th class="text-center" style="font-weight: bolder;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-if="VerifiedProcessCtrl.countPengesahan === 0">
+                                                            <td colspan="4" cellpadding="0">
+                                                                <div class="alert alert-info text-center">
+                                                                    <span>{{'No' | translate}}</span>
+                                                                </div>
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="fl in VerifiedProcessCtrl.Akta">
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENGESAHAN'" class="text-center" style="vertical-align: middle;">{{fl.DocumentNo}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENGESAHAN'" class="text-center" style="vertical-align: middle;">{{fl.DocumentDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENGESAHAN' && fl.DocumentURL" class="text-center" style="vertical-align: middle;"><a href="{{VerifiedProcessCtrl.folderFile + fl.DocumentURL}}" class="btn btn-sm btn-success" target="_BLANK" title="Download"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></td>
+                                                            <td ng-if="fl.DocumentType === 'LEGAL_DOC_PENGESAHAN'" class="text-center" style="vertical-align: middle;">
+                                                                <a ng-click="VerifiedProcessCtrl.openForm(fl,5,true)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                                <a ng-if="fl.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(fl, 3)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                           </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab ng-click="VerifiedProcessCtrl.addFlag()">
+                        <uib-tab-heading>
+                            {{'BREADCRUMB.BALANCE' | translate}}
+                        </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>{{'FINANCIAL_COMPANY_DATA' | translate}}</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <a ng-if="VerifiedProcessCtrl.balanceDocUrl" target="_blank" href="{{VerifiedProcessCtrl.folderFile + VerifiedProcessCtrl.balanceDocUrl}}" class="btn btn-flat btn-success turun-15" title="{{'DOWNLOAD' | translate}}">
+                                        <i class='fa fa-download'></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="width: 4%">No.</th>
+                                                        <th class="text-center">{{'TABLE.FINANCIAL_COMPANY' | translate}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="sk in VerifiedProcessCtrl.vendorbalance">
+                                                        <td>{{$index+1}}.</td>
+                                                        <td>
+                                                            <b>{{sk.WealthType.Value}}</b>
+                                                            <table class="table table-bordered">
+                                                                <tr ng-repeat="pt in sk.subWealth">
+                                                                    <td ng-if="pt.subCategory.length !== 0">
+                                                                        {{$index+1}}. {{pt.COAType.Value}}
+                                                                        <table class="table table-bordered">
+                                                                            <tr ng-repeat="subcoa in pt.subCategory">
+                                                                                <td>
+                                                                                    {{$index+1}}. {{subcoa.SubCOA.Value}}
+                                                                                    <span class="pull-right" ng-if="subcoa.UnitType === 3106" style="display:inline-block !important;">{{subcoa.Amount}} gram</span>
+                                                                                    <span class="pull-right" ng-if="subcoa.UnitType === 3107" style="display:inline-block !important;">{{subcoa.Amount}} unit</span>
+                                                                                    <span class="pull-right" ng-if="subcoa.UnitType === 3108" style="display:inline-block !important;">{{subcoa.Amount}} {{'mounth'|translate}}</span>
+                                                                                </td>
+                                                                                <td width="20%">Rp. {{subcoa.Nominal | currency: ""+ labelcurr +" "}}</td>
+                                                                                <td width="15%">
+                                                                                    <a ng-click="VerifiedProcessCtrl.openForm(subcoa,6,true)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                                                    <a ng-if="subcoa.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(subcoa, 6)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                                                                   <a ng-show="!(subcoa.DocUrl === '')" href="{{VerifiedProcessCtrl.folderFile + subcoa.DocUrl}}" target="_BLANK" class="btn btn-flat btn-sm btn-primary" title="Lihat File/Berkas Neraca"><i class="fa fa-download"></i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td ng-if="pt.subCategory.length === 0">
+                                                                        <table class="table table-bordered">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{$index+1}}. {{pt.COAType.Value}}
+                                                                                    <span class="pull-right" ng-if="pt.Unit.RefID === 3106" style="display:inline-block !important;">{{pt.Amount}} gram</span>
+                                                                                    <span class="pull-right" ng-if="pt.Unit.RefID === 3107" style="display:inline-block !important;">{{pt.Amount}} unit</span>
+                                                                                    <span class="pull-right" ng-if="pt.Unit.RefID === 3108" style="display:inline-block !important;">{{pt.Amount}} {{'mounth'|translate}}</span>
+                                                                                </td>
+                                                                                <td width="20%">Rp. {{pt.nominal | currency: ""+ labelcurr +" "}}</td>
+                                                                                <td width="15%">
+                                                                                    <a ng-click="VerifiedProcessCtrl.openForm(sk.WealthType,6,pt)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                                                    <a ng-if="pt.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(subcoa, 6)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                                                                   <a ng-show="!(pt.DocUrl === '')" href="{{VerifiedProcessCtrl.folderFile + pt.DocUrl}}" target="_BLANK" class="btn btn-flat btn-sm btn-primary" title="Lihat File/Berkas Neraca"><i class="fa fa-download"></i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="VerifiedProcessCtrl.vendorbalance.length !== 0">
+                                                        <td>{{+VerifiedProcessCtrl.vendorbalance.length +1}}.</td>
+                                                        <td>
+                                                            <table class="table table-bordered">
+                                                                <tr>
+                                                                    <td><b>Modal</b></td>
+                                                                    <td width="35%">Rp. {{VerifiedProcessCtrl.modal | currency: ""+ labelcurr +" "}}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="VerifiedProcessCtrl.vendorbalance.length === 0">
+                                                        <td colspan=3>{{'No' | translate}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        <div class="row" style="padding-top: 15px!important;" ng-if="VerifiedProcessCtrl.vendorbalance.length !== 0" >
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>{{'SCALE_VENDOR' | translate}}</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row"ng-if="VerifiedProcessCtrl.vendorbalance.length !== 0" >
+                            <div class="col-md-12 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">No</th>
+                                                        <th class="text-center" ng-if="VerifiedProcessCtrl.dataComm[0].CommodityID == null" >Nama Bidang Usaha </th>
+                                                        <th class="text-center" ng-if="VerifiedProcessCtrl.dataComm[0].CommodityID != null">Nama Komoditas </th>
+                                                        <th class="text-center">Skala </th>
+                                                    </tr>
+                                                    </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="pt in VerifiedProcessCtrl.dataComm">
+                                                        <td>{{$index+1}}</td> 
+                                                        <td ng-if="pt.CommodityID !== null" class="text-center">{{pt.Commodity.Name}}</td>
+                                                        <td ng-if="pt.CommodityID == null" class="text-center">{{pt.BusinessField.Name}}</td>
+                                                        <td>
+                                                            <select id="{{pt.ID}}" name="StatusScale{{pt.ID}}" ng-model="pt.ScaleReffS" class="form-control" ng-change="VerifiedProcessCtrl.changeScale(pt)"
+                                                                    ng-options="item as item.Name | translate for item  in VerifiedProcessCtrl.listCompanyScale">
+                                                                <option value="" selected disabled>
+                                                                    -- {{'CHOOSE_SCALE' | translate}} --
+                                                                </option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()">
+                        <uib-tab-heading>
+                            {{'DATA_PENGURUS_PERUSAHAAN' | translate}}
+                        </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>{{'DATA_PENGURUS_PERUSAHAAN' | translate}}</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left" style="vertical-align: middle;">No</th>
+                                                        <th class="text-left" style="vertical-align: middle;">{{'NAMA' | translate}}</th>
+                                                        <th class="text-center" style="vertical-align: middle;">{{'NO_KTP' | translate}}</th>
+                                                        <th class="text-center"style="vertical-align: middle;">{{'TGL_LAHIR' | translate}}</th>
+                                                        <th class="text-center" style="vertical-align: middle;">{{'JABATAN' | translate}}</th>
+                                                        <th class="text-center" style="vertical-align: middle;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-if="VerifiedProcessCtrl.compPersons.length <= 0">
+                                                        <td colspan="6" cellpadding="0">
+                                                            <div class="alert alert-info text-center">
+                                                                <span>{{'No' | translate}}</span>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="obj in VerifiedProcessCtrl.compPersons">
+                                                        <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                                        <td style="vertical-align: middle;">{{obj.PersonName}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.NoID}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.DateOfBirth | date : "dd-MM-yyyy"}}</td>
+                                                        <td style="vertical-align: middle;">{{('POSITION.' + obj.PositionRef) | translate}}</td>
+                                                        <td class="text-center">
+                                                            <a ng-click="VerifiedProcessCtrl.detail(2, obj)" class="btn btn-sm btn-success" title="Lihat"><i class="fa fa-eye"></i>&nbsp; </a>
+                                                            <a ng-click="VerifiedProcessCtrl.openFormTenagaAhli(obj, 7)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                            <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 7)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                                         </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()"> 
+                        <uib-tab-heading>
+                            {{'VENDOR_EXPERT' | translate}}
+                           </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>{{'VENDOR_EXPERT' | translate}}</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="vertical-align: middle;">No</th>
+                                                        <th class="text-center" style="vertical-align: middle;">{{'NAMA' | translate}}</th>
+                                                        <th class="text-center" style="vertical-align: middle;">{{'EDUCATION' | translate}}</th>
+                                                        <th class="text-center" style="vertical-align: middle;">{{'JABATAN' | translate}}</th>
+                                                        <th class="text-center">{{'KEAHLIAN' | translate}}</th>
+                                                        <th class="text-center" style="vertical-align: middle;">{{'EXPERIENCE' | translate}}</th>
+                                                        <th class="text-center" style="vertical-align: middle;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-if="VerifiedProcessCtrl.vendorexperts.length <= 0">
+                                                        <td colspan="7" cellpadding="0">
+                                                            <div class="alert alert-info text-center">
+                                                                <span>{{'No' | translate}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="obj in  VerifiedProcessCtrl.vendorexperts">
+                                                        <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                                        <td style="vertical-align: middle;">{{obj.Name}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.Education}}</td>
+                                                        <td style="vertical-align: middle;">{{obj.Position}}</td>
+                                                        <td style="vertical-align: middle;">{{obj.Expertise}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.YearOfExperience}}</td>
+                                                        <td class="text-center" style="vertical-align: middle!important;">
+                                                            <a ng-click="VerifiedProcessCtrl.detail(3, obj)" class="btn btn-sm btn-warning" title="Lihat Detail"><i class="fa fa-external-link"></i></a>
+                                                            <a ng-click="VerifiedProcessCtrl.viewDetail(obj)" class="btn btn-sm btn-success" title="Curricullum Vitae"><i class="fa fa-external-link"></i></a>
+                                                            <a ng-click="VerifiedProcessCtrl.openFormTenagaAhli(obj, 8)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                            <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 8)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                                        </td>
+                                                    </tr>
+</tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="VerifiedProcessCtrl.flag === true">
+                            <hr style="margin-bottom: 5px; margin-top: 5px;" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 class="text-center afta-font">CURRICULUM VITAE</h4>
+                                </div>
+                            </div>
+                            <hr style="margin-top: 5px;" />
+                            <div class="row">
+                                <div class="col-md-11 center-block well" style="float: none!important;">
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                                            <label class="afta-font" style="font-size: 1.5em;">{{'EXPERIENCE WORK' | translate}}</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="vertical-align: middle;">No</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'START' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'UNTIL' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;">File</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'DESCRIPTION_JOB' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-if="VerifiedProcessCtrl.CertificatePengalaman.length <= 0">
+                                                            <td colspan="7" cellpadding="0">
+                                                                <div class="alert alert-info text-center">
+                                                                    <span>{{'No' | translate}}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="obj in VerifiedProcessCtrl.CertificatePengalaman">
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{obj.StartDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{obj.EndDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                                <a href="{{VerifiedProcessCtrl.folderFile + obj.DocUrl}}" target="_BLANK" ng-if="obj.DocUrl !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+                                                            </td>
+                                                            <td style="vertical-align: middle!important;">{{obj.Description}}</td>
+                                                            <td style="vertical-align: middle!important;">
+                                                                <a ng-click="VerifiedProcessCtrl.openForm(obj,9,true)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                                <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 9)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                                            <label class="afta-font" style="font-size: 1.5em;">{{'EDUCATION' | translate}}</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="vertical-align: middle;">No</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'START' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'UNTIL' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;">File</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'DESCRIPTION_JOB' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-if="VerifiedProcessCtrl.CertificatePendidikan.length <= 0">
+                                                            <td colspan="7" cellpadding="0">
+                                                                <div class="alert alert-info text-center">
+                                                                    <span>{{'No' | translate}}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="obj in VerifiedProcessCtrl.CertificatePendidikan">
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{obj.StartDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{obj.EndDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                                <a href="{{VerifiedProcessCtrl.folderFile + obj.DocUrl}}" target="_BLANK" ng-if="obj.DocUrl !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+                                                            </td>
+                                                            <td style="vertical-align: middle!important;">{{obj.Description}}</td>
+                                                            <td style="vertical-align: middle!important;">
+                                                                <a ng-click="VerifiedProcessCtrl.openForm(obj,10,true)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                                <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 10)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-12 col-xs-12 center-block">
+                                            <label class="afta-font" style="font-size: 1.5em;">{{'KEAHLIAN CERTIFICATE' | translate}}</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" style="vertical-align: middle;">No</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'START' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'UNTIL' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;">File</th>
+                                                            <th class="text-center" style="vertical-align: middle;">{{'DESCRIPTION_JOB' | translate}}</th>
+                                                            <th class="text-center" style="vertical-align: middle;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-if="VerifiedProcessCtrl.CertificateSertifikat.length <= 0">
+                                                            <td colspan="7" cellpadding="0">
+                                                                <div class="alert alert-info text-center">
+                                                                    <span>{{'No' | translate}}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="obj in VerifiedProcessCtrl.CertificateSertifikat">
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{$index+1}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{obj.StartDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">{{obj.EndDate | date: "dd-MM-yyyy"}}</td>
+                                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                                <a href="{{VerifiedProcessCtrl.folderFile + obj.DocUrl}}" target="_BLANK" ng-if="obj.DocUrl !== null" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+                                                            </td>
+                                                            <td style="vertical-align: middle!important;">{{obj.Description}}</td>
+                                                            <td style="vertical-align: middle!important;">
+                                                                <a ng-click="VerifiedProcessCtrl.openForm(obj,11,true)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                                <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 11)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()" ng-if="VerifiedProcessCtrl.verified[0].Contact.Address.State.Country.Code === 'IDN'">
+                        <uib-tab-heading>
+                            Data Perlengkapan
+                         </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>Data Perlengkapan Perusahaan</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <h3 class="afta-font">Bangunan dan Infrastruktur</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="vertical-align: middle;">No</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Kategori</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Luas(M<sup>2</sup>)</th>
+                                                        <th class="text-center"  >Alamat</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Status Kepemilikan(Sewa/Milik Sendiri *)</th>
+                                                        <th class="text-center"  ></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-if="VerifiedProcessCtrl.listBuilding.length <= 0">
+                                                        <td colspan="7" cellpadding="0">
+                                                            <div class="alert alert-info text-center">
+                                                                <span>{{'No' | translate}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="obj in VerifiedProcessCtrl.listBuilding">
+                                                        <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.category.Value}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;" >{{obj.BuildingArea}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.address.AddressInfo}} {{obj.address.AddressDetail}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{obj.ownershipStatus.Value}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">
+                                                            <a ng-click="VerifiedProcessCtrl.openFormBuilding('building',obj,false)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                            <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 12)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                            </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <h3 class="afta-font">Kendaraan</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="vertical-align: middle;">No</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Nama Alat</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Merk/Type</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Tahun Pembuatan</th>
+                                                        <th class="text-center" style="vertical-align: middle;">No.Seri/No.Polisi</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Kapasitas</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Kondisi</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Status Kepemilikan</th>
+                                                        <th class="text-center" style="vertical-align: middle;"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-if="VerifiedProcessCtrl.listVehicle.length <= 0">
+                                                        <td colspan="9" cellpadding="0">
+                                                            <div class="alert alert-info text-center">
+                                                                <span>{{'No' | translate}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="objc in VerifiedProcessCtrl.listVehicle">
+                                                        <td class="text-center" style="vertical-align: middle;">{{DataPerlengkapanCtrl.currentPage > 1 ? (DataPerlengkapanCtrl.pageSize * (DataPerlengkapanCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                        <td style="vertical-align: middle;">{{objc.Name}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.Brand}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.MfgDate}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.SerialNo}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.Capacity}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.ConditionRef.Value}} </td>
+                                                        <td class="text-center">{{objc.OwnershipRef.Value}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">
+                                                            <a ng-click="VerifiedProcessCtrl.openFormBuilding('vehicle',objc,false)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                            <a ng-if="objc.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(objc, 13)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                          </td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <h3 class="afta-font">Peralatan (Alat Berat)</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="vertical-align: middle;">No</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Nama Alat</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Merk/Type</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Tahun Pembuatan</th>
+                                                        <th class="text-center" style="vertical-align: middle;">No.Seri/No.Polisi</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Kapasitas</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Kondisi</th>
+                                                        <th class="text-center" style="vertical-align: middle;">Status Kepemilikan</th>
+                                                        <th class="text-center"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-if="VerifiedProcessCtrl.listEquipmentTools.length <= 0">
+                                                        <td colspan="9" cellpadding="0">
+                                                            <div class="alert alert-info text-center">
+                                                                <span>{{'No' | translate}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="objc in VerifiedProcessCtrl.listEquipmentTools">
+                                                        <td class="text-center" style="vertical-align: middle;">{{DataPerlengkapanCtrl.currentPage > 1 ? (DataPerlengkapanCtrl.pageSize * (DataPerlengkapanCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                        <td style="vertical-align: middle;">{{objc.Name}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.Brand}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.MfgDate}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.SerialNo}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.Capacity}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">{{objc.ConditionRef.Value}} </td>
+                                                        <td class="text-center">{{objc.OwnershipRef.Value}}</td>
+                                                        <td class="text-center" style="vertical-align: middle;">
+                                                            <a ng-click="VerifiedProcessCtrl.openFormBuilding('equipment',objc,false)" class="btn btn-flat btn-sm btn-primary" role="button" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                            <a ng-if="objc.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(objc, 14)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-trash-o"></i></a>
+                                                          </td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()">
+                        <uib-tab-heading>
+                            Data Pengalaman
+                        </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>Data Pengalaman Perusahaan</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <h4 class="text-center afta-font">Pekerjaan Yang Sudah Selesai</h4>
+                                    <h5 class="text-center afta-font"><em>5 (lima) tahun terakhir</em></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">No</th>
+                                                <th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+                                                <th class="text-center" style="vertical-align: middle;">Lokasi</th>
+                                                <th class="text-center" style="vertical-align: middle;">Instansi</th>
+                                                <th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+                                                <th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+                                                <th class="text-center" style="vertical-align: middle;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-if="VerifiedProcessCtrl.listFinishExp.length <= 0">
+                                                <td colspan="7" cellpadding="0">
+                                                    <div class="alert alert-info text-center">
+                                                        <span>{{'No' | translate}}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr ng-repeat="obj in VerifiedProcessCtrl.listFinishExp">
+                                                <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.ContractName}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.CityLocation.Name}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.Agency}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency:"Rp."}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.StartDate}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a ng-click="VerifiedProcessCtrl.detail(4, obj)" class="btn btn-flat btn-sm btn-warning">
+                                                        <i class="fa fa-external-link" title="Lihat Detail"></i>
+                                                    </a>
+                                                    <a ng-click="VerifiedProcessCtrl.openFormTenagaAhli(obj, 9)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                    <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 17)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <h4 class="text-center afta-font">Pekerjaan Yang Sedang Berlangsung</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">No</th>
+                                                <th class="text-center" style="vertical-align: middle;">Nama Kontrak</th>
+                                                <th class="text-center" style="vertical-align: middle;">Lokasi</th>
+                                                <th class="text-center" style="vertical-align: middle;">Instansi</th>
+                                                <th class="text-center" style="vertical-align: middle;">Nilai Kontrak</th>
+                                                <th class="text-center" style="vertical-align: middle;">Tanggal Pelaksanaan</th>
+                                                <th class="text-center" style="vertical-align: middle;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-if="VerifiedProcessCtrl.listCurrentExp.length <= 0">
+                                                <td colspan="7" cellpadding="0">
+                                                    <div class="alert alert-info text-center">
+                                                        <span>{{'No' | translate}}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr ng-repeat="obj in VerifiedProcessCtrl.listCurrentExp">
+                                                <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.ContractName}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.CityLocation.Name}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.Agency}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.ContractValue| currency:"Rp."}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{obj.StartDate}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a ng-click="VerifiedProcessCtrl.detail(4, obj)" class="btn btn-flat btn-sm btn-warning">
+                                                        <i class="fa fa-external-link" title="Lihat Detail"></i>
+                                                    </a>
+                                                    <a ng-click="VerifiedProcessCtrl.openFormTenagaAhli(obj, 9)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-pencil"></i></a>
+                                                    <a ng-if="obj.IsActive === true" ng-click="VerifiedProcessCtrl.deleteObj(obj, 17)" class="btn btn-flat btn-sm btn-danger" title="{{'NON_ACTIVE'|translate}}"><i class="fa fa-times-circle"></i></a>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab  ng-click="VerifiedProcessCtrl.addFlag()">
+                        <uib-tab-heading>
+                            Dokumen Lain-lain*
+                           </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>Data Dokumen Lain-lain</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-11 center-block" style="float: none!important;">
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">No</th>
+                                                        <th class="text-center">Nama Dokumen</th>
+                                                        <th class="text-center" style="width: 300px; min-width: 300px; vertical-align: middle;">No. Surat</th>
+                                                        <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Masa Berlaku Hingga</th>
+                                                        <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="dok in VerifiedProcessCtrl.document">
+                                                        <td class="text-center">{{$index + 1}}</td>
+                                                        <td class="text-center">{{dok.DocumentName}}</td>
+                                                        <td class="text-center">{{dok.DocumentNo}}</td>
+                                                        <td class="text-center">{{dok.ValidDateConverted}}</td>
+                                                        <td class="text-center">
+                                                            <a class="btn btn-flat btn-sm btn-warning" ng-click="FormIzinCtrl.view(dok)" title="Lihat"><i class="fa fa-file-o"></i></a>
+                                                            <a ng-click="VerifiedProcessCtrl.openForm(dok, 16,true)" class="btn btn-flat btn-sm btn-primary" title="{{'Edit'|translate}}"><i class="fa fa-edit"></i></a>
+                                                            <a class="btn btn-flat btn-sm btn-danger" ng-click="VerifiedProcessCtrl.deleteObj(dok, 16)" title="hapus"><i class="fa fa-trash-o"></i></a>
+                                                            </td>
+                                                    </tr>
+                                                    <tr ng-if="VerifiedProcessCtrl.document.length === 0">
+                                                        <td colspan="5"> Data tidak Ada </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <small><b>*)</b> Dokumen Profil Perusahaan</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <!--bank detail-->
+                    <uib-tab ng-click="VerifiedProcessCtrl.addFlag()">
+                        <uib-tab-heading>
+                            Bank Detail
+                        </uib-tab-heading>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="text-center">
+                                    <label>Bank Detail</label>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;">No Rekening</th>
+                                                <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Nama Account</th>
+                                                <th class="text-center" style="width: 120px; min-width: 120px; vertical-align: middle;">Nama Bank</th>
+                                                <th class="text-center" style="width: 170px; min-width: 170px; vertical-align: middle;">Cabang Bank</th>
+                                                <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Swift Code</th>
+                                                <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Mata Uang</th>
+                                                <th class="text-center" style="width: 120px; min-width: 120px; vertical-align: middle;">Bukti Scan Rekening</th>
+                                                <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="bankDetail in VerifiedProcessCtrl.bankdetail.List">
+                                                <td class="text-center">{{$index + 1}}</td>
+                                                <td class="text-center">{{bankDetail.AccountNo}}</td>
+                                                <td class="text-center">{{bankDetail.AccountName}}</td>
+                                                <td class="text-center">{{bankDetail.BankName}}</td>
+                                                <td class="text-center">{{bankDetail.Branch}}</td>
+                                                <td class="text-center">{{bankDetail.SwiftCode}}</td>
+                                                <td class="text-center">{{bankDetail.CurrencyName}}</td>
+                                                <td class="text-center"><a href="{{VerifiedProcessCtrl.folderFile + bankDetail.UrlDoc}}" target="_BLANK" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></td>
+                                                <td class="text-center">
+                                                    <a ng-click="VerifiedProcessCtrl.updateBankDetail(bankDetail)" class="btn btn-flat btn-sm btn-primary" title="ubah"><i class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-flat btn-sm btn-danger" ng-click="VerifiedProcessCtrl.deleteBankDetail(bankDetail)" title="hapus"><i class="fa fa-trash-o"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="VerifiedProcessCtrl.bankdetail.Count===0"><td colspan="8"> Data Tidak ada</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>   
+                    </uib-tab>
+                    <!--end-->
+                </uib-tabset>
+            </div>
+
+        </div>
+    </div>
+</section>

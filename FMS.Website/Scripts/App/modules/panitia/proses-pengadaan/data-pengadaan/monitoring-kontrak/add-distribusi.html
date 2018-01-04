@@ -1,0 +1,109 @@
+﻿<!-- Main content -->
+<div ng-init="AddDistribusiCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-kontrak">{{'BREADCRUMB.MONITORING_KONTRAK' | translate}}</a></li>
+            <li><a href="#/monitor" class="active">{{'BREADCRUMB.MONITORING_DISTRIBUSI' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.MONITORING_ADD_DISTRIBUSI' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_MON' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="col-sm-4">{{'VENDOR_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{AddDistribusiCtrl.contractSignOff.VendorName}}</label>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="col-sm-4">Nilai Kontrak</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{AddDistribusiCtrl.contractSignOff.TotalPrice}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-sm-4">{{'TENDER_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{AddDistribusiCtrl.contractSignOff.TenderStepData.tender.TenderName}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="col-sm-4">Total Distribusi</label>
+                                <label class="col-sm-1">:</label>
+
+                                <label class="col-sm-7">{{AddDistribusiCtrl.contractSignOff.SpendingValue | currency : "IDR."}}</label>
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="col-sm-4">Sisa Kontrak</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{AddDistribusiCtrl.contractSignOff.RemainingValue | currency : "IDR."}}</label>
+                            </div>
+
+                            <div class="clearfix">
+                            </div>
+                        </div>
+
+                        <div class="row turun-15 panel-success">
+                            <div class="col-md-12">
+                                <div class="col-lg-12 form-group">
+                                    <label> Tahun Distribusi </label>
+                                    <select name="TanggalPO" ng-model="AddDistribusiCtrl.TahunDistribusi" class="form-control">
+                                        <option ng-repeat="year in AddDistribusiCtrl.years" value="{{AddDistribusiCtrl.getStrDate (year.value)}}" class="glyphicon-option-horizontal"> {{year.label}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-12 form-group">
+                                    <label> Value </label>
+                                    <input type="number" class="form-control" name="budget" ng-model="AddDistribusiCtrl.totalprice" required />
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label> Nomor PO </label>
+                                    <input type="number" class="form-control" name="NomorPO" ng-model="AddDistribusiCtrl.NoPO" required />
+                                </div>
+                                <div class="col-lg-12 form-group ">
+                                    <label> Tanggal PO </label>
+                                    <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                        <input style="background-color: #ffffff;" readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="Close"
+                                               is-open="AddDistribusiCtrl.isCalendarOpened[1]" ng-model="AddDistribusiCtrl.TanggalPO" ng-click="AddDistribusiCtrl.openCalendar(1)" style="background-color: #ffffff;" />
+                                        <span class="input-group-addon" ng-click="AddDistribusiCtrl.openCalendar(1)"><span class="glyphicon glyphicon-th"></span></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 form-group ">
+                                    <label> Keterangan </label>
+                                    <textarea class="form-control" cols="2" rows="1" placeholder="Isi Keterangan" ng-model="AddDistribusiCtrl.keterangan"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="pull-right">
+                                    <button class="btn btn-success turun-15" title="{{'SIMPAN' | translate}}" ng-click="AddDistribusiCtrl.CreateDistribusi()"><i class="fa fa-save"></i>&nbsp;{{'SIMPAN' | translate}}</button>
+
+
+                                    <a href="#/monitoring-kontrak" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                        <i class="fa fa-arrow-left"></i>&nbsp;{{'BACK' | translate}}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

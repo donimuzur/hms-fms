@@ -1,0 +1,18 @@
+﻿{
+  "BREADCRUMB": {
+    "HOME": "Beranda",
+    "COMPANY_DATA": "Data Perusahaan",
+    "VERIFIED_SEND": "Kirim Verifikasi"
+  },
+  "ACCEPT": "Setuju",
+  "VENDOR_EXPERT": "Data Tenaga Ahli",
+  "EDUCATION": "Pendidikan",
+  "EXPERIENCE": "Pengalaman (tahun)",
+  "KEAHLIAN": "Keahlian",
+  "EXPERIENCE WORK": "Pengalaman Kerja",
+  "Start": "Mulai",
+  "UNTIL": "Hingga",
+  "DESCRIPTION_JOB": "Job Deskripsi",
+  "KEAHLIAN CERTIFICATE":  "Sertifikat Keahlian"
+
+}

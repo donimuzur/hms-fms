@@ -1,0 +1,26 @@
+{
+  "HEAD1": "Dashboard",
+  "HEAD2": "Selamat Datang",
+  "APP_PENGADAAN": "Approval Pengadaan",
+  "SRC_PLACEHOLDER": "Cari nama pengadaan...",
+  "SRC_BUTTON": "Cari",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_PENGADAAN": "Nama Pengadaan",
+    "TAHAPAN": "Tahapan",
+    "MULAI": "Mulai",
+    "SELESAI": "Selesai",
+    "STATUS": "Status"
+  },
+  "Tender Comm Reject":  "Reject",
+  "MENUJU_HALAMAN_APPROVAL": "Menuju halaman approval",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data",
+  "CONFIRM": {
+    "SEND_FOR_APPROVAL": "Apakah anda ingin mengirim data Total Evaluasi tender ini untuk proses persetujuan?"
+  },
+  "MESSAGE": {
+    "ERR_SEND_TO_APPRV": "Gagal mengirim data kontrak untuk proses approval",
+    "SUCC_SEND_TO_APPRV": "Data kontrak berhasil dikirim untuk proses approval"
+  }
+}

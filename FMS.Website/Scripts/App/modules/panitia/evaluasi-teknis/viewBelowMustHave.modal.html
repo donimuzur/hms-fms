@@ -1,0 +1,38 @@
+﻿<div class="modal-content" ng-init="mustHaveCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="mustHaveCtrl.onBatalClick()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Vendor : {{mustHaveCtrl.vendorName}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" style="min-width: 20px; width: 20px;">No</th>
+                                <th class="center-vertical">Kriteria di bawah nilai Must Have</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="krit in mustHaveCtrl.kriteria">
+                                <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                <td class="text-left" style="vertical-align: middle;">{{krit.CriteriaName}}</td>
+                            </tr>
+                            <tr ng-if="mustHaveCtrl.kriteria.length === 0">
+                                <td style="vertical-align: middle;" colspan="2">Tidak Ada</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="mustHaveCtrl.onBatalClick()" type="button" class="btn btn-flat btn-default" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

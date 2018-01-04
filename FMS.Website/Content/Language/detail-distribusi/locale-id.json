@@ -1,0 +1,39 @@
+{
+
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_KONTRAK": "Monitoring Kontrak Jasa",
+    "MONITORING_DISTRIBUSI": "Detail Distribusi"
+  },
+  "JUDUL_DISTRIBUSI": "Detail Distribusi Budget",
+  "CANCEL": "Batal",
+  "EDIT": "Edit",
+  "KIRIM_PO": "Kirim PO",
+  "DISTRIBUSI": "Distribusi",
+  "BATAL": "Batal",
+  "KEMBALI": "Kembali",
+  "TENDER_NAME": "Nama Pengadaan",
+  "VENDOR_NAME": "Nama Vendor",
+  "MESSAGE": {
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data Distribusi",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Distribusi",
+    "LOADING": "Silahkan Tunggu..."
+  },
+  "SIMPAN": "Simpan",
+  "TABLE": {
+    "NO": "No",
+    "TAHUN_DISTRIBUSI": "Tahun Distribusi",
+    "BUDGET": "Budget",
+    "NOMOR_PO": "Nomor PO",
+    "TANGGAL_PO": "Tanggal PO",
+    "STATUS_PO": "Status PO",
+    "KETERANGAN": "Keterangan",
+    "ACTION_DETIL": "Edit",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data"
+}

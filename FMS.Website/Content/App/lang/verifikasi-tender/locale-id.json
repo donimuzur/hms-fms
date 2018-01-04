@@ -1,0 +1,72 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "PROSES_PENGADAAN": "Proses Pengadaan",
+    "VERIFIKASI_TENDER": "Verifikasi Tender",
+    "ATUR_APPROVAL": "Pengaturan Approval"
+  },
+  "DATA_VERIFIKASI": "Data Verifikasi Tender ( Contract Planning )",
+  "APPROVAL": "Approval",
+  "ATUR_APPROVAL": "Pengaturan Approval",
+  "DETAIL_APPROVAL": "Detail Approval",
+  "PILIH_PEGAWAI": "Pilih Pegawai",
+  "FILTER": {
+    "NOMOR_TENDER": "Nomor Tender",
+    "RFQ": "RFQ"
+  },
+  "TABLE": {
+    "NO": "No",
+    "NOMOR_TENDER": "Nomor Tender",
+    "RFQ": "RFQ",
+    "JENIS_CR": "Jenis CR",
+    "TANGGAL_REVIEW": "Tanggal Review",
+    "KETERANGAN": "Keterangan",
+    "STATUS": "Status",
+    "DETAIL": "Detail",
+    "DOKUMEN": "Dokumen",
+    "ACTION": "Action",
+    "DETAIL_APPROVAL": "Detail Approval",
+    "ATUR_APPROVAL": "Atur Approval",
+    "NAMA_PEGAWAI": "Nama Pegawai",
+    "DEPARTEMEN": "Departemen",
+    "JABATAN": "Jabatan",
+    "TANGGAL_APPROVE": "Tgl. Approve",
+    "APPROVAL": "Approval",
+    "PRIORITAS_UTAMA": "Chairman"
+  },
+  "CARI": "Cari",
+  "TIDAK_ADA_DATA":  "Tidak Ada Data",
+  "TOTAL_DATA":  "Total Data",
+  "DETAIL": "Detail",
+  "TAMBAH": "Tambah",
+  "KEMBALI": "Kembali",
+  "DOKUMEN": "Dokumen",
+  "PILIH": "PILIH",
+  "CARI_NAMA_PEGAWAI": "Cari Nama Pegawai",
+  "HAPUS": "Hapus",
+  "SIMPAN": "Simpan",
+  "TUTUP": "Tutup",
+  "APPROVED": "Approved",
+  "REJECTED": "Rejected",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data kontrak",
+    "ERR_LOAD_APPROVERS": "Gagal mendapatkan daftar approver",
+    "ERR_SAVE_APPROVERS": "Gagal menyimpan daftar approver",
+    "SUCC_SAVE_APPROVERS": "Berhasil menyimpan daftar approver",
+    "ERR_LOAD_EMPLOYEE": "Gagal mendapatkan daftar pegawai",
+    "ERR_DUPLICATE_EMPLOYEE": "Pegawai ini sudah dipilih",
+    "ERR_NOT_PROCESS_2": "Tender ini sudah tidak dalam proses verifikasi",
+    "ERR_NO_CHAIRMAN": "Pilih minimal 1 (satu) pegawai sebagai chairman"
+  },
+  "STATUS": {
+    "APPROVED": "Approved",
+    "ON_PROCESS": "On Process",
+    "REVIEWED": "Reviewed",
+    "UNCOMPLETE": "Uncomplete",
+    "PENDING": "Pending"
+  },
+  "KETERANGAN_APPROVAL": "Tender akan dianggap lolos persetujuan apabila sudah disetujui oleh SEMUA approver Chairman dan minimal 1 (SATU) approver Non Chairman.",
+    "KETERANGAN_APPROVAL1": "Apabila pemenang bukan nilai terbaik dari Total evaluasi maka diperlukan Approval L1 dan L2, Untuk L1 dan L2 Harus diurutan 1 dan 2."
+}

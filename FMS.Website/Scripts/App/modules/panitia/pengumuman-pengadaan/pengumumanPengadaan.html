@@ -1,0 +1,119 @@
+<section class="content" ng-init="pengumumanPengadaanCtrl.init()">
+<ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a  class="active" >Pengumuman Pengadaan</a></li>
+            
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="text-left afta-font" style="padding-bottom: 20px;">Pengumuman Pengadaan</h3>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20px;vertical-align: middle!important;">No.</th>
+                                            <th class="text-center" style="vertical-align: middle!important;">Deskripsi</th>
+                                            <th class="text-center" style="width: 140px; min-width: 240px!important;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pgm in pengumumanPengadaanCtrl.listPengumuman">
+                                            <td style="vertical-align: middle;">{{$index+1}}</td>
+                                            <td style="vertical-align: middle;">{{pgm.TenderAnnouncement.Description}}</td>
+                                            <td class="text-center" style="vertical-align: middle!important;">
+                                                <a ng-click="pengumumanPengadaanCtrl.detailData(false, pgm)" class="btn btn-flat btn-sm btn-warning"  title="Lihat"><i class="fa fa-external-link"></i></a>
+                                                <!--<a ng-click="pengumumanPengadaanCtrl.editForm(false, pgm)" class="btn btn-flat btn-sm btn-primary" title="Ubah Data" ><i class="fa fa-edit"></i></a>-->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br/><br/><br/><br/>
+                    </div>
+                    <div class="row" style="padding-bottom: 20px;">
+                        <div class="col-md-12">
+                            <div class="center-block text-center">
+                                <button ng-click="pengumumanPengadaanCtrl.openForm(true, null)" ng-disabled="pengumumanPengadaanCtrl.listPengumuman.length > 0" 
+                                   class="btn btn-flat btn-xs btn-primary"  title="Buat Pengumuman"><i class="fa fa-pencil"></i>&nbsp;</button>                                  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button ng-click="pengumumanPengadaanCtrl.backDetailTahapan()" class="btn btn-flat btn-primary" title="{{'BATAL'|translate}}"><i class="fa fa-reply"></i></button>
+                        </div>
+                    </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/ng-template" id="detail-pengumuman-pengadaan.html">
+    <div class="modal-content" ng-init="formPPCtrl.init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="formPPCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Deskripsi Pengadaan</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <dl class="dl-horizontal">
+                        <dt>Kode Tender</dt>   
+                        <dd> : &nbsp; {{formPPCtrl.TenderCode}}</dd>
+                        <dt>Nama Tender</dt>
+                        <dd> : &nbsp; {{formPPCtrl.TenderName}}</dd>      
+                        <dt>Pengumuman</dt>
+                        <dd> : &nbsp; {{formPPCtrl.Description}}</dd>   
+                        <dt>Komoditas</dt>
+                        <dd> : &nbsp; {{formPPCtrl.selectedComodity.Name}}</dd>
+                        <dt>Klasifikasi</dt>
+                        <dd> : &nbsp; {{formPPCtrl.selectedClasification.Value}}</dd> 
+                        <dt>Tehnikal</dt>
+                        <dd> : &nbsp; {{formPPCtrl.selectedTechnical.Value}}</dd>   
+                        <dt>Area</dt>
+                        <dd> : &nbsp; <span ng-if="formPPCtrl.IsLocal === true">Lokal </span>
+                            <span ng-if="formPPCtrl.IsNational === true">, National </span>
+                            <span ng-if="formPPCtrl.IsInternational === true">, International </span>
+                        </dd> 
+                        <dt>Email Vendor</dt>
+                        <dd> : &nbsp; {{formPPCtrl.Emails}}</dd> 
+                    </dl>          
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="center-vertical" width="5%">{{'TABLE_VENDOR.NO' | translate}}</th>
+                                    <th class="center-vertical" width="25%">{{'TABLE_VENDOR.CODE' | translate}}</th>
+                                    <th class="center-vertical">{{'TABLE_VENDOR.NAMEV' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="dt in formPPCtrl.Vendors">
+                                    <td class="center-vertical">{{$index + 1}}</td>
+                                    <td style="vertical-align: middle;">{{dt.Code}}</td>
+                                    <td style="vertical-align: middle;">{{dt.VendorName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="formPPCtrl.batal()" type="button" class="btn btn-flat btn-primary" title="{{'BACK'|translate}}"><i class="fa fa-reply"></i></button>
+        </div>
+    </div>
+
+</script>

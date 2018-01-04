@@ -1,0 +1,142 @@
+﻿<style>
+    .dl-horizontal dd {
+        margin-left: 250px;
+        padding-bottom: 5px;
+    }
+
+    .dl-horizontal dt {
+        width: 250px;
+    }
+</style>
+<section class="content" style="overflow: visible;" ng-init="DPVHSCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a class="active">Detail Penawaran</a></li>
+    </ol>
+    <div class="container-fluid">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Detail Penawaran VHS</h3>
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Pengadaan: {{DPVHSCtrl.nego[0].tender.tender.TenderName}}</h3>
+                            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 15px;">Rekanan: {{DPVHSCtrl.nego[0].VendorName}}</h3>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <form role="form" name="formAdd">
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="col-md-12">
+                                        <pagination total-items="DPVHSCtrl.totalItems" page="DPVHSCtrl.currentPage" items-per-page="10" ng-show="DPVHSCtrl.totalItems > 10"
+                                                    max-size="DPVHSCtrl.maxSize" on-select-page="DPVHSCtrl.jLoad(page)"></pagination>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="table table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center center-vertical" colspan="4"></th>
+                                                        <th class="text-center center-vertical" colspan="2">Harga Rekanan</th>
+                                                        <th class="text-center center-vertical" colspan="2">Harga Negosiasi</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="text-center center-vertical" width="20px">No.</th>
+                                                        <th class="text-center center-vertical">Uraian Pekerjaan</th>
+                                                        <th class="text-center center-vertical">Terbuka<input type="checkbox" ng-change="DPVHSCtrl.loadOpenAll()" ng-model="DPVHSCtrl.IsOpenAll" ng-click="DPVHSCtrl.save()" /></th>
+                                                        <th class="text-center center-vertical">Volume</th>
+                                                        <th class="text-center center-vertical">Harga Satuan</th>
+                                                        <th class="text-center center-vertical">Jumlah Harga</th>
+                                                        <th class="text-center center-vertical">Harga Satuan</th>
+                                                        <th class="text-center center-vertical">Jumlah Harga</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="dp in DPVHSCtrl.nego">
+                                                        <td class="middle-vertical">{{DPVHSCtrl.currentPage > 1 ? (DPVHSCtrl.pageSize * (DPVHSCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                        <td class="middle-vertical">
+                                                            {{dp.ShortText}}
+                                                        </td>
+                                                        <td class="middle-vertical">
+                                                            <input type="checkbox" ng-model="dp.IsOpen" ng-click="DPVHSCtrl.saveIsOpen(dp)" />
+                                                        </td>
+                                                        <td class="text-center center-vertical">
+                                                            {{dp.Quantity}}
+                                                        </td>
+                                                        <td class="text-right middle-vertical">
+                                                            {{dp.UnitPriceVOE | currency:"Rp"}}
+                                                        </td>
+                                                        <td class="text-right middle-vertical">
+                                                            {{dp.TotalPriceVOE | currency:"Rp"}}
+                                                        </td>
+                                                        <td class="text-center center-vertical" ng-if="dp.UnitPrice !== null ">{{dp.UnitPrice | currency:"Rp"}}</td>
+                                                        <td class="text-center center-vertical" ng-if="dp.UnitPrice === null ">Rp0.00</td>
+                                                        <td class="text-right middle-vertical" ng-if="dp.TotalPrice !== null">
+                                                            {{dp.TotalPrice | currency:"Rp"}}
+                                                        </td>
+                                                        <td class="text-right middle-vertical" ng-if="dp.TotalPrice === null">
+                                                            Rp0.00
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td class="text-right middle-vertical"><strong>Sub Total : </strong></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="text-right middle-vertical"><strong>{{DPVHSCtrl.cost| currency: ""+ labelcurr +" "}} </strong></td>
+                                                        <td></td>
+                                                        <td class="text-right middle-vertical"><strong>{{DPVHSCtrl.totalNego | currency: ""+ labelcurr +" "}} </strong></td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <ul uib-pagination boundary-links="true" total-items="DPVHSCtrl.totalItems" ng-model="DPVHSCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="DPVHSCtrl.jLoad(DPVHSCtrl.currentPage)"></ul>
+                                        <br />
+                                        <!--<label>{{'TOTAL_DATA' | translate}} : {{DPVHSCtrl.totalItems}}</label>-->
+                                    </div>
+                                    <div class="col-md-5" style="margin-top:18px !important;">
+                                        <strong>
+                                            Selisih harga rekanan:
+                                            <div class="pull-right" style="display:inline-block!important;">
+                                                {{DPVHSCtrl.selisih | currency:""}}
+                                        </strong>
+                                    </div><br />
+                                    <strong>
+                                        Presentase penurunan harga:
+                                        <div class="pull-right" style="display:inline-block!important;">
+                                            {{DPVHSCtrl.presentase | number}}%
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <dl class="dl-horizontal" style="margin-bottom: 0px;">
+                                    <dt class="text-right"><input type="checkbox" ng-model="DPVHSCtrl.generet" ng-click="DPVHSCtrl.generate()" /> Generate Negosiasi </dt>
+                                    <dd>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="pull-right text-right" style="padding-top: 15px;">
+                                    <a class="btn btn-sm btn-flat btn-default" ng-click="DPVHSCtrl.back()"><i class="fa fa-reply"></i>&nbsp;Kembali</a>
+                                    &nbsp;
+                                    <!--
+                                    <span>
+                                        <button ng-click="DPVHSCtrl.save()" class="btn btn-sm btn-flat btn-primary"><i class="fa fa-save"></i>&nbsp;Simpan</button>
+                                    </span>-->
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</section>

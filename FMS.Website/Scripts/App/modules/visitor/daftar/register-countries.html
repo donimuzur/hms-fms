@@ -1,0 +1,64 @@
+﻿<div class="row form-group">
+    <ng-form name="daftarCtrl.regionalForm">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.regionalForm.$valid && !daftarCtrl.regionalForm.$pristine}">
+                <select required class="form-control"
+                        ng-model="daftarCtrl.vendor.country"
+                        ng-change="daftarCtrl.loadStates()"
+                        ng-options="item as item.Name for item in daftarCtrl.countryList">
+                    <option value="" selected disabled class="text-center">--{{"FORM.COUNTRY" | translate}}--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.regionalForm.$valid && !daftarCtrl.regionalForm.$pristine}">
+                <input ng-disabled="true" class="form-control" data-toggle="tooltip" data-placement="right" placeholder="{{'FORM.REGION' | translate}} *" type="text" ng-model="daftarCtrl.vendor.region.Name" />
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <select class="form-control"
+                        ng-model="daftarCtrl.vendor.state"
+                        ng-change="daftarCtrl.loadCities()"
+                        ng-disabled="!daftarCtrl.stateList || daftarCtrl.stateList.length == 0 || !daftarCtrl.vendor.country"
+                        ng-options="item as item.Name for item in daftarCtrl.stateList">
+                    <option value="" selected disabled>--{{"FORM.STATE" | translate}}--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <select class="form-control"
+                        ng-model="daftarCtrl.vendor.city"
+                        ng-change="daftarCtrl.loadDistricts()"
+                        ng-disabled="!daftarCtrl.cityList || daftarCtrl.cityList.length == 0 || !daftarCtrl.vendor.state"
+                        ng-options="item as item.Name for item in daftarCtrl.cityList">
+                    <option value="" selected disabled>--{{"FORM.CITY" | translate}}--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <select class="form-control"
+                        ng-model="daftarCtrl.vendor.district"
+                        ng-disabled="!daftarCtrl.districtList || daftarCtrl.districtList.length == 0 || !daftarCtrl.vendor.city"
+                        ng-options="item as item.Name for item in daftarCtrl.districtList">
+                    <option value="" selected disabled>--{{"FORM.DISTRICT" | translate}}--</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <div class="input-group ">
+                    <input class="form-control" style="text-transform: uppercase" data-toggle="tooltip" data-placement="right" title="{{'FORM.KODETENDER' | translate}}" placeholder="{{'FORM.KODETENDER' | translate}} *" type="text" ng-model="daftarCtrl.vendor.tendercodetemp" ng-blur="daftarCtrl.tenderChanged()" name="tendercodetemp" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="daftarCtrl.tenderChanged()"><i class="fa fa-search"></i>&nbsp;Check</button>
+                    </span>
+                </div> 
+            </div> 
+            <div class="input-group" ng-if="daftarCtrl.tenderName !== ''">
+                Nama Tender: {{daftarCtrl.tenderName}}
+            </div>
+        </div>
+    </ng-form>
+</div>

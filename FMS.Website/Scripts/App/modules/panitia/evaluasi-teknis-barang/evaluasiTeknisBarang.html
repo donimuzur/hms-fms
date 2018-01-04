@@ -1,0 +1,70 @@
+<section class="content" ng-init="evalTBCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/home">{{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a class="active">{{evalTBCtrl.tenderStepData.step.TenderStepName}}</a></li>
+    </ol>
+	<div class="row">
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-12">
+							<h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{evalTBCtrl.tenderStepData.step.TenderStepName}}</h3>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8">
+							<label>{{'TANGGAL_MULAI'|translate}}: {{evalTBCtrl.tenderStepData.StartDate | date: "dd-MM-yyyy HH:mm"}}</label>
+						</div>
+						<div class="col-md-4">
+							<label>{{'TANGGAL_SELESAI'|translate}}: {{evalTBCtrl.tenderStepData.EndDate | date: "dd-MM-yyyy HH:mm"}}</label>
+						</div>
+						<div class="col-md-9">
+							<label>{{'TENDER'|translate}}: {{evalTBCtrl.tenderStepData.tender.TenderName}}</label>
+						</div>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<div class="col-md-12">
+							<div class="table table-responsive" style="padding-bottom: 20px;">
+								<table class="table table-bordered table-striped" id="table-rekanan">
+									<thead>
+										<tr>
+											<th class="text-center">{{'TABLE.NO'|translate}}</th>
+											<th class="text-center">{{'TABLE.REKANAN'|translate}}</th>
+											<th class="text-center">{{'TABLE.STATUS'|translate}}</th>
+											<th class="text-center">{{'TABLE.SKOR'|translate}}</th>
+                                            <th class="text-center"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="eval in evalTBCtrl.evaluations">
+											<td class="center-vertical">{{$index + 1}}</td>
+											<td class="center-vertical">{{eval.VendorName}}</td>
+                                            <td class="center-vertical" ng-if="eval.IsPassed === true">{{'LOLOS'|translate}}</td>
+                                            <td class="center-vertical" ng-if="eval.IsPassed !== true">{{'TIDAK_LOLOS'|translate}}</td>
+                                            <td class="center-vertical">{{eval.Score}}</td>
+                                            <td class="center-vertical">
+                                                <button type="button" class="btn btn-flat btn-sm btn-success" ng-click="evalTBCtrl.detail(eval.VendorID)" title="{{'LAKUKAN_EVALUASI'|translate}}">
+                                                    <i class='fa fa-check-square'></i>&nbsp; 
+                                                </button>
+                                            </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="pull-right">
+								<button type="button" class="btn btn-flat btn-sm btn-warning" ng-click="evalTBCtrl.kembali()">
+									<i class='fa fa-arrow-left'></i>&nbsp; {{'KEMBALI'|translate}}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

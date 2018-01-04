@@ -1,0 +1,47 @@
+﻿<div class="modal-content" ng-init="FormIzinCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormIzinCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Ijin Usaha</h3>
+    </div>
+    <div class="modal-body" >
+        <div class="row blocked">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nomor SIUP/SIUI/SIUJK/TDP</dt>
+                            <dd>{{FormIzinCtrl.dataLicensi.LicenseNo}}</dd>
+                            <dt>Jenis Ijin</dt>
+                            <dd>{{FormIzinCtrl.licensiname}}</dd>
+                            <dt>Berlaku Sampai</dt>
+                            <dd>{{FormIzinCtrl.dataLicensi.ExpiredDate}}</dd>
+                            <dt>Instansi Pemberi</dt>
+                            <dd>{{FormIzinCtrl.dataLicensi.IssuedBy}}</dd>
+                            <div ng-if="FormIzinCtrl.licensiname === 'SIUP'">
+                                <dt>Kualifikasi</dt>
+                                <dd>{{FormIzinCtrl.dataLicensi.CompanyScaleName}}</dd>
+                                <dt>Modal</dt>
+                                <dd>{{FormIzinCtrl.dataLicensi.CapitalAmount}}</dd>
+                            </div>
+                            <dt>File Dokumen</dt>
+                            <dd>
+                                <a href="{{FormIzinCtrl.folderFile + FormIzinCtrl.dataLicensi.DocumentURL}}" target="_BLANK" class="btn btn-sm btn-primary" 
+                                   ng-if="FormIzinCtrl.dataLicensi.DocumentURL != null" title="Download Dokumen Data Ijin Usaha">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp;
+                                </a>
+                                <label class="label label-sm label-default" ng-if="FormIzinCtrl.dataLicensi.DocumentURL === null">
+                                    <i class="fa fa-times"></i>&nbsp;&nbsp;File Dokumen Data Ijin Usaha Belum di Upload
+                                </label>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="FormIzinCtrl.batal()" data-dismiss="modal" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+    </div>
+</div>

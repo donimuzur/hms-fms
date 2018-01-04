@@ -1,0 +1,283 @@
+<div class="content" ng-init="PengumumanTenderVendorCtrl.init()">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <ol class="breadcrumb">
+                        <li><a href="#/dashboard-vendor">Beranda</a></li>
+                        <li><a class="active">Pengumuman Pengadaan</a></li>
+                    </ol>
+                </div>
+                <div class="box-body">                        
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="box-title afta-font text-center">Pengumuman Pengadaan</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="afta-font text-center">
+                                <strong>Nama Pegadaan</strong> ({{PengumumanTenderVendorCtrl.dataTender.TenderName}})
+                            </h4>
+                            
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <div class="box-body" ng-if="PengumumanTenderVendorCtrl.GoodsOrService===1 && PengumumanTenderVendorCtrl.offerEntryType==='VHS'">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">No Quotation</label><br />
+                                                <input type="text" class="form-control input-group-sm" ng-model="PengumumanTenderVendorCtrl.QuotationNo" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" ng-if="(PengumumanTenderVendorCtrl.RFQId.RFQType === 1 && PengumumanTenderVendorCtrl.RFQId.DeliveryTerms == 3087)">
+                                            <div class="form-group">
+                                                <label class="control-label">Lead Time</label><br />
+                                                <input type="text" ng-disabled="PengumumanTenderVendorCtrl.RFQId.DeliveryTerms === 3087" class="form-control input-group-sm" ng-model="PengumumanTenderVendorCtrl.RFQId.LeadTime" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Quotation validity</label><br />
+                                                <input type="text" ng-disabled="PengumumanTenderVendorCtrl.RFQId.RFQType === 1" class="form-control input-group-sm" ng-model="PengumumanTenderVendorCtrl.RFQId.ExpiredDay" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Jenis Penawaran</label><br />
+                                                <select disabled class="form-control input-sm" ng-model="PengumumanTenderVendorCtrl.selectedDeliveryTerms"
+                                                        ng-options="item as item.Value | translate for item in PengumumanTenderVendorCtrl.DeliveryTerm">
+                                                    <option value="" selected disabled>
+                                                        -- Tipe Penawaran --
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Inco Terms</label><br />
+                                                <select ng-disabled="PengumumanTenderVendorCtrl.RFQId.DeliveryTerms == 3087" class="form-control input-sm" ng-model="PengumumanTenderVendorCtrl.selectedIncoTerms" ng-change="PengumumanTenderVendorCtrl.changeFreightDetai()"
+                                                        ng-options="item as item.Name for item in PengumumanTenderVendorCtrl.listIncoTerms">
+                                                    <option value="" selected disabled>
+                                                        -- Tujuan Pengiriman --
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Tujuan Pengiriman</label><br />
+                                                <select ng-disabled="PengumumanTenderVendorCtrl.RFQId.DeliveryTerms == 3087" class="form-control input-sm" ng-model="PengumumanTenderVendorCtrl.selectedState"
+                                                        ng-options="item as item.Name for item in PengumumanTenderVendorCtrl.listFreight">
+                                                    <option value="" selected disabled>
+                                                        -- Tujuan Pengiriman --
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="box-body" ng-if="PengumumanTenderVendorCtrl.GoodsOrService===1 && PengumumanTenderVendorCtrl.offerEntryType==='GOODS'">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Nomor Quotation</label><br />
+                                                <input type="text" class="form-control" ng-model="PengumumanTenderVendorCtrl.goods[0].goods.QuotationNo" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Expired Day</label><br />
+                                                <input type="text" class="form-control" ng-disabled="true" ng-model="PengumumanTenderVendorCtrl.goods[0].goods.StartDate" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Tujuan Pengiriman</label><br />
+                                                <select class="form-control input-sm" ng-model="PengumumanTenderVendorCtrl.selectedFreightCost2"
+                                                        ng-options="item as item.DeliveryState for item in PengumumanTenderVendorCtrl.listFreightCost2" disabled>
+                                                    <option value="" selected disabled>
+                                                        -- Tujuan Pengiriman --
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Payment Term</label>
+                                                <select disabled class="form-control input-sm" ng-model="PengumumanTenderVendorCtrl.selectedPaymentTerm"
+                                                        ng-options="item as item.Name for item in PengumumanTenderVendorCtrl.listPaymentTerm"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Currency</label><br />
+                                                <select class="form-control input-sm" ng-model="PengumumanTenderVendorCtrl.selectedCurrencies" ng-change="PengumumanTenderVendorCtrl.changeCurrent(PengumumanTenderVendorCtrl.selectedCurrencies)"
+                                                        ng-options="item as item.Symbol for item in PengumumanTenderVendorCtrl.listCurrencies" disabled>
+                                                    <option value="" selected disabled>
+                                                        -- Currency --
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-md-12" ng-if="PengumumanTenderVendorCtrl.GoodsOrService===1 && PengumumanTenderVendorCtrl.offerEntryType==='GOODS'">
+                                <h4 class="text-right afta-font">Total Penawaran : {{PengumumanTenderVendorCtrl.offer | currency: ""+ labelcurr +" "}}</h4>
+                            </div>
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <!--vhs-->
+                                <table ng-if="PengumumanTenderVendorCtrl.GoodsOrService===1 && PengumumanTenderVendorCtrl.offerEntryType==='VHS'" class="table table-bordered table-striped" id="tabelPesertaNegosiasi">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="20px">No.</th>
+                                            <th class="text-center">Persyaratan</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="data in PengumumanTenderVendorCtrl.dataOfferEntry">
+                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{data.DocName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+
+                                                <a ng-if="data.TenderDocTypeID === 21" ng-click="PengumumanTenderVendorCtrl.downloadExcel(data)" class="btn btn-flat btn-sm btn-warning" title="Download Template">
+                                                    <i class='fa fa-download'></i>&nbsp;
+                                                </a>
+                                                <a ng-if="(data.TenderDocTypeID === 10|| data.TenderDocTypeID === 11 || data.TenderDocTypeID === 12) && data.DocumentUrl !== null " href="{{PengumumanTenderVendorCtrl.folderFile+data.DocumentUrl}}" target="_blank" class="btn btn-flat btn-sm btn-success" title="Download File">
+                                                    <i class='fa fa-download'></i>&nbsp;
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="PengumumanTenderVendorCtrl.dataOfferEntry.length === 0"><td colspan="6">Data Tidak Ada</td></tr>
+                                    </tbody>
+                                </table>
+
+                                <!--barang-->
+                                <table class="table table-bordered table-striped" ng-if="PengumumanTenderVendorCtrl.GoodsOrService===1 && PengumumanTenderVendorCtrl.offerEntryType==='GOODS'" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Uraian Barang</th>
+                                            <th class="text-center" ng-if="PengumumanTenderVendorCtrl.TenderType === 4171">Alternatif</th>
+                                            <th class="text-center">Lead Time (Days)</th>
+                                            <th class="text-center">Qty</th>
+                                            <th class="text-center">Satuan</th>
+                                            <th class="text-center">Harga Satuan</th>
+                                            <th class="text-center">Total Harga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="gods in PengumumanTenderVendorCtrl.goods">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{gods.item.ShortText}}</td>
+                                            <td class="center-vertical" ng-if="PengumumanTenderVendorCtrl.TenderType === 4171"><input type="text" ng-model="gods.Alternative" style="width: 160px;" /></td>
+                                            <td class="center-vertical"><input class="form-control input-sm" disabled currency-mask type="text" ng-model="gods.LeadTime" style="width: 80px;" /></td>
+                                            <td class="center-vertical" style="width: 30px;">{{gods.item.Quantity}}</td>
+                                            <td class="center-vertical" style="width: 30px;">{{gods.item.UnitMeasure}}</td>
+                                            <td class="center-vertical"><input currency-mask type="text" disabled class="form-control input-sm" ng-model="gods.UnitPrice" style="width: 100px;" ng-blur="PengumumanTenderVendorCtrl.changePrice(gods)" /></td>
+                                            <td class="center-vertical"><input currency-mask disabled type="text" class="form-control input-sm" ng-model="gods.TotalPrice" style="text-align: right; width: 100px;" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <!--jasa-->
+                                <table ng-if="PengumumanTenderVendorCtrl.GoodsOrService===2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" colspan="7">Kelengkapan Tender</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center" width="10%">Kode </th>
+                                            <th class="text-center">Nama Form </th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pgm in PengumumanTenderVendorCtrl.listKelengkapan">
+                                            <td class="text-center">{{pgm.DocumentCode}}</td>
+                                            <td>{{pgm.DocumentName}}</td>
+                                            <td class="text-center">
+                                                <button ng-click="PengumumanTenderVendorCtrl.detailDokumen(pgm)" class="btn btn-xs btn-warning" title="Detail"><i class="fa fa-folder-open-o"></i> </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="detail-dok-penawaran.html">
+    <div class="modal-content" ng-init="DetDokPenawaranCtrl.init()">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="DetDokPenawaranCtrl.batal()" title="Keluar">
+                <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+            </button>
+            <h4 class="afta-font modal-title ">{{DetDokPenawaranCtrl.DocumentName}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Nama Dokumen </th>
+                                            <th class="text-center" width="10%">Download </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{DetDokPenawaranCtrl.DocumentName}}</td>
+                                            <td class="text-center">
+                                                <a ng-disabled="(DetDokPenawaranCtrl.FileDoc === null)" href="{{DetDokPenawaranCtrl.folderFile+DetDokPenawaranCtrl.FileDoc}}" class="btn btn-xs btn-success" title="Download"><i class="fa fa-download"></i> </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="pull-right">
+                                <button ng-click="DetDokPenawaranCtrl.batal()" class="btn btn-sm btn-default" title="Kembali"><i class="fa fa-arrow-circle-o-left"></i> </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

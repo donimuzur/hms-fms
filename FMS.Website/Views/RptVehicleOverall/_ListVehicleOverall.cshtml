@@ -1,0 +1,116 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.VehicleOverallReportModel
+
+<table id="tbVehicle" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 100px">Police Number</th>
+            <th style="min-width: 100px">Chasis Number</th>
+            <th style="min-width: 100px">Engine Number</th>
+            <th style="min-width: 100px">Employee ID</th>
+            <th style="min-width: 100px">Employee Name</th>
+            <th style="min-width: 100px">Cost Center</th>
+            <th style="min-width: 100px">Manufacture</th>
+            <th style="min-width: 100px">Model</th>
+            <th style="min-width: 100px">Series</th>
+            <th style="min-width: 100px">Transmission</th>
+            <th style="min-width: 100px">Body Type</th>
+            <th style="min-width: 100px">Fuel</th>
+            <th style="min-width: 100px">Branding</th>
+            <th style="min-width: 100px">Color</th>
+            <th style="min-width: 100px">Airbag</th>
+            <th style="min-width: 100px">ABS</th>
+            <th style="min-width: 100px">Vehicle Type</th>
+            <th style="min-width: 100px">Start Rent</th>
+            <th style="min-width: 100px">End Rent</th>
+            <th style="min-width: 100px">Vendor</th>
+            <th style="min-width: 100px">Asset Number</th>
+            <th style="min-width: 100px">Current Location</th>
+            <th style="min-width: 100px">Supply Method</th>
+            <th style="min-width: 100px">Termination Date</th>
+            <th style="min-width: 100px">Monthly Installment</th>
+            <th style="min-width: 100px">VAT</th>
+            <th style="min-width: 100px">Total Monthly</th>
+            <th style="min-width: 100px">PO Number</th>
+            <th style="min-width: 100px">PO Line</th>
+            <th style="min-width: 100px">Function</th>
+            <th style="min-width: 100px">Regional</th>
+            <th style="min-width: 100px">Vehicle Status</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.ListVehicle)
+        {
+            <tr>
+                <td>@Html.Raw(data.PoliceNumber)</td>
+                <td><a href="@Url.Action("DetailsVehicle", "RptVehicleOverall", new { @id =data.ChasisNumber, @filter = Model.SearchView})">@Html.Raw(data.ChasisNumber)</a></td>
+                <td>@Html.Raw(data.EngineNumber)</td>
+                <td>@Html.Raw(data.EmployeeId)</td>
+                <td>@Html.Raw(data.EmployeeName)</td>
+                <td>@Html.Raw(data.CostCenter)</td>
+                <td>@Html.Raw(data.Manufacture)</td>
+                <td>@Html.Raw(data.Models)</td>
+                <td>@Html.Raw(data.Series)</td>
+                <td>@Html.Raw(data.Transmission)</td>
+                <td>@Html.Raw(data.BodyType)</td>
+                <td>@Html.Raw(data.FuelType)</td>
+                <td>@Html.Raw(data.Branding)</td>
+                <td>@Html.Raw(data.Colour)</td>
+                <td>@Html.Raw(data.Airbag ==false ? "No" : "Yes" )</td>
+                <td>@Html.Raw(data.Abs == false ? "No" : "Yes")</td>
+                <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.Vendor)</td>
+                <td>@Html.Raw(data.AssetsNumber)</td>
+                <td>@Html.Raw(data.City)</td>
+                <td>@Html.Raw(data.SupplyMethod)</td>
+                <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.MonthlyInstallment)</td>
+                <td>@Html.Raw(data.Vat)</td>
+                <td>@Html.Raw(data.TotalMonthlyInstallment)</td>
+                <td>@Html.Raw(data.PoNumber)</td>
+                <td>@Html.Raw(data.PoLine)</td>
+                <td>@Html.Raw(data.Function)</td>
+                <td>@Html.Raw(data.Regional)</td>
+                <td>@Html.Raw(data.VehicleStatus == false ? "InActive" : "Active")</td>
+            </tr>
+        }
+    </tbody>
+</table>

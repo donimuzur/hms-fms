@@ -1,0 +1,66 @@
+<link rel="stylesheet" type="text/css" href="assets/css/rolas-design.css" />
+<div class="col-md-8 col-sm-10 col-xs-12 col-md-offset-2 col-sm-offset-1">
+	<section class="content">
+		<div ng-init="loginAdmCtrl.init()" class="form-box" id="login-box" style="margin-top: 15px;">
+			<div class="header" style="background: #eef3fa!important; padding-bottom: 5px;">
+				<div class="row">
+					<div class="col-md-12">
+						<!--<img src="assets/img/logo_vale2.png" class="img-responsive center-block" style="padding-bottom: 10px;padding-right:90px;padding-left:50px;" width="300px" height="50px"/>-->
+					</div>
+				</div>
+				<div class="text-center">
+					<h4 class="afta-font text-center" style="color: #000;">PT. HM Sampoerna Tbk.</h4>
+					<h4 class="afta-font text-center" style="color: #000;">Fleet Management System</h4>
+				</div>
+			</div>
+			<div class="row" ng-show="showMsg">
+				<div class="col-md-12">
+					<div class="alert alert-warning alert-dismissable">
+						<i class="fa fa-warning"></i>
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+						<b>Attention!</b> {{AdminLoginController.failedMsg}}
+					</div>
+				</div>
+			</div>
+			<form id="formLogin">
+				<div class="body bg-gray">
+                    <select class="form-control" ng-model="loginAdmCtrl.username">
+                        <option>admin</option>
+                        <option>HR</option>
+                        <option>FLEET</option>
+                        <option>USER</option>
+                        <option>Robby Wijaya</option>
+                        <option>Yuningsi Gunawan</option>
+                        <option>Retno Ayudiati</option>
+                    </select>
+					<!--<div class="form-inline" style="margin-bottom: -5px;">
+						<div class="text-center">
+							<canvas id='textCanvas' ng-show="false" height=20></canvas>
+							<img id='image' height="40">
+							<button class="btn btn-primary" ng-click="loginAdmCtrl.captcha()"  style="margin-bottom: 10px;margin-left: 10px;background: #038578;">
+								<i class="fa fa-refresh"></i>
+							</button>
+						</div>
+					</div>
+					<div class="form-inline" style="margin-bottom: 20px;">
+						<div class="text-center">
+							<input ng-keyup="$event.keyCode == 13 && loginAdmCtrl.captcha()" class="form-control" type="text" autocomplete="off" placeholder="Input The Word Above" id="txtInput" />
+						</div>
+					</div>-->
+				</div>
+				<div class="footer" style="background: #038578!important;">
+					<button ng-click="loginAdmCtrl.login()" name="submit" value="submit" class="btn btn-block" style="background :#FFFFFF; margin-bottom: 0px;">
+						<i class="fa fa-arrow-circle-right"></i>&nbsp;Masuk
+					</button>
+				</div>
+			</form>
+		</div>
+		<div class="row" style="padding-top: 10px;">
+			<div class="col-md-12">
+				<div class="text-center">
+					<a ui-sref="lupa-password">Lupa Password?</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

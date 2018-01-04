@@ -1,0 +1,120 @@
+﻿@model FMS.Website.Models.FleetItem 
+@using FMS.Core;
+
+<section class="content-header">
+    <h1>
+        Master Data Fleet Create
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+        @using (Html.BeginForm("Create", "MstFleet"))
+        {
+            <div class="box-header" style="overflow-y: auto;">
+                <div class="box" style="overflow-y: auto;">
+                    <div class="box-body">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Police Number<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Chasis Number<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Engine Number<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.EngineNumber, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Vendor Namer<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(model => model.VendorName , Model.VendorList, "Select", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Manufacturer<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4"> Models <span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Series<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Body Type<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(model => model.BodyType , Model.BodyTypeList, "Select", new { @class = "form-control " })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Color<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(model => model.Color, new { @class = "form-control " })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4">Transmision<span class="red">*</span></label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control " })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Status<span class="red">*</span></label>
+                    <div class="form-control">
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        @Html.Label("Active", new { @id = "lblStatus" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box-body">
+                        <input type="submit" value="Save" class="btn bg-blue" />
+                        <a href="@Url.Action("Index", "MstFleet" )"><div class="btn bg-gray">Back</div></a>
+                    </div>
+                </div>
+            </div>
+        }
+        </div> 
+    </div> 
+</section> 

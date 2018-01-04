@@ -1,0 +1,68 @@
+﻿<div class="modal-content" ng-init="FormCommitteeEmployeeCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormCommitteeEmployeeCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Pilih Pegawai</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                        <form ng-submit="FormCommitteeEmployeeCtrl.onSearchSubmit(searchText)" role="form" method="post">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <input ng-model="searchText" class="form-control" placeholder="Cari Nama Pegawai..." />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default"><i class="fa fa-search"></i>&nbsp;Cari</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 10px;">No.</th>
+                                        <th class="text-center" style="width: 30%;">Nama</th>
+                                        <th class="text-center">Jabatan</th>
+                                        <th class="text-center" style="width: 15%;">Email</th>
+                                        <th class="text-center" style="width: 10%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="pgw in FormCommitteeEmployeeCtrl.detailEmployee">
+                                        <td class="text-center" style="vertical-align: middle;">{{FormCommitteeEmployeeCtrl.currentPage > 1 ? (FormCommitteeEmployeeCtrl.fullSize * (FormCommitteeEmployeeCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td style="vertical-align: middle;">{{pgw.Name}}</td>
+                                        <td style="vertical-align: middle;">{{pgw.PositionName}}</td>
+                                        <td style="vertical-align: middle;" ng-if="pgw.Email !== 'NULL'">{{pgw.Email}}</td>
+                                        <td style="vertical-align: middle;" ng-if="pgw.Email === 'NULL'"></td>
+                                        <td style="vertical-align: middle;">
+                                            <a class="btn btn-flat btn-sm btn-success" ng-click="FormCommitteeEmployeeCtrl.pegawai(pgw)" title="Pilih"><i class="fa fa-check-circle"></i>&nbsp; </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <ul max-size="10" uib-pagination boundary-links="true" total-items="FormCommitteeEmployeeCtrl.totalItems" ng-model="FormCommitteeEmployeeCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="FormCommitteeEmployeeCtrl.jLoad(FormCommitteeEmployeeCtrl.currentPage)"></ul>
+                        <br />
+                        <label>{{'TOTAL_DATA' | translate}} : {{FormCommitteeEmployeeCtrl.totalItems}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-danger" ng-click="FormCommitteeEmployeeCtrl.batal()"><i class="fa fa-reply"></i>&nbsp;Batal</button>
+        <!--<button type="button" class="btn btn-flat btn-success" data-dismiss="modal"><i class="fa fa-reply"></i>&nbsp;Simpan</button>-->
+    </div>
+</div>

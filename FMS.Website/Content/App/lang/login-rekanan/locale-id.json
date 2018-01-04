@@ -1,0 +1,13 @@
+{
+    "JUDUL": "Pengumuman Pengadaan",
+    "TEXT_SEARCH" : "Cari Nama Pengadaan",
+    "BTN_SEARCH" : "Cari",
+    "TABLE" : {
+        "NO" : "NO",
+        "DATE" : "Tanggal",
+        "NAMA_TENDER" : "Nama Pengadaan",
+        "MASA_BERLAKU" : "Masa Berlaku",
+        "SISA_HARI" : "Sisa Hari"
+    },
+    "PAGE_TITLE" : "Pengumuman Pengadaan"
+}

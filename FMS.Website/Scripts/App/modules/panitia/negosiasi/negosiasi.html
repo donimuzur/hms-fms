@@ -1,0 +1,84 @@
+﻿<section ng-init="NegosiasiCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a class="active">Negosiasi</a></li>
+    </ol>
+
+    <!-- tampilan pertama muncul -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="afta-font text-left">
+                                    Negosiasi
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6 text-left">
+                                <a class="btn btn-sm btn-flat btn-primary" ng-if="NegosiasiCtrl.flagSum === true" ng-click="NegosiasiCtrl.do_summary()" title="Lakukan Summary Negosiasi"><i class="fa fa-play-circle-o"></i> Lakukan Summary</a>
+                                <a class="btn btn-sm btn-flat btn-warning" ng-if="NegosiasiCtrl.flagSum === false" ng-click="NegosiasiCtrl.do_summary()" title="Ubah Summary Negosiasi"><i class="fa fa-play-circle-o"></i> Ubah Summary Negosiasi</a>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 5px!important;">
+                            <br />
+                            <div class="col-md-12">
+                                <label ng-if="isEBidding == false">Data Rekanan Yang Mengikuti Negosiasi</label>
+                                <label ng-if="online && isEBidding == true">Data Peserta</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped" id="tabelPesertaNegosiasi">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width="20px">No.</th>
+                                                <th class="text-center">Nama Rekanan</th>
+                                                <th class="text-center">Harga Rekanan</th>
+                                                <th class="text-center">Harga Negosiasi</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center" style="width: 110px; min-width: 110px;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="peserta in NegosiasiCtrl.nego">
+                                                <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{peserta.VendorName}}</td>
+                                                <td class="text-center">{{peserta.TotalCost| currency: ""+ labelcurr +" "}}</td>
+                                                <td class="text-center">{{peserta.NegotiationPrice| currency: ""+ labelcurr +" "}}</td>
+                                                <td style="vertical-align: middle;" ng-if="peserta.IsDeal === true">Sepakat</td>
+                                                <td style="vertical-align: middle;" ng-if="peserta.IsDeal === false">Tidak sepakat</td>
+                                                <td style="vertical-align: middle;" ng-if="peserta.IsDeal === null">Belum sepakat</td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a class="btn btn-sm btn-flat btn-primary" ng-if="peserta.NegoId === 0" ng-click="NegosiasiCtrl.viewDetail(peserta, true)" title="Mulai Negosiasi"><i class="fa fa-play-circle-o"></i></a>
+                                                    <a class="btn btn-sm btn-flat btn-warning" ng-if="peserta.NegoId !== 0" ng-click="NegosiasiCtrl.viewDetail(peserta, false)" title="Detail Negosiasi"><i class="fa fa-external-link"></i></a>
+                                                    <a class="btn btn-sm btn-flat btn-danger" ng-if="peserta.NegoId !== 0" ng-click="NegosiasiCtrl.EndNego(peserta)" title="Akhiri Negosiasi"><i class="fa fa-times"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="NegosiasiCtrl.nego.length === 0"><td colspan="6">Data Tidak Ada</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:50px !important;">
+                            <div class="col-md-8 col-sm-12">
+                                <strong>
+                                    <button type="button" class="btn btn-flat btn-sm btn-primary"><i class="fa fa-play-circle-o"></i></button> : Mulai Negosiasi <button type="button" class="btn btn-flat btn-sm btn-warning"><i class="fa fa-external-link"></i></button> : Detail Negosiasi <button type="button" class="btn btn-flat btn-sm btn-danger"><i class="fa fa-times"></i></button> : Akhiri Negosiasi
+                                </strong>
+                            </div>
+                            <div class="col-md-4 col-sm-12 text-right">
+                                    <a ng-click="NegosiasiCtrl.backpengadaan()"  class="btn btn-sm btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i></a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

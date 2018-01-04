@@ -1,0 +1,134 @@
+<section class="content" ng-init="respMxCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li ng-repeat="b in respMxCtrl.breadcrumbs">
+            <a ng-if="b.href" href="{{b.href}}">{{ b.title | translate}}</a>
+            <a ng-if="!b.href">{{ b.title | translate}}</a>
+        </li>
+    </ol>
+    <div class="container">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-center afta-font">{{'RESP_MATRIX' | translate}}</h3>
+                        <h4 class="text-center afta-font">{{respMxCtrl.ProjectTitle}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button ng-if="!respMxCtrl.isTenderVerification" ng-click="respMxCtrl.addItem()" class="btn btn-flat btn-success" title="{{'TAMBAH'|translate}} item"><i class="fa fa-plus"></i></button>
+                    </div>
+                    <div class="col-md-6 afta-font">
+                        <div class="form-control-static pull-right">
+                            S = <strong>{{'TABLE.SUPPLY' | translate}}</strong> &nbsp;&nbsp;&nbsp;
+                            I = <strong>{{'TABLE.INSTALL' | translate}}</strong> &nbsp;&nbsp;&nbsp;
+                            M = <strong>{{'TABLE.MAINTAIN' | translate}}</strong> &nbsp;&nbsp;&nbsp;
+                            O = <strong>{{'TABLE.OWNER' | translate}}</strong> &nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width="70" class="center-vertical" rowspan="2">{{'TABLE.ITEM' | translate}}</th>
+                                            <th class="center-vertical" rowspan="2">{{'TABLE.DESKRIPSI' | translate}}</th>
+                                            <th class="center-vertical" colspan="4">{{'TABLE.CONTRACTOR' | translate}}</th>
+                                            <th class="center-vertical" colspan="4">{{'TABLE.COMPANY' | translate}}</th>
+                                            <th width="350" class="center-vertical" rowspan="2">{{'TABLE.COMMENTS' | translate}}</th>
+                                            <th ng-if="!respMxCtrl.isTenderVerification" rowspan="2"></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">S</th>
+                                            <th class="text-center">I</th>
+                                            <th class="text-center">M</th>
+                                            <th class="text-center">O</th>
+                                            <th class="text-center">S</th>
+                                            <th class="text-center">I</th>
+                                            <th class="text-center">M</th>
+                                            <th class="text-center">O</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="rm in respMxCtrl.respMatrix">
+                                        <tr style="background-color:#f5f5f0;">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td colspan="10">{{rm.Description}}</td>
+                                            <td ng-if="!respMxCtrl.isTenderVerification" class="center-vertical">
+                                                <button ng-click="respMxCtrl.editItem(rm)" class="btn btn-xs btn-info" title="{{'UBAH'|translate}} item"><i class="fa fa-pencil"></i></button>
+                                                <button ng-click="respMxCtrl.addSubItem(rm)" class="btn btn-xs btn-success" title="{{'TAMBAH'|translate}} sub-item"><i class="fa fa-plus"></i></button>
+                                                <button ng-click="respMxCtrl.deleteItem($index)" class="btn btn-xs btn-danger" title="{{'HAPUS'|translate}} item"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr ng-repeat="rmc in rm.Children">
+                                            <td class="center-vertical">{{$parent.$index + 1}}.{{$index + 1}}</td>
+                                            <td class="text-left middle-vertical">{{rmc.Description}}</td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsContractorS"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsContractorS" class="fa fa-check-circle"/>
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsContractorI"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsContractorI" class="fa fa-check-circle" />
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsContractorM"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsContractorM" class="fa fa-check-circle" />
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsContractorO"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsContractorO" class="fa fa-check-circle" />
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsCompanyS"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsCompanyS" class="fa fa-check-circle" />
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsCompanyI"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsCompanyI" class="fa fa-check-circle" />
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsCompanyM"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsCompanyM" class="fa fa-check-circle" />
+                                            </td>
+                                            <td class="center-vertical">
+                                                <input ng-if="!respMxCtrl.isTenderVerification" type="checkbox" ng-model="rmc.IsCompanyO"/>
+                                                <i ng-if="respMxCtrl.isTenderVerification && rmc.IsCompanyO" class="fa fa-check-circle" />
+                                            </td>
+                                            <td ng-if="!respMxCtrl.isTenderVerification" class="center-vertical">
+                                                <input type="text" ng-model="rmc.Comment" class="form-control input-sm"/>
+                                            </td>
+                                            <td ng-if="respMxCtrl.isTenderVerification" class="text-left">
+                                                {{rmc.Comment}}
+                                            </td>
+                                            <td ng-if="!respMxCtrl.isTenderVerification" class="center-vertical">
+                                                <button ng-click="respMxCtrl.editItem(rmc)" class="btn btn-xs btn-info" title="{{'UBAH'|translate}} sub-item"><i class="fa fa-pencil"></i></button>
+                                                <button ng-click="respMxCtrl.deleteSubItem(rm, $index)" class="btn btn-xs btn-danger" title="{{'HAPUS '|translate}} sub-item"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody ng-if="respMxCtrl.respMatrix.length === 0">
+                                        <tr>
+                                            <td colspan="12">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button ng-click="respMxCtrl.back()" class="btn btn-flat btn-primary" title="{{'KEMBALI' | translate}}"><i class="fa fa-reply"></i></button>
+                        <button ng-if="!respMxCtrl.isTenderVerification" ng-click="respMxCtrl.save()" class="btn btn-flat btn-success" title="{{'SIMPAN' | translate}}"><i class="fa fa-save"></i> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

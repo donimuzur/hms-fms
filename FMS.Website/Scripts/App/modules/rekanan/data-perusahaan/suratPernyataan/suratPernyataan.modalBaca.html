@@ -1,0 +1,36 @@
+﻿<div class="modal-content" ng-init="SrtPernyataanModalBacaCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="SrtPernyataanModalBacaCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font">{{'SURAT.TITLE' | translate}}</h3>
+    </div>
+    <div class="modal-body">
+        {{'SURAT.OPENING' | translate}}<br /><br />
+        {{SrtPernyataanModalBacaCtrl.NamaDir}}{{'SURAT.TEXT1' | translate}}Presiden Direktur
+        {{'SURAT.TEXT2' | translate}}{{SrtPernyataanModalBacaCtrl.vendorName}}
+        {{'SURAT.TEXT3' | translate}}{{SrtPernyataanModalBacaCtrl.NamaNotaris}}
+        {{'SURAT.TEXT4' | translate}}{{SrtPernyataanModalBacaCtrl.DocNo}}
+        {{'SURAT.TEXT5' | translate}}{{SrtPernyataanModalBacaCtrl.DocDateSub}}
+        {{'SURAT.TEXT6' | translate}}{{SrtPernyataanModalBacaCtrl.Address}}<br /><br />
+        {{'SURAT.TEXT7' | translate}}<br /><br />
+        <ol>
+            <li>{{'SURAT.LIST.1' | translate}}</li><br />
+            <li>{{'SURAT.LIST.2' | translate}}</li><br />
+            <li>{{'SURAT.LIST.3' | translate}}</li><br />
+            <li>{{'SURAT.LIST.4' | translate}}</li>
+        </ol><br /><br />
+        ...............................,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br /><br /><br />
+        <div class="row">
+            <div class="col-md-6">
+                {{'SURAT.TEXT9' | translate}}<br />
+                <!--{{SrtPernyataanModalBacaCtrl.businessName}}--> {{SrtPernyataanModalBacaCtrl.vendorName}}<br /><br />
+                <h6>{{'SURAT.TEXT11' | translate}}<br /><br /></h6>
+                [{{SrtPernyataanModalBacaCtrl.NamaDir}}, Direktur]
+            </div>
+            <div class="col-md-6">
+                {{'SURAT.TEXT12' | translate}}<br />
+                {{'SURAT.TEXT13' | translate}}<br /><br /><br /><br />
+                {{'SURAT.TEXT14' | translate}}
+            </div>
+        </div> 
+    </div>
+</div>

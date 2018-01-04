@@ -1,0 +1,50 @@
+﻿{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_MASTER": "Data Master",
+    "MASTER_RATE": "Master RATE"
+  },
+  "TUTUP":  "Tutup",
+  "DATA_RATE" : "Data Rate",
+  "TAMBAH": "Tambah",
+  "TOTAL_DATA": "Total Data" ,
+  "TABLE": {
+    "NO": "No",
+    "CURRENCY": "Currency",
+    "CONVERT_CURRENCY": "Convert Currency",
+    "VALID_DATE": "Valid Date",
+    "EXCHANGE_RATE": "Exchange Rate",
+    "FROM_FACTOR": "From Factor",
+    "TO_FACTOR": "To Factor"
+  },
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu",
+    "ERR_LOADDATA":  "Gagal Mendapatkan Data Rate",
+    "ERR_TYPEFILE": "Gagal mendapatkan data tipe dan size file",
+    "ERR_API": "Gagal Akses API",
+    "ERR_INVALID_FILETYPE": "Tipe File Upload Tidak Sesuai",
+    "ERR_NOFILE": "File Belum di Upload",
+    "ERR_UPLOAD": "Gagal Upload File",
+    "ERR_EXCEL": "Format Kolom File Excel Ada Yang Tidak Sesuai",
+    "ERR_DATE1": "Tanggal Awal belum dipilih",
+    "ERR_DATE2": "Tanggal Akhir belum dipilih"
+  },
+  "FORM": {
+    "TITLE": "Form Upload Data Rate",
+    "LABEL_UPLOAD": "Pilih File",
+    "BTN_UPLOAD": "Tampilkan Data File",
+    "BTN_SAVE": "Upload dan Simpan Data",
+    "MSG_SUC_SAVE": "Berhasil Simpan Data Rate",
+    "MSG_ERR_SAVE": "Gagal menyimpan data",
+    "MSG_SUC_UPLOAD": "Berhasil Upload File"
+  },
+  "TBLEXCEL": {
+    "NO": "No",
+    "CURRENCY": "Currency",
+    "CONVERT_CURRENCY": "Convert Currency",
+    "VALID_DATE": "Valid Date",
+    "EXCHANGE_RATE": "Exchange Rate",
+    "FROM_FACTOR": "From Factor",
+    "TO_FACTOR": "To Factor"
+  }
+}

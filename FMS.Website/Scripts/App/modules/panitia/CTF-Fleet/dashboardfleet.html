@@ -1,0 +1,138 @@
+﻿<section ng-init="ctrl.init()" ng-controller="ctfdashboardfleetctrl as ctrl">
+    <section class="content-header">
+        <h1>
+            Car Termination Form (CTF) Dashboard
+        </h1>
+    </section>
+
+    <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+        <div class="box box-info" ng-show="ctrl.appCount > 0">
+            <div class="box-body">
+                <div class="row">
+                    <a class="btn btn-app"><i class="glyphicon glyphicon-upload"></i>upload & view</a>
+                    <a class="btn btn-app"><i class="fa fa-file-excel-o"></i>Export to Excel</a>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <pagination ng-show="ctrl.appCount > 10" total-items="ctrl.appCount" page="ctrl.page" items-per-page="ctrl.appPageSize"
+                                    max-size="10" on-select-page="ctrl.loadApproval(page)"></pagination>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Police Number</th>
+                                        <th>Vehicle Type</th>
+                                        <th>Proposed Date</th>
+                                        <th>Employee ID</th>
+                                        <th>Employee Name</th>
+                                        <th>Vehicle Location</th>
+                                        <th>Cost Center</th>
+                                        <th>Supply Method</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="/#/ctf-form-fleet">
+                                                <i class="glyphicon glyphicon-record"></i>
+                                            </a>
+                                        </td>
+                                        <td>L934PP</td>
+                                        <td>WTC</td>
+                                        <td>01-May-2017</td>
+                                        <td>80427901</td>
+                                        <td>Christianty, Happy</td>
+                                        <td>Surabaya</td>
+                                        <td>823467264KIX</td>
+                                        <td>Lease</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="Term_extend.html">
+                                                <i class="glyphicon glyphicon-record" id="myModalLabel"></i>
+                                            </a>
+
+                                        </td>
+                                        <td>B1337WN</td>
+                                        <td>WTC</td>
+                                        <td>01-Apr-2017</td>
+                                        <td>80427901</td>
+                                        <td>Putri, Citra</td>
+                                        <td>Jakarta</td>
+                                        <td>821167864KIX</td>
+                                        <td>Lease</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="Term_extend.html">
+                                                <i class="glyphicon glyphicon-record" id="myModalLabel"></i>
+                                            </a>
+
+                                        </td>
+
+                                        <td>L977WN</td>
+                                        <td>WTC</td>
+                                        <td>01-Apr-2017</td>
+                                        <td>80427901</td>
+                                        <td>Aaa, Nnn</td>
+                                        <td>Surabaya</td>
+                                        <td>823468274KIX</td>
+                                        <td>Lease</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="Term_extend.html">
+                                                <i class="fa fa-car" id="myModalLabel"></i>
+                                            </a>
+                                        </td>
+                                        <td>B1214NN</td>
+                                        <td>WTC</td>
+                                        <td>01-Jun-2017</td>
+                                        <td>80427901</td>
+                                        <td>Cccc, Mmmm</td>
+                                        <td>Jakarta</td>
+                                        <td>823460974KIX</td>
+                                        <td>Lease</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr ng-if="ctrl.appCount === 0"><td colspan="5">{{'TIDAK_ADA_DATA' | translate}}</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <pagination ng-show="ctrl.appCount > 10" total-items="ctrl.appCount" page="ctrl.page" items-per-page="ctrl.appPageSize"
+                                    max-size="10" on-select-page="ctrl.loadApproval(page)"></pagination>
+                        <br /><label>{{'TOTAL_DATA' | translate}} : {{ctrl.appCount}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>

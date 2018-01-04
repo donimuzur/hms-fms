@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using AutoMapper;
+using FMS.BLL.Role;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Dto;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Code;
 using FMS.Website.Models;
-
+using FMS.Website.Helpers;
 
 namespace FMS.Website.Controllers
 {
-
+    [AuthorizeAD]
     public class BaseController : Controller
     {
 
@@ -66,24 +71,119 @@ namespace FMS.Website.Controllers
                 ControllerContext.HttpContext.Response.Cookies.Add(cookie);
             }
         }
-        
+
         public Login CurrentUser
         {
             get
             {
+
+                SetLoginSession();
                 return (Login)Session[Constans.SessionKey.CurrentUser];
-            }
-            set
-            {
-                Session[Constans.SessionKey.CurrentUser] = value;
+
             }
         }
+        public void SetLoginSession()
+        {
+            if (Session[Core.Constans.SessionKey.CurrentUser] == null)
+            {
+                var userId = User.Identity.Name.Split('\\')[User.Identity.Name.Split('\\').Length - 1]; //User.Identity.Name.Remove(0, 4);
+                IRoleBLL _userBll = MvcApplication.GetInstance<RoleBLL>();
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+                var list = new List<String>();
+                SqlCommand query = new SqlCommand("SELECT SETTING_VALUE FROM MST_SETTING WHERE SETTING_GROUP = 'USER_ROLE'", con);
+                SqlDataReader reader = query.ExecuteReader();
+                while (reader.Read())
+                {
+                    var roleName = reader[0].ToString();
+                    list.Add(roleName);
+                }
+                reader.Close();
+                var getrole = new List<LdapDto>();
+                foreach (var item in list)
+                {
+                   query = new SqlCommand("SELECT ADGroup = '"+ item +"', employeeID, login = sAMAccountName, displayName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + item + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ", con);
+                    reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var data = new LdapDto();
+                        data.ADGroup = reader[0].ToString();
+                        data.EmployeeId = reader[1].ToString();
+                        data.Login = reader[2].ToString();
+                        data.DisplayName = reader[3].ToString();
+                        var arsplit = data.ADGroup.Split(' ').ToList();
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        data.RoleName = string.Join(" ", arsplit.ToArray());
+                        data.RoleName = data.RoleName.Substring(23);
+                        getrole.Add(data);
+                    }
+                    reader.Close();
+                }
+                var userrole = getrole.Where(x => x.Login == userId).FirstOrDefault();
+                var loginResult = new Login();
+                
+                if (userrole != null)
+                {
+                    loginResult.UserRole = _userBll.GetUserRole(userrole.RoleName);
+                    loginResult.USERNAME = userrole.DisplayName;
+                    loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == userrole.RoleName).ToList();
+                    loginResult.USER_ID = userrole.Login;
+                    loginResult.EMPLOYEE_ID = userrole.EmployeeId;
+                    Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
+                }
+                else
+                {
+                    var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
 
-        protected SysMenu PageInfo
+                    query = new SqlCommand("SELECT ID, FULL_NAME, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + userId + "'", con);
+                    reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        var employeeId = reader[0].ToString();
+                        if (employeeId != "")
+                        {
+                            employeeId = employeeId.Replace("ID", "");
+                            employeeId = Convert.ToInt32(employeeId).ToString("00000000");
+                        }
+                        loginResult.EMPLOYEE_ID = employeeId;
+                    }
+                    loginResult.USERNAME = userId;
+                    loginResult.USER_ID = userId;
+                    loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == Enums.UserRole.User.ToString()).ToList();
+                    loginResult.UserRole = Enums.UserRole.User;
+                    Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
+                }
+                con.Close();
+            }
+        }
+        protected MST_MODUL PageInfo
         {
             get
             {
-                return _pageBLL.GetPageByID((int) _menuID);
+                return _pageBLL.GetPageByModulName( _menuID.ToString());
+            }
+        }
+
+        protected RoleDto CurrentPageAccess
+        {
+            get
+            {
+                var dataRole = CurrentUser.AuthorizePages.FirstOrDefault(x => x.IsActive && x.ModulId == (int) _menuID);
+                if (dataRole == null)
+                {
+                    return new RoleDto()
+                    {
+                        ModulId = (int) _menuID,
+                        ReadAccess = false,
+                        WriteAccess = false,
+                        UploadAccess = false
+                    };
+                }
+                return dataRole;
             }
         }
 
@@ -98,6 +198,120 @@ namespace FMS.Website.Controllers
 
         }
 
+        public List<ChangesLogs> GetChangesHistory(int modulId, long formId)
+        {
+            var data = _pageBLL.GetChangesHistory(modulId, formId);
+
+            return Mapper.Map<List<ChangesLogs>>(data);
+        }
+
+        public List<WorkflowLogs> GetWorkflowHistory(int modulId, long formId)
+        {
+            var data = _pageBLL.GetWorkflowHistory(modulId, formId);
+            var rolesAll = GetRoleUsers();
+            List<RemarkDto> dataRemark = _pageBLL.GetAllRemark();
+            foreach (var wf in data)
+            {
+                var dataLdap = rolesAll.FirstOrDefault(x => x.Login.ToUpper() == wf.ACTION_BY.ToUpper());
+                wf.ROLE_NAME = dataLdap != null ? (dataLdap.RoleName == "VIEWER" ? "END USER" : dataLdap.RoleName) : "END USER";
+                if (wf.REMARK_ID != null)
+                {
+                    var remark = dataRemark.FirstOrDefault(x => x.MstRemarkId == wf.REMARK_ID);
+                    wf.REMARK_DESCRIPTION = remark != null ? remark.Remark : null;
+                }
+            }
+
+            return Mapper.Map<List<WorkflowLogs>>(data);
+        }
+
+        public List<LdapDto> GetRoleUsers()
+        {
+            IRoleBLL _userBll = MvcApplication.GetInstance<RoleBLL>();
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            var list = new List<String>();
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var getrole = new List<LdapDto>();
+
+            SqlCommand query =
+                    new SqlCommand("SELECT SETTING_VALUE FROM MST_SETTING WHERE SETTING_GROUP = 'USER_ROLE'", con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var roleName = reader[0].ToString();
+                list.Add(roleName);
+            }
+            reader.Close();
+
+            if (typeEnv == "VTI")
+            {
+                query =
+                        new SqlCommand("SELECT AD_GROUP, EMPLOYEE_ID, LOGIN,DISPLAY_NAME, EMAIL from LOGIN_FOR_VTI",
+                            con);
+
+                reader = query.ExecuteReader();
+                while (reader.Read())
+                {
+                    var data = new LdapDto();
+                    data.ADGroup = reader[0].ToString();
+                    data.EmployeeId = reader[1].ToString();
+                    data.Login = reader[2].ToString();
+                    data.DisplayName = reader[3].ToString();
+                    data.RoleName = "USER";
+                    var arsplit = new List<string>();
+                    if (!string.IsNullOrEmpty(data.ADGroup))
+                    {
+                        arsplit = data.ADGroup.Split(' ').ToList();
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        data.RoleName = string.Join(" ", arsplit.ToArray());
+                        data.RoleName = data.RoleName.Substring(23);
+                        getrole.Add(data);
+                    }
+
+
+                }
+                reader.Close();
+            }
+            else
+            {
+                
+
+                foreach (var item in list)
+                {
+                    query =
+                        new SqlCommand(
+                            "SELECT ADGroup = '" + item +
+                            "', employeeID, login = sAMAccountName, displayName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " +
+                            item +
+                            ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ",
+                            con);
+                    reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var data = new LdapDto();
+                        data.ADGroup = reader[0].ToString();
+                        data.EmployeeId = reader[1].ToString();
+                        data.Login = reader[2].ToString();
+                        data.DisplayName = reader[3].ToString();
+                        var arsplit = data.ADGroup.Split(' ').ToList();
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        arsplit.RemoveAt(arsplit.Count - 1);
+                        data.RoleName = string.Join(" ", arsplit.ToArray());
+                        data.RoleName = data.RoleName.Substring(23);
+                        getrole.Add(data);
+                    }
+                    reader.Close();
+                }
+            }
+
+
+            return getrole;
+        } 
+
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -108,23 +322,23 @@ namespace FMS.Website.Controllers
 
             if (controllerName == "Login" && actionName == "Index") return;
 
-            if (CurrentUser == null )
+            if (CurrentUser == null)
             {
                 filterContext.Result = new RedirectToRouteResult(
                    new RouteValueDictionary { { "controller", "Login" }, { "action", "Index" } });
 
-
                 return;
             }
+           
             var isUsePageAuth = ConfigurationManager.AppSettings["UsePageAuth"] != null && Convert.ToBoolean(ConfigurationManager.AppSettings["UsePageAuth"]);
             if (isUsePageAuth)
             {
                 CurrentUser.AuthorizePages = _pageBLL.GetAuthPages(CurrentUser);
-                if (CurrentUser.AuthorizePages != null)
+                if (CurrentUser.AuthorizePages != null & CurrentUser.AuthorizePages.Count != 0)
                 {
-                    if (!CurrentUser.AuthorizePages.Contains(PageInfo.MenuID))
+                    if (!CurrentUser.AuthorizePages.Select(x=> x.ModulId).Contains(PageInfo.MST_MODUL_ID))
                     {
-                        if (!CurrentUser.AuthorizePages.Contains(PageInfo.MenuParent))
+                        if (!CurrentUser.AuthorizePages.Select(x => x.ModulId).Contains(PageInfo.PARENT_MODUL_ID))
                         {
                             filterContext.Result = new RedirectToRouteResult(
                                 new RouteValueDictionary { { "controller", "Error" }, { "action", "Unauthorized" } });
@@ -133,8 +347,6 @@ namespace FMS.Website.Controllers
                     }
                 }
             }
-
-
         }
 
         #region MessageInfo

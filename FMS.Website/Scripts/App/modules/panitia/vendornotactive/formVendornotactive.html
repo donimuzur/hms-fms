@@ -1,0 +1,26 @@
+﻿<div id="idTambahVerifiedData" class="modal-content" ng-init="formVendornotactiveCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="formVendornotactiveCtrl.cancel()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{formVendornotactiveCtrl.aktifasi}} Vendor {{formVendornotactiveCtrl.VendorName}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12" style="float: none!important;">
+                        <div class="form-group">
+                            <label class="col-sm-1">Alasan: </label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" rows="3" ng-model="formVendornotactiveCtrl.Description"></textarea>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-default" ng-click="formVendornotactiveCtrl.cancel()" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-primary" ng-click="formVendornotactiveCtrl.save()" title="Send to Approval"><i class="fa fa-check-circle-o"></i>&nbsp;&nbsp; </button>
+    </div>
+</div>

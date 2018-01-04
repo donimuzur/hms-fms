@@ -1,0 +1,97 @@
+﻿<div id="idTambahVerifiedData" class="modal-content" ng-init="CommitteeModalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="CommitteeModalCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="text-center afta-font">{{'ATUR_APPROVAL' | translate}}</h3>
+        <h4 class="text-center afta-font">{{aturApprovalTotalEvalCtrl.ProjectTitle}}</h4>
+    </div>
+    <div class="modal-body">
+        <div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Tipe Approval</label>
+                        <select class="form-control input-sm" ng-model="CommitteeModalCtrl.selectedPosition"
+                                ng-options="item as item.Value | translate for item in CommitteeModalCtrl.tipeApp"
+                                ng-change="CommitteeModalCtrl.load(selectedPosition)">
+                            <option value="" selected disabled>
+                                -- Tipe Approval --
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <input class="form-control" type="text" ng-model="CommitteeModalCtrl.Name" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <a class="btn btn-primary btn-flat form-control" ng-click="CommitteeModalCtrl.tambah()"><i class="fa fa-edit"></i> Pilih Pegawai</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12" align="center">
+                            <a ng-click="CommitteeModalCtrl.addEmployee()" class="btn btn-flat btn-sm btn-primary text-center"><i class="fa fa-plus-circle"></i>&nbsp;  Tambah ke Daftar Approval</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="center-vertical">{{'TABLE.NO' | translate}}</th>
+                                                <th class="center-vertical">{{'TABLE.NAMA_PEGAWAI' | translate}}</th>
+                                                <th class="center-vertical">{{'TABLE.DEPARTEMEN' | translate}}</th>
+                                                <th class="center-vertical">{{'TABLE.JABATAN' | translate}}</th>
+                                                <th class="center-vertical">Tipe Approval</th>
+                                                <th class="center-vertical">Approver*</th>
+                                                <th class="center-vertical"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="ca in CommitteeModalCtrl.crApps">
+                                                <td ng-if="ca.IsActive === true" class="center-vertical">{{$index + 1}}</td>
+                                                <td ng-if="ca.IsActive === true">{{ca.EmployeeFullName}}</td>
+                                                <td ng-if="ca.IsActive === true">{{ca.EmployeeDepartmentName}}</td>
+                                                <td ng-if="ca.IsActive === true">{{ca.EmployeePositionName}}</td>
+                                                <td ng-if="ca.IsActive === true">{{ca.SysReference1.Value}}</td>
+                                                <td ng-if="ca.IsActive === true" class="center-vertical">
+                                                    <input type="checkbox" ng-model="ca.IsHighPriority" />
+                                                </td>
+                                                <td ng-if="ca.IsActive === true" class="center-vertical">
+                                                    <button ng-click="CommitteeModalCtrl.deleteRow(ca,$index)" class="btn btn-xs btn-danger" title="{{'HAPUS'|translate}}"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="CommitteeModalCtrl.crApps.length == 0">
+                                                <td colspan="7"> Data Tidak ada</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-md-12">
+                *) {{'KETERANGAN_APPROVAL1' | translate}}
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="btn btn-sm btn-danger" ng-click="CommitteeModalCtrl.cancel()"><i class="fa fa-arrow-left"></i> Kembali</button>
+            <button ng-if="CommitteeModalCtrl.flagEmp !== 0" class="btn btn-sm btn-primary" ng-click="CommitteeModalCtrl.addCommiteEmployee()"><i class="fa fa-plus-circle"></i> Simpan</button>
+        </div>
+    </div>
+</div>

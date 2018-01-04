@@ -105,4 +105,16 @@ Generated_Code #added for RIA/Silverlight projects
 packages/*/*
  
 hms-fms.sln.DotSettings.user
-FMS.Website/FMS.Website.csproj.user
+/FMS.Website/FMS.Website.csproj.user
+FMS.Website/Web.*.config
+FMS.Website/Web.config
+/FMS.Website/Web.Release.config
+/FMS.Website/Web.config
+/FMS.Website/Web.Debug.config
+/FMS.Website/Properties/PublishProfiles/publish.pubxml.user
+/FMS.Website/Properties/PublishProfiles
+PublishProfiles
+/FMS.DAL/App.Config
+/.vs/config/applicationhost.config
+/.vs/config/applicationhost.config
+/FMS.Website/Properties/PublishProfiles/publish.pubxml

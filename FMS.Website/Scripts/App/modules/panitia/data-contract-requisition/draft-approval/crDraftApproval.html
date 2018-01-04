@@ -1,0 +1,95 @@
+<section class="content" ng-init="dataCRDACtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.MASTER_REQUISITION' | translate}}</a></li>
+        <li><a href="#/data-contract-requisition">{{'BREADCRUMB.DATA_CONTRACT_REQUISITION' | translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.APPROVAL' | translate}}</a></li>
+    </ol>
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">                
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{'DATA_CONTRACT_REQUISITION' | translate}}</h3>
+                        </div>
+                    </div>                    
+                    <div class="row" style="margin-bottom: 2px;">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label col-lg-1">Filter &nbsp; </label>
+                                <div class="col-md-4">
+                                    <select class="form-control input-sm" ng-change="dataCRDACtrl.onFilterTypeChange(column)" ng-model="column">
+                                        <option value="1" ng-selected="true">{{'FILTER.NOMOR_TENDER' | translate}}</option>
+                                        <option value="2">{{'FILTER.RFQ' | translate}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <form ng-submit="dataCRDACtrl.onSearchClick(keyword)">
+                                        <input type="text" class="form-control input-sm" ng-model="keyword" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" width="10">{{'TABLE.NO' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.NOMOR_TENDER' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.RFQ' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.JENIS_CR' | translate}}</th>
+                                            <th class="center-vertical" width="60">{{'TABLE.TANGGAL_BUAT' | translate}}</th>
+                                            <th class="center-vertical" width="80">{{'TABLE.STATUS' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.KETERANGAN' | translate}}</th>
+                                            <th class="center-vertical" width="120"></th>
+                                            <th class="center-vertical" width="80"></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="dt in dataCRDACtrl.contractRequisition">
+                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1 + (dataCRDACtrl.pageSize * (dataCRDACtrl.currentPage - 1))}}</td>
+                                            <td style="vertical-align: middle;">{{dt.TenderCode}}</td>
+                                            <td style="vertical-align: middle;">{{dt.ProjectTitle}}</td>
+                                            <td style="vertical-align: middle;">{{dt.IsCSMS === true ? 'CSMS' : (dt.IsCSMS === false ? 'Non CSMS' : '')}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dataCRDACtrl.convertDate(dt.Created)}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dataCRDACtrl.statusLabels[dt.StatusName] | translate}}</td>
+                                            <td style="vertical-align: middle;">{{dt.Information}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">       
+                                                <a class="btn btn-flat btn-xs btn-primary" ng-click="dataCRDACtrl.detailContract(dt)" title="{{'TABLE.DETAIL' | translate}}"><i class='fa fa-external-link'></i>&nbsp; </a>
+                                                <a class="btn btn-flat btn-xs btn-warning" ng-click="dataCRDACtrl.menujuDokumen(dt)" title="{{'TABLE.DOKUMEN' | translate}}"><i class="fa fa-file-o"></i>&nbsp; </a>
+                                                <a class="btn btn-flat btn-xs btn-success" ng-click="dataCRDACtrl.detailApproval(dt)" title="{{'DETAIL_APPROVAL' | translate}}"><i class="fa fa-sitemap"></i></a>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <span ng-if="dt.IsApprovingTurn">
+                                                    <a class="btn btn-flat btn-xs btn-success" ng-click="dataCRDACtrl.approve(dt)" title="{{'APPROVE' | translate}}"><i class="fa fa-check"></i>&nbsp; </a>
+                                                    <a class="btn btn-flat btn-xs btn-danger" ng-click="dataCRDACtrl.reject(dt)" title="{{'REJECT' | translate}}"><i class="fa fa-times"></i></a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="dataCRDACtrl.totalItems === 0">
+                                            <td colspan="9">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-sd-4 col-md-10" >
+                                        <ul uib-pagination total-items="dataCRDACtrl.totalItems"
+                                            ng-model="dataCRDACtrl.currentPage" items-per-page="dataCRDACtrl.pageSize"
+                                            previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="dataCRDACtrl.loadContracts()"></ul>
+                                        <br /><label>{{'TOTAL_DATA' | translate}} : {{dataCRDACtrl.totalItems}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

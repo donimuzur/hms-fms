@@ -1,0 +1,50 @@
+{
+   "BREADCRUMB": {
+    "BERANDA": "Home",
+    "MONITORING": "Monitoring",
+    "MONITORING_TENDER": "Monitoring Product Tender"
+  },
+  "JUDUL_MON": "MONITORING PO",
+  "UPLOAD_PO": "Upload Data PO",
+  "SENT_PO": "Sent PO",
+  "FILTER": {
+    "SEARCH": "Search by",
+    "VENDOR": "Vendor Name",
+    "KEYWORD": "Enter Search Keyword"
+  },
+  "TABLE": {
+    "NO": "No",
+    "VENDOR_CODE": "Kode Vendor",
+    "VENDOR_NAME": "Nama Vendor",
+    "PO_TYPE": "jenis PO",
+    "PO_NUMBER": "Nomer PO",
+    "PO_DATE": "Tanggal PO",
+    "PO_SENT": "PO dikirim",
+    "PO_STATUS": "Status PO",
+    "NOTE": "Catatan",
+    "ACTION": "Tindakan"
+  },
+
+  "CANCEL": "Batal",
+  "PROSES": "Dalam Proses",
+  "APPROVE": "Setuju",
+  "DRAFT": "Draf",
+  "PROCUREMENT_TYPE_CANCEL": "Cancel",
+  "PROCUREMENT_TYPE_PROCESS": "Proses",
+   "PROCUREMENT_TYPE_APPROVE": "Approved",
+  "PROCUREMENT_TYPE_DRAFT": "Draft",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data",
+  "ACTION": "PO",
+  "KEMBALI": "Kembali",
+  "BATAL": "Batal",
+  "SIMPAN": "Simpan",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data PO",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar PO",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status"
+    
+  }
+}

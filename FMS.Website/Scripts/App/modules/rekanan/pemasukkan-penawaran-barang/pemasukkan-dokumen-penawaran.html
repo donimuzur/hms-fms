@@ -1,0 +1,384 @@
+<div class="container" ng-init="init()" step-wizard>    
+    <div ng-show="status == 1">
+        <div ng-show="habisTanggal == false">
+            <div ng-show="masihBertahan">
+                <div class="row" style="margin-top: 70px;">
+                    <div class="col-md-12">
+                        <h2 class="text-center afta-font" style="margin-top: 0px;">
+                            {{nama_tahapan}}
+                        </h2>
+                    </div>
+                </div>
+                <div ng-show="perluPersetujuan" ><!---->
+                    <div class="row form-group">
+                        <div class="col-xs-12">
+                            <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                                <li class="active">
+                                    <a href="#step-1" data-toggle="tab">
+                                        <h3 class="afta-font list-group-item-heading">Pernyataan Minat</h3>
+                                    </a>
+                                </li>
+                                <li class="disabled">
+                                    <a href="#step-2" data-toggle="tab">
+                                        <h3 class="afta-font list-group-item-heading">Pakta Integritas</h3>
+                                    </a>
+                                </li>
+                                <li class="disabled">
+                                    <a href="#step-3" data-toggle="tab">
+                                        <h3 class="afta-font list-group-item-heading">Pernyataan Tidak Pailit</h3>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="step-1">
+                        <div class="col-xs-12">
+                            <div class="col-md-12 well">
+                                <h3 class="afta-font text-center" style="padding-bottom: 10px; margin-top: 10px;"> Pernyataan Minat</h3>
+                                <p class="text-center">
+                                    UNTUK MENGIKUTI PEKERJAAN <strong>{{nama_paket}}</strong>
+                                    DI PT ASURANSI JIWASRAYA (PERSERO)
+                                </p>
+                                <p>
+                                    Menyatakan dengan sebenarnya bahwa setelah mengetahui pengadaan yang akan dilaksanakan oleh PT. Vale Indonesia Tbk tahun <strong>{{tahun}}</strong>, maka dengan ini saya menyatakan berminat untuk mengikuti proses pengadaan paket <strong>{{nama_paket}}</strong>
+                                </p>
+                                <br/>
+                                <div class="text-center">
+                                    <div class="form-inline">
+                                        <input type="checkbox" ng-change="ubahPernyataanMinat(setujuPernyataanMinat)" ng-model="setujuPernyataanMinat"  ng-checked="setujuPernyataanMinat"/>
+                                        <label>Saya setuju dengan pernyataan di atas</label>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="text-center" style="padding-top: 20px;">
+                                    <a id="activate-step-2" class="btn btn-primary" ng-disabled="setujuPernyataanMinat == false" title="Baca Selanjutnya">&nbsp;<i class="fa fa-hand-o-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="step-2">
+                        <div class="col-xs-12">
+                            <div class="col-md-12 well">
+                                <h3 class="afta-font text-center" style="padding-bottom: 10px; margin-top: 10px;"> Pakta Integritas</h3>
+                                <p>
+                                    Saya yang bertanda tangan di bawah ini , dalam rangka pekerjaan <strong>{{nama_paket}}</strong> di PT. Vale Indonesia Tbk, dengan ini menyatakan bahwa saya :
+                                </p>
+                                <ol>
+                                    <li>
+                                        Tidak akan melakukan praktek KKN
+                                    </li>
+                                    <li>
+                                        Akan melakukan praktek persaingan yang sehat dalam proses pengadaan;
+                                    </li>
+                                    <li>
+                                        Akan melaporkan kepada pihak yang berwenang apabila mengetahui ada indikasi KKN dan atau praktek persaingan yang tidak sehat di dalam proses pengadaan ini;
+                                    </li>
+                                    <li>
+                                        Dalam proses pengadaan ini, berjanji akan melaksanakan tugas secara bersih, transparan, dan profesional dalam arti kata mengarahkan segala kemampuan dan sumber daya secara optimal untuk membersihkan hasil kerja terbaik mulai dari penyiapan penawaran, pelaksanaan, dan penyelesaian pekerjaan <strong>{{nama_paket}}</strong>
+                                    </li>
+                                    <li>
+                                        Apabila saya melanggar hal-hal yang telah saya nyatakan dalam PAKTA INTEGRITAS ini, saya bersedia dikenakan sanksi moral, sanksi administrasi serta dituntut ganti rugi sesuai dengan ketentuan peraturan perundang-undangan yang berlaku.
+                                    </li>
+                                </ol>
+                                <br/>
+                                <div class="text-center">
+                                    <div class="form-inline">
+                                        <input type="checkbox" ng-change="ubahPaktaIntegritas(setujuPaktaIntegritas)" ng-model="setujuPaktaIntegritas" ng-checked="setujuPaktaIntegritas">
+                                        <label>Saya setuju dengan pernyataan di atas</label>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="text-center" style="padding-top: 20px;">
+                                    <a id="activate-step-3" class="btn btn-primary" ng-disabled="setujuPaktaIntegritas == false" title="Baca Selanjutnya">&nbsp;<i class="fa fa-hand-o-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row setup-content" id="step-3">
+                        <div class="col-xs-12">
+                            <div class="col-md-12 well">
+                                <h3 class="afta-font text-center" style="padding-bottom: 10px; margin-top: 10px;"> Pernyataan Tidak Pailit</h3>
+                                <p>
+                                    Menyatakan dengan sesungguhnya bahwa saya :
+                                </p>
+
+                                <ol>
+                                    <li>
+                                        Secara hukum mempunyai kapasitas menandatangani kontrak
+                                    </li>
+                                    <li>
+                                        Saya/Perusahaan saya tidak sedang dinyatakan pailit atau perusahaan saya kegiatan usahanya tidak sedang dihentikan atau sedang menjalani sanksi pidana atau sedang dalam pengawasan pengadilan
+                                    </li>
+                                    <li>
+                                        Tidak membuat pernyataan yang tidak benar tentang kompetensi dan kemampuan usahanya.
+                                    </li>
+                                    <li>
+                                        Tidak pernah dihukum berdasarkan putusan pengadilan atas tindakan yang berkaitan dengan kondite profesional saya;
+                                    </li>
+                                    <li>
+                                        Tidak sedang dan tidak akan terlibat pertentangan kepentingan dengan para pihak yang terkait, langsung maupun tidak langsung dalam proses pengadaan ini.
+                                    </li>
+                                    <li>
+                                        Tidak sedang dalam sanksi Black List oleh institusi Pemerintah/BUMN/BUMD/BLU.
+                                    </li>
+                                    <li>
+                                        Data yang berkaitan dengan saya/perusahaan saya adalah benar.
+                                    </li>
+                                </ol>
+                                <p style="text-align: justify;">
+                                    Demikian pernyataan ini saya buat dengan sebenarnya dan penuh rasa tanggung jawab. Jika pada kemudian hari ditemui bahwa data/dokumen yang saya sampaikan tidak benar dan ada pemalsuan maka saya bersedia dikenakan sanksi administrasi, yaitu dimasukkan dalam daftar hitam untuk jangka waktu selama 2 (dua) tahun, dan sanksi perdata sesuai dengan ketetntuan peraturan perundang-undangan yang berlaku.
+                                </p>
+                                <br/>
+                                <div class="text-center">
+                                    <div class="form-inline">
+                                        <input type="checkbox" ng-change="ubahPernyataanTidakPailit(setujuPernyataanTidakPailit)" ng-model="setujuPernyataanTidakPailit" ng-checked="setujuPernyataanTidakPailit">
+                                        <label>Saya setuju dengan pernyataan di atas</label>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="text-center" style="padding-top: 20px;">
+                                    <a ng-click="keUpload()" class="btn btn-primary btn-lg" ng-disabled="setujuPernyataanTidakPailit == false" title="Selanjutnya"><i class="fa fa-location-arrow"></i> &nbsp;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 40px;" ng-if="tampilkanUpload">
+                        <div class="col-md-6 center-block well" style="float: none!important;">
+                            <div class="box box-success">                        
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center afta-font" style="margin-top: 0px; margin-bottom: 0px;">
+                                                {{nama_tahapan}}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer" style="margin-top: 20px;">
+                                    <div class="form-group">
+                                        <label class="box-title">Upload Dokumen &nbsp;<small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small></label>
+                                        <div class="input-group">
+                                            <input id="uploadFile" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document"><i class="fa fa-plus"></i> &nbsp;</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover" 
+                                                   style="table-layout: fixed!important;">
+                                                <thead>
+                                                <th class="text-center" style="width: 30%; font-weight: bolder;">File Name</th>
+                                                <th class="text-center" style="width: 20%; font-weight: bolder;">File Size</th>
+                                                <th class="text-center" style="width: 20%; font-weight: bolder;">Action</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="fl in files">
+                                                        <td style="width: 30%; word-wrap: break-word!important;">{{fl.fileName}}</td>
+                                                        <td class="text-center" style="width: 20%; word-wrap: break-word!important;">{{fl.fileSize}} KB</td>
+                                                        <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                            <button class="btn btn-xs red center-block" title="Hapus" ng-click="removeFile(fl.fileName)" >
+                                                                <i class="fa fa-trash-o"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions text-center" style="margin-bottom: 15px!important;" ng-click="upload()">
+                                        <button class="btn btn-primary" title="Upload"><i class="fa fa-upload"></i>&nbsp;</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="perluPersetujuan == false">
+                    <!--<div class="row">
+                       <div class="col-md-6 center-block" style="float: none!important;">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                    <th class="text-center" style="width: 15%; font-weight: bolder;">Sub Pekerjaan</th>
+                                    <th class="text-center" style="font-weight: bolder;">Jumlah Harga</th>
+                                    <th class="text-center" style="width: 20%; font-weight: bolder;"></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: center!important; word-wrap: break-word!important;">PERSIAPAN</td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                Rp 0,00
+                                            </td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                <button class="btn btn-xs btn-warning center-block" ng-click="detailpenawaran(704)" >
+                                                    <i class="fa fa-eye"></i>&nbsp;Detail Penawaran
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center!important; word-wrap: break-word!important;">PENGADAAN</td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                Rp 0,00
+                                            </td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                <button class="btn btn-xs btn-warning center-block" ng-click="detailpenawaran(704)" >
+                                                    <i class="fa fa-eye"></i>&nbsp;Detail Penawaran
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center!important; word-wrap: break-word!important;">JASA</td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                Rp 0,00
+                                            </td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                <button class="btn btn-xs btn-warning center-block" ng-click="detailpenawaran(704)" >
+                                                    <i class="fa fa-eye"></i>&nbsp;Detail Penawaran
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center!important; word-wrap: break-word!important;">PENYELESAIAN</td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                Rp 0,00
+                                            </td>
+                                            <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                <button class="btn btn-xs btn-warning center-block" ng-click="detailpenawaran(704)" >
+                                                    <i class="fa fa-eye"></i>&nbsp;Detail Penawaran
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                       </div>
+                    </div>-->
+                    <div class="row" ng-if="sudahUpload == true">
+                        <div class="col-md-6 center-block"  style="float: none!important;">
+                            <div class="form-group center-block text-center">
+                                <label>Download Dokumen</label><br>
+                                <a href="{{$root.url_api + dokumens.url_dokumen}}" target="_blank" class="label label-primary" title="Download Dokumen Penawaran">
+                                    <i class="fa fa-download"></i>&nbsp;</a>
+                                <br/>
+                                Password : {{dokumens.password}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 center-block" style="float: none!important;">
+                            <div class="form-group">
+                                <label class="box-title">Upload Dokumen</label>&nbsp;<small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small>
+                                <div class="input-group">
+                                    <input id="uploadFile" style="padding-top: 5px!important;" type="file" class="form-control input-sm upload-file" data-max-size={{$root.filemaksimal}} onchange="angular.element(this).scope().fileMChanged(this)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" ng-click="uploads()" class="btn btn-flat btn-sm btn-success" title="Add Document"><i class="fa fa-plus"></i> &nbsp;</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover" 
+                                           style="table-layout: fixed!important;">
+                                        <thead>
+                                        <th class="text-center" style="width: 30%; font-weight: bolder;">File Name</th>
+                                        <th class="text-center" style="width: 20%; font-weight: bolder;">File Size</th>
+                                        <th class="text-center" style="width: 10%; font-weight: bolder;">Action</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="fl in files">
+                                                <td style="width: 30%; word-wrap: break-word!important;">{{fl.fileName}}</td>
+                                                <td class="text-center" style="width: 20%; word-wrap: break-word!important;">{{fl.fileSize}} KB</td>
+                                                <td class="text-center" style="width: 20%; word-wrap: break-word!important;">
+                                                    <button class="btn btn-xs btn-danger center-block" title="Hapus" ng-click="removeFile(fl.fileName)" >
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-actions text-center" style="margin-bottom: 15px!important;" ng-click="upload()">
+                                <button class="btn btn-primary" ng-if="!isFirefox" title="Upload"><i class="fa fa-upload"></i>&nbsp;</button>
+                                <button class="btn btn-primary" ng-if="isFirefox" title="Archive"><i class="fa fa-file-archive-o"></i>&nbsp;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="masihBertahan == false">
+                <div class="row" style="margin-top: 70px;">
+                    <div class="col-md-12">
+                        <h2 class="text-center afta-font" style="margin-top: 0px; margin-bottom: 25px;">
+                            Anda Dinyatakan Tidak Lolos dan Tidak Bisa Mengikuti Tahapan Selanjutnya
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="habisTanggal == true">
+            <div class="row" style="margin-top: 70px;">
+                <div class="col-md-12">
+                    <h2 class="text-center afta-font" style="margin-top: 0px; margin-bottom: 25px;">
+                        Sudah melewati batas waktu tahapan
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-show="status == 2">
+        <div class="row" style="margin-top: 70px;">
+            <div class="col-md-12">
+                <h2 class="text-center afta-font" style="margin-top: 0px; margin-bottom: 25px;">
+                    Tahapan ini sudah selesai
+                </h2>
+            </div>
+        </div>
+    </div>    
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var navListItems = $('ul.setup-panel li a'),
+                allWells = $('.setup-content');
+
+        allWells.hide();
+
+        navListItems.click(function(e)
+        {
+            e.preventDefault();
+            var $target = $($(this).attr('href')),
+                    $item = $(this).closest('li');
+
+            if (!$item.hasClass('disabled')) {
+                navListItems.closest('li').removeClass('active');
+                $item.addClass('active');
+                allWells.hide();
+                $target.show();
+            }
+        });
+
+        $('ul.setup-panel li.active a').trigger('click');
+
+        // DEMO ONLY //
+        $('#activate-step-2').on('click', function(e) {
+            $('ul.setup-panel li:eq(1)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-2"]').trigger('click');
+        });
+
+        $('#activate-step-3').on('click', function(e) {
+            $('ul.setup-panel li:eq(2)').removeClass('disabled');
+            $('ul.setup-panel li a[href="#step-3"]').trigger('click');
+        });
+
+        $('#activate-step-1').on('click', function(e) {
+            $('ul.setup-panel li a[href="#step-1"]').trigger('click');
+        });
+
+    });
+</script>

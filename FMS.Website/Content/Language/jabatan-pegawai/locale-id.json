@@ -1,0 +1,23 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "TITLE" : "Jabatan Pegawai"
+    },
+    "DATA_JABATAN" : "Data Jabatan Pegawai",
+    "CARI_JABATAN" : "Cari Nama / Keterangan",
+    "CARI" : "Cari",
+    "TAMBAH_DATA" : "Tambah Data",
+    "TABLE" : {
+      "NO": "No",
+      "CODE_JABATAN": "Kode Jabatan",
+      "NAMA_JABATAN" : "Nama Jabatan",
+      "STATUS" : "Status"
+    },
+    "AKTIF" : "Aktif",
+    "TIDAK_AKTIF" : "Tidak Aktif",
+    "NONAKTIFKAN" : "NonAktifkan",
+    "AKTIFKAN" : "Aktifkan",
+    "TOTAL_DATA" : "Total Data",
+    "UBAH" : "Ubah"
+}

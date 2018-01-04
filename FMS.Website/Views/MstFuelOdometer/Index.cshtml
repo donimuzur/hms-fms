@@ -1,0 +1,355 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.FuelOdometerModel
+<!-- Main content -->
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Fuel and Odometer</h5>
+    @if (Model.CurrentPageAccess.UploadAccess == true)
+    {
+        <a href="@Url.Action("Upload", "MstFuelOdometer")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>
+    }
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+</div>
+<section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+    @using (Html.BeginForm("ExportMasterFuelOdometer", "MstFuelOdometer", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+    }
+    <div class="wpanel">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_PoliceNumber">Police Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.PoliceNumber, Model.SearchView.PoliceNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EmployeeName">Employee Name</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EmployeeId">Employee ID</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeId, Model.SearchView.EmployeeIDList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VehicleTypeList">Vehicle Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_Status">Status</label>
+                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CostCenter">Cost Center</label>
+                    @Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EcsRmbTransId">EcsRmbTrans Id</label>
+                    @Html.DropDownListFor(model => model.SearchView.EcsRmbTransId, Model.SearchView.EcsRmbTransIdList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_ClaimType">Claim Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.ClaimType, Model.SearchView.ClaimTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_ClaimComment">Claim Comment</label>
+                    @Html.TextBoxFor(model => model.SearchView.ClaimComment, new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_LastKM">Last KM</label>
+                    @Html.TextBoxFor(model => model.SearchView.LastKM, new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_SeqNumber">Seq Number</label>
+                    @Html.TextBoxFor(model => model.SearchView.SeqNumber, new { @class = "form-control", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_PostedTime">Posted Time</label>
+                    @Html.TextBoxFor(model => model.SearchView.PostedTime, new { @class = "form-control date-begin" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_DateOfCost">Date Of Cost</label>
+                    @Html.TextBoxFor(model => model.SearchView.DateOfCost, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="wpanel">
+        <table id="tbFuelOdometer" class="table table-bordered table-striped">
+            <thead>
+
+                <tr>
+                    <th>Action</th>
+                    <th>Vehicle Type</th>
+                    <th>Police Number</th>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>ECS RMB Trans ID</th>
+                    <th>SEQ Number</th>
+                    <th>Claim Type</th>
+                    <th>Date Of Cost</th>
+                    <th>Cost Center</th>
+                    <th>Fuel Amount</th>
+                    <th>Last KM</th>
+                    <th>Cost</th>
+                    <th>Claim Comment</th>
+                    <th>Posted Time</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Modified By</th>
+                    <th>Modified Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr ng-repeat="data in dataFuelOdometer">
+
+                        <td style="text-align: center;">
+                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            {
+                                <a href="@Url.Action("Detail", "MstFuelOdometer", new { MstFuelOdometerId = data.MstFuelOdometerId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                        </td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.EcsRmbTransId)</td>
+                        <td>@Html.Raw(data.SeqNumber)</td>
+                        <td>@Html.Raw(data.ClaimType)</td>
+                        <td>@Html.Raw(data.DateOfCost)</td>
+                        <td>@Html.Raw(data.CostCenter)</td>
+                        <td>@Html.Raw(data.FuelAmount)</td>
+                        <td>@Html.Raw(data.LastKM)</td>
+                        <td>@Html.Raw(data.Cost)</td>
+                        <td>@Html.Raw(data.ClaimComment)</td>
+                        <td>@Html.Raw(data.PostedTime.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                        @if (data.IsActive == true)
+                        {
+                            <td>@Html.Raw("Active")</td>
+                        }
+                        else
+                        {
+                            <td>@Html.Raw("InActive")</td>
+                        }
+                    </tr>
+                }
+                @*@if (Model.Details.Count == 0)
+                    {
+                        <tr ng-if="dataEmployee.length<1">
+                            <td colspan="13">No Data Found</td>
+                        </tr>
+                    }*@
+
+            </tbody>
+
+        </table>
+    </div>
+    @*<div>
+            <ul uib-pagination boundary-links="true" total-items="totalRecords" max-size="5" ng-model="off" class="pagination pull-left" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="paging(off)"></ul>
+        </div>*@
+
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script type="text/javascript">
+
+</script>
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript" language="javascript" class="init">
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    jQuery(function ($) {
+        // DataTable
+        //var table = $('#tbFuelOdometer').DataTable({
+        //    "dom": 'lf<"table-overflow"t>pi',
+        //    orderCellsTop: true
+        //});
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+
+        $(".chosen").chosen();
+
+        setupDataTables();
+
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbFuelOdometer').DataTable();
+
+            table.ajax.reload();
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $('input[type=text]').val('');
+            $("select").val('');
+            $("select").selectpicker("refresh");
+            setupDataTables();
+        });
+    });
+
+    function ExportXls() {
+        $('#ExportToXls').submit();
+    }
+
+    function setupColumns() {
+        var columns = [
+            { "data": null, "orderable" : false },
+            { "data": "VehicleType", "orderable": false },
+            { "data": "PoliceNumber", "orderable": false },
+            { "data": "EmployeeId", "orderable": false },
+            { "data": "EmployeeName", "orderable": false },
+            { "data": "EcsRmbTransId", "orderable": false },
+            { "data": "SeqNumber", "orderable": false },
+            { "data": "ClaimType", "orderable": false },
+            {
+                "data": "DateOfCost", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY HH:mm:ss") : "";
+                }
+            },
+            { "data": "CostCenter", "orderable": false },
+            { "data": "FuelAmount", "orderable": false },
+            { "data": "LastKM", "orderable": false },
+            { "data": "Cost", "orderable": false },
+            { "data": "ClaimComment", "orderable": false },
+            {
+                "data": "PostedTime", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY HH:mm:ss") : "";
+                }
+            },
+            { "data": "CreatedBy", "orderable": false },
+            {
+                "data": "CreatedDate", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { "data": "ModifiedBy", "orderable": false },
+            {
+                "data": "ModifiedDate", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "IsActive", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Active" : "InActive";
+                }
+            }
+        ];
+
+        return columns;
+    }
+
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbFuelOdometer')) {
+            table = $('#tbFuelOdometer').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+        table = $('#tbFuelOdometer').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "rowCallback": function(row, data, index) {
+                actionHtml = '';
+
+                if (ReadAccess == true) {
+                    actionHtml = actionHtml + "<a href='MstFuelOdometer/Detail?MstFuelOdometerId="+data.MstFuelOdometerId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='Content/images/search.png' alt='' /></a>";
+                }
+
+                var actionRow = $(row).find("td")[0];
+
+                $(actionRow).addClass('action');
+                $(actionRow).html(actionHtml);
+            },
+            "serverSide": true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchFuelOdometerAjax", "MstFuelOdometer")",
+                "type": "POST",
+                "data": function(d) {
+                    return $.extend({}, d, {
+                        "PoliceNumber": $('#SearchView_PoliceNumber').val(),
+                        "EmployeeName": $('#SearchView_EmployeeName').val(),
+                        "ClaimComment": $('#SearchView_ClaimComment').val(),
+                        "EmployeeId": $('#SearchView_EmployeeId').val(),
+                        "ClaimType": $('#SearchView_ClaimType').val(),
+                        "StatusSource": $('#SearchView_Status').val(),
+                        "EcsRmbTransId": $('#SearchView_EcsRmbTransId').val(),
+                        "VehicleType": $('#SearchView_VehicleType').val(),
+                        "LastKM": $('#SearchView_LastKM').val(),
+                        "SeqNumber": $('#SearchView_SeqNumber').val(),
+                        "PostedTime": $('#SearchView_PostedTime').val(),
+                        "DateOfCost": $('#SearchView_DateOfCost').val()
+                    });
+                }
+            }
+        });
+
+        table.on('preXhr', function(e, settings, data) {
+            $(".loading").show();
+        });
+
+        table.on('xhr', function(e, settings, data) {
+            $(".loading").hide();
+        });
+    }
+</script>

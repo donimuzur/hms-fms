@@ -1,0 +1,276 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.GsItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data GS Create</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
+        @using (Html.BeginForm("Create", "MstGs"))
+        {
+            <div class="row col-md-6">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Employee Id<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EmployeeId, new { @id = "employeeSelect", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Employee Name<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Police Number<span class="red">*</span></label>
+                        <label class="label-warning" id="PoliceNote"></label>
+                        @Html.DropDownListFor(model => model.PoliceNumber, Model.PoliceNumberList, "-- Please Select --", new { @class = "form-control", @onchange = "ChangePoliceNumber()", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Usage Name<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", required = "required", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Car Group Level<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", required = "required", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Manufacturer<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Model<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Series<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Transmission<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Location<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.Location, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-6">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">GS Request Date<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.GsRequestDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">GS Fullfillment Date<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.GsFullfillmentDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Manufacturer<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsManufacturer, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Model<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsModel, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Series<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsSeries, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Transmission<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsTransmission, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Gs Police Number<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.GsPoliceNumber, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Start Date<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            <span class="input-group-addon btn btn-primary" onclick="onSpStartDate()">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">End Date<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", required = "required" })
+                            <span class="input-group-addon btn btn-primary" onclick="onSpEndDate()">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Lead Time<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.LeadTimeS, new { @class = "form-control", required = "required", @readonly = "readonly" })
+                        @Html.HiddenFor(model => model.LeadTime)
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Remark<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Remark, Model.RemarkList, "-- Please Select--", new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="@Url.Action("Index", "MstGs" )" class="btn btn-default">Back</a>
+            </div>
+
+        }
+    </div>
+</section>
+
+<script src="~/Scripts/js/scripts.js"></script>
+<script type="text/javascript">
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        } return true;
+    }
+
+
+    $(function () {
+
+        InitEmployee('@Url.Action("GetEmployeeList","MstGS")', '@Url.Action("GetEmployeeData","MstGS")');
+    });
+
+    function ChangePoliceNumber() {
+        if ($("#PoliceNumber").length && $('#PoliceNumber').length) {
+            var PoliceNumber = $('#PoliceNumber').find("option:selected").val();
+            var EmployeeName = $('#employeeSelect').val();
+            var EmployeeID = $('EmployeeId').val();
+
+            var GroupLevel = $('#GroupLevel').val();
+            if (PoliceNumber == '' || $('#PoliceNumber').find("option:selected").val() == '') {
+                $('#VehicleUsage').val('');
+                $('#Location').val('');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("ChangePoliceNumber", "MstGs")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { PoliceNumber: PoliceNumber, EmployeeID: EmployeeID, GroupLevel: GroupLevel },
+                    success: function (list) {
+                        $('#VehicleUsage').val(list.VehicleUsage);
+                        $('#Location').val(list.City);
+                    }
+                });
+            }
+        }
+    }
+
+    function GetEmployee(urlGet, obj) {
+
+        var Id = $(obj).val();
+        $.ajax({
+            url: urlGet,
+            type: "POST",
+            dataType: "JSON",
+            data: { employeeId: Id },
+            success: function (response) {
+                $("#employeeSelect").val(Id);
+                $("#EmployeeName").val(response.FORMAL_NAME);
+                $("#Location").val(response.BASETOWN);
+
+                $('#PoliceNumber').append('<option value="">Select</option>');
+                $('#PoliceNote').html('');
+                if (response.EmployeeVehicle != null) {
+                    $('#PoliceNumber').val( response.EmployeeVehicle.PoliceNumber );
+                    $('#VehicleUsage').val(response.EmployeeVehicle.VehicleUsage);
+                    $('#GroupLevel').val(response.EmployeeVehicle.CarGroupLevel);
+                    $('#Manufacturer').val(response.EmployeeVehicle.Manufacturer);
+                    $('#Models').val(response.EmployeeVehicle.Models);
+                    $('#Series').val(response.EmployeeVehicle.Series);
+                    $('#Transmission').val(response.EmployeeVehicle.Transmission);
+                }
+                else {
+                    $('#PoliceNote').html(' -- This Employee does not have a police number');
+                }
+            }
+        });
+    }
+
+    function InitEmployee(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee(urlsearch, "#employeeSelect");
+                }
+            },
+
+        };
+
+        $("#employeeSelect").easyAutocomplete(options);
+    }
+
+    function CalculateLeadTime(endDate, startDate) {
+        var dateDiff = endDate - startDate;
+
+
+    }
+</script>

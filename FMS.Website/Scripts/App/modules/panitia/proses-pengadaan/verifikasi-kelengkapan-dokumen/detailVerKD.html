@@ -1,0 +1,102 @@
+﻿<section class="content" ng-init="detVerKDCtrl.init()" style="overflow: visible!important;">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font text-center"> {{'TITLE2' | translate}}</h3>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{'VENDOR' | translate}}{{detVerKDCtrl.data[0].VHSOfferEntry.vhs.VendorName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label>{{'TENDER' | translate}}{{detVerKDCtrl.step.tender.TenderName}}</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label ng-if="detVerKDCtrl.data[0].VerifiedDocVH.IsStatus == true">{{'HASIL' | translate}} LOLOS</label>
+                                <label ng-if="detVerKDCtrl.data[0].VerifiedDocVH.IsStatus == false">{{'HASIL' | translate}} TIDAK LOLOS</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_NO2' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_PERSYARATAN' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_TGL_MASUK' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_TGL_VER' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_STATUS' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_CHECK_LIST' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_KET' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_SCORE' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_KET' | translate}}</th>
+                                                <th class="text-center" style="text-align: center;">{{'TABLE2.COL_ACTION' | translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="td in detVerKDCtrl.data">
+                                                <td class="text-center">{{$index + 1}}</td>
+                                                <td class="text-center">{{td.VHSOfferEntry.DocName}}</td>
+                                                <td class="text-center">{{td.VHSOfferEntry.VHSDate| date: "dd-MM-yyyy"}}</td>
+                                                <td class="text-center">{{detVerKDCtrl.data[0].VerifiedDocVH.VerifiedDate| date: "dd-MM-yyyy"}}</td>
+                                                <td class="text-center">{{td.IsValid}}</td>
+                                                <td class="text-center"> <input type="checkbox" ng-model="td.Checklist" ng-change="detVerKDCtrl.CheckCriteria(td)" /></td>
+                                                <td class="text-center">
+                                                    <select ng-if="td.IsNeedScoring && td.Checklist" class="form-control input-sm" ng-model="td.Option" ng-change="detVerKDCtrl.CheckCriteriaOption($index, td, td.Option)"
+                                                            ng-options="item as item.OptionName for item in td.listOption">
+                                                        <option value="" selected disabled>
+                                                            -- Keterangan --
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td class="text-center"><input ng-if="td.IsNeedScoring && td.Checklist" ng-disabled="td.IsFix === true" type="number" class="form-control input-sm" title="Max value {{td.Option.MaxScore}}" ng-blur="detVerKDCtrl.Check1(td)" ng-model="td.Score" style="text-align: right; width: 100px;" /></td>
+                                                <td class="text-center">
+                                                    <input type="text" ng-model="td.Remark" class="form-control input-sm"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-primary" ng-click="detVerKDCtrl.uploadDetBC(td.VHSOfferEntry.vhs.VendorID, td.VHSOfferEntry.TenderDocTypeID)" ng-if="td.VHSOfferEntry.TenderDocTypeID === 14 || td.VHSOfferEntry.TenderDocTypeID === 18 || td.VHSOfferEntry.TenderDocTypeID === 20 || td.VHSOfferEntry.TenderDocTypeID === 13 || td.VHSOfferEntry.TenderDocTypeID === 15 || td.VHSOfferEntry.TenderDocTypeID === 16 || td.VHSOfferEntry.TenderDocTypeID === 19 || td.VHSOfferEntry.TenderDocTypeID === 17" title="Detail File"><i class="fa fa-edit"></i></button>
+                                                    <!--<button class="btn btn-sm btn-primary" ng-click="detVerKDCtrl.uploadDetBC(td.VHSOfferEntry.vhs.VendorID, td.VHSOfferEntry.TenderDocTypeID)" ng-if="td.VHSOfferEntry.TenderDocTypeID === 14 || td.VHSOfferEntry.TenderDocTypeID === 18 || td.VHSOfferEntry.TenderDocTypeID === 20 || td.VHSOfferEntry.TenderDocTypeID === 13 || td.VHSOfferEntry.TenderDocTypeID === 15 || td.VHSOfferEntry.TenderDocTypeID === 16 || td.VHSOfferEntry.TenderDocTypeID === 19 || td.VHSOfferEntry.TenderDocTypeID === 17" title="Detail File"><i class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-primary" ng-if="(td.VHSOfferEntry.TenderDocTypeID === 10 || td.VHSOfferEntry.TenderDocTypeID === 21|| td.VHSOfferEntry.TenderDocTypeID === 11 || td.VHSOfferEntry.TenderDocTypeID === 12) && td.VHSOfferEntry.DocumentUrl !== null " href="{{detVerKDCtrl.folderFile+td.VHSOfferEntry.DocumentUrl}}" target="_blank" title="Download File"><i class="fa fa-download"></i></button>-->
+                                                    
+                                                    <a  ng-if="td.VHSOfferEntry.TenderDocTypeID === 21" href="{{detVerKDCtrl.folderFile+td.VHSOfferEntry.DocumentUrl}}" target="_blank" class="btn btn-flat btn-sm btn-success" title="Download File ">
+                                                        <i class="fa fa-download"></i>
+                                                    </a>
+                                                    <a ng-if="(td.VHSOfferEntry.TenderDocTypeID === 10|| td.VHSOfferEntry.TenderDocTypeID === 11 || td.VHSOfferEntry.TenderDocTypeID === 12) && td.VHSOfferEntry.DocumentUrl !== null " href="{{detVerKDCtrl.folderFile+td.VHSOfferEntry.DocumentUrl}}" target="_blank" class="btn btn-flat btn-sm btn-success" title="Download File">
+                                                        <i class='fa fa-download'></i>&nbsp;
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button class="btn btn-sm btn-primary" ng-click="detVerKDCtrl.Insert()" title="{{'SIMPAN' | translate}}"><i class="fa fa-save"></i></button>
+                            <button class="btn btn-sm btn-danger" ng-click="detVerKDCtrl.kembali()" title="{{'KEMBALI' | translate}}"><i class="fa fa-arrow-circle-left"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

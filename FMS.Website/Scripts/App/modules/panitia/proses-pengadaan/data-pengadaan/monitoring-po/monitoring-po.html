@@ -1,0 +1,118 @@
+﻿<div ng-init="monitoringPOCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin">{{'BREADCRUMB.BERANDA'| translate}}</a></li>
+            <li><a>{{'BREADCRUMB.MONITORING'| translate}}</a></li>
+            <li><a>{{'BREADCRUMB.MONITORING_TENDER'| translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="afta-font text-center">{{'JUDUL_MON'|translate}}</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    Filter :
+                                    <select class="input-sm" ng-model="monitoringPOCtrl.searchBy" required>
+                                        <option value="" disabled selected>{{'FILTER.SEARCH' | translate }}</option>
+                                        <option value="1">{{'TABLE.VENDOR_CODE' | translate }}</option>
+                                        <option value="2">{{'TABLE.VENDOR_NAME' | translate }}</option>
+                                        <option value="3" selected="selected">{{'TABLE.PO_TYPE' | translate }}</option>
+                                        <option value="4">{{'TABLE.PO_NUMBER' | translate }}</option>
+                                    </select>
+                                 <!--   <input type="text" placeholder="{{'FILTER.KEYWORD' | translate}}" class="input-sm" ng-model="keyword" ng-change="monitoringPOCtrl.cariPaket(keyword)" /> -->
+                                    <input type="text" placeholder="{{'FILTER.KEYWORD' | translate}}" class="input-sm" ng-model="monitoringPOCtrl.keyword"/> 
+                                     <span class="">
+                                        <button ng-click="monitoringPOCtrl.loadPaket()" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'SEARCH' | translate}}">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <a href="#/dataupload-po" class="btn btn-flat btn-success" title="{{'UPLOAD_PO'|translate}}"><i class="fa fa-cloud-upload">{{'UPLOAD_PO'|translate}}</i>&nbsp;</a>
+                                <a href="#/kirim-po" class="btn btn-flat btn-warning" ng-click="monitoringPOCtrl.sent()" title="{{'SENT_PO'|translate}}"><i class="fa fa-envelope">{{'SENT_PO'|translate}}</i>&nbsp;</a>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive ">
+                                    <table id="listPO" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px; min-width: 30px; text-align: center;">{{'TABLE.NO'|translate}}</th>
+                                                <th class="text-center" style="width: 100px; min-width: 100px;">{{'TABLE.VENDOR_CODE'|translate}}</th>
+                                                <th class="text-center" style="width: 100px; min-width: 100px;">{{'TABLE.VENDOR_NAME'|translate}}</th>
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">{{'TABLE.PO_TYPE'|translate}}</th>
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">{{'TABLE.PO_NUMBER'|translate}}</th>
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">{{'TABLE.PO_DATE'|translate}}</th>
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">{{'TABLE.PO_SENT'|translate}}</th>
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">{{'TABLE.PO_STATUS'|translate}}</th>
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">{{'TABLE.NOTE'|translate}}</th>
+
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">{{'TABLE.ACTION'|translate}}</th>
+                                                <th class="text-center" style="width: 30px; min-width: 30px;">[]</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="dt in monitoringPOCtrl.paket">
+                                                <td class="text-center" style="vertical-align: middle;">{{dt.currentPage > 1 ? (monitoringPOCtrl.maxSize * (monitoringPOCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{dt.VendorCodeSAP}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{dt.VendorName}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{dt.POType}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{dt.PONumber}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{monitoringPOCtrl.convertDate (dt.PODate) }}</td>
+                                                <td class="text-center" style="vertical-align: middle;"></td>
+                                                <td ng-if="dt.ApprovalStatus === 1" class="text-center" style="vertical-align: middle;">
+                                                    <label class="label label-sm label-warning col-md-12">OK</label>
+                                                </td>
+                                                <td ng-if="dt.ApprovalStatus != 1" class="text-center" style="vertical-align: middle;">
+                                                   {{'PROSES'|translate}}
+                                                </td>
+                                                
+                                                <td class="text-center" style="vertical-align: middle;">{{dt.Description}}</td>
+
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a ng-click="monitoringPOCtrl.viewPO(dt.VendorCodeSAP)" title="{{'ACTION'|translate}}" class="btn btn-link" >{{'ACTION'|translate}}</a>
+                                                </td>
+                                                <td class="text-center" style="vertical-align: middle;">-</td>
+                                            </tr>
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-10 center text-center ">
+                                        <ul uib-pagination total-items="monitoringPOCtrl.totalItems"
+                                            ng-model="monitoringPOCtrl.currentPage" items-per-page="monitoringPOCtrl.pageSize"
+                                            previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="monitoringPOCtrl.loadPaket()"></ul>
+                                    </div>
+                                    <div class="col-md-10 text-right">
+
+                                        <label>{{'TOTAL_DATA'|translate}} : {{monitoringPOCtrl.totalItems}}</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</div>
+    </section>
+</div>

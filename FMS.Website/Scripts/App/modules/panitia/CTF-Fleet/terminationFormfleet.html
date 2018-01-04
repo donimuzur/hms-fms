@@ -1,0 +1,463 @@
+﻿<section class="content-header">
+    <h1>
+        Car Termination Form Fleet
+    </h1>
+
+    <div class="box-tools pull-right" style="margin-top: -20px">
+        <h4>
+            <label for="" class="control-label">Status:</label>
+            <label class="control-label">Draft</label>
+        </h4>
+    </div>
+</section>
+
+<section class="content" ng-init="ctrl.init()" ng-controller="terminationformfleetctrl as ctrl">
+    <div class="row">
+        <form role="form">
+            <div>
+                <div class="col-md-12 ">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Car Termination Form Fleet Data</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-toggle="collapse" data-target="#collapseOne">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body" id="collapseOne" collapse="false">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="control-label">Request ID</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.request_number" disabled>
+                                        <input type="hidden" class="form-control" ng-model="ctrl.model.ctf_id" disabled>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">Request Date</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.request_dateConvert" disabled>
+                                        <input type="hidden" ng-model="ctrl.model.request_date">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">Coordinator</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.coordinator" disabled>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">EmployeeID</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.employee_id" ng-click="ctrl.openEmployee()">
+                                        <input type="hidden" class="form-control" ng-model="ctrl.model.epaf_id">
+                                        <input type="hidden" class="form-control" ng-model="ctrl.model.fleet_id">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">Employee Name</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.employee_name" disabled>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Cost Center</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.cost_center" disabled>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Group Level</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.group_level" disabled>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">Terminate Reason</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group " ng-init="ctrl.loadReason()">
+                                            <select class="form-control" ng-model="ctrl.model.reason" required>
+                                                <option ng-repeat="reason in ctrl.reasonlist" value="{{reason.reason_id}}">{{reason.reason}}</option>
+                                            </select>
+                                            <span class="glyphicon glyphicon-exclamation-sign form-control-feedback "></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Supply Method</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.supply_method" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Police Number</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.police_number">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">Vehicle Year</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.vehicle_year" disabled>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Vehicle Type</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.vehicle_type" disabled>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label">Vehicle Usage</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.vehicle_usage" disabled>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="control-label">End Rent Date</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="ctrl.model.end_contractconvert" disabled>
+                                        <input type="hidden" ng-model="ctrl.model.end_contract">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">Effective Date</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar" ng-click="ctrl.openCalendar(1)"></span>
+                                            </span>
+                                            <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy"
+                                                   close-text="Tutup" is-open="ctrl.isCalendarOpened[1]"
+                                                   ng-model="ctrl.model.effectivedate"
+                                                   ng-click="ctrl.openCalendar(1)"
+                                                   style="background-color: #ffffff;" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Transfer To Cfm Idle</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <select class="form-control">
+                                            <option>Yes</option>
+                                            <option>No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="control-label">Extend Vehicle</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select class="form-control">
+                                            <option>Yes</option>
+                                            <option>No</option>
+                                        </select>
+                                    </div>
+                                    <div class="box-tools pull-right">
+                                        <a class="btn bg-blue" style="margin-bottom: 15px;margin-top: -10px;margin-right: 25px " ng-click="ctrl.showExtendVehicle()">
+                                            <i class="glyphicon glyphicon-check" id="myModalLabel" data-toggle="modal"></i>  Extend
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Vehicle Extend</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; width: 15%">New Proposed Date</th>
+                                    <th style="text-align: center; width: 15%">Po Number</th>
+                                    <th style="text-align: center; width: 15%">PO Line</th>
+                                    <th style="text-align: center; width: 15%">Price</th>
+                                    <th style="text-align: center; width: 15%">Reason</th>
+                                    <th class="text-center" style="width: 200px; min-width: 200px; vertical-align: middle;">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="extend in ctrl.extendctf">
+                                    <td>{{extend.new_proposed_date}}</td>
+                                    <td>{{extend.extend_po_number}}</td>
+                                    <td>{{extend.extend_po_line}}</td>
+                                    <td>{{extend.extend_price}}</td>
+                                    <td>{{extend.remark_id}}</td>
+                                    <td class="center-vertical">
+                                        <button class="btn btn-danger btn-sm text-center" ng-click="ctrl.removeExtend($index)" ng-disabled="ctrl.method=='view'"><i class="fa fa-minus-square"></i></button>&nbsp;&nbsp;
+                                        <!--                                        <button class="btn btn-primary btn-sm text-center" ng-click="ctrl.SIF(list)"><i class="fa fa-user"></i></button>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Withdrawal Detail</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" class="form-horizontal">
+                <div class="box-body">
+                    <div class="col-md-6">
+                        <div class="box-body">
+                            <div class="col-sm-4">
+                                <label>Person In Charge</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="ctrl.model.withd_pic">
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-sm-4">
+                                <label>Phone Number</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="ctrl.model.withd_phone">
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-4">
+                                <label>Date</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-calendar" ng-click="ctrl.openCalendar(3)"></span>
+                                    </span>
+                                    <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy"
+                                           close-text="Tutup" is-open="ctrl.isCalendarOpened[3]"
+                                           ng-model="ctrl.model.withd_date"
+                                           ng-click="ctrl.openCalendar(3)"
+                                           style="background-color: #ffffff;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-4">
+                                <label class="control-label">City</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="ctrl.model.withd_city">
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-4">
+                                <label class="control-label">Address</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="ctrl.model.withd_address">
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Fleet Confirmation</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <div class="box-body">
+                <div class="col-md-6">
+                    <div class="box-body">
+                        <div class="col-sm-4">
+                            <label>Penalty Po Number</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="ctrl.model.penalty_po_number">
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-sm-4">
+                            <label>Penalty Po Line</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" ng-model="ctrl.model.penalty_po_line">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="box-body">
+                        <div class="col-sm-4">
+                            <label class="control-label">Penalty Price</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="10.000.000,00" ng-model="ctrl.model.penalty_price">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+        <a class="btn bg-blue" style="margin-top:5px;">
+            <i class="glyphicon glyphicon-ban-circle" data-toggle="modal" data-target="#vendormassupload"></i> Cancel
+        </a>
+        <a class="btn bg-blue" style="margin-top:5px;" ng-click="ctrl.saveDraft()">
+            <i class="glyphicon glyphicon-floppy-save" data-toggle="modal" data-target="#vendormassupload"></i> Save
+        </a>
+        <a class="btn bg-blue" style="margin-top:5px; ">
+            <i class="glyphicon glyphicon-ok" data-toggle="modal" data-target="#vendormassupload"></i> Send
+        </a>
+    </div>
+    <script type="text/ng-template" id="selectEmployee.html">
+        <div class="modal-header" ng-init="getEmployee(1)">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">Select Employee</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box" style="overflow-y: auto;">
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Employee Id</th>
+                                        <th>Employee Name</th>
+                                        <th>Cost Control</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="employee_id" ng-change="searchID(1)"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="employee_name" ng-change="searchName(1)"></td>
+                                        <td><input style="border-radius: 7px; text-align: center;" type="text" placeholder="search" ng-model="position" ng-change="searchPosition(1)"></td>
+                                    </tr>
+                                    <tr ng-repeat="employee in employees | filter:search:data">
+                                        <td><input type="radio" name="emp" ng-click="selectEmployee(employee)" autocomplete="off"></td>
+                                        <td>{{employee.employee_id}}</td>
+                                        <td>{{employee.employee_name}}</td>
+                                        <td>{{employee.cost_center}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-md-7">
+                                <ul ng-if="pagingEmployee" uib-pagination boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="getEmployee(currentPage)"></ul>
+                                <ul ng-if="pagingEmployeeID" uib-pagination boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="searchID(currentPage)"></ul>
+                                <ul ng-if="pagingEmployeeName" uib-pagination boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="searchName(currentPage)"></ul>
+                                <ul ng-if="pagingEmployeePosition" uib-pagination boundary-links="true" total-items="totalRecords" ng-model="currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="searchPosition(currentPage)"></ul>
+                                <br />
+                                <label>{{'TOTAL DATA' | translate}} : {{totalRecords}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="showExtendVehicle.html">
+        <div class="modal-header" ng-init="loadExtendVehicle()">
+            <button type="button" ng-click="batal()" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h3 class="modal-title">Extend Vehicle</h3>
+        </div>
+        <div class="modal-body">
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Proposed Date</label>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar" ng-click="openCalendar(2)"></span>
+                        </span>
+                        <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MMM-yyyy"
+                               close-text="Tutup" is-open="isCalendarOpened[2]"
+                               ng-model="popup.new_proposed_date"
+                               ng-click="openCalendar(2)"
+                               style="background-color: #ffffff;" />
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Extend PO No.</label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control" type="text" ng-model="popup.extend_po_number">
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Extend PO Line</label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control" ng-model="popup.extend_po_line">
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Extend Price</label>
+                </div>
+                <div class="col-md-8">
+                    <input class="form-control" ng-model="popup.extend_price">
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="col-md-4">
+                    <label class="control-label">Reason</label>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group " ng-init="loadRemarkReason()">
+                        <select class="form-control" ng-model="popup.remark_id" required>
+                            <option ng-repeat="remark in remarkReasonList" value="{{remark.remark_id}}">{{remark.remark}}</option>
+                        </select>
+                        <span class="glyphicon glyphicon-exclamation-sign form-control-feedback "></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="batal()">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-click="extend(popup)">Extend</button>
+            </div>
+        </div>
+    </script>
+
+</section>
+
+

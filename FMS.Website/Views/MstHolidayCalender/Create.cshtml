@@ -1,0 +1,36 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.HolidayCalenderItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Holiday Calender Create</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Create", "MstHolidayCalender"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Date From<span class="red">*</span></label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.MstHolidayDate, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Description<span class="red">*</span></label>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control ", @rows = "4" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstHolidayCalender" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>

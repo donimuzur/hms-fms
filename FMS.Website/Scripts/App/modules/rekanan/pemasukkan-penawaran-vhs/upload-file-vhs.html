@@ -1,0 +1,113 @@
+﻿<section ng-init="UploadFileVHSCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a href="javascript:void(0)">Proses Pengadaan</a></li>
+        <li><a href="#/daftar-lelang-admin">Data Pengadaan</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li><a class="active">Pemasukkan Penawaran VHS</a></li>
+        <li><a class="active">Upload File Penawaran VHS</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">
+                <!--notife flow-->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="afta-font">Upload File Penawaran VHS</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Upload File
+                                    <small> ( <span ng-repeat="ft in UploadFileVHSCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{UploadFileVHSCtrl.idUploadConfigs[0].Size}} {{UploadFileVHSCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="UploadFileVHSCtrl.selectUpload()"
+                                       ng-model="UploadFileVHSCtrl.fileUpload" name="ownerIDFile" required accept="{{UploadFileVHSCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 margintop20">
+                            <button class="btn btn-sm btn-primary" ng-click="UploadFileVHSCtrl.uploadFile()" title="Upload File"><i class="fa fa-arrow-circle-o-down"></i></button>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1" ng-if="UploadFileVHSCtrl.RFQId.TenderType === 4169">
+                           
+                            <div style="padding: 5px;">
+                                <label class="label label-sm label-warning center-block" style="font-size: 14px; line-height:1.3;">
+                                    Perhatian! Jenis penawaran:  Fix<br />
+                                    Pastikan anda tidak merubah kolom Code, Material Code, Item Description, Manufacture, Part Number,
+                                    <br />Annual Usage, Unit Of Measurement, dan Currency
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-10 col-md-offset-1" ng-if="UploadFileVHSCtrl.RFQId.TenderType === 4171">
+                            <div style="padding: 5px;">
+                                <label class="label label-sm label-warning center-block" style="font-size: 14px; line-height:1.3;">
+                                    Perhatian! Jenis penawaran: Alternatif <br />
+                                    Pastikan anda tidak merubah kolom Code, Material Code, dan Annual Usage
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div ng-if="UploadFileVHSCtrl.newExcel.length > 0" class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-success marginBottom-1" ng-click="UploadFileVHSCtrl.uploadSave()"><i class="fa fa-upload"></i>Save File</button>
+                                <button class="btn btn-sm btn-danger marginBottom-1" ng-click="UploadFileVHSCtrl.clear()"><i class="fa fa-trash"></i>Hapus Data</button>
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width="5%">No</th>
+                                                <th class="text-center">Material Code</th>
+                                                <th class="text-center" width="20%">Item Description</th>
+                                                <th class="text-center" width="15%">Manufacture</th>
+                                                <th class="text-center" width="15%">Part No</th>
+                                                <th class="text-center" width="15%">Estimate</th>
+                                                <th class="text-center" width="15%">Unit</th>
+                                                <th class="text-center" width="15%">Currency</th>
+                                                <th class="text-center" width="15%">Unit Price</th>
+                                                <th class="text-center" width="15%">Lead Time</th>
+                                                <th class="text-center" width="15%">Country Of Origin</th>
+                                                <th class="text-center" width="15%">Remark</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rt in UploadFileVHSCtrl.newExcel">
+                                                <td class="text-center">{{UploadFileVHSCtrl.currentPage > 1 ? (UploadFileVHSCtrl.maxSize * (UploadFileVHSCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td class="text-center">{{rt.MaterialCode}}</td>
+                                                <td>{{rt.ItemDescrip}}</td>
+                                                <td class="text-center">{{rt.Manufacture}}</td>
+                                                <td class="text-center">{{rt.PartNo}}</td>
+                                                <td class="text-center">{{rt.Estimate}}</td>
+                                                <td class="text-center">{{rt.Unit}}</td>
+                                                <td class="text-center">{{rt.Currency}}</td>
+                                                <td class="text-center">{{rt.PriceIDR}}</td>
+                                                <td class="text-center">{{rt.LeadTime}}</td>
+                                                <td class="text-center">{{rt.CountryOfOrigin}}</td>
+                                                <td class="text-center">{{rt.Remark}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 center-block text-right">
+                            <a class="btn btn-flat btn-primary" ng-click=" UploadFileVHSCtrl.kembali()" title="{{'KEMBALI'|translate}}"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

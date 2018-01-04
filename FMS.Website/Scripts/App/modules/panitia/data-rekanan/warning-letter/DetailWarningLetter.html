@@ -1,0 +1,100 @@
+﻿<div class="modal-content" ng-init="DetailwarningLetterCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="DetailwarningLetterCtrl.batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'DETAIL_WARNING' | translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.CREATEDDATE' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.CreatedDate | date: 'dd-MM-yyyy'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.VENDORNAME' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.VendorName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.AREA' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.Area}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.GOODSORSERVICE' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.GoodOrService}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.WARNINGTYPE' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.WarningType | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.ENDDATE' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.EndDate | date: 'dd-MM-yyyy'}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.REPORTER' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.Reporter}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">{{'TABLE.STATUS' | translate }}</label>
+                        <div class="col-md-8">
+                            : {{DetailwarningLetterCtrl.Status}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <center>
+            <button type="button" class="btn btn-flat btn-primary" ng-click="DetailwarningLetterCtrl.tambah(DetailwarningLetterCtrl.WarningType)" title="{{'LANJUT' | translate}}">
+                <i class='fa fa-plus-circle'></i>&nbsp; 
+            </button>
+            <button type="button" class="btn btn-flat btn-warning" ng-click="DetailwarningLetterCtrl.batal()" title="{{'TIDAK' | translate}}">
+                <i class='fa fa-minus-circle'></i>&nbsp; 
+            </button>
+        </center>
+        </div>
+    </div>

@@ -1,0 +1,76 @@
+<section class="content" ng-init="init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> Beranda</a></li>
+        <li><a>Monitoring</a></li>
+        <li><a>Monitoring Tender VHS/FPA</a></li>
+        <li><a class="active">Upload Data VHS</a></li>
+    </ol>
+    
+    <div class="row">
+        
+        <h2 class="text-center">Upload Data Tender VHS</h2>
+                <fieldset>
+				
+                    <div class="col-md-8">
+                        <button class="btn btn-flat btn-defould" ng-click="cancel()" title="Pilih File"><i class="fa fa-search"></i>&nbsp;</button>
+                        <button class="btn btn-flat btn-success" ng-click="delete()" title="Upload"><i class="fa fa-upload"></i>&nbsp;</button>
+                        <button class="btn btn-flat btn-primary" ng-click="delete()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center-vertical">No</th>
+                                        <th class="center-vertical">PIC</th>
+                                        <th class="center-vertical">Storage Location</th>
+                                        <th class="center-vertical">Posting Date</th>
+                                        <th class="center-vertical">Resertvation</th>
+                                        <th class="center-vertical">Movement Tipe</th>
+                                        <th class="center-vertical">Special Stock</th>
+                                        <th class="center-vertical">Vendor</th>
+                                        <th class="center-vertical">Vendor Name</th>
+                                        <th class="center-vertical">Material Dokument</th>
+                                        <th class="center-vertical">Material Dok. item</th>
+                                        <th class="center-vertical">Materilal</th>
+                                        <th class="center-vertical">Material Description</th>
+                                        <th class="center-vertical">QTY</th>
+                                       
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td class="center-vertical">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td style="vertical-align: middle;">PLYWOOD;</td>
+                                        <td style="vertical-align: middle;">REFERENCE</td>
+                                        <td style="vertical-align: middle;">4FT X 8FT</td>
+                                        <td style="vertical-align: middle;">PC</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        <td style="vertical-align: middle;">0</td>
+                                        
+                                       
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div></div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <div class="col-sd-4 col-md-10" >
+                            <pagination ng-show="totalItems > 10" id="paginationMetode" total-items="totalItems" page="currentPage" items-per-page="10" 
+                                        max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+                            <br/><label>Total Data : {{totalItems}}</label>
+                        </div>
+                    </div>
+                    
+                </fieldset>
+                </div>
+</section>

@@ -1,0 +1,45 @@
+<div class="modal-content" ng-init="detKelTenderCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close"  ng-click="detKelTenderCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{'DETAIL_KELENGKAPAN_TENDER'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div >
+            <div class="row">
+                <div class="col-md-12" >
+                    <div class="form-group">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">{{'TABLE.KODE'|translate}}</th>
+                                        <th class="text-center">{{'TABLE.NAMA_FORM'|translate}}</th>
+                                        <th class="text-center">{{'TABLE.ACTION'|translate}}</th>
+                                        <th class="text-center">{{'TABLE.KETERANGAN'|translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dt in detKelTenderCtrl.tenderDocTypes">
+                                        <td class="text-center">{{dt.DocCode}}</td>
+                                        <td>{{dt.DocName}}</td>
+                                        <td class="text-center">
+                                            <input ng-if="detKelTenderCtrl.editable" type="checkbox" ng-model="dt.checked"/>
+                                            <span ng-if="!detKelTenderCtrl.editable"><i class="fa fa-check-circle" ng-if="dt.checked"></i></span>
+                                        </td>
+                                        <td>{{dt.Information}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button ng-if="detKelTenderCtrl.editable" class="btn btn-sm btn-success" ng-click="detKelTenderCtrl.save()" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i></button>
+            <button class="btn btn-sm btn-default" ng-click="detKelTenderCtrl.cancel()" title="{{'TUTUP'|translate}}"><i class="fa fa-arrow-left"></i></button>
+        </div>
+    </div>
+</div>

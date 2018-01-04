@@ -11,6 +11,8 @@
     <AssemblyName>FMS.Contract</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,25 +41,117 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\IAutoGrBLL.cs" />
+    <Compile Include="BLL\ICafBLL.cs" />
+    <Compile Include="BLL\ICarComplaintFormBLL.cs" />
+    <Compile Include="BLL\ICfmIdleReportBLL.cs" />
+    <Compile Include="BLL\IComplaintCategoryBLL.cs" />
+    <Compile Include="BLL\ICostObBLL.cs" />
+    <Compile Include="BLL\ICtfExtendBLL.cs" />
+    <Compile Include="BLL\IDelegationBLL.cs" />
+    <Compile Include="BLL\IDocumentSequenceNumberBLL.cs" />
+    <Compile Include="BLL\IDocumentTypeBLL.cs" />
     <Compile Include="BLL\IEmployeeBLL.cs" />
+    <Compile Include="BLL\IEpafBLL.cs" />
+    <Compile Include="BLL\IExecutiveSummaryBLL.cs" />
+    <Compile Include="BLL\IFleetBLL.cs" />
+    <Compile Include="BLL\IFuelOdometerBLL.cs" />
+    <Compile Include="BLL\IGroupCostCenterBLL.cs" />
+    <Compile Include="BLL\IGsBLL.cs" />
+    <Compile Include="BLL\IHolidayCalenderBLL.cs" />
+    <Compile Include="BLL\IKpiMonitoringBLL.cs" />
+    <Compile Include="BLL\ILocationMappingBLL.cs" />
     <Compile Include="BLL\IPageBLL.cs" />
+    <Compile Include="BLL\IPenaltyLogicBLL.cs" />
+    <Compile Include="BLL\IRptCcfBLL.cs" />
+    <Compile Include="BLL\IRptFuelBLL.cs" />
+    <Compile Include="BLL\IRptPoBLL.cs" />
+    <Compile Include="BLL\ISalesVolumeBLL.cs" />
+    <Compile Include="BLL\ISettingBLL.cs" />
+    <Compile Include="BLL\IReasonBLL.cs" />
+    <Compile Include="BLL\IRemarkBLL.cs" />
+    <Compile Include="BLL\IPenaltyBLL.cs" />
+    <Compile Include="BLL\IPriceListBLL.cs" />
+    <Compile Include="BLL\IRoleBLL.cs" />
+    <Compile Include="BLL\ISysAccessBLL.cs" />
+    <Compile Include="BLL\ITraCcfBLL.cs" />
+    <Compile Include="BLL\ITraCrfBLL.cs" />
+    <Compile Include="BLL\ITraCsfBLL.cs" />
+    <Compile Include="BLL\ITraCtfBLL.cs" />
+    <Compile Include="BLL\ITraTemporaryBLL.cs" />
+    <Compile Include="BLL\IVehicleOverallReportBLL.cs" />
+    <Compile Include="BLL\IVehicleSpectBLL.cs" />
+    <Compile Include="BLL\IVendorBLL.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\IAutoGrService.cs" />
+    <Compile Include="Service\ICAFService.cs" />
+    <Compile Include="Service\ICarComplaintFormService.cs" />
+    <Compile Include="Service\ICcfService.cs" />
+    <Compile Include="Service\ICfmIdleReportService.cs" />
+    <Compile Include="Service\IComplaintCategoryService.cs" />
+    <Compile Include="Service\ICostObService.cs" />
+    <Compile Include="Service\ICRFService.cs" />
+    <Compile Include="Service\ICsfService.cs" />
+    <Compile Include="Service\ICtfExtendService.cs" />
+    <Compile Include="Service\ICtfService.cs" />
+    <Compile Include="Service\IDelegationService.cs" />
+    <Compile Include="Service\IDocumentNumberService.cs" />
+    <Compile Include="Service\IDocumentTypeService.cs" />
     <Compile Include="Service\IEmployeeService.cs" />
+    <Compile Include="Service\IEpafService.cs" />
+    <Compile Include="Service\IExecutiveSummaryService.cs" />
+    <Compile Include="Service\IFleetService.cs" />
+    <Compile Include="Service\IFuelOdometerService.cs" />
+    <Compile Include="Service\IGroupCostCenterService.cs" />
+    <Compile Include="Service\IGsService.cs" />
+    <Compile Include="Service\IHolidayCalenderService.cs" />
+    <Compile Include="Service\IKpiMonitoringService.cs" />
+    <Compile Include="Service\ILocationMappingService.cs" />
+    <Compile Include="Service\IMessageService.cs" />
+    <Compile Include="Service\IModulService.cs" />
+    <Compile Include="Service\IPenaltyLogicService.cs" />
+    <Compile Include="Service\IRptCCFService.cs" />
+    <Compile Include="Service\IRptPoService.cs" />
+    <Compile Include="Service\ISalesVolumeService.cs" />
+    <Compile Include="Service\ISettingService.cs" />
+    <Compile Include="Service\IReasonService.cs" />
+    <Compile Include="Service\IRemarkService.cs" />
+    <Compile Include="Service\IPenaltyService.cs" />
+    <Compile Include="Service\IPriceListService.cs" />
+    <Compile Include="Service\IRoleService.cs" />
+    <Compile Include="Service\ISysAccessService.cs" />
+    <Compile Include="Service\ITemporaryService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\IVehicleOverallReportService.cs" />
+    <Compile Include="Service\IVehicleSpectService.cs" />
+    <Compile Include="Service\IVendorService.cs" />
+    <Compile Include="Service\IWorkflowHistoryService.cs" />
+    <Compile Include="Service\IRptFuelService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FMS.BusinessObject\FMS.BusinessObject.csproj">
       <Project>{af94bba5-4257-4647-b77d-a7b54f2c4b7a}</Project>
       <Name>FMS.BusinessObject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.Core\FMS.Core.csproj">
+      <Project>{82770928-aa10-4045-94e3-7eb728c3abe1}</Project>
+      <Name>FMS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

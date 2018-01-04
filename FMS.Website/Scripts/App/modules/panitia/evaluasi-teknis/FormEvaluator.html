@@ -1,0 +1,156 @@
+﻿<div id="lakukanEvaluasi" class="modal-content" ng-init="FormEvaluator.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormEvaluator.batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Entry Data {{nama_tahapan}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tanggal Dokumen</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormEvaluator.isCalendarOpened[0]" ng-model="FormEvaluator.DocumentDate" ng-click="FormEvaluator.openCalendar(1)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="FormEvaluator.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="box-title">Upload Dokumen 
+                                <small> ( <span ng-repeat="ft in FormEvaluator.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{FormEvaluator.idUploadConfigs[0].Size}} {{FormEvaluator.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                            </label>
+                            <input type="file" class="form-control" ng-file-select="FormEvaluator.selectUpload()"
+                                   ng-model="FormEvaluator.fileUpload" name="ownerIDFile" required accept="{{frmLibraryCtrl.idFileTypes}}" />
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="float: none!important;" ng-if="FormEvaluator.DocumentUrl">
+                        <div class="form-group">
+                            <label>Dokumen Yang Sudah Diupload</label>
+                            <a href="{{FormEvaluator.folderFile+FormEvaluator.DocumentUrl}}" class="btn btn-sm btn-flat btn-primary" target="_BLANK" title="Download File"><i class="fa fa-download"></i>&nbsp;Download</a>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="row">
+                    <div class="col-md-6 col-sm-8 col-xs-12">
+                        <div class="form-group">
+                            <label>Nomor Surat Berita Acara</label>
+                            <input ng-model="FormEvaluator.Nomer" class="form-control" type="text" placeholder="Nomor Surat Berita Acara" />
+                        </div>
+                    </div>
+                </div>
+                -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-info">
+                            <div class="box-header">
+                                <h4 class="box-title afta-font">Summary <small class="afta-font"><em>"Masukkan kesimpulan hasil evaluasi penawaran"</em></small></h4>
+                            </div><!-- /.box-header -->
+                            <div class="box-body pad">
+                                <form>
+                                    <textarea ng-model="FormEvaluator.Summary" rows="7" cols="80"></textarea>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12 center-block">
+                        <div class="box box-success">
+                            <div class="box-header">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 class="box-title afta-font">Hasil Perhitungan Skor</h4>
+                                        <button type="button" ng-click="FormEvaluator.calculateSummaryScore()" style="margin-right: 20px; margin-top: 10px;" class="pull-right btn btn-sm btn-flat btn-primary" title="Hitung Ulang Skor"><i class="fa fa-refresh"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <!--
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Nama Rekanan</label>
+                                            <select required class="form-control input-sm" ng-model="FormEvaluator.selectedTypeVendor"
+                                                    ng-options="item as item.VendorName | translate for item in FormEvaluator.evaltechnical"
+                                                    ng-change="FormEvaluator.changeTypeVendor()">
+                                                <option value="" selected disabled>-- Nama Vendor --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Hasil Evaluasi</label>
+                                            <select id="hasilevaluasi" class="form-control input-sm" ng-model="FormEvaluator.selectedType" ng-change="FormEvaluator.add(FormEvaluator.selectedType)">
+                                                <option value= "1">Lolos</option>
+                                                <option value= "0">Tidak Lolos</option>
+                                                <option value="" selected disabled>-- Hasil --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6" ng-if="FormEvaluator.selectedType === '1'">
+                                        <div class="form-group">
+                                            <label>Score</label>
+                                            <input type="text" ng-model="FormEvaluator.score" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6" ng-if="FormEvaluator.selectedType === '1'">
+                                        <div class="form-group">
+                                            <label>Peringkat</label>
+                                            <input type="text" number-masking="number-masking" ng-model="FormEvaluator.Rating" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 form-group" align="center">
+                                        <button ng-click="FormEvaluator.tambah()" class="btn btn-flat btn-sm btn-success" title="Tambah Hasil Evaluasi Rekanan"><i class="fa fa-plus"></i>&nbsp;  </button>
+                                    </div>
+                                </div>
+                                -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table table-responsive">
+                                            <table id="example2" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="width: 60px!important; min-width: 60px!important;">Peringkat</th>
+                                                        <th class="text-center">Nama Rekanan</th>
+                                                        <th class="center-vertical" style="width: 90px; min-width: 90px;">Score</th>
+                                                        <th class="center-vertical" style="width: 150px; min-width: 150px;">Must Have</th>
+                                                        <!--<th class="center-vertical" style="width: 100px; min-width: 100px;"></th>-->
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="data in FormEvaluator.list">
+                                                        <td class="text-center">{{$index + 1}}</td>
+                                                        <td>{{data.VendorName}}</td>
+                                                        <td class="center-vertical">{{data.Score.toFixed(2)}}</td>
+                                                        <td class="text-center">
+                                                            <span ng-if="data.IsMustHaveValid === true">Lolos</span>
+                                                            <span ng-if="data.IsMustHaveValid === false">Tidak Lolos&nbsp;
+                                                                <a class="btn btn-sm btn-flat btn-danger" ng-click="FormEvaluator.viewMustHave(data)" title="Lihat Must Have"><i class="fa fa-exclamation"></i></a>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button  type="button" class="btn btn-flat btn-danger" ng-click="FormEvaluator.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button ng-click="FormEvaluator.uploadFile()" type="button" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

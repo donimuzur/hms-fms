@@ -1,0 +1,107 @@
+﻿<!-- Main content -->
+<div ng-init="DetailKonCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-kontrak">{{'BREADCRUMB.MONITORING_KONTRAK' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.MONITORING_VARIASI' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-8 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_VARIASI' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">{{'VENDOR_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetailKonCtrl.list[0].VendorName}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">{{'TENDER_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetailKonCtrl.list[0].TenderName}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">{{'ORIGINAL_DATE_CON' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetailKonCtrl.convertDate  (DetailKonCtrl.list[0].StartDate)}} s/d {{DetailKonCtrl.convertDate  (DetailKonCtrl.list[0].FinishDate)}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">{{'ORIGINAL_VAL' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetailKonCtrl.list[0].OriginalValue | currency : "IDR."}}</label>
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                        </div>
+
+                        <div class="row turun-15">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.KODE_TENDER' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.TYPE_VARIATION' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.VARIATION_VALUE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.START_DATE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.END_DATE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.KETERANGAN' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ACTION' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in DetailKonCtrl.list">
+                                                <td style="vertical-align: middle; text-align:center;">{{DetailKonCtrl.currentPage > 1 ? (DetailKonCtrl.maxSize * (DetailKonCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle; text-align:center;">{{data.TenderCodeVar}}</td>
+                                                <td style="vertical-align: middle; text-align:center;">{{data.TenderTypeName}}</td>
+                                                <td style="vertical-align: middle; text-align:center;">{{data.NewTotalValue | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle; text-align:center; ">{{DetailKonCtrl.convertDate (data.varStartDate) }}</td>
+                                                <td style="vertical-align: middle; text-align:center;">{{DetailKonCtrl.convertDate (data.varEndDate) }}</td>
+                                                <td style="vertical-align: middle;">{{data.Keterangan}}</td>
+                                                <td style="vertical-align: middle;"><a href="{{DetailKonCtrl.folderFile + data.DocUrl}}" class="btn btn-link" target="_BLANK" title="{{'TABLE.DETAIL' | translate }}"> {{'TABLE.DETAIL' | translate }}</a></td>
+                                            </tr>
+                                            <tr ng-if="DetailKonCtrl.totalItems === 0">
+                                                <td colspan="13">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row turun-15">
+                           
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">Total Value</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetailKonCtrl.list[DetailKonCtrl.currentPage].TotalValues | currency : "IDR."}}</label>
+                            </div>
+                           
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="pull-right">
+                                    <a href="#/monitoring-kontrak" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                        <i class="fa fa-arrow-left"></i>&nbsp;{{'BACK' | translate}}
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,55 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Home",
+    "MONITORING": "Monitoring Product (PO)",
+    "DATA_UPLOAD_PO": "Data Upload PO"
+  },
+  "JUDUL": "DATA UPLOAD PO SAP",
+  "UPLOAD_DATA": "Upload Data",
+  "FILTER": {
+    "VENDOR": "Vendor Name",
+    "CHOOSE": "Choose File"
+  },
+  "TABLE": {
+    "NO": "No",
+    "FILE_NAME": "File Name",
+    "UPLOAD_DATE": "Upload Date",
+    "RESPONSE": "Response",
+    "ACTION": "Action"
+  },
+
+  "CANCEL": "Cancel",
+  "PROSES": "On Proses",
+  "APPROVE": "Approved",
+  "DRAFT": "Draft",
+  "PROCUREMENT_TYPE_VARIANT": "Variant",
+  "PROCUREMENT_TYPE_NO_VARIANT": "No Variant",
+  "PROCUREMENT_TYPE_DRAFT": "Draft PO",
+  "TIDAK_ADA_DATA": "No Data",
+  "TOTAL_DATA": "Total Data",
+  "ACTION": "PO",
+  "DETAIL": "Detail",
+  "COMPARE": "Compare",
+  "DOWNLOAD": "Download",
+  "KEMBALI": "Back",
+  "BATAL": "Cancel",
+  "SIMPAN": "Save",
+
+  "MSG_NOFILE": "Not Choose File",
+  "MSG_ERR_EXCEL": "Not Macth Excel Format",
+  "MSG_SUC_SAVE": "Save Data Success",
+  "MSG_ERR_SAVE": "Save Data Failed",
+  "MSG_SUC_UPLOADE": "Upload Successfull",
+  "MSG_ERR_UPLOAD": "Upload Failed",
+   "LOADING": "Please Wait...",
+
+
+  "MESSAGE": {
+   
+    "ERR_API": "Failed Get API...",
+    "ERR_LOAD": "Failed Get PO Data",
+    "ERR_LOAD_STEP": "Failed get List Upload",
+    "ERR_LOAD_STATUS": "Failed get List of Status Upload",
+    "ERR_TYPEFILE": "Unknown Data Type"
+  }
+}

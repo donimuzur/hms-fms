@@ -1,0 +1,60 @@
+﻿@model  FMS.Website.Models.TraCafUploadViewModel
+
+<table id="Ck5UploadTable" class="table table-bordered table-striped js-options-table">
+    <thead>
+        <tr>
+            
+            <th>SIRS No.<span style="color: red">*</span></th>
+            <th>Police No.<span style="color: red">*</span></th>
+            <th>Employee Name<span style="color: red">*</span></th>
+            <th>Area</th>
+            <th>Vehicle Model</th>
+            <th>Vendor</th>
+            <th>Status</th>
+            <th>Incident Date<span style="color: red">*</span></th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            for (int i = 0; i < Model.Details.Count(); i++)
+            {
+                @Html.HiddenFor(model => model.Details[i].TraCafId)
+                @Html.HiddenFor(model => model.Details[i].Area)
+                @Html.HiddenFor(model => model.Details[i].CreatedBy)
+                @Html.HiddenFor(model => model.Details[i].CreatedDate)
+                @Html.HiddenFor(model => model.Details[i].DocumentNumber)
+                @Html.HiddenFor(model => model.Details[i].DocumentStatus)
+                @Html.HiddenFor(model => model.Details[i].EmployeeId)
+                @Html.HiddenFor(model => model.Details[i].EmployeeName)
+                @Html.HiddenFor(model => model.Details[i].IncidentDate)
+                @Html.HiddenFor(model => model.Details[i].IncidentDescription)
+                @Html.HiddenFor(model => model.Details[i].IncidentLocation)
+                @Html.HiddenFor(model => model.Details[i].ModifiedBy)
+                @Html.HiddenFor(model => model.Details[i].ModifiedDate)
+                @Html.HiddenFor(model => model.Details[i].PoliceNumber)
+                @Html.HiddenFor(model => model.Details[i].SirsNumber)
+                @Html.HiddenFor(model => model.Details[i].Supervisor)
+                @Html.HiddenFor(model => model.Details[i].VehicleModel)
+                @Html.HiddenFor(model => model.Details[i].VendorId)
+                @Html.HiddenFor(model => model.Details[i].VendorName)
+
+                <tr>
+                    <td>@Html.DisplayFor(model => model.Details[i].SirsNumber)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].PoliceNumber)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].EmployeeName)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].Area)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].VehicleModel)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].VendorName)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].DocumentStatusString)</td>
+                    <td>@Html.DisplayFor(model => model.Details[i].IncidentDateString)</td>
+
+                    <td>@Html.DisplayFor(model => model.Details[i].Message)</td>
+                    
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

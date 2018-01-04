@@ -1,0 +1,102 @@
+<div class="modal-content"  style="width:1000px!important;">
+    <div class="modal-header">
+        <button type="button" class="close" title="Keluar" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Buat / Ubah Adendum</h3>
+    </div>
+    <div class="modal-body">
+        <div >
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Vendor </label>   
+                        <div class="col-md-1"><label class="form-control-static">:</label></div>
+                        <div class="col-md-8"> 
+                            <label class="form-control-static">
+                                 CV. LUWU UTAMA
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Store Location </label> 
+                        <div class="col-md-1"><label class="form-control-static">:</label></div>
+                        <div class="col-md-8"> 
+                            <label class="form-control-static">
+                                 VH16
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Adendum </label> 
+                        <div class="col-md-1"><label class="form-control-static">:</label></div>
+                        <div class="col-md-8"> 
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Date </label> 
+                        <div class="col-md-1"><label class="form-control-static">:</label></div>
+                        <div class="col-md-3"> 
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-required="true" ambiltanggal ng-model="undanganToCreate.tgl_undangan"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1"><h4> s/d </h4></div>
+                        <div class="col-md-3"> 
+                            <div class="input-group">
+                                <input class="form-control" type="text" ng-required="true" ambiltanggal ng-model="undanganToCreate.tgl_undangan"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Contract Value </label> 
+                        <div class="col-md-1"><label class="form-control-static">:</label></div>
+                        <div class="col-md-8"> 
+                            <input type="text" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Remark </label> 
+                        <div class="col-md-1"><label class="form-control-static">:</label></div>
+                        <div class="col-md-8"> 
+                            <textarea class="form-control input-sm" rows="7"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-sm btn-success" title="Simpan"><i class="fa fa-save"></i> </button>
+                <button class="btn btn-sm btn-warning" title="Kembali"><i class="fa fa-arrow-left"></i> </button>
+            </div>
+        </div>
+    </div>
+</div>

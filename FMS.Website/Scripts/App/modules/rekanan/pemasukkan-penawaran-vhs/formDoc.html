@@ -1,0 +1,43 @@
+﻿<div id="idTambahLibrary" class="modal-content" ng-init="frmDocCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="frmDocCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-success">
+                    <!--notife flow-->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="afta-font">Unggah berkas {{frmDocCtrl.detail.DocName}}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Upload File
+                                        <small> ( .doc, .docx, .pdf / Size < {{frmDocCtrl.idUploadConfigs[0].Size}} {{frmDocCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                    </label>
+                                    <input type="file" class="form-control" ng-file-select="frmDocCtrl.selectUpload()"
+                                           ng-model="frmDocCtrl.fileUpload" name="ownerIDFile" required accept="{{frmDocCtrl.idFileTypes}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="frmDocCtrl.batal()" title="Batal">
+            <i class="fa fa-reply"></i> 
+        </button>
+        <button class="btn btn-sm btn-primary" ng-click="frmDocCtrl.uploadFile()" title="Simpan"><i class="fa fa-upload"></i></button>
+        
+
+    </div>
+    </div>

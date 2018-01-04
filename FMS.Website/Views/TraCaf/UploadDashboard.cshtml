@@ -1,0 +1,174 @@
+﻿@model  FMS.Website.Models.TraCafUploadViewModel
+<div class="opt-content clearfloat">
+    <h5 class="title-page">CAF Dashboard</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+            <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
+                <i class="glyphicon glyphicon-floppy-save"></i> Save
+            </button>
+            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                <i class="glyphicon glyphicon-ok"></i> Send
+            </button>
+        </div>*@
+</div>
+<section>
+    @using (Html.BeginForm("Upload", "TraCaf"))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <div class="container-wrap">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div role="tabpanel" class="tab-pane" id="upload">
+                        <div class="panel-group">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Upload Excel File Documents
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                <div class="input-group col-md-6">
+                                                    <input type="file" class="form-control" name="itemExcelFile" id="itemExcelFile">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <a href="~/files_upload/Accident/EHSTemplate.xlsx">EHSTemplate.xlsx</a>
+                                                </div>
+                                            </div>
+                                            @*@if (Model.IsNotViewer)
+                                            {*@
+                                                <div class="col-md-6">
+                                                    <input type="button" id="btnGenerate" class="btn btn-grey generate" value="Generate" />
+                                                    <input type="submit" class="btn btn-blue" id="btnSave" value="Save" disabled />
+                                                </div>
+                                            @*}*@
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="table-container" id="listFileDocuments">
+                            @Html.Partial("_UploadFileDocumentsList", Model)
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="~/Scripts/UploadExcel.js"></script>
+    @*<script src="~/Scripts/CafScripts.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CafMenu').removeClass('collapse');
+
+            $('#CafDashboard').removeClass('active');
+            $('#CafOpen').removeClass('active');
+            $('#CafCompleted').removeClass('active');
+
+            if ($('.title-page').html() == 'CAF Dashboard') {
+                $('#CafDashboard').addClass('active');
+            }
+            else if ($('.title-page').html() == 'CAF Open Documents' || $('.title-page').html() == 'Mass upload from Vendor') {
+                $('#CafOpen').addClass('active');
+            }
+            else if ($('.title-page').html() == 'CAF Completed Documents') {
+                $('#CafCompleted').addClass('active');
+            }
+            else if ($('.title-page').html() == 'CAF Personal Dashboard' || $('.title-page').html() == 'Mass upload from Vendor - Personal Dashboard') {
+                $('#CafParent').addClass('active');
+            }
+            //$('#MenuCK5FileDocuments').addClass('active');
+            //var table = $('#tbEpaf').DataTable({
+            //    "dom": 'lf<"table-overflow"t>pi',
+            //    orderCellsTop: true
+            //});
+
+            //// Apply the search
+            //table.columns().eq(0).each(function (colIdx) {
+            //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+            //        table
+            //            .column(colIdx)
+            //            .search(this.value)
+            //            .draw();
+            //    });
+            //});
+
+            $('#btnGenerate').click(function () {
+                
+                $('#btnSave').prop('disabled', true);
+                var fileName = $('[name="itemExcelFile"]').val().trim();
+                var pos = fileName.lastIndexOf('.');
+                var extension = (pos <= 0) ? '' : fileName.substring(pos);
+                if (extension != '.xlsx') {
+                    alert('Please browse a correct excel file to upload');
+                    return false;
+                }
+
+                var formData = new FormData();
+                var totalFiles = document.getElementById("itemExcelFile").files.length;
+                for (var i = 0; i < totalFiles; i++) {
+                    var file = document.getElementById("itemExcelFile").files[i];
+
+                    formData.append("itemExcelFile", file);
+                    //formData.append("plantId", $('#SourcePlantId').val());
+                }
+
+                $.ajax({
+                    type: "POST",
+                    //url: '/CK5/UploadFileDocuments',
+                    url: '@Url.Action("UploadFileAjax", "TraCaf")',
+                    data: formData,
+                    dataType: 'html',
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $('#listFileDocuments').html("");
+                        $('#listFileDocuments').html(response);
+                        if (IsValidFileDocumentDataUpload())
+                            $('#btnSave').removeAttr("disabled");
+                    },
+                    error: function (error) {
+                        alert("errror " + error);
+                    }
+                });
+            });
+        });
+
+        
+
+
+
+        function IsValidFileDocumentDataUpload() {
+            debugger;
+            var datarows = GetTableData($('#Ck5UploadTable'));
+
+            for (var i = 0; i < datarows.length; i++) {
+                if (datarows[i][8].length > 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+    </script>
+
+

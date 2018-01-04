@@ -1,0 +1,740 @@
+﻿<ol class="breadcrumb" style='margin-top: 10px'>
+	<li><a class="active">Home</a></li>
+</ol>
+<div class="container-fluid" ng-init="init()" style="padding-top: 0px!important;">
+	<div class="row">
+		<div class="col-md-11 center-block" style="float: none!important;">
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-info-circle"></i> Penjelasan Lingkup Pekerjaan
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_notif = !show_notif" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_notif, 'fa-chevron-down': show_notif}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_notif">
+					<div class="row">
+						<div class="col-md-12">
+							<form role="form">
+								<div class="form-group">
+									<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce" ng-model="berita.content_news"></textarea>
+								</div>
+								<button type="submit" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-dashboard"></i> Komunikasi dan Organisasi
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_reg = !show_reg" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_reg, 'fa-chevron-down': show_reg}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_reg">
+					<div class="row">
+						<div class="col-md-12">
+							<form role="form">
+								<div class="form-group">
+									<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce" ng-model="berita.content_news"></textarea>
+								</div>
+								<button type="submit" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-success panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-bar-chart-o fa-fw"></i> Standar dan Pengukuran Hasil Kerja
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_pra = !show_pra" class="btn btn-success btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_pra, 'fa-chevron-down': show_pra}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_pra">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style="width: 50px; min-width: 30px; text-align: center;">No.</th>
+											<th class="text-center">KPI</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Target</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Pengukuran</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Frekuensi Pengukuran</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Pengecualian</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="fl in flow">
+											<td class="text-center" style="vertical-align: middle;">{{fl.urutan+1}}</td>
+											<td style="vertical-align: middle;">{{fl.nama_tahapan}}</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style="width: 50px; min-width: 30px; text-align: center;">No.</th>
+											<th class="text-center">KPI</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Target</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Pengukuran</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Frekuensi Pengukuran</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Pengecualian</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="fl in flow2">
+											<td class="text-center" style="vertical-align: middle;">{{fl.urutan+1}}</td>
+											<td style="vertical-align: middle;">{{fl.nama_tahapan}}</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-success panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-files-o "></i> Detil Lingkup Kerja, Langkah Kerja &amp; Kondisi Lapangan
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_tender = !show_tender" class="btn btn-success btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_tender, 'fa-chevron-down': show_tender}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_tender">
+					<div class="row">
+						<div class="col-md-12">
+							<form role="form">
+								<div class="form-group">
+									Detail Lingkup Kerja
+									<textarea class="form-control" rows="4" style="width:100%;"></textarea>
+									Langkah Kerja
+									<div class="input-group">
+										<input id="uploadFile" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm" />
+										<span class="input-group-btn">
+											<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document">
+												<i class="fa fa-plus"></i> &nbsp; 
+											</button>
+										</span>
+									</div>
+									Upload kondisi lapangan
+									<div class="input-group">
+										<input id="uploadFileCond" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm" />
+										<span class="input-group-btn">
+											<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document">
+												<i class="fa fa-plus"></i> &nbsp; 
+											</button>
+										</span>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Daftar Aktifitas atau Pekerjaan Kritis Berisiko Tinggi
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_jsa = !show_jsa" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_news, 'fa-chevron-down': show_news}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_jsa">
+					<div class="row">
+						<div class="col-sm-12">
+							<form role="form">
+								<div class="form-group">
+									<textarea class="form-control" rows="4" style="width:100%;"></textarea>
+									Upload File JSA
+									<div class="input-group">
+										<input id="uploadFileJSA" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm" />
+										<span class="input-group-btn">
+											<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document">
+												<i class="fa fa-plus"></i> &nbsp; 
+											</button>
+										</span>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Persyaratan Umum - Lingkungan, Kesehatan dan Keselamatan
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_apd = !show_apd" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_news, 'fa-chevron-down': show_news}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_apd">
+					<div class="row">
+						<div class="col-sm-12">
+							<h4>Daftar Alat Pelindung Diri (APD) - Umum</h4>
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style="width: 50px; min-width: 30px; text-align: center;">No.</th>
+											<th class="text-center">Peralatan</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Jumlah</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Spesifikasi</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Keterangan</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="fl in flow">
+											<td class="text-center" style="vertical-align: middle;">{{fl.urutan+1}}</td>
+											<td style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Persyaratan Khusus - Lingkungan, Kesehatan dan Keselamatan
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_env = !show_env" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_news, 'fa-chevron-down': show_news}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_env">
+					<div class="row">
+						<div class="col-sm-12">
+							<h4>Daftar Peralatan Keselamatan - Khusus</h4>
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style="width: 50px; min-width: 30px; text-align: center;">No.</th>
+											<th class="text-center">Peralatan</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Jumlah</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Spesifikasi</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Keterangan</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="fl in flow">
+											<td class="text-center" style="vertical-align: middle;">{{fl.urutan+1}}</td>
+											<td style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Persyaratan Tenaga Kerja Ahli
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="EngineerReq = !EngineerReq" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !EngineerReq, 'fa-chevron-down': EngineerReq}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="EngineerReq">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style="width: 50px; min-width: 30px; text-align: center;">No.</th>
+											<th class="text-center">Kualifikasi</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Jumlah</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Level / Sertifikat</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Keterangan</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="fl in flow">
+											<td class="text-center" style="vertical-align: middle;">{{fl.urutan+1}}</td>
+											<td style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Peralatan Utama
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="PrimaryTools = !PrimaryTools" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !PrimaryTools, 'fa-chevron-down': PrimaryTools}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="PrimaryTools">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="table table-responsive">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style="width: 50px; min-width: 30px; text-align: center;">No.</th>
+											<th class="text-center">Peralatan</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Jumlah</th>
+											<th class="text-center" style="width: 190px; min-width: 190px;">Spesifikasi</th>
+											<th class="text-center" style="width: 180px; min-width: 180px;">Keterangan</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="fl in flow">
+											<td class="text-center" style="vertical-align: middle;">{{fl.urutan+1}}</td>
+											<td style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center" style="vertical-align: middle;">
+												<input type="text" />
+											</td>
+											<td class="text-center">
+												<input type="text" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Tanggung Jawab (Perusahaan dan Kontraktor)
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="show_responsibility = !show_responsibility" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !show_responsibility, 'fa-chevron-down': show_responsibility}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="show_responsibility">
+					<div class="row">
+						<div class="col-sm-12">
+							<form role="form">
+								<div class="form-group">
+									Tanggungjawab PTVI
+									<textarea class="form-control" rows="4" style="width:100%;"></textarea>
+									Tanggungjawab Kontraktor
+									<textarea class="form-control" rows="4" style="width:100%;"></textarea>
+								</div>
+								<button type="submit" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Standar dan Spesifikasi
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="StandartSpec = !StandartSpec" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !StandartSpec, 'fa-chevron-down': StandartSpec}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="StandartSpec">
+					<div class="row">
+						<div class="col-sm-12">
+							<form role="form">
+								<div class="form-group">
+									<textarea class="form-control" rows="4" style="width:100%;"></textarea>
+									<div class="input-group">
+										<input id="uploadFileJSA" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm" />
+										<span class="input-group-btn">
+											<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document">
+												<i class="fa fa-plus"></i> &nbsp; 
+											</button>
+										</span>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-default">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Persyaratan Kontrol Kualitas
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="QualityCtrl = !QualityCtrl" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !QualityCtrl, 'fa-chevron-down': QualityCtrl}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="QualityCtrl">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce" ng-model="berita.content_news"></textarea>
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Harga Penawaran
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="OfferPrice = !OfferPrice" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !OfferPrice, 'fa-chevron-down': OfferPrice}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="OfferPrice">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="list-group">
+								<a href="#" class="list-group-item">
+									<h4 class="list-group-item-heading">Meeting Lelang</h4>
+									<p class="list-group-item-text">meeting lelang akan di laksanakan pada....</p>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Jadwal Pekerjaan
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="WorkSched = !WorkSched" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !WorkSched, 'fa-chevron-down': WorkSched}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="WorkSched">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Tanggal Mulai</label>
+										<div class="input-group date form_datetime" tanggalwaktu data-date-format="yyyy-mm-dd hh:ii">
+											<input class="form-control" size="16" ng-model="flowInfo.tgl_mulai" type="text">
+											<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Tanggal Selesai</label>
+										<div class="input-group date form_datetime" tanggalwaktu data-date-format="yyyy-mm-dd hh:ii">
+											<input class="form-control" size="16" ng-model="flowInfo.tgl_selesai" type="text" ng-change="cektanggal()">
+											<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Sub Kontraktor
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="SubCon = !SubCon" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !SubCon, 'fa-chevron-down': SubCon}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="SubCon">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce" ng-model="berita.content_news"></textarea>
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Deliverables
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="Deliverables = !Deliverables" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !Deliverables, 'fa-chevron-down': Deliverables}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="Deliverables">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce" ng-model="berita.content_news"></textarea>
+							</div>
+							<div class="input-group">
+								<input id="uploadFileCond" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm" />
+								<span class="input-group-btn">
+									<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document">
+										<i class="fa fa-plus"></i> &nbsp; 
+									</button>
+								</span>
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Pre-JSA untuk Kegiatan Berisiko Tinggi
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="PreJSA = !PreJSA" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !PreJSA, 'fa-chevron-down': PreJSA}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="PreJSA">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce" ng-model="berita.content_news"></textarea>
+							</div>
+							<div class="input-group">
+								<input id="uploadFileCond" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm" />
+								<span class="input-group-btn">
+									<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document">
+										<i class="fa fa-plus"></i> &nbsp; 
+									</button>
+								</span>
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Orientation and Training Check List
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="TrainingCL = !TrainingCL" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !TrainingCL, 'fa-chevron-down': TrainingCL}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="TrainingCL">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce" ng-model="berita.content_news"></textarea>
+							</div>
+							<div class="input-group">
+								<input id="uploadFileCond" style="padding-top: 5px!important;" type="file" onchange="angular.element(this).scope().fileMChanged(this)" class="form-control input-sm" />
+								<span class="input-group-btn">
+									<button type="button" ng-click="uploads()" class="btn btn-sm btn-flat btn-success" title="Add Document">
+										<i class="fa fa-plus"></i> &nbsp; 
+									</button>
+								</span> 
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default panel-marginbot2">
+				<div class="panel-heading">
+					<span class="pull-left">
+						<h3 class="panel-title">
+							<i class="fa fa-tasks"></i> Managing the Work Check List
+						</h3>
+					</span>
+					<span class="pull-right">
+						<button ng-click="WorkCL = !WorkCL" class="btn btn-default btn-xs">
+							<i class="fa" ng-class="{'fa-chevron-up': !WorkCL, 'fa-chevron-down': WorkCL}"></i>
+						</button>
+					</span>
+					<div class="clearfix"></div>
+				</div>
+				<div class="panel-body" ng-show="WorkCL">
+					<div class="row">
+						<div class="col-sm-12">
+							<!--<div class="form-group">
+								<textarea class="form-control" rows="10" data-ui-tinymce="customTinymce"></textarea>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

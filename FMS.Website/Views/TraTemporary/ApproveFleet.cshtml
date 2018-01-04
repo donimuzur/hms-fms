@@ -1,0 +1,360 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.TempItemModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Temporary Car</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("", "TraTemporary", FormMethod.Post, new { @id = "EditForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div id="information" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse show" id="collapseOne">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="box-tools pull-right" style="margin-top:-50px">
+                                            <h4>
+                                                <label for="" class="control-label">Status:</label>
+                                                <label class="control-label">@Html.Raw(Model.Detail.TempStatusName)</label>
+                                            </h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Temporary Info</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            @Html.HiddenFor(model => model.Detail.TraTempId)
+                                                            @Html.HiddenFor(model => model.Detail.CreateBy)
+                                                            @Html.HiddenFor(model => model.Detail.CreateDate)
+                                                            @Html.HiddenFor(model => model.Detail.IsSaveSubmit)
+                                                            @Html.HiddenFor(model => model.Detail.IsActive)
+                                                            @Html.HiddenFor(model => model.Detail.VehicleType)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.Detail.EmployeeIdCreator)
+                                                            <label class="control-label">Temporary Number</label>
+                                                            @Html.TextBoxFor(model => model.Detail.TempNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Reference Number</label>
+                                                            @Html.TextBoxFor(model => model.Detail.ReferenceNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Temporary Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.Detail.CreateDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Coordinator</label>
+                                                            @Html.TextBoxFor(model => model.Detail.CreateBy, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Reason</label>
+                                                            @Html.DropDownListFor(model => model.Detail.ReasonId, Model.Detail.ReasonList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Start Date</label>
+                                                            <div class="input-group date">
+                                                                @Html.TextBoxFor(model => model.Detail.StartPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                                                <span class="input-group-addon" id="divStartDate">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">End Date</label>
+                                                            <div class="input-group date" id="divEndDate">
+                                                                @Html.TextBoxFor(model => model.Detail.EndPeriod, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @disabled = "disabled" })
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Location</label>
+                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Assigned Employee</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee ID</label>
+                                                            @Html.DropDownListFor(model => model.Detail.EmployeeId, Model.Detail.EmployeeList, "-- Please Select --", new { @class = "form-control autocomplete", onchange = "GetEmployee()", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Name</label>
+                                                            @Html.TextBoxFor(model => model.Detail.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Cost Center</label>
+                                                            @Html.TextBoxFor(model => model.Detail.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    @if (Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12" style="display:none">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Group Level</label>
+                                                                @Html.TextBoxFor(model => model.Detail.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Type</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleType, Model.Detail.VehicleTypeList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.DropDownListFor(model => model.Detail.VehicleUsage, Model.Detail.VehicleUsageList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vendor<span class="red">*</span></label>
+                                                            @Html.DropDownListFor(model => model.Detail.VendorName, Model.Detail.VendorList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Project</label>
+                                                            @Html.DropDownListFor(model => model.Detail.ProjectName, Model.Detail.ProjectList, "-- Please Select --", new { @class = "form-control", @disabled = "disabled" })
+                                                        </div>
+                                                    </div>
+                                                    @if (!Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Assigned To</label>
+                                                                @Html.TextBoxFor(model => model.Detail.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.Partial("_ListVehicle")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading3" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapse3" data-parent="#accordion3" data-toggle="collapse">
+                                        Vehicle Detail Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading3" role="tabpanel" class="panel-collapse collapse show" id="collapse3">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ListVehicleFromVendor")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading5" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                        Workflow History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_WorkflowHistoryTable")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-multiselectable="true" role="tablist" id="accordion6" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading6" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseSix" aria-expanded="true" href="#collapse6" data-parent="#accordion6" data-toggle="collapse">
+                                        Change History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ChangesLog")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <a href="#" class="btn btn-primary" onclick="AppTemp(@Model.Detail.TraTempId)"><i class="glyphicon glyphicon-ok"></i> Approve</a>
+                <a href="#" class="btn btn-primary" onclick="RejectTemp(@Model.Detail.TraTempId)"><i class="glyphicon glyphicon-alert"></i> Reject</a>
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraTemporary")" class="btn btn-default">Back</a>
+            </div>
+        }
+    </div>
+</section>
+<div id="appmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Approve Document ?</h4>
+            </div>
+            @using (Html.BeginForm("ApproveTemp", "TraTemporary"))
+            {
+                <div class="modal-footer">
+                    @Html.HiddenFor(model => model.IsPersonalDashboard)
+                    <input type="hidden" name="TraTempId" id="TraTempId">
+                    <img src="~/Content/img/loader2.gif" id="imgLoaderApp" style="display:none" />
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseApp" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="rejectmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Reject Document ?</h4>
+            </div>
+            @using (Html.BeginForm("RejectTemp", "TraTemporary"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                <input type="hidden" name="TraTempIdReject" id="TraTempIdReject">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <img src="~/Content/img/loader2.gif" id="imgLoaderReject" style="display:none" />
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseReject" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmReject" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/tempscript.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnConfirmApp").click(function () {
+            $("#imgLoaderApp").css("display", "");
+            $("#btnCloseApp").css("display", "none");
+            $("#btnConfirmApp").css("display", "none");
+        });
+
+        $('#appmodal').on('hidden.bs.modal', function () {
+            $("#imgLoaderApp").css("display", "none");
+            $("#btnCloseApp").css("display", "");
+            $("#btnConfirmApp").css("display", "");
+        })
+
+        $("#btnConfirmReject").click(function () {
+            $("#imgLoaderReject").css("display", "");
+            $("#btnCloseReject").css("display", "none");
+            $("#btnConfirmReject").css("display", "none");
+        });
+
+        $('#rejectmodal').on('hidden.bs.modal', function () {
+            $("#imgLoaderReject").css("display", "none");
+            $("#btnCloseReject").css("display", "");
+            $("#btnConfirmReject").css("display", "");
+        })
+
+        $("#RemarkId").change(function () {
+            var str = $('#RemarkId').find("option:selected").text();
+
+            if (str.toLowerCase() != "") {
+                $("#imgLoaderReject").css("display", "none");
+                $("#btnCloseReject").css("display", "");
+                $("#btnConfirmReject").css("display", "");
+            }
+        });
+    });
+
+    function AppTemp(value) {
+        $('#TraTempId').val(value);
+        $('#appmodal').modal('show');
+    }
+
+    function RejectTemp(value) {
+        $('#TraTempIdReject').val(value);
+        $('#rejectmodal').modal('show');
+    }
+</script>

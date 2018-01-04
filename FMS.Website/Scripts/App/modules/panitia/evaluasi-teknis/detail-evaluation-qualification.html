@@ -1,0 +1,58 @@
+﻿<div class="modal-content" ng-init="DetailEquipmentQualificationCtrl.init()">
+    <div class="modal-header">
+        <button type="button" ng-click="DetailEquipmentQualificationCtrl.batal()" class="close" data-dismiss="modal" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Form</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center afta-font" style="padding-bottom: 20px;">{{DetailEquipmentQualificationCtrl.detail.vendorOffer.DocumentName}}</h3>
+            </div>
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Nama Dokument</th>
+                                <th class="text-center">Type/Size File</th>
+                                <th class="text-center">Tanggal Approve</th>
+                                <th class="text-center">Download</th>
+                                <th class="text-center">Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align: middle;">{{DetailEquipmentQualificationCtrl.detail.vendorOffer.DocumentName}}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    {{DetailEquipmentQualificationCtrl.detail.vendorOffer.Type/Size}}
+                                </td>
+                                <td class="text-center" style="vertical-align: middle;">{{DetailEquipmentQualificationCtrl.detail.vendorOffer.ApproveDate | date: "dd-MM-yyyy"}}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <a ng-if="DetailEquipmentQualificationCtrl.detail.vendorOffer.DocumentURL"
+                                       href="{{DetailEquipmentQualificationCtrl.folderFile + DetailEquipmentQualificationCtrl.detail.vendorOffer.DocumentURL}}" class="btn btn-xs btn-primary" target="_BLANK" title="Download Dokumen">
+                                        <i class="fa fa-download"></i>&nbsp;&nbsp;
+                                    </a>
+                                    <a ng-if="!DetailEquipmentQualificationCtrl.detail.vendorOffer.DocumentURL">
+                                        <label class="label label-sm label-default">
+                                            <i class="fa fa-download"></i>&nbsp;&nbsp;Dokumen  Belum di Upload
+                                        </label>
+                                    </a>
+                                </td>
+                                <td class="text-center" style="vertical-align: middle;">{{DetailEquipmentQualificationCtrl.detail.Remark}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br/>
+            <br/>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary"
+                ng-click="DetailEquipmentQualificationCtrl.batal()"
+                data-dismiss="modal" title="Kembali">
+            <i class="fa fa-arrow-circle-left"></i>&nbsp;
+        </button>
+    </div>
+</div>

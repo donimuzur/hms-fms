@@ -1,0 +1,83 @@
+﻿<section class="content" ng-init="StructureBudgetCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{ 'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a href="#" class="active">{{ 'BREADCRUMB.MASTER_STRUCTBUD' | translate}}</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <!--notife flow-->
+                <div class="box-header">
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h3 class="afta-font judul-datatabel">{{ 'DATA_STRUCTBUD' | translate}}</h3>
+                        </div>
+                        <div class="col-md-7">
+                            <form method="post" role="form" ng-submit="StructureBudgetCtrl.jLoad(1)">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="{{'LABEL_SEARCH' | translate}}" ng-model="ListDOACtrl.textSearch">
+                                    <span class="input-group-btn">
+                                        <button ng-click="StructureBudgetCtrl.jLoad(1)" type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'BTN_SEARCH' | translate}}">
+                                            <i class="fa fa-search"></i>&nbsp; 
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="5%">{{ 'TABLE.NO' | translate}}</th>
+                                            <th class="text-center">{{ 'TABLE.STRUCTBUD_POSITION' | translate}}</th>
+                                            <th class="text-center">{{ 'TABLE.STRUCTBUD_LEVEL' | translate}}</th>
+                                            <th class="text-center" width="25%">{{ 'TABLE.HEAD' | translate}}</th>
+                                            <th class="text-center" width="10%">{{ 'TABLE.ACTION' | translate}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rt in StructureBudgetCtrl.listData">
+                                            <td style="vertical-align: middle;">{{StructureBudgetCtrl.currentPage > 1 ? (StructureBudgetCtrl.maxSize * (StructureBudgetCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{rt.FromCurr}}</td>
+                                            <td style="vertical-align: middle;">{{rt.ToCurr}}</td>
+                                            <td style="vertical-align: middle;">{{rt.ValidFrom}}</td>
+                                            <td style="vertical-align: middle;">
+                                                <!--
+                                                <a ng-click="StructureBudgetCtrl.forminput()" class="btn btn-flat btn-xs btn-success"><i class="fa fa-pencil"></i>&nbsp;</a>
+                                                &nbsp; <a class="btn btn-flat btn-xs btn-danger"><i class="fa fa-trash-o"></i>&nbsp;</a>
+                                                    -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <ul uib-pagination boundary-links="true" total-items="asosiasiCtrl.totalItems" ng-model="StructureBudgetCtrl.currentPage"
+                                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                ng-change="StructureBudgetCtrl.jLoad(StructureBudgetCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{StructureBudgetCtrl.totalItems}}</label>
+                        </div>
+                        <div class="col-md-5 margintop20">
+                            <div class="pull-right">
+                                <!--
+                                <button class="btn btn-sm btn-primary" ng-click="StructureBudgetCtrl.formRate()">
+                                    <i class="fa fa-plus-circle"></i> {{ 'TAMBAH' | translate}}
+                                </button>
+                                    -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,211 @@
+<div id="modal-content" ng-init="formExpCtrl.init()">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="formExpCtrl.batal()">
+			<span aria-hidden="true">&times;</span>
+			<span class="sr-only">Keluar</span>
+		</button>
+		<h3 class="modal-title afta-font">Data Pengalaman</h3>
+	</div>
+    <form>
+	<div class="modal-body">
+		<div class="row" style="padding-top: 10px!important;">
+			<div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-11 center-block" style="float: none!important; padding-bottom: 15px;">
+								<div class="form-inline">
+									<div class="form-group">
+										<label class="control-label">Proses Pekerjaan * : </label>&nbsp;&nbsp;
+										<label class="radio-inline" ng-repeat="tipe in formExpCtrl.listTypeExp">
+											<input ng-click="formExpCtrl.cek()" ng-checked="tipe.RefID === formExpCtrl.dataExp.ExperienceType" 
+                                                   type="radio" value="{{tipe.RefID}}" ng-model="formExpCtrl.dataExp.ExperienceType" />&nbsp;{{tipe.Value}}
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+                <div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Nama Kontrak *</label>
+							<input type="text" tabindex="1" class="form-control input-sm" required placeholder="Nama Kontrak" ng-model="formExpCtrl.dataExp.ContractName" />
+						</div>
+					</div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Instansi *</label>
+                            <input type="text" tabindex="2" class="form-control" placeholder="Instansi" ng-model="formExpCtrl.dataExp.Agency" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Tipe Bidang Tender</label>
+                            <select tabindex="3" required class="form-control input-sm" ng-model="formExpCtrl.selectedTypeTender"
+                                    ng-options="item as item.Name | translate for item in formExpCtrl.listTypeTender"
+                                    ng-change="formExpCtrl.changeTypeTender()">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Bidang </label>
+                            <select tabindex="4" required class="form-control input-sm"
+                                    ng-model="formExpCtrl.selectedBusinessField"
+                                    ng-disabled="!formExpCtrl.listBusinessField"
+                                    ng-options="item as item.Name  for item  in formExpCtrl.listBusinessField"
+                                    ng-change="formExpCtrl.changeBusinessField()">
+                                <option value="" selected disabled>--- {{'BUSINESS_FIELD' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Negara</label>
+                            <select required class="form-control"
+                                    ng-model="formExpCtrl.selectedCountry"
+                                    ng-change="formExpCtrl.loadStates()"
+                                    ng-options="item as item.Name for item in formExpCtrl.countryList">
+                                <option value="" selected disabled class="text-center">--{{"FORM.COUNTRY" | translate}}--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Region</label>
+                            <input ng-disabled="true" class="form-control" data-toggle="tooltip" data-placement="right" placeholder="{{'FORM.REGION' | translate}} *" type="text" ng-model="formExpCtrl.selectedRegion.Name" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Provinsi</label>
+                            <select class="form-control"
+                                    ng-model="formExpCtrl.selectedState"
+                                    ng-disabled="!formExpCtrl.stateList || formExpCtrl.stateList.length == 0 || !formExpCtrl.selectedCountry"
+                                    ng-options="item as item.Name for item in formExpCtrl.stateList" ng-change="formExpCtrl.changeState()">
+                                <option value="" selected disabled>--{{"FORM.STATE" | translate}}--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" ng-show="(formExpCtrl.selectedCountry.CountryID === 360)">
+                        <label class="control-label">Kota </label>
+                        <select tabindex="8" required class="form-control input-sm" ng-model="formExpCtrl.selectedCities"
+                                ng-options="item as item.Name for item in formExpCtrl.listCities"
+                                ng-change="formExpCtrl.changeCities()"></select>
+                    </div>	
+                </div>
+                <div class="row">                    				
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Alamat *</label>
+							<input tabindex="9" type="text" class="form-control input-sm" required placeholder="Alamat" ng-model="formExpCtrl.dataExp.Address" />
+						</div>
+					</div>
+                </div>
+                <div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Telepon </label>
+							<input tabindex="10" type="text" class="form-control input-sm" required placeholder="Telepon"  ng-model="formExpCtrl.dataExp.AgencyTelpNo"  />
+						</div>
+					</div>
+					<div class="col-md-4">
+                        <div class="form-group">
+                            <label>No. Kontrak *</label>
+                            <input tabindex="11" type="text" class="form-control input-sm" required placeholder="Nomor Kontrak" ng-model="formExpCtrl.dataExp.ContractNo" />
+                        </div>
+					</div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Pilih Mata Uang</label>
+                            <select tabindex="12" required class="form-control input-sm" ng-model="formExpCtrl.selectedCurrencies" ng-change="formExpCtrl.changeCurr(formExpCtrl.selectedCurrencies)"
+                                    ng-options="item as item.Symbol for item in formExpCtrl.listCurrencies"></select>
+                        </div>
+                    </div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Nilai Kontrak *</label>
+							<input tabindex="13" type="text" currency-mask class="form-control input-sm" 
+                                   placeholder="Nilai Kontrak" ng-model="formExpCtrl.dataExp.ContractValue" />
+						</div>
+					</div>
+                </div>
+                <div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Tanggal Pelaksanaan *</label>
+                            <div class="input-group date form_datetime">
+                                <input style="background-color: #ffffff;" tabindex="14" readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formExpCtrl.isCalendarOpened[0]" ng-model="formExpCtrl.dataExp.StartDate" ng-change="formExpCtrl.checkStartDate(formExpCtrl.dataExp.StartDate)"
+                                       ng-click="formExpCtrl.openCalendar(0)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formExpCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Selesai Kontrak *</label>
+                            <div class="input-group date form_datetime">
+                                <input tabindex="15" style="background-color: #ffffff;" readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                       is-open="formExpCtrl.isCalendarOpened[1]" ng-model="formExpCtrl.dataExp.EndDate" ng-change="formExpCtrl.checkEndDate(formExpCtrl.dataExp.EndDate,formExpCtrl.dataExp.StartDate,formExpCtrl.dataExp.ExperienceType)"
+                                       ng-click="formExpCtrl.openCalendar(1)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="formExpCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+						</div>
+					</div>
+                 </div>
+                 <div class="row">					
+					<div class="col-md-8">
+						<div class="form-group">
+                            <label class="control-label">
+                                File Upload
+                                <small>(<span ng-repeat="ft in formExpCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / 
+                                    Size : {{formExpCtrl.idUploadConfigs[0].Size}} {{formExpCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )
+                                </small>
+                            </label>
+                            <input type="file" tabindex="15" class="form-control" ng-file-select="formExpCtrl.selectUpload()"
+                                   ng-model="formExpCtrl.fileUpload" name="ownerIDFile" accept="{{formExpCtrl.idFileTypes}}" />
+						</div>
+					</div>
+                    <div class="col-md-4" ng-show="!(formExpCtrl.dataExp.DocumentURL === null || formExpCtrl.dataExp.DocumentURL === '')" >
+                        <div class="form-group">
+                            <label>Dokumen Yang Telah Diupload</label>
+                            <a href="{{formExpCtrl.folderFile + formExpCtrl.dataExp.DocumentURL}}" class="btn btn-sm btn-primary" target="_BLANK" title="Download File">
+                                <i class="fa fa-download"></i>&nbsp;
+                            </a>
+                        </div>
+                    </div>
+                     <div class="col-md-4" ng-show="formExpCtrl.dataExp.DocumentURL === null || formExpCtrl.dataExp.DocumentURL === ''">
+                         <div class="form-group">
+                             <label>Dokumen Yang Telah Diupload</label>
+                             <button class="btn btn-sm btn-default" title="belum ada file yang diupload"><i class="fa fa-download"></i></button>
+                         </div>
+                     </div>
+                </div>
+                <div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Keterangan </label>
+							<textarea class="form-control" tabindex="16" rows="2"  placeholder="Keterangan Tambahan.." ng-model="formExpCtrl.dataExp.Remark"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" ng-click="formExpCtrl.batal()" class="btn btn-flat btn-danger" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+		<button type="submit" ng-click="formExpCtrl.saveData()" class="btn btn-flat btn-success" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+	</div>
+    </form>
+</div>

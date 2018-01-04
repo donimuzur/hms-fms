@@ -1,0 +1,77 @@
+<link rel="stylesheet" type="text/css" href="assets/css/rolas-design.css" />
+<section class="content" ng-init="tempPanitiaCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.HOME'|translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.MASTER'|translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.TEMPLATE_PANITIA'|translate}}</a></li>
+    </ol>
+    <div id="utama" class="row" style="padding-top: 25px;">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 class="afta-font judul-datatabel">{{'DATA_TEMPLATE_SUSUNAN_PANITIA'|translate}}</h3>
+                        </div>
+                        <div class="col-md-5">
+                            <form method="post" role="form" ng-submit="tempPanitiaCtrl.caritemplate(textcari)">
+                            <div class="input-group">
+                               <input type="text" class="form-control" placeholder="{{'CARI_NAMA_TEMPLATE'|translate}}" ng-model="textcari">
+                                <span class="input-group-btn">
+                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-primary" title="{{'CARI'|translate}}">
+                                        <i class="fa fa-search"></i>&nbsp; </button>
+                                </span>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-flat btn-primary turun-15 pull-right" ng-click="tempPanitiaCtrl.tambahdata()" title="{{'TAMBAH'|translate}}">
+                                <i class='fa fa-plus-circle'></i>&nbsp; 
+                            </button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle; width: 40px; min-width: 40px">{{'TABLE.NO'|translate}}</th>
+                                            <th class="text-center" style="width: 300px; min-width: 300px; vertical-align: middle;">{{'TABLE.NAMA_TEMPLATE'|translate}}</th>
+                                            <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;"></th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>	
+                                        <tr ng-repeat="tp in tempPanitiaCtrl.templates">
+                                            <td class="center-vertical">{{(tempPanitiaCtrl.maxSize * (tempPanitiaCtrl.currentPage - 1)) + $index + 1}}</td>
+                                            <td class="middle-vertical">{{tp.TemplateName}}</td>
+                                            <td class="text-center">
+                                                <a class="btn btn-flat btn-sm btn-success" ng-click="tempPanitiaCtrl.ubahdata(tp.ID)" title="{{'UBAH'|translate}}"><i class='fa fa-edit'></i></a>
+                                                <a class="btn btn-flat btn-sm btn-danger" ng-click="tempPanitiaCtrl.hapus(tp.ID)" title="{{'HAPUS'|translate}}"><i class='fa fa-trash'></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="tempPanitiaCtrl.totalItems === 0" >
+                                            <td colspan="3">{{'NO_DATA' | translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>                            
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sd-4 col-md-7" >
+                            <ul uib-pagination total-items="tempPanitiaCtrl.totalItems" max-size="10"
+                                ng-model="tempPanitiaCtrl.currentPage" items-per-page="tempPanitiaCtrl.pageSize"
+                                previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="tempPanitiaCtrl.loadData(tempPanitiaCtrl.currentPage)"></ul>
+                            <br /><label>{{'TOTAL_DATA' | translate}} : {{tempPanitiaCtrl.totalItems}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

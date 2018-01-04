@@ -1,0 +1,141 @@
+﻿@model FMS.Website.Models.CsfIndexModel
+@using FMS.Core;
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Upload", "TraTemporary"))
+        {
+            @Html.AntiForgeryToken()
+            <h5 class="text-info text-red">
+                @Model.ErrorMessage
+                @Html.HiddenFor(model => model.IsPersonalDashboard)
+            </h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="file" id="itemExcelFile" name="itemExcelFile" class="form-control rounded-0 rounded-left" />
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/excelVendor.xlsx">here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="example2" class="table table-bordered dataTables table-striped">
+                <thead>
+                    <tr>
+                        <th>Document Number</th>
+                        <th>Employee Name</th>
+                        <th>Police Number</th>
+                        <th>Manufacturer</th>
+                        <th>Model</th>
+                        <th>Series</th>
+                        <th>Body Type</th>
+                        <th>Vendor</th>
+                        <th>Color</th>
+                        <th>Start Contract</th>
+                        <th>End Contract</th>
+                        <th>PO Number</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraTemporary")" title="Cancel" class="btn">Cancel</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script src="~/Scripts/tempscript.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnupload').click(function () {
+            uploadXmlFile();
+        });
+    });
+
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("MassUploadFile", "TraTemporary")';
+        var fileName = $('[name="itemExcelFile"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("itemExcelFile").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("itemExcelFile").files[i];
+            formData.append("itemExcelFile", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var tr = '<tr>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].CsfNumber" id="TemporaryList[' + i + ']CsfNumber" value="' + uploaditems[i].CsfNumber + '"></input>' + uploaditems[i].CsfNumber + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].EmployeeName" id="TemporaryList[' + i + ']_EmployeeName" value="' + uploaditems[i].EmployeeName + '"></input>' + uploaditems[i].EmployeeName + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].PoliceNumber" id="TemporaryList[' + i + ']_PoliceNumber" value="' + uploaditems[i].PoliceNumber + '"></input>' + uploaditems[i].PoliceNumber + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].Manufacturer" id="TemporaryList[' + i + ']_Manufacturer" value="' + uploaditems[i].Manufacturer + '"></input>' + uploaditems[i].Manufacturer + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].Models" id="TemporaryList[' + i + ']_Models" value="' + uploaditems[i].Models + '"></input>' + uploaditems[i].Models + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].Series" id="TemporaryList[' + i + ']_Series" value="' + uploaditems[i].Series + '"></input>' + uploaditems[i].Series + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].BodyType" id="TemporaryList[' + i + ']_BodyType" value="' + uploaditems[i].BodyType + '"></input>' + uploaditems[i].BodyType + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].VendorName" id="TemporaryList[' + i + ']_VendorName" value="' + uploaditems[i].VendorName + '"></input>' + uploaditems[i].VendorName + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].Color" id="TemporaryList[' + i + ']_Color" value="' + uploaditems[i].Color + '"></input>' + uploaditems[i].Color + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].StartPeriod" id="TemporaryList[' + i + ']_StartPeriod" value="' + uploaditems[i].StartPeriodValue + '"></input>' + uploaditems[i].StartPeriodName + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].EndPeriod" id="TemporaryList[' + i + ']_EndPeriod" value="' + uploaditems[i].EndPeriodValue + '"></input>' + uploaditems[i].EndPeriodName + '</td>' +
+                    '<td><input type="hidden" name="TemporaryList[' + i + '].PoNumber" id="TemporaryList[' + i + ']_PoNumber" value="' + uploaditems[i].PoNumber + '"></input>' + uploaditems[i].PoNumber + '</td>' +
+                    '<td>' + uploaditems[i].MessageError + '</td>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].ChasisNumber" id="TemporaryList[' + i + ']_ChasisNumber" value="' + uploaditems[i].ChasisNumber + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].EngineNumber" id="TemporaryList[' + i + ']_EngineNumber" value="' + uploaditems[i].EngineNumber + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].IsAirBag" id="TemporaryList[' + i + ']_IsAirBag" value="' + uploaditems[i].IsAirBag + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].Transmission" id="TemporaryList[' + i + ']_Transmission" value="' + uploaditems[i].Transmission + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].Branding" id="TemporaryList[' + i + ']_Branding" value="' + uploaditems[i].Branding + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].Purpose" id="TemporaryList[' + i + ']_Purpose" value="' + uploaditems[i].Purpose + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].PoLine" id="TemporaryList[' + i + ']_PoLine" value="' + uploaditems[i].PoLine + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].IsVat" id="TemporaryList[' + i + ']_IsVat" value="' + uploaditems[i].IsVat + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].IsRestitution" id="TemporaryList[' + i + ']_IsRestitution" value="' + uploaditems[i].IsRestitution + '"></input>' +
+                    '</tr>';
+                    $('#tb-upload-excel').append(tr);
+                    error += uploaditems[i].MessageErrorStopper;
+                }
+
+                if (error.trim() == "") {
+                    $("#btnSave").css("display", "");
+                }
+                else {
+                    $("#btnSave").css("display", "none");
+                }
+            }
+        });
+    };
+</script>
+

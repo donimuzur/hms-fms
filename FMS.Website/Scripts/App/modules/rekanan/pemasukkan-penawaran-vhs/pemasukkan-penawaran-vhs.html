@@ -1,0 +1,176 @@
+﻿<section ng-init="PPVHSVendorCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a href="javascript:void(0)">Proses Pengadaan</a></li>
+        <li><a href="#/daftar-lelang-admin">Data Pengadaan</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li ng-if="PPVHSVendorCtrl.RFQId.RFQType === 1"><a class="active">Pemasukkan Penawaran VHS</a></li>
+        <li ng-if="PPVHSVendorCtrl.RFQId.RFQType === 2"><a class="active">Pemasukkan Penawaran FPA</a></li>
+    </ol>
+
+    <!-- tampilan pertama muncul -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 ng-if="PPVHSVendorCtrl.RFQId.RFQType === 1" class="afta-font judul-datatabel" style="text-align: center!important;">Pemasukkan Penawaran VHS </h3>
+                                <h3 ng-if="PPVHSVendorCtrl.RFQId.RFQType === 2" class="afta-font judul-datatabel" style="text-align: center!important;">Pemasukkan Penawaran FPA </h3>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label>Tanggal Mulai: {{PPVHSVendorCtrl.step.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Tanggal Selesai: {{PPVHSVendorCtrl.step.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                            </div>
+                            <div class="col-md-9">
+                                <label>Tender: {{PPVHSVendorCtrl.step.tender.TenderName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">No Quotation</label><br />
+                                            <input type="text" class="form-control input-group-sm" ng-model="PPVHSVendorCtrl.QuotationNo" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-if="(PPVHSVendorCtrl.RFQId.RFQType === 1 && PPVHSVendorCtrl.RFQId.DeliveryTerms == 3087)">
+                                        <div class="form-group">
+                                            <label class="control-label">Lead Time</label><br />
+                                            <input type="text" ng-disabled="PPVHSVendorCtrl.RFQId.DeliveryTerms === 3087" class="form-control input-group-sm" ng-model="PPVHSVendorCtrl.RFQId.LeadTime" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Quotation validity</label><br />
+                                            <input type="text" ng-disabled="PPVHSVendorCtrl.RFQId.RFQType === 1" class="form-control input-group-sm" ng-model="PPVHSVendorCtrl.RFQId.ExpiredDay" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Jenis Penawaran</label><br />
+                                            <select disabled class="form-control input-sm" ng-model="PPVHSVendorCtrl.selectedDeliveryTerms"
+                                                    ng-options="item as item.Value | translate for item in PPVHSVendorCtrl.DeliveryTerm">
+                                                <option value="" selected disabled>
+                                                    -- Tipe Penawaran --
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Inco Terms</label><br />
+                                            <select ng-disabled="PPVHSVendorCtrl.RFQId.DeliveryTerms == 3087" class="form-control input-sm" ng-model="PPVHSVendorCtrl.selectedIncoTerms" ng-change="PPVHSVendorCtrl.changeFreightDetai()"
+                                                    ng-options="item as item.Name for item in PPVHSVendorCtrl.listIncoTerms">
+                                                <option value="" selected disabled>
+                                                    -- Tujuan Pengiriman --
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Tujuan Pengiriman</label><br />
+                                            <select ng-disabled="PPVHSVendorCtrl.RFQId.DeliveryTerms == 3087" class="form-control input-sm" ng-model="PPVHSVendorCtrl.selectedState"
+                                                    ng-options="item as item.Name for item in PPVHSVendorCtrl.listFreight">
+                                                <option value="" selected disabled>
+                                                    -- Tujuan Pengiriman --
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                        <div class="box-body">
+                            <div class="row" style="padding-top: 10px!important;">
+                                <br />
+                                <div class="col-md-12">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped" id="tabelPesertaNegosiasi">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" width="20px">No.</th>
+                                                    <th class="text-center">Persyaratan</th>
+                                                    <th class="text-center">Nama File</th>
+                                                    <th class="text-center">Check List</th>
+                                                    <th class="text-center" style="width: 110px; min-width: 110px;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="peserta in PPVHSVendorCtrl.Template">
+                                                    <td class="text-center" style="vertical-align: middle;">{{$index + 1}}</td>
+                                                    <td  style="vertical-align: middle;">{{peserta.DocName}}</td>
+                                                    <td class="text-center" style="vertical-align: middle;"> {{peserta.Filename}} </td>
+                                                    <td class="text-center"><input type="checkbox" ng-model="peserta.IsPublish"></td>
+                                                    <td class="text-center" style="vertical-align: middle;">
+                                                        <div ng-if="PPVHSVendorCtrl.inProcess===true" style="display:inline-block !important;">
+                                                            <a ng-if="peserta.TenderDocTypeID === 21" ng-click="PPVHSVendorCtrl.upload(peserta)" class="btn btn-flat btn-sm btn-primary" title="Choose File">
+                                                                <i class='fa fa-upload'></i>&nbsp;
+                                                            </a>
+                                                        </div>
+                                                        <a ng-if="peserta.TenderDocTypeID === 21" ng-click="PPVHSVendorCtrl.viewDetail()" class="btn btn-flat btn-sm btn-success" title="Detail Penawaran">
+                                                            <i class='fa fa-edit'></i>&nbsp;
+                                                        </a>
+                                                        <a ng-if="peserta.TenderDocTypeID === 21" ng-click="PPVHSVendorCtrl.downloadExcel(peserta)" class="btn btn-flat btn-sm btn-warning" title="Download Template">
+                                                            <i class='fa fa-download'></i>&nbsp;
+                                                        </a>
+                                                        <div ng-if="PPVHSVendorCtrl.inProcess===true" style="display:inline-block !important;">
+                                                            <a ng-if="peserta.TenderDocTypeID === 10|| peserta.TenderDocTypeID === 11 || peserta.TenderDocTypeID === 12 " ng-click="PPVHSVendorCtrl.uploadDet(peserta, peserta.TenderDocTypeID)" class="btn btn-flat btn-sm btn-primary" title="Choose File">
+                                                                <i class='fa fa-upload'></i>&nbsp;
+                                                            </a>
+                                                        </div>
+                                                            <a ng-if="(peserta.TenderDocTypeID === 10|| peserta.TenderDocTypeID === 11 || peserta.TenderDocTypeID === 12) && peserta.DocumentUrl !== null " href="{{PPVHSVendorCtrl.folderFile+peserta.DocumentUrl}}" target="_blank" class="btn btn-flat btn-sm btn-success" title="Download File">
+                                                                <i class='fa fa-download'></i>&nbsp;
+                                                            </a>
+                                                            <a ng-if="peserta.TenderDocTypeID === 14 || peserta.TenderDocTypeID === 18 || peserta.TenderDocTypeID === 20 || peserta.TenderDocTypeID === 13 || peserta.TenderDocTypeID === 15 || peserta.TenderDocTypeID === 16 || peserta.TenderDocTypeID === 19 || peserta.TenderDocTypeID === 17" ng-click="PPVHSVendorCtrl.uploadDetBC(peserta, peserta.TenderDocTypeID)" class="btn btn-flat btn-sm btn-success" title="Detail">
+                                                                <i class='fa fa-edit'></i>&nbsp;
+                                                            </a>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="PPVHSVendorCtrl.vhs.length === 0"><td colspan="6">Data Tidak Ada</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <br />
+                                <hr />
+                                <div class="col-md-12">
+
+                                    <div class="text-center">
+                                        <a ng-click="PPVHSVendorCtrl.backpengadaan()" class="btn btn-sm btn-flat btn-default" title="Kembali"><i class="fa fa-arrow-circle-left"></i>&nbsp;</a>&nbsp;
+                                        <a ng-click="PPVHSVendorCtrl.Insert()" class="btn btn-sm btn-flat btn-primary" title="Simpan"><i class="fa fa-save"></i>&nbsp;</a>&nbsp;
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        
+
+
+
+
+
+    </div>
+</section>

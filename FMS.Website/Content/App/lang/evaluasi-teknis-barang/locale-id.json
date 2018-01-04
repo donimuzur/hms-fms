@@ -1,0 +1,34 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "PROSES_PENGADAAN": "Proses Pengadaan",
+    "DATA_PENGADAAN": "Data Pengadaan"
+  },
+  "TENDER": "Tender",
+  "VENDOR": "Vendor",
+  "HASIL": "Hasil",
+  "SKOR": "Skor",
+  "SIMPAN_SKOR": "Simpan Skor",
+  "TANGGAL_MULAI": "Tanggal Mulai",
+  "TANGGAL_SELESAI": "Tanggal Selesai",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu",
+    "ERR_LOAD": "Gagal Mendapatkan Data Evaluasi",
+    "SUCC_SAVE_EVALUATION": "Evaluasi Tersimpan",
+    "ERR_SAVE_EVALUATION": "Evaluasi Gagal disimpan",
+    "ERR_SAVE_SCORE": "Skor Gagal disimpan",
+    "SUCC_SAVE_SCORE": "Skor tersimpan"
+  },
+  "LOLOS": "Lolos",
+  "TIDAK_LOLOS": "Tidak Lolos",
+  "LAKUKAN_EVALUASI": "Lakukan Evaluasi",
+  "KEMBALI": "Kembali",
+  "TABLE": {
+    "NO": "No",
+    "VENDOR": "Vendor",
+    "NAMA_ITEM": "Nama Item",
+    "DOKUMEN": "Dokumen",
+    "SKOR": "Skor",
+    "STATUS": "Status"
+  }
+}

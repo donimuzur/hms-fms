@@ -1,0 +1,75 @@
+﻿<div class="modal-content" style="width:1100px!important" ng-init="ItemPRCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="ItemPRCtrl.batal()" title="Keluar">
+            <span aria-hidden="true">&times;</span><span class="sr-only"></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="afta-font text-center">{{'ITEMPR.TITLE' | translate}}</h3>
+                        <h5 class="afta-font text-center">{{ItemPRCtrl.CommodityName}}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-sm btn-success" type="button" ng-click="ItemPRCtrl.simpanItem(ItemPRCtrl.listCheckedPR) "><i class="fa fa-save"></i> {{'ITEMPR.BTN_SAVE' | translate}}</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.NO' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.DATE' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.APPROVAL' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.NO_PR' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.REQ_ITEM' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.PURCH_GROUP' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.REQUISITIONER' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.SHORTTEXT' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.QTY' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.TOTALVALUE' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.MATERIAL' | translate}}</th>
+                                        <th ng-if="!ItemPRCtrl.CommodityID" class="center-vertical">{{'ITEMPR.TABLE.COMMODITY' | translate}}</th>
+                                        <th class="center-vertical">{{'ITEMPR.TABLE.DELIVERYDATE' | translate}}</th>
+                                        <!--<th class="center-vertical">{{'ITEMPR.TABLE.FILE' | translate}}</th>-->
+                                        <th class="center-vertical">
+                                            <input type="checkbox" ng-model="ItemPRCtrl.isCekAll" ng-click="ItemPRCtrl.checkAll()"> {{'ITEMPR.TABLE.ACTION' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="pr in ItemPRCtrl.listItemPR">
+                                        <td class="text-center">{{UploadItemPRCtrl.currentPage > 1 ? (UploadItemPRCtrl.maxSize * (UploadItemPRCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                        <td class="text-center">{{pr.InputDate}}</td>
+                                        <td class="text-center">{{pr.ApprovalDate}}</td>
+                                        <td class="text-center">{{pr.PurchaseReq}}</td>
+                                        <td class="text-center">{{pr.RequisnItem}}</td>
+                                        <td class="text-center">{{pr.PurchGroup}}</td>
+                                        <td>{{pr.Requisitioner}}</td>
+                                        <td class="text-center">{{pr.ShortText}}</td>
+                                        <td class="text-center">{{pr.Quantity}}</td>
+                                        <td style="text-align:right;">{{pr.TotalValue}}</td>
+                                        <td class="text-center">{{pr.Material}}</td>
+                                        <td ng-if="!ItemPRCtrl.CommodityID" nowrap>{{pr.CommodityName}}</td>
+                                        <td class="text-center">{{pr.DeliveryDate}}</td>
+                                        <!--<td style="vertical-align: middle;">{{pr.FileDocumen}}</td>-->
+                                        <td class="text-center">
+                                            <input type="checkbox" ng-checked="{{pr.IsUsed}}" ng-model="pr.IsUsed" ng-click="ItemPRCtrl.choosePR(pr)">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

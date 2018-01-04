@@ -1,0 +1,70 @@
+﻿@model FMS.Website.Models.TraCrfItemViewModel
+           
+<div class="panel panel-default">
+    <div id="headingFour" role="tab" class="panel-heading">
+        <h4 class="panel-title">
+            <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordion" data-toggle="collapse">
+                Temporary Car
+                <i class="fa fa-caret-down"></i>
+            </a>
+        </h4>
+    </div>
+    <!-- /.box-header -->
+    <!-- form start -->
+    <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
+        <div class="panel-body">
+            <div role="form" class="form-excise">
+                <div class="col-md-12">
+                    @if (Model.Detail.ExpectedDate > Model.Detail.EffectiveDate)
+                    {
+                        <div class="col-md-12" id="temporaryButton">
+                            <div class="form-group">
+                                <a href="#" class="btn btn-primary" onclick="CreateTemporary()" style="float:right;margin-top:20px"><i class="glyphicon glyphicon-ok"></i> Create Temporary</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12" id="temporaryButton" style="display:none">
+                            <div class="form-group">
+                                <a href="#" class="btn btn-primary" onclick="CreateTemporary()" style="float:right;margin-top:20px"><i class="glyphicon glyphicon-ok"></i> Create Temporary</a>
+                            </div>
+                        </div>
+                    }
+                    
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 15%">New Start Date</th>
+                                <th style="text-align: center; width: 15%">New End Date</th>
+                                <th style="text-align: center; width: 15%">Reason</th>
+                                <th style="text-align: center; width: 15%">Detail Temporary </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.TemporaryList != null)
+                            {
+                                foreach (var data in Model.TemporaryList)
+                                {
+                                    <tr>
+                                        <td>@Html.Raw(@data.StartPeriod.ToString("dd-MMM-yyyy"))</td>
+                                        <td>@Html.Raw(@data.EndPeriod.ToString("dd-MMM-yyyy"))</td>
+                                        <td>@data.ReasonTemp</td>
+                                        <td><a href="@Html.Raw(data.UrlTemp)" target="_blank">@Html.Raw(data.TemporaryNumber)</a></td>
+                                    </tr>
+                                }
+                            }
+                            
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="box-footer"></div>
+    </div>
+</div>

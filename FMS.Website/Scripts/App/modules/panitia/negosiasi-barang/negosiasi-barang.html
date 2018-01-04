@@ -1,0 +1,95 @@
+﻿<section ng-init="NegosiasiBarangCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a class="active">Negosiasi Barang</a></li>
+    </ol>
+
+    <!-- tampilan pertama muncul -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="afta-font text-left">
+                                    Negosiasi Barang
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6 text-left">
+                                <a class="btn btn-sm btn-flat btn-primary" ng-if="NegosiasiBarangCtrl.flagSum === true" ng-click="NegosiasiBarangCtrl.do_summary()" title="Lakukan Summary Negosiasi"><i class="fa fa-play-circle-o"></i> Lakukan Summary</a>
+                                <a class="btn btn-sm btn-flat btn-warning" ng-if="NegosiasiBarangCtrl.flagSum === false" ng-click="NegosiasiBarangCtrl.do_summary()" title="Ubah Summary Negosiasi"><i class="fa fa-play-circle-o"></i> Ubah Summary Negosiasi</a>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top: 5px!important;">
+                            <br />
+                            <div class="col-md-12">
+                                <label ng-if="isEBidding == false">Data Rekanan Yang Mengikuti Negosiasi</label>
+                                <label ng-if="online && isEBidding == true">Data Peserta</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped" id="tabelPesertaNegosiasi">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" width="20px">No.</th>
+                                                <th class="text-center">Nama Rekanan</th>
+                                                <th class="text-center">Nilai Evaluasi</th>
+                                                <th class="text-center">Harga Rekanan</th>
+                                                <th class="text-center">Harga Negosiasi</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="pnb in NegosiasiBarangCtrl.nb">
+                                                <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{pnb.VendorName}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{pnb.ScoreEvaluation}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{pnb.GOENegoPrice | currency: ""+ labelcurr +" "}}</td>
+                                                <td class="text-center" style="vertical-align: middle;">{{pnb.NegotiationPrice | currency: ""+ labelcurr +" "}}</td>
+                                                <td class="text-center" style="vertical-align: middle;" ng-if="pnb.IsDeal === true">Sepakat</td>
+                                                <td class="text-center" style="vertical-align: middle;" ng-if="pnb.IsDeal === false">Tidak sepakat</td>
+                                                <td class="text-center" style="vertical-align: middle;" ng-if="pnb.IsDeal === null">Belum sepakat</td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                    <a class="btn btn-sm btn-flat btn-primary" ng-if="pnb.ID === 0" ng-click="NegosiasiBarangCtrl.viewDetail(pnb, true)" title="Mulai Negosiasi"><i class="fa fa-play-circle-o"></i></a>
+                                                    <a class="btn btn-sm btn-flat btn-warning" ng-if="pnb.ID !== 0" ng-click="NegosiasiBarangCtrl.viewDetail(pnb, false)" title="Detail Negosiasi"><i class="fa fa-external-link"></i></a>
+                                                    <a class="btn btn-sm btn-flat btn-danger" ng-if="pnb.ID !== 0" ng-click="NegosiasiBarangCtrl.endnego(pnb)" title="Akhiri Negosiasi"><i class="fa fa-times"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="NegosiasiBarangCtrl.nb.length === 0"><td colspan="6">Data Tidak Ada</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row" style="padding-top: 5px!important;">
+                            <div class="col-md-6 text-left">
+                                <a class="btn btn-sm btn-flat btn-primary" ng-click="NegosiasiBarangCtrl.summary()" title="Lakukan Summary"><i class="fa fa-play-circle-o"></i> Lakukan Summary</a>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <a class="btn btn-sm btn-flat btn-primary" ng-click="NegosiasiBarangCtrl.summary()" title="Lakukan Summary"><i class="fa fa-play-circle-o"></i> Approval</a>
+                            </div>
+                        </div>
+                        -->
+                        <div class="row" style="padding-top:50px !important;">
+                            <div class="col-md-8 col-sm-12">
+                                <strong>
+                                    <button type="button" class="btn btn-flat btn-sm btn-primary"><i class="fa fa-play-circle-o"></i></button> : Mulai Negosiasi <button type="button" class="btn btn-flat btn-sm btn-warning"><i class="fa fa-external-link"></i></button> : Detail Negosiasi <button type="button" class="btn btn-flat btn-sm btn-danger"><i class="fa fa-times"></i></button> : Akhiri Negosiasi
+                                </strong>
+                            </div>
+                            <div class="col-md-4 col-sm-12 text-right">
+                                    <a ng-click="NegosiasiBarangCtrl.backpengadaan()"  class="btn btn-sm btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i> Kembali</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,310 @@
+<!-- Main content -->
+<section class="content" ng-init="initializeExpired()">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin" >Home</a></li>
+        <li><a href="#/verifikasi-data/" >Data Rekanan</a></li>
+        <li><a href="#/verifikasi-data/2" >Kelola Data Rekanan</a></li>
+        <li><a class="active" >List Data Expired</a></li>
+
+    </ol>
+    <div class="row" >
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h3 class="afta-font" style="padding-bottom: 20px; font-size: 1.4em;">Kelola Data Rekanan</h3>
+                        </div>
+                        <div class="col-md-3">
+                            <!-- <div class="input-group pull-right" style="padding-top: 15px;">
+                                <div class="input-cont">
+                                    <select id="cmbStatus" name="cmbStatus" class="form-control">
+                                        <option value="-1">-- STATUS --</option>
+                                        <option value="1">Belum Diaktivasi</option>
+                                        <option value="2">Teraktivasi</option>
+                                        <option value="3">Belum Diverifikasi</option>
+                                        <option value="4">Terverifikasi</option>
+                                    </select>
+                                </div>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="cariByStatus()">
+                                        Cari &nbsp; <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div> -->
+                        </div>
+                        <form method="post" role="form" ng-submit="initializeExpired()">
+                        <div class="col-md-4">
+                            <div class="input-group pull-right" style="padding-top: 15px;">
+                                <div class="input-cont">
+                                    <input type="text" placeholder="Cari Perusahaan" 
+                                           ng-model="nCompany" ng-change="setnCompany(nCompany)"
+                                           class="form-control">
+                                </div>
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"
+                                            ng-click="initializeExpired()" title="Cari">
+                                         &nbsp; <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="20px">No.</th>
+                                            <th class="text-center">Nama Perusahaan Rekanan</th>
+                                            <!--<th class="text-center" style="width: 130px; min-width: 130px;">Status</th>-->
+                                            <th class="text-center" style="min-width: 560px;">Keterangan</th>
+                                            <!--<th class="text-center" style="width: 270px; min-width: 270px;"></th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rek in datarekanan">
+                                            <td style="vertical-align: middle;">{{currentPage > 1 ? (fullSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+
+                                            <td style="vertical-align: middle;">{{rek.nama_perusahaan}}</td>
+                                            <!--<td class="text-center" style="vertical-align: middle;">
+                                                <label ng-if="rek.is_activated === true && rek.is_verified === true" class="label label-sm label-success"><i class="fa fa-check"></i>&nbsp;Terverifikasi</label>
+                                                <label ng-if="rek.is_activated === true && (rek.is_verified === null || rek.is_verified === false)" class="label label-sm label-primary"><i class="fa fa-check-circle"></i>&nbsp;Teraktivasi</label>
+                                                <label ng-if="rek.is_activated === null" class="label label-sm label-default"><i class="fa fa-clock-o"></i>&nbsp;Belum Diaktivasi</label>
+                                            </td>-->
+                                            <td style="vertical-align: middle;">{{rek.keterangan}}</td>
+                                            <!--<td class="text-center">
+                                                <a ng-show="activator" href="" ng-click="modalAktivasi(rek.rekanan_id)" ng-if="rek.is_activated === null" class="btn btn-flat btn-xs btn-warning"    style="cursor: pointer;"><i class="fa fa-check-circle"></i>&nbsp; Aktivasi Akun</a>
+                                                <a ng-show="verificator || activator" ng-click="pageVerifikasi(rek.rekanan_id)" ng-if="rek.is_activated === true && rek.trigger_verified === true" 
+                                                   class="btn btn-flat btn-xs btn-success"    style="cursor: pointer;">
+                                                    <i class="fa fa-check"></i>&nbsp; Verifikasi Rekanan
+                                                </a>
+                                                <a ng-if="(rek.is_activated === true && rek.is_verified === true) || (rek.is_activated === true && rek.is_verified === false)" ng-click="pageVerifikasi(rek.rekanan_id)" class="btn btn-flat btn-xs btn-primary" style="cursor: pointer;">
+                                                    <i class="fa fa-eye"></i>&nbsp; Detail Data Rekanan
+                                                </a>
+                                                <a ng-if="rek.is_activated === true && rek.is_verified === null" ng-click="keDataAktivasi(rek.rekanan_id)" class="btn btn-flat btn-xs btn-primary" style="cursor: pointer;">
+                                                    <i class="fa fa-eye"></i>&nbsp; Detail Data Aktivasi
+                                                </a>
+                                            </td>-->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br/><br/><br/><br/>
+                    </div>
+                    <div class="row" style="padding-bottom: 20px;">
+                        <div class="col-md-12">
+                         <label>Total Data : {{totalRecords}}</label>
+                            <div class="center-block text-center">
+                                <div class="btn-panel" style="background: none;">
+                                    <!--pagination boundary-links="true" total-items="totalRecords"
+                                                page="currentPage" max-size="fullSize"
+                                                items-per-page="5"
+                                                previous-text="&lsaquo;"
+                                                next-text="&rsaquo;"
+                                                first-text="&laquo;" last-text="&raquo;"
+                                                on-select-page="changepageExpired(page)">
+                                    </pagination-->
+                                    <pagination total-items="totalRecords"
+                                        page="currentPage" max-size="fullSize"
+                                        items-per-page="10"
+                                        previous-text="&lsaquo;"
+                                        next-text="&rsaquo;"
+                                        first-text="&laquo;" last-text="&raquo;"
+                                        on-select-page="changepageExpired(page)" ng-show="totalRecords > 10">
+                                    </pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/ng-template" id="rekananModalAktifasi.html">
+    <div class="modal-header" ng-init="initialize()">
+    <button type="button" class="close" 
+    ng-click="cancel()" title="Keluar">
+    <span aria-hidden="true">&times;</span>
+    <span class="sr-only"></span>
+    </button>
+    <h3 class="modal-title afta-font" 
+    id="myModalLabel">Aktivasi Rekanan</h3>
+    </div>
+    <div class="modal-body">
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-md-8 col-xs-12 col-sm-10 center-block well" 
+    style="float: none!important">
+    <dl class="dl-horizontal">
+    <dt>Username</dt>
+    <dd>{{rekananByRekId.username}}</dd>
+    <dt>Email User</dt>
+    <dd>{{rekananByRekId.email_pribadi}}</dd>
+    <dt>Nama Perusahaan</dt>
+    <dd>{{rekananByRekId.nama_perusahaan}}</dd>
+    <dt>Jenis Perusahaan</dt>
+    <dd>{{jenis_perusahaan}}</dd>
+    <dt>NPWP</dt>
+    <dd>{{rekananByRekId.npwp}}</dd>
+    <dt>Alamat</dt>
+    <dd>{{rekananByRekId.alamat}}</dd>
+    <dt>Provinsi</dt>
+    <dd>{{propNama}}</dd>
+    <dt>Kabupaten/Kota</dt>
+    <dd>{{townNama}}</dd>
+    <dt>Telepon</dt>
+    <dd>{{rekananByRekId.telepon}}</dd>
+    <dt>Fax</dt>
+    <dd>{{rekananByRekId.fax}}</dd>
+    <dt>MobilePhone</dt>
+    <dd>{{rekananByRekId.no_ponsel}}</dd>
+    <dt>Kode Pos</dt>
+    <dd>{{rekananByRekId.kodepos}}</dd>
+    <dt>Email Perusahaan</dt>
+    <dd>{{rekananByRekId.email}}</dd>
+    <dt>Website</dt>
+    <dd>{{rekananByRekId.website}}</dd>
+    <dt>Kantor Cabang</dt>
+    <dd ng-if="rekananByRekId.kantor_cabang === true">Ya</dd>
+    <dd ng-if="rekananByRekId.kantor_cabang === false">Tidak</dd>
+    </dl>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+    <button type="button" class="btn btn-flat btn-danger"    ng-click="tolakAktifasi()" title="Aktivasi Ditolak"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;</button>
+    <button type="button" class="btn btn-flat btn-primary" ng-click="terimaAktifasi()" title="Aktivasi Akun"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;</button>
+    </div>
+</script>
+<script type="text/ng-template" id="tolakAktifasi.html">
+    <div class="modal-header">
+    <h3 class="modal-title afta-font">Aktivasi Rekanan </h3>
+    </div>
+    <div class="modal-body">
+    <div class="container-fluid">
+    <h3 class="text-center afta-font">Anda yakin ingin menolak aktivasi user ini ?</h3>
+    </div>
+    <div class="row" style="padding-top: 10px;">
+    <div class="col-md-6 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+    <div class="form-group">
+    <label>Alasan Penolakan</label>
+    <textarea class="form-control" rows="3" required 
+    ng-model="ktrg" ng-change="setKtrg(ktrg)"
+    placeholder="Contoh : data yang anda masukkan tidak valid">
+    </textarea>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+    <button type="button" class="btn btn-flat btn-danger" ng-click="ditolak()" title="Aktivasi Ditolak"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="rekananModalAktifasi2.html">
+    <div class="modal-header" ng-init="initialize()">
+    <button type="button" class="close" 
+    ng-click="cancel()" title="Keluar">
+    <span aria-hidden="true">&times;</span>
+    <span class="sr-only"></span>
+    </button>
+    <h3 class="modal-title afta-font" 
+    id="myModalLabel">Aktivasi Rekanan</h3>
+    </div>
+    <div class="modal-body">
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-md-8 col-xs-12 col-sm-10 center-block well" 
+    style="float: none!important">
+    <dl class="dl-horizontal">
+    <dt>Username</dt>
+    <dd>{{rekananByRekId.username}}</dd>
+    <dt>Email User</dt>
+    <dd>{{rekananByRekId.email_pribadi}}</dd>
+    <dt>Nama Perusahaan</dt>
+    <dd>{{rekananByRekId.nama_perusahaan}}</dd>
+    <dt>Jenis Perusahaan</dt>
+    <dd>{{jenis_perusahaan}}</dd>
+    <dt>NPWP</dt>
+    <dd>{{rekananByRekId.npwp}}</dd>
+    <dt>Alamat</dt>
+    <dd>{{rekananByRekId.alamat}}</dd>
+    <dt>Provinsi</dt>
+    <dd>{{propNama}}</dd>
+    <dt>Kabupaten/Kota</dt>
+    <dd>{{townNama}}</dd>
+    <dt>Telepon</dt>
+    <dd>{{rekananByRekId.telepon}}</dd>
+    <dt>Fax</dt>
+    <dd>{{rekananByRekId.fax}}</dd>
+    <dt>MobilePhone</dt>
+    <dd>{{rekananByRekId.no_ponsel}}</dd>
+    <dt>Kode Pos</dt>
+    <dd>{{rekananByRekId.kodepos}}</dd>
+    <dt>Email Perusahaan</dt>
+    <dd>{{rekananByRekId.email}}</dd>
+    <dt>Website</dt>
+    <dd>{{rekananByRekId.website}}</dd>
+    <dt>Kantor Cabang</dt>
+    <dd ng-if="rekananByRekId.kantor_cabang === true">Ya</dd>
+    <dd ng-if="rekananByRekId.kantor_cabang === false">Tidak</dd>
+    </dl>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-flat btn-default" ng-click="cancel()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="viewModalVerifikasi.html">
+    <div class="modal-content">
+    <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+    <h3 class="modal-title afta-font" id="myModalLabel">Verifikasi Rekanan : {{rekananId}}</h3>
+    </div>
+    <div class="modal-body">
+    <div class="container-fluid">
+    <accordion>                        
+    <accordion-group heading="Surat Pernyataan">
+    <div class="row">
+    <div class="col-md-11 center-block" style="float: none!important;">
+    <div class="row">
+    <div class="col-md-4 col-sm-6 col-xs-12 center-block well" style="float: none!important;">
+    <div class="form-group">
+    <div class="text-center">
+    <label class="text-center">
+    Download File Scan Surat Pernyataan
+    </label><br/>
+    <a href="#" class="label label-sm label-primary text-center" title="Download File"><i class="fa fa-download"></i>&nbsp;</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </accordion-group>
+    </accordion>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-flat btn-default" ng-click="batal()" title="Keluar"><i class="fa fa-reply"></i>&nbsp;</button>
+    <button type="button" class="btn btn-flat btn-danger"    data-toggle="modal" data-target="#tolakVerifikasi" title="Verifikasi Ditolak"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;</button>
+
+    <button type="button" class="btn btn-flat btn-success" onclick="alert('Data Calon Rekanan Telah Terverifikasi');
+    window.location.href = '/#/verifikasi-data-rekanan';" title="Verifikasi Diterima"><i class="fa fa-check"></i>&nbsp;&nbsp;</button>
+    </div>
+    </div>
+    </div>            
+</script>
+

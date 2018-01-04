@@ -1,0 +1,138 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CostObModel 
+<!-- Main content -->
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Cost OB</h5>
+@if (Model.CurrentPageAccess.UploadAccess == true)
+{
+    <a href="@Url.Action("Upload", "MstCostOb")" class="btn btn-primary line" title="Upload & View">
+        <i class="fa fa-download"></i> Import
+    </a>
+}
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-upload"></i> Export
+    </a>
+</div>
+<section class="content">
+    @using (Html.BeginForm("ExportMasterCostOb", "MstCostOb", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+        @Html.HiddenFor(model => model.SearchView.Year, new { @id = "filter_Year" })
+        @Html.HiddenFor(model => model.SearchView.Regional, new { @id = "filter_Regional" })
+        @Html.HiddenFor(model => model.SearchView.Function, new { @id = "filter_Function" })
+        @Html.HiddenFor(model => model.SearchView.VehicleType, new { @id = "filter_VehicleType" })
+        @Html.HiddenFor(model => model.SearchView.Status, new { @id = "filter_Status" })
+    }
+    <div class="wpanel">
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListCostOb", "MstCostOb",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                    OnBegin="OnBegin",
+                    OnFailure="OnError"
+                }))
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Year</label>
+                        @Html.TextBoxFor(model => model.SearchView.Year, new { @class = "form-control", @placeholder = "From"})
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type</label>
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList,"ALL",new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Function</label>
+                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "ALL", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Regional</label>
+                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Status</label>
+                        @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "ALL", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListCostOb")
+        @Html.HiddenFor(m => m.CurrentPage)
+    </div>
+</section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">
+    function ExportXls() {
+        $('#filter_Year').val($('#SearchView_Year').val());
+        $('#filter_Regional').val($('#SearchView_Regional').val());
+        $('#filter_Function').val($('#SearchView_Function').val());
+        $('#filter_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#filter_Status').val($('#SearchView_Status').val());
+
+
+        $('#ExportToXls').submit();
+    }
+
+    function OnBegin()
+    {
+        $('#LoadingModal').show();
+    }
+    function OnEror() {
+        $('#LoadingModal').hide();
+    }
+    $(function () {
+        setupDataTables();
+    });
+    function setupDataTables() {
+        // DataTable
+        var table = $('#tbCostOb').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+        $('#LoadingModal').hide();
+    }
+</script>

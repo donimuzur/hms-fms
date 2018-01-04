@@ -1,0 +1,216 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.TraCrfItemViewModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Car Relocation</h5>
+    @*<div class="box-tools pull-right" style="margin-bottom: 20px; margin-right: 20px">
+            <button class="btn bg-blue" style="margin-top:5px;" onclick="$('#formCreate').submit();" >
+                <i class="glyphicon glyphicon-floppy-save"></i> Save
+            </button>
+            <button class="btn bg-blue" style="margin-top:5px; " ng-click="sendDraft()" ng-disabled="roles != 'SYSTEM.ROLE_HR'">
+                <i class="glyphicon glyphicon-ok"></i> Send
+            </button>
+        </div>*@
+</div>
+<section class="content">
+
+    <div class="wpanel">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div role="tabpanel">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Information</a></li>
+                        @*<li role="presentation"><a href="#changes" aria-controls="changes" role="tab" data-toggle="tab">Changes logs</a></li>*@
+                    </ul>
+
+                    <div class="tab-content">
+                        
+                            
+                            
+                        <div id="information" class="tab-pane active" role="tabpanel">
+
+                            <div class="tab-wrapper">
+                                <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                                    @Html.Partial("_CreateInformationReadonly")
+                                    @Html.Partial("_RelocationVehicleInfoReadonly")
+                                        
+
+                                    @Html.Partial("_FleetConfirmationReadonly")
+                                            
+                                        
+                                    @Html.Partial("_TemporaryCarInfo")
+                                        
+
+
+                                    <!-- /.box-body -->
+                                </div>
+                                <div aria-multiselectable="true" role="tablist" id="accordion7" class="panel-group">
+                                    <div class="panel panel-default">
+                                        <div id="heading7" role="tab" class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a aria-controls="collapseSeven" aria-expanded="true" href="#collapse7" data-parent="#accordion7" data-toggle="collapse">
+                                                    Workflow History
+                                                    <i class="fa fa-caret-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div aria-labelledby="heading7" role="tabpanel" class="panel-collapse collapse" id="collapse7">
+                                            <div class="panel-body">
+                                                <div role="form" class="form-excise">
+                                                    @Html.Partial("_WorkflowHistoryTable")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                                    <div class="panel panel-default">
+                                        <div id="heading5" role="tab" class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                                    Changes History
+                                                    <i class="fa fa-caret-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                            <div class="panel-body">
+                                                <div role="form" class="form-excise">
+                                                    @Html.Partial("_ChangesLog")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+
+                        </div>
+                           
+                            
+
+
+                            <div class="row col-md-12">
+                                @if (Model.IsAllowedApprove)
+                                {
+                                    <a href="#" onclick="approve()" class="btn btn-primary">Approve</a>
+                                    <a href="#" onclick="reject()" class="btn btn-primary">Reject</a>
+                                    if (Model.Detail.CreatedBy == Model.CurrentLogin.USER_ID)
+                                    {
+                                        <a href="#" onclick="cancel()" class="btn btn-danger">Cancel</a>
+                                    }
+                                }
+                                @*<input type="submit" value="Save" class="btn btn-primary" />*@
+                                @if (Model.IsPersonalDashboard)
+                                {
+                                    <a href="@Url.Action("PersonalDashboard", "TraCrf")" class="btn btn-default">Back</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Index", "TraCrf")" class="btn btn-default">Back</a>
+                                }
+                            </div>
+
+
+
+                        </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <div id="approveModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="approveModalTitle">Approve document</h4>
+                </div>
+                @using (Html.BeginForm("Approve", "TraCrf",FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.HiddenFor(model => model.IsApproved, new { @id = "isApproved" })
+                                    <input type="hidden" name="TraCrfId" value="@Model.Detail.TraCrfId"/>
+
+                                    <label class="control-label rejecthide">Select Remark</label>
+                                    @Html.DropDownList("remark", Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="cancelModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="approveModalTitle">Cancel document</h4>
+                </div>
+                @using (Html.BeginForm("Cancel", "TraCrf", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    
+                                    <input type="hidden" name="TraCrfId" value="@Model.Detail.TraCrfId" />
+
+                                    <label class="control-label rejecthide">Select Remark</label>
+                                    @Html.DropDownList("remark", Model.RemarkList, "Select", new { @class = "form-control rejecthide SelectPicker"})
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    
+</section>
+
+<script type="text/javascript">
+    //$(document).ready(function() {
+    //    $(".form-control").attr("disabled", "disabled");
+    //});
+	
+	
+    function approve() {
+        $("#isApproved").val(true);
+        $(".rejecthide").hide();
+        $("#approveModalTitle").html("Approve Document");
+        $('#approveModal').modal('show');
+    }
+    
+    function reject() {
+        $("#isApproved").val(false);
+        $(".rejecthide").show();
+        $("#approveModalTitle").html("Reject Document");
+        $('#approveModal').modal('show');
+    }
+    
+
+    function cancel() {
+        $("#cancelModal").modal('show');
+    }
+</script>

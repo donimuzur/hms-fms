@@ -1,0 +1,154 @@
+﻿<div class="modal-content" ng-init="formFreightCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="formFreightCtrl.batal()" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">
+            <span ng-show="formFreightCtrl.isAdd === true">{{'FORM.JUDUL_FORM_ADD' | translate}}</span>
+            <span ng-show="formFreightCtrl.isAdd === false">{{'FORM.JUDUL_FORM_EDIT' | translate}}</span>
+        </h3>
+    </div>
+    <div class="modal-body ">
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="afta-font">{{'FORM.TUJUAN' | translate}}</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm" ng-model="formFreightCtrl.freightField.DeliveryState">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="marginBottom-0 margin-hilang"/>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">{{'FORM.WAKTU' | translate}} ({{'AIR' | translate}})</label>
+                    <div class="input-group input-group-sm">
+                        <input type="number" class="form-control input-sm" ng-model="formFreightCtrl.freightField.DeliveryTimeAir" />
+                        <span class="input-group-addon" id="sizing-addon3">{{'DAYS'|translate}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label">{{'FORM.BIAYA' | translate}} ({{'AIR' | translate}})</label>
+                <div class="input-group input-group-sm">
+                    <input type="number" min="0" max="100" class="form-control input-sm" ng-model="formFreightCtrl.freightField.FreightCostAir" />
+                    <span class="input-group-addon" id="sizing-addon3">%</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">{{'FORM.WAKTU' | translate}} ({{'LAND' | translate}})</label>
+                    <div class="input-group input-group-sm">
+                        <input type="number" class="form-control input-sm" ng-model="formFreightCtrl.freightField.DeliveryTimeLand" />
+                        <span class="input-group-addon" id="sizing-addon3">{{'DAYS'|translate}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label">{{'FORM.BIAYA' | translate}} ({{'LAND' | translate}})</label>
+                <div class="input-group input-group-sm">
+                    <input type="number" min="0" max="100" class="form-control input-sm" ng-model="formFreightCtrl.freightField.FreightCostLand" />
+                    <span class="input-group-addon" id="sizing-addon3">%</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">{{'FORM.WAKTU' | translate}} ({{'SEA' | translate}})</label>
+                    <div class="input-group input-group-sm">
+                        <input type="number" class="form-control input-sm" ng-model="formFreightCtrl.freightField.DeliveryTimeSea" />
+                        <span class="input-group-addon" id="sizing-addon3">{{'DAYS'|translate}}</span>
+                    </div>
+                 </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label">{{'FORM.BIAYA' | translate}} ({{'SEA' | translate}})</label>
+                <div class="input-group input-group-sm">
+                    <input type="number" min="0" max="100" class="form-control input-sm" ng-model="formFreightCtrl.freightField.FreightCostSea" />
+                    <span class="input-group-addon" id="sizing-addon3">%</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">{{'FORM.TIPE_WILAYAH' | translate}}</label>
+                    <select class="form-control input-sm" ng-model="formFreightCtrl.selectedTipeWilayah" 
+                                ng-options="item as item.Name | translate for item in formFreightCtrl.listTipeWilayah">
+                        <option value="" selected disabled>{{'FORM.TIPE_WILAYAH' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <!--<div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">{{'FORM.TIPE_PENGIRIMAN' | translate}}</label>
+                    <select class="form-control input-sm" ng-model="formFreightCtrl.selectedTipeKirim" 
+                                ng-options="item as item.Name | translate for item in formFreightCtrl.listTipePengiriman">
+                        <option value="" selected disabled>{{'FORM.TIPE_PENGIRIMAN' | translate}}</option>
+                    </select>
+                </div>
+            </div>-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">{{'FORM.INCOTERMS' | translate}}</label>
+                    <select class="form-control input-sm" ng-model="formFreightCtrl.selectedIncoTerms"
+                            ng-options="item as item.Name + ' ( ' + item.Code + ' ) '  for item in formFreightCtrl.listIncoTerms">
+                        <option value="" selected disabled>{{'FORM.INCOTERMS' | translate}}</option>
+                    </select> 
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <br>
+                        <button class="btn btn-success" ng-click="formFreightCtrl.addIncoTerms()"><i class="fa fa-plus" style="height: 20px;"></i> {{"BUTTONS.ADD" | translate}}</button>           
+                    </br>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 50px;">No</th>
+                                <th class="text-center" style="width: 70%;">Nama</th>
+                                <th class="text-center">Kode</th>
+                                <th style="width: 50px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="formFreightCtrl.inco.length == 0">
+                                <td colspan="4">
+                                    <div class="alert alert-info">No Data</div>
+                                    <div class="clearfix"></div>
+                                </td>
+                            </tr>
+                            <tr ng-repeat="data in formFreightCtrl.inco">
+                                <td>{{$index + 1}}</td>
+                                <td>{{data.Name}}</td>
+                                <td>{{data.Code}}</td>
+                                <td><button class="btn btn-danger" ng-click="formFreightCtrl.removeIncoTerms(data)"><i class="fa fa-close"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="formFreightCtrl.batal()" class="btn btn-flat btn-default" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" ng-click="formFreightCtrl.simpan()" class="btn btn-flat btn-primary" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

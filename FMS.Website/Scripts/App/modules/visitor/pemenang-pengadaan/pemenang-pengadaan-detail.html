@@ -1,0 +1,64 @@
+<style>
+    .pagination {
+        margin-top: 0px;
+    }
+</style>
+<div class="container" style="margin-top: 30px;" ng-init="init()">
+    <div class="box">
+        <div class="box-body table-responsive">
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    <h3 class="box-title afta-font">Pemenang Pengadaan {{pemanang[0].nama_paket}}</h3>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="input-group" style="padding-top: 15px;">
+                        <div class="input-cont">
+                            <input type="text" ng-model="srcText" placeholder="Cari Nama Rekanan" class="form-control"
+                                   ng-change="cariPemenang()" >
+                        </div>
+                        <span class="input-group-btn">
+                            <button ng-click="cariPemenang()" type="button" class="btn btn-default" title="Cari">
+                                &nbsp; <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-left " style="width: 20px; min-width: 20px; text-align: center;">No</th>
+                        <th class="text-left ">Nama Rekanan</th>
+                        <th class="text-center " style="width: 240px; min-width: 240px; text-align: center;">Sub Pekerjaan</th>
+                        <th class="text-center " style="width: 180px; min-width: 180px; text-align: center;">Tanggal Penunjukkan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="pmn in pemenang">
+                        <td>{{$index+1}}</td>
+                        <td>{{pmn.nama_perusahaan}}</td>
+                        <td class="text-center">{{pmn.nama_subpekerjaan}}</td>
+                        <td class="text-center">{{pmn.tgl_penunjukkan}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="col-xs-12 col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pull-left">
+                            <button class="btn btn-default" ng-click="kembali()" title="Kembali"><i class="fa fa-arrow-left"></i></button>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="col-md-6">
+                        <div class="pull-right" ng-show="">
+                            <pagination total-items="totalItems" page="currentPage" items-per-page="10" 
+                            max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+</div>

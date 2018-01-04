@@ -1,0 +1,198 @@
+<div class="container-fluid">
+    <ol class="breadcrumb">
+            <li><a href="#/dashboard-vendor" >Beranda</a></li>
+            <li><a  class="active" >Data Pajak</a></li>
+        </ol>
+    <div class="row" style="padding-top: 30px!important;">
+         <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-success">
+                                <button type="button" class="close" 
+                                        data-dismiss="alert" aria-hidden="true">×</button>
+                                <span>
+                                    <strong>Data Pajak </strong>      
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+        <div class="col-md-12">
+            <h3 class="text-center afta-font" style="padding-bottom: 20px;">Data Pajak</h3>
+        </div>
+		
+		<div class="col-md-12" ng-init="initialize()">
+            <div class="table table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Jenis Pajak</th>
+                            <th class="text-center">Masa Pajak</th>
+                            <th class="text-center">No. Bukti</th>
+                            <th class="text-center">Tanggal Bukti</th>
+							<th class="text-center">Dokumen Pajak</th>
+                            <th class="text-center" style="width: 200px; min-width: 200px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in datapajak">
+                            <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+                            <td class="text-center" style="vertical-align: middle;">{{data.jenis_pajak}}</td>
+                            <td class="text-center" style="vertical-align: middle;">{{$root.convertLongDate(data.masa_pajak)}}</td>
+                            <td class="text-center" style="vertical-align: middle;">{{data.nomorbukti_pajak}}</td>
+                            <td class="text-center" style="vertical-align: middle;">{{$root.convertLongDate(data.tanggalbukti_pajak)}}</td>
+							<td class="text-center" style="vertical-align: middle;">
+								<a href="{{$root.url_api + data.dokumenurl_pajak}}" target="_BLANK" class="btn btn-flat btn-sm btn-primary" title="Download"><i class="fa fa-download"></i>&nbsp;</a>
+							</td>
+							<td class="text-center">        
+                                <a ng-if="bisaMengubahData === true" href="" ng-click="editPajak(data)" class="btn btn-flat btn-sm btn-primary" title="Ubah"><i class="fa fa-edit"></i></a>
+                                <a ng-if="bisaMengubahData === true" href="" ng-click="hapusPajak(data.pajak_id)" class="btn btn-flat btn-sm btn-danger" title="Hapus"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br><br>
+    </div>
+	
+	<div class="row" style="padding-bottom: 20px;">
+        <div class="col-md-12">
+            <div class="center-block text-center">
+                <a ng-if="bisaMengubahData === true" href="" class="btn btn-flat btn-primary"
+                   ng-click="tambah()" title="Tambah Data"><i class="fa fa-plus-circle"></i>
+                    
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="tambahPajak.html">
+	<div id="mdlTambahPajak" ng-init="inittambah()">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+			<h3 class="modal-title afta-font">Tambah Data Pajak</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row" style="padding-top: 20px!important;">
+				<div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Jenis Pajak *</label>
+							<input type="text" class="form-control" placeholder="Jenis Pajak" max-char="100"
+								   ng-model="datapajak.jenis_pajak"/>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Masa Pajak *</label>
+							<div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+								<input class="form-control" size="16" type="text" ng-model="datapajak.masa_pajak">
+								<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+							</div>
+						</div>
+						
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Nomor Bukti Penerimaan Surat *</label>
+							<input type="text" class="form-control" placeholder="Nomor Bukti" max-char="70"
+								   ng-model="datapajak.nomorbukti_pajak"/>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Tanggal Bukti Penerimaan Surat *</label>
+							<div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+								<input class="form-control" size="16" type="text" ng-model="datapajak.tanggalbukti_pajak">
+								<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+							</div>
+							
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+							<div class="form-group">
+								<label>File Dokumen *</label>&nbsp;<small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small>
+								<input type="file" class="form-control upload-file" data-max-size={{$root.filemaksimal}} placeholder="File Dokumen"
+									   onchange="angular.element(this).scope().fileDok(this)"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-danger" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+			<button type="button" class="btn btn-flat btn-success" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+		</div>
+	</div>
+</script>
+	
+<script type="text/ng-template" id="editPajak.html">
+	<div id="mdlEditPajak" ng-init="initedit()">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+			<h3 class="modal-title afta-font">Edit Data Pajak</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row" style="padding-top: 20px!important;">
+				<div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Jenis Pajak *</label>
+							<input type="text" class="form-control" placeholder="Jenis Pajak"
+								   ng-model="datapajak.jenis_pajak"/>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Masa Pajak *</label>
+							<div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+								<input class="form-control" size="16" ng-model="datapajak.masa_pajak" type="text">
+								<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Nomor Bukti Penerimaan Surat *</label>
+							<input type="text" class="form-control" placeholder="Nomor Bukti"
+								   ng-model="datapajak.nomorbukti_pajak"/>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Tanggal Bukti Penerimaan Surat *</label>
+							<div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+								<input class="form-control" size="16" ng-model="datapajak.tanggalbukti_pajak" type="text">
+								<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+							<div class="form-group">
+								<label>File yang Telah Diupload</label>
+								<a href="{{datapajak.dokumenurl_pajak}}" target="_BLANK" class="btn btn-xs btn-primary pull-right" title="Lihat Dokumen Pajak"><i class="fa fa-download"></i>&nbsp;</a>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+							<div class="form-group">
+								<label>File Dokumen *</label>&nbsp;<small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small>
+								<input type="file" class="form-control upload-file" data-max-size={{$root.filemaksimal}} placeholder="File Dokumen"
+									   onchange="angular.element(this).scope().fileDok(this)"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-flat btn-default" ng-click="batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+			<button type="button" class="btn btn-flat btn-primary" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+		</div>
+	</div>
+</script>

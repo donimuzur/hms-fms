@@ -1,0 +1,42 @@
+﻿<div id="idTambahLibrary" class="modal-content" ng-init="frmUploadNeracaCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="frmUploadNeracaCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Upload Neraca</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="box box-success">
+                    <!--notife flow-->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="afta-font">Form Upload Berkas Neraca</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Unggah Berkas :
+                                        <small> ( <span ng-repeat="ft in frmUploadNeracaCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{frmUploadNeracaCtrl.idUploadConfigs[0].Size}} {{frmUploadNeracaCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                    </label>
+                                    <input type="file" class="form-control" ng-file-select="frmUploadNeracaCtrl.selectUpload()"
+                                           ng-model="frmUploadNeracaCtrl.fileUpload" name="ownerIDFile" required accept="{{frmUploadNeracaCtrl.idFileTypes}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="frmUploadNeracaCtrl.batal()" title="Batal">
+            <i class="fa fa-reply"></i> 
+        </button>
+        <button class="btn btn-sm btn-primary" ng-click="frmUploadNeracaCtrl.uploadFile()" title="Unggah"><i class="fa fa-upload"></i></button>
+    </div>
+    </div>

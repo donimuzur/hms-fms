@@ -1,0 +1,43 @@
+{
+  "ADENDUM": "Adendum",
+  "BATAL": "Batal",
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_TENDER": "Monitoring Tender VHS",
+    "ADDENDUM": "Detail Data Addendum"
+  },
+  "CANCEL": "Batal",
+  "DETAIL": "Detail",
+  "DRAFT": "Draf",
+  "FILTER": {
+    "KEYWORD": "Masukkan Kata Pencarian",
+    "SEARCH": "Cari Berdasarkan",
+    "VENDOR_CODE": "Kode Vendor",
+    "VENDOR_NAME": "Nama Vendor"
+  },
+  "JUDUL_ADENDUM": "DETAIL DATA ADDENDUM",
+  "KEMBALI": "Kembali",
+  "MESSAGE": {
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data Addendum",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Addendum",
+    "LOADING": "Silahkan Tunggu..."
+  },
+  "SIMPAN": "Simpan",
+  "TABLE": {
+    "NO": "No",
+    "ADENDUM": "Addendum",
+    "DATE_REQ": "Date Request",
+    "START_CONT": "Start Contract",
+    "FINISH_CONT": "Finish Contract",
+    "ADD_BUDGET_CONT": "Additional Budget Contract",
+    "NEW_BUDGET_CONT": "New Budget Contract",
+    "RESPONSE": "Response",
+    "REMASK": "Remask",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data"
+}

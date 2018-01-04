@@ -1,0 +1,75 @@
+﻿<section class="content" ng-init="aturApprovalTotalEvalCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA'|translate}}</a></li>
+        <li><a>{{'BREADCRUMB.ATUR_APPROVAL' | translate}}</a></li>
+    </ol>
+    <div class="container">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-center afta-font">{{'ATUR_APPROVAL' | translate}}</h3>
+                        <h4 class="text-center afta-font">{{aturApprovalTotalEvalCtrl.ProjectTitle}}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button ng-click="aturApprovalTotalEvalCtrl.add()" class="btn btn-sm btn-success pull-right" title="{{'TAMBAH'|translate}}"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="50" class="center-vertical">{{'TABLE.NO' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.NAMA_PEGAWAI' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.DEPARTEMEN' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.JABATAN' | translate}}</th>
+                                            <th width="100" class="center-vertical">Approver*</th>
+                                            <th width="100" class="center-vertical"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ca in aturApprovalTotalEvalCtrl.crApps">
+                                            <td ng-if="ca.IsActive === true" class="center-vertical">{{$index + 1}}</td>
+                                            <td ng-if="ca.IsActive === true" >{{ca.EmployeeFullName}}</td>
+                                            <td ng-if="ca.IsActive === true" >{{ca.EmployeeDepartmentName}}</td>
+                                            <td ng-if="ca.IsActive === true">{{ca.EmployeePositionName}}</td>
+                                            <td ng-if="ca.IsActive === true" class="center-vertical">
+                                                <input type="checkbox" ng-model="ca.IsHighPriority" />
+                                            </td>
+                                            <td ng-if="ca.IsActive === true" class="center-vertical">
+                                                <button ng-click="aturApprovalTotalEvalCtrl.delete(ca)" class="btn btn-xs btn-danger" title="{{'HAPUS'|translate}}"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody ng-if="aturApprovalTotalEvalCtrl.crApps.length === 0">
+                                        <tr>
+                                            <td colspan="12">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        *) {{'KETERANGAN_APPROVAL1' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button ng-click="aturApprovalTotalEvalCtrl.save()" ng-disabled="aturApprovalTotalEvalCtrl.crApps.length === 0" class="btn btn-sm btn-info" title="{{'SIMPAN' | translate}}"><i class="fa fa-save"></i></button>
+                        <button ng-click="aturApprovalTotalEvalCtrl.back()" class="btn btn-sm btn-default" title="{{'KEMBALI' | translate}}"><i class="fa fa-arrow-left"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

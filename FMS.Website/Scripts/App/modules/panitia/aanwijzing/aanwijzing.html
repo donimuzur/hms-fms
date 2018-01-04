@@ -1,0 +1,170 @@
+<section class="content" ng-init="aanwijzingCtrl.init()">
+	<ol class="breadcrumb">
+		<li>
+			<a href="#/home">Home</a>
+		</li>
+		<li>
+			<a class="active">Pemberian Pre-Bid Meeting</a>
+		</li>
+	</ol>
+	<div class="row">
+		<div class="col-md-12">
+			<h3 class="afta-font text-center">{{aanwijzingCtrl.nama_tahapan}} ( {{aanwijzingCtrl.TypeAanwijzing}} )</h3>
+		</div>
+	</div>
+	<!-- tampilan pertama muncul -->
+	<div class="container-fluid">
+		<!-- begin jika di pilih metode none -->
+		<div class="row">
+			<div class="col-md-12 center-block" style="float: none!important;">
+				<div class="row">
+					<div class="col-md-12">
+						<h4 class="afta-font text-center">
+							Nama Paket Pengadaan:
+						</h4>
+						<div class="text-center">
+							<label>{{aanwijzingCtrl.TenderName}}</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end jika di pilih metode none -->
+		<br />
+		<!-- begin forum online -->
+		<div id="forum">
+			<div class="row" id="metodeOnline">
+				<div class="col-md-12 center-block" style="float: none!important;">
+					<div class="row">
+						<div class="col-md-6"></div>
+						<div class="col-md-6">
+                            <button ng-if="aanwijzingCtrl.ProcPackType === 4189" ng-click="aanwijzingCtrl.aturVendorAanwijzing()" class="btn btn-flat btn-sm btn-primary pull-right" title="Atur Proses Aanwijzing">
+                                <i class="fa fa-check"></i>&nbsp; Detail Vendor
+                            </button>
+							<button ng-click="aanwijzingCtrl.aturAanwijzing(aanwijzingCtrl.dataAturAanwijzing,aanwijzingCtrl.IsAtur)" class="btn btn-flat btn-sm btn-success pull-right" title="Atur Proses Aanwijzing">
+								<i class="fa fa-gears"></i>&nbsp;
+							</button>
+							<button ng-if="aanwijzingCtrl.IsAtur === true" ng-click="aanwijzingCtrl.postingPertanyaan(aanwijzingCtrl.dataAturAanwijzing)" class="btn btn-flat btn-sm btn-primary pull-right">
+								<span ng-show="(aanwijzingCtrl.dataAturAanwijzing.PostedDate === null)">
+									<i class="fa fa-plus"></i>&nbsp; Posting Tanggapan
+								</span>
+								<span ng-show="!(aanwijzingCtrl.dataAturAanwijzing.PostedDate === null)">
+									<i class="fa fa-pencil-square-o"></i>&nbsp; Edit Posting Tanggapan
+								</span>
+							</button>
+                            <button ng-if="!aanwijzingCtrl.adminPost && aanwijzingCtrl.IsAtur === true" ng-click="aanwijzingCtrl.postingInformasi()" class="btn btn-flat btn-sm btn-primary pull-right">
+                                <span>
+                                    <i class="fa fa-exclamation-circle"></i>&nbsp; Buat Postingan Informasi
+                                </span>
+                            </button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12 center-block">
+					<div class="message-wrap col-md-12 center-block" style="float: none!important; box-shadow: none!important;">
+						<div class="box box-info">
+							<div class="box-body well" ng-if="!(aanwijzingCtrl.dataAturAanwijzing.PostedDate === null)">
+								<div class="row">
+									<div class="col-md-12">
+										<h4>
+											<strong>
+												<a href="#" class="post-title">Summary Pre-Bid Meeting</a>
+											</strong>
+										</h4>
+										<i class="fa fa-clock-o"></i> {{aanwijzingCtrl.dataAturAanwijzing.PostedDate}}&nbsp;
+										<b>{{aanwijzingCtrl.dataAturAanwijzing.TitleSummary}}</b>
+									</div>
+								</div>
+								<div class="row post-content">
+									<div class="col-md-8">
+										<p ng-bind-html="aanwijzingCtrl.dataAturAanwijzing.Remark" style="font-size: 12px; text-align: justify!important;font-family: sans-serif!important;"></p>
+									</div>
+									<div class="col-md-4">
+										<a ng-show="!(aanwijzingCtrl.dataAturAanwijzing.FileDocument === null)" href="{{aanwijzingCtrl.folderFile+aanwijzingCtrl.dataAturAanwijzing.FileDocument}}" target="_blank" class="btn btn-sm btn-primary btn-flat pull-right"><i class="fa fa-download"></i> Download Dokumen</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="col-md-12">
+                    <button ng-if="aanwijzingCtrl.adminPost && aanwijzingCtrl.IsAtur === true" ng-click="aanwijzingCtrl.postingInformasi()" class="btn btn-flat btn-sm btn-primary pull-right">
+                        <span>
+                            <i class="fa fa-exclamation-circle"></i>&nbsp; Ubah Postingan Informasi
+                        </span>
+                    </button>
+                </div>
+                <div class="col-md-12 center-block" ng-if="aanwijzingCtrl.adminPost">
+                    <div class="message-wrap col-md-12 center-block" style="float: none!important; box-shadow: none!important;">
+                        <div class="box box-info">
+                            <div class="box-body well">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4>
+                                            <strong>
+                                                <a href="#" class="post-title">{{aanwijzingCtrl.adminPost.Title}}</a>
+                                            </strong>
+                                        </h4>
+                                        <i class="fa fa-clock-o"></i> {{aanwijzingCtrl.adminPost.PostDate | date : 'yyyy-MM-dd'}}&nbsp;
+                                    </div>
+                                </div>
+                                <div class="row post-content">
+                                    <div class="col-md-8">
+                                        <p ng-bind-html="aanwijzingCtrl.adminPost.Post" style="font-size: 12px; text-align: justify!important;font-family: sans-serif!important;"></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a ng-show="aanwijzingCtrl.adminPost.UploadURL" href="{{aanwijzingCtrl.folderFile + aanwijzingCtrl.adminPost.UploadURL}}" target="_blank" class="btn btn-sm btn-primary btn-flat pull-right"><i class="fa fa-download"></i> Download Dokumen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<!-- end jika di pilih metode online -->
+			<!-- negoisasi Online -->
+			<div class="container-fluid" ng-show="aanwijzingCtrl.IsAtur === true">
+				<div ng-repeat="pt in aanwijzingCtrl.listPertanyaan" class="row" style="padding-top: 3px!important; padding-bottom: 5px!important;">
+					<div class="col-md-12">
+						<div class="message-wrap col-md-12 center-block" style="float: none!important;">
+							<div class="msg-wrap" style="padding-top: 10px;">
+								<div class="media msg">
+									<div class="media-body">
+										<small class="pull-right time">
+											<i class="fa fa-clock-o"></i> {{pt.QuestionDate}}
+										</small>
+										<h5 class="media-heading afta-font">
+											{{aanwijzingCtrl.currentPage > 1 ? (aanwijzingCtrl.maxSize * (aanwijzingCtrl.currentPage - 1)) + $index + 1 : $index + 1}}) &nbsp; {{pt.QuestionTitle}} , <i>oleh : {{pt.vendorPosted.VendorName}} </i>
+										</h5>
+										<div class="row">
+											<div class="col-md-10">
+												<p style="margin-top: 10px;" ng-bind-html="pt.Question"></p>
+											</div>
+											<div class="col-md-2">
+												<a ng-show="!(pt.UploadURL === '' )" href="{{aanwijzingCtrl.folderFile + pt.UploadURL}}" target="_BLANK" class="btn btn-xs btn-default btn-flat pull-right" style="margin-top: 10px;" title="Lihat Lampiran">
+													<i class="fa fa-download"></i>&nbsp;
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-7">
+						<ul uib-pagination boundary-links="true" total-items="aanwijzingCtrl.totalItems" ng-model="aanwijzingCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="aanwijzingCtrl.jLoad(aanwijzingCtrl.currentPage)" items-per-page="aanwijzingCtrl.maxSize"></ul>
+					</div>
+                    <div class="col-md-5" style="margin-top:18px!important;">
+
+                        <div class="text-right">
+                            <a ng-click="aanwijzingCtrl.backpengadaan()" class="btn btn-sm btn-flat btn-primary"><i class="fa fa-arrow-circle-left"></i>&nbsp;Kembali</a>&nbsp;
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+		<!-- end forum online-->
+	</div>
+</section>

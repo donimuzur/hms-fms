@@ -1,0 +1,20 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_ASOSIASI" : "Master Asosiasi"
+    },
+    "DATA_ASOSIASI" : "Data Asosiasi",
+    "CARI_JUDUL_ISI" : "Cari Nama Asosiasi",
+    "CARI" : "Cari",
+    "TAMBAH": "Tambah",
+    "TOTAL_DATA" : "Total Data",
+    "TABLE" : {
+        "NO" : "No",
+        "NAMA" : "Nama",
+        "ALAMAT" : "Alamat",
+        "NO_TELP" : "No.Telepon",
+        "EMAIL" : "email",
+        "KETERANGAN" : "Keterangan"
+    }
+}

@@ -1,0 +1,289 @@
+﻿  #ad{ display:none;}
+  #leftbar{ display:none;}
+ #contentarea{ width:100%;}
+  page-footer{display:none !important;}
+	
+#menu { 
+	display: none; 
+}
+
+.hidden-content{
+    visibility:visible!important;
+    /*float:right!important;*/
+}
+
+ @page {
+  size: auto;
+  margin: 0;
+       }
+	
+#wrapper, 
+#content { 
+	width: auto; 
+	margin: 0 5%; 
+	padding: 0; 
+	border: 0; 
+	float: none !important; 
+	color: black; 
+	background: transparent none; 
+}
+	
+div#content { 
+	margin-left: 10%; 
+	padding-top: 1em; 
+	border-top: 1px solid #930; 
+}
+.container {
+    margin-bottom: 5%;
+}	
+.label1 {
+    margin-right: 5%
+}
+.col-md-1 {
+        width: 2px;
+    }
+/*header*/
+.vendor-info .col-md-3 {
+    display: inline-block;
+    width: 350px;
+    vertical-align:top;
+    /*border:1px solid red;*/
+}
+.vendor-info .col-md-9 {
+    display: inline-block;
+    width: 550px;
+    /*border:1px solid red;*/
+}
+.vendor-no .col-md-3 {
+    display: inline-block;
+    width:350px;
+    vertical-align:top;
+    /*border:1px solid red;*/
+}
+.vendor-no .col-md-9 {
+    display: inline-block;
+    width: 250px;  
+   /* border:1px solid red;*/
+}
+.vendor-contact .col-md-3 {
+    display: inline-block;
+    width: 350px;
+    vertical-align:top;
+   /* border:1px solid red;*/
+}
+.vendor-contact .col-md-9 {
+    display: inline-block;
+    width: 550px;  
+   /* border:1px solid red;*/
+}
+.vendor-date-info .col-md-3 {
+    display: inline-block;
+    width: 350px;
+    vertical-align:top;
+    /*border:1px solid red;*/
+}
+.vendor-date-info .col-md-9 {
+    display: inline-block;
+    width: 250px;
+    /*border:1px solid red;*/
+}
+
+.alert-danger {
+    border: 2px solid red;
+    border-radius:5px;
+    margin-top:20px;
+}
+/*question*/
+.rowQuestion .number {
+    display: inline-block;
+    width: 2px!important;
+    margin-top:0px;
+    /*border: 3px solid #73AD21;*/
+    position:relative;
+    vertical-align:top;
+}
+.rowQuestion .question, .col-question, .form-question {
+    display: inline-block;
+    width:1000px;
+}
+.rowQuestion .answer {
+    margin-left:0px;
+}
+.desc-print {
+    margin-left:0px;
+    margin-right:0px;
+}
+.rowQuestion .col-answer{
+    margin-left:40px;
+}
+
+/*formEEC*/
+
+.formEEC-container{
+    margin:20px auto;
+}
+.formEEC-logoRight{
+    float:right;
+    width:10px;
+    height:20px;
+    display:block;
+}
+.formEEC-title{
+        text-align:center;
+        font-size:14px;
+        font-weight:bold;
+        display:block;
+}
+.formEEC-content{
+    font-size:12px;
+    padding:5px;
+}
+.formEEC-contentOutside{
+    padding:6px;
+}
+.formEEC-col3 {
+    display: inline-block;
+    width: 200px!important;
+    margin-top:0px !important;
+    /*border: 3px solid #73AD21;*/
+    position:relative;
+    vertical-align:top;
+}
+.formEEC-col6 {
+    display: inline-block;
+    width: 370px;
+    margin-top:0px !important;
+    /*border: 3px solid #73AD21;*/
+    position:relative;
+    vertical-align:top;
+}
+.formEEC-col9 {
+    display: inline-block;
+    width: 400px!important;
+    margin-top:0px !important;
+    /*border: 3px solid #73AD21;*/
+    position:relative;
+    vertical-align:top;
+}
+.formEEC-box{
+    border:1px solid #000000;
+    margin-top: 5px;
+    padding:5px;
+}
+table{
+    width:100%;
+}
+table,th,td{
+    border:1px solid #000000;
+    border-collapse: collapse;
+    padding:5px;
+    font-size:12px;
+}
+
+
+@-moz-document url-prefix() {
+    /*PRINT KUESIONER*/
+     #contentarea{ width:100%;}
+    .vendor-info .col-md-3 {
+        display: inline-block;
+        width: 250px;
+        vertical-align:top;
+        /*border:1px solid red;*/
+    }
+    .vendor-info .col-md-9 {
+        display: inline-block;
+        width: 350px;
+        /*border:1px solid red;*/
+    }
+    .vendor-no .col-md-3 {
+        display: inline-block;
+        width:250px;
+        vertical-align:top;
+        /*border:1px solid red;*/
+    }
+    .vendor-no .col-md-9 {
+        display: inline-block;
+        width: 250px;  
+       /* border:1px solid red;*/
+    }
+    .vendor-contact .col-md-3 {
+        display: inline-block;
+        width: 250px;
+        vertical-align:top;
+       /* border:1px solid red;*/
+    }
+    .vendor-contact .col-md-9 {
+        display: inline-block;
+        width: 350px;  
+       /* border:1px solid red;*/
+    }
+    .vendor-date-info .col-md-3 {
+        display: inline-block;
+        width: 250px;
+        vertical-align:top;
+        /*border:1px solid red;*/
+    }
+    .vendor-date-info .col-md-9 {
+        display: inline-block;
+        width: 250px;
+        /*border:1px solid red;*/
+    }
+
+    .alert-danger {
+        border: 2px solid red;
+        border-radius:5px;
+        margin-top:20px;
+    }
+    /*question*/
+    .rowQuestion .number {
+        display: inline-block;
+        width: 2px!important;
+        margin-top:0px;
+        /*border: 3px solid #73AD21;*/
+        position:relative;
+        vertical-align:top;
+    }
+    .rowQuestion .question, .col-question, .form-question {
+        display: inline-block;
+        width:630px;
+    }
+    .rowQuestion .answer {
+        margin-left:0px;
+    }
+    .desc-print {
+        margin-left:0px;
+        margin-right:0px;
+    }
+    .rowQuestion .col-answer{
+        margin-left:40px;
+    }
+
+
+    /*FORM EEC*/
+
+}
+div#mast { 
+	margin-bottom: -8px; 
+}
+	
+div#mast img { 
+	vertical-align: bottom; 
+}
+	
+a:link, 
+a:visited { 
+	color: #520; 
+	background: transparent; 
+	font-weight: bold; 
+	text-decoration: underline; 
+}
+	
+#content a:link:after, 
+#content a:visited:after { 
+	content: " (" attr(href) ") "; 
+	font-size: 90%; 
+}
+	
+#content a[href^="/"]:after { 
+	content: " (http://www.alistapart.com" attr(href) ") "; 
+}

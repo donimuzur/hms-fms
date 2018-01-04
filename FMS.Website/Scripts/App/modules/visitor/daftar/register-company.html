@@ -1,0 +1,165 @@
+﻿<form name="daftarCtrl.companyContact">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <button type="button" class="close"
+                        data-dismiss="alert" aria-hidden="true">
+                    ×
+                </button>
+                <span>
+                    {{'FORM.NOTE_USERNAME' | translate}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.companyContact.vendorEmail.$valid && !daftarCtrl.companyContact.vendorEmail.$pristine}">
+                <input ng-blur="daftarCtrl.checkEmail(true)" class="form-control" name="vendorEmail" placeholder="{{'FORM.EMAIL_PERUSAHAAN' | translate}} *" type="email"
+                       ng-model="daftarCtrl.vendor.email" required />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.companyContact.vendorUsername.$valid && !daftarCtrl.companyContact.vendorUsername.$pristine}">
+                <input name="vendorUsername" class="form-control" placeholder="{{'FORM.USERNAME' | translate}} *" type="text"
+                       ng-model="daftarCtrl.vendor.username" disabled required />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': !daftarCtrl.companyContact.vendorPassword.$valid && !daftarCtrl.companyContact.vendorPassword.$pristine}">
+                <input name="vendorPassword" type="{{showPass ? 'text' : 'password'}}" style="margin-bottom:0px !important;"class="form-control" placeholder="{{'FORM.PASSWORD' | translate}} *"
+                       ng-model="daftarCtrl.vendor.password" no-space required />
+                <div class="row">
+                    <div class="col-md-12">
+                        <i data-toggle="collapse" data-target="#demo"class="glyphicon glyphicon-info-sign"></i>
+                        <div id="demo" class="collapse">
+                            <span class="font10">
+                                {{'FORM.INFO_PASS' | translate}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group" ng-class="{'has-error': daftarCtrl.vendor.password != daftarCtrl.vendor.confirmPassword && !daftarCtrl.companyContact.confirmPassword.$pristine}">
+                <input name="confirmPassword" type="{{showPass ? 'text' : 'password'}}" class="form-control" placeholder="{{'FORM.CONFIRM_PASSWORD' | translate}} *"
+                       ng-model="daftarCtrl.vendor.confirmPassword" no-space required />
+				<div class="row">
+                    <div class="col-md-12">  
+                        <div >
+                           <input type="checkbox" ng-model="showPass">&nbsp;{{'FORM.SHOW_PASS' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <input class="form-control" placeholder="{{'FORM.WEBSITE' | translate}}" type="text"
+                       ng-model="daftarCtrl.vendor.website" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <select required class="form-control" style="margin-bottom:0px !important;"
+                                name="countryCode"
+                                ng-model="daftarCtrl.phoneCode" ng-disabled="!daftarCtrl.phoneCodeList"
+                                ng-options="item as item.Name + '(' + item.PhonePrefix + ')' for item in daftarCtrl.phoneCodeList">
+                            <option value="" selected disabled>Pilih</option>
+                        </select>
+                        <i class="font10">
+                            {{'FORM.COUNTRY_CODE' | translate}}*
+                        </i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input required class="form-control" style="margin-bottom:0px !important;"
+                               placeholder="{{'FORM.NO_TELP' | translate}}*"  name="contactPhone"
+                               ng-model="daftarCtrl.vendor.phone" />
+                        <!--ui-mask="999-?9?9?9?9?9?9?9?9?9?9" ui-mask-placeholder ui-mask-placeholder-char="_"-->
+                        <i class="font10">
+                            {{'FORM.PHONE_FORMAT' | translate}}
+                        </i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <input class="form-control" placeholder="{{'FORM.FAX' | translate}}" type="tel"
+                       ng-model="daftarCtrl.vendor.fax"
+                       ui-mask="999-?9?9?9?9?9?9?9?9?9?9" ui-mask-placeholder ui-mask-placeholder-char="_" />
+            </div>
+        </div>
+    </div>
+</form>
+<label>{{'FORM.KONTAK_PERSON' | translate}}</label>
+<form name="daftarCtrl.vendorContactForm">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group" >
+                <input class="form-control"
+                       placeholder="{{'FORM.KONTAK_PERSON' | translate}} * "
+                       type="text" required
+                       name="contactName"
+                       ng-model="daftarCtrl.contact.name" />
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <input class="form-control" placeholder="{{'FORM.MOBILE_PHONE' | translate}}" 
+                       ng-model="daftarCtrl.contact.phone" ng-blur="daftarCtrl.checkTelp(true)" required/>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group" >
+                <input ng-blur="daftarCtrl.checkEmail(false)" class="form-control" placeholder="{{'FORM.EMAIL' | translate}}" ng-model="daftarCtrl.contact.email" type="email" name="contactEmail" required/>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success" ng-click="daftarCtrl.addContact()" ng-disabled="daftarCtrl.vendorContactForm.$invalid"><i class="fa fa-plus"></i> {{'BUTTONS.ADD' | translate}}</button>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-8 col-sm-10 col-sm-offset-1 col-xs-12">
+        <div class="table table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width: 50px;">{{'FORM.CONTACT_TABLE.HEADERS.NO' | translate}}</th>
+                        <th class="text-center" style="width: 30%;">{{'FORM.CONTACT_TABLE.HEADERS.NAME' | translate}}</th>
+                        <th class="text-center" style="width: 30%">{{'FORM.CONTACT_TABLE.HEADERS.NUMBER' | translate}}</th>
+                        <th class="text-center">{{'FORM.CONTACT_TABLE.HEADERS.EMAIL' | translate}}</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="daftarCtrl.contacts.length <= 0">
+                        <td colspan="5">
+                            <div class="alert alert-info">{{'FORM.CONTACT_TABLE.NO_DATA' | translate}}</div>
+                            <div class="clearfix"></div>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="dt in daftarCtrl.contacts">
+                        <td>{{$index + 1}}</td>
+                        <td>{{dt.name | ucwords}}</td>
+                        <!--
+                        <td>{{'(' + dt.countryCode.PhonePrefix + ') ' + dt.phone}}</td>-->
+                        <td>{{dt.phone}}</td>
+                        <td>{{dt.email}}</td>
+                        <td><button class="btn btn-danger" ng-click="daftarCtrl.removeContact(dt)"><i class="fa fa-close"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

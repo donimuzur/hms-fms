@@ -1,0 +1,1438 @@
+﻿<div class="modal-content" ng-init="FormIzinCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormIzinCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 0">Data Administrasi</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 1">Data Ijin Usaha</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 2">Data Kepemilikan Saham</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 3">Data Akta Pendirian</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 4">Data Akta Perubahan Terakhir</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 5">Data Pengesahan Kemenkumham</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 6">Data Neraca</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 8">Data Tenaga Ahli</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 9">Data Pengalaman Kerja</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 16">Upload Dokumen Lain-lain</h3>
+        <h3 class="modal-title afta-font" ng-if="FormIzinCtrl.flag === 17">{{'BUSINESS.TITLE' | translate}}</h3>
+    </div>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 0">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+
+                        <div class="row blok" style="padding-top: 20px!important;">
+                            <!-- right column -->
+                            <div class="col-md-12 col-sm-12"
+                                 style="float:center!important;border:solid 1px #cccccc!important; border-radius: 2px!important; padding: 20px!important;">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'EMAIL_VENDOR' | translate}}</label><br />
+                                            <!--<label style="padding-top: 5px; font-weight: normal;"><em>{{FormIzinCtrl.Email}}</em></label>-->
+                                            <input type="email" class="form-control" required ng-model="FormIzinCtrl.Email" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'USERNAME_VENDOR' | translate}}</label><br />
+                                            <label style="padding-top: 5px; font-weight: normal;"><em>{{FormIzinCtrl.contact[0].Vendor.user.Username}}</em></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'CODE_VENDOR' | translate}}</label><br />
+                                            <label style="padding-top: 5px; font-weight: normal;">{{FormIzinCtrl.contact[0].Vendor.Code}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'REGION_VENDOR' | translate}}</label><br />
+                                            <label style="padding-top: 5px; font-weight: normal;">{{FormIzinCtrl.Region}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'CMB_VENDOR_TYPE' | translate}}</label>
+                                            <select required class="form-control input-sm" ng-model="FormIzinCtrl.selectedTypeVendor"
+                                                    ng-options="item as item.Name | translate for item in FormIzinCtrl.listTypeVendor"
+                                                    ng-change="FormIzinCtrl.changeTypeVendor()">
+                                                <option value="" selected disabled>-- {{'VENDOR_TYPE' | translate}} --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'PEMASOK_TYPE' | translate}}</label>
+                                            <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedSupplier"
+                                                    ng-options="item as item.Name | translate for item in FormIzinCtrl.listSupplier">
+                                                <option value="" ng-selected="true">
+                                                    -- {{'PEMASOK_TYPE' | translate}} --
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group" ng-if="FormIzinCtrl.CountryCode === 'IDN'">
+                                            <label>{{'COMPANY_TYPE' | translate}} *</label>
+                                            <select required class="form-control"
+                                                    ng-model="FormIzinCtrl.selectedBusinessEntity"
+                                                    ng-click="FormIzinCtrl.loadSelectedBusinessEntity(FormIzinCtrl.selectedBusinessEntity)"
+                                                    ng-options="item as item.Name | translate for item  in FormIzinCtrl.listBusinessEntity"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'MONEY_TYPE' | translate}} *</label>
+                                            <div class="table table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="20%">No</th>
+                                                            <th width="80%">{{'MONEY_TYPE' | translate}}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="moneytype in FormIzinCtrl.listCurrencies ">
+                                                            <td>{{$index+1}}</td>
+                                                            <td>{{moneytype.MstCurrency.Symbol}} ({{moneytype.MstCurrency.Label}})</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'COMPANY_NAME' | translate}}</label><br />
+                                            <label style="padding-top: 5px; font-weight: normal;">{{FormIzinCtrl.contact[0].Vendor.VendorName}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'START_DATE' | translate}} *</label>
+                                            <div class="input-group date form_datetime">
+                                                <label style="padding-top: 5px; font-weight: normal;">{{FormIzinCtrl.StartDate | date:'MM/dd/yyyy'}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Website</label><br />
+                                            <label style="padding-top: 5px; font-weight: normal;">{{FormIzinCtrl.Website}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Phone</label><br />
+                                            <input type="text" class="form-control" ng-model="FormIzinCtrl.Phone" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label ng-if="FormIzinCtrl.CountryCode === 'IDN'">
+                                                NPWP *</label>
+                                                <label ng-if="FormIzinCtrl.CountryCode !== 'IDN' ">Company Registration</label><br />
+                                                <input type="text" class="form-control"
+                                                       ng-model="FormIzinCtrl.contact[0].Vendor.Npwp" required ng-blur="FormIzinCtrl.cekNpwp(FormIzinCtrl.contact[0].Vendor.Npwp)"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label ng-if="FormIzinCtrl.CountryCode === 'IDN' ">{{'FILE' | translate}} NPWP* </label>
+                                            <label ng-if="FormIzinCtrl.CountryCode !== 'IDN' ">Company Registration</label>
+                                            <a ng-show="!(FormIzinCtrl.contact[0].Vendor.NpwpUrl === '')" href="{{FormIzinCtrl.folderFile + FormIzinCtrl.contact[0].Vendor.NpwpUrl}}" target="_BLANK" class="btn btn-sm btn-primary form-control" title="Lihat File/Berkas NPWP"><i class="fa fa-download"></i>&nbsp;</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" ng-if="FormIzinCtrl.CountryCode == 'IDN'">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>No. SPPKP </label>
+                                            <input type="text" class="form-control" placeholder="No SPPKP Perusahaan"
+                                                   ng-model="FormIzinCtrl.PKPNumber" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                {{ 'UPLOAD' | translate}} SPPKP
+                                                <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                            </label>
+                                            <input type="file" class="form-control" ng-file-select="FormIzinCtrl.selectUpload()"
+                                                   ng-model="FormIzinCtrl.fileUpload" name="ownerIDFile" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'FILE' | translate}} SPPKP</label><br />
+                                            <a ng-show="FormIzinCtrl.contact[0].Vendor.LegalDocument" href="{{FormIzinCtrl.folderFile + FormIzinCtrl.contact[0].Vendor.LegalDocument}}" target="_BLANK" class="form-control btn btn-sm btn-primary" title="Lihat File/Berkas SPPKP"><i class="fa fa-download"></i>&nbsp;</a>
+                                            <a ng-show="!FormIzinCtrl.contact[0].Vendor.LegalDocument" href="javascript:void(0)" class="form-control btn btn-sm btn-default" title="File/Berkas SPPKP Belum Tersedia"><i class="fa fa-download"></i>&nbsp;</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                            <i class="fa fa-area-chart"></i>
+                                            {{'TITLE_BIDUSAHA' | translate}}
+                                        </legend>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'BUSINESS_FIELD' | translate}} </label>
+                                            <select required class="form-control"
+                                                    ng-model="FormIzinCtrl.selectedBusinessField"
+                                                    ng-disabled="!FormIzinCtrl.listBusinessField"
+                                                    ng-options="item as item.Name  for item  in FormIzinCtrl.listBusinessField"
+                                                    ng-change="FormIzinCtrl.changeBussinesField()">
+                                                <option value="" selected disabled>--- {{'BUSINESS_FIELD' | translate}} ---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>{{'COMODITY' | translate}}</label>
+                                            <select required class="form-control"
+                                                    ng-model="FormIzinCtrl.selectedComodity"
+                                                    ng-disabled="!FormIzinCtrl.listComodity"
+                                                    ng-options="item as item.Name for item  in FormIzinCtrl.listComodity">
+                                                <option value="" selected disabled>--- {{'COMODITY' | translate}} ---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 margintop25">
+                                        <button class="btn btn-sm btn-primary" ng-click="FormIzinCtrl.addDetailBussinesField()" title="Tambah Bidang Usaha"><i class="fa fa-plus-circle"></i></button>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="table table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">No</th>
+                                                            <th class="text-center">Bidang Usaha</th>
+                                                            <th class="text-center">Komoditas</th>
+                                                            <th width="10%"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="det in FormIzinCtrl.listBussinesDetailField">
+                                                            <td>{{$index+1}}</td>
+                                                            <td>{{det.BusinessField.Name}}</td>
+                                                            <td>{{det.Commodity.Name}}</td>
+                                                            <td>
+                                                                <button class="btn btn-xs btn-danger" ng-click="FormIzinCtrl.deleteRow($index+1)" title="Hapus">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                            <i class="fa fa-phone"></i>
+                                            {{'CONTACT_INFO' | translate}}
+                                        </legend>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="table table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">No</th>
+                                                            <th class="text-center">Nama</th>
+                                                            <th class="text-center">Telephone</th>
+                                                            <th class="text-center">Email</th>
+                                                            <th class="text-center"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="dt in FormIzinCtrl.listPersonal">
+                                                            <td class="text-center">{{$index+1}}</td>
+                                                            <td class="text-center">{{dt.Contact.Name}}</td>
+                                                            <td class="text-center">{{dt.Contact.Phone}}</td>
+                                                            <td class="text-center">{{dt.Contact.Email}}</td>
+                                                            <td class="text-center">
+                                                            <a ng-click="FormIzinCtrl.editcontact(dt)" class="btn btn-flat btn-xs btn-primary" title="Edit" style="cursor: pointer;">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                            <i class="fa fa-home"></i>
+                                            {{'ADDRESS_INFO' | translate}} {{FormIzinCtrl.ContactName}}
+                                        </legend>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Alamat Perusahaan *" type="text"
+                                                   ng-model="FormIzinCtrl.address1" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select required class="form-control"
+                                                    ng-model="FormIzinCtrl.selectedCountry"
+                                                    ng-options="item as item.Name | translate for item  in FormIzinCtrl.listCountry"
+                                                    ng-change="FormIzinCtrl.loadState()">
+                                                <option value="" selected disabled>--- {{'COUNTRY_TYPE' | translate}} ---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input ng-disabled="true" class="form-control" ng-model="FormIzinCtrl.listRegion.Name">
+                                        </div>
+                                    </div>
+                                    <div ng-if="FormIzinCtrl.CountryCode === 'IDN'">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <select required class="form-control"
+                                                        ng-model="FormIzinCtrl.selectedState"
+                                                        ng-options="item as item.Name | translate for item  in FormIzinCtrl.listState"
+                                                        ng-change="FormIzinCtrl.loadCity()">
+                                                    <option value="" selected disabled>--- {{'STATE_TYPE' | translate}} ---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <select required class="form-control"
+                                                        ng-model="FormIzinCtrl.selectedCity"
+                                                        ng-disabled="!FormIzinCtrl.listCity ||FormIzinCtrl.selectedCountry.Code !== 'IDN'"
+                                                        ng-options="item as item.Name | translate for item  in FormIzinCtrl.listCity"
+                                                        ng-change="FormIzinCtrl.loadDistrict()">
+                                                    <option value="" selected disabled>--- {{'CITY_TYPE' | translate}} ---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <select required class="form-control"
+                                                        ng-model="FormIzinCtrl.selectedDistrict"
+                                                        ng-disabled="!FormIzinCtrl.listDistrict ||FormIzinCtrl.selectedCountry.Code !== 'IDN'"
+                                                        ng-options="item as item.Name | translate for item  in FormIzinCtrl.listDistrict">
+                                                    <option value="" selected disabled>--- {{'DISTRICT_TYPE' | translate}} ---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input class="form-control" ng-model="FormIzinCtrl.postcalcode" placeholder="Kode Pos " type="text" required />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select required class="form-control"
+                                                    ng-model="FormIzinCtrl.selectedAssociation"
+                                                    ng-disabled="!FormIzinCtrl.listAssociation"
+                                                    ng-options="item as item.AssosiationName | translate for item  in FormIzinCtrl.listAssociation">
+                                                <option value="" selected disabled>--- {{'ASSOCIATION_TYPE' | translate}} ---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12">
+                                        <legend class="font18" style="border-bottom: 1px dotted darkgreen!important;padding-bottom: 1px;">
+                                            <i class="fa fa-home"></i>
+                                            {{'ADDRESS_INFO_ALTERNATIF' | translate}} {{FormIzinCtrl.ContactName}}
+                                        </legend>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Alamat Perusahaan *" type="text"
+                                                   ng-model="FormIzinCtrl.addressinfo" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select required class="form-control"
+                                                    ng-model="FormIzinCtrl.selectedCountryAlternatif"
+                                                    ng-options="item as item.Name | translate for item  in FormIzinCtrl.listCountryAlternatif"
+                                                    ng-change="FormIzinCtrl.loadStateAlternatif()">
+                                                <option value="" selected disabled>--- {{'COUNTRY_TYPE' | translate}} ---</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input ng-disabled="true" class="form-control" ng-model="FormIzinCtrl.listRegionAlternatif.Name">
+                                        </div>
+                                    </div>
+                                    <div ng-if="FormIzinCtrl.CountryCode === 'IDN'">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <select required class="form-control"
+                                                        ng-model="FormIzinCtrl.selectedStateAlternatif"
+                                                        ng-options="item as item.Name | translate for item  in FormIzinCtrl.listStateAlternatif"
+                                                        ng-change="FormIzinCtrl.loadCityAlternatif()">
+                                                    <option value="" selected disabled>--- {{'STATE_TYPE' | translate}} ---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <select required class="form-control"
+                                                        ng-model="FormIzinCtrl.selectedCityAlternatif"
+                                                        ng-disabled="FormIzinCtrl.listCityAlternatif.length === 0 ||FormIzinCtrl.selectedCountryAlternatif.Code !== 'IDN'"
+                                                        ng-options="item as item.Name | translate for item  in FormIzinCtrl.listCityAlternatif"
+                                                        ng-change="FormIzinCtrl.loadDistrictAlternatif()">
+                                                    <option value="" selected disabled>--- {{'CITY_TYPE' | translate}} ---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <select required class="form-control"
+                                                        ng-model="FormIzinCtrl.selectedDistrictAlternatif"
+                                                        ng-disabled="FormIzinCtrl.listDistrictAlternatif.length === 0 ||FormIzinCtrl.selectedCountryAlternatif.Code !== 'IDN'"
+                                                        ng-options="item as item.Name | translate for item  in FormIzinCtrl.listDistrictAlternatif">
+                                                    <option value="" selected disabled>--- {{'DISTRICT_TYPE' | translate}} ---</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input class="form-control" ng-model="FormIzinCtrl.PostalCodeAlternatif" placeholder="Kode Pos " type="text" required />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!--/.col (right) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 1">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Nomor ({{FormIzinCtrl.licensiname}}) *</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.LicenseNo" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Jenis Ijin *</label>
+                                <div class="form-control-static">
+                                    <label>{{FormIzinCtrl.licensiname}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Tanggal Mulai Berlaku *</label>
+                                <div class="input-group date form_datetime">
+                                    <input readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.IssuedDate" ng-click="FormIzinCtrl.openCalendar(0)" ng-change="FormIzinCtrl.selectedIssuedDate(FormIzinCtrl.data.IssuedDate)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Tanggal Berakhir *</label>
+                                <div class="input-group date form_datetime">
+                                    <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[1]" ng-model="FormIzinCtrl.data.ExpiredDate" ng-click="FormIzinCtrl.openCalendar(1)" ng-change="FormIzinCtrl.selectedExpiredDate(FormIzinCtrl.data.ExpiredDate)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Instansi Pemberi</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.IssuedBy" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label">{{'FORM.PROVINSI' | translate}}</label>
+                            <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedState"
+                                    ng-options="item as item.Name for item in FormIzinCtrl.listState"
+                                    ng-change="FormIzinCtrl.changeState()"></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">{{'FORM.KOTA' | translate}}</label>
+                            <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedCities"
+                                    ng-options="item as item.Name for item in FormIzinCtrl.listCities"
+                                    ng-change="FormIzinCtrl.changeCities()"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" ng-if="FormIzinCtrl.licensiname === 'SIUP'">
+                            <div class="form-group">
+                                <label>Kualifikasi</label>
+                                <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedClasification"
+                                        ng-options="item as item.Name | translate for item in FormIzinCtrl.listClasification">
+                                    <option value="" disabled selected>{{ 'FORMINPUTRFQ.CMB_CLASIFICATION.LABEL' | translate}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-if="FormIzinCtrl.data.IsNominal === true">
+                            <div class="form-group" >
+                                <label>Nominal Modal Usaha</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Rp</span>
+                                    <input type="text" currency-mask class="form-control" placeholder="Nominal Modal Usaha" ng-model="FormIzinCtrl.data.CapitalAmount" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    {{ 'FORM.LABEL_UPLOAD' | translate}}
+                                    <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="FormIzinCtrl.selectUpload()"
+                                       ng-model="FormIzinCtrl.fileUpload" name="ownerIDFile" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-show="(FormIzinCtrl.data.DocumentURL != null)">
+                            <div class="form-group">
+                                <label>Dokumen yang Telah Diupload</label><br />
+                                <a href="{{FormIzinCtrl.folderFile + FormIzinCtrl.data.DocumentURL}}" target="_BLANK" class="btn btn-sm btn-primary" title="Lihat Dokumen Ijin Usaha"><i class="fa fa-download"></i>&nbsp;</a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <textarea class="form-control" ng-model="FormIzinCtrl.data.Remark"
+                                          rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 2">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Nama Pemilik Saham</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.OwnerName" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Tanggal Lahir Pemilik</label>
+                                <div class="input-group date form_datetime">
+                                    <input readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.OwnerDOB" ng-click="FormIzinCtrl.openCalendar(0)" ng-change="FormIzinCtrl.selectedIssuedDate(FormIzinCtrl.data.IssuedDate)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">No. KTP Pemilik Saham</label>
+                                <input class="form-control" placeholder="{{'FORM.NO_KTP' | translate}} *" ng-model="FormIzinCtrl.data.OwnerID" name="ownerID" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Unggah berkas KTP</label>
+                                <input ng-file-select="FormIzinCtrl.stockOwnerIDSelected()" class="form-control  marginBottom-1" type="file"
+                                       ng-model="FormIzinCtrl.fileUpload" name="ownerIDFile" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                                <i class="font10">
+                                    {{'FORM.KET_FILE' | translate}} <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )<a ng-if="FormIzinCtrl.data.OwnerIDUrl !== undefined" ng-href="{{FormIzinCtrl.folderFile+FormIzinCtrl.data.OwnerIDUrl}}" class="btn btn-flat btn-xs btn-primary" style="cursor: pointer;"><i class="fa fa-download">Unduh File</i></a> </small>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label">Satuan Saham</label>
+                            <select class="form-control input-sm" ng-model="FormIzinCtrl.data.Unit"
+                                    ng-options="item as item.Name for item in FormIzinCtrl.stockUnits"></select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Nominal Saham</label>
+                                <input type="number" class="form-control" placeholder="{{'FORM.NOMINAL_SHM' | translate}} *" name="stockQty" ng-model="FormIzinCtrl.data.Quantity" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" ng-if="FormIzinCtrl.data.Unit.Name == 'STOCK_UNIT_CURRENCY'">
+                        <select name="stockUnitCurrency" required class="form-control input-sm" ng-model="FormIzinCtrl.stockUnitCurrency"
+                                ng-options="item as item.Symbol + ' | ' + item.Label for item in FormIzinCtrl.currencyList">
+                            <option value="" selected disabled class="text-center">--{{"FORM.SATUAN_SHM_MATAUANG" | translate}}--</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 3">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">{{'JENIS_PERUSAHAAN'|translate}}</label>
+                                <div class="col-md-1" style="margin-right:0px!important">:</div>
+                                <div class="col-md-8"> {{FormIzinCtrl.businessName}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">{{'ALAMAT_PERUSAHAAN'|translate}}</label>
+                                <div class="col-md-1">:</div>
+                                <div class="col-md-8"> {{FormIzinCtrl.vendorAddress}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'NOMOR'|translate}}</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.DocumentNo" placeholder="{{'NOMOR'|translate}}" id="nomorAktaPendirian" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'TANGGAL_SURAT'|translate}} &nbsp;<em>(dd-mm-YYYY)</em></label>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.DocumentDate" ng-click="FormIzinCtrl.openCalendar(0)" />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="FormIzinCtrl.openCalendar(0)"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'NOTARIS'|translate}}</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.NotaryName"
+                                       placeholder="{{'NAMA_LENGKAP_NOTARIS'|translate}}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'TEMPAT_NOTARIS'|translate}}</label>
+                                <select required class="form-control input-sm" ng-model="FormIzinCtrl.selectedNotaryLocation"
+                                        ng-options="item as item.Name | translate for item in FormIzinCtrl.listKotaKab"
+                                        ng-change="FormIzinCtrl.changeNotarisPlace()"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10 center-block">
+                            <div class="form-group">
+                                <label>
+                                    {{'FILE_DOKUMEN'|translate}}
+                                    <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                                    {{uploadSOWDModalCtrl.sowDoc.DocUrl ? '**' : ''}}
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="FormIzinCtrl.file1Change(FormIzinCtrl.file1)"
+                                       ng-model="FormIzinCtrl.fileUpload" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 text-center" ng-if="FormIzinCtrl.data.DocumentURL !== ''">
+                            <div class="form-group">
+                                <span class="input-group-btn">
+                                    <a href="{{FormIzinCtrl.folderFile + FormIzinCtrl.data.DocumentURL}}" class="btn btn-sm btn-flat btn-primary" title="{{'DOWNLOAD_BERKAS'|translate}}" target="_BLANK"><i class="fa fa-download"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 4">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'NOMOR'|translate}}</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.DocumentNo" placeholder="{{'NOMOR'|translate}}" id="nomorAktaPendirian" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'TANGGAL_SURAT'|translate}} &nbsp;<em>(dd-mm-YYYY)</em></label>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.DocumentDate" ng-click="FormIzinCtrl.openCalendar(0)" />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="FormIzinCtrl.openCalendar(0)"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'NOTARIS'|translate}}</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.NotaryName"
+                                       placeholder="{{'NAMA_LENGKAP_NOTARIS'|translate}}" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    {{'FILE_DOKUMEN'|translate}}
+                                    <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                                    {{uploadSOWDModalCtrl.sowDoc.DocUrl ? '**' : ''}}
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="FormIzinCtrl.file1Change(FormIzinCtrl.file1)"
+                                       ng-model="FormIzinCtrl.fileUpload" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 text-center" ng-if="FormIzinCtrl.data.DocumentURL !== ''">
+                            <div class="form-group">
+                                <span class="input-group-btn">
+                                    <a href="{{FormIzinCtrl.folderFile + FormIzinCtrl.data.DocumentURL}}" class="btn btn-sm btn-flat btn-primary" title="{{'DOWNLOAD_BERKAS'|translate}}" target="_BLANK"><i class="fa fa-download"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 5">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-10 col-sm-12 center-block well" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'NOMOR'|translate}}</label>
+                                <input type="text" class="form-control" ng-model="FormIzinCtrl.data.DocumentNo" placeholder="{{'NOMOR'|translate}}" id="nomorAktaPendirian" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'TANGGAL_SURAT'|translate}} &nbsp;<em>(dd-mm-YYYY)</em></label>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.DocumentDate" ng-click="FormIzinCtrl.openCalendar(0)" />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th" ng-click="FormIzinCtrl.openCalendar(0)"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <div class="form-group">
+                                <label>
+                                    {{'FILE_DOKUMEN'|translate}}
+                                    <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                                    {{uploadSOWDModalCtrl.sowDoc.DocUrl ? '**' : ''}}
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="FormIzinCtrl.file1Change(FormIzinCtrl.file1)"
+                                       ng-model="FormIzinCtrl.fileUpload" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 text-center" ng-if="FormIzinCtrl.data.DocumentURL !== ''">
+                            <div class="form-group">
+                                <span class="input-group-btn">
+                                    <a href="{{FormIzinCtrl.folderFile + FormIzinCtrl.data.DocumentURL}}" class="btn btn-sm btn-flat btn-primary" title="{{'DOWNLOAD_BERKAS'|translate}}" target="_BLANK"><i class="fa fa-download"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 6">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>{{'ASSET_TYPE' | translate}}</label>
+                            <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedAsset"
+                                    ng-options="item as item.Value | translate for item in FormIzinCtrl.listAsset"
+                                    ng-change="FormIzinCtrl.loadCOA(FormIzinCtrl.selectedAsset)">
+                                <option value="" ng-selected="true">
+                                    -- {{'ASSET_TYPE' | translate}} --
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>{{'COA_TYPE' | translate}}</label>
+                            <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedCOA"
+                                    ng-disabled="!FormIzinCtrl.listCOA"
+                                    ng-options="item as item.Value | translate for item in FormIzinCtrl.listCOA"
+                                    ng-change="FormIzinCtrl.loadSubCOA(FormIzinCtrl.selectedCOA)">
+                                <option value="" ng-selected="true">
+                                    -- {{'COA_TYPE' | translate}} --
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>{{'SUB_COA_TYPE' | translate}}</label>
+                            <select class="form-control input-sm"
+                                    ng-model="FormIzinCtrl.selectedSubCOA"
+                                    ng-disabled="!FormIzinCtrl.listSubCOA || FormIzinCtrl.param === ''"
+                                    ng-change="FormIzinCtrl.changeSubCOA(FormIzinCtrl.selectedSubCOA)"
+                                    ng-options="item as item.Value | translate for item in FormIzinCtrl.listSubCOA">
+                                <option value="" ng-selected="true">
+                                    -- {{'SUB_COA_TYPE' | translate}} --
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>{{'UNIT' | translate}}</label>
+                            <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedUnit"
+                                    ng-options="item as item.Value | translate for item in FormIzinCtrl.listUnit">
+                                <option value="" ng-selected="true">
+                                    -- {{'UNIT' | translate}} --
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>{{'AMOUNT' | translate}}</label>
+                            <input type="text" class="form-control input-sm" ng-model="FormIzinCtrl.data.Amount" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>{{'NOMINAL' | translate}}</label>
+                            <input currency-mask type="text" class="form-control input-sm" ng-model="FormIzinCtrl.data.Nominal" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                {{'UPLOAD'|translate}}
+                                <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) <a ng-if="FormIzinCtrl.data.DocUrl !== undefined" ng-href="{{FormIzinCtrl.folderFile+FormIzinCtrl.data.DocUrl}}" class="btn btn-flat btn-xs btn-primary" style="cursor: pointer;"><i class="fa fa-download">Unduh File</i></a> </small>
+                            </label>
+                            <input type="file" class="form-control" ng-file-select="FormIzinCtrl.selectUpload()"
+                                   ng-model="FormIzinCtrl.fileUpload" name="ownerIDFile" required accept="{{FormIzinCtrl.idFileTypes}}" />
+
+                            <a ng-show="FormIzinCtrl.item.DocUrl;" href="{{FormIzinCtrl.folderFile + FormIzinCtrl.fileUpload}}" target="_BLANK" class="form-control btn btn-sm btn-primary" title="Lihat File/Berkas Neraca"><i class="fa fa-download"></i>&nbsp;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 7">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'NAMA'|translate}} *</label>
+                                <input type="text" class="form-control" placeholder="{{'NAMA'|translate}}"
+                                       ng-model="FormIzinCtrl.data.PersonName" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'TGL_LAHIR'|translate}} *</label>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.DateOfBirth" ng-click="FormIzinCtrl.openCalendar(0)"
+                                           ng-change="FormIzinCtrl.validateAge(FormIzinCtrl.data.DateOfBirth)" />
+                                    <span class="input-group-addon" ng-click="FormIzinCtrl.openCalendar(0)"><span class="glyphicon glyphicon-th"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-if="FormIzinCtrl.vendorLocation !== 'IDN'">
+                                <label>{{'NO_PASPOR'|translate}} </label>
+                                <input type="text" class="form-control" placeholder="{{'NO_PASPOR'|translate}}"
+                                       ng-model="FormIzinCtrl.data.NoID" />
+                            </div>
+                            <div class="form-group" ng-if="FormIzinCtrl.vendorLocation === 'IDN'">
+                                <label>{{'NO_KTP'|translate}} </label>
+                                <input type="text" class="form-control" placeholder="{{'NO_KTP'|translate}}" required
+                                       ng-model="FormIzinCtrl.data.NoID" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{'SCAN_KTP'|translate}} {{FormIzinCtrl.data.ID > 0 ? '' : '*'}}</label>&nbsp;
+                                <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                                <input type="file" class="form-control" ng-model="FormIzinCtrl.file"
+                                       ng-file-select="FormIzinCtrl.fileSelect(FormIzinCtrl.file)" accept="{{FormIzinCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-12 center-block" style="float: none!important;">
+                            <div class="form-group">
+                                <label>{{'ALAMAT'|translate}} *</label>
+                                <input type="text" class="form-control" placeholder="{{'ALAMAT'|translate}}"
+                                       ng-model="FormIzinCtrl.data.Address.AddressInfo" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Negara *</label>
+                                <select class="form-control input-sm" required ng-model="FormIzinCtrl.data.Address.CountryID"
+                                        ng-options="item.CountryID as item.Name for item in FormIzinCtrl.countryList"
+                                        ng-change="FormIzinCtrl.changeCountry(FormIzinCtrl.data.Address.CountryID)"></select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">{{'STATE'|translate}} *</label>
+                                <select class="form-control input-sm" required ng-model="FormIzinCtrl.data.Address.StateID"
+                                        ng-options="item.StateID as item.Name for item in FormIzinCtrl.listProvinsi"
+                                        ng-change="FormIzinCtrl.changeProvince()"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">{{'CITY'|translate}}</label>
+                                <select class="form-control input-sm" required ng-model="FormIzinCtrl.data.Address.CityID"
+                                        ng-options="item.CityID as item.Name for item in FormIzinCtrl.listKabupaten"
+                                        ng-change="FormIzinCtrl.changeCities()">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">{{'DISTRICT'|translate}}</label>
+                                <select class="form-control input-sm" required ng-model="FormIzinCtrl.data.Address.DistrictID"
+                                        ng-options="item.DistrictID as item.Name for item in FormIzinCtrl.listKecamatan">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'JABATAN'|translate}} *</label>
+                                <select class="form-control" ng-model="FormIzinCtrl.data.PositionRef" ng-options="item.Name as ('POSITION.' + item.Name) | translate for item in FormIzinCtrl.positionTypes"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'VERSIVENDOR'|translate}}</label>
+                                <input type="text" class="form-control" placeholder="{{'VERSIVENDOR'|translate}}"
+                                       ng-model="FormIzinCtrl.data.CompanyPosition" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>{{'MENJABAT_SEJAK'|translate}} *</label>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="FormIzinCtrl.isCalendarOpened[1]" ng-model="FormIzinCtrl.data.ServiceStartDate" ng-click="FormIzinCtrl.openCalendar(1)" />
+                                    <span class="input-group-addon" ng-click="FormIzinCtrl.openCalendar(1)"><span class="glyphicon glyphicon-th"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>{{'SAMPAI'|translate}}</label>&nbsp;<em><small>({{'KOSONGKAN'| translate}})</small></em>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="FormIzinCtrl.isCalendarOpened[2]" ng-model="FormIzinCtrl.data.ServiceEndDate" ng-click="FormIzinCtrl.openCalendar(2)" />
+                                    <span class="input-group-addon" ng-click="FormIzinCtrl.openCalendar(2)"><span class="glyphicon glyphicon-th"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+                        <div ng-show="isEdit === 1" class="col-md-6">
+                            <div class="form-group">
+                                <label>Scan KTP yang Telah Diupload</label><br />
+                                <a href="{{$root.url_api+datapp.file_ktp}}" target="_BLANK" class="btn btn-xs btn-primary"><i class="fa fa-download"></i>&nbsp; Download Scan KTP</a>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.saveprocess()" title="Simpan Data"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 8">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nama *</label>
+                                <input type="text" class="form-control" placeholder="Nama"
+                                       ng-model="FormIzinCtrl.data.Name" ng-required="true" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tanggal Lahir *</label>
+                                <div class="input-group date form_datetime">
+                                    <input style="background-color:#ffffff;" readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.DateOfBirth" ng-click="FormIzinCtrl.openCalendar(0)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-top: 25px;">
+                            <div class="form-group">
+                                <label>Jenis Kelamin</label>
+                                <input ng-checked="FormIzinCtrl.radio.tipeM === FormIzinCtrl.data.Gender" type="radio" value="{{FormIzinCtrl.radio.tipeM}}" ng-model="FormIzinCtrl.Gender" style="opacity: 1!important;" />&nbsp;Laki - laki
+                                <input ng-checked="FormIzinCtrl.radio.tipeF === FormIzinCtrl.data.Gender" type="radio" value="{{FormIzinCtrl.radio.tipeF}}" ng-model="FormIzinCtrl.Gender" style="opacity: 1!important;" />&nbsp;Perempuan
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Alamat</label>
+                                <input type="text" class="form-control" placeholder="Alamat Lengkap"
+                                       ng-model="FormIzinCtrl.data.address.AddressInfo" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Pendidikan Terakhir *</label>
+                                <select class="form-control" ng-model="FormIzinCtrl.data.Education">
+                                    <option value="SMA">SMA</option>
+                                    <option value="SMA">SMK</option>
+                                    <option value="D1">D1</option>
+                                    <option value="D2">D2</option>
+                                    <option value="D3">D3</option>
+                                    <option value="D4">D4</option>
+                                    <option value="S1">S1</option>
+                                    <option value="S2">S2</option>
+                                    <option value="S3">S3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Kewarganegaraan</label>
+                                <select class="form-control" ng-model="FormIzinCtrl.data.country.Name" ng-options="item.Name as item.Name for item in FormIzinCtrl.nationalities"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Jabatan *</label>
+                                <input type="text" class="form-control" placeholder="Jabatan Tenaga Ahli"
+                                       ng-model="FormIzinCtrl.data.Position" ng-required="true" />
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-top: 25px;">
+                            <div class="form-group">
+                                <label>Status Kepegawaian</label>
+                                <input ng-checked="FormIzinCtrl.radio.StatusK === FormIzinCtrl.data.Statusperson.Name" type="radio" value="{{FormIzinCtrl.radio.StatusK}}" ng-model="FormIzinCtrl.data.Statusperson.Name" style="opacity: 1!important;" />&nbsp;Kontrak
+                                <input ng-checked="FormIzinCtrl.radio.StatusI === FormIzinCtrl.data.Statusperson.Names" type="radio" value="{{FormIzinCtrl.radio.StatusI}}" ng-model="FormIzinCtrl.data.Statusperson.Name" style="opacity: 1!important;" />&nbsp;Magang
+                                <input ng-checked="FormIzinCtrl.radio.StatusP === FormIzinCtrl.data.Statusperson.Name" type="radio" value="{{FormIzinCtrl.radio.StatusP}}" ng-model="FormIzinCtrl.data.Statusperson.Name" style="opacity: 1!important;" />&nbsp;Permanen
+                            </div>
+                        </div>
+                        <div class="col-md-6 center-block" style="float: none!important;">
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Profesi/Keahlian *</label>
+                                <textarea class="form-control" rows="2" placeholder="Uraian Profesi / Keahlian"
+                                          ng-model="FormIzinCtrl.data.Expertise" ng-required="true"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label><em>*) Wajib diisi</em></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.saveprocess()" title="Simpan Data"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 9 || FormIzinCtrl.flag === 10 || FormIzinCtrl.flag === 11">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row" style="padding-top: 10px; padding-bottom: 15px;">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label> Tanggal Mulai</label>
+                                <div class="input-group date form_datetime">
+                                    <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.StartDate" ng-click="FormIzinCtrl.openCalendar(0)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="text-center center-block margintop20" style="padding-top: 8px;">
+                                - s/d -
+                            </label>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label> Tanggal Selesai</label>
+                                <div class="input-group date form_datetime">
+                                    <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[1]" ng-model="FormIzinCtrl.data.EndDate" ng-click="FormIzinCtrl.openCalendar(1)" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6 center-block" style="float: none!important;">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Upload File Scan
+                                            <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                        </label>
+                                        <input type="file" class="form-control" ng-file-select="FormIzinCtrl.selectUpload()"
+                                               ng-model="FormIzinCtrl.fileUpload" name="ownerIDFile" required accept="{{FormIzinCtrl.idFileTypes}}" /> 
+                                        <a href="{{FormIzinCtrl.folderFile + FormIzinCtrl.data.DocUrl}}" target="_blank" class="btn btn-flat btn-xs btn-primary" ><i class="fa fa-cloud-download"></i>Unduh Berkas</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="3" placeholder="Jelaskan.."
+                                      ng-model="FormIzinCtrl.data.Description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan Data"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 16">
+        <div class="modal-body">
+            <div class="row" style="padding-top: 20px!important;">
+                <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nama Dokumen *</label>
+                                <input type="text" class="form-control" placeholder="Nama Dokumen" ng-model="FormIzinCtrl.data.DocumentName">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nomor Surat</label>
+                                <input type="text" class="form-control" placeholder="Nomor Surat" ng-model="FormIzinCtrl.data.DocumentNo">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Masa Berlaku Hingga</label>
+                                <div class="input-group date form_datetime" datepicker-abc data-date-format="dd-MM-yyyy">
+                                    <input readonly required class="form-control" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}"
+                                           is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.data.ValidDate" ng-click="FormIzinCtrl.openCalendar(0)" />
+                                    <span class="input-group-addon" ng-click="FormIzinCtrl.openCalendar(0)"><span class="glyphicon glyphicon-th"></span></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Upload File
+                                    <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size < {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                                </label>
+                                <input type="file" class="form-control" ng-file-select="FormIzinCtrl.selectUpload()"
+                                       ng-model="FormIzinCtrl.fileUpload" name="ownerIDFile" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 17">
+        <div class="modal-body">
+            {{'BUSINESS.DATE1' | translate}}<br /><br /><br />
+            {{'BUSINESS.OPENING1' | translate}}<br /><br />
+            {{'BUSINESS.TEXT1' | translate}}<br /><br />
+            {{'BUSINESS.TEXT2' | translate}}<br /><br />
+            {{'BUSINESS.TEXT3' | translate}}<br /><br />
+            {{'BUSINESS.TEXT4' | translate}}<br /><br />
+            <h4>{{'BUSINESS.ENDING1' | translate}}</h4><br /><br /><br />
+            <h3>{{'BUSINESS.MISSIONTITLE' | translate}}</h3><br />
+            {{'BUSINESS.MISSION' | translate}}<br /><br />
+            <h3>{{'BUSINESS.VISIONTITLE' | translate}}</h3><br />
+            {{'BUSINESS.VISION' | translate}}<br /><br />
+            <h3>{{'BUSINESS.VALUETITLE' | translate}}</h3><br />
+            <ul>
+                <li>{{'BUSINESS.VALUE.1' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.2' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.3' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.4' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.5' | translate}}<br /></li>
+                <li>{{'BUSINESS.VALUE.6' | translate}}<br /></li>
+            </ul><br />
+            <h3>{{'BUSINESS.INTRODUCTION' | translate}}</h3><br />
+            {{'BUSINESS.TEXT5' | translate}}<br /><br />
+            {{'BUSINESS.TEXT6' | translate}}<br /><br />
+            {{'BUSINESS.TEXT7' | translate}}<br /><br />
+            <h3>{{'BUSINESS.COUVERAGE' | translate}}</h3><br />
+            {{'BUSINESS.TEXT8' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.TITLE2' | translate}}</h4><br />
+            <h3>{{'BUSINESS.1' | translate}}</h3><br />
+            {{'BUSINESS.TEXT9' | translate}}<br /><br />
+            {{'BUSINESS.TEXT10' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.LEGISLATION' | translate}}</h4><br />
+            {{'BUSINESS.TEXT11' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.CONTRACT' | translate}}</h4><br />
+            {{'BUSINESS.TEXT12' | translate}}<br /><br />
+            {{'BUSINESS.TEXT13' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.AGREEMENTS' | translate}}</h4><br />
+            {{'BUSINESS.TEXT14' | translate}}<br /><br /><br />
+            <h4>{{'BUSINESS.ANTI' | translate}}</h4><br />
+            {{'BUSINESS.TEXT15' | translate}}<br /><br /><br />
+            <h3>{{'BUSINESS.2' | translate}}</h3><br />
+            {{'BUSINESS.TEXT16' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.2LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.3' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.4' | translate}}</li>
+                <li>{{'BUSINESS.2LIST.5' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.3' | translate}}</h3><br />
+            {{'BUSINESS.TEXT17' | translate}}<br /><br />
+            <h4>{{'BUSINESS.CORRUPT' | translate}}</h4><br />
+            {{'BUSINESS.TEXT18' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.CORRUPTLIST.1' | translate}}</li>
+                <li>{{'BUSINESS.CORRUPTLIST.2' | translate}}</li>
+                <li>{{'BUSINESS.CORRUPTLIST.3' | translate}}</li>
+                <li>{{'BUSINESS.CORRUPTLIST.4' | translate}}</li>
+            </ul><br />
+            <h4>{{'BUSINESS.OFFER' | translate}}</h4><br />
+            {{'BUSINESS.TEXT19' | translate}}<br /><br />
+            <h4>{{'BUSINESS.CONFLICT' | translate}}</h4><br />
+            {{'BUSINESS.TEXT20' | translate}}<br /><br />
+            <h4>{{'BUSINESS.ABUSE' | translate}}</h4><br />
+            {{'BUSINESS.TEXT21' | translate}}<br /><br />
+            <h4>{{'BUSINESS.UNFAIR' | translate}}</h4><br />
+            {{'BUSINESS.TEXT22' | translate}}<br /><br />
+            <h4>{{'BUSINESS.SOCIAL' | translate}}</h4><br />
+            {{'BUSINESS.TEXT23' | translate}}<br /><br /><br />
+            <h3>{{'BUSINESS.4' | translate}}</h3><br />
+            {{'BUSINESS.TEXT24' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.4LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.3' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.4' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.5' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.6' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.7' | translate}}</li>
+                <li>{{'BUSINESS.4LIST.8' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.5' | translate}}</h3><br />
+            {{'BUSINESS.TEXT25' | translate}}<br /><br />
+            {{'BUSINESS.TEXT26' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.5LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.3' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.4' | translate}}</li>
+                <li>{{'BUSINESS.5LIST.5' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.6' | translate}}</h3><br />
+            {{'BUSINESS.TEXT27' | translate}}<br /><br />
+            {{'BUSINESS.TEXT28' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.6LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.6LIST.2' | translate}}</li>
+            </ul><br /><br />
+            <h3>{{'BUSINESS.7' | translate}}</h3><br />
+            {{'BUSINESS.TEXT29' | translate}}<br /><br />
+            <h4>{{'BUSINESS.WORKING' | translate}}</h4><br />
+            {{'BUSINESS.TEXT30' | translate}}<br /><br />
+            <h4>{{'BUSINESS.DIVERSITY' | translate}}</h4><br />
+            {{'BUSINESS.TEXT31' | translate}}<br /><br />
+            <h4>{{'BUSINESS.INCLUSION' | translate}}</h4><br />
+            {{'BUSINESS.TEXT32' | translate}}<br /><br />
+            <h4>{{'BUSINESS.CHILD' | translate}}</h4><br />
+            {{'BUSINESS.TEXT33' | translate}}<br /><br />
+            {{'BUSINESS.TEXT34' | translate}}<br /><br />
+            <h4>{{'BUSINESS.GENDER' | translate}}</h4><br />
+            {{'BUSINESS.TEXT35' | translate}}<br /><br />
+            {{'BUSINESS.TEXT36' | translate}}<br /><br />
+            <h3>{{'BUSINESS.8' | translate}}</h3><br />
+            {{'BUSINESS.TEXT37' | translate}}<br /><br />
+            {{'BUSINESS.TEXT38' | translate}}<br /><br />
+            <ul>
+                <li>{{'BUSINESS.8LIST.1' | translate}}</li>
+                <li>{{'BUSINESS.8LIST.2' | translate}}</li>
+                <li>{{'BUSINESS.8LIST.3' | translate}}</li>
+            </ul><br />
+            {{'BUSINESS.TEXT39' | translate}}<br /><br />
+            <h3>{{'BUSINESS.9' | translate}}</h3><br />
+            {{'BUSINESS.TEXT40' | translate}}<br /><br />
+            <h3>{{'BUSINESS.10' | translate}}</h3><br />
+            {{'BUSINESS.TEXT41' | translate}}<br /><br />
+            {{'BUSINESS.TEXT42' | translate}}<br /><br />
+            {{'BUSINESS.TEXT43' | translate}}<br /><br />
+            {{'BUSINESS.TEXT44' | translate}}<br /><br />
+            <h3>{{'BUSINESS.11' | translate}}</h3><br />
+            {{'BUSINESS.TEXT45' | translate}}<br /><br />
+            {{'BUSINESS.TEXT46' | translate}}<br /><br />
+            {{'BUSINESS.TEXT47' | translate}}<br /><br />
+            <h3>{{'BUSINESS.12' | translate}}</h3><br />
+            {{'BUSINESS.TEXT48' | translate}}<br /><br />
+            {{'BUSINESS.TEXT49' | translate}}<br /><br />
+            {{'BUSINESS.TEXT50' | translate}}<br /><br /><br />
+            <h3>{{'BUSINESS.COMMITMENT' | translate}}</h3><br />
+            {{'BUSINESS.TEXT51' | translate}} {{SrtPernyataanModalCtrl.vendorName}}
+            {{'BUSINESS.TEXT52' | translate}} {{SrtPernyataanModalCtrl.Country}}
+            {{'BUSINESS.TEXT53' | translate}} {{SrtPernyataanModalCtrl.StateName}}
+            {{'BUSINESS.TEXT54' | translate}} {{SrtPernyataanModalCtrl.NamaDir}}, {{SrtPernyataanModalCtrl.Country}}, President Direktur
+            {{'BUSINESS.TEXT55' | translate}} {{SrtPernyataanModalCtrl.noID}}
+            {{'BUSINESS.TEXT56' | translate}}<br />
+            <ul>
+                <li>{{'BUSINESS.DECLARE.1' | translate}}</li>
+                <li>{{'BUSINESS.DECLARE.2' | translate}}</li>
+                <li>{{'BUSINESS.DECLARE.3' | translate}}</li>
+                <li>{{'BUSINESS.DECLARE.4' | translate}}</li>
+            </ul><br />
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        </div>
+    </form>
+    <form name="myForm" ng-if="FormIzinCtrl.flag === 18">
+        <div class="modal-body">
+            {{'SURAT.OPENING' | translate}}<br /><br />
+            {{SrtPernyataanModalBacaCtrl.NamaDir}}{{'SURAT.TEXT1' | translate}}Presiden Direktur
+            {{'SURAT.TEXT2' | translate}}{{SrtPernyataanModalBacaCtrl.vendorName}}
+            {{'SURAT.TEXT3' | translate}}{{SrtPernyataanModalBacaCtrl.NamaNotaris}}
+            {{'SURAT.TEXT4' | translate}}{{SrtPernyataanModalBacaCtrl.DocNo}}
+            {{'SURAT.TEXT5' | translate}}{{SrtPernyataanModalBacaCtrl.DocDateSub}}
+            {{'SURAT.TEXT6' | translate}}{{SrtPernyataanModalBacaCtrl.Address}}<br /><br />
+            {{'SURAT.TEXT7' | translate}}<br /><br />
+            <ol>
+                <li>{{'SURAT.LIST.1' | translate}}</li>
+                <br />
+                <li>{{'SURAT.LIST.2' | translate}}</li>
+                <br />
+                <li>{{'SURAT.LIST.3' | translate}}</li>
+                <br />
+                <li>{{'SURAT.LIST.4' | translate}}</li>
+            </ol><br /><br />
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,57 @@
+﻿<div class="modal-content" ng-init="selectVendorCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="selectVendorCtrl.onBatalClick()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'MODAL.PILIH_VENDOR'|translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                <form ng-submit="selectVendorCtrl.onSearchSubmit(searchText)" role="form" method="post">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <input ng-model="searchText" class="form-control" placeholder="{{'MODAL.CARI_KODE_VENDOR'|translate}}" />
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default" title="{{'CARI' | translate}}"><i class="fa fa-search"></i>&nbsp; </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" style="min-width: 20px; width: 20px;">{{'TABLE.NO' | translate}}</th>
+                                <th class="center-vertical">{{'MODAL.NAMA_VENDOR'|translate}}</th>
+                                <th class="center-vertical">{{'MODAL.NPWP'|translate}}</th>
+                                <th class="center-vertical" style="min-width: 30px; width: 40px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="r in selectVendorCtrl.vendor">
+                                <td class="text-center" style="vertical-align: middle;">{{(selectVendorCtrl.pageNumber - 1) * selectVendorCtrl.pageSize + $index + 1}}.</td>
+                                <td class="text-left" style="vertical-align: middle;">{{r.VendorName}}</td>
+                                <td class="text-left" style="vertical-align: middle;">{{r.Npwp}}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <a class="btn btn-flat btn-sm btn-success" ng-click="selectVendorCtrl.onSelectClick(r)"><i class="fa fa-check-circle"></i>&nbsp; {{'PILIH'|translate}}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul uib-pagination total-items="selectVendorCtrl.count" max-size="10"
+                        ng-model="selectVendorCtrl.pageNumber" items-per-page="selectVendorCtrl.pageSize"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="selectVendorCtrl.loadData()"></ul>
+                    <br /><label>{{'TOTAL_DATA' | translate}} : {{selectVendorCtrl.count}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="selectVendorCtrl.onBatalClick()" type="button" class="btn btn-flat btn-default"><i class="fa fa-reply" title="{{'BATAL' | translate}}"></i>&nbsp;</button>
+    </div>
+</div>

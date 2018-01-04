@@ -1,0 +1,93 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CostObItem 
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Cost OB Detail</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstCostOb"))
+        {
+            <h5 class="text-info text-red">
+                @Model.ErrorMessage
+            </h5>
+            <div class="row col-md-12" >
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Year<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstCostObId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", required = "required", @disabled = "disabled" })    
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Month<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Month, Model.MonthList, "-- Please Select --", new { @class = "form-control ", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost Center<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Body Type<span class="red">*</span></label>
+                       @Html.TextBoxFor(model => model.Models, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Function<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.FunctionName, new { @class = "form-control", required = "required", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Regional</label>
+                        @Html.TextBoxFor(model => model.Regional, new { @class = "form-control",  @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost OB</label>
+                        @Html.TextBox("CostOb", string.Format("{0:N0}", Model.ObCost), new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)" ,  @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">QTY</label>
+                        @Html.TextBoxFor(model => model.Qty, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <a href="@Url.Action("Index", "MstCostOb" )" class="btn btn-default">Back</a>
+            </div>
+        }
+        </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
+    </div>
+    </section>
+
+<script src="~/Scripts/thousand-separator.js"></script>
+<script type="text/javascript">
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+    $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
+</script>

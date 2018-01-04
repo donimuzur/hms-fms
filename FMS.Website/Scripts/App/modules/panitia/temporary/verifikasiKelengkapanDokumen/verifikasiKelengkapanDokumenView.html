@@ -1,0 +1,194 @@
+<div ng-init="loadPegawai()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li>
+                <a href="#/homeadmin">
+                    <i class="fa fa-home"></i> Beranda
+                </a>
+            </li>
+            <li>
+                <a>Proses Pengadaan</a>
+            </li>
+             <li>
+                <a class="active">Detail Tahapan</a>
+            </li>
+            <li>
+                <a class="active">Pemasukan Penawaran VHS/FPA</a>
+            </li>
+           
+           
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class=" text-center">Verifikasi Kelengkapan Dokumen</h3>
+                            </div>
+                        </div>
+                      
+                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h4 class=" text-left">Star Date: 21 Juni 2016 9:30</h4>
+                                
+                               
+                            </div>
+                            
+                            <div class="col-md-6">
+
+                            </div>
+                            
+                            <div class="col-md-3">
+                               <h4 class=" text-left">End Date: 29 Juni 2016 9:30</h4>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-5">
+                      <h4 class=" text-left">Tender: SUPLAY OF AIR CONDITIONER</h4>
+                            </div>
+                            
+                            <div class="col-md-4">
+
+                            </div>
+                           
+                            <div class="col-md-3">
+                                
+                            </div>
+                        </div><br>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="center-vertical" style="width:5%;">PO.</th>
+                                                <th class="center-vertical" style="width:15%;">Nama Vendor</th>
+                                                <th class="center-vertical" style="width:15%;">Tanggal Masuk Penawaran</th>
+                                                <th class="center-vertical" style="width:15%;">Tanggal Verifikasi</th>
+                                                 <th class="center-vertical" style="width:15%;">Status</th>
+                                                <th class="center-vertical" style="width:15%;">Action</th>
+                                               
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="rfq in rfqList">
+                                                <td class="center-vertical">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td class="center-vertical">{{rfq.rfqName}}</td>
+                                                <td class="center-vertical">{{rfq.rfqDate}}</td>
+                                                <td class="center-vertical">{{rfq.rfqDate}}</td>
+                                                <td class="center-vertical">
+                                                    {{rfq.status}}
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <button type="button" title="Detail" class="btn btn-flat btn-success turun-15" style="float:left!important" ng-click="detailVerifikasiView('lg')" data-toggle="modal" data-target="#myModal">
+                                                    <!--  ng-if="userBisaMenambah" -->
+                                                    <i class="fa fa-check"></i>&nbsp;
+                                                </button>
+                                                </td>
+                                                
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--
+                            <div class="col-md-12">
+                                    <pagination total-items="totalItems" page="currentPage" items-per-page="10"
+                                                                    max-size="maxSize" on-select-page="jLoad2(page)"ng-show="totalItems>10"></pagination>
+                            </div>
+                            -->
+                            <div class="col-md-10">
+                                <pagination total-items="totalItems" page="currentPage" items-per-page="10" max-size="maxSize" on-select-page="jLoad2(page)" ng-show="totalItems > 10"></pagination>
+                            </div>
+                            <div ng-if="userBisaMengatur" class="col-md-2">
+                                <div class="col-md-12 turun-15" style="float:right"><label>Total Data : {{totalItems}}</label></div>
+                            </div>
+                            
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+<!-- detailEvaluasi -->
+<script type="text/ng-template" id="detailVerifikasi.html">
+        <div class="model-content">
+        
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="cancel()">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Keluar</span>
+                    </button>
+                        <h3 class="box-title text-center afta-font">Detail Verifikasi Kelengkapan Dokumen</h3>
+                </div>
+    
+                <div class="modal-body">       
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h4 class=" text-left">Vendor: PT. Malifak Maju Jaya</h4>
+                                <h4 class=" text-left">Tender: SUPLAY OF AIR CONDITIONER</h4>                     
+                            </div>
+                            <div class="col-md-4">
+                            
+                            </div>
+                            <div class="col-md-3">
+                                <h4 class=" text-left">Hasil : LULUS</h4>
+                            </div>
+                        </div><br>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical">No.</th>
+                                            <th class="center-vertical">Persyaratan</th>
+                                            <th class="center-vertical">Tanggal Masuk</th>
+                                            <th class="center-vertical">Tanggal Verifikasi</th>
+                                            <th class="center-vertical">Status</th>
+                                            <th class="center-vertical">Check List</th>
+                                            <th class="center-vertical">Keterangan</th>
+                                            <th class="center-vertical">Action</th>   
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="center-vertical">1</td>
+                                            <td class="">Surat Dukungan Prinsipal</td>
+                                            <td class="center-vertical">01 Januari 2016</td>
+                                            <td class="center-vertical">10 Februari 2016</td>
+                                            <td class="center-vertical">Valid</td>
+                                            <td class="center-vertical">
+                                             <input type="checkbox" name="" value="">
+                                            </td>
+                                            <td class="center-vertical"></td>
+                                            <td class="center-vertical">Detail</td>       
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button class="btn btn-flat btn-danger" ng-click="cancel()" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</button>
+                <button class="btn btn-flat btn-success" ng-click="simpan()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button> 
+            </div>
+        </div>
+</script>

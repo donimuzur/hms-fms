@@ -1,0 +1,31 @@
+{
+  "JUDUL": "ACKNOWLEDMENT SHEET",
+  "TO": "To",
+  "ATTN": "Attn",
+  "FAX": "Fax",
+  "EMAIL": "Email",
+  "DATE": "Date",
+  "PO_REF": "PO Ref",
+  "BUYER": "Buyer",
+  "DELIVERY_DATE": "Delivery Date",
+  "UNIT_PRICE": "Unit Price",
+  "CURRENCY": "Currency",
+  "DESC": "Description and Part Number Match",
+  "UNIT_OF": "Unit of Purchase / Packages Quantity",
+  "SHIPP": "Shipping",
+  "COMPANY": "Company",
+  "PRINT_NAME": "Print Name",
+  "SIGNATURE": "Signature",
+
+  "BACK": "Kembali",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data PO",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Upload",
+    "ERR_LOAD_STATUS": "Gagal mendapat status Upload"
+
+  }
+}

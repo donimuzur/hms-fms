@@ -1,0 +1,53 @@
+﻿<div class="modal-content" ng-init="DetailTenagaAhliCtrl.init()">
+    <div class="modal-header">
+        <button type="button" ng-click="DetailTenagaAhliCtrl.batal()" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Data Tenaga Ahli</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Tenaga Ahli</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.Name}}</dd>
+                            <dt>Tanggal Lahir</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.DateOfBirth | date: 'dd-MM-yyyy'}}</dd>
+                            <dt>Jenis Kelamin</dt>
+                            <dd ng-if="DetailTenagaAhliCtrl.item.Gender === 'M'">Laki-Laki</dd>
+                            <dd ng-if="DetailTenagaAhliCtrl.item.Gender === 'F'">Perempuan</dd>
+                            <dt>Alamat</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.address.AddressInfo}}</dd>
+                            <dt>Pendidikan Terakhir</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.Education}}</dd>
+                            <dt>Kewarganegaraan</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.country.Name}}</dd>
+                            <dt>Jabatan</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.Position}}</dd>
+                            <dt>Pengalaman Kerja (tahun)</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.YearOfExperience}} Tahun</dd>
+                            <!--
+                            <dt>Email</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.Email}}</dd>-->
+                            <dt>Status Kepegawaian</dt>
+                            <dd>{{DetailTenagaAhliCtrl.item.Statusperson.Value}}</dd>
+                            <dt>Uraian Profesi/Keahlian</dt>
+                            <dd>
+                                <p>
+                                    {{DetailTenagaAhliCtrl.item.Expertise}}
+                                </p>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary"
+                ng-click="DetailTenagaAhliCtrl.batal()"
+                data-dismiss="modal" title="Kembali">
+            <i class="fa fa-arrow-circle-left"></i>&nbsp;
+        </button>
+    </div>
+</div>

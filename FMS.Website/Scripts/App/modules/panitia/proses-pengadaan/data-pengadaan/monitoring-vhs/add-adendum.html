@@ -1,0 +1,178 @@
+﻿<!-- Main content -->
+<div ng-init="AddVHSCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-vhs">{{'BREADCRUMB.MONITORING_TENDER' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.ADDENDUM' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_ADENDUM' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="AddendumCode">Addendum Code : </label>
+                                    <input type="text" class="form-control" value="" name="AddendumCode" ng-model="AddVHSCtrl.AddendumCode" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Requestor</label>
+                                    <div class="form-control">
+                                        <input type="radio" name="type" class="checkbox checkbox-inline" value="1" ng-model="AddVHSCtrl.Requestor" /> <label> Vendor </label>
+                                        <input type="radio" name="type" class="checkbox checkbox-inline" value="2" ng-model="AddVHSCtrl.Requestor" /> <label> Internal PTVI </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date Request : </label>
+                                    <div class="input-group date form_datetime">
+                                        <input style="background-color: #ffffff;" readonly required class="form-control datepicker" size="4" ng-model="AddVHSCtrl.RequestDate" type="text" uib-datepicker-popup="dd-MM-yyyy"
+                                               is-open="AddVHSCtrl.isCalendarOpened[3]" ng-click="AddVHSCtrl.openCalendar(3)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="AddVHSCtrl.openCalendar(3)">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Type Budget</label>
+                                    <div class="input-group form-control">
+                                        <input type="checkbox" ng-disabled="AddVHSCtrl.TypePrice || AddVHSCtrl.TypeDuration || AddVHSCtrl.TypeNewItem" name="typeBudget" id="typeBudget" class="checkbox checkbox-inline " ng-model="AddVHSCtrl.TypeBudget" value="1" /> <label for="typeBudget"><span>&nbsp;</span>Budget</label> <br />
+                                    </div>
+                                    <div class="input-group form-control">
+                                        <input type="checkbox" ng-disabled="AddVHSCtrl.TypePrice || AddVHSCtrl.TypeBudget || AddVHSCtrl.TypeNewItem" name="typeBudget" id="typeDuration" class="checkbox checkbox-inline" ng-model="AddVHSCtrl.TypeDuration" value="2" /> <label for="typeDuration"><span>&nbsp;</span>Duration<span>&nbsp;</span> </label>
+                                        <input type="text" ng-show="AddVHSCtrl.TypeDuration" class="input-sm" value="" name="duration" ng-model="AddVHSCtrl.Duration" /> <label ng-show="AddVHSCtrl.TypeDuration"> Months</label><br />
+                                    </div>
+                                    <div class="input-group form-control">
+                                        <input type="checkbox" ng-disabled="AddVHSCtrl.TypePrice || AddVHSCtrl.TypeBudget || AddVHSCtrl.TypeDuration" name="typeBudget" id="typeNewItem" class="checkbox checkbox-inline" ng-model="AddVHSCtrl.TypeNewItem" value="3" /><label for="typeBudget"><span>&nbsp;</span>New Item</label><br />
+                                    </div>
+                                    <div class="input-group form-control">
+                                        <input type="checkbox" ng-disabled="AddVHSCtrl.TypeNewItem || AddVHSCtrl.TypeBudget || AddVHSCtrl.TypeDuration" name="typeBudget" id="typePrice" class="checkbox checkbox-inline" ng-model="AddVHSCtrl.TypePrice" value="4" /><label for="typeBudget"><span>&nbsp;</span>Price</label><br />
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="AddVHSCtrl.TypeBudget">
+                                    <label>Additinal Value :</label>
+                                    <input type="number" class="form-control input-sm" size="50" value="" name="addval" ng-model="AddVHSCtrl.AdditionalValue" />
+                                </div>
+                                <div class="form-group" ng-show="AddVHSCtrl.TypeDuration">
+                                    <label>Addendum Contract</label>
+                                    <div class="form-group">
+                                        <input class="form-control" size="4" ng-model="AddVHSCtrl.datetoStart" type="hidden" />
+                                        <input required class="form-control" size="4" value="{{AddVHSCtrl.convertDate(AddVHSCtrl.listVHS[0].StartContractDate)}}" type="text" readonly /> To
+                                        <input class="form-control" size="4" ng-model="AddVHSCtrl.endDate" type="hidden" />
+                                        <input required class="form-control" size="4" value="{{AddVHSCtrl.getMon(AddVHSCtrl.datetoStart, AddVHSCtrl.Duration) | date :'dd/MM/yyyy'}}" type="text" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Doc Addendum</label>
+                                    <div class="input-group">
+                                        <label class="control-label">
+                                            <small> ( <span ng-repeat="ft in AddVHSCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{AddVHSCtrl.idUploadConfigs[0].Size}} {{AddVHSCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                                            {{AddVHSCtrl.DocUrl ? '**' : ''}}
+                                        </label>
+                                        <input type="file" class="form-control" ng-file-select="AddVHSCtrl.selectUpload(fileUpload)"
+                                               ng-model="fileUpload" required accept="{{AddVHSCtrl.idFileTypes}}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 bg-greentosca-gradient">
+                                <div class="form-group">
+                                    <label for="vendor">Vendor Name : </label>
+                                    <div class="form-control">
+                                        {{AddVHSCtrl.listVHS[0].VendorName}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="StorageLoc">Storage Location : </label>
+                                    <div class="form-control">
+                                        {{AddVHSCtrl.listVHS[0].StorageLocation}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vendor">Title Document :</label>
+                                    <div class="form-control">
+                                        {{AddVHSCtrl.listVHS[0].TitleDoc}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vendor">Remask</label>
+                                    <textarea cols="50" rows="5" class="form-control input-append" name="" ng-model="AddVHSCtrl.Remask"> </textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-show="AddVHSCtrl.TypePrice">
+                                <button ng-click="AddVHSCtrl.Export()" type="button" name="Export" class="btn btn-success" title="Export">
+                                    <i class="fa fa-cloud-upload"></i>Export
+                                </button>
+                                <button ng-click="AddVHSCtrl.Import()" type="button" name="Import" class="btn btn-primary" title="Import">
+                                    <i class="fa fa-cloud-download"></i>Export
+                                </button>
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.MATERIAL_CODE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ITEM_DES' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.MANUFACT' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.PART_NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ESTIMATION' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.UOP' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.CURRENCY' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.PRICE' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.EADTIM' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.COUNTRY_OR' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.REMASK' | translate }}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr ng-repeat="data in AddVHSCtrl.listVHS">
+                                                <td style="vertical-align: middle;">{{AddVHSCtrl.currentPage > 1 ? (AddVHSCtrl.maxSize * (AddVHSCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                                <td style="vertical-align: middle;">{{data.StorageLocation}}</td>
+                                            </tr>
+                                            <tr ng-if="AddVHSCtrl.totalItems === 0">
+                                                <td colspan="13">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                          
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pull-right">
+                                        <button class="btn btn-success turun-15" title="{{'SIMPAN' | translate}}" ng-click="AddVHSCtrl.save()"><i class="fa fa-save"></i>&nbsp;{{'SIMPAN' | translate}}</button>
+                                        <a href="#/detail-data-adendum/{{AddVHSCtrl.listVHS[0].ID}}" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                            <i class="fa fa-arrow-left"></i> Kembali
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

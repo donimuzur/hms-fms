@@ -1,0 +1,56 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DETAIL_TAHAPAN_PENGADAAN": "Detail Tahapan Pengadaan"
+  },
+  "NOTIFIKASI": "Notifikasi",
+  "PRAKUALIFIKASI": "Prakualifikasi",
+  "PENGUMUMAN_TENDER": "Pengumuman Tender",
+  "TENDER_YANG_DIIKUTI": "Tender yang Diikuti",
+  "BERITA": "Berita",
+  "CHANGE": "Permintaan Ubah data",
+  "TABLE": {
+    "NO": "No",
+    "NAMA_PENGADAAN": "Nama Pengadaan",
+    "NAMA_TAHAPAN": "Nama Tahapan",
+    "KODE": "Kode",
+    "TANGGAL": "Tanggal",
+    "TGL_MULAI": "Tanggal Mulai",
+    "TGL_SELESAI": "Tanggal Selesai",
+    "KADALUARSA": "Kadaluarsa",
+    "TERDAFTAR": "Terdaftar",
+    "BELUM_TERDAFTAR": "Belum Terdaftar",
+    "TAHAPAN": "Tahapan",
+    "STATUS": "Status",
+    "ACTION": "Action"
+  },
+  "INFO": {
+    "SURVIVE": "Anda sudah tidak lolos pada tahapan",
+    "RESIGNED": "Anda sudah mengundurkan diri dari Pengadaan ini",
+    "ELIMINATED": "Anda tidak lolos dari Pengadaan ini"
+  },
+  "ATUR_TAHAPAN": "Atur Tahapan",
+  "SEBELUMNYA": "Sebelumnya",
+  "SELANJUTNYA": "Selanjutnya",
+  "BELUM_MULAI": "Belum mulai",
+  "PROSES": "Proses",
+  "SELESAI": "Selesai",
+  "CARI": "Cari",
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TIDAK_ADA_LELANG": "Tidak ada pengadaan yang diikuti",
+  "TOTAL_DATA": "Total Data",
+  "DETAIL": "Detail",
+  "DETAIL_TAHAPAN": "Detail Tahapan",
+  "KEMBALI": "Kembali",
+  "BATAL": "Batal",
+  "SIMPAN": "Simpan",
+  "SELENGKAPNYA": "Selengkapnya",
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu...",
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar tahapan",
+    "ERR_LOAD_TENDER_REG": "Gagal mendapat data registrasi",
+    "ERR_LOAD_TENDER": "Gagal mendapat data pengadaan",
+    "ERR_LOAD_ANNOUNCEMENT": "Gagal mendapat data pengumuman"
+  }
+}

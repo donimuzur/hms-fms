@@ -1,0 +1,47 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.SettingItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Setting Create</h5>
+</div>
+<section class="content">
+
+    <div class="wpanel">
+        @using (Html.BeginForm("Create", "MstSetting"))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Setting Group<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.SettingGroup, Model.SettingGroupList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Setting Name<span class="red">*</span></label>
+                         @Html.TextBoxFor(model => model.SettingName, new { @class = "form-control ", @required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Setting Value<span class="red">*</span></label>                                
+                        @Html.TextBoxFor(model => model.SettingValue, new { @class = "form-control ", @required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Status<span class="red">*</span></label>
+                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-control " })
+                            @Html.Label("Active", new { @id = "lblStatus" })
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstSetting" )" class="btn btn-default">Back</a>
+                </div>
+
+        </div>
+        }
+    </div>
+</section>

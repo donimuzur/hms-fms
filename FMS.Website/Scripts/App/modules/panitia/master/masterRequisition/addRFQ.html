@@ -1,0 +1,298 @@
+﻿<div class="modal-content" ng-init="addRFQCtrl.init()">
+	<form name="frmCreate">
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="addRFQCtrl.closeModal()" title="{{'CLOSE' | translate }}">
+				<span aria-hidden="true">&times;</span>
+				<span class="sr-only"></span>
+			</button>
+			<h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">{{'FORMINPUTRFQ.TITLE' | translate }}</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>{{'FORMINPUTRFQ.LB_TYPE' | translate }}</label><br />
+						<input ng-disabled="addRFQCtrl.formData.ID > 0" ng-model="addRFQCtrl.formData.RFQType" ng-change="addRFQCtrl.changeType()" type="radio" name="tenderVHSFPA" value="1" required> VHS&nbsp;&nbsp;&nbsp;
+						<input ng-disabled="addRFQCtrl.formData.ID > 0" ng-model="addRFQCtrl.formData.RFQType" ng-change="addRFQCtrl.changeType()" type="radio" name="tenderVHSFPA" value="2" required> FPA&nbsp;&nbsp;&nbsp;
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>{{'FORMINPUTRFQ.LB_CODE' | translate }}</label>
+						<input ng-readonly="true" type="text" id="rfqCode" ng-model="addRFQCtrl.formData.RFQCode" class="form-control input-sm" required>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>{{'FORMINPUTRFQ.LB_NAME' | translate }}</label>
+						<input ng-readonly="!addRFQCtrl.allowEdit" type="text" id="nik" class="form-control input-sm" ng-model="addRFQCtrl.formData.RFQName" required>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 center-block" style="float: none!important;">
+					<div class="form-group">
+						<label>{{'FORMINPUTRFQ.LB_NOTICE' | translate }}</label>
+						<textarea ng-readonly="!addRFQCtrl.allowEdit" class="form-control input-sm" ng-model="addRFQCtrl.formData.NoticeText"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-7">
+					<div class="form-group">
+						<button class="btn btn-sm btn-flat btn-primary" type="button" ng-click="addRFQCtrl.uploadItem()" title="{{'FORMINPUTRFQ.ITEM_UPLOAD' | translate }}">
+							<i class="fa fa-external-link"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-11 center-block" style="float: none!important;border:dotted 1px #808080 !important;">
+					<fieldset>
+						<legend>
+							<input ng-disabled="!addRFQCtrl.allowEdit" type="radio" name="selVendorBy" value="1" ng-model="addRFQCtrl.formData.VendorSelectBy" required ng-change="addRFQCtrl.vendorSelectByChange()" />
+						</legend>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>{{'COMMODITY' | translate }}</label>
+								<select class="form-control" ng-model="addRFQCtrl.formData.CommodityID" ng-options="val.ID as val.Name for val in addRFQCtrl.commodities" style="width: 100%;" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 1">
+									<option value="" disabled selected>{{'SELECT_COMMODITY' | translate }}</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<input type="checkbox" ng-model="addRFQCtrl.formData.IsVendorEmails" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 1">{{'FORMINPUTRFQ.EMAIL_OPTIONAL' | translate }}<br />
+								<input type="text" class="form-control input-sm" ng-model="addRFQCtrl.formData.Emails" placeholder="{{'SEPARATE_WITH_COMMA' | translate }}"
+									   ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 1 || !addRFQCtrl.formData.IsVendorEmails" ng-blur="addRFQCtrl.chkBidder()">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>{{'FORMINPUTRFQ.LB_AREA' | translate }}</label><br />
+								<input type="checkbox" ng-model="addRFQCtrl.formData.IsLocal" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 1"> {{'LOCAL' | translate }}&nbsp;&nbsp;&nbsp;
+								<input type="checkbox" ng-model="addRFQCtrl.formData.IsNational" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 1"> {{'NATIONAL' | translate }}&nbsp;&nbsp;&nbsp;
+								<input type="checkbox" ng-model="addRFQCtrl.formData.IsInternational" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 1"> {{'INTERNATIONAL' | translate }}
+							</div>
+							<div class="form-group">
+								<div class="col-md-6">
+									<label>{{'FORMINPUTRFQ.LB_CLASIFICATION' | translate }}</label><br />
+									<select class="form-control" ng-model="addRFQCtrl.formData.CompScale" ng-options="val.RefID as val.Name | translate for val in addRFQCtrl.compScales" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 1"></select>
+								</div>
+								<div class="col-md-6" style="vertical-align:bottom;">
+									<button type="button" class="btn btn-sm btn-flat btn-success turun-15" ng-click="addRFQCtrl.viewVendor()" title="{{'SHOW_VENDORS' | translate }}">
+										<i class="fa fa-search"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-11 center-block" style="float: none!important;border:dotted 1px #808080 !important;">
+					<fieldset>
+						<legend>
+							<input ng-disabled="!addRFQCtrl.allowEdit" type="radio" name="selVendorBy" value="2" ng-model="addRFQCtrl.formData.VendorSelectBy" ng-change="addRFQCtrl.vendorSelectByChange()" required />
+						</legend>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-12">
+									<div style="float: left;">
+										<label>{{'VENDOR_LIST' | translate }}</label>
+									</div>
+									<div style="float: right;">
+										<button type="button" class="btn btn-sm btn-flat btn-success turun-15" style="float:right!important" ng-click="addRFQCtrl.addVendor()" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.formData.VendorSelectBy != 2" title="{{'ADD_VENDOR' | translate }}">
+											<i class="fa fa-plus"></i>&nbsp;
+										</button>
+									</div>
+									<div style="clear: both;"></div>
+								</div>
+							</div>
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="center-vertical">No.</th>
+											<th class="center-vertical">{{'FORMINPUTRFQ.TABLE_VENDOR.NAMEV' | translate }}</th>
+											<th class="center-vertical">{{'FORMINPUTRFQ.TABLE_VENDOR.EMAIL' | translate }}</th>
+											<th ng-if="addRFQCtrl.allowEdit" class="center-vertical"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="vendor in addRFQCtrl.addedVendor">
+											<td class="center-vertical">{{addRFQCtrl.currentPage > 1 ? (addRFQCtrl.maxSize * (addRFQCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td style="vertical-align: middle;">{{vendor.Name}}</td>
+											<td style="vertical-align: middle;">{{vendor.Email}}</td>
+											<td ng-if="addRFQCtrl.allowEdit" class="center-vertical">
+												<a class="btn btn-flat btn-sm btn-danger" title="{{'FORMINPUTRFQ.TABLE_VENDOR.BTN_DEL' | translate }}" ng-click="addRFQCtrl.deleteVendor($index)">
+													<i class="fa fa-trash-o"></i>
+												</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_JENISPENAWARAN' | translate }}</label><br />
+					<select ng-disabled="!addRFQCtrl.allowEdit" required class="form-control input-sm" ng-model="addRFQCtrl.formData.TenderType"
+							ng-options="item.RefID as item.Value for item in addRFQCtrl.listTypeTender"></select>
+				</div>
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_DELIVERYTERMS' | translate }}</label><br />
+					<label ng-repeat="deliveryTerm in addRFQCtrl.deliveryTerms">
+						<input ng-disabled="!addRFQCtrl.allowEdit" type="radio" name="deliveryTerms" ng-model="addRFQCtrl.formData.DeliveryTerms" ng-change="addRFQCtrl.deliveryTermChange(addRFQCtrl.formData.DeliveryTerms)" value="{{deliveryTerm.RefID}}" required /> {{'FORMINPUTRFQ.' + deliveryTerm.Name | translate}}&nbsp;&nbsp;&nbsp;
+					</label>
+				</div>
+				<div class="col-md-2">
+					<label>{{'FORMINPUTRFQ.LB_LEADTIME' | translate }}</label><br />
+					<div class="input-group">
+						<input ng-readonly="!addRFQCtrl.allowEdit || addRFQCtrl.formData.RFQType !== '1'" type="number" class="form-control input-sm" ng-model="addRFQCtrl.formData.LeadTime">
+						<span class="input-group-addon">{{'FORMINPUTRFQ.LB_DAY' | translate }}</span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_TYPEPENAWARAN' | translate }}</label><br />
+					<select ng-disabled="!addRFQCtrl.allowEdit" class="form-control input-sm" ng-model="addRFQCtrl.formData.TenderOption"
+							ng-options="item.RefID as item.Value for item in addRFQCtrl.listOptionsTender"></select>
+				</div>
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_INCOTERMS' | translate }}</label><br />
+					<select ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.IsDeliveryTermFix === false" class="form-control input-sm" ng-model="addRFQCtrl.formData.IncoTerm"
+							ng-options="item.ID as item.Name for item in addRFQCtrl.incoTerms"></select>
+				</div>
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_PAYMENTTERM' | translate }}</label><br />
+					<select ng-disabled="!addRFQCtrl.allowEdit" class="form-control input-sm" ng-model="addRFQCtrl.formData.PaymentTerm" ng-options="item.Id as item.Code + ' - ' + item.Name for item in addRFQCtrl.paymentTerms"></select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<label>{{'FORMINPUTRFQ.LB_BATAS' | translate }}</label><br />
+					<div class="input-group">
+						<input ng-readonly="!addRFQCtrl.allowEdit" type="number" class="form-control input-sm" min="0" max="100" ng-model="addRFQCtrl.formData.Limit">
+						<span class="input-group-addon">%</span>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<label>{{'FORMINPUTRFQ.LB_EXPIRED' | translate }}</label><br />
+					<div class="input-group">
+						<input ng-readonly="!addRFQCtrl.allowEdit" type="number" class="form-control input-sm" ng-model="addRFQCtrl.formData.ExpiredDay">
+						<span class="input-group-addon">{{'FORMINPUTRFQ.LB_DAY' | translate }}</span>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">{{'FORMINPUTRFQ.LB_DELIVERYTOSTATE' | translate}}</label><br />
+						<select class="form-control input-sm" ng-model="addRFQCtrl.formData.FreightCostID"
+								ng-options="item.FreightCostID as item.DeliveryState for item in addRFQCtrl.listState" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.IsDeliveryTermFix === false"></select>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<!--<label class="control-label"></label><br />-->
+						<button type="button" class="btn btn-sm btn-flat btn-primary turun-15" ng-click="addRFQCtrl.setReviewer(rfq)" title="{{'SET_REVIEWER' | translate }}">
+							{{'SET_REVIEWER' | translate}}
+						</button>
+						<!--<input type="checkbox" ng-model="addRFQCtrl.formData.IsNeedReviewer" ng-disabled="!addRFQCtrl.allowEdit">&nbsp;{{'FORMINPUTRFQ.LB_ISNEEDREVIEWER' | translate }}-->
+					</div>
+				</div>
+				<!--<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">{{'FORMINPUTRFQ.LB_DELIVERYTO' | translate}}</label><br />
+						<select class="form-control input-sm" ng-model="addRFQCtrl.formData.DeliveryLocation"
+								ng-options="item.CityID as item.Name for item in addRFQCtrl.listCity" ng-disabled="!addRFQCtrl.allowEdit || addRFQCtrl.IsDeliveryTermFix === false"></select>
+					</div>
+				</div>-->
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_METODEBIDDER' | translate }}</label><br />
+					<select ng-disabled="!addRFQCtrl.allowEdit" style="width: 100%;" class="form-control input-sm" ng-model="addRFQCtrl.formData.BidderSelMethod" ng-change="addRFQCtrl.bidderChange(addRFQCtrl.formData.BidderSelMethod)" ng-options="item.RefID as item.Value for item in addRFQCtrl.listBidderMethod"></select>
+				</div>
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_SKEMATENDER' | translate }}</label><br />
+					<select ng-disabled="!addRFQCtrl.allowEdit" style="width: 100%;" class="form-control input-sm" ng-model="addRFQCtrl.formData.ProcMethod" required ng-options="val.MethodID as val.MethodName for val in addRFQCtrl.procMethods" ng-change="addRFQCtrl.getSteps()"></select>
+				</div>
+				<div class="col-md-4">
+					<label>{{'FORMINPUTRFQ.LB_METODEEVALUASI' | translate }}</label><br />
+					<select ng-disabled="!addRFQCtrl.allowEdit" style="width: 100%;" class="form-control input-sm" ng-model="addRFQCtrl.formData.EvalMethod" required ng-options="val.EvaluationMethodId as val.EvaluationMethodName for val in addRFQCtrl.evalMethods"></select>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-md-12">
+					<div style="float: left;">
+						<label>{{'FORMINPUTRFQ.TITLE_TAHAPAN' | translate }}</label>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table table-responsive">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th class="center-vertical">No.</th>
+									<th class="text-center">{{'FORMINPUTRFQ.TABLESTEP.NAMESTEP' | translate }}</th>
+									<th class="center-vertical">{{'FORMINPUTRFQ.TABLESTEP.FIRSTDATE' | translate }}</th>
+									<th class="center-vertical" width="150px">{{'FORMINPUTRFQ.TABLESTEP.ENDDATE' | translate }}</th>
+									<th class="center-vertical">{{'FORMINPUTRFQ.TABLESTEP.DURATION' | translate }}</th>
+									<th class="center-vertical"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="step in addRFQCtrl.tenderSteps">
+									<td class="center-vertical">{{addRFQCtrl.currentPageStep > 1 ? (addRFQCtrl.maxSizeStep * (addRFQCtrl.currentPageStep - 1)) + $index + 1 : $index + 1}}</td>
+									<td style="vertical-align:middle;">{{step.TenderStepName}}</td>
+									<td class="center-vertical">
+										<div ng-if="$index === 0" class="form-group">
+                                            
+											<div class="input-group date form_datetime">
+												<input readonly required class="form-control" size="10" type="text" uib-datepicker-popup="dd-MMM-yyyy" datepicker-options="addRFQCtrl.datepickeroptions" close-text="{{'CLOSE'|translate}}" is-open="addRFQCtrl.isCalendarOpened[$index]" ng-change="addRFQCtrl.getEndDate($index)" ng-model="step.StartDate" ng-click="addRFQCtrl.openCalendar($index)" />
+												<span class="input-group-btn">
+													<button type="button" class="btn btn-default" ng-click="addRFQCtrl.openCalendar($index)">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</button>
+												</span>
+											</div>
+                                             
+                                          
+										</div>
+										<span ng-if="$index > 0 && step.StartDate">{{step.StartDate | date:'dd-MMM-yyyy'}}</span>
+									</td>
+									<td class="center-vertical">
+										{{step.EndDate ? (step.EndDate | date:'dd-MMM-yyyy') : ''}}
+									</td>
+									<td style="vertical-align: middle;">
+										<input ng-readonly="!addRFQCtrl.allowEdit" type="number" min="0" class="form-control" style="width: 40%;" ng-model="step.Duration" ng-change="addRFQCtrl.getEndDate($index)" />
+									</td>
+									<td style="vertical-align: middle;">
+										<a ng-if="step.IsNeedDocument" class="btn btn-flat btn-sm btn-success" title="Detail" ng-click="addRFQCtrl.aturDokumen(step)" title="Detail">
+											<i class="fa fa-search"></i>&nbsp;
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-primary" type="button" ng-click="addRFQCtrl.closeModal()" title="{{'FORMINPUTRFQ.BTN_KEMBALI' | translate }}"><i class="fa fa-reply"></i>&nbsp;</button>
+			<button ng-if="addRFQCtrl.allowEdit" type="submit" class="btn btn-flat btn-success" ng-click="frmCreate.$valid && addRFQCtrl.createRFQ()" title="{{'FORMINPUTRFQ.BTN_SAVE' | translate }}">
+				<i class="fa fa-save"></i>&nbsp;
+			</button>
+		</div>
+	</form>
+</div>

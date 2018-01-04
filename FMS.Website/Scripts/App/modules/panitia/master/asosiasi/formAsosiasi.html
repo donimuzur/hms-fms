@@ -1,0 +1,79 @@
+﻿<div class="modal-content" ng-init="formAsosiasiCtrl.init()" >
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="formAsosiasiCtrl.batal()"><span aria-hidden="true" title="Keluar">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{formAsosiasiCtrl.action}} Data Asosiasi</h3>
+    </div>
+    <div class="modal-body ">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Nama Asosiasi</label>
+                    <input type="text" class="form-control input-sm" ng-model="formAsosiasiCtrl.associatonFld.AssociationName" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Alamat</label>
+                    <input type="text" class="form-control input-sm" ng-model="formAsosiasiCtrl.associatonFld.AddressInfo" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Provinsi</label>
+                    <select class="form-control input-sm" ng-model="formAsosiasiCtrl.selectedProvince" 
+                            ng-options="item as item.Name for item in formAsosiasiCtrl.listProvinsi"
+                            ng-change="formAsosiasiCtrl.changeProvince()">
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Kabupaten</label>
+                    <select class="form-control input-sm" ng-model="formAsosiasiCtrl.selectedKabupaten" 
+                            ng-options="item as item.Name for item in formAsosiasiCtrl.listKabupaten"
+                            ng-change="formAsosiasiCtrl.changeCities()">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Kecamatan</label>
+                    <select class="form-control input-sm" ng-model="formAsosiasiCtrl.selectedKecamatan" 
+                            ng-options="item as item.Name for item in formAsosiasiCtrl.listKecamatan"
+                            ng-change="formAsosiasiCtrl.changeDistrict()">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">No.Telepon</label>
+                    <input type="text" class="form-control input-sm" ng-model="formAsosiasiCtrl.associatonFld.Phone" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <input type="text" class="form-control input-sm" ng-model="formAsosiasiCtrl.associatonFld.Email" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label">Keterangan</label>
+                    <textarea class="form-control input-sm" ng-model="formAsosiasiCtrl.associatonFld.AssociationInfo"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button" ng-click="formAsosiasiCtrl.batal()" class="btn btn-flat btn-default" title="Batal"><i class="fa fa-reply"></i> </button>
+                <button type="button" ng-click="formAsosiasiCtrl.simpan()" class="btn btn-flat btn-primary" title="Simpan"><i class="fa fa-save"></i></button>
+            </div>
+        </div> 
+    </div>
+</div>

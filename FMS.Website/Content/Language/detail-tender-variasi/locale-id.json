@@ -1,0 +1,40 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_KONTRAK": "Monitoring Kontrak Jasa",
+    "MONITORING_VARIASI": "Detail Tender Variasi"
+  },
+  "JUDUL_VARIASI": "Detail Tender Variation",
+  "TAMBAH": "Tambah",
+  "DETAIL": "Detail Dokumen",
+  "VENDOR_NAME": "Vendor Name",
+  "TENDER_NAME": "Tender Name",
+  "ORIGINAL_DATE_CON": "Original Date Contract",
+  "ORIGINAL_VAL": "Original Value Contract",
+  "BATAL": "Batal",
+  "KEMBALI": "Kembali",
+  "TOTAL_VALUE": "Total Value",
+
+  "MESSAGE": {
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data Variasi Tender",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar status",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar Variasi Tender",
+    "LOADING": "Silahkan Tunggu..."
+  },
+  "SIMPAN": "Simpan",
+  "TABLE": {
+    "NO": "No",
+    "KODE_TENDER": "Kode Tender",
+    "TYPE_VARIATION": "Type Variation",
+    "VARIATION_VALUE": "Variation Value",
+    "START_DATE": "Start Date Variation",
+    "END_DATE": "End Date varition",
+    "KETERANGAN": "Keterangan",
+    "DETAIL": "Detail Dokumen",
+    "ACTION": "Action"
+  },
+  "TIDAK_ADA_DATA": "Tidak Ada Data",
+  "TOTAL_DATA": "Total Data"
+}

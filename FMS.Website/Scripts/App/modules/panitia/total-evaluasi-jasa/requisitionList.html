@@ -1,0 +1,84 @@
+<section class="content" ng-init="requisitionListTotEvalCtrl.init()" style="overflow: visible!important;">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a class="active">{{'BREADCRUMB.REQUISITION_LIST' | translate}}</a></li>
+    </ol>
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-success">                
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{'REQUISITION_LIST' | translate}}</h3>
+                        </div>
+                    </div>                    
+                    <div class="row">
+                        <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                            <form ng-submit="requisitionListTotEvalCtrl.onSearchSubmit(searchText)" role="form" method="post">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <input ng-model="searchText" class="form-control" placeholder="Cari nama tender" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default" title="{{'CARI' | translate}}"><i class="fa fa-search"></i>&nbsp;</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical">{{'TABLE.NO' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.NOMOR_TENDER' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.RFQ' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.JENIS_CR' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.TANGGAL_REVIEW' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.STATUS' | translate}}</th>
+                                            <th class="center-vertical">{{'TABLE.KETERANGAN' | translate}}</th>
+                                            <th class="center-vertical">Action</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <tr ng-repeat="dt in requisitionListTotEvalCtrl.contracttotal">
+                                            <td class="text-center" style="vertical-align: middle;">{{$index + 1 + (requisitionListTotEvalCtrl.pageSize * (requisitionListTotEvalCtrl.currentPage - 1))}}</td>
+                                            <td style="vertical-align: middle;">{{dt.tender.TenderCode}}</td>
+                                            <td style="vertical-align: middle;">{{dt.tender.TenderName}}</td>
+                                            <td style="vertical-align: middle;">{{dt.TenderType === true ? 'CSMS' : (dt.TenderType === false ? 'Non CSMS' : '')}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.SendApprovalDate | date: "dd-MM-yyyy"}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{dt.ApprovalStatusReff.Value }}</td>
+                                            <td style="vertical-align: middle;">{{dt.Information}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                <a class="btn btn-flat btn-xs btn-primary" ng-click="requisitionListTotEvalCtrl.detailtotal(dt)" title="Detail Total Evaluasi"><i class="fa fa-edit"></i></a>
+                                                <a class="btn btn-flat btn-xs btn-success" ng-click="requisitionListTotEvalCtrl.detailApproval(dt)" title="{{'TABLE.DETAIL_APPROVAL' | translate}}"><i class="fa fa-sitemap"></i></a>
+                                                <a class="btn btn-flat btn-xs btn-info" ng-if="dt.flagEmp == true" ng-click="requisitionListTotEvalCtrl.sendToApproval(dt)" title="{{'TABLE.ATUR_APPROVAL' | translate}}"><i class="fa fa-check "></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="requisitionListTotEvalCtrl.contracttotal.length === 0">
+                                            <td colspan="8">{{'TIDAK_ADA_DATA' | translate}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-sd-4 col-md-10" >
+                                        <ul uib-pagination total-items="requisitionListTotEvalCtrl.totalItems"
+                                            ng-model="requisitionListTotEvalCtrl.currentPage" items-per-page="requisitionListTotEvalCtrl.pageSize"
+                                            previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="requisitionListTotEvalCtrl.loadContracts()"></ul>
+                                        <br /><label>{{'TOTAL_DATA' | translate}} : {{requisitionListTotEvalCtrl.totalItems}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

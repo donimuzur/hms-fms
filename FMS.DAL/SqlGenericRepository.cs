@@ -8,9 +8,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using FMS.BusinessObject.CustomEntityClass;
 using FMS.Contract;
 using NLog;
+using System.Data.Entity.Core.Objects;
 
 namespace FMS.DAL
 {
@@ -137,8 +139,18 @@ namespace FMS.DAL
                 Insert(entity);
             else
                 Update(entity);
+
         }
 
+        public void InsertOrUpdate(TEntity entity, Login userLogin, FMS.Core.Enums.MenuList menuId)
+        {
+            if (!Exists(entity))
+                Insert(entity);
+            else
+                Update(entity);
+
+            SaveChangesLog(entity, userLogin,menuId);
+        }
 
         public void InsertOrUpdateBulk(IEnumerable<TEntity> entities)
         {
@@ -210,6 +222,54 @@ namespace FMS.DAL
             _dbSet.SqlQuery(sql);
         }
 
+        public void SaveChangesLog(TEntity entity, Login user, Core.Enums.MenuList menuId)
+        {
+            if (user != null)
+            {
+                var isAdded = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Added);
+                var isModified = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Modified);
+                var isDeleted = _context.ChangeTracker.Entries().Any(x => x.State == EntityState.Deleted);
+
+                var action = "";
+                if (isAdded)
+                {
+                    action = "Create";
+
+                }
+                
+                if (isModified)
+                {
+                    action = "Modified";
+                }
+
+                ObjectContext objectContext = ((IObjectContextAdapter)_context).ObjectContext;
+                ObjectSet<TEntity> set = objectContext.CreateObjectSet<TEntity>();
+                IEnumerable<string> keyNames = set.EntitySet.ElementType
+                                                            .KeyMembers
+                                                            .Select(k => k.Name);
+                string id = "";
+                if (keyNames.Count() > 0)
+                {
+                    foreach (var name in keyNames)
+                    {
+                        id += _context.Entry(entity).CurrentValues[name].ToString();
+                    }
+                }
+                
+                _context.TRA_CHANGES_HISTORY.Add(new TRA_CHANGES_HISTORY()
+                {
+                    MODUL_ID = (int)menuId,
+                    FORM_ID = long.Parse(id),
+                    MODIFIED_BY = user.USER_ID,
+                    MODIFIED_DATE = DateTime.Now,
+                    ACTION = action
+                });
+                _context.SaveChanges();
+            }
+
+            
+
+        }
 
         public List<TableDetail> GetTableDetail(string tableName)
         {

@@ -1,0 +1,105 @@
+﻿<section ng-init="ContractSignOffController.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a href="javascript:void(0)">Proses Pengadaan</a></li>
+        <li><a href="#/daftar-lelang-admin">Data Pengadaan</a></li>
+        <li><a href="#/daftar-lelang-panitia">Data Pengadaan</a></li>
+        <li><a href="#/paketlelang/viewtahapan/{{paket_lelang_id}}">Detail Tahapan</a></li>
+        <li><a class="active">Penetapan Pemenang</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Penandatanganan Kontrak</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{ContractSignOffController.step.StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{ContractSignOffController.step.EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        
+                        <div class="col-md-9">
+                            <label>Tender: {{ContractSignOffController.step.tender.TenderName}}</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="vertical-align: middle;">No</th>
+                                            <th class="text-center" style="vertical-align: middle;">Nama Vendor Pemenang</th>
+                                            <th class="text-center"style="vertical-align: middle;">Nomor Kontrak</th>
+                                            <th class="text-center"style="vertical-align: middle;">Mulai Kontrak</th>
+                                            <th class="text-center"style="vertical-align: middle;">Selesai Kontrak</th>
+                                            <th class="text-center"style="vertical-align: middle;">Unggah Dokumen <br/> (<small> <span ng-repeat="ft in ContractSignOffController.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{ContractSignOffController.idUploadConfigs[0].Size}} {{ContractSignOffController.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small></th>
+                                            <th class="text-center"style="vertical-align: middle;">Keterangan</th>
+                                            <th class="text-center"style="vertical-align: middle;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="eval in ContractSignOffController.detail">
+                                            <td class="text-center">{{$index+1}}</td>
+                                            <td class="text-center">{{eval.VendorName}}</td>
+                                            <td class="text-center"><input class="form-control input-group-sm" ng-disabled="eval.ApprovalStatusReff.Name === 'CR_APPROVED'" type="text" ng-model="eval.ContractNo" /></td>
+                                            <td class="text-center">
+                                                <div class="input-group date form_datetime">
+                                                    <input required class="form-control input-group-sm" ng-disabled="eval.ApprovalStatusReff.Name === 'CR_APPROVED'" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="ContractSignOffController.isCalendarOpened[$index]" ng-model="eval.ContractStartDate" ng-click="ContractSignOffController.openCalendar($index)" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="ContractSignOffController.openCalendar($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="input-group date form_datetime">
+                                                    <input required class="form-control input-group-sm" ng-disabled="eval.ApprovalStatusReff.Name === 'CR_APPROVED'" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="ContractSignOffController.isCalendarOpened1[$index]" ng-model="eval.ContractEndDate" ng-click="ContractSignOffController.openCalendar1($index)" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="ContractSignOffController.openCalendar1($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="file" class="form-control" ng-file-select="ContractSignOffController.selectUpload(eval)" ng-disabled="eval.ApprovalStatusReff.Name === 'CR_APPROVED'" ng-model="eval.filePath" name="ownerIDFile" style="width: 300px;" />
+                                                <a ng-if="eval.UploadURL !== null" class="btn btn-xs btn-primary" href="{{ContractSignOffController.folderFile+ eval.UploadURL}}" target="_BLANK"><i class="fa fa-download"></i></a>
+                                            </td>
+                                            <td class="text-center"><input class="form-control input-group-sm"  ng-disabled="eval.ApprovalStatusReff.Name === 'CR_APPROVED'"type="text" ng-model="eval.Description" /></td>
+                                            <td class="text-center">
+                                                <button title="Simpan" ng-if="eval.ID === 0 && ContractSignOffController.login === true || (eval.ID !== 0 && (eval.ApprovalStatusReff.Name === 'CR_APPROVED' || eval.ApprovalStatusReff.Name === 'APPROVAL_VENDOR_REJECTED') && ContractSignOffController.login == true)" type="button" class="btn btn-flat btn-sm btn-primary" ng-click="ContractSignOffController.uploadFile(eval)">
+                                                    <i class="fa fa-save" aria-hidden="true"></i>
+                                                </button>
+                                                <button title="{{'SENDAPPROVE' | translate}}" ng-if="eval.flagEmp == 0 && eval.Status ==='Draft'&& eval.flagTemp == 1" class="btn btn-sm btn-primary " ng-click="ContractSignOffController.sendToApprove(eval)">
+                                                    <i class="fa fa-check"></i> 
+                                                </button>
+                                                <button title="Approve" ng-if="(eval.flagEmp == 2) || ((eval.flagEmp != 2 && eval.flagEmp != 0) && eval.Status !== undefined) " class="btn btn-sm btn-primary" ng-click="ContractSignOffController.detailApproval(1, eval)">
+                                                    <i class="fa fa-check"></i> 
+                                                </button>
+                                                <button ng-if="eval.Status !== 'Draft'" class="btn btn-sm btn-success" title="Detail Approval" ng-click="ContractSignOffController.detailApproval(2, eval)">
+                                                    <i class="fa fa-sitemap"></i>
+                                                </button>
+                            </td>
+                            </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 pull-right">
+                            <button class="btn btn-sm btn-default" ng-click="ContractSignOffController.back()">
+                                <i class="fa fa-arrow-left"></i> Kembali
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

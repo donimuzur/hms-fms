@@ -1,0 +1,295 @@
+﻿<div id="divAturTahapan" class="modal-content" ng-init="atModCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="atModCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">{{'KELUAR'|translate}}</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{'ATUR_TAHAPAN'|translate}}</h3> <!-- Atur Tanggal Tahapan -->
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>{{'NAMA_TAHAPAN'|translate}} :</label><br/>
+                            <label style="padding-top: 5px; font-weight: normal; font-size: 1.3em;"><em>{{atModCtrl.stepItem.TenderStepName}}</em></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        
+                        <label>{{'TABLE.TGL_MULAI'|translate}}</label>
+                        <div class="form-group">
+                            <div class="row">
+                            <div class="col-md-6">
+                            <div class="input-group date form_datetime atmod" datepicker-abc data-date-format="dd-MM-yyyy">
+
+                                <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yy" close-text="{{'TUTUP'|translate}}"
+                                        is-open="atModCtrl.isCalendarOpened[0]" ng-model="atModCtrl.stepItem.StartDate" ng-click="atModCtrl.openCalendar(0)" ng-change="atModCtrl.checkStartDate(atModCtrl.stepItem.StartDate)" />
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="atModCtrl.openCalendar(0)"></span></span>
+                             
+                            </div>
+                            </div>
+                                <div class="col-md-6">
+                                    <div uib-timepicker ng-model="atModCtrl.stepItem.StartDate" show-meridian="ismeridian"></div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                          
+                      <!--  <div class="row">
+                            <div class="col-md-6">
+                                <input class="form-control" style="display:inline-block !important;" uib-timepicker ng-model="atModCtrl.stepItem.StartDate" placeholder="HH:mm:ss" />
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-md-4">
+                        <label>{{'TABLE.TGL_SELESAI'|translate}}</label>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group date form_datetime atmod" datepicker-abc data-date-format="dd-MM-yyyy">
+                                        <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yy" close-text="{{'TUTUP'|translate}}"
+                                               is-open="atModCtrl.isCalendarOpened[1]" ng-model="atModCtrl.stepItem.EndDate" ng-click="atModCtrl.openCalendar(1)" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ng-click="atModCtrl.openCalendar(1)"></span></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div uib-timepicker ng-model="atModCtrl.stepItem.EndDate" show-meridian="ismeridian"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>{{'TABLE.STATUS'|translate}}</label>
+                            <select class="form-control atur-tahapan-selesai" ng-model="atModCtrl.stepItem.Status" ng-options="item.RefID as (item.Name | translate) for item in atModCtrl.statusOption"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <!--
+                <div class="row">
+                -->
+                <!--
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" ng-selected="flowInfo.status" ng-model="flowInfo.status">
+                            <option value=0>Belum Mulai</option>
+                            <option value=1>Proses</option>
+                            <option value=2>Selesai</option>
+                        </select>
+                    </div>
+                </div>
+                -->
+                <!-- dijadikan komen karena belum berfungsi -->
+                <!--
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tanggal Rentang Waktu</label>
+                        <select class="form-control" ng-selected="flowInfo.rentang" ng-model="flowInfo.rentang" ng-change="ubahRentang(flowInfo.rentang)">
+                            <option value=0>Flexible</option>
+                            <option value=1>Fixed</option>
+                        </select>
+                    </div>
+                </div>
+                -->
+                <!--
+                </div>
+                -->
+                <!-- Tidak Digunakan di JWSR-->
+                <!--div id="divEvaluator" ng-show="flowInfo.jenis_form_id == 5 || flowInfo.jenis_form_id == 15" class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-10 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                            <div class="form-group">
+                                <label>Pilih Evaluator</label>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <select class="form-control" style="width: 325px; min-width: 300px;" ng-model="panitiaTerpilih" ng-options="val.nama_pegawai for val in listPanitia" ng-change="changeEvaluator(panitiaTerpilih)">
+                                        </select>
+                                    </div>
+                                    <button ng-click="tambahEvaluator()" class="btn btn-flat btn-primary"><i class="fa fa-plus-circle"></i>&nbsp;Tambah Evaluator</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="divListEvaluator" class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" width="20px">No.</th>
+                                            <th class="center-vertical">Nama Evaluator</th>
+                                            <th class="center-vertical" style="width: 180px; min-width: 180px;">Jabatan</th>
+                                            <th class="center-vertical" style="width: 100px; min-width: 100px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ev in evaluator">
+                                            <td class="middle-vertical">{{$index+1}}</td>
+                                            <td class="middle-vertical">{{ev.nama_pegawai}}</td>
+                                            <td class="middle-vertical">{{ev.jabatan_nama}}</td>
+                                            <td class="center-vertical">
+                                                <a ng-click="hapusEvaluator(ev.panitia_id)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-times"></i>&nbsp;Hapus</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div-->
+                <br />
+                <!--div id="divApproval" class="container-fluid" ng-show="flowInfo.tanpa_approval != true && (flowInfo.jenis_form_id == 19 || flowInfo.jenis_form_id == 20 || flowInfo.jenis_form_id == 21) && type_pengadaan =='NON_LELANG'"-->
+                    <!--  || flowInfo.jenis_form_id == 23 -->
+                    <!-- Tidak Digunakan di JWSR-->
+                    <!--div class="row">
+                        <div class="col-md-10 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Pilih Approval</label>
+                                        <div class="form-group">
+                                            <select class="form-control" ng-model="approvalTerpilih" ng-options="val.nama_pegawai for val in listCalonApprover" ng-change="changeApproval(approvalTerpilih)">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Approval ke-</label>
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <select class="form-control" style="width: 100px;" ng-model="approvalLevel" ng-change="changeLevel(approvalLevel)">
+                                                    <option value=1>I</option>
+                                                    <option value=2>II</option>
+                                                </select>
+                                            </div>
+                                            <button ng-click="tambahApproval()" class="btn btn-flat btn-primary"><i class="fa fa-plus-circle"></i>&nbsp;Tambah Approval</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div-->
+                    <!--
+                    <div id="divListApproval" class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                            <div class="table table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="center-vertical" width="20px">No.</th>
+                                            <th class="center-vertical">Nama Approval</th>
+                                            <th class="center-vertical" style="width: 200px; min-width: 200px;">Jabatan</th>
+                                            <th class="center-vertical" style="width: 50px; min-width: 50px;">Approval ke-</th>
+                                            <th class="center-vertical" style="width: 100px; min-width: 100px;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="ev in approval">
+                                            <td class="middle-vertical">{{$index+1}}</td>
+                                            <td class="middle-vertical">{{ev.nama_pegawai}}</td>
+                                            <td class="middle-vertical">{{ev.jabatan_nama}}</td>
+                                            <td class="middle-vertical text-center">{{ev.level == 2 ? 'II': 'I'}}</td>
+                                            <td class="center-vertical">
+                                                <a class="btn btn-xs btn-primary btn-flat" ng-if="ev.status_approval_id == 1">&nbsp;{{ev.status}}</a>
+                                                <a class="btn btn-xs btn-success btn-flat" ng-if="ev.status_approval_id == 2">&nbsp;{{ev.status}}</a>
+                                                <a class="btn btn-xs btn-danger btn-flat" ng-if="ev.status_approval_id == 3">&nbsp;{{ev.status}}</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-if="tampilkanAlert" class="alert alert-info alert-dismissable">
+                            <i class="fa fa-info"></i>
+                            <button ng-click="hilangkanAlert()" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <b>Perhatian!</b> Anda harus memasukkan tanggal batas akhir.
+                        </div>
+                    </div>
+                </div>
+                -->
+                <!--
+                <br />
+                <div class="row" ng-if="flowInfo.jenis_form_id == 9 || flowInfo.jenis_form_id == 12 || flowInfo.jenis_form_id == 21">
+                    <div ng-if="flowInfo.jenis_form_id == 9" class="col-md-6 well center-block" style="float: none!important;">
+                        <div class="form-group">
+                            <label>Jenis Sanggahan</label>
+                            <select class="form-control" ng-selected="flowInfo.offline_online" ng-model="flowInfo.offline_online">
+                                <option value=0>Offline</option>
+                                <option value=1>Online</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div ng-if="flowInfo.jenis_form_id == 12" class="col-md-6 well center-block" style="float: none!important;">
+                        <div class="form-group">
+                            <label>Jenis Aanwijzing</label>
+                            <select class="form-control" ng-selected="flowInfo.offline_online" ng-model="flowInfo.offline_online">
+                                <option value=0>Offline</option>
+                                <option value=1>Online</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div ng-if="flowInfo.jenis_form_id == 21" class="col-md-6 well center-block" style="float: none!important;">
+                        <div class="form-group">
+                            <label>Jenis Negosiasi</label>
+                            <select class="form-control" ng-selected="flowInfo.offline_online" ng-model="flowInfo.offline_online">
+                                <option value=0>Offline</option>
+                                <option value=1>Online</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="tampilkanOpsiPublish === true" class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                        <div class="form-group" style="padding-left: 50px;">
+                            <div class="checkbox">
+                                <label>
+                                    <input class="uacheck" type="checkbox" value={{flowInfo.publish}} ng-checked="flowInfo.publish">
+                                    Publish Detail Informasi Ke Rekanan
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="tampilkanOpsiTerendah === true" class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                        <div class="form-group" style="padding-left: 50px;">
+                            <div class="checkbox">
+                                <label>
+                                    <input class="uacheckrendah" type="checkbox" value={{flowInfo.show_terendah}} ng-checked="flowInfo.show_terendah">
+                                    Tampilkan nilai penawaran terendah
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="tampilkanOpsiTanpaApproval === true && !sudahAdaApproval" class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+                        <div class="form-group" style="padding-left: 50px;">
+                            <div class="checkbox">
+                                <label>
+                                    <input class="uachecknoapp" type="checkbox" ng-model="flowInfo.tanpa_approval">
+                                    Tanpa Proses Approval
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-success" ng-click="atModCtrl.save()" title="{{'SIMPAN'|translate}}"><i class="fa fa-save"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-primary" ng-click="atModCtrl.cancel()" title="{{'BATAL'|translate}}"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>

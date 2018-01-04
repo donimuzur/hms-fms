@@ -1,0 +1,418 @@
+<ol class="breadcrumb" style='margin-top: 10px'>
+    <li><a href="/#/dashboard-vendor">Beranda</a></li>
+    <li><a class="active">Pengingat Aktivitas</a></li>
+</ol>
+
+<!--
+<div id="divTolak" ng-if="$root.isVerifikasi.tolak_verifikasi == true" class="row" style="padding-top: 0px!important;">
+    <div class="col-md-8 center-block" style="float: none!important;">
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <span><strong>Peringatan !</strong> Proses Verifikasi Rekanan Anda ditolak dengan alasan <b>{{tolak}}</b>, Mohon segera dilengkapi data-data untuk persyaratan verifikasi</span>
+        </div>
+    </div>
+</div>
+
+<div id="divSIUP" ng-if="SIUP_expired == true" class="row" style="padding-top: 0px!important;">
+    <div class="col-md-8 center-block" style="float: none!important;">
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <span><strong>Peringatan !</strong> Dimohon untuk memperpanjang SIUP/SIUI/SIUJK perusahaan anda.</span>
+        </div>
+    </div>
+</div>
+
+<div id="divUbahData" class="row" ng-if="ubahDataApproved == true" style="padding-top: 0px!important;">
+    <div class="col-md-10 center-block" style="float: none!important;">
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <span><strong>Peringatan !</strong> Anda diizinkan menambah/mengubah data profil perusahaan hingga batas akhir tanggal <b>{{tanggalBolehUbahData.akhir_ubah_data}}</b></span>
+        </div>
+    </div>
+</div>
+
+<div id="divBL" class="row" ng-if="blacklist.flag_blacklist == true" style="padding-top: 0px!important;">
+    <div class="col-md-12 center-block" style="float: none!important;">
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <span><strong>PERHATIAN !</strong> Anda telah dikenakan masa blacklist hingga <b ng-if="blacklist.masa_blacklist == 'Selamanya'">selamanya</b> <b ng-if="blacklist.masa_blacklist != 'Selamanya'">{{blacklist.masaakhir_blacklist}}</b> karena <b>{{blacklist.alasan_blacklist}}</b><br/>
+                Sebelum masa blacklist berakhir, anda tidak dapat mendaftar ataupun mengikuti Pengadaan. Untuk info lebih lanjut, hubungi admin Pengadaan.
+            </span>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="container-fluid" ng-init="PACtrl.init()" style="padding-top: 0px!important;">
+    <!-- MULAI ACTIVITY REMINDER -->
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="afta-font text-center" style="margin-bottom: 0px;">Pengadaan Yang Diikuti</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="row">
+                <div class="col-md-12">
+                    <label style="padding-top: 15px;" class="control-label text-center center-block">Filter:</label>
+                </div>
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group" style="padding-top: 15px; margin-bottom: 0px;">
+                        <div class="text-center" style="width: auto!important; float: none!important;">
+                            <div class="form-inline" style="padding-top: 5px;">
+                                <input ng-show=false type="checkbox" ng-change="centangStatus(PACtrl.statusTercentang)" ng-model="statusTercentang" ng-checked="statusTercentang"><!--&nbsp;Status &nbsp;&nbsp;-->
+                                <input type="checkbox" ng-change="centangNamaLelang(PACtrl.namaLelangTercentang)" ng-model="namaLelangTercentang" ng-checked="namaLelangTercentang">&nbsp;Nama Pengadaan &nbsp;&nbsp;
+                                <input type="checkbox" ng-change="centangNamaTahapan(PACtrl.namaTahapanTercentang)" ng-model="namaTahapanTercentang" ng-checked="namaTahapanTercentang">&nbsp;Nama Tahapan &nbsp; &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="PACtrl.statusTercentang" class="row">
+                <div class="col-md-4 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label style="padding-top: 5px;" class="col-md-4 control-label text-left">Pilih Status :</label>
+                        <div class="col-md-8">
+                            <select ng-model="PACtrl.selectedStatus" ng-selected="PACtrl.selectedStatus" class="form-control" style="margin-bottom: 0px;">
+                                <option value="5">Semua</option>
+                                <option value="2">Selesai</option>
+                                <option value="1">Proses</option>
+                                <option value="0">Belum Mulai</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="namaLelangTercentang" class="row" style="padding-top: 15px;"><!-- Pasang ng-if disini bro -->
+                <div class="col-md-5 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <input ng-model="srcNamaLelang" type="text" placeholder="Cari Nama Pengadaan..." class="form-control" style="margin-bottom: 0px!important;">
+                </div>
+            </div>
+
+            <div ng-show="namaTahapanTercentang" class="row" style="padding-top: 15px;"><!-- Pasang ng-if disini bro -->
+                <div class="col-md-3 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <input ng-model="srcNamaTahapan" type="text" placeholder="Cari Nama Tahapan..." class="form-control" style="margin-bottom: 0px!important;">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="text-center">
+                <a ng-click="cariPaket()" class="btn btn-primary text-center" style="margin-top: 15px;" title="Cari"><i class="fa fa-search"></i>&nbsp;</a>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row" style="padding-bottom: 15px;">
+        <div class="col-md-12">
+            <a ui-sref="pengumuman-pengadaan" class="btn btn-xs btn-primary" title="Anda Bisa Meng-Klik Menu Pengumuman"><i class="fa fa-chevron-right"></i>&nbsp;</a>
+        </div>
+    </div>
+    <div ng-show="totalItems > 10">
+<!--        <pagination id="countPaket" total-items="totalItems" page="currentPage" items-per-page="10" 
+                    max-size="maxSize" on-select-page="jLoad(page)"></pagination>-->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table table-responsive">
+                <table id="tabelPaket" class="table table-bordered table-striped" style="margin-bottom: 0px!important;">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="vertical-align: middle; width:'20px';">No.</th>
+                            <th class="text-center" style="vertical-align: middle;">Nama Pengadaan</th>
+                            <th class="text-center" style="vertical-align: middle;">Tanggal Pengumuman</th>
+                            <th class="text-center" style="vertical-align: middle; width: 360px; min-width: 360px;">Tahapan</th>
+                            <th class="text-center" style="vertical-align: middle; width: 50px; min-width: 50px;">Status</th>
+                            <!-- <th class="text-center" style="vertical-align: middle; width: 110px; min-width: 110px;">Status</th> -->
+                            <th class="text-center" style="vertical-align: middle;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="paket.length < 1"><td colspan="6" class="text-center">Belum ada lelang yang diikuti</td></tr>
+                        <tr ng-repeat="pkt in paket">
+                            <td style="vertical-align: middle;">{{currentPage > 1 ? (maxSize * (currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                            <td style="vertical-align: middle;">{{pkt.nama_paket}}</td>
+                            <td class="text-center" style="vertical-align: middle;">{{pkt.tahapanLama.length <= 0 ? $root.convertTanggalWaktu(pkt.tahapanSekarang[0].tgl_mulai) : $root.convertTanggalWaktu(pkt.tahapanLama[0].tgl_mulai)}}</td>
+                            <td  style="vertical-align: middle;">
+                                <div class="row">
+                                    <div ng-if="pkt.tahapanTersingkir.length == 0 && pkt.tahapanSekarang.length > 0">
+                                        <div ng-repeat="z in pkt.tahapanSekarang" class="col-md-12">
+                                            <i class="fa fa-caret-right"></i>&nbsp;{{z.nama_tahapan}}
+                                        </div>
+                                    </div>
+                                    <div ng-if="pkt.tahapanTersingkir.length == 0 && pkt.tahapanSekarang.length == 0 && pkt.tahapanLama.length > 0 && pkt.tahapanNext.length == 0">
+                                        <div  class="col-md-12">
+                                            <i class="fa fa-caret-right"></i>&nbsp;{{pkt.tahapanLama[pkt.tahapanLama.length - 1].nama_tahapan}}
+                                        </div>
+                                    </div>
+                                    <div ng-if="pkt.tahapanTersingkir.length == 0 && pkt.tahapanSekarang.length == 0 && pkt.tahapanNext.length > 0">
+                                        <div  class="col-md-12">
+                                            <i class="fa fa-caret-right"></i>&nbsp; Belum Dimulai {{pkt.tahapanNext[0].nama_tahapan}}
+                                        </div>
+                                    </div>
+                                    <div ng-if="pkt.tahapanTersingkir.length == 0 && pkt.tahapanSekarang.length == 0 && pkt.tahapanLama.length == 0 && pkt.tahapanNext.length == 0">
+                                        <div  class="col-md-12">
+                                            <i class="fa fa-caret-right"></i>&nbsp; Belum Dimulai
+                                        </div>
+                                    </div>
+                                    <div ng-if="pkt.tahapanTersingkir.length > 0">
+                                        <div  class="col-md-12">
+                                            <i class="fa fa-caret-right"></i>&nbsp;{{pkt.tahapanTersingkir[0].nama_tahapan}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td class="text-center" style="vertical-align: middle;"> 
+                                <span ng-if="pkt.pemenang == 1" >Pemenang</span>
+                                <span ng-if="pkt.tahapanTersingkir.length > 0" >Tidak Lolos</span>
+                                <span ng-if="pkt.tahapanTersingkir.length == 0 && pkt.pemenang == 0" >Berlangsung</span>
+                            </td>
+                            <!-- <td class="text-center" style="vertical-align: middle;">
+                                <div class="row">
+                                    <div ng-repeat="z in pkt.tahapanSekarang" class="col-md-12" style="padding-top: 3px!important; padding-bottom: 3px!important;">
+                                        <label ng-if="z.status === 0" class="label label-sm label-warning"><i class="fa fa-exclamation-triangle"></i>&nbsp;Belum Mulai</label>
+                                        <label ng-if="z.status === 1" class="label label-sm label-primary"><i class="fa fa-spinner"></i>&nbsp;Proses</label>
+                                        <label ng-if="z.status === 2" class="label label-sm label-success"><i class="fa fa-check-square-o"></i>&nbsp;Selesai</label>
+                                    </div>
+                                </div>
+                            </td> -->
+                            <td class="text-center" style="vertical-align: middle;">
+                                <a class="btn btn-flat btn-sm btn-warning" ng-disabled="is_verified == false || SIUP_expired == true || blacklist.flag_blacklist == true" ng-click="viewTahapan(pkt.paket_lelang_id)" title="Lihat Detail"><i class="fa fa-external-link"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="totalItems > 10">
+                    <pagination id="countPaket" total-items="totalItems" page="currentPage" items-per-page="10" 
+                                max-size="maxSize" on-select-page="jLoad(page)"></pagination>
+                    <br/><label>Total Data : {{totalItems}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="afta-font text-center" style="margin-top: 0px; margin-bottom: 0px;">Pekerjaan Yang Dimenangkan</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important; padding-top: 15px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="control-label text-center center-block">Filter:</label>
+                    <div style="width: auto;">
+                        <div class="center-block text-center">
+                            <div class="form-inline" style="padding-top: 5px;">
+                                <input type="checkbox" ng-change="centangNamaPekerjaan(namaPekerjaanTercentang)" ng-model="namaPekerjaanTercentang"  ng-checked="namaPekerjaanTercentang">&nbsp;Nama Pekerjaan &nbsp;&nbsp;
+                                <input type="checkbox" ng-change="centangWaktuMulai(waktuMulaiTercentang)" ng-model="waktuMulaiTercentang"  ng-checked="waktuMulaiTercentang">&nbsp;Rentang Waktu Mulai &nbsp;&nbsp;
+                                <input type="checkbox" ng-change="centangWaktuSelesai(waktuSelesaiTercentang)" ng-model="waktuSelesaiTercentang"  ng-checked="waktuSelesaiTercentang">&nbsp;Rentang Waktu Selesai &nbsp; &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="namaPekerjaanTercentang === true" class="row" style="padding-top: 15px;">
+                <div class="col-md-8 col-sm-10 col-xs-12 center-block" style="float: none!important;">
+                    <input type="text" ng-model="srcTextPekerjaan" placeholder="Cari Nama Pekerjaan.." class="form-control" style="margin-bottom: 0px!important;">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8 center-block" style="float: none!important;">
+                    <div ng-show="waktuMulaiTercentang" class="row" style="padding-top: 15px;"> <!-- Pasang ng-if disini -->
+                        <div class="col-md-4">
+                            <label style="padding-top: 5px;">Rentang Waktu Mulai</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <datepicker-abc button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" date-format="dd/MM/yyyy">
+                                    <input ng-model="waktuMulai1" ng-required="true" class="form-control" type="text" />
+                                </datepicker-abc>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <datepicker-abc button-prev="<i class='fa fa-arrow-left'></i>" button-next="<i class='fa fa-arrow-right'></i>" date-format="dd/MM/yyyy">
+                                    <input ng-model="waktuMulai2" ng-required="true" class="form-control" type="text" />
+                                </datepicker-abc>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="waktuSelesaiTercentang" class="row" style="padding-top: 15px;"> <!-- Pasang ng-if disini -->
+                        <div class="col-md-4">
+                            <label style="padding-top: 5px;">Rentang Waktu Selesai</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input ng-model="waktuSelesai1" ng-required="true" ambiltanggal class="form-control" type="text"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input ng-model="waktuSelesai2" ng-required="true" ambiltanggal class="form-control" type="text"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default"><i class="fa fa-calendar-o"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 15px;">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <a ng-click="cariPekerjaan()" class="btn btn-primary text-center" title="Cari"><i class="fa fa-search"></i>&nbsp;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div ng-show="totalItems > 10">
+        <pagination id="countPekerjaan" total-items="totalItemsPekerjaan" page="currentPagePekerjaan" items-per-page="10" 
+                    max-size="maxSizePekerjaan" on-select-page="jLoadPekerjaan(page)"></pagination>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table table-responsive">
+                <table id="tabelPekerjaan" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <!--<th style="width: 50px; min-width: 30px; text-align: center; vertical-align: middle;">No.</th>-->
+                            <th class="text-center" style="vertical-align: middle;" width="20px">No.</th>
+                            <th class="text-center" style="vertical-align: middle;">Nama Pekerjaan</th>
+                            <th class="text-center" style="vertical-align: middle; width: 180px; min-width: 180px;">Tgl Mulai Pekerjaan</th>
+                            <th class="text-center" style="vertical-align: middle; width: 180px; min-width: 180px;">Tgl Selesai Sesuai Kontrak</th>
+                            <th class="text-center" style="vertical-align: middle;">Sisa Waktu Pekerjaan</th>
+                            <th class="text-center" style="vertical-align: middle; width: 240px; min-width: 240px;">Ket. Pekerjaan</th>
+                            <th class="text-center" style="vertical-align: middle;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="pekerjaan.length < 1"><td colspan="6" class="text-center">Belum ada lelang yang diikuti</td></tr>
+                        <tr ng-repeat="pe in pekerjaan">
+                            <!--<td class="text-center" style="vertical-align: middle;"></td>-->
+                            <td style="vertical-align: middle;">{{currentPagePekerjaan > 1 ? (maxSizePekerjaan * (currentPagePekerjaan - 1)) + $index + 1 : $index + 1}}</td>
+                            <td style="vertical-align: middle;">{{pe.nama_paket}}</td>
+                            <td class="text-center">{{pe.tgl_mulai_kontrak_formatted}}</td>
+                            <td class="text-center">{{pe.tgl_selesai_kontrak_formatted}}</td>
+                            <td class="text-center">{{pe.sisa_kerja > 0 ? pe.sisa_kerja : 0}} Hari</td>
+                            <td style="vertical-align: middle;">{{pe.keterangan_pekerjaan}}</td>
+                            <td class="text-center" style="vertical-align: middle;">
+                                <a ng-click="lihatCatatanPekerjaan(pe)" class="btn btn-flat btn-sm btn-warning" role="button" title="Detail Catatan Pekerjaan"><i class="fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div ng-show="countPekerjaan > 10">
+                    <pagination id="countPekerjaan" total-items="totalItemsPekerjaan" page="currentPagePekerjaan" items-per-page="10" 
+                                max-size="maxSizePekerjaan" on-select-page="jLoadPekerjaan(page)"></pagination>
+                    <br/><label>Total Data : {{countPekerjaan}}</label>
+                </div>
+                <div class="row">
+                    <hr />
+                    <div ng-show="totalItems > 10">
+                            <pagination id="countPekerjaan" total-items="totalItemsPekerjaan" page="currentPagePekerjaan" items-per-page="10" 
+                                        max-size="maxSizePekerjaan" on-select-page="jLoadPekerjaan(page)"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="lihatCatatanPekerjaan.html">
+<div class="modal-content" ng-init="init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="afta-font" style="margin-top: 5px; margin-bottom: 5px;">Catatan Pekerjaan {{namaPaket}}</h3>  
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 center-block" >
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h4 class="box-title afta-font">1. Ketepatan Waktu Pendistribusian</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="text-align: center;">No.</th>
+                                                <th class="text-center" style="text-align: center;">Keterangan</th>
+                                                <th class="text-center" style="text-align: center;">Sanksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in catatan1">
+                                                <td class="text-center">{{$index + 1}}</td>
+                                                <td class="text-center"> {{data.keterangan}} </td>
+                                                <td class="text-center"> {{data.sanksi}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-12 center-block" >
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h4 class="box-title afta-font">2. Kesesuaian Spesifikasi</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table id="example2" class="table table-bordered table-striped table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="text-align: center;">No.</th>
+                                                <th class="text-center" style="text-align: center;">Keterangan</th>
+                                                <th class="text-center" style="text-align: center;">Sanksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in catatan2">
+                                                <td class="text-center">{{$index + 1}}</td>
+                                                <td class="text-center"> {{data.keterangan}} </td>
+                                                <td class="text-center"> {{data.sanksi}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="modal-footer">
+        <button ng-click="batal()" type="button" class="btn btn-flat btn-danger" title="Kembali"><i class="fa fa-reply"></i>&nbsp;</button>
+    </div>
+</div>
+</script>

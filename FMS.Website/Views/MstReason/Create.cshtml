@@ -1,0 +1,88 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.ReasonItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Reason Create</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
+        @using (Html.BeginForm("Create", "MstReason"))
+            {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Document Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, "Select", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Reason<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Reason, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Penalty<span class="red">*</span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.IsPenalty, new { @id = "CheckisPenalty", onclick = "CheckIsPenalty()" })
+                            @if (Model.IsPenalty == true)
+                            {
+                                @Html.Label("Yes", new { @id = "lblIsPenalty" })
+                            }
+                            else
+                            {
+                                @Html.Label("No", new { @id = "lblIsPenalty" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Display Penalty For Employee</label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.PenaltyForEmplloyee)
+                            @Html.Label("Yes")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Display Penalty For Fleet</label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.PenaltyForFleet)
+                            @Html.Label("Yes")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstReason" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<script type="text/javascript">
+    function CheckIsPenalty() {
+        if (document.getElementById('CheckisPenalty').checked == true) {
+            document.getElementById('lblIsPenalty').innerHTML = "Yes";
+            
+            $('#PenaltyForEmplloyee').prop('disabled', false);
+            $('#PenaltyForFleet').prop('disabled', false);
+        }
+        else {
+            document.getElementById('lblIsPenalty').innerHTML = "No";
+            $('#PenaltyForEmplloyee').prop('disabled', true);
+            $('#PenaltyForFleet').prop('disabled', true);
+        }
+    }
+</script>

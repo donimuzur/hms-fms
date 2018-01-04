@@ -1,0 +1,29 @@
+{
+	"SEARCH_PLACEHOLDER": "Search...",
+	"SEARCH": "Search",
+	"ADD": "Add",
+	"TITLE": "Procurement Method",
+	"TABLE": {
+		"NO": "No.",
+		"METHOD_NAME": "Method Name",
+		"PROCUREMENT_TYPE": "Procurement Type",
+		"STATUS": "Status",
+		"GOODSORSERVICE": "Goods or Service"
+	},
+	"ACTIVE": "Active",
+	"INACTIVE": "Inactive",
+	"TOTAL_DATA": "Data Total",
+	"DETAIL": "Detail",
+	"EDIT": "Edit",
+	"ACTIVATE": "Activate",
+	"INACTIVATE": "Inactivate",
+	"STAGE_TYPE": "Stage Type",
+	"STAGE": "Stage",
+	"NO_DATA": "Data not found.",
+	"PROCUREMENT_METHOD_NAME": "Procurement Method Name",
+	"SAVE": "Save",
+	"STAGES_SEQUENCE": "Stages Sequence",
+	"STAGES_SEQUENCE_LIST": "Stages Sequence List",
+	"PROCUREMENT_METHOD_DETAIL": "Procurement Method Detail",
+	"CLOSE": "Close"
+}

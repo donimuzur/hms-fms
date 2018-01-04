@@ -1,0 +1,103 @@
+<div ng-init="init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li ng-if="menuhome === 1"><a href="#/home-admin" >Home</a></li>
+            <li><a  class="active" >Sertifikat Pra Kualifikasi</a></li>
+        </ol>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 center-block" style="float: none!important;">
+                    <div class="box box-primary">                        
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12 post post-header-line" style="padding-bottom: 20px;">
+                                    <h3 class="text-left afta-font">
+                                        Sertifikat Prakualifikasi
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom: 15px;">
+                                <div class="col-md-6">
+                                    <span class="pull-left">
+                                        <i class="fa fa-clock-o"></i><b> Tanggal Mulai : </b> {{tgl_mulai}}
+                                    </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="pull-right">
+                                        <i class="fa fa-clock-o"></i><b> Tanggal Selesai : </b> {{tgl_selesai}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row post-content">
+                                <div class="col-md-12">
+                                    <div class="table table-responsive">
+                                        <table class="table table-bordered table-striped" id="example2">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="5" class="text-center">Data Rekanan</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center" width='20px'>No.</th>
+                                                    <th class="text-center" >Nama Rekanan</th>
+                                                    <th class="text-center" width="15%">Tgl.Permintaan</th>
+                                                    <th class="text-center" width="15%">Tgl.Cetak</th>
+                                                    <th class="text-center" style="width: 160px; min-width: 160px;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-if="dokumen.length < 1"><td colspan="5" class="text-center"><i>Belum ada Vendor yang Memasukkan Dokumen</i></td></tr>
+                                                <tr ng-repeat="dok in dokumen">
+                                                    <td style="vertical-align: middle;">{{$index + 1}}</td>
+                                                    <td style="vertical-align: middle;">{{dok.nama_perusahaan}}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center" style="vertical-align: middle;">
+                                                        <a ng-click="printdata(dok.rekanan_id)" class="btn btn-flat btn-sm btn-success" title="Lihat Dokumen Kualifikasi">
+                                                            <i class="fa fa-print"></i> 
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="row" id="printdata" ng-show="false">
+    <div class="col-md-10 center-block">
+        <div class="row">
+            <div class="row">
+                <div class="col-md-12 text-center ">
+                    <img src="../assets/admin/img/logo_vale.png" width="60" class="img-responsive" style="margin-left: 30px!important;padding-bottom: 10px;"/>
+                    <h3 class="afta-font text-center">SERTIFIKAT KELULUSAN PRA-KUALIFIKASI</h3>
+                </div>
+                <div class="col-md-12 text-center" style="margin-top: 30px!important;">
+                    <h4 class="text-center">PANITIA PRAKUALIFIKASI PT VALE INDONESIA TBK DENGAN INI MENYATAKAN BAHWA, </h4>
+                </div>
+                <div class="col-md-12 text-center">
+                    <h3 class="afta-font"><strong>PT. MALIFAX</strong></h3>
+                </div>
+                <div class="col-md-12 text-center">
+                    <h4>Telah lulus dalam tahapan Pra-Kualifikasi 2016.</h4>
+                </div>
+                <div class="col-md-12 text-center">
+                    <h4>Detail Kualifikasi, Klasifikasi dan Kemampuan Teknis adalah sebagaimana tercantum dalam bagian 
+                        belakang sertifikat</h4>
+                </div>
+                <div class="col-md-12 text-center" style="margin-top: 35px!important; margin-bottom: 35px!important">
+                    Soroako, 16 May 2016 
+                </div>
+                <div class="col-md-12 text-center">
+                    <u class="paddingtopbot10"><b> Deddy Aulia</b> </u> <br/>
+                    Senior Manager of Procurement Contract and Warehouse
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

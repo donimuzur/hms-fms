@@ -1,0 +1,234 @@
+﻿{
+  "MENUS": {
+    "HOME": "Home",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "ANNOUNCEMENT": "Tender Announcement",
+    "PUBLISH": "Pemenang Pengadaan",
+    "REGISTER": "Sign Up",
+    "PROCUREMENT": {
+      "MAIN": "Proses Pengadaan",
+      "STEP": "Tahapan Lelang",
+      "METHOD": "Metode Lelang",
+      "PACKAGE": "Paket Pengadaan",
+      "TEAM": "Susunan Panitia",
+      "REQUISITION": "Purchase Requisition",
+      "EVALUATION": {
+        "CRITERIA": "Kriteria Evaluasi",
+        "METHOD": "Metode Evaluasi"
+      },
+      "DATA": "Data Lelang",
+      "REPORT": {
+        "MAIN": "Laporan Pengadaan",
+        "VENDOR": "Data Rekanan",
+        "REALIZATION": "Realisasi Pengadaan",
+        "CHRONOLOGY": "Kronologi Pengadaan",
+        "CHART": "Grafik Laporan",
+        "VENDOR_REPORT": "Rekapitulasi Data Rekanan",
+        "REALIZATION_CHART": "Grafik Realisasi Pengadaan"
+      },
+	  "CONTRACTPLANNING" : "Verifikasi Contract Planning",
+	  "TENDER" : "Pengadaan",
+	  "TENDERCOM" : "Tender Committee"
+    },
+    "VENDOR": {
+      "MAIN": "Data Rekanan",
+      "MANAGE": "Kelola Data Rekanan",
+      "OPENLOCK": "Buka Lock",
+      "BLACKLIST": "Data Blacklist",
+      "INACTIVEDATA": "Rekanan Tidak Aktif",
+      "PERFORMANCE": "Performa Rekanan",
+      "WARNING_LETTER": "Surat Peringatan",
+      "COMPLAINT":  "Data Pengaduhan"
+    },
+    "ROLES": "Pengaturan Hak Akses",
+    "LOGS": {
+      "MAIN": "Log Akses",
+      "VENDOR": "Log Akses Rekanan",
+      "ADMIN": "Log Akses Admin"
+    },
+    "FORCE_LOGOFF": "Force Logoff",
+    "CATALOG": {
+      "MAIN": "Master Katalog",
+      "CATEGORY": "Kategori Barang",
+      "VENDOR": "Katalog Vendor"
+    },
+    "CONFIG": {
+      "MAIN": "Konfigurasi Sistem",
+      "FILEUPLOAD": "Konfigurasi Upload",
+      "EMAIL": "Konfigurasi Email",
+      "DOCUMENT": "Template Dokumen"
+    },
+    "MASTER": {
+      "MAIN": "Data Master",
+      "BUSINESS_CATEGORY": "Bidang Usaha",
+      "BUSINESS_ENTITY": "Badan Usaha",
+      "RATES": "Nilai Tukar",
+      "POSITION": "Jabatan Pegawai",
+      "USER": "Data Pegawai",
+      "DEPARTMENT": "Departemen",
+      "NEWS": "Berita",
+      "BUDGET": "Anggaran",
+      "FREIGHT_COST": "Freight Cost",
+      "LIBRARY": "Pustaka",
+      "ASSOCIATION": "Asosiasi",
+      "QUESTIONNAIRE": "Kuisioner",
+      "APPROVAL": "Setting Approval",
+      "STATE": "Data Provinsi",
+      "ADMIN_TEMPLATE": "Template Panitia"
+    },
+    "REQUISITION": {
+      "MAIN": "Master Requisition",
+      "CONTRACT": "Contract Requisition",
+      "PURCHASE": "Purchase Requisition",
+	  "RFQVHS" : "VHS/FPA Requisition",
+	  "UPLOADPR" : "Upload PR",
+	  "FORMPURCHASE" : "Form Purchase Requisition"
+    },
+    "PROJECT": {
+      "MAIN": "Proyek",
+      "DATA": "Data Proyek",
+      "MONITORING": "Monitoring Proyek"
+    },
+    "PREQUALIFICATION": {
+      "MAIN": "Pra-Kualifikasi",
+      "CRITERIA": "Kriteria Prakualifikasi",
+      "METHOD": "Metode Prakualifikasi",
+      "MANAGE": "Atur Prakualifikasi",
+      "DATA": "Data Prakualifikasi"
+    },
+
+    "COMPANYDATA": {
+      "MAIN": "Company Data",
+      "ADMINISTRATION": "Administration",
+      "BUSINESSLICENSE": "License",
+      "DEED": "Akta Pendirian",
+      "COMPANYPERSON": "Company Organization",
+      "BALANCE": "Balance",
+      "STUFFS": "Data Perlengkapan",
+      "EXPERIENCE": "Experiences",
+      "SENDVERIFICATION": "Verification",
+      "EXPERTS":  "Experts",
+	  "BANKDETAIL": "Bank Detail",
+	  "AGREEMENTLETTER": "Agreement",
+	  "OTHERDOCUMENT": "Other Documents"
+    },
+    "VENDOR_TENDER": {
+      "MAIN": "Informasi Tender",
+      "TENDERANNOUNCEMENT":  "Pengumuman Tender"
+    }
+  },
+  "ROUTES": {
+    "HOME": "Beranda",
+    "NEWS": "Berita",
+    "HOMEADMIN": "Admin Dashboard",
+    "ADMINLOGIN": "Admin Login"
+  },
+  "ERRORS": {
+    "UNAUTHORIZED": {
+      "TITLE": "401 - Akses Tidak Diizinkan",
+      "MESSAGE": "Anda tidak diizinkan mengakses halaman ini, silahkan login dahulu!"
+    },
+    "FORBIDDEN": {
+      "TITLE": "403 - Akses Ditolak",
+      "MESSAGE": "Anda tidak diizinkan mengakses halaman ini, silahkan login dahulu!"
+    },
+    "INTERNAL_ERROR": {
+      "TITLE": "500 - Kesalahan pada Server API",
+      "MESSAGE": "Server sedang bermasalah, silahkan coba kembali!"
+    },
+    "REQUEST_FAILED": {
+      "TITLE": "500 - Request ke Server API gagal!",
+      "MESSAGE": "Request ke server bermasalah, silahkan coba kembali!"
+    },
+    "UPLOAD_FAILED": {
+      "TITLE": "500 - Request ke Server API gagal!",
+      "MESSAGE": "Upload gagal!, silahkan coba kembali!"
+    },
+    "PARAMETER_INCOMPLETE": {
+      "TITLE": "400 - Request ke Server API gagal!",
+      "MESSAGE":  "Parameter tidak lengkap!"
+    }
+  },
+  "NOTIFICATION": {
+    "LOGIN": {
+      "SUCCESS": {
+        "MESSAGE": "Login berhasil!",
+        "TITLE": "200 - Autentikasi Berhasil!"
+      }
+    }
+  },
+  "LOADERS": {
+    "LOADING_MENUS": "Memuat menu . . . ",
+    "LOADING_REGION": "Memuat data region . . .",
+    "LOADING_COUNTRY": "Memuat data negara . . .",
+    "LOADING_STATE": "Memuat data provinsi . . .",
+    "LOADING_CITY": "Memuat data kota . . .",
+    "LOADING_DISTRICT": "Memuat data kecamatan . . .",
+    "LOADING_BUSINESS": "Memuat data badan usaha . . .",
+    "LOADING_CURRENCY": "Memuat data mata uang . . .",
+    "LOADING_UPLOAD_CONFIG": "Memuat data filter . . .",
+    "LOADING_UPLOAD_FILE": "Mengunggah berkas . . .",
+    "LOADING_OFFICE_TYPE": "Memuat jenis kantor administrasi . . .",
+    "LOADING_STOCK_TYPE": "Memuat data satuan saham . . .",
+    "LOADING_PHONE": "Memuat data kode negara . . .",
+    "CHECKING_NPWP":  "Memvalidasi NPWP . . .",
+    "CHECKING_TENDER":  "Checking Tender Code . . ."
+  },
+  "FORM": {
+    "VALIDATION_ERRORS": {
+      "REQUIRED": {
+        "MESSAGE": "Tidak dapat menyimpan data, form tidak lengkap!",
+        "TITLE": "Form Tidak Valid"
+      },
+      "NPWP_USED": {
+        "MESSAGE": "NPWP sudah didaftarkan! Silahkan coba dengan NPWP lain",
+        "TITLE": "NPWP Tidak Valid"
+      }
+    },
+    "VALIDATION_OK": {
+      "NPWP_AVAILABLE": {
+        "MESSAGE": "NPWP bisa digunakan untuk mendaftar!",
+        "TITLE": "NPWP Valid"
+      },
+      "LEGAL_AVAILABLE": {
+        "MESSAGE": "Legal Number cannot to Sign Up",
+        "TITLE": "Legal Number Valid"
+      }
+    },
+    "AGE": "Stockholder's age minimum 17 years old",
+    "MAX_PERSEN":  "Stock's nominal maximum 100 %",
+    "MIN_PERSEN": "Stock's nominal less than 100 %",
+    "LEGAL":  "Legal Type",
+    "NOTNULL": "Stock's nominal should not 0",
+    "TENDERVALID":  "Tender code valid",
+    "EXPIREDTENDER":  "Tender code already expired",
+    "TENDERNOTVALID":  "Tender code is not valid",
+    "NOTCOMPLETE":  "Data not complete"
+  },
+  "MODULE": {
+    "VENDOR": {
+      "REGISTRATION": "Modul Pendaftaran Rekanan"
+    }
+  },
+  "PAGE": {
+    "VENDOR": {
+      "REGISTRATION": {
+        "TITLE": "Pendaftaran Rekanan",
+        "ID": "KTP",
+        "NPWP": "NPWP",
+        "SKT": "SKT/SIUP/IUJP"
+      }
+    }
+  },
+  "BUTTONS": {
+    "ADD": "Add",
+    "EDIT": "Ubah",
+    "DELETE": "Hapus",
+    "OK": "Ok",
+    "CANCEL": "Batal",
+    "SUBMIT":  "Kirim"
+  },
+  "SIZE_UNIT_KB": "KB",
+  "SIZE_UNIT_MB": "MB"
+}

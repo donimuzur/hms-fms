@@ -1,0 +1,38 @@
+﻿<div class="modal-content" ng-init="uploadSOWDModalCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="uploadSOWDModalCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">{{uploadSOWDModalCtrl.title | translate}} {{'SOW.DOKUMEN_SOW' | translate}}</h3>
+    </div>
+    <form role="form" name="formAdd">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label>{{'NAMA_DOK' | translate}}</label>
+                        <input type="text" ng-model="uploadSOWDModalCtrl.sowDoc.DocName" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 center-block" style="float: none!important;">
+                    <div class="form-group">
+                        <label class="control-label">
+                            {{'FILE_DOK' | translate}}
+                            <small> ( <span ng-repeat="ft in uploadSOWDModalCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Max. {{uploadSOWDModalCtrl.idUploadConfigs[0].Size}} {{uploadSOWDModalCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> ) </small>
+                            {{uploadSOWDModalCtrl.sowDoc.DocUrl ? '**' : ''}}
+                        </label>
+                        <input type="file" class="form-control" ng-file-select="uploadSOWDModalCtrl.selectUpload(fileUpload)"
+                               ng-model="fileUpload" required accept="{{uploadSOWDModalCtrl.idFileTypes}}" />
+                        <label ng-if="uploadSOWDModalCtrl.sowDoc.DocUrl" class="control-label">
+                            <small>** {{'SOW.EDIT_FILE_NOTE' | translate}}</small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-flat btn-danger" ng-click="uploadSOWDModalCtrl.cancel()" title="{{ 'BATAL' | translate}}"><i class="fa fa-times-circle"></i></button>
+            <button type="button" class="btn btn-flat btn-success" ng-click="uploadSOWDModalCtrl.save()" title="{{ 'SIMPAN' | translate}}"><i class="fa fa-save"></i> </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,126 @@
+﻿<div class="modal-content" ng-init="FormIzinCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="FormIzinCtrl.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Data Ijin Usaha</h3>
+    </div>
+    <form name="myForm">
+    <div class="modal-body">
+        <div class="row" style="padding-top: 20px!important;">
+            <div class="col-md-11 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Nomor ({{FormIzinCtrl.licensiname}}) *</label>
+                            <input type="text" class="form-control" ng-model="FormIzinCtrl.dataLicensi.LicenseNo" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Jenis Ijin *</label>
+                            <div class="form-control-static">
+                                <label>{{FormIzinCtrl.licensiname}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Tanggal Mulai Berlaku *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly class="form-control" size="16" style="background-color: #ffffff;"  type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[0]" ng-model="FormIzinCtrl.dataLicensi.IssuedDate" ng-click="FormIzinCtrl.openCalendar(0)" ng-change="FormIzinCtrl.selectedIssuedDate(FormIzinCtrl.dataLicensi.IssuedDate)" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Tanggal Berakhir *</label>
+                            <div class="input-group date form_datetime">
+                                <input readonly required class="form-control" size="16" style="background-color: #ffffff;"  type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="FormIzinCtrl.isCalendarOpened[1]" ng-model="FormIzinCtrl.dataLicensi.ExpiredDate" ng-click="FormIzinCtrl.openCalendar(1)"  ng-change="FormIzinCtrl.selectedExpiredDate(FormIzinCtrl.dataLicensi.ExpiredDate) || FormIzinCtrl.selectedExpiredDate2(FormIzinCtrl.dataLicensi.ExpiredDate) " />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="FormIzinCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Instansi Pemberi</label>
+                            <input type="text" class="form-control" ng-model="FormIzinCtrl.dataLicensi.IssuedBy"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label">{{'FORM.PROVINSI' | translate}}</label>
+                        <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedState"
+                                ng-options="item as item.Name for item in FormIzinCtrl.listState"
+                                ng-change="FormIzinCtrl.changeState()"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">{{'FORM.KOTA' | translate}}</label>
+                        <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedCities"
+                                ng-options="item as item.Name for item in FormIzinCtrl.listCities"
+                                ng-change="FormIzinCtrl.changeCities()"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" ng-if="FormIzinCtrl.isNominal === true">
+                            <label>Kualifikasi</label>
+                            <select class="form-control input-sm" ng-model="FormIzinCtrl.selectedClasification"
+                                    ng-options="item as item.Name | translate for item in FormIzinCtrl.listClasification"
+                                    >
+                                <option value="" disabled selected>{{ 'FORMINPUTRFQ.CMB_CLASIFICATION.LABEL' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" ng-if="FormIzinCtrl.isNominal === true">
+                            <label>Nominal Modal Usaha</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">Rp</span>
+                                <input type="text" currency-mask class="form-control" placeholder="Nominal Modal Usaha" ng-model="FormIzinCtrl.dataLicensi.CapitalAmount">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">
+                                {{ 'FORM.LABEL_UPLOAD' | translate}}
+                                <small> ( <span ng-repeat="ft in FormIzinCtrl.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{FormIzinCtrl.idUploadConfigs[0].Size}} {{FormIzinCtrl.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small>
+                            </label>
+                            <input type="file" class="form-control" ng-file-select="FormIzinCtrl.selectUpload()"
+                                   ng-model="FormIzinCtrl.fileUpload" name="ownerIDFile" required accept="{{FormIzinCtrl.idFileTypes}}" />
+                        </div>
+                    </div>
+                    <div class="col-md-6" ng-show="(FormIzinCtrl.dataLicensi.DocumentURL != null)">
+                        <div class="form-group" >
+                            <label>Dokumen yang Telah Diupload</label><br />
+                            <a href="{{FormIzinCtrl.folderFile + FormIzinCtrl.dataLicensi.DocumentURL}}" target="_BLANK" class="btn btn-sm btn-primary" title="Lihat Dokumen Ijin Usaha"><i class="fa fa-download"></i>&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <textarea class="form-control" ng-model="FormIzinCtrl.dataLicensi.Remark"
+                                        rows="10"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-danger" ng-click="FormIzinCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-success" ng-click="FormIzinCtrl.savedata()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+    </form>
+</div>

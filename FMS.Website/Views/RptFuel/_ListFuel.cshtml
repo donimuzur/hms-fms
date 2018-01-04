@@ -1,0 +1,77 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.RptFuelModel
+
+<table id="tbRptFuel" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Police Number</th>
+            <th>Liter</th>
+            <th>Odometer</th>
+            <th>Usage</th>
+            <th>KM/Lt</th>
+            <th>Cost</th>
+            <th>Fuel Type</th>
+            <th>Cost Center</th>
+            <th>Function</th>
+            <th>Manufacturer</th>
+            <th>Model</th>
+            <th>Series</th>
+            <th>Body Type</th>
+            <th>Vehicle Type</th>
+            <th>Vehicle Usage</th>
+            <th>Location</th>
+            <th>Regional</th>
+            <th>Report Month</th>
+            <th>Report Year</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.RptFuelItem)
+        {
+            <tr>
+                <td>@Html.Raw(data.PoliceNumber)</td>
+                <td>@string.Format("{0:N0}", data.Liter)</td>
+                <td>@string.Format("{0:N0}", data.Odometer)</td>
+                <td>@string.Format("{0:N0}", data.Usage)</td>
+                <td>@string.Format("{0:N0}", data.kmlt)</td>
+                <td>@string.Format("{0:N0}", data.Cost)</td>
+                <td>@Html.Raw(data.FuelType)</td>
+                <td>@Html.Raw(data.CostCenter)</td>
+                <td>@Html.Raw(data.Function)</td>
+                <td>@Html.Raw(data.Manufacturer)</td>
+                <td>@Html.Raw(data.Models)</td>
+                <td>@Html.Raw(data.Series)</td>
+                <td>@Html.Raw(data.BodyType)</td>
+                <td>@Html.Raw(data.VehicleType)</td>
+                <td>@Html.Raw(data.VehicleUsage)</td>
+                <td>@Html.Raw(data.Location)</td>
+                <td>@Html.Raw(data.Regional)</td>
+                <td>@Html.Raw(data.Month)</td>
+                <td>@Html.Raw(data.ReportYear)</td>
+            </tr>
+        }
+    </tbody>
+</table>

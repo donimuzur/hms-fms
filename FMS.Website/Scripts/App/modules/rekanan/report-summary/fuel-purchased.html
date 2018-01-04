@@ -1,0 +1,182 @@
+﻿<section class="content-header">
+    <h1 class="page-title"><i class="fa fa-calendar-check-o"></i> Fuel Purchased (In Liters)</h1>
+</section>
+
+<section class="content" ng-init="SUMDashboardCtrl.init()">
+
+    <div class="row">
+        <div class="col-md-12">
+                <!-- BEGIN CHART PORTLET-->
+                <div class="panel with-nav-tabs panel-primary">
+                    <div class="panel-heading">
+                        <div class="pull-left hide">
+                            <h3 class="panel-title">Vehicle by Function</h3>
+                            <small class="block-help">(In Liters)</small>
+                        </div>
+                        <ul class="nav nav-tabs pull-right">
+                            <li class="active">
+                                <a data-target="#diagram" data-toggle="tab">Show Chart</a>
+                            </li>
+                            <li>
+                                <a data-target="#tabel" data-toggle="tab">Show Table</a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="diagram">
+                                <div id="chart_l" class="chart" style="height: 500px;"> </div>
+                            </div>
+                            <div class="tab-pane" id="tabel">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>BY FUNCTION</th>
+                                            <th>Nov-14</th>
+                                            <th>Dec-14</th>
+                                            <th>Jan-15</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>SALES</th>
+                                            <td>3,899</td>
+                                            <td>3,915</td>
+                                            <td>3,841</td>
+                                        </tr>
+                                        <tr>
+                                            <td>MARKETING</th>
+                                            <td>1,089</td>
+                                            <td>1,079</td>
+                                            <td>1,104</td>
+                                        </tr>
+                                        <tr>
+                                            <td>OPERATIONS</th>
+                                            <td>635</td>
+                                            <td>634</td>
+                                            <td>634</td>
+                                        </tr>
+                                        <tr>
+                                            <td>OTHERS</th>
+                                            <td>276</td>
+                                            <td>274</td>
+                                            <td>275</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td>5,899</td>
+                                            <td>5,902</td>
+                                            <td>5,854</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END CHART PORTLET-->
+        </div>
+    </div>
+
+    <!--<script src="assets/js/app.min.js" type="text/javascript"></script>
+    <script src="assets/plugin/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
+    <script src="assets/plugin/amcharts/amcharts/serial.js" type="text/javascript"></script>
+    <script src="assets/plugin/amcharts/amcharts/pie.js" type="text/javascript"></script>
+    <script src="assets/plugin/amcharts/amcharts/radar.js" type="text/javascript"></script>
+    <script src="assets/plugin/amcharts/amcharts/themes/light.js" type="text/javascript"></script>
+    <script src="assets/plugin/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>
+    <script src="assets/plugin/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>
+    <script src="assets/js/stats.js" type="text/javascript"></script>-->
+
+    <!-- Chart code -->
+    <script>
+        var chart = AmCharts.makeChart("chart_l", {
+      "type": "serial",
+      "addClassNames": true,
+      "theme": "light",
+      "autoMargins": false,
+      "marginLeft": 30,
+      "marginRight": 8,
+      "marginTop": 10,
+      "marginBottom": 26,
+      "balloon": {
+        "adjustBorderColor": false,
+        "horizontalPadding": 10,
+        "verticalPadding": 8,
+        "color": "#ffffff"
+      },
+
+      "dataProvider": [ {
+        "year": 2009,
+        "income": 23.5,
+        "expenses": 21.1
+      }, {
+        "year": 2010,
+        "income": 26.2,
+        "expenses": 30.5
+      }, {
+        "year": 2011,
+        "income": 30.1,
+        "expenses": 34.9
+      }, {
+        "year": 2012,
+        "income": 29.5,
+        "expenses": 31.1
+      }, {
+        "year": 2013,
+        "income": 30.6,
+        "expenses": 28.2,
+        "dashLengthLine": 5
+      }, {
+        "year": 2014,
+        "income": 34.1,
+        "expenses": 32.9,
+        "dashLengthColumn": 5,
+        "alpha": 0.2,
+        "additional": "(projection)"
+      } ],
+      "valueAxes": [ {
+        "axisAlpha": 0,
+        "position": "left"
+      } ],
+      "startDuration": 1,
+      "graphs": [ {
+        "alphaField": "alpha",
+        "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+        "fillAlphas": 1,
+        "title": "Income",
+        "type": "column",
+        "valueField": "income",
+        "dashLengthField": "dashLengthColumn"
+      }, {
+        "id": "graph2",
+        "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+        "bullet": "round",
+        "lineThickness": 3,
+        "bulletSize": 7,
+        "bulletBorderAlpha": 1,
+        "bulletColor": "#FFFFFF",
+        "useLineColorForBulletBorder": true,
+        "bulletBorderThickness": 3,
+        "fillAlphas": 0,
+        "lineAlpha": 1,
+        "title": "Expenses",
+        "valueField": "expenses",
+        "dashLengthField": "dashLengthLine"
+      } ],
+      "categoryField": "year",
+      "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "tickLength": 0
+      },
+      "export": {
+        "enabled": true
+      }
+    } );
+    </script>
+
+</section>

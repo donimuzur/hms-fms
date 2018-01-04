@@ -1,0 +1,72 @@
+﻿<div class="modal-content" ng-init="DetailFormEvaluator.init()">
+    <div class="modal-header">
+        <button type="button" ng-click="DetailFormEvaluator.batal()" class="close" data-dismiss="modal" title="Keluar"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Form</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center">
+                    <h3 class="afta-font" style="margin-top: 0px; margin-bottom: 20px;">Detail Summary Hasil Evaluasi</h3>
+                </div>
+            </div>
+        </div>
+        <div id="divNamaEvaluator" class="row">
+            <div class="col-md-12">
+                <h4>Oleh : {{DetailFormEvaluator.detail.employee.FullName}}</h4>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table table-responsive">
+                        <table id="tabelSkor" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="center-vertical" colspan="3">Data Rekanan</th>
+                                    <th class="center-vertical" colspan="4">Detail Evaluasi</th>
+                                </tr>
+                                <tr>
+                                    <th class="center-vertical">No</th>
+                                    <th class="center-vertical">Nama Rekanan</th>
+                                    <th class="center-vertical" style="width: 80px; min-width: 80px;">Total Score</th>
+                                    <th class="center-vertical" style="width: 200px; min-width: 200px;">Kriteria Evaluasi</th>
+                                    <th class="center-vertical" style="width: 85px; min-width: 85px;">Score</th>
+                                    <th class="center-vertical" style="width: 85px; min-width: 85px;">Bobot</th>
+                                    <th class="center-vertical" style="width: 85px!important; min-width: 85px!important;">SubTotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="pe in DetailFormEvaluator.list">
+                                    <td class="center-vertical">{{$index+1}}</td>
+                                    <td class="middle-vertical">{{pe.tech.VendorName}}</td>
+                                    <td class="center-vertical">{{pe.tech.Score}}</td>
+                                    <td class="middle-vertical">
+                                        <span ng-repeat="ay in pe.detail">{{$index+1}}. {{ay.CriteriaName}}<br /></span>
+                                    </td>
+                                    <td class="center-vertical">
+                                        <span ng-repeat="ay in pe.detail">{{ay.Score}}<br /></span>
+                                    </td>
+                                    <td class="center-vertical">
+                                        <span ng-repeat="ay in pe.detail">{{ay.weight}}<br /></span>
+                                    </td>
+                                    <td class="center-vertical">
+                                        <span ng-repeat="ay in pe.detail">{{ay.SubTotal}}<br /></span>
+                                    </td>
+                                </tr>
+                                <tr ng-if="DetailFormEvaluator.list.length===0"><td colspan="7">Data Tidak Ada</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary"
+                ng-click="DetailFormEvaluator.batal()"
+                data-dismiss="modal" title="Kembali">
+            <i class="fa fa-arrow-circle-left"></i>&nbsp;
+        </button>
+    </div>
+</div>
+

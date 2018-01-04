@@ -1,0 +1,29 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="viewUploadCtrl.close()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font" id="myModalLabel">Detail Dokumen</h3>
+    </div>
+    <div class="modal-body" ng-init="init()">
+        <div class="row">
+            <div class="col-md-10 center-block" style="float: none!important;">
+                <div class="row well">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>Nama Dokumen</dt>
+                            <dd>{{viewUploadCtrl.item.DocumentName}}</dd>
+                            <dt>Nomor Dokumen</dt>
+                            <dd>{{viewUploadCtrl.item.DocumentNo}}</dd>
+                            <dt>Masa Berlaku</dt>
+                            <dd>{{viewUploadCtrl.ValidDateConverted}}</dd>
+                            <dt>Dokumen</dt>
+                            <dd><a href="{{viewUploadCtrl.folderFile + viewUploadCtrl.item.DocumentUrl}}" target="BLANK" class="label label-sm label-primary" title="Download"><i class="fa fa-download"></i>&nbsp;&nbsp;</a></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-primary" ng-click="viewUploadCtrl.close()" title="Tutup"><i class="fa fa-arrow-circle-left"></i>&nbsp;</button>
+    </div>
+</div>

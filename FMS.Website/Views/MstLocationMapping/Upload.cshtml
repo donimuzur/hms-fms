@@ -1,0 +1,155 @@
+﻿@model FMS.Website.Models.LocationMappingModel
+@using FMS.Core
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Location Mapping Upload</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
+        @using (Html.BeginForm("Upload", "MstLocationMapping", FormMethod.Post))
+            {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterLocationMapping.xlsx">here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="tbUpload" class="table table-bordered dataTables table-striped"> 
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Location</th>
+                        <th>Address</th>
+                        <th>Basetown</th>
+                        <th  style="min-width: 100px">Region</th>
+                        <th>Zone Sales</th>
+                        <th>Zone Price List</th>
+                        <th>Validity From</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action("Index","MstLocationMapping")" title="Cancel" class="btn">Cancel</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script type="text/javascript">
+
+    $(function () {
+        // DataTable
+        var table = $('#tbUpload').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+    });
+    $('#btnSave').prop('disabled', true);
+
+    function createColumn(text) {
+        return '<td>' + text + '</td>';
+    }
+    var uploaditems = [];
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDecimal(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+
+    $('#btnupload').click(function () {
+        uploadXmlFile();
+    });
+
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "MstLocationMapping")';
+        var fileName = $('[name="upload"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("upload").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("upload").files[i];
+            formData.append("upload", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                    var dt = new Date(parseInt(uploaditems[i].ValidFrom.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+
+                    var tr = '<tr>' +
+                createColumn(i + 1) +
+                createColumnWithHiddenField(uploaditems[i].Location, 'Model.Details[' + i + '].Location') +
+                createColumnWithHiddenField(uploaditems[i].Address, 'Model.Details[' + i + '].Address') +
+                createColumnWithHiddenField(uploaditems[i].Basetown, 'Model.Details[' + i + '].Basetown') +
+                createColumnWithHiddenField(uploaditems[i].Region, 'Model.Details[' + i + '].Region') +
+                createColumnWithHiddenField(uploaditems[i].ZoneSales, 'Model.Details[' + i + '].ZoneSales') +
+                createColumnWithHiddenField(uploaditems[i].ZonePriceList, 'Model.Details[' + i + '].ZonePriceList') +
+                createColumnWithHiddenField(str, 'Model.Details[' + i + '].ValidFrom') +
+                createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
+                '</tr>';
+                    $('#tb-upload-excel').append(tr);
+                    error += uploaditems[i].ErrorMessage;
+                }
+                if (error == '')
+                {
+                    $('#btnSave').prop('disabled', false);
+                }
+                else {
+                    $('#btnSave').prop('disabled', true);
+                }
+            }
+        });
+    };
+</script>

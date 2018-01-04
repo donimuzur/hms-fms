@@ -1,0 +1,189 @@
+﻿<section ng-init="GoodsAwardCtrl.init()" class="content" style="overflow: visible;">
+    <ol class="breadcrumb">
+        <li><a href="#/home-admin">Home</a></li>
+        <li><a class="active">Penetapan Pemenang</a></li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12 center-block" style="float: none!important;">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">Tahapan Penetapan Pemenang</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>Tanggal Mulai: {{GoodsAwardCtrl.detail[0].StartDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Tanggal Selesai: {{GoodsAwardCtrl.detail[0].EndDate| date: "dd-MM-yyyy h:mm"}}</label>
+                        </div>
+                        <div class="col-md-9">
+                            <label>Tender: {{GoodsAwardCtrl.detail[0].TenderName}}</label>
+                        </div>
+                    </div>
+
+                    <div class="row pull-right">
+                        <div class="col-md-12">
+                            <button ng-disabled="GoodsAwardCtrl.count === 0" type="button" class="btn btn-flat btn-sm btn-primary" ng-click="GoodsAwardCtrl.Export('#tableToExport')">
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Nama Vendor</th>
+                                            <th class="text-center">Total Penawaran</th>
+                                            <th class="text-center">No PO</th>
+                                            <th class="text-center">Tanggal PO</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-if="GoodsAwardCtrl.count !== 0" ng-repeat="eval in GoodsAwardCtrl.detail">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td class="center-vertical">{{eval.VendorName}}</td>
+                                            <td class="center-vertical">{{eval.TotalNego | currency: ""+ labelcurr +" "}}</td>
+                                            <td class="center-vertical"><input type="text" ng-model="eval.NoPO" /></td>
+                                            <td class="center-vertical">
+                                                <div class="input-group date form_datetime">
+                                                    <input required class="form-control" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="GoodsAwardCtrl.isCalendarOpened[$index]" ng-model="eval.PODate" ng-click="GoodsAwardCtrl.openCalendar($index)" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="GoodsAwardCtrl.openCalendar($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+
+                                                <button title="Send Approval" ng-if="eval.flagEmp == 0 && eval.Status ==='Draft'&& eval.flagTemp == 1" class="btn btn-sm btn-primary " ng-click="GoodsAwardCtrl.sendToApprove(eval)">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                                <button title="Approve" ng-if="(eval.flagEmp == 2) || (eval.flagEmp == 1 && eval.Status !== undefined) " class="btn btn-sm btn-primary" ng-click="GoodsAwardCtrl.detailApproval(1, eval)">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                                <button ng-if="eval.ID !== 0 && PPGVHSCtrl.flagSave === true " type="button" class="btn btn-flat btn-sm btn-warning" ng-click="GoodsAwardCtrl.edit(eval)" title="Upload File">
+                                                    <i class="fa fa-upload" aria-hidden="true"></i>
+                                                </button>
+                                                <a ng-if="eval.ID !== 0 && eval.DocumentUrl != null" target="_blank" type="button" class="btn btn-flat btn-sm btn-success" title="Download File" href="{{PPGVHSCtrl.folderFile+eval.DocumentUrl}}">
+                                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                                </a>
+                                                <button ng-if="eval.Status !== 'Draft'" class="btn btn-sm btn-success" title="Detail Approval" ng-click="GoodsAwardCtrl.detailApproval(2, eval)">
+                                                    <i class="fa fa-sitemap"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="GoodsAwardCtrl.count === 0">
+                                            <td colspan= 6> Data Tidak Ada </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-10"></div>
+                            <div class="col-md-2 text-right">
+                                <button ng-if="GoodsAwardCtrl.flagSave === true && GoodsAwardCtrl.detail[0].ApprovalStatusReff == null" type="button" class="btn btn-flat btn-sm btn-primary" ng-click="GoodsAwardCtrl.simpan()">
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan
+                                </button>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <!--
+                        <div class="col-md-12">
+                                <pagination total-items="totalItems" page="currentPage" items-per-page="10"
+                                                                max-size="maxSize" on-select-page="jLoad2(page)"ng-show="totalItems>10"></pagination>
+                        </div>
+                        -->
+                        <div class="col-md-10">
+                            <pagination total-items="totalItems" page="currentPage" items-per-page="10" max-size="maxSize" on-select-page="jLoad2(page)" ng-show="totalItems > 10"></pagination>
+                        </div>
+                        <div ng-if="userBisaMengatur" class="col-md-2">
+                            <div class="col-md-12 turun-15" style="float:right"><label>Total Data : {{totalItems}}</label></div>
+                        </div>
+
+                    </div>
+
+                    <div ng-hide="true" class="row" style="margin-top: 20px;">
+                        <div class="col-md-12">
+                            <div id="tableToExport" class="table table-responsive" style="padding-bottom: 20px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Identifier</th>
+                                            <th class="text-center">Vendor</th>
+                                            <th class="text-center">Item Text</th>
+                                            <th class="text-center">Order Type</th>
+                                            <th class="text-center">Purch. Organization</th>
+                                            <th class="text-center">Purchasing Group</th>
+                                            <th class="text-center">Plant</th>
+                                            <th class="text-center">Storage Location</th>
+                                            <th class="text-center">Payment Terms</th>
+                                            <th class="text-center">Currency</th>
+                                            <th class="text-center">Incoterms1</th>
+                                            <th class="text-center">Incoterms2</th>
+                                            <th class="text-center">Quotation Day</th>
+                                            <th class="text-center">Quotation</th>
+                                            <th class="text-center">Your Reference</th>
+                                            <th class="text-center">Our Reference</th>
+                                            <th class="text-center">Sarbox</th>
+                                            <th class="text-center">Header Text</th>
+                                            <th class="text-center">Purchase Requisition</th>
+                                            <th class="text-center">Item</th>
+                                            <th class="text-center">Order Quantity</th>
+                                            <th class="text-center">Net Order Price</th>
+                                            <th class="text-center">Unit Price</th>
+                                            <th class="text-center">Delivery Date</th>
+                                            <th class="text-center">Tax code</th>
+                                            <th class="text-center">Concession Category</th>
+                                            <th class="text-center">Harmonized Code</th>
+                                            <th class="text-center">Pl. Deliv. Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="eval in GoodsAwardCtrl.vendor">
+                                            <td class="center-vertical">{{$index + 1}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.VendorCode}}</td>
+                                            <td class="text-center">{{eval.itemPR.ShortText}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.itemPR.PurchasingOrg}}</td>
+                                            <td class="text-center">{{eval.itemPR.PurchGroup}}</td>
+                                            <td class="text-center">{{eval.itemPR.Plant}}</td>
+                                            <td class="text-center">{{eval.itemPR.StorLocation}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.VendorCurency}}</td>
+                                            <td class="text-center">{{eval.Incoterms1}}</td>
+                                            <td class="text-center">{{eval.Incoterms2}}</td>
+                                            <td class="text-center">{{eval.rfq.ExpiredDay}}</td>
+                                            <td class="text-center">{{eval.Quotation}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{eval.RFQGoodsCode}}</td>
+                                            <td class="text-center">{{eval.RequisnItem}}</td>
+                                            <td class="text-center">{{eval.Quantity}}</td>
+                                            <td class="text-center">{{eval.TotalValue}}</td>
+                                            <td class="text-center">{{eval.UnitPrice}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

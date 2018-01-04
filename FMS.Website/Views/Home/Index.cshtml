@@ -1,29 +1,177 @@
-﻿<div ng-controller="HomeController">
-    <div class="jumbotron">
-        <h1>{{title}}</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    </div>
+﻿@using FMS.Core
+@model FMS.Website.Models.BaseModel
 
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FMS - Fleet Management System</title>
+    <!-- <link rel="shortcut icon" href="assets/images/favico.png" type="image/x-icon" /> -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="starcom">
+    <meta name="author" content="VTI Indonesia">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0,target-densitydpi=device-dpi, user-scalable=no"> -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+
+    <!-- Load Style -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="~/Content/css/app.css" media="screen">
+
+    <!-- Load Scripts -->
+    @*@Scripts.Render("~/bundles/custom.js")*@
+
+    @Scripts.Render("~/Scripts/js/main.min.js")
+    @Scripts.Render("~/Scripts/js/popper.js")
+    @Scripts.Render("~/Scripts/js/bootstrap.min.js")
+    @Scripts.Render("~/Scripts/js/scripts.js")
+
+  
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="landing">
+    <!-- content -->
+    <div class="main-content">
+        <div class="container head-landing">           
+             <div class="logo animated fadeIn pull-left">
+                  <img src="~/Content/images/logo-hms.png" alt="">
+                  <h5>Fleet Management System</h5>
+             </div>
+             <ul class="menu pull-right">
+                  <li><a href="@Url.Action("PersonalDashboard", "TraCsf")">Personal Dashboard</a></li>
+                  @if (Model.CurrentLogin.UserRole != Enums.UserRole.User) { 
+                      <li><a href="@Url.Action("Index","MstFleet")">Master Data</a></li>
+                      <li><a href="@Url.Action("Index", "RptCfmIdle")">Report</a></li>
+                  }
+                  <li><a href="#">Help</a></li>
+             </ul>            
         </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Selection</h4>
+                            </div>
+                            <img src="~/Content/images/key.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraCsf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Selection</h4>
+                            </div>
+                            <img src="~/Content/images/key.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                </div>
+                <div class="col">
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Relocation</h4>
+                            </div>
+                            <img src="~/Content/images/plang.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraCrf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Relocation</h4>
+                            </div>
+                            <img src="~/Content/images/plang.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                </div>
+                <div class="col">
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Termination</h4>
+                            </div>
+                            <img src="~/Content/images/hammer.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraCtf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
+                            <div class="text-layer">
+                                <h4>Car Termination</h4>
+                            </div>
+                            <img src="~/Content/images/hammer.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <a href="@Url.Action("CreateCcf", "TraCcf", new { IsPersonalDashboard = true })" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/4.jpg")')">
+                        <div class="text-layer">
+                            <h4>Car Complaint</h4>
+                        </div>
+                        <img src="~/Content/images/cc.png" alt="" class="icon-item">
+                        <div class="blue-layer"></div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="@Url.Action("Index","TraCaf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/3.jpg")')">
+                        <div class="text-layer">
+                            <h4>Car Accident</h4>
+                        </div>
+                        <img src="~/Content/images/ca.png" alt="" class="icon-item">
+                        <div class="blue-layer"></div>
+                    </a>
+                </div>
+                <div class="col">
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+                    {
+                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
+                            <div class="text-layer">
+                                <h4>Temporary Car</h4>
+                            </div>
+                            <img src="~/Content/images/clock.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index","TraTemporary")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
+                            <div class="text-layer">
+                                <h4>Temporary Car</h4>
+                            </div>
+                            <img src="~/Content/images/clock.png" alt="" class="icon-item">
+                            <div class="blue-layer"></div>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center animated fadeIn">
+                    <p class="cright">© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
+                </div>
+            </div>         
         </div>
     </div>
-</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+﻿<div ng-init="ContractSignOffController.init()">
+	<section class="content">
+		<div class="row">
+			<div class="col-md-12 center-block" style="float: none!important;">
+				<div class="box box-info">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-5">
+								<h3 class="afta-font judul-datatabel">Penandatanganan Kontrak</h3>
+							</div>
+						</div>
+                        <div class="row" ng-if="ContractSignOffController.Status !== undefined">
+                            <div class="col-md-4">
+                                <label>Status: {{ContractSignOffController.Status}}</label>
+                            </div>
+
+                        </div>
+							<div class="row">
+								<div class="col-md-4">
+									<label>Nama Vendor</label>
+									<input type="text" class="form-control" disabled="disabled" ng-model="ContractSignOffController.vendName" />
+								</div>
+								<div class="col-md-4">
+									<label>No. Kontrak</label>
+									<input type="text" class="form-control" ng-model="ContractSignOffController.ContractNo" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<label>Mulai Kontrak</label>
+									<div class="input-group date form_datetime">
+										<input readonly required class="form-control" size="10" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="{{'CLOSE'|translate}}" is-open="ContractSignOffController.isStartDateOpened" ng-model="ContractSignOffController.ContractStartDate" ng-click="ContractSignOffController.openStartDate()" />
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-default" ng-click="ContractSignOffController.openStartDate()">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<label>Selesai Kontrak</label>
+									<div class="input-group date form_datetime">
+										<input readonly required class="form-control" size="10" type="text" uib-datepicker-popup="dd-MMM-yyyy" close-text="{{'CLOSE'|translate}}" is-open="ContractSignOffController.isEndDateOpened" ng-model="ContractSignOffController.ContractEndDate" ng-click="ContractSignOffController.openEndDate()" />
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-default" ng-click="ContractSignOffController.openEndDate()">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-8">
+									<label>Upload Kontrak <small> ( <span ng-repeat="ft in ContractSignOffController.idUploadConfigs">{{ft.Name}}{{$last ? '' : ', '}}</span><span> / Size : {{ContractSignOffController.idUploadConfigs[0].Size}} {{ContractSignOffController.idUploadConfigs[0].SizeUnitName | translate}}</span> )</small></label>
+									<input type="file" class="form-control" ng-file-select="ContractSignOffController.selectUpload()" ng-model="ContractSignOffController.filePath" required accept="{{ContractSignOffController.idFileTypes}}" />
+									<div ng-if="ContractSignOffController.UploadURL != null" class="input-group-btn">
+										<a class="btn btn-sm btn-primary" target="_BLANK" href="{{ContractSignOffController.folderFile+ContractSignOffController.UploadURL}}">
+											<i class="fa fa-arrow-circle-o-down"></i> Download File
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-8">
+									<label>Keterangan</label>
+									<textarea ng-model="ContractSignOffController.Summary" class="form-control" rows="3" placeholder="{{'REMARKS_PLACEHOLDER' | translate }}"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<button class="btn btn-sm btn-success" ng-click="ContractSignOffController.uploadFile()">
+										<i class="fa fa-save"></i> Simpan
+									</button>
+                                    <!--<button ng-if="((ContractSignOffController.flagEmp != 2 && ContractSignOffController.flagEmp != 0) && ContractSignOffController.Status !== undefined)" class="btn btn-sm btn-primary" ng-click="ContractSignOffController.sendToApprove()">
+                                        <i class="fa fa-check"></i> Approve
+                                    </button>-->
+                                    <button ng-if="ContractSignOffController.flagEmp == 0 && ContractSignOffController.Status ==='Draft'&& ContractSignOffController.flagTemp == 1" class="btn btn-sm btn-primary " ng-click="ContractSignOffController.sendToApprove()">
+                                        <i class="fa fa-check"></i> {{'SENDAPPROVE' | translate}}
+                                    </button>
+                                    <button ng-if="(ContractSignOffController.flagEmp == 2) || ((ContractSignOffController.flagEmp != 2 && ContractSignOffController.flagEmp != 0) && ContractSignOffController.Status !== undefined) " class="btn btn-sm btn-primary" ng-click="ContractSignOffController.detailApproval(1)">
+                                        <i class="fa fa-check"></i> Approve
+                                    </button>
+								</div>
+                                <div class="col-md-6 pull-right">
+                                    <button ng-if="ContractSignOffController.Status !== 'Draft'" class="btn btn-sm btn-primary" ng-click="ContractSignOffController.detailApproval(2)">
+                                        <i class="fa fa-sitemap"></i> Detail Approval
+                                    </button>
+                                </div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

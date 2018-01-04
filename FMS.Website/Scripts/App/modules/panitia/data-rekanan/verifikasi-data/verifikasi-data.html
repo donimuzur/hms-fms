@@ -1,0 +1,179 @@
+<!-- Main content -->
+<section class="content" ng-init="verifikasiDataCtrl.init()">
+    <ol class="breadcrumb">
+        <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+        <li><a>{{'BREADCRUMB.DATA_VENDOR_MANAGE' | translate}}</a></li>
+    </ol>
+    <div class="row center" >
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-info">
+                <div class="box-body">
+                    <div class="row">
+                        <form method="post" role="form" ng-submit="tenderStepCtrl.pencarian()">
+                            <div class="col-md-5">
+                                <h3 class="afta-font judul-datatabel">{{'BREADCRUMB.DATA_VENDOR_MANAGE' | translate}}</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="cmbStatus" name="cmbStatus" ng-model="verifikasiDataCtrl.Status" class="form-control" ng-change="verifikasiDataCtrl.show()"
+                                    ng-options="item as item.Name | translate for item  in verifikasiDataCtrl.listDropdown">
+                                    <option value="" selected disabled>
+                                        -- Cari Status Perusahaan --
+                                    </option>
+                                    </select>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Cari Perusahaan" ng-model="verifikasiDataCtrl.nCompany" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-flat btn-primary" ng-click="verifikasiDataCtrl.show()">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <pagination total-items="verifikasiDataCtrl.totalItems" page="verifikasiDataCtrl.currentPage" items-per-page="10" ng-show="verifikasiDataCtrl.totalItems > 10"
+                                        max-size="verifikasiDataCtrl.fullSize" on-select-page="verifikasiDataCtrl.jLoad(page)"></pagination>
+                        </form>
+                    </div>
+                    <div class="row" style="padding-right: 15px; padding-top: 10px">
+                        <div class="col-md-8 col-md-offset-4 col-sm-10 col-xs-12">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                    <div class="input-group date form_datetime">
+                                        <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="verifikasiDataCtrl.isCalendarOpened[0]" ng-model="verifikasiDataCtrl.verifikasi.StartDate" ng-click="verifikasiDataCtrl.openCalendar(0)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="verifikasiDataCtrl.openCalendar(0)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <label style="padding-top: 5px;">s/d</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group date form_datetime">
+                                        <input readonly required class="form-control" style="background-color: #ffffff;" size="16" type="text" uib-datepicker-popup="dd-MM-yyyy" close-text="{{'TUTUP'|translate}}" is-open="verifikasiDataCtrl.isCalendarOpened[1]" ng-model="verifikasiDataCtrl.verifikasi.EndDate" ng-click="verifikasiDataCtrl.openCalendar(1)" ng-change="verifikasiDataCtrl.verifyEndDate(verifikasiDataCtrl.verifikasi.EndDate,verifikasiDataCtrl.verifikasi.StartDate)" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="verifikasiDataCtrl.openCalendar(1)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <div class="table table-responsive" style="padding-bottom: 10px;">
+                                <table class="table table-bordered table-striped" id="table-rekanan">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">{{'TABLE.NO' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.NAMA' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.STATUS' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.CREATEDDATE' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.ACTIVEDDATE' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.VERIFIEDSENDDATE' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.VERIFIEDDATE' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.NONACTIVEDATE' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.TENDERCODE' | translate}}</th>
+                                            <th class="text-center">{{'TABLE.DESCRIPTION' | translate}}</th>
+                                            <th class="text-center">Kategori Vendor</th>
+                                            <th class="text-center">Kode E-procurement Vendor</th>
+                                            <th class="text-center">Kode SAP 
+                                            <a class="btn btn-xs btn-success" ng-click="verifikasiDataCtrl.saveSAP()" title="Save SAP code">
+                                                <i class="fa fa-save"></i>&nbsp;
+                                            </a></th>
+                                            <th class="text-center"></th>
+                                       </tr>
+                                    </thead>
+                                   <tbody>
+                                        <tr ng-repeat="rek in verifikasiDataCtrl.verifikasidata">
+                                            <td style="vertical-align: middle;">{{verifikasiDataCtrl.currentPage > 1 ? (verifikasiDataCtrl.fullSize * (verifikasiDataCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td style="vertical-align: middle;">{{rek.VendorName}}</td>
+                                            <td style="vertical-align: middle;">
+                                                <label ng-if="rek.StatusVend == 0">&nbsp;{{'SELECT.VERIFIED' | translate }}</label><!--verifikasi-->
+                                                <label ng-if="rek.StatusVend == 1">&nbsp; {{'SELECT.END_VERIFIED' | translate }}</label><!--gak diverifikasi-->
+                                                <label ng-if="rek.StatusVend == 2">&nbsp;{{'SELECT.NOT_VERIFIED' | translate }}</label><!--belum terverifikasi-->
+                                                <label ng-if="rek.StatusVend == 3">&nbsp;{{'SELECT.ACTIVED' | translate }}</label><!--aktifasi-->
+                                                <label ng-if="rek.StatusVend == 4">&nbsp;{{'SELECT.END_ACTIVED' | translate }}</label><!--gak ke aktifasi-->
+                                                <label ng-if="rek.StatusVend == 5">&nbsp;{{'SELECT.NOT_ACTIVED' | translate }}</label><!--belum aktifasi-->
+                                                <label ng-if="rek.StatusVend == 6">&nbsp; {{'SELECT.NOT_ACTIVE' | translate }}</label><!--gak aktif-->
+                                            </td>
+                                            <td class="text-left" style="vertical-align: middle;">
+                                                <label>&nbsp;{{rek.CreatedDate | date: 'dd-MM-yyyy'}}</label>
+                                            </td>
+                                            <td ng-if="rek.ActivedDate != null " class="text-left" style="vertical-align: middle;">
+                                                <label>&nbsp;{{rek.ActivedDate | date: 'dd-MM-yyyy'}}</label>
+                                            </td>
+                                            <td ng-if="rek.ActivedRejectedDate !== null " class="text-left" style="vertical-align: middle;">
+                                                <label>&nbsp;{{rek.ActivedRejectedDate | date: 'dd-MM-yyyy'}}</label>
+                                            </td>
+                                            <td ng-if="rek.ActivedDate == null && rek.ActivedRejectedDate == null" class="text-left" style="vertical-align: middle;"></td>
+                                            <td ng-if="rek.VerifiedSendDate !== null" class="text-left" style="vertical-align: middle;">
+                                                <label>&nbsp;{{rek.VerifiedSendDate | date: 'dd-MM-yyyy'}}</label>
+                                            </td>
+                                            <td ng-if="rek.VerifiedSendDate == null" class="text-left" style="vertical-align: middle;"></td>
+
+                                            <td ng-if="rek.VerifiedDate !== null" class="text-left" style="vertical-align: middle;">
+                                                <label>&nbsp;{{rek.VerifiedDate | date: 'dd-MM-yyyy'}}</label>
+                                            </td>
+                                            <td ng-if="rek.VerifiedRejectedDate !== null" class="text-left" style="vertical-align: middle;">
+                                                <label>&nbsp;{{rek.VerifiedRejectedDate | date: 'dd-MM-yyyy'}}</label>
+                                            </td>
+                                            <td ng-if="rek.VerifiedDate == null && rek.VerifiedRejectedDate == null" class="text-left" style="vertical-align: middle;"></td>
+                                            <td ng-if="!(rek.StatusVend == 6)" class="text-left" style="vertical-align: middle;">
+                                            </td>
+                                            <td ng-if="rek.StatusVend == 6" class="text-left" style="vertical-align: middle;">
+                                                <label>&nbsp;{{rek.ModifiedDate | date: 'dd-MM-yyyy'}}</label>
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                {{rek.TenderCodeTemp}}
+                                            </td>
+                                            <td class="text-center" style="vertical-align: middle;">{{rek.Description}}</td>
+
+                                            <td class="text-center">{{rek.categoryvendor | translate}}</td>
+                                            <td class="text-center">{{rek.Code}}</td>
+                                            <td class="text-center"><input type="text" class="form-control input-sm "  ng-model="rek.SAPCode" ng-blur="verifikasiDataCtrl.addSAP"/></td>
+                                            <td class="text-center">
+                                                <a ng-if="rek.StatusVend == 5" title="Detail Proses Aktivasi" ng-click="verifikasiDataCtrl.add(0,rek, rek.TenderName)" class="btn btn-flat btn-sm btn-primary" style="cursor: pointer;">
+                                                            <i class="fa fa-check-square-o"></i>&nbsp;
+                                                </a>
+                                                <a ng-if="rek.Isverified !== null || (rek.VerifiedSendDate !== null && rek.Isverified === null)" title="Detail Proses Verifikasi" ng-click="verifikasiDataCtrl.addVerifikasi(rek)" class="btn btn-flat btn-sm btn-primary" style="cursor: pointer;">
+                                                            <i class="fa fa-check-square-o"></i>&nbsp;
+                                                </a>
+                                                 <a ng-if="rek.IsActived !== null && rek.VerifiedSendDate == null && rek.Isverified == null" title="Detail Data Aktifasi" ng-click="verifikasiDataCtrl.add(1,rek, rek.TenderName)" class="btn btn-flat btn-sm btn-primary" style="cursor: pointer;">
+                                                    <i class="fa fa-external-link"></i>&nbsp;
+                                                 </a>
+                                                <a ng-if="rek.IsActive === true && rek.ApprovalStatusName !== 'RFQ_ONPROCESS'" title="Non Aktifkan Vendor" ng-click="verifikasiDataCtrl.editActive(false,rek)" class="btn btn-flat btn-sm btn-danger" style="cursor: pointer;">
+                                                    <i class="fa fa-external-link"></i>&nbsp;
+                                                </a>
+                                                <a ng-if="rek.IsActive === false && rek.ApprovalStatusName !== 'RFQ_ONPROCESS' " title="Aktifkan Vendor" ng-click="verifikasiDataCtrl.editActive(true,rek)" class="btn btn-flat btn-sm btn-success" style="cursor: pointer;">
+                                                    <i class="fa fa-external-link"></i>&nbsp;
+                                                </a>
+                                                <a ng-if="rek.ApprovalStatusName === 'RFQ_ONPROCESS' " title="Detail Approval" ng-click="verifikasiDataCtrl.Detailapproval(rek)" class="btn btn-flat btn-sm btn-success" style="cursor: pointer;">
+                                                    <i class="fa fa-sitemap"></i>&nbsp;
+                                                </a>
+                                            </td>
+                                            
+                                         </tr>
+                                       <tr ng-if="verifikasiDataCtrl.verifikasidata.length === 0"><td colspan="13">Data Tidak Ada</td></tr>
+                                   </tbody>
+                                </table>
+                            </div>
+                         </div>
+                     </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <ul uib-pagination boundary-links="true" total-items="verifikasiDataCtrl.totalItems" ng-model="verifikasiDataCtrl.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="verifikasiDataCtrl.jLoad(verifikasiDataCtrl.currentPage)"></ul>
+                                    <br />
+                                    <label>{{'TOTAL_DATA' | translate}} : {{verifikasiDataCtrl.totalItems}}</label>
+                                </div>
+                                <div class="col-sd-2 col-md-5">
+                                    <a class="btn btn-flat btn-success turun-15" ng-if="verifikasiDataCtrl.typelogin!=='L2'" style="float:right!important" ng-click="verifikasiDataCtrl.approval()" title="Data Approval">
+                                        <i class="fa fa-paste"></i>&nbsp; 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+</section>

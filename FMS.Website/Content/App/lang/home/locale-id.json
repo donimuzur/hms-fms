@@ -1,0 +1,39 @@
+﻿{
+	"ARTICLE": {
+		"TITLE_LINE_1": "Selamat datang di e-Procurement",
+		"TITLE_LINE_2": "PT. Vale Indonesia Tbk",
+		"CONTENT": "Sebagai wujud penerapan prinsip Good Corporate Governance (GCG), PT. Vale Indonesia Tbk menyusun tatakelola Teknologi Informasi dalam lingkup bisnis dan pelaksanaan pengelolaan perusahaan. Dukungan Teknologi Informasi dapat meningkatkan kapabilitas perusahaan dalam memberikan kontribusi bagi penciptaan nilai tambah, serta mencapai efektifitas dan efisiensi. Aspek kunci dari prinsip GCG meliputi adil, responsibilitas, transparansi, independensi, akuntabilitas, keselarasan dan kewajaran serta tanggung jawab untuk mencapai tujuan perusahaan."
+	},
+	"PANEL": {
+		"HEADING_1": "Transparan dan User Friendly",
+		"CONTENT_1": "Spesifik menurut perspektif penggunanya sehingga mudah dioperasikan.",
+		"HEADING_2": "Terus Diperbarui",
+		"CONTENT_2": "Menarik karena informasinya selalu diperbarui sesuai dengan kegiatan pengadaan perusahaan",
+		"HEADING_3": "Mobile Friendly",
+		"CONTENT_3": "Dapat diakses setiap saat dan dari mana saja melalui koneksi internet"
+	},
+	"CONTACT": {
+		"HEADING": "Hubungi Kami",
+		"CONTENT": {
+			"NAME": "PT. Vale Indonesia Tbk",
+			"ADDRESS_LABEL": "Alamat",
+			"ADDRESS": "Jl. Ternate 44 , Sorowako, Nuha - Luwu Timur 92984, Sulawesi Selatan, Indonesia",
+			"EMAIL_LABEL": "Email",
+			"EMAIL": "-",
+			"PHONE_LABEL": "Telepon",
+			"PHONE": "+62 21 5249100",
+			"FAX_LABEL": "Fax",
+			"FAX": "+62 21 5249557",
+			"WEB_LABEL": "Website",
+			"WEB": "Vale Indonesia"
+		}
+	},
+	"DESCRIPTION": {
+		"LINE_1": "e-Procurement merupakan layanan mandiri berbasis internet untuk lebih mengefisienkan transaksi antara PT. Vale Indonesia Tbk. dengan Rekanan.",
+		"LINE_2": "e-Procurement ini adalah sistem pengadaan yang menawarkan proses pengadaan barang dan jasa secara elektronik yang memudahkan fungsi administrasi bagi PT. Vale Indonesia Tbk dan Rekanan serta penggunaan fasilitas ini tidak dipungut biaya. Tujuan sistem ini adalah mempercepat proses pengadaan, efisiensi operasional dan penghematan biaya serta untuk transparansi."
+	},
+	"INFORMATION": "Informasi e-Procurement",
+	"NODATA": {
+		"NEWS": "Belum ada data berita"
+	}
+}

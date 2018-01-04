@@ -1,0 +1,112 @@
+﻿<!-- Main content -->
+<div ng-init="DetDistribusiCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-kontrak">{{'BREADCRUMB.MONITORING_KONTRAK' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.MONITORING_DISTRIBUSI' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-8 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_DISTRIBUSI' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="clearfix">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">{{'VENDOR_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetDistribusiCtrl.list[0].VendorName}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">{{'TENDER_NAME' | translate}}</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetDistribusiCtrl.list[0].TenderStepData.tender.TenderName}}</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-flat btn-success turun-15" ng-click="DetDistribusiCtrl.addDistribusi(DetDistribusiCtrl.list[0].ID)" title="Tambah Data">
+                                        <i class='fa fa-plus-circle'></i>Distribusi
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                        </div>
+
+                        <div class="row turun-15">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.TAHUN_DISTRIBUSI' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.BUDGET' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NOMOR_PO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle; ">{{'TABLE.TANGGAL_PO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.KETERANGAN' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ACTION' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in DetDistribusiCtrl.list">
+                                                <td style="vertical-align: middle; text-align:center;">{{DetDistribusiCtrl.currentPage > 1 ? (DetDistribusiCtrl.maxSize * (DetDistribusiCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle; text-align:center; ">{{DetDistribusiCtrl.getStrDate (data.TahunDistribusi) }}</td>
+                                                <td style="vertical-align: middle; text-align:center;">{{data.totalprice | currency : "IDR."}}</td>
+                                                <td style="vertical-align: middle; text-align:center;">{{data.NoPurchase}}</td>
+                                                <td style="vertical-align: middle; text-align:center; ">{{DetDistribusiCtrl.convertDate (data.DatePurchase) }}</td>
+                                                <td style="vertical-align: middle; text-align:center; ">{{data.keterangan}}</td>
+                                                <td style="vertical-align: middle; text-align:center;">
+                                                    <a ng-click="DetDistribusiCtrl.editDistribusi(data.ID, data.DisBudgetId)" class="btn btn-flat btn-sm btn-primary" title="ubah"><i class="fa fa-edit"></i>{{'TABLE.ACTION_DETIL' | translate }}</a>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="DetDistribusiCtrl.totalItems === 0">
+                                                <td colspan="13">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row turun-15">
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">Total Distribusi</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetDistribusiCtrl.list[0].SpendingValue | currency : "IDR."}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">Total Value</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetDistribusiCtrl.list[0].TotalValue | currency : "IDR."}}</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-3">Remaining Value</label>
+                                <label class="col-sm-1">:</label>
+                                <label class="col-sm-7">{{DetDistribusiCtrl.list[0].RemainingValue | currency : "IDR."}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="pull-right">
+                                    <a href="#/monitoring-kontrak" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                        <i class="fa fa-arrow-left"></i>&nbsp;{{'BACK' | translate}}
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

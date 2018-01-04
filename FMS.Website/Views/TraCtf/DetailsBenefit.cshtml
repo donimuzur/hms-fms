@@ -1,0 +1,874 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.CtfItem
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("DetailsBenefit", "TraCtf"))
+        {
+            @Html.AntiForgeryToken()
+            <div id="information" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse">
+                                        Information
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingOne" role="tabpanel" class="@(Model.CurrentLogin.UserRole == Enums.UserRole.User || Model.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID ? "panel-collapse collapse":"panel-collapse collapse show" )" id="collapseOne">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="box-tools pull-right" style="margin-top:-50px">
+                                                <h4>
+                                                    <label for="" class="control-label">Status:</label>
+                                                    <label class="control-label">@Html.Raw(Model.DocumentStatus.ToString())</label>
+                                                </h4>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>CTF Info</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">CTF Number</label>
+                                                            @Html.HiddenFor(model => model.EpafId)
+                                                            @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                                            @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.EmployeeIdCreator)
+                                                            @Html.HiddenFor(model => model.EmployeeIdFleetApproval)
+                                                            @Html.HiddenFor(model => model.ApprovedFleet)
+                                                            @Html.HiddenFor(model => model.ApprovedFleetDate)
+                                                            @Html.HiddenFor(model => model.DocumentStatus)
+                                                            @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.Penalty)
+                                                            @Html.HiddenFor(model => model.EmployeeContribution)
+                                                            @Html.HiddenFor(model => model.RefundCost)
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.HiddenFor(model => model.BuyCost)
+                                                            @Html.HiddenFor(model => model.PenaltyPrice)
+                                                            @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
+                                                            @*--------------------- calculation----------------*@
+                                                            @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
+                                                            @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">CTF Date</label>
+                                                            @Html.TextBoxFor(model => model.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Coordinator</label>
+                                                            @Html.TextBoxFor(model => model.CreatedBy, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">EmployeeID</label>
+                                                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control", onchange = "GetEmployee()", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Name</label>
+                                                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Cost Center</label>
+                                                            @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Group Level</label>
+                                                            @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Reason</label>
+                                                            @Html.HiddenFor(model => model.Reason)
+                                                            @Html.TextBoxFor(model => model.ReasonS, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Vehicle Information</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Police Number</label>
+                                                           @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control", onchange = "GetVehicle()", @id = "PoliceNumber", required = "required", @readonly = "readonly" }) 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Year</label>
+                                                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Type</label>
+                                                            @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Vehicle Usage</label>
+                                                            @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Supply Method</label>
+                                                            @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">End Rent Date</label>
+                                                            @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Effective Date</label>
+                                                            @Html.TextBoxFor(model => model.EffectiveDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    @*<div class="col-md-12" id="idBuyCost">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Buy Cost</label>
+                                                            @Html.HiddenFor(model => model.BuyCostTotal)
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>*@
+                                                    <div id="idcfmonly">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Transfer to CFM Idle</label>
+                                                                <div class="form-control">
+                                                                    @Html.CheckBoxFor(model => model.IsTransferToIdle, new { @id = "ChkIsTransferToIdle", onclick = "CheckIsTransferToIdle()", disabled = "disabled" })
+                                                                    @if (Model.IsTransferToIdle == true)
+                                                                    {
+                                                                        @Html.Label("Yes", new { @id = "lblIsTransferToIdle" })
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @Html.Label("No", new { @id = "lblIsTransferToIdle" })
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Extend Vehicle</label>
+                                                                @Html.DropDownListFor(model => model.ExtendVehicle, Model.ExtendList, "-- Please Select--", new { @class = "form-control", onchange = "onExtendVehicle()", disabled = "disabled" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="VehicleExtend" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion4" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingFour" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFour" aria-expanded="true" href="#collapseFour" data-parent="#accordio4" data-toggle="collapse">
+                                        Extend Vehicle
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse show" id="collapseFour">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Extend Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Police Number</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoliceNumber, new { @class = "form-control", @id = "extNewPoliceNumber", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">New Proposed Date</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "extNewDate", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Extend PO Number</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control", @id = "extPoNumber", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Extend PO Line</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "extPoLine", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Extend Price</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "extPrice", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Reason</label>
+                                                            @Html.HiddenFor(model => model.CtfExtend.Reason)
+                                                            @Html.TextBoxFor(model => model.CtfExtend.MstReason.REASON, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            if(!Model.ExtendVehicle )
+            { 
+            <div id="WithdrawalDetails" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion2" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingTwo" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseTwo" aria-expanded="true" href="#collapseTwo" data-parent="#accordion2" data-toggle="collapse">
+                                        Withdrawal Detail
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingTwo" role="tabpanel" class="panel-collapse collapse show" id="collapseTwo">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-12" id="idCostDetails">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Cost Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Employee Contribution</label>
+                                                            @Html.TextBoxFor(model => model.EmployeeContributionStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Penalty</label>
+                                                            @Html.TextBoxFor(model => model.PenaltyStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Refund Cost</label>
+                                                            @Html.TextBoxFor(model => model.RefundCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Buy Cost</label>
+                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row col-md-12" id="userDecisionTittle">
+                                                <div class="col-md-12">
+                                                    <h5>User Confirmation</h5>
+                                                    <hr />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Decision</label>
+                                                        @Html.HiddenFor(model => model.UserDecision)
+                                                        @if (Model.UserDecision != null)
+                                                        {
+                                                            @Html.TextBox("UserDecision", Model.UserDecision == 1 ? "Buy" : "Refund", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.TextBox("UserDecision", "", new { @class = "form-control", @readonly = "readonly" })
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" id="widhDetails" style="display:none">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>PIC Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Person In Charge</label>
+                                                            @Html.TextBoxFor(model => model.WithdPic, new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Phone Number</label>
+                                                            @Html.TextBoxFor(model => model.WithdPhone, new { @class = "form-control", maxlength = "15", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Date</label>
+                                                            <div class="input-group date" id="empDate">
+                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" ,@readonly = "readonly" })
+                                                                <span class="input-group-addon btn btn-primary">
+                                                                    <i class="fa fa-calendar "></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">City</label>
+                                                            @Html.TextBoxFor(model => model.WithdCity, new { @class = "form-control" , @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Address</label>
+                                                            @Html.TextBoxFor(model => model.WithdAddress, new { @class = "form-control", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="FleetConfirmation" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion3" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="headingThree" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="true" href="#collapseThree" data-parent="#accordion3" data-toggle="collapse">
+                                        Fleet Confirmation
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="headingThree" role="tabpanel" class="@(Model.CurrentLogin.UserRole == Enums.UserRole.User || Model.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID? "panel-collapse collapse":"panel-collapse collapse show" )" id="collapseThree">
+                                <div class="panel-body ">
+                                    <div role="form" class="form-excise">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h5>Penalty Details</h5>
+                                                        <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Penalty PO Number</label>
+                                                            @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Penalty PO Line</label>
+                                                            @Html.TextBoxFor(model => model.PenaltyPoLine, new { @class = "form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Penalty For Fleet</label>
+                                                            @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control ", @readonly = "readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            <div id="WorkflowHistory" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion5" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading5" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseFive" aria-expanded="true" href="#collapse5" data-parent="#accordion5" data-toggle="collapse">
+                                        Workflow History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading5" role="tabpanel" class="panel-collapse collapse" id="collapse5">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_WorkflowHistoryTable")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ChangeHistroy" class="tab-pane active" role="tabpanel">
+                <div class="tab-wrapper">
+                    <div aria-multiselectable="true" role="tablist" id="accordion6" class="panel-group">
+                        <div class="panel panel-default">
+                            <div id="heading6" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseSix" aria-expanded="true" href="#collapse6" data-parent="#accordion6" data-toggle="collapse">
+                                        Change History
+                                        <i class="fa fa-caret-down"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div aria-labelledby="heading6" role="tabpanel" class="panel-collapse collapse" id="collapse6">
+                                <div class="panel-body">
+                                    <div role="form" class="form-excise">
+                                        @Html.Partial("_ChangesLog")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12" >
+                <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
+            </div>
+        }
+    </div>
+</section>
+<div id="extendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Extend Vehicle</h4>
+            </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">New Proposed Date</label>
+                                <div class="input-group date">
+                                    @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, new { @class = "form-control", @type = "Date",@id="modalDate"})
+                                    <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend PO Number</label>
+                                @Html.TextBoxFor(model => model.PenaltyPoNumber, new { @class = "form-control ",@id="modalPoNumber" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend PO Line</label>
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend Price</label>
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id ="modalPrice" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                @Html.HiddenFor(model => model.CtfExtend.Reason)
+                                @Html.TextBoxFor(model => model.CtfExtend.MstReason.REASON, new { @class = "form-control ", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose"/>
+                    <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
+                </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/thousand-separator.js"></script>
+<script src="~/Scripts/ctfscript.js"></script>
+<script type="text/javascript">
+
+    $('#BuyCostTotalStr').val(ThausandSeperator($('#BuyCostTotalStr').val(), 2));
+    $('#PenaltyStr').val(ThausandSeperator($('#PenaltyStr').val(), 2));
+    $('#EmployeeContributionStr').val(ThausandSeperator($('#EmployeeContributionStr').val(), 2));
+    $('#PenaltyPriceStr').val(ThausandSeperator($('#PenaltyPriceStr').val(), 2));
+    $('#BuyCostStr').val(ThausandSeperator($('#BuyCostStr').val(), 2));
+    $('#RefundCostStr').val(ThausandSeperator($('#RefundCostStr').val(), 2));
+    $('#extPrice').val(ThausandSeperator($('#extPrice').val(), 2));
+
+    function IsAngka(evt) {
+        var charCode = (evt.which);
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+     $(document).ready()
+    {
+        InitEmployee('@Url.Action("GetEmployeeList","TraCtf")', '@Url.Action("GetEmployee","TraCtf")');
+        InitPoliceNumber('@Url.Action("GetPoliceNumberList", "TraCtf")', '@Url.Action("GetVehicle", "TraCtf")');
+        var data = $('#VehicleUsage').val().toLowerCase();
+        if (data == 'cop') {
+            CheckUserDecision();
+        }
+        checkVehicletype();
+        checkVehicleusage();
+        CheckEndrent();
+        onExtendVehicle();
+     }
+    function CheckUserDecision() {
+        var reason = $('#UserDecision').val();
+        if (reason == '2') {
+            $('#WithdPic').prop('required', true);
+            $('#WithdPhone').prop('required', true);
+            $('#WithdDate').prop('required', true);
+            $('#WithdCity').prop('required', true);
+            $('#WithdAddress').prop('required', true);
+
+            $('#widhDetails').show();
+        }
+        else {
+            $('#WithdPic').val('');
+            $('#WithdPhone').val('');
+            $('#WithdDate').val('');
+            $('#WithdCity').val('');
+            $('#WithdAddress').val('');
+
+            $('#WithdPhone').prop('required', false);
+            $('#WithdPic').prop('required', false);
+            $('#WithdDate').prop('required', false);
+            $('#WithdCity').prop('required', false);
+            $('#WithdAddress').prop('required', false);
+
+            $('#widhDetails').hide();
+        }
+    }
+    $('#UserDecision').change(function () {
+        CheckUserDecision();
+    });
+    function InitPoliceNumber(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "PoliceNumber",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "VehicleType"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetVehicle();
+                }
+            }
+        };
+        $("#PoliceNumber").easyAutocomplete(options);
+    }
+    function InitEmployee(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "EMPLOYEE_ID",
+
+            template: {
+                type: "description",
+                fields: {
+                    description: "FORMAL_NAME"
+                }
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                sort: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee();
+                }
+            }
+        };
+        $("#EmployeeId").easyAutocomplete(options);
+    }
+    function CheckEndrent()
+    {
+        var reason = $('#Reason').find("option:selected").text().toLowerCase()
+        if(reason == 'end rent')
+        {
+            $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            $('#VehicleExtend').hide();
+            var EndRent = $('#EndRendDate').val()
+            document.getElementById("EffectiveDate").value = EndRent;
+        }
+        else
+        {
+            checkVehicletype();
+            checkVehicleusage();
+        }
+    }
+    $("#Reason").change(function () {
+        CheckEndrent();
+    });
+    function checkVehicletype() {
+        var data = $('#VehicleType').val().toLowerCase();
+        if (data == 'wtc') {
+            //$('#idBuyCost').hide();
+            $('#BuyCostTotalStr').prop('required', false);
+            $('#idExtend').show();
+            $('#VehicleExtend').show();
+            $('#idcfmonly').hide();
+            $('#userDecisionTittle').hide();
+        }
+    }
+    function checkVehicleusage() {
+        var data = $('#VehicleUsage').val().toLowerCase();
+        if (data == 'cfm') {
+            $('#idcfmonly').show();
+            //$('#idBuyCost').hide();
+            $('#idCostDetails').hide();
+            $('#idExtend').show();
+            $('#VehicleExtend').show();
+
+            $('#WithdPic').prop('required', true);
+            $('#WithdPhone').prop('required', true);
+            $('#WithdDate').prop('required', true);
+            $('#WithdCity').prop('required', true);
+            $('#WithdAddress').prop('required', true);
+            $('#widhDetails').show();
+            $('#userDecisionTittle').hide();
+
+            $('#UserDecision').prop('required', false);
+            $('#BuyCostTotalStr').prop('required', false);
+        }
+        else if (data == 'cop') {
+            //$('#idBuyCost').show();
+            $('#BuyCostTotalStr').prop('required', true);
+            $('#idcfmonly').hide();
+            $('#idExtend').hide();
+            $('#idCostDetails').show();
+            $('#VehicleExtend').hide();
+            $('#userDecisionTittle').show();
+        }
+    }
+    function GetEmployee() {
+        var Id = document.getElementById("EmployeeId").value;
+        $.ajax({
+            url: '@Url.Action("GetEmployee", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id:Id },
+            success: function (response) {
+                document.getElementById("EmployeeName").value = response.EmployeeName;
+                document.getElementById("CostCenter").value = response.CostCenter;
+                document.getElementById("GroupLevel").value = response.GroupLevel;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("PoliceNumber").value = response.PoliceNumber;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleYear").value = response.VehicleYear;
+                    document.getElementById("VehicleType").value = response.VehicleType;
+                    document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                    document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                    var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                    var dtStr = dt.toString();
+                    var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                    document.getElementById("EndRendDate").value = str;
+                }
+                else
+                {
+                    document.getElementById("PoliceNumber").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleYear").value = '';
+                    document.getElementById("VehicleType").value = '';
+                    document.getElementById("VehicleUsage").value = '';
+                    document.getElementById("SupplyMethod").value = '';
+                    document.getElementById("EndRendDate").value = '';
+                }
+            },
+            complete: function (data) {
+                checkVehicletype();
+                checkVehicleusage();
+                var data = $('#Reason').find("option:selected").text().toLowerCase()
+                CheckEndrent(data);
+            }
+        });
+    }
+    function GetVehicle() {
+        var Id = document.getElementById("PoliceNumber").value;
+        $.ajax({
+            url: '@Url.Action("GetVehicle", "TraCtf")',
+            type: "POST",
+            dataType: "JSON",
+            data: { Id: Id },
+            success: function (response) {
+                document.getElementById("VehicleYear").value = response.VehicleYear;
+                document.getElementById("VehicleType").value = response.VehicleType;
+                document.getElementById("VehicleUsage").value = response.VehicleUsage;
+                document.getElementById("SupplyMethod").value = response.SupplyMethod;
+                var dt = new Date(parseInt(response.EndRendDate.substr(6)));
+                var dtStr = dt.toString();
+                var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+                document.getElementById("EndRendDate").value = str;
+                if (response.PoliceNumber != null) {
+                    document.getElementById("EmployeeId").value = response.EmployeeId;
+                    document.getElementById("EmployeeName").value = response.EmployeeName;
+                    document.getElementById("CostCenter").value = response.CostCenter;
+                    document.getElementById("GroupLevel").value = response.GroupLevel;
+                }
+                else
+                {
+                    document.getElementById("EmployeeName").value = '';
+                    document.getElementById("CostCenter").value = '';
+                    document.getElementById("GroupLevel").value = '';
+                }
+            },
+            complete: function (data) {
+                checkVehicletype();
+                checkVehicleusage();
+                CheckEndrent();
+            }
+        });
+    }
+    function CheckIsTransferToIdle () {
+        if (document.getElementById('ChkIsTransferToIdle').checked == true) {
+            document.getElementById('lblIsTransferToIdle').innerHTML = "Yes";
+        }
+        else {
+            document.getElementById('lblIsTransferToIdle').innerHTML = "No";
+        }
+    }
+    function onExtendVehicle()
+    {
+        if($('#ExtendVehicle').val() == 'True')
+        {
+            $('#VehicleExtend').show();
+        }
+        else if ($('#ExtendVehicle').val() == 'False')
+        {
+            $('#VehicleExtend').hide();
+        }
+    }
+    //$('#btnConfirmExtend').click(function () {
+    //    $('#extNewDate').val($('#modalDate').val().toString("dd-MMM-yyy"));
+    //    $('#extPoNumber').val($('#modalPoNumber').val());
+    //    $('#extPoLine').val($('#modalPoLine').val());
+    //    $('#extReason').val($('#modalReason').selectedIndex);
+    //    $('#extReasonS').val($('#modalReason').val());
+    //    $('#extPrice').val($('#modalPrice').val());
+    //    $('#extendmodal').modal('hide');
+    //});
+
+    function ajaxSelectPoliceNumber() {
+        if ($("#EmployeeId").length) {
+            var Id = $('#EmployeeId').find("option:selected").val();
+            $('#PoliceNumber option').remove();
+            $('#VehicleYear').val('')
+            $('#VehicleType').val('')
+            $('#VehicleUsage').val('')
+            $('#SupplyMethod').val('')
+            $('#EndRendDate').val('')
+            $('#PoliceNote').html('')
+            if (Id == '' || $('#EmployeeId').find("option:selected").val() == '') {
+                $('#PoliceNumber option').append('<option value="">Select</option>');
+            }
+            else {
+                 $.ajax({
+                        url: '@Url.Action("GetPoliceNumberList", "TraCtf")',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: { Id: Id , Type : "benefit"},
+                        success: function (list) {
+                        $('#PoliceNumber').append('<option value="">Select</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#PoliceNumber').append('<option value=' + list[i].PoliceNumber + '>' + list[i].PoliceNumber + '</option>');
+                            }
+                        }
+                        else
+                        {
+                            $('#VehicleYear').val('')
+                            $('#VehicleType').val('')
+                            $('#VehicleUsage').val('')
+                            $('#SupplyMethod').val('')
+                            $('#EndRendDate').val('')
+                            $('#PoliceNote').html(' -- This Employee doesnt have a police number')
+                        }
+
+                    }
+                });
+            }
+        }
+    }
+
+</script>

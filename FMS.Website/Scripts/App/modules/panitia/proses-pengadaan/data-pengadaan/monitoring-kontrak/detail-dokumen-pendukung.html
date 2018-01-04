@@ -1,0 +1,75 @@
+﻿<!-- Main content -->
+<div ng-init="DetDokCtrl.init()">
+    <section class="content">
+        <ol class="breadcrumb">
+            <li><a href="#/homeadmin"><i class="fa fa-home"></i> {{'BREADCRUMB.BERANDA' | translate}}</a></li>
+            <li><a href="#/monitoring-kontrak">{{'BREADCRUMB.MONITORING_KONTRAK' | translate}}</a></li>
+            <li><a class="active">{{'BREADCRUMB.MONITORING_DISTRIBUSI' | translate}}</a></li>
+        </ol>
+        <div class="row">
+            <div class="col-md-8 center-block" style="float: none!important;">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <div class="row">
+                            <div class="col-md-12 align-center">
+                                <h3 class="afta-font center text-center">{{'JUDUL_DISTRIBUSI' | translate}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-flat btn-success turun-15" ng-click="DetDokCtrl.uploadDok()" title="{{DetDokCtrl.id}}">
+                                    <i class='fa fa-plus-circle'></i>Tambah
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row turun-15">
+                            <div class="col-md-12">
+                                <div class="table table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NO' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.NAMA_DOKUMEN' | translate }}</th>
+                                                <th class="text-center" style="vertical-align: middle;">{{'TABLE.ACTION' | translate }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="data in DetDokCtrl.list">
+                                                <td style="vertical-align: middle;">{{DetDokCtrl.currentPage > 1 ? (DetDokCtrl.maxSize * (DetDokCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                                <td style="vertical-align: middle;">{{data.DocName}}</td>
+                                                <td style="vertical-align: middle;"><a href="{{DetDokCtrl.folderFile + data.DocUrl}}" class="btn btn-link" target="_BLANK" title="Download"> Download</a></td>
+
+                                            </tr>
+                                            <tr ng-if="DetDokCtrl.totalItems === 0">
+                                                <td colspan="13">{{'TIDAK_ADA_DATA' | translate }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-10 center text-center ">
+                                    <ul uib-pagination total-items="DetDokCtrl.totalItems"
+                                        ng-model="DetDokCtrl.currentPage" items-per-page="DetDokCtrl.pageSize"
+                                        previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="DetDokCtrl.loadPaket()"></ul>
+                                </div>
+                               
+                                <div class="pull-right">
+                                    <a href="#/monitoring-kontrak" class="btn btn-flat btn-primary turun-15" title="{{'BACK' | translate}}">
+                                        <i class="fa fa-arrow-left"></i>&nbsp;{{'BACK' | translate}}
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

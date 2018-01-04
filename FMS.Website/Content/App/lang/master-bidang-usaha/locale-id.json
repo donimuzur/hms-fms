@@ -1,0 +1,21 @@
+﻿{
+    "BREADCRUMB" : {
+        "BERANDA" : "Beranda",
+        "DATA_MASTER" : "Data Master",
+        "MASTER_BIDANG_USAHA" : "Master Bidang Usaha"
+    },
+    "DATA_BIDANG_USAHA" : "Data Bidang Usaha",
+    "CARI_BIDANG_USAHA" : "Cari Nama atau Kode dari Bidang Usaha",
+    "CARI" : "Cari",
+    "TAMBAH" : "Tambah",
+    "TABLE" : {
+        "NO" : "No",
+        "TIPE" : "Tipe",
+        "JENIS" : "Jenis",
+        "NAMA_BID_USAHA" : "Nama Bidang Usaha"
+    },
+    "UBAH" : "Ubah",
+    "HAPUS" : "Hapus",
+    "TIDAK_ADA_DATA" : "Tidak Ada Data",
+    "TOTAL_DATA" : "Total Data"
+}

@@ -1,0 +1,79 @@
+﻿<div class="modal-content" ng-init="formNeracaCtrl.init()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="formNeracaCtrl.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+        <h3 class="modal-title afta-font">{{formNeracaCtrl.action}} {{'BREADCRUMB.BALANCE' | translate}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="padding-top: 20px!important;">
+            <div class="col-md-10 col-sm-12 center-block" style="float: none!important;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>{{'ASSET_TYPE' | translate}}</label>
+                        <select class="form-control input-sm" ng-model="formNeracaCtrl.selectedAsset"
+                                ng-options="item as item.Value | translate for item in formNeracaCtrl.listAsset"
+                                ng-change="formNeracaCtrl.loadCOA(formNeracaCtrl.selectedAsset)">
+                            <option value="" ng-selected="true">
+                                -- {{'ASSET_TYPE' | translate}} --
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>{{'COA_TYPE' | translate}}</label>
+                        <select class="form-control input-sm" ng-model="formNeracaCtrl.selectedCOA"
+                                ng-disabled="!formNeracaCtrl.listCOA"
+                                ng-options="item as item.Value | translate for item in formNeracaCtrl.listCOA"
+                                ng-change="formNeracaCtrl.loadSubCOA(formNeracaCtrl.selectedCOA)">
+                            <option value="" ng-selected="true">
+                                -- {{'COA_TYPE' | translate}} --
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>{{'SUB_COA_TYPE' | translate}}</label>
+                        <select class="form-control input-sm" 
+                                ng-model="formNeracaCtrl.selectedSubCOA"
+                                ng-disabled="!formNeracaCtrl.listSubCOA || formNeracaCtrl.param === ''"
+                                ng-change="formNeracaCtrl.changeSubCOA(formNeracaCtrl.selectedSubCOA)"
+                                ng-options="item as item.Value | translate for item in formNeracaCtrl.listSubCOA">
+                            <option value="" ng-selected="true">
+                                -- {{'SUB_COA_TYPE' | translate}} --
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>{{'UNIT' | translate}}</label>
+                        <select class="form-control input-sm" ng-model="formNeracaCtrl.selectedUnit"
+                                ng-options="item as item.Value | translate for item in formNeracaCtrl.listUnit">
+                            <option value="" ng-selected="true">
+                                -- {{'UNIT' | translate}} --
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>{{'AMOUNT' | translate}}</label>
+                        <input type="text" class="form-control input-sm" ng-model="formNeracaCtrl.Amount" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>{{'NOMINAL' | translate}}</label>
+                        <input currency-mask type="text" class="form-control input-sm" ng-model="formNeracaCtrl.Nominal" />
+                    </div>
+                    <div class="col-md-6">
+                        <label>{{'UPLOAD' | translate}}</label>
+                        <input type="file" class="form-control" ng-file-select="formNeracaCtrl.selectUpload()"
+                               ng-model="formNeracaCtrl.fileUpload" name="ownerIDFile" required accept="{{formNeracaCtrl.idFileTypes}}" />
+
+                        <a ng-show="formNeracaCtrl.item.DocUrl;" href="{{formNeracaCtrl.folderFile + formNeracaCtrl.fileUpload}}" target="_BLANK" class="form-control btn btn-sm btn-primary" title="Lihat File/Berkas Neraca"><i class="fa fa-download"></i>&nbsp;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-flat btn-danger" ng-click="formNeracaCtrl.batal()" title="Batal"><i class="fa fa-reply"></i>&nbsp;</button>
+        <button type="button" class="btn btn-flat btn-success" ng-click="formNeracaCtrl.uploadFile()" title="Simpan"><i class="fa fa-save"></i>&nbsp;</button>
+    </div>
+</div>

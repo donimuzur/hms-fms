@@ -1,0 +1,81 @@
+﻿<div class="modal-content" ng-init="KDKVCtrl.init()">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" ng-click="KDKVCtrl.batal()">
+			<span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+		</button>
+		<h4 class="afta-font  modal-title ">Kelengkapan Data Komersial</h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+				<div class="row">
+					<div class="col-md-5">
+						<div class="form-group">
+							<label class="control-label col-md-4">Tanggal Mulai</label>
+							<label class="col-md-6"> : {{KDKVCtrl.StartDate}}</label>
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-5 pull-right">
+						<div class="form-group">
+							<label class="control-label col-md-5">Tanggal Selesai</label>
+							<label class="col-md-6"> : {{KDKVCtrl.EndDate}}</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="control-label col-md-1">Tender</label>
+							<label class="col-md-6" style="margin-left:10px!important"> : {{KDKVCtrl.TenderName}}</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="table table-responsive">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th colspan="6"><h4 class="afta-font text-center">Check List Item (Daftar Periksa)</h4></th>
+									</tr>
+									<tr>
+										<th class="text-center" width="5%">No.</th>
+										<th class="text-center">Nama Form </th>
+										<th class="text-center" width="10%">Detail Form </th>
+										<th class="text-center" width="10%">Tanggal Submit</th>
+										<th class="text-center" width="7%">Cek List </th>
+										<th class="text-center" width="20%">Keterangan</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="pgm in KDKVCtrl.listDocChecks">
+										<td class="text-center">{{KDKVCtrl.currentPage > 1 ? (KDKVCtrl.maxSize * (KDKVCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+										<td>{{pgm.DocumentName}}</td>
+										<td class="text-center">
+											<button ng-click="KDKVCtrl.detailDokumen(pgm)" class="btn btn-xs btn-warning" title="Detail">
+												<i class="fa fa-folder-open-o"></i>
+											</button>
+										</td>
+										<td class="text-center">{{pgm.ApproveDate}}</td>
+										<td class="text-center">
+											<input type="checkbox" ng-checked="pgm.IsApproved" ng-model="pgm.IsApproved" ng-click="KDKVCtrl.updateChecklist(pgm)" />
+										</td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-md-12">
+						<button ng-click="KDKVCtrl.back()" class="btn btn-sm btn-default pull-right" title="Kembali"><i class="fa fa-arrow-circle-o-left"></i> </button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

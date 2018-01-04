@@ -1,0 +1,187 @@
+<section class="content" ng-init="beritaCtrl.init()">
+	<ol class="breadcrumb">
+		<li>
+			<a href="#/homeadmin">
+				<i class="fa fa-home"></i>
+				{{'BREADCRUMB.BERANDA' | translate}}
+			</a>
+		</li>
+		<li>
+			<a class="active">{{'BREADCRUMB.MASTER_BERITA' | translate}}</a>
+		</li>
+	</ol>
+	<div class="row">
+		<!--  style="padding-top: 25px;" -->
+		<div class="col-md-12 center-block" style="float: none!important;">
+			<div class="box">
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-7">
+							<h3 class="afta-font judul-datatabel">{{'DATA_BERITA' | translate}}</h3>
+						</div>
+						<div class="col-md-5">
+							<form method="post" role="form" ng-submit="cariBerita()">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="{{'CARI_JUDUL_ISI' | translate}}" ng-model="beritaCtrl.kata.srcText">
+									<span class="input-group-btn">
+										<button type="button" name="search" id="search-btn" class="btn btn-flat btn-primary" ng-click="beritaCtrl.cariBerita()" title="Cari">
+											<i class="fa fa-search"></i>&nbsp;
+										</button>
+									</span>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sd-4 col-md-7">
+							<pagination total-items="beritaCtrl.totalItems" page="beritaCtrl.currentPage" items-per-page="10" ng-show="beritaCtrl.totalItems > 10" max-size="beritaCtrl.maxSize" on-select-page="beritaCtrl.jLoad(page)">
+							</pagination>
+						</div>
+						<div class="col-sd-2 col-md-5">
+							<button ng-if="beritaCtrl.allowAdd" type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click="beritaCtrl.createNews()" title="Tambah Data">
+								<i class='fa fa-plus-circle'></i>&nbsp;
+							</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table table-responsive">
+								<table class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th class="text-center" style="vertical-align: middle; width: 20px; min-width:20px">{{'TABLE.NO' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle; width: 200px; min-width: 200px">{{'TABLE.JUDUL' | translate}}</th>
+											<th class="text-center">{{'TABLE.ISI_BERITA' | translate}}</th>
+											<th class="text-center" style="vertical-align: middle; width: 150px; min-width: 150px;">{{'TABLE.TANGGAL' | translate}}</th>
+											<th ng-if="beritaCtrl.allowEdit || beritaCtrl.allowDelete" class="text-center" style="width: 100px; min-width: 100px; vertical-align: middle;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="ba in beritaCtrl.berita">
+											<td class="text-center">{{beritaCtrl.currentPage > 1 ? (beritaCtrl.maxSize * (beritaCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+											<td>{{ba.NewsTitle}}</td>
+											<td>
+												<p class="col-lg-12" style="margin-top: 5px;" ng-bind-html="beritaCtrl.remHtml(ba.NewsContent) | limitTo:200"></p>
+											</td>
+											<td>
+												<span ng-if="ba.NewsDate">{{ba.NewsDate | date:"dd - MMM - yyyy"}}</span>
+											</td>
+											<td class="text-center">
+												<a ng-if="beritaCtrl.allowEdit" class="btn btn-flat btn-sm btn-primary" ng-click="beritaCtrl.ubah(ba)" title="Ubah">
+													<i class="fa fa-edit"></i>
+												</a>
+												<a ng-if="beritaCtrl.allowDelete" class="btn btn-flat btn-sm btn-danger" ng-click="beritaCtrl.delete(ba.NewsID)" title="Hapus">
+													<i class='fa fa-trash-o'></i>
+												</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sd-4 col-md-7">
+							<pagination total-items="beritaCtrl.totalItems" page="beritaCtrl.currentPage" items-per-page="10" ng-show="beritaCtrl.totalItems > 10" max-size="beritaCtrl.maxSize" on-select-page="beritaCtrl.jLoad(page)"></pagination><br />
+							<label>{{'TOTAL_DATA' | translate}} : {{beritaCtrl.totalItems}}</label>
+						</div>
+						<div class="col-sd-2 col-md-5">
+							<button ng-if="beritaCtrl.allowAdd" type="button" style="float:right!important" class="btn btn-flat btn-primary turun-15" ng-click="beritaCtrl.createNews()" title="Tambah Data">
+								<i class='fa fa-plus-circle'></i>&nbsp; 
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<!-- TODO -->
+<script type="text/ng-template" id="tambahBerita.html">
+	<div id="idTambahBadan" class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" ng-click="batal()">
+				<span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+			</button>
+			<h3 class="modal-title afta-font" id="myModalLabel">{{action}} Data Berita</h3>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="form-group">
+						<label>Judul Berita </label>
+						<input type="text" class="form-control input-sm" ng-model="berita.newsTitle" />
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label>Tanggal</label>
+						<div class="input-group">
+							<input type="text" class="form-control" ambiltanggal ng-model="berita.newsDate" disabled="disabled" />
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>Isi Berita</label>
+						<textarea class="form-control" rows="10" ng-model="berita.newsContent"></textarea>
+					</div>
+				</div>
+			</div>
+			<!--
+			<div class="row">
+				<div class="col-md-9">
+					<div class="form-group">
+						<label>Upload Picture
+						<small> ( <span ng-repeat="ft in $root.filetypelist">{{ft.file_type_name}}{{$last ? '' : ', '}}</span><span> / Maksimal : {{$root.ukuranfile}} KB</span> ) </small>
+						</label>
+						<input class="form-control input-sm upload-file" data-max-size="{{$root.filemaksimal}}"  type="file" onchange="angular.element(this).scope().filesTChanged(this)">
+					</div>
+				</div>
+				<div class="col-md-2" ng-if="berita.id_news > 0 && !(berita.picture_news ==='')">
+					<div class="form-group">
+						<label>Preview Picture</label>
+						<a href="{{berita.picture_news}}" target="_blank"
+								class="form-control btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-download"></i> Preview</a>
+					</div>
+				</div>
+			</div>
+			-->
+		</div> <!-- <div class="modal-body"> -->
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger" ng-click="batal()" title="Batal">
+				<i class="fa fa-reply"></i>
+			</button>
+			<button type="button" class="btn btn-primary" ng-click="simpan()" title="Simpan">
+				<i class="fa fa-save"></i>
+			</button>
+		</div>
+	</div>
+</script>
+
+<!-- TODO -->
+<script type="text/ng-template" id="delModalBerita.html">
+	<div class="model-content">
+		<div class="modal-header">
+			<h3 class="box-title">Hapus Data Berita</h3>
+		</div>
+		<div class="modal-body">
+			<h4 style="text-align: left;">Apakah Anda Yakin Akan Hapus Data ini?</h4>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-flat btn-success" ng-click="delBerita()"> Yes</button>
+			<button class="btn btn-flat btn-danger" ng-click="cancel()"> No</button>
+			<div>
+			</div>
+		</div>
+	</div>
+</script>

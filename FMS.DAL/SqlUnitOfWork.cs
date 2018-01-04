@@ -16,9 +16,9 @@ namespace FMS.DAL
     {
         private ILogger _logger;
 
-        public SqlUnitOfWork(ILogger logger)
+        public SqlUnitOfWork()
         {
-            _logger = logger;
+            _logger = new NullLogger(new LogFactory());
         }
 
         //load a context automatically

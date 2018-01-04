@@ -1,0 +1,65 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.PenaltyLogicItem
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Penalty Logic Edit</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Edit", "MstPenaltyLogic"))
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Rumus<span class="red">*</span></label>
+                        @Html.HiddenFor(model => model.MstPenaltyLogicId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextAreaFor(model => model.PenaltyLogic, new { @class = "form-control", @cols = "100", @row = "5", @readonly = "readonly", @id = "idRumus" })
+                        <input type="hidden" id="CekData" name="CekRumus" value="" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Status<span class="red">*</span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.IsActive)
+                            @Html.Label("Active", new { @id = "lblStatus" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a href="@Url.Action("Index", "MstPenaltyLogic" )" class="btn btn-default">Back</a>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="changes" class="tab-pane">
+        @Html.Partial("_ChangesLog");
+    </div>
+</section>
+
+<script type="text/javascript">
+    function KolomClick() {
+        document.getElementById('idRumus').value = document.getElementById('idRumus').value + $("#idKolom").val() + " ";
+        document.getElementById('CekData').value = document.getElementById('CekData').value + "1" + " ";
+    }
+    function OperatorClick() {
+        document.getElementById('idRumus').value = document.getElementById('idRumus').value + $("#idOperator").val() + " ";
+        document.getElementById('CekData').value = document.getElementById('CekData').value + $("#idOperator").val() + " ";
+    }
+    function resetRumus() {
+        document.getElementById('idRumus').value = "";
+        document.getElementById('CekData').value = "";
+    }
+    function check() {
+        if (document.getElementById('ChkisActive').checked == true) {
+            document.getElementById('lblStatus').innerHTML = "Active";
+        }
+        else
+        {
+            document.getElementById('lblStatus').innerHTML = "InActive";
+        }
+    }
+</script>

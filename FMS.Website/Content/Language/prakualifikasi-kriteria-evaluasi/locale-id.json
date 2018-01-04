@@ -1,0 +1,23 @@
+{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "PRAKUALIFIKASI": "Prakualifikasi",
+    "KRITERIA_PRAKUALIFIKASI": "Kriteria Prakualifikasi"
+  },
+  "KRITERIA_PRAKUALIFIKASI": "Kriteria Prakualifikasi",
+  "CARI": "Cari Nama Kriteria",
+  "NAMA_KRITERIA": "Nama Kriteria",
+  "EXPAND_ALL": "Expand All",
+  "COLLAPSE_ALL": "Collapse All",
+  "TAMBAH": "Tambah",
+  "UBAH": "Ubah",
+  "HAPUS": "Hapus",
+  "MODAL": {
+    "TAMBAH": "Tambah",
+    "UBAH": "Ubah",
+    "MASTER_KRITERIA": "Master Kriteria",
+    "SUB_KRITERIA": "Sub Kriteria",
+    "BATAL": "Batal",
+    "SIMPAN": "Simpan"
+  }
+}

@@ -1,0 +1,152 @@
+<div class="content" ng-init="PPVCtrl.init()">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 center-block" style="float: none!important;">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <ol class="breadcrumb">
+                        <li><a href="#/dashboard-vendor">Beranda</a></li>
+                        <li><a class="active">Pengumuman Pengadaan</a></li>
+                    </ol>
+                </div>
+                <div class="box-body">
+                    <div id="divVerifikasi" class="row" ng-if="is_verified === false || is_verified === null">
+                        <div class="col-md-8 center-block" style="float: none!important;">
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <span><strong>Peringatan !</strong> Pendaftaran Pengadaan tidak di-izinkan sebelum anda melengkapi Data Perusahaan sedetail mungkin. <br>Setelah data perussahaan di isi, harap dikirim pada menu <b>Data Perusahaan > Kirim Data Verifikasi.</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="divSIUP" class="row" ng-if="SIUP_expired">
+                        <div class="col-md-8 center-block" style="float: none!important;">
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <span><strong>Perhatian !</strong> SIUP/SIUI/SIUJK perusahaan anda sudah kadaluarsa. Anda tidak dapat mendaftar Pengadaan.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="divBL" class="row" ng-if="blacklist.flag_blacklist">
+                        <div class="col-md-12 center-block" style="float: none!important;">
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <span>
+                                    <strong>PERHATIAN !</strong> Anda telah dikenakan masa blacklist hingga <b ng-if="blacklist.masa_blacklist==='Selamanya'">selamanya</b> <b ng-if="blacklist.masa_blacklist==='Tidak'">{{blacklist.masaakhir_blacklist}}</b> karena <b>{{blacklist.alasan_blacklist}}</b><br />
+                                    Sebelum masa blacklist berakhir, anda tidak dapat mendaftar ataupun mengikuti Pengadaan. Untuk info lebih lanjut, hubungi admin Pengadaan.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" style="padding-bottom: 10px;">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <h3 class="box-title afta-font">Pengumuman Pengadaan</h3>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="input-group" style="padding-top: 15px;">
+                                        <div class="input-cont">
+                                            <input type="text" ng-model="PPVCtrl.srcText" placeholder="Cari Nama Pengadaan.." class="form-control">
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button ng-click="PPVCtrl.jLoad(1)" type="button" class="btn btn-primary" title="Cari">
+                                                 &nbsp; <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table id="tabelPengumuman" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 20px; min-width: 20px; text-align: center; vertical-align: middle;">No</th>
+                                            <th class="text-center" style="width: 195px; min-width: 195px; text-align: center; vertical-align: middle;">Tanggal</th>
+                                            <th class="text-center" style="vertical-align: middle;">Nama Pengadaan</th>
+                                            <th class="text-center" style="vertical-align: middle; width: 195px; min-width: 195px;">Kadaluarsa</th>
+                                            <th class="text-center" style="width: 150px; min-width: 150px; vertical-align: middle;">Status</th>
+                                            <th class="text-center" style="vertical-align: middle;">Detail Pengadaan</th>
+                                            <th class="text-center" style="vertical-align: middle;">Minat(?)</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pen in PPVCtrl.listPengumuman">
+                                            <td class="text-center" style="vertical-align: middle;">{{PPVCtrl.currentPage > 1 ? (PPVCtrl.maxSize * (PPVCtrl.currentPage - 1)) + $index + 1 : $index + 1}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{pen.RegistrationStartDate| date: "dd/MM/yyyy"}}</td>
+                                            <td style="vertical-align: middle;">{{pen.TenderStepData.tender.TenderName}}</td>
+                                            <td class="text-center" style="vertical-align: middle;">{{pen.RegistrationEndDate| date: "dd/MM/yyyy"}}</td>
+                                            <td ng-if="pen.IsAlreadyRegistered === true" class="text-center" style="vertical-align: middle;"> Terdaftar
+                                            <td ng-if="pen.IsAlreadyRegistered === false" class="text-center" style="vertical-align: middle;"> Belum Terdaftar
+                                            <td class="text-center" style="vertical-align: middle;"><a ng-click="PPVCtrl.detailPengumuman(pen)" class="btn btn-flat btn-sm btn-primary" role="button" title="Detail"><i class="fa fa-external-link"></i> </a></td>
+                                                <td class="text-center" style="vertical-align: middle;">
+                                                <a ng-if="pen.IsAlreadyRegistered === true" ng-click="PPVCtrl.detailPengumuman(pen)" class="btn btn-flat btn-sm btn-warning" role="button" title="Detail"><i class="fa fa-external-link"></i> </a>
+                                                <a ng-if="pen.IsAlreadyRegistered === false && !pen.IsAlreadyClosed" ng-click="PPVCtrl.lihatPendaftaran(pen)" class="btn btn-sm btn-primary" role="button" title="Minat"><i class="fa fa-check-square"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul uib-pagination boundary-links="true" total-items="PPVCtrl.totalItems" ng-model="PPVCtrl.currentPage"
+                                class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                ng-change="PPVCtrl.jLoad(PPVCtrl.currentPage)"></ul>
+                            <br />
+                            <label>{{'TOTAL_DATA' | translate}} : {{PPVCtrl.total}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="detail-pengumuman-pengadaan-vendor.html">
+    <div class="modal-content" ng-init="detailPPVendorController.init()">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="detailPPVendorController.batal()"><span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span></button>
+            <h3 class="modal-title afta-font" id="myModalLabel">Detail Pengumuman Pengadaan</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <dl class="dl-horizontal">
+                        <dt>Kode Tender</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.TenderCode}}</dd>
+                        <dt>Nama Tender</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.TenderName}}</dd>
+                        <dt>Pengumuman</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.Description}}</dd>
+                        <!--
+                        <dt>Komoditas</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.selectedComodity.Name}}</dd>
+                        <dt>Klasifikasi</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.selectedClasification.Value}}</dd>
+                        <dt>Tehnikal</dt>
+                        <dd> : &nbsp; {{detailPPVendorController.selectedTechnical.Value}}</dd>
+                        <dt>Area</dt>
+                        <dd>
+                            : &nbsp; <span ng-if="detailPPVendorController.IsLocal === true">Lokal </span>
+                            <span ng-if="detailPPVendorController.IsNational === true">, National </span>
+                            <span ng-if="detailPPVendorController.IsInternational === true">, International </span>
+                        </dd>
+                            -->
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button ng-click="detailPPVendorController.batal()" type="button" class="btn btn-flat btn-primary" title="Kembali"><i class="fa fa-arrow-circle-left"></i></button>
+        </div>
+    </div>
+</script>

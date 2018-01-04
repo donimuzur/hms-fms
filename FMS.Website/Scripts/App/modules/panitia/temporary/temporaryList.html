@@ -1,0 +1,62 @@
+<div ng-init="init()" class="container-fluid">
+    <div class="row" style="margin-top: 25px;">
+        <div class="col-md-6 center-block" style="float: none!important;">
+            <h3 class="afta-font text-center" style="margin-bottom: 0px;">
+                Check List Item
+            </h3>
+        </div>
+    </div>    
+    
+    <div id="divSuratPernyataan" class="row" style="margin-top: 10px;">
+        <div class="col-md-12">
+            
+            <div class="row">
+                <div class="col-md-10 center-block" style="float: none!important;">
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>
+                                Document/Data which listed below are items mandatory to be supplied by the Bidder in Tender Reply Documents.<br/>
+                                The tender form was required as seen below should be completed in all respects.  Wherever the information is 
+                                not relevant to your bid,
+                                the space should be appropriately filled with `NA or NIL’.  No space shall be left blank.  All forms 
+                                of the tender form which required below  should be returned. <br/>  
+If the given space is insufficient to give required information, additional sheets may be added.  Each such additional page shall be numbered consecutively and shall bear our tender reference number and signature of bidder.
+
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                            <tr>
+                                                <th style="width: 50px; min-width: 30px; text-align: center;">No.</th>
+<!--                                                <th class="text-center" style="width: 190px; min-width: 190px;">Classification</th>-->
+                                                <th class="text-center">Documents/Data to be supplied</th>
+                                                <th class="text-center">Tanggal Submit</th>
+                                                <th class="text-center" style="width: 190px; min-width: 190px;">Check List (Ok/No)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="fl in flow">
+                                                <td class="text-center" style="vertical-align: middle;">{{$index+1}}</td>
+<!--                                                <td style="vertical-align: middle;"><a ui-sref="{{fl.jenis_form_url}}">{{fl.frm}}</a></td>-->
+                                                <td style="vertical-align: middle;"><a ui-sref="{{fl.jenis_form_url}}">{{fl.nama_tahapan}}</a></td>
+                                                <td class="text-center" style="vertical-align: middle;"></td>
+                                                <td class="text-center" style="vertical-align: middle;"></td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+</div>

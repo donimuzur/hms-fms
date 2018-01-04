@@ -1,0 +1,83 @@
+<div class="modal-content" ng-init="uploadItemCtrl.init()" style="overflow: visible!important;">              
+    <div class="modal-header">
+        <div class="col-md-12">
+            <h3 class="afta-font judul-datatabel" style="text-align: center!important;">{{'ITEM_VHS_FPA'|translate}}</h3>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-7 col-sm-8 col-xs-12 center-block" style="float: none!important;">
+            <form ng-submit="uploadItemCtrl.onSearchSubmit(searchText)" role="form" method="post">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input ng-model="searchText" class="form-control" placeholder="..." />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat btn-default" title="{{'SEARCH' | translate}}"><i class="fa fa-search"></i>&nbsp; </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>             
+        <!--button Tambah PR-->
+        <div class="row" style="margin-bottom: 2px;" ng-if="uploadItemCtrl.allowEdit">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="file" class="form-control" ng-model="fileUpload" ng-file-select="uploadItemCtrl.selectUpload(fileUpload)" accept=".xls,.xlsx" />
+                            <div class="input-group-btn">
+                                <button ng-disabled="!uploadItemCtrl.fileUpload" class="btn btn-success" ng-click="uploadItemCtrl.uploadFile()" title="{{'BTN_UPLOAD'|translate}}"><i class="fa fa-upload"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center-vertical" width="10">{{'TABLE.NO'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.MATERIAL'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.UNIT_OF_MEASURE'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.CURRENCY'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.MANUFACTURER_NAME'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.PART_NUMBER'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.PO_LONG_TEXT'|translate}}</th>
+                                <th class="center-vertical">{{'TABLE.ANNUAL_USAGE'|translate}}</th>
+                            </tr>
+                        </thead> 
+                        <tbody>	
+                            <tr ng-repeat="dt in uploadItemCtrl.pagedItems">
+                                <td class="text-center" style="vertical-align: middle;">{{(uploadItemCtrl.pageNumber - 1) * uploadItemCtrl.pageSize + $index + 1}}</td>
+                                <td style="vertical-align: middle;">{{dt.Material}}</td>
+                                <td style="vertical-align: middle;">{{dt.UnitOfMeasure}}</td>
+                                <td style="vertical-align: middle;">{{dt.Currency}}</td>
+                                <td style="vertical-align: middle;">{{dt.ManufacturerName}}</td>
+                                <td style="vertical-align: middle;">{{dt.PartNumber}}</td>
+                                <td style="vertical-align: middle;">{{dt.POLongText}}</td>  
+                                <td class="text-right" style="vertical-align: middle;">{{dt.AnnualUsage}}</td>                                                                         
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul uib-pagination total-items="uploadItemCtrl.count" max-size="10"
+                        ng-model="uploadItemCtrl.pageNumber" items-per-page="uploadItemCtrl.pageSize"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" ng-change="uploadItemCtrl.loadData()"
+                        boundary-links="true" first-text="&laquo;" last-text="&raquo;"></ul>
+                    <br /><label>{{'TOTAL_DATA' | translate}} : {{uploadItemCtrl.count}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <br />
+                <button ng-if="uploadItemCtrl.allowEdit" ng-click="uploadItemCtrl.simpan()" class="btn btn-flat btn-success"><i class="fa fa-save" title="{{'FORMINPUTRFQ.BTN_SAVE'|translate}}"></i> </button>
+                <button ng-click="uploadItemCtrl.back()" class="btn btn-flat btn-primary"><i class="fa fa-reply" title="{{'FORMINPUTRFQ.BTN_KEMBALI'|translate}}"></i> </button>
+            </div>
+        </div>
+    </div>
+</div>

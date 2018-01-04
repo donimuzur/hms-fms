@@ -1,0 +1,46 @@
+{
+  "ADENDUM": "Adendum",
+  "BATAL": "Batal",
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "MONITORING": "Monitoring",
+    "MONITORING_TENDER": "Monitoring Tender VHS"
+  },
+  "CANCEL": "Batal",
+  "DETAIL": "Detail",
+  "DRAFT": "Draf",
+  "FILTER": {
+    "KEYWORD": "Masukkan Kata Pencarian",
+    "SEARCH": "Cari Berdasarkan",
+    "VENDOR_CODE": "Vendor Code",
+    "VENDOR_NAME": "Vendor Name"
+  },
+  "JUDUL_MON": "DATA MONITORING TENDER VHS",
+  "KEMBALI": "Kembali",
+  "MESSAGE": {
+    "ERR_API": "Gagal Akses API...",
+    "ERR_LOAD": "Gagal mendapat data VHS",
+    "ERR_LOAD_STATUS": "Gagal mendapat daftar VHS",
+    "ERR_LOAD_STEP": "Gagal mendapat daftar VHS",
+    "LOADING": "Silahkan Tunggu..."
+  },
+  "SIMPAN": "Simpan",
+  "TABLE": {
+    "ACTION": "Action",
+    "BUDGET_KONTRAK": "Budget Contract",
+    "KODE_VENDOR": "Vendor Code",
+    "LOKASI_PENYIMPANAN": "Storage Location",
+    "MULAI_KONTRAK": "Start Contract",
+    "NAMA_DOKUMEN": "Title Document",
+    "NAMA_VENDOR": "Vendor Name",
+    "NO": "No",
+    "NO_KONTRAK": "Contract Number (SAP)",
+    "REMAINING_CONTRACT": "Sisa Budget",
+    "ORIGINAL_CONTRACT": "Original Contract",
+    "REMAKS": "Remaks",
+    "SELESAI_KONTRAK": "FInish Contract",
+    "SPENDING_CONTRACT": "Spending Contract"
+  },
+  "TIDAK_ADA_DATA": "No Data",
+  "TOTAL_DATA": "Total Data"
+}

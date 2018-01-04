@@ -1,0 +1,245 @@
+﻿@model FMS.Website.Models.FleetModel
+@using FMS.Core
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Master Data Fleet Upload <label class="label-warning">@Model.ErrorMessage</label></h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        @using (Html.BeginForm("Upload", "MstFleet", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <span>
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/masterFleet.xlsx">here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="tbUpload" class="table table-bordered dataTables table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Police Number</th>
+                        <th>Employee Name</th>
+                        <th>Employee ID</th>
+                        <th>Cost Center</th>
+                        <th>Manufacturer.</th>
+                        <th>Model</th>
+                        <th style="min-width: 80px">Series</th>
+                        <th>Transmision</th>
+                        <th>Body Type</th>
+                        <th>Fuel Type</th>
+                        <th>Branding</th>
+                        <th>Color</th>
+                        <th>Airbag</th>
+                        <th>Chasis Number</th>
+                        <th>Engine Number</th>
+                        <th>Request Year</th>
+                        <th>Vehicle Type</th>
+                        <th>Vehicle Usage</th>
+                        <th>Project</th>
+                        <th>Project Name</th>
+                        <th style="min-width: 80px">Start Date</th>
+                        <th style="min-width: 80px">End Date</th>
+                        <th>Vendor Name</th>
+                        <th>City</th>
+                        <th>Supply Method</th>
+                        <th>Restitution</th>
+                        <th>Monthly HMS Installment</th>
+                        <th>Price</th>--
+                        <th>Vat</th>
+                        <th>PO Number</th>
+                        <th>PO Line</th>
+                        <th>Car Group Level</th>
+                        <th>Employee Group Level</th>
+                        <th>Assigned To</th>
+                        <th>Address</th>
+                        <th style="min-width: 80px">Start Contract</th>
+                        <th style="min-width: 80px">End Contract</th>
+                        <th>Vehicle Status</th>
+                        <th>Certificate of Ownership</th>
+                        <th>Comments</th>
+                        <th>Assets</th>
+                        <th>Total Monthly Charge</th>
+                        <th>Function</th>
+                        <th>Regional</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action("Index","MstFleet")" title="Cancel" class="btn">Cancel</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<script type="text/javascript">
+
+    $(function () {
+        // DataTable
+        var table = $('#tbUpload').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange" : false,
+            "searching": false,
+            "info":false,
+            "bInfo" :false,
+            "ordering": false
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+    $('#btnSave').prop('disabled', true);
+
+    function createColumn(text) {
+        return '<td>' + text + '</td>';
+    }
+    var uploaditems = [];
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDate(text, name) {
+        if (new String(text).valueOf() == "null") {
+            return '<td><input type="hidden" name="' + name + '" >' + text + '</td>';
+        }
+        else {
+            var date = new Date(new String(text).valueOf());
+            //return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="date">' + date.getDate().toString() + '-' + date.getMonth().toString() + '-' + date.getFullYear().toString() + '  2</span></td>';
+            return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+        }
+
+    }
+
+    function createColumnWithHiddenFieldDecimal(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+
+    $('#btnupload').click(function () {
+        uploadXmlFile();
+    });
+
+    function jsonDateToDatetime(str)
+    {
+        try {
+            var dt = new Date(parseInt(str.substr(6)));
+            var dtStr = dt.toString();
+            var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+        } catch (e) {
+            return '';
+        }
+        
+        return str;
+
+    }
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "MstFleet")';
+        var fileName = $('[name="upload"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+
+        if (extension != '.xlsx') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("upload").files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("upload").files[i];
+            formData.append("upload", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+
+                    var tr = '<tr>' +
+                            createColumn(i + 1) +
+                            createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
+                            createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
+                            createColumnWithHiddenField(uploaditems[i].EmployeeID == null ? "" : uploaditems[i].EmployeeID, 'Model.Details[' + i + '].EmployeeID') +
+                            createColumnWithHiddenField(uploaditems[i].CostCenter, 'Model.Details[' + i + '].CostCenter') +
+                            createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Details[' + i + '].Manufacturer') +
+                            createColumnWithHiddenField(uploaditems[i].Models, 'Model.Details[' + i + '].Models') +
+                            createColumnWithHiddenField(uploaditems[i].Series, 'Model.Details[' + i + '].Series') +
+                            createColumnWithHiddenField(uploaditems[i].Transmission, 'Model.Details[' + i + '].Transmission') +
+                            createColumnWithHiddenField(uploaditems[i].BodyType, 'Model.Details[' + i + '].BodyType') +
+                            createColumnWithHiddenField(uploaditems[i].FuelType, 'Model.Details[' + i + '].FuelType') +
+                            createColumnWithHiddenField(uploaditems[i].Branding, 'Model.Details[' + i + '].Branding') +
+                            createColumnWithHiddenField(uploaditems[i].Color, 'Model.Details[' + i + '].Color') +
+                            createColumnWithHiddenField(uploaditems[i].Airbag, 'Model.Details[' + i + '].Airbag') +
+                            createColumnWithHiddenField(uploaditems[i].ChasisNumber, 'Model.Details[' + i + '].ChasisNumber') +
+                            createColumnWithHiddenField(uploaditems[i].EngineNumber, 'Model.Details[' + i + '].EngineNumber') +
+                            createColumnWithHiddenField(uploaditems[i].VehicleYear, 'Model.Details[' + i + '].VehicleYear') +
+                            createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
+                            createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
+                            createColumnWithHiddenField(uploaditems[i].Project, 'Model.Details[' + i + '].Project') +
+                            createColumnWithHiddenField(uploaditems[i].ProjectName, 'Model.Details[' + i + '].ProjectName') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartDate), 'Model.Details[' + i + '].StartDate') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndDate), 'Model.Details[' + i + '].EndDate') +
+                            createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
+                            createColumnWithHiddenField(uploaditems[i].City, 'Model.Details[' + i + '].City') +
+                            createColumnWithHiddenField(uploaditems[i].SupplyMethod, 'Model.Details[' + i + '].SupplyMethod') +
+                            createColumnWithHiddenField(uploaditems[i].Restitution, 'Model.Details[' + i + '].Restitution') +
+                            createColumnWithHiddenField(uploaditems[i].MonthlyHMSInstallment, 'Model.Details[' + i + '].MonthlyHMSInstallment') +
+                            createColumnWithHiddenField(uploaditems[i].Price, 'Model.Details[' + i + '].Price') +
+                            createColumnWithHiddenField(uploaditems[i].VatDecimal, 'Model.Details[' + i + '].VatDecimal') +
+                            createColumnWithHiddenField(uploaditems[i].PoNumber, 'Model.Details[' + i + '].PoNumber') +
+                            createColumnWithHiddenField(uploaditems[i].PoLine, 'Model.Details[' + i + '].PoLine') +
+                            createColumnWithHiddenField(uploaditems[i].CarGroupLevel, 'Model.Details[' + i + '].CarGroupLevel') +
+                            createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
+                            createColumnWithHiddenField(uploaditems[i].AssignedTo, 'Model.Details[' + i + '].AssignedTo') +
+                            createColumnWithHiddenField(uploaditems[i].Address, 'Model.Details[' + i + '].Address') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartContract), 'Model.Details[' + i + '].StartContract') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndContract), 'Model.Details[' + i + '].EndContract') +
+                            createColumnWithHiddenField(uploaditems[i].VehicleStatus, 'Model.Details[' + i + '].VehicleStatus') +
+                            createColumnWithHiddenField(uploaditems[i].CertificateOwnership, 'Model.Details[' + i + '].CertificateOwnership') +
+                            createColumnWithHiddenField(uploaditems[i].Comments, 'Model.Details[' + i + '].Comments') +
+                            createColumnWithHiddenField(uploaditems[i].Assets, 'Model.Details[' + i + '].Assets') +
+                            createColumnWithHiddenField(uploaditems[i].TotalMonthlyCharge, 'Model.Details[' + i + '].TotalMonthlyCharge') +
+                            createColumnWithHiddenField(uploaditems[i].Function, 'Model.Details[' + i + '].Function') +
+                            createColumnWithHiddenField(uploaditems[i].Regional, 'Model.Details[' + i + '].Regional') +
+                            createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
+                            '</tr>';
+                                $('#tb-upload-excel').append(tr);
+                                error += uploaditems[i].ErrorMessage;
+                }
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
+            }
+        });
+    };
+</script>

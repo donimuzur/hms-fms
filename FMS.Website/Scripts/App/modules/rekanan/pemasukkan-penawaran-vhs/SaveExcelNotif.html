@@ -1,0 +1,69 @@
+﻿<div id="idTambahLibrary" class="modal-content" ng-init="SaveNotifExcel.init()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" ng-click="SaveNotifExcel.batal()">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Keluar</span>
+        </button>
+         </div>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 center-block" style="float: none!important;">
+                <h4 class="text-center afta-font">
+                    Silahkan simpan ulang file kedalam format excel (.xls, .xlsx) dan masukkan detail penawan didalam excel ini sesuai ketentuan yang ada
+                </h4>
+            </div>
+        </div>
+       
+
+        <div ng-hide="true" class="row" style="margin-top: 20px;">
+            <div class="col-md-12">
+                <div id="tableToExport" class="table table-responsive" style="padding-bottom: 20px;">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No.</th>
+                                <th class="text-center">Code</th>
+                                <th class="text-center">Material Code</th>
+                                <th class="text-center">Item Description</th>
+                                <th class="text-center">Manufacture</th>
+                                <th class="text-center">Part no</th>
+                                <th class="text-center">Estimate Annual Usage</th>
+                                <th class="text-center">UOP</th>
+                                <th class="text-center">Currency</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Lead Time(days)</th>
+                                <th class="text-center">Country of Origin</th>
+                                <th class="text-center">Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="eval in SaveNotifExcel.vendor">
+                                <td class="center-vertical">{{$index + 1}}</td>
+                                <td class="text-center">{{eval.ID}}</td>
+                                <td class="text-center">{{eval.Material}}</td>
+                                <td class="text-center">{{eval.POLongText}}</td>
+                                <td class="text-center">{{eval.ManufacturerName}}</td>
+                                <td class="text-center">{{eval.PartNumber}}</td>
+                                <td class="text-center">{{eval.AnnualUsage}}</td>
+                                <td class="text-center">{{eval.UnitOfMeasure}}</td>
+                                <td class="text-center">{{eval.Currency}}</td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer" style="text-align: center!important;">
+        <button type="button" class="btn btn-warning" ng-click="SaveNotifExcel.batal()" title="Batal"> <i class="fa fa-reply"></i></button>
+        <button ng-click="SaveNotifExcel.Export('#tableToExport')"  class="btn btn-success" title="Setuju"><i class="fa fa-check"></i></button>
+        
+
+    </div>
+    </div>

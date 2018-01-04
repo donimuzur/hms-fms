@@ -1,0 +1,27 @@
+﻿{
+  "BREADCRUMB": {
+    "BERANDA": "Beranda",
+    "DATA_MASTER": "Data Master",
+    "MASTER_APPBUD": "Data-Data Approval Budget"
+  },
+  "MESSAGE": {
+    "LOADING": "Silahkan Tunggu",
+    "ERR_LOADDATA": "Gagal Mendapatkan Data Approval Budget",
+    "ERR_TYPEFILE": "Gagal mendapatkan data tipe dan size file",
+    "ERR_API": "Gagal Akses API",
+    "ERR_INVALID_FILETYPE": "Tipe File Upload Tidak Sesuai",
+    "ERR_NOFILE": "File Belum di Upload",
+    "ERR_UPLOAD": "Gagal Upload File"
+  },
+  "DATA_APPBUD" : "Data Approval Budget",
+  "TAMBAH": "Tambah",
+  "TOTAL_DATA": "Total Data" ,
+  "TABLE": {
+    "NO": "No",
+    "AUTHORIZE": "Authorisasi",
+    "BUDGETVALUE": "Nominal",
+    "STARTDATE": "Tanggal Berlaku",
+    "ENDDATE":  "Tanggal Expired",
+    "ACTION": "Action"
+  }
+}

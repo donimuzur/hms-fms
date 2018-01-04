@@ -1,0 +1,237 @@
+﻿@model FMS.Website.Models.CtfUploadModel
+@using FMS.Core
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Mass Upload Ctf</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
+        @using (Html.BeginForm("UploadCtf", "TraCtf", FormMethod.Post))
+            {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="file" id="upload" name="upload" class="form-control rounded-0 rounded-left" />
+                            <span class="input-group-btn">
+                                <button type="button" id="btnupload" value="upload" name="upload" class="btn btn-primary rounded-0 rounded-right">Generate</button>
+                            </span>
+                        </div>
+                        <div>
+                            Download template <a href="~/files_upload/UploadCtf.xlsx">here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="tbUpload" class="table table-bordered dataTables table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Reason</th>
+                        <th>Termination Date</th>
+                        <th>Police Number</th>
+                        <th>Cost Center</th>
+                        <th>Vehicle Type</th>
+                        <th>Vehicle Year</th>
+                        <th>Supply Method</th>
+                        <th>Extend Vehicle</th>
+                        <th>Extend New Proposed Date</th>
+                        <th>Extend Police Number</th>
+                        <th>Extend PO Number</th>
+                        <th>Extend PO Line</th>
+                        <th>Extend Price</th>
+                        <th>Extend Reason</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-upload-excel"></tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
+                    <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-primary">Back</a>
+                </div>
+            </div>
+            }
+        </div>
+</section>
+
+<script src="~/Scripts/thousand-separator.js"></script>
+<script type="text/javascript">
+    $(document).ready()
+    {
+        onExtendVehicle();
+    }
+    $(function () {
+        // DataTable
+        var table = $('#tbUpload').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+    });
+    $('#btnSave').prop('disabled', true);
+
+    function createColumn(text) {
+        return '<td>' + text + '</td>';
+    }
+    var uploaditems = [];
+
+    function createColumnWithHiddenField(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
+    }
+
+    function createColumnWithHiddenFieldDecimal(text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
+    }
+
+    $('#btnupload').click(function () {
+        uploadXmlFile();
+    });
+
+    function jsonDateToDatetime(str) {
+        try {
+            var dt = new Date(parseInt(str.substr(6)));
+            var dtStr = dt.toString();
+            var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+        } catch (e) {
+            return '';
+        }
+
+        return str;
+    }
+    function uploadXmlFile() {
+        var postUrl = '@Url.Action("UploadFile", "TraCtf")';
+        var fileName = $('[name="upload"]').val().trim();
+        var pos = fileName.lastIndexOf('.');
+        var extension = (pos <= 0) ? '' : fileName.substring(pos);
+        if (extension != '.xlsx' && extension != '.csv') {
+            alert('Please browse a correct excel file to upload');
+            return false;
+        }
+
+        var formData = new FormData();
+        var totalFiles = document.getElementById("upload").files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("upload").files[i];
+            formData.append("upload", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: postUrl,
+            data: formData,
+            dataType: 'html',
+            contentType: false,
+            processData: false,
+
+            success: function (response) {
+                $('#tb-upload-excel').html('');
+                uploaditems = JSON.parse(response);
+                var error = "";
+                for (var i = 0; i < uploaditems.length; i++) {
+                 
+                    var tr = '<tr>' +
+                    createColumn(i + 1) +
+                    createColumnWithHiddenField(uploaditems[i].EmployeeId, 'Model.Details[' + i + '].EmployeeId') +
+                    createColumnWithHiddenField(uploaditems[i].EmployeeName, 'Model.Details[' + i + '].EmployeeName') +
+                    createColumnWithHiddenField(uploaditems[i].CostCenter, 'Model.Details[' + i + '].CostCenter') +
+                    createColumnWithHiddenField(uploaditems[i].PoliceNumber, 'Model.Details[' + i + '].PoliceNumber') +
+                    createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
+                    createColumnWithHiddenField(uploaditems[i].VehicleYear, 'Model.Details[' + i + '].VehicleYear') +
+                    createColumnWithHiddenField(uploaditems[i].SupplyMethod, 'Model.Details[' + i + '].SupplyMethod') +
+                    createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EffectiveDate), 'Model.Details[' + i + '].EffectiveDate') +
+                    createColumnWithHiddenField(uploaditems[i].ErrorMessage == null ? "" : uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
+                    '</tr>';
+                    $('#tb-upload-excel').append(tr);
+                    error += uploaditems[i].ErrorMessage == null ? "" : uploaditems[i].ErrorMessage;
+                }
+                if (error == '')
+                {
+                    $('#btnSave').prop('disabled', false);
+                }
+            }
+        });
+    };
+
+    $("#Reason").change(function () {
+        var data = $('#Reason').find("option:selected").text().toLowerCase()
+        CheckEndrent(data);
+    });
+    function CheckEndrent(reason) {
+        var reasonval = $("#Reason").val();
+        if (reasonval == '') {
+            $('#ExtendVehicle').prop('disabled', false);
+            onExtendVehicle();
+
+        }
+        else {
+            $('#ExtendVehicle').prop('disabled', true);
+            $('#ExtendVehicle').prop('selectedIndex', 1);
+            onExtendVehicle();
+        }
+    }
+    function onExtendVehicle() {
+        if ($('#ExtendVehicle').val() == 'True') {
+            
+            $('#idExtend').show();
+            $('#modalPoNumber').prop('required', true);
+            $('#modalPoLine').prop('required', true);
+            $('#modalReason').prop('required', true);
+            $('#modalDate').prop('required', true);
+            $('#modalPrice').prop('required', true);
+
+            $('#modalPoNumber').prop('disabled', false);
+            $('#modalPoLine').prop('disabled', false);
+            $('#modalReason').prop('disabled', false);
+            $('#modalDate').prop('disabled', false);
+            $('#modalPrice').prop('disabled', false);
+        }
+        else if ($('#ExtendVehicle').val() == 'False') {
+            
+            $('#idExtend').hide();
+            $('#modalPoNumber').prop('required', false);
+            $('#modalPoLine').prop('required', false);
+            $('#modalReason').prop('required', false);
+            $('#modalDate').prop('required', false);
+            $('#modalPrice').prop('required', false);
+
+            $('#modalPoNumber').prop('disabled', true);
+            $('#modalPoLine').prop('disabled', true);
+            $('#modalReason').prop('disabled', true);
+            $('#modalDate').prop('disabled', true);
+            $('#modalPrice').prop('disabled', true);
+        }
+    }
+    function SendCtf(value) {
+        $('#TraCtfIdSend').val(value);
+        $('#sendmodal').modal('show');
+    }
+    function Confirm() {
+        $('#isSubmit').val('submit');
+        $("#btnSubmit").trigger('click');
+    }
+    $("#btnConfirmSend").click(function () {
+        $('#isSubmit').val('submit');
+        $("#btnSubmit").trigger('click');
+    });
+</script>
