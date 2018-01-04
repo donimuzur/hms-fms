@@ -968,14 +968,13 @@ namespace FMS.BLL.Ctf
                     bodyMail.Append("Fleet Team");
                     bodyMail.AppendLine();
 
-
-                    rc.To.Add(employeeDataEmail);
-
                     if (!string.IsNullOrEmpty(vendorDataEmail))
                     {
-                        rc.CC.Add(vendorDataEmail);
+                        rc.To.Add(vendorDataEmail);
                     }
 
+                    rc.CC.Add(employeeDataEmail);
+                   
                     foreach (var item in fleetEmailList)
                     {
                         rc.CC.Add(item);
@@ -1272,6 +1271,7 @@ namespace FMS.BLL.Ctf
                 FleetDto.IsActive = true;
                 FleetDto.PoLine = extendDto.EXTEND_PO_LINE;
                 FleetDto.PoNumber = extendDto.EXTEND_PO_NUMBER;
+                FleetDto.PoliceNumber = extendDto.EXTEND_POLICE_NUMBER;
                 FleetDto.Price = extendDto.EXTEND_PRICE == null ? 0 : extendDto.EXTEND_PRICE.Value;
                 FleetDto.StartContract = vehicle.END_CONTRACT.Value.AddDays(1);
                 FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;
