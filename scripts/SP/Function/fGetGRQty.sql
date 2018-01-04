@@ -18,7 +18,7 @@ GO
 -- Create date: <Create Date, ,>
 -- Description:	<Description, ,>
 -- =============================================
-CREATE FUNCTION fGetGRQTY 
+ALTER FUNCTION dbo.fGetGRQTY 
 (
 	-- Add the parameters for the function here
 	@start_contract as date,
@@ -59,7 +59,7 @@ BEGIN
 		return @result;
 	end
 
-	if MONTH(@start_contract) = @current_month
+	if MONTH(@start_contract) = @current_month and YEAR(@start_contract) = @current_year
 	begin
 		set @result = 0;
 
