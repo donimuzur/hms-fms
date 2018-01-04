@@ -22,6 +22,7 @@ namespace FMS.Website.Models
         public int DocumentType { get; set; }
         public string Remark { get; set; }
         public string RoleType { get; set; }
+        public string VehicleType { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
@@ -30,6 +31,7 @@ namespace FMS.Website.Models
         public string MstDocumentType { get; set; }
         public SelectList DocumentTypeList { get; set; }
         public SelectList RoleTypeList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
 
     }
 

@@ -132,7 +132,11 @@ namespace FMS.Website.Controllers
             param.Vendor = searchView.Vendor;
             param.Function = searchView.Function;
             param.StartRent = searchView.StartRent;
+            param.StartRentTo = searchView.StartRentTo;
             param.EndRent = searchView.EndRent;
+            param.EndRentTo = searchView.EndRentTo;
+            param.EndDate = searchView.EndDate;
+            param.EndDateTo = searchView.EndDateTo;
             param.Regional = searchView.Regional;
             param.City = searchView.City;
             param.EmployeeId = searchView.EmployeeId;
@@ -283,7 +287,7 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.VatDecimalStr = model.VatDecimal == null ? "" : string.Format("{0:n0}", model.VatDecimal);
-            model.MonthlyHMSInstallmentStr = model.MonthlyHMSInstallment == null ? "" : string.Format("{0:n0}", model.MonthlyHMSInstallment);
+            model.MonthlyHMSInstallmentStr = string.Format("{0:n0}", model.MonthlyHMSInstallment);
             model.TotalMonthlyChargeStr = model.TotalMonthlyCharge == null ? "" : string.Format("{0:n0}", model.TotalMonthlyCharge);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -484,15 +488,15 @@ namespace FMS.Website.Controllers
                         item.ProjectName = dataRow[19];
                         if (dataRow[20] != "NULL" && dataRow[20] != "")
                         {
-                            double dStartDate = double.Parse(dataRow[21].ToString());
-                            DateTime dtStartDate = DateTime.FromOADate(dStartDate);
-                            item.StartDate = dtStartDate;
+                            double dStartContract = double.Parse(dataRow[20].ToString());
+                            DateTime dtStartContract = DateTime.FromOADate(dStartContract);
+                            item.StartContract = dtStartContract;
                         }
                         if (dataRow[21] != "NULL" && dataRow[21] != "")
                         {
-                            double dEndDate = double.Parse(dataRow[21].ToString());
-                            DateTime dtEndDate = DateTime.FromOADate(dEndDate);
-                            item.EndDate = dtEndDate;
+                            double dEndContract = double.Parse(dataRow[21].ToString());
+                            DateTime dtEndContract = DateTime.FromOADate(dEndContract);
+                            item.EndContract = dtEndContract;
                         }
                         item.VendorName = dataRow[22];
                         item.City = dataRow[23];
@@ -515,20 +519,18 @@ namespace FMS.Website.Controllers
                         }
                         item.AssignedTo = dataRow[33];
                         item.Address = dataRow[34];
-
                         if (dataRow[35] != "NULL" && dataRow[35] != "")
                         {
-                            double dStartContract = double.Parse(dataRow[35].ToString());
-                            DateTime dtStartContract = DateTime.FromOADate(dStartContract);
-                            item.StartContract = dtStartContract;
+                            double dStartDate = double.Parse(dataRow[35].ToString());
+                            DateTime dtStartDate = DateTime.FromOADate(dStartDate);
+                            item.StartDate = dtStartDate;
                         }
                         if (dataRow[36] != "NULL" && dataRow[36] != "")
                         {
-                            double dEndContract = double.Parse(dataRow[36].ToString());
-                            DateTime dtEndContract = DateTime.FromOADate(dEndContract);
-                            item.EndContract = dtEndContract;
+                            double dEndDate = double.Parse(dataRow[36].ToString());
+                            DateTime dtEndDate = DateTime.FromOADate(dEndDate);
+                            item.EndDate = dtEndDate;
                         }
-
                         item.VehicleStatus = dataRow[37];
                         item.CertificateOwnership = dataRow[38];
                         item.Comments = dataRow[39];
@@ -656,8 +658,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 18, "Vehicle Usage");
             slDocument.SetCellValue(iRow, 19, "Project");
             slDocument.SetCellValue(iRow, 20, "Project Name");
-            slDocument.SetCellValue(iRow, 21, "Start Date");
-            slDocument.SetCellValue(iRow, 22, "End Date");
+            slDocument.SetCellValue(iRow, 21, "Start Contract");
+            slDocument.SetCellValue(iRow, 22, "End Contract");
             slDocument.SetCellValue(iRow, 23, "Vendor Name");
             slDocument.SetCellValue(iRow, 24, "City");
             slDocument.SetCellValue(iRow, 25, "Supply Method");
@@ -670,8 +672,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 32, "Employee Group Level");
             slDocument.SetCellValue(iRow, 33, "Assigned To");
             slDocument.SetCellValue(iRow, 34, "Address");
-            slDocument.SetCellValue(iRow, 35, "Start Contract");
-            slDocument.SetCellValue(iRow, 36, "End Contract");
+            slDocument.SetCellValue(iRow, 35, "Start Date");
+            slDocument.SetCellValue(iRow, 36, "End Date");
             slDocument.SetCellValue(iRow, 37, "Vehicle Status");
             slDocument.SetCellValue(iRow, 38, "Certificate of Ownership");
             slDocument.SetCellValue(iRow, 39, "Comments");
@@ -725,8 +727,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 18, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 19, data.Project);
                 slDocument.SetCellValue(iRow, 20, data.ProjectName);
-                slDocument.SetCellValue(iRow, 21, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 22, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 21, data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 22, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 23, data.VendorName);
                 slDocument.SetCellValue(iRow, 24, data.City);
                 slDocument.SetCellValue(iRow, 25, data.SupplyMethod);
@@ -739,8 +741,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 32, data.GroupLevel);
                 slDocument.SetCellValue(iRow, 33, data.AssignedTo);
                 slDocument.SetCellValue(iRow, 34, data.Address);
-                slDocument.SetCellValue(iRow, 35, data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 36, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 35, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 36, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 37, data.IsActive ? "Active" : "Not Active");
                 slDocument.SetCellValue(iRow, 38, data.CertificateOwnership);
                 slDocument.SetCellValue(iRow, 39, data.Comments);

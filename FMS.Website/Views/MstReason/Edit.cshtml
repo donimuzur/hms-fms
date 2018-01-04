@@ -16,19 +16,19 @@
                     @Html.HiddenFor(model => model.MstReasonId)
                     @Html.HiddenFor(model => model.CreatedDate)
                     @Html.HiddenFor(model => model.CreatedBy)
-                    @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, new { @class = "form-control", @required = "required" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @required = "required" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Reason<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.Reason, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Reason, new { @class = "form-control", @required = "required" })
                 </div>
             </div>
             <div class="col-md-6">

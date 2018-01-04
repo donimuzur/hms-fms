@@ -97,7 +97,7 @@
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        @if (data.ModifiedDate == data.CreatedDate)
+                        @if (data.ModifiedDate.HasValue)
                         {
                             <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         }

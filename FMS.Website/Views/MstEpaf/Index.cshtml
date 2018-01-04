@@ -114,6 +114,12 @@
 </section>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstEpaf").offset().top
+        }, 1000);
+    });
+
     function ExportXls() {
         $('#ExportToXls').submit();
     }

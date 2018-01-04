@@ -934,7 +934,19 @@ namespace FMS.Website.Controllers
         public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate, string location)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
-            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
+            var priceListData = _priceListBLL.GetPriceList().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacture)
+                                                                     && !string.IsNullOrEmpty(x.Model) 
+                                                                     && !string.IsNullOrEmpty(x.Series)).ToList();
+
+            var vehicleDataNoNull = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacturer)
+                                                                     && !string.IsNullOrEmpty(x.Models)
+                                                                     && !string.IsNullOrEmpty(x.Series)).ToList();
+
+            var vehicleData = vehicleDataNoNull.Where(x => x.Year == createdDate.Year
+                                                            && priceListData.Select(p => p.Manufacture.ToUpper()).ToList().Contains(x.Manufacturer.ToUpper())
+                                                            && priceListData.Select(p => p.Model.ToUpper()).ToList().Contains(x.Models.ToUpper())
+                                                            && priceListData.Select(p => p.Series.ToUpper()).ToList().Contains(x.Series.ToUpper())
+                                                            && priceListData.Select(p => p.Year).ToList().Contains(x.Year)).ToList();
 
             var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Location == location)
                                                                                         .OrderByDescending(x => x.ValidFrom).FirstOrDefault();
