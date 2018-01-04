@@ -1511,7 +1511,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 17, "Location");
             slDocument.SetCellValue(iRow, 18, "Branding");
             slDocument.SetCellValue(iRow, 19, "Purpose");
-            slDocument.SetCellValue(iRow, 20, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 20, "Request Year");
             slDocument.SetCellValue(iRow, 21, "PO");
             slDocument.SetCellValue(iRow, 22, "PO Line");
             slDocument.SetCellValue(iRow, 23, "Vat");
@@ -1543,7 +1543,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, string.Empty);
             slDocument.SetCellValue(iRow, 7, string.Empty);
             slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToOADate());
-            slDocument.SetCellValue(iRow, 9, csfData.EFFECTIVE_DATE.ToOADate());
+            slDocument.SetCellValue(iRow, 9, string.Empty);
             slDocument.SetCellValue(iRow, 10, "YES");
             slDocument.SetCellValue(iRow, 11, csfData.MANUFACTURER);
             slDocument.SetCellValue(iRow, 12, csfData.MODEL);
@@ -1575,7 +1575,7 @@ namespace FMS.Website.Controllers
             SLStyle dateStyle = slDocument.CreateStyle();
             dateStyle.FormatCode = "dd/MM/yyyy";
 
-            slDocument.SetCellStyle(iRow, 8, iRow, 9, dateStyle);
+            slDocument.SetCellStyle(iRow, 8, iRow, 8, dateStyle);
 
             return slDocument;
         }
