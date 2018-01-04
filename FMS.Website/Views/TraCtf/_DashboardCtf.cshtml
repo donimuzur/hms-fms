@@ -11,16 +11,16 @@
             <th style="min-width: 120px" align="center">Employee ID</th>
             <th style="min-width: 120px" align="center">Employee Name</th>
             <th style="min-width: 120px" align="center">Reason</th>
+            <th style="min-width: 120px" align="center">Police Number</th>
             <th style="min-width: 120px" align="center">Termination Date</th>
             <th style="min-width: 120px" align="center">Regional</th>
-            <th style="min-width: 120px" align="center">Coordinator</th>
-            <th style="min-width: 120px" align="center">Police Number</th>
+            <th style="min-width: 120px" align="center">Vehicle Location</th>
             <th style="min-width: 120px" align="center">Cost Center</th>
             <th style="min-width: 120px" align="center">Vehicle usage</th>
             <th style="min-width: 120px" align="center">Supply Method</th>
-            <th style="min-width: 120px" align="center">Vehicle Location</th>
             <th style="min-width: 120px" align="center">End Rent Date</th>
             <th style="min-width: 120px" align="center">Extend Date</th>
+            <th style="min-width: 120px" align="center">Coordinator</th>
             <th style="min-width: 120px" align="center">Updated by</th>
             <th style="min-width: 120px" align="center">Updated Date</th>
         </tr>
@@ -84,16 +84,16 @@
                 <td>@Html.Raw(data.EmployeeId)</td>
                 <td>@Html.Raw(data.EmployeeName)</td>
                 <td>@Html.Raw(data.ReasonS)</td>
+                <td>@Html.Raw(data.PoliceNumber)</td>
                 <td>@Html.Raw(data.EffectiveDate.HasValue ? data.EffectiveDate.Value.ToString("dd-MMM-yyyy") : "")</td>
                 <td>@Html.Raw(data.Region)</td>
-                <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.PoliceNumber)</td>
+                <td>@Html.Raw(data.VehicleLocation)</td>
                 <td>@Html.Raw(data.CostCenter)</td>
                 <td>@Html.Raw(data.VehicleUsage)</td>
                 <td>@Html.Raw(data.SupplyMethod)</td>
-                <td>@Html.Raw(data.VehicleLocation)</td>
                 <td>@Html.Raw(data.EndRendDate.HasValue ? data.EndRendDate.Value.ToString("dd-MMM-yyyy") : "")</td>
                 <td>@Html.Raw(data.CtfExtend == null ? "" : data.CtfExtend.NewProposedDate.Value.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.CreatedBy)</td>
                 <td>@Html.Raw(data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy HH:mm:ss"))</td>
             </tr>

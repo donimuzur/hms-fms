@@ -290,7 +290,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Reason</label>
-                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
+                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonExtendList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
                         </div>
                     </div>
                 </div>
@@ -561,6 +561,7 @@
                 }
             },
             complete: function (data) {
+                GetReasonList();
                 checkVehicletype();
                 checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
@@ -606,6 +607,7 @@
 
             },
             complete: function (data) {
+                GetReasonList();
                 checkVehicletype();
                 checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
@@ -712,4 +714,32 @@
         $('#isSubmit').val('submit');
         $("#btnSubmit").trigger('click');
     });
+
+    function GetReasonList() {
+        if ($("#VehicleType").length) {
+            var VehicleType = $('#VehicleType').val();
+            $('#Reason option').remove();
+            if (VehicleType == '' || $('#VehicleType').find("option:selected").val() == '') {
+                $('#Reason').append('<option value="">-- Please Select --</option>');
+
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetReasonByVehicleType", "TraCtf")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { VehicleType: VehicleType },
+                    success: function (list) {
+                        $('#Reason').append('<option value="">-- Please Select --</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#Reason').append('<option value=' + list[i].MstReasonId + '>' + list[i].Reason + '</option>');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
 </script>

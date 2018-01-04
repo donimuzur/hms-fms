@@ -471,7 +471,8 @@ namespace FMS.BLL.Ccf
             {
                 if (complaintCategory.ROLE_TYPE == "Fleet")
                 {
-                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
+                    //rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
+                    rc.Subject = ccfData.DocumentNumber + " - User Complaint";
 
                     bodyMail.Append("Dear Fleet,<br /><br />");
                     bodyMail.AppendLine();
@@ -506,7 +507,8 @@ namespace FMS.BLL.Ccf
                 }
                 else if (complaintCategory.ROLE_TYPE == "HR")
                 {
-                    rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
+                    //rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
+                    rc.Subject = ccfData.DocumentNumber + " - User Complaint";
 
                     bodyMail.Append("Dear HR,<br /><br />");
                     bodyMail.AppendLine();
@@ -548,7 +550,8 @@ namespace FMS.BLL.Ccf
                     case Enums.ActionType.Submit:
                         if (complaintCategory.ROLE_TYPE == "Fleet")
                         {
-                            rc.Subject = ccfData.DocumentNumber + " In Progress by Fleet";
+                            //rc.Subject = ccfData.DocumentNumber + " In Progress by Fleet";
+                            rc.Subject = ccfData.DocumentNumber + " - Complaint Response";
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();
@@ -578,7 +581,8 @@ namespace FMS.BLL.Ccf
                         }
                         else if (complaintCategory.ROLE_TYPE == "HR")
                         {
-                            rc.Subject = ccfData.DocumentNumber + " In Progress by HR";
+                            //rc.Subject = ccfData.DocumentNumber + " In Progress by HR";
+                            rc.Subject = ccfData.DocumentNumber + " - Complaint Response";
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();
@@ -610,7 +614,8 @@ namespace FMS.BLL.Ccf
                     case Enums.ActionType.Completed:
                         if (complaintCategory.ROLE_TYPE == "Fleet")
                         {
-                            rc.Subject = ccfData.DocumentNumber + " has been completed by Fleet";
+                            //rc.Subject = ccfData.DocumentNumber + " has been completed by Fleet";
+                            rc.Subject = ccfData.DocumentNumber + " - Completed Document";
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();
@@ -640,7 +645,8 @@ namespace FMS.BLL.Ccf
                         }
                         else if (complaintCategory.ROLE_TYPE == "HR")
                         {
-                            rc.Subject = ccfData.DocumentNumber + " has been completed by HR";
+                            //rc.Subject = ccfData.DocumentNumber + " has been completed by HR";
+                            rc.Subject = ccfData.DocumentNumber + " - Completed Document";
 
                             bodyMail.Append("Dear " + ccfData.EmployeeName + ",<br /><br />");
                             bodyMail.AppendLine();

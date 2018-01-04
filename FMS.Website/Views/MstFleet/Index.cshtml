@@ -105,20 +105,38 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="SearchView_StartRent">Start Rent</label>
+                    <label for="SearchView_StartRent">Start Rent From</label>
                     @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="SearchView_EndRent">End Rent</label>
+                    <label for="SearchView_StartRent">Start Rent To</label>
+                    @Html.TextBoxFor(model => model.SearchView.StartRentTo, new { @class = "form-control date-begin" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Rent From</label>
                     @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="SearchView_EndRent">End Date</label>
+                    <label for="SearchView_EndRent">End Rent To</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndRentTo, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Date From</label>
                     @Html.TextBoxFor(model => model.SearchView.EndDate, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Date To</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndDateTo, new { @class = "form-control date-end" })
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -166,8 +184,7 @@
 
         $(document).on('click', '#btn-reset', function () {
             $('input[type=text]').val('');
-            $("select").val('');
-            $("select").selectpicker("refresh");
+            $('.chosen-single > span').html('select');
             setupDataTables();
         });
     });
@@ -208,12 +225,12 @@
             },
             { "data": "ProjectName", "orderable": false },
             {
-                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
+                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
             {
-                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
+                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
@@ -234,12 +251,12 @@
             { "data": "AssignedTo", "orderable": false },
             { "data": "Address", "orderable": false },
             {
-                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
+                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
             {
-                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
+                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
@@ -328,8 +345,11 @@
                         "Vendor": $('#SearchView_Vendor').val(),
                         "Function": $('#SearchView_Function').val(),
                         "StartRent": $('#SearchView_StartRent').val(),
+                        "StartRentTo": $('#SearchView_StartRentTo').val(),
                         "EndRent": $('#SearchView_EndRent').val(),
+                        "EndRentTo": $('#SearchView_EndRentTo').val(),
                         "EndDate": $('#SearchView_EndDate').val(),
+                        "EndDateTo": $('#SearchView_EndDateTo').val(),
                         "Regional": $('#SearchView_Regional').val(),
                         "City": $('#SearchView_City').val()
                     });

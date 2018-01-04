@@ -92,6 +92,12 @@
     </div>
 </section>
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstLocationMapping").offset().top
+        }, 1000);
+    });
+
       function ExportXls() {
             $('#ExportToXls').submit();
       }

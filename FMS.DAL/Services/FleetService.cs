@@ -170,41 +170,50 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.City))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.City);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.StartRent))
                 {
-
-                    queryFilterFleet = queryFilterFleet.And(c => c.START_CONTRACT == Convert.ToDateTime(input.StartRent));
-
+                    var StartRent = Convert.ToDateTime(input.StartRent);
+                    queryFilterFleet = queryFilterFleet.And(c => c.START_CONTRACT >= StartRent);
                 }
-
+                if (!string.IsNullOrEmpty(input.StartRentTo))
+                {
+                    var StartRentTo = Convert.ToDateTime(input.StartRentTo);
+                    queryFilterFleet = queryFilterFleet.And(c => c.START_CONTRACT <= StartRentTo);
+                }
+                if (!string.IsNullOrEmpty(input.Vendor))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => (c.VENDOR_NAME == null ? "" : c.VENDOR_NAME.ToUpper()) ==input.Vendor.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(input.Function))
+                {
+                    queryFilterFleet = queryFilterFleet.And(c => (c.VEHICLE_FUNCTION == null ? "" : c.VEHICLE_FUNCTION.ToUpper()) == input.Function.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(input.EndRent))
                 {
-
-                    queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT == Convert.ToDateTime(input.EndRent));
-
-
+                    var EndRent = Convert.ToDateTime(input.EndRent);
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT >= EndRent);
                 }
-
+                if (!string.IsNullOrEmpty(input.EndRentTo))
+                {
+                    var EndRentTo = Convert.ToDateTime(input.EndRentTo);
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_CONTRACT <= EndRentTo);
+                }
                 if (!string.IsNullOrEmpty(input.EndDate))
                 {
-
-                    queryFilterFleet = queryFilterFleet.And(c => c.END_DATE == Convert.ToDateTime(input.EndDate));
-
-
+                    var EndDate = Convert.ToDateTime(input.EndDate);
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_DATE >= EndDate);
                 }
-
+                if (!string.IsNullOrEmpty(input.EndDateTo))
+                {
+                    var EndDateTo = Convert.ToDateTime(input.EndDateTo);
+                    queryFilterFleet = queryFilterFleet.And(c => c.END_DATE <= EndDateTo);
+                }
                 if (!string.IsNullOrEmpty(input.Regional))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
-
-
                 }
             }
             return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
