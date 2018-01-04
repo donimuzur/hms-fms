@@ -298,8 +298,8 @@ namespace FMS.Website.Controllers
         {
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE == true).Select(x => new { x.EMPLOYEE_ID, employee = x.EMPLOYEE_ID + " - " + x.FORMAL_NAME }).Distinct().ToList().OrderBy(x => x.EMPLOYEE_ID);
             var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).OrderBy(x => x.Reason).ToList();
-
-            if(!string.IsNullOrEmpty(model.VehicleType))
+            var ReasonExtendList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 8).OrderBy(x => x.Reason).ToList();
+            if (!string.IsNullOrEmpty(model.VehicleType))
             {
                 ReasonList = ReasonList.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == model.VehicleType.ToUpper()).ToList();
             }
@@ -322,6 +322,7 @@ namespace FMS.Website.Controllers
 
             model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
             model.ExtendList = new SelectList(ExtendList, "Key", "Value");
+            model.ReasonExtendList = new SelectList(ReasonExtendList, "MstReasonId", "Reason");
             model.PoliceNumberList = new SelectList(PoliceNumberList, "PoliceNumber", "PoliceNumber");
             model.UserDecisionList = new SelectList(UserDecisionList, "Key", "Value");
             model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
