@@ -458,11 +458,12 @@
         }
         else if (reasonval == '')
         {
-            $('#idExtend').show();
-            $('#ExtendVehicle').prop('disabled', false);
+            checkVehicletype();
+            checkVehicleusage();
             $('#idExtend').prop('disabled', false);
+            $('#ExtendVehicle').prop('disabled', false);
+            $('#EffectiveDate').prop('readonly', true);
             onExtendVehicle();
-
         }
         else
         {
@@ -534,7 +535,7 @@
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.EmployeeName;
                 document.getElementById("CostCenter").value = response.CostCenter;
-                document.getElementById("GroupLevel").value = response.GroupLevel;
+               
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
@@ -544,6 +545,9 @@
                     if (response.VehicleType == 'WTC')
                     {
                         document.getElementById("CostCenter").value = response.CostCenterFleet;
+                    }
+                    if (response.VehicleType.toLowerCase() == 'benefit') {
+                        document.getElementById("GroupLevel").value = response.GroupLevel;
                     }
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     
