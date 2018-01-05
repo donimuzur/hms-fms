@@ -949,7 +949,7 @@ namespace FMS.Website.Controllers
                                                             && priceListData.Select(p => p.Series.ToUpper()).ToList().Contains(x.Series.ToUpper())
                                                             && priceListData.Select(p => p.Year).ToList().Contains(x.Year)).ToList();
 
-            var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Location == location)
+            var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Basetown == location)
                                                                                         .OrderByDescending(x => x.ValidFrom).FirstOrDefault();
 
             var zonePriceListByUserCsf = zonePriceList == null ? string.Empty : zonePriceList.ZonePriceList;
@@ -1000,7 +1000,9 @@ namespace FMS.Website.Controllers
                     var cfmIdleListSelectedCrf = _crfBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled 
                                                                             && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
 
-                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
+                    var fleetDataGood = _fleetBLL.GetFleet().Where(x => x.VehicleUsage != null);
+
+                    var fleetData = fleetDataGood.Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
                                                                     && x.IsActive
                                                                     && !cfmIdleListSelected.Contains(x.MstFleetId)
                                                                     && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
@@ -1537,19 +1539,45 @@ namespace FMS.Website.Controllers
         {
             int iRow = 4; //starting row data
 
+            var vSpecListData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.Year == csfData.CREATED_DATE.Year
+                                                                        && x.Manufacturer != null
+                                                                        && x.Models != null
+                                                                        && x.Series != null
+                                                                        && x.BodyType != null
+                                                                        && x.IsActive).ToList();
+
+            var vSpecList = vSpecListData.Where(x => x.Manufacturer.ToUpper() == csfData.MANUFACTURER.ToUpper()
+                                                    && x.Models.ToUpper() == csfData.MODEL.ToUpper()
+                                                    && x.Series.ToUpper() == csfData.SERIES.ToUpper()
+                                                    && x.BodyType.ToUpper() == csfData.BODY_TYPE.ToUpper()).FirstOrDefault();
+
+            var transmissionData = vSpecList == null ? string.Empty : vSpecList.Transmission;
+
+            var policeNumberCfmIdle = string.Empty;
+            var chasCfmIdle = string.Empty;
+            var engCfmIdle = string.Empty;
+            if (csfData.CFM_IDLE_ID != null)
+            {
+                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID);
+                policeNumberCfmIdle = cfmData == null ? string.Empty : (cfmData.PoliceNumber == null ? string.Empty : cfmData.PoliceNumber);
+                chasCfmIdle = cfmData == null ? string.Empty : (cfmData.ChasisNumber == null ? string.Empty : cfmData.ChasisNumber);
+                engCfmIdle = cfmData == null ? string.Empty : (cfmData.EngineNumber == null ? string.Empty : cfmData.EngineNumber);
+                transmissionData = cfmData == null ? string.Empty : (cfmData.Transmission == null ? string.Empty : cfmData.Transmission);
+            }
+
             slDocument.SetCellValue(iRow, 2, csfData.DOCUMENT_NUMBER);
             slDocument.SetCellValue(iRow, 3, csfData.EMPLOYEE_NAME);
             slDocument.SetCellValue(iRow, 4, csfData.VENDOR_NAME);
-            slDocument.SetCellValue(iRow, 5, string.Empty);
-            slDocument.SetCellValue(iRow, 6, string.Empty);
-            slDocument.SetCellValue(iRow, 7, string.Empty);
+            slDocument.SetCellValue(iRow, 5, policeNumberCfmIdle);
+            slDocument.SetCellValue(iRow, 6, chasCfmIdle);
+            slDocument.SetCellValue(iRow, 7, engCfmIdle);
             slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToOADate());
             slDocument.SetCellValue(iRow, 9, string.Empty);
             slDocument.SetCellValue(iRow, 10, "YES");
             slDocument.SetCellValue(iRow, 11, csfData.MANUFACTURER);
             slDocument.SetCellValue(iRow, 12, csfData.MODEL);
             slDocument.SetCellValue(iRow, 13, csfData.SERIES);
-            slDocument.SetCellValue(iRow, 14, string.Empty);
+            slDocument.SetCellValue(iRow, 14, transmissionData);
             slDocument.SetCellValue(iRow, 15, csfData.COLOUR);
             slDocument.SetCellValue(iRow, 16, csfData.BODY_TYPE);
             slDocument.SetCellValue(iRow, 17, csfData.LOCATION_CITY);
