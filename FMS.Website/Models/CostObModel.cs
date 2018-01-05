@@ -15,6 +15,7 @@ namespace FMS.Website.Models
             SearchView = new CostObSearchView();
         }
 
+        public int Year { get; set; }
         public CostObSearchView SearchView { get; set; }
         public HttpPostedFileBase upload{ get; set; }
         public List<CostObItem> Details { get; set; }
@@ -26,21 +27,16 @@ namespace FMS.Website.Models
     public class CostObItem : BaseModel
     {
         public long MstCostObId { get; set; }
-        [Required]
         public int? Year { get; set; }
         public string CostCenter { get; set; }
         public int? Qty { get; set; }
         public int? Month { get; set; }
         public string MonthS { get; set; }
         public string Zone { get; set; }
-        [Required]
         public string Models { get; set; }
-        [Required]
         public string Type { get; set; }
-        [Required]
         public decimal? ObCost { get; set; }
         public string ObCostS { get; set; }
-        [Required]
         public string Remark { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -51,7 +47,12 @@ namespace FMS.Website.Models
         public SelectList RemarkList { get; set; }
         public SelectList ModelList { get; set; }
         public SelectList MonthList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
         public SelectList TypeList { get; set; }
+        public SelectList FunctionList {get;set;}
+        public SelectList RegionalList { get; set; }
+        public SelectList CostCenterList { get; set; }
+
         public bool IsActive { get; set; }
         public string VehicleType { get; set; }
         public string FunctionName { get; set; }
