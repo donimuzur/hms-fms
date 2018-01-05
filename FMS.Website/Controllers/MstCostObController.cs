@@ -46,7 +46,6 @@ namespace FMS.Website.Controllers
             _pageBLL = PageBll;
             _vehicleSpectBll = VehicleSpectBll;
             _mainMenu = Enums.MenuList.MasterData;
-
         }
 
         public CostObItem InitialModel(CostObItem model)
@@ -54,20 +53,17 @@ namespace FMS.Website.Controllers
             var ZoneList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true).ToList();
             model.ZoneList = new SelectList(ZoneList, "ZonePriceList", "ZonePriceList");
 
-            var ModelList = new List<SelectListItem>
+            var VehicleTypeList = new List<SelectListItem>
             {
-                new SelectListItem { Text = "MPV", Value = "MPV" },
-                new SelectListItem { Text = "SUV", Value = "SUV" },
-                new SelectListItem { Text = "Forklift", Value = "Forklift" },
-                new SelectListItem { Text = "Motorcycle", Value = "Motorcycle" },
-                new SelectListItem { Text = "Truck", Value = "Truck" }
+                new SelectListItem { Text = "BENEFIT", Value = "BENEFIT" },
+                new SelectListItem { Text = "WTC", Value = "WTC" },
             };
-            model.ModelList = new SelectList(ModelList, "Value", "Text");
+            model.VehicleTypeList = new SelectList(VehicleTypeList, "Value", "Text");
 
             var TypeList = new List<SelectListItem>
             {
-                new SelectListItem { Text = "Benefit", Value = "Benefit" },
-                new SelectListItem { Text = "WTC", Value = "WTC" },
+                new SelectListItem { Text = "QTY", Value = "QTY" },
+                new SelectListItem { Text = "OB", Value = "OB" },
             };
             model.TypeList = new SelectList(TypeList, "Value", "Text");
 
@@ -87,6 +83,19 @@ namespace FMS.Website.Controllers
                 new SelectListItem() {Text = "December", Value = "12" }
             };
             model.MonthList = new SelectList(MonthList, "Value", "Text");
+            
+            var FunctionList = _functionGroupBll.GetGroupCenter().Where(x => x.IsActive ).Select(x => new { FunctionName = (x.FunctionName == null ? "" :x.FunctionName.ToUpper())}).Distinct().OrderBy(x=>x.FunctionName).ToList();
+            model.FunctionList = new SelectList(FunctionList, "FunctionName", "FunctionName");
+
+            var BodyTypeList = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType) && x.IsActive).Select(x => new { x.SettingValue} ).Distinct().OrderBy(x => x.SettingValue).ToList();
+            model.ModelList = new SelectList(BodyTypeList, "SettingValue", "SettingValue");
+
+            var RegionalList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().OrderBy(x => x.Region).ToList();
+            model.RegionalList = new SelectList(RegionalList, "Region", "Region");
+
+            var CostCenterList = _functionGroupBll.GetGroupCenter().Where(x => (x.IsActive ))
+               .Select(x => new { x.CostCenter }).Distinct().OrderBy(x => x.CostCenter).ToList();
+            model.CostCenterList = new SelectList(CostCenterList, "CostCenter", "CostCenter");
 
             return model;
         }
@@ -176,8 +185,7 @@ namespace FMS.Website.Controllers
 
             return "An Error Occurred";
         }
-
-
+        
         public ActionResult Create()
         {
             var model = new CostObItem();
@@ -188,8 +196,7 @@ namespace FMS.Website.Controllers
             model.Year = null;
             return View(model);
         }
-
-
+        
         [HttpPost]
         public ActionResult Create(CostObItem item)
         {
@@ -231,6 +238,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
+            model.ObCostS = model.ObCost == null ? "" : string.Format("{0:n0}", model.ObCost);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
             return View(model);
         }
@@ -240,13 +248,33 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (item.ObCostS != null)
+                {
+                    item.ObCost = Convert.ToDecimal(item.ObCostS.Replace(",", ""));
+                }
                 var data = Mapper.Map<CostObDto>(item);
                 data.ModifiedDate = DateTime.Now;
                 data.ModifiedBy = CurrentUser.USER_ID;
-
+               
                 try
                 {
+                    var exist = _costObBLL.GetCostOb().Where(x => (x.FunctionName == null ? "" : x.FunctionName.ToUpper()) == (item.FunctionName == null ? "" : item.FunctionName.ToUpper())
+                                                            && (x.CostCenter == null ? "" : x.CostCenter.ToUpper()) == (item.CostCenter == null ? "" : item.CostCenter.ToUpper())
+                                                            && (x.Regional == null ? "" : x.Regional.ToUpper()) == (item.Regional == null ? "" : item.Regional.ToUpper())
+                                                            && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
+                                                            && (x.Model == null ? "" : x.Model.ToUpper()) == (item.Models == null ? "" : item.Models.ToUpper())
+                                                            && (x.Type == null ? "" : x.Type.ToUpper()) == (item.Type == null ? "" : item.Type.ToUpper())
+                                                            && x.Month == item.Month && x.Year == item.Year && x.IsActive && x.MstCostObId != item.MstCostObId ).FirstOrDefault();
+                    if(exist != null)
+                    {
+                        item.ErrorMessage ="data Already Exist";
+                        item.MainMenu = _mainMenu;
+                        item.CurrentLogin = CurrentUser;
+                        item = InitialModel(item);
+                        return View(item);
+                    }
                     _costObBLL.Save(data, CurrentUser);
+                    _costObBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -254,6 +282,7 @@ namespace FMS.Website.Controllers
                     item.MainMenu = _mainMenu;
                     item.CurrentLogin = CurrentUser;
                     item = InitialModel(item);
+                    return View(item);
                 }
             }
             return RedirectToAction("Index", "MstCostOb");
@@ -271,18 +300,19 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        #region ---- Upload --------------
         public ActionResult Upload()
         {
             var model = new CostObModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.Year = DateTime.Today.Year + 1;
             return View(model);
         }
-
-
         [HttpPost]
-        public ActionResult Upload(CostObModel Model)
+        public ActionResult Upload(CostObModel Model, int Year)
         {
+            var state = ModelState.IsValid;
             var dataFunction = _functionGroupBll.GetGroupCenter();
             var data = (new ExcelReader()).ReadExcel(Model.upload);
             var model = new List<CostObItem>();
@@ -375,7 +405,7 @@ namespace FMS.Website.Controllers
                                             item.ErrorMessage = "Year is not Valid";
                                         }
 
-                                        if (item.Year == DateTime.Today.Year + 1) model.Add(item);
+                                        if (item.Year == Year) model.Add(item);
                                     }
                                     else if (Type.ToUpper() == "OB")
                                     {
@@ -472,7 +502,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult UploadFile(HttpPostedFileBase upload)
+        public JsonResult UploadFile(HttpPostedFileBase upload, int Year)
         {
             var dataFunction = _functionGroupBll.GetGroupCenter();
             var data = (new ExcelReader()).ReadExcel(upload);
@@ -567,7 +597,7 @@ namespace FMS.Website.Controllers
                                             item.ErrorMessage = "Year is not Valid";
                                         }
 
-                                        if (item.Year == DateTime.Today.Year + 1) model.Add(item);
+                                        if (item.Year == Year) model.Add(item);
                                     }
                                     else if(Type.ToUpper() == "OB")
                                     {
@@ -638,7 +668,9 @@ namespace FMS.Website.Controllers
             }
             
         }
+        #endregion
 
+        #region --- Get Data ---
         [HttpPost]
         public PartialViewResult ListCostOb(CostObModel model)
         {
@@ -668,7 +700,17 @@ namespace FMS.Website.Controllers
             var dbData = _costObBLL.GetByFilter(input);
             return Mapper.Map<List<CostObItem>>(dbData);
         }
+        #endregion
 
+        #region --- Json Result ---
+        public JsonResult GetCostCenter(string FunctionName)
+        {
+            var CostCenterList=_functionGroupBll.GetGroupCenter().Where(x => (x.IsActive && x.FunctionName == null ? "" : x.FunctionName.ToUpper()) == (FunctionName == null ? "" : FunctionName.ToUpper()))
+                .Select(x =>new { x.CostCenter }).Distinct().OrderBy(x => x.CostCenter).ToList();
+
+            return Json(CostCenterList);
+        }
+        #endregion
 
         #region export xls
         public void ExportMasterCostOb(CostObModel model)

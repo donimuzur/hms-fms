@@ -356,72 +356,86 @@
         </div>
 </section>
 <div id="extendmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-content">
-        @using (Html.BeginForm("CtfExtend", "TraCtf"))
-        {
-            <div class="modal-header">
-                <h4 class="modal-title">Extend Vehicle</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Employee Id</label>
-                            @Html.HiddenFor(model => model.TraCtfId)
-                            @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @id = "modalEmployeeId", @readonly = "readonly" })
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Police Number</label>
-                            @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoliceNumber", @readonly = "readonly" })
-                        </div>
-                    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm("CtfExtend", "TraCtf"))
+            {
+                <div class="modal-header">
+                    <h4 class="modal-title">Extend Vehicle</h4>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">New Proposed Date</label>
-                            <div class="input-group date" id="extDate">
-                                @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
-                                <span class="input-group-addon btn btn-primary" onclick="onNewProposedDate()">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Employee Id</label>
+                                @Html.HiddenFor(model => model.TraCtfId, new { @id = "modalTraCtfId"})
+                                @Html.TextBoxFor(model => model.EmployeeId, new { @class = "form-control ", @id = "modalEmployeeId", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Police Number</label>
+                                @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @id = "modalPoliceNumber", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">End Rent Date</label>
+                                @Html.TextBoxFor(model => model.EndRendDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalEndRent", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">New Proposed Date</label>
+                                <div class="input-group date" id="extDate">
+                                    @Html.TextBoxFor(model => model.CtfExtend.NewProposedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @id = "modalDate" })
+                                    <span class="input-group-addon btn btn-primary">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Extend PO Number</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend Police Number</label>
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPoliceNumber, new { @class = "form-control ", @id = "modalExtPoliceNumber" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Extend PO Line</label>
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend PO Number</label>
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Extend Price</label>
-                            @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
-                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend PO Line</label>
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtedPoLine, new { @class = "form-control", @id = "modalPoLine" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="control-label">Reason</label>
-                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonExtendList, "Select", new { @class = "form-control", @id = "modalReason" })
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Extend Price</label>
+                                @Html.HiddenFor(model => model.CtfExtend.ExtendPrice)
+                                @Html.TextBoxFor(model => model.CtfExtend.ExtendPriceStr, new { @class = "decimal form-control", @id = "modalPrice", onkeypress = "return IsAngka(event)" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Reason</label>
+                                @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonExtendList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
-                <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
-            </div>
-        }
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnConfirmClose" />
+                    <input type="submit" class="btn btn-danger" value="Extend" id="btnConfirmExtend" />
+                </div>
+            }
+        </div>
     </div>
 </div>
 <div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -607,10 +621,12 @@
             $('#EffectiveDate').prop('readonly', true);
         }
         else if (reasonval == '') {
-            $('#ExtendVehicle').prop('disabled', false);
+            checkVehicletype();
+            checkVehicleusage();
             $('#idExtend').prop('disabled', false);
+            $('#ExtendVehicle').prop('disabled', false);
+            $('#EffectiveDate').prop('readonly', true);
             onExtendVehicle();
-
         }
         else {
             checkVehicletype();
@@ -758,48 +774,37 @@
             document.getElementById('lblIsTransferToIdle').innerHTML = "No";
         }
     }
-    function onExtendVehicle()
-    {
-        if($('#ExtendVehicle').val() == 'True')
-        {
+    function onExtendVehicle() {
+        if ($('#ExtendVehicle').val() == 'True') {
             document.getElementById('extButton').style.display = 'block';
+
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
+
+            $('#modalExtPoliceNumber').prop('required', true);
             $('#modalPoNumber').prop('required', true);
             $('#modalPoLine').prop('required', true);
             $('#modalReason').prop('required', true);
             $('#modalDate').prop('required', true);
-            $('#modalReason').prop('required', true);
-
-            $('#VehicleExtend').show();
+            $('#modalPrice').prop('required', true);
         }
-        else
-        {
+        else if ($('#ExtendVehicle').val() == 'False') {
             document.getElementById('extButton').style.display = 'none';
-
+            $('#modalExtPoliceNumber').prop('required', false);
             $('#modalPoNumber').prop('required', false);
             $('#modalPoLine').prop('required', false);
             $('#modalReason').prop('required', false);
             $('#modalDate').prop('required', false);
-            $('#modalReason').prop('required', false);
-
-            $('#VehicleExtend').hide();
+            $('#modalPrice').prop('required', false);
         }
     }
-    $('#btnConfirmExtend').click(function () {
-        $('#extNewDate').val($('#modalDate').val().toString("dd-MMM-yyy"));
-        $('#extPoNumber').val($('#modalPoNumber').val());
-        $('#extPoLine').val($('#modalPoLine').val());
-        $('#extReason').val($('#modalReason').selectedIndex);
-        $('#extReasonS').val($('#modalReason').val());
-        $('#extPrice').val($('#modalPrice').val());
-        $('#extendmodal').modal('hide');
-    });
 
-    $('#extButton').click(function ()
-    {
+    $('#extButton').click(function () {
+        $('#modalTraCtfId').val($('#TraCtfId').val());
         $('#modalEmployeeId').val($('#EmployeeId').val());
         $('#modalPoliceNumber').val($('#PoliceNumber').val());
+        $('#modalEndRent').val($('#EndRendDate').val());
+        $('#modalDate').val($('#EndRendDate').val());
         $('#extendmodal').modal('show');
     });
 

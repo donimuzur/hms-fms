@@ -224,7 +224,7 @@
                     <div class="form-group">
                         <label class="control-label">Start Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.StartDate, new {@class = "form-control" })
+                            @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new {@class = "form-control" })
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -235,7 +235,7 @@
                     <div class="form-group">
                         <label class="control-label">End Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
