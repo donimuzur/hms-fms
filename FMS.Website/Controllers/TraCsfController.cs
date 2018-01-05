@@ -936,7 +936,8 @@ namespace FMS.Website.Controllers
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
             var priceListData = _priceListBLL.GetPriceList().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacture)
                                                                      && !string.IsNullOrEmpty(x.Model) 
-                                                                     && !string.IsNullOrEmpty(x.Series)).ToList();
+                                                                     && !string.IsNullOrEmpty(x.Series)
+                                                                     && x.Year == createdDate.Year).ToList();
 
             var vehicleDataNoNull = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacturer)
                                                                      && !string.IsNullOrEmpty(x.Models)
