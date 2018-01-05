@@ -73,7 +73,14 @@
                     {
                         if (Model.CurrentLogin.UserRole != Enums.UserRole.Viewer && Model.CurrentLogin.UserRole != Enums.UserRole.User)
                         {
-                            <a href="@Url.Action("Edit", "TraCtf", new { @TraCtfId = data.TraCtfId,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            if (((data.DocumentStatus == Enums.DocumentStatus.Draft || data.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                              && data.EmployeeIdCreator == Model.CurrentLogin.EMPLOYEE_ID) || (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser && data.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID) ||
+                          (data.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval && Model.CurrentLogin.UserRole == Enums.UserRole.HR) ||
+                          ((data.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval || data.DocumentStatus == Enums.DocumentStatus.InProgress || data.DocumentStatus == Enums.DocumentStatus.Extended)
+                                  && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))
+                            {
+                                <a href="@Url.Action("Edit", "TraCtf", new { @TraCtfId = data.TraCtfId,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                            }
                         }
                         <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }

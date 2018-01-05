@@ -72,7 +72,11 @@
                         <td style="text-align: center;">
                             @if (data.DocumentStatus != Enums.DocumentStatus.Completed && data.DocumentStatus != Enums.DocumentStatus.Cancelled)
                             {
-                                if (data.DocumentStatus != Enums.DocumentStatus.Draft || (data.DocumentStatus == Enums.DocumentStatus.Draft && data.EmployeeIdCreator == Model.CurrentLogin.EMPLOYEE_ID))
+                                if (((data.DocumentStatus == Enums.DocumentStatus.Draft || data.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+                                && data.EmployeeIdCreator == Model.CurrentLogin.EMPLOYEE_ID) || (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser && data.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID) ||
+                                (data.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval && Model.CurrentLogin.UserRole == Enums.UserRole.HR) ||
+                                ((data.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval || data.DocumentStatus == Enums.DocumentStatus.InProgress || data.DocumentStatus == Enums.DocumentStatus.Extended)
+                                && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))
                                 {
                                     <a href="@Url.Action("Edit", "TraCtf", new { @TraCtfId = data.TraCtfId,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                                 }
