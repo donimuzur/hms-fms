@@ -78,7 +78,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> Number Of Vehicle</h5>
+                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></h5>
                             <canvas id="pieChart"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -87,7 +87,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> Number Of Vehicle WTC</h5>
+                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></h5>
                             <canvas id="canvasDoughnut"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -96,7 +96,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> Number Of Vehicle Make</h5>
+                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></h5>
                             <canvas id="polarArea"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -105,7 +105,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> Odometer</h5>
+                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></h5>
                             <canvas id="canvasDoughnut2"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -114,7 +114,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> Liter By Function</h5>
+                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></h5>
                             <canvas id="polarArea2"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -123,7 +123,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> Fuel Cost By Function</h5>
+                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></h5>
                             <canvas id="pieChart2"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -132,7 +132,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> Lease Cost By Function</h5>
+                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></h5>
                             <canvas id="polarArea3"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -141,7 +141,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> Sales By Region</h5>
+                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></h5>
                             <canvas id="pieChart3"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
@@ -150,8 +150,17 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> Accident</h5>
+                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></h5>
                             <canvas id="canvasDoughnut3"></canvas>
+                        </div>
+                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-bullseye"></i> AC Vs OB</h5>
+                            <canvas id="mybarChart"></canvas>
                         </div>
                         <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
                     </div>
@@ -167,6 +176,8 @@
 <script type="text/javascript">
     function init_charts() {
 
+        var isByRegion = '@Model.IsByRegion';
+
         console.log('run_charts  typeof [' + typeof (Chart) + ']');
 
         if (typeof (Chart) === 'undefined') { return; }
@@ -176,14 +187,18 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetVehicleDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
 
                 for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].VEHICLE_TYPE);
+                    if (isByRegion === 'True') {
+                        labels_chart.push(response[i].FUNCTION);
+                    } else if (isByRegion === 'False') {
+                        labels_chart.push(response[i].VEHICLE_TYPE);
+                    }
                     value_chart.push(response[i].NO_OF_VEHICLE);
 
                     if (i == 0) {
@@ -224,7 +239,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetVehicleWtcDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
@@ -272,7 +287,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetVehicleMakeDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
@@ -320,14 +335,18 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetOdometerDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
 
                 for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].VEHICLE_TYPE);
+                    if (isByRegion === 'True') {
+                        labels_chart.push(response[i].FUNCTION);
+                    } else if (isByRegion === 'False') {
+                        labels_chart.push(response[i].VEHICLE_TYPE);
+                    }
                     value_chart.push(response[i].TOTAL_KM);
 
                     if (i == 4) {
@@ -368,14 +387,18 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetLiterByFunctionDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
 
                 for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].VEHICLE_TYPE);
+                    if (isByRegion === 'True') {
+                        labels_chart.push(response[i].FUNCTION);
+                    } else if (isByRegion === 'False') {
+                        labels_chart.push(response[i].VEHICLE_TYPE);
+                    }
                     value_chart.push(response[i].TOTAL_LITER);
 
                     if (i == 0) {
@@ -416,14 +439,18 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetFuelCostByFunctionDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
 
                 for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].VEHICLE_TYPE);
+                    if (isByRegion === 'True') {
+                        labels_chart.push(response[i].FUNCTION);
+                    } else if (isByRegion === 'False') {
+                        labels_chart.push(response[i].VEHICLE_TYPE);
+                    }
                     value_chart.push(response[i].TOTAL_FUEL_COST);
 
                     if (i == 0) {
@@ -464,7 +491,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetLeaseCostByFunctionDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
@@ -512,7 +539,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("SalesByRegionDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
@@ -560,14 +587,19 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("AccidentDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
             success: function (response) {
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
 
                 for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].VEHICLE_TYPE);
+                    if (isByRegion === 'True') {
+                        labels_chart.push(response[i].FUNCTION);
+                    } else if (isByRegion === 'False') {
+                        labels_chart.push(response[i].VEHICLE_TYPE);
+                    }
+                    
                     value_chart.push(response[i].ACCIDENT_COUNT);
 
                     if (i == 4) {
@@ -599,6 +631,55 @@
                     var canvasDoughnut3 = new Chart(ctx, {
                         data: data,
                         type: 'doughnut'
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AcObDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: isByRegion },
+            success: function (response) {
+                var labels_chart = [];
+                var ob_chart = [];
+                var ac_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].FUNCTION);
+                    ob_chart.push(response[i].COST_OB);
+                    ac_chart.push(response[i].ACTUAL_COST);
+                }
+
+                // Bar chart
+                if ($('#mybarChart').length) {
+
+                    var ctx = document.getElementById("mybarChart");
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: '# of Operational Budget',
+                                backgroundColor: "#21A4FF",
+                                data: ob_chart
+                            }, {
+                                label: '# of Actual Cost',
+                                backgroundColor: "#828282",
+                                data: ac_chart
+                            }]
+                        },
+
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }

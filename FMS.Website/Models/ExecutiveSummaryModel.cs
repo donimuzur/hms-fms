@@ -28,6 +28,7 @@ namespace FMS.Website.Models
             SearchView.MonthTo = DateTime.Now.Month;
         }
 
+        public bool IsByRegion { get; set; }
         public string TitleForm { get; set; }
         public string TitleExport { get; set; }
         public List<NoVehicleData> NoVehicleList { get; set; }
