@@ -147,6 +147,32 @@ namespace FMS.Website.Controllers
             return Mapper.Map<List<FleetItem>>(data);
         }
 
+        private List<FleetItem> SearchDataFleetExport(FleetSearchView searchView = null)
+        {
+            var param = new FleetParamInput();
+            param.Status = searchView.StatusSource;
+            param.SupplyMethod = searchView.SupplyMethod;
+            param.BodyType = searchView.BodyType;
+            param.VehicleType = searchView.VehicleType;
+            param.VehicleUsage = searchView.VehicleUsage;
+            param.Vendor = searchView.Vendor;
+            param.Function = searchView.Function;
+            param.StartRent = searchView.StartRent;
+            param.StartRentTo = searchView.StartRentTo;
+            param.EndRent = searchView.EndRent;
+            param.EndRentTo = searchView.EndRentTo;
+            param.EndDate = searchView.EndDate;
+            param.EndDateTo = searchView.EndDateTo;
+            param.Regional = searchView.Regional;
+            param.City = searchView.City;
+            param.EmployeeId = searchView.EmployeeID;
+            param.FormalName = searchView.EmployeeName;
+            param.PoliceNumber = searchView.PoliceNumber;
+
+            var data = _fleetBLL.GetFleetByParam(param);
+            return Mapper.Map<List<FleetItem>>(data);
+        }
+
         private IEnumerable<FleetItem> FleetDataOrder(string column, DTOrderDir dir, IEnumerable<FleetItem> data)
         {
 
@@ -581,11 +607,11 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public void ExportMasterFleet()
+        public void ExportMasterFleet(FleetModel model = null)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsMasterFleet();
+            pathFile = CreateXlsMasterFleet(model);
 
             var newFile = new FileInfo(pathFile);
 
@@ -601,11 +627,12 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsMasterFleet()
+        private string CreateXlsMasterFleet(FleetModel model = null)
         {
             //get data
             List<FleetDto> fleet = _fleetBLL.GetFleet();
-            var listData = Mapper.Map<List<FleetItem>>(fleet);
+            var listData = SearchDataFleetExport(model.SearchView);
+            //var listData = Mapper.Map<List<FleetItem>>(fleet);
 
             var slDocument = new SLDocument();
 
