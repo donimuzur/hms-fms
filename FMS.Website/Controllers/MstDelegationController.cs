@@ -50,7 +50,7 @@ namespace FMS.Website.Controllers
         {
             foreach(DelegationItem item in data)
             {
-                if(DateTime.Now <= item.DateTo.AddDays(1))
+                if(DateTime.Today > item.DateTo & item.IsActive)
                 {
                     item.IsActive = false;
 

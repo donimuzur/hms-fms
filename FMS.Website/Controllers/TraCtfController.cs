@@ -1764,6 +1764,7 @@ namespace FMS.Website.Controllers
             }
 
             var TraCtfDtoExtend = new CtfExtendDto();
+            TraCtfDtoExtend.ExtendPoliceNumber = Model.CtfExtend.ExtendPoliceNumber;
             TraCtfDtoExtend.ExtedPoLine = Model.CtfExtend.ExtedPoLine;
             TraCtfDtoExtend.ExtendPoNumber = Model.CtfExtend.ExtendPoNumber;
             TraCtfDtoExtend.ExtendPrice = Model.CtfExtend.ExtendPrice;
@@ -2057,7 +2058,7 @@ namespace FMS.Website.Controllers
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.PoliceNumber == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.PoliceNumber == Id && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).FirstOrDefault();
             }
             if (vehicle != null)
             {

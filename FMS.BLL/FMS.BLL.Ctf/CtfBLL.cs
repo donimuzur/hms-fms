@@ -1130,9 +1130,7 @@ namespace FMS.BLL.Ctf
             var dateMinus1 = DateTime.Today.AddDays(-1);
 
             var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
-                                                                        && x.EFFECTIVE_DATE.Value.Day <= dateMinus1.Day
-                                                                        && x.EFFECTIVE_DATE.Value.Month <= dateMinus1.Month
-                                                                        && x.EFFECTIVE_DATE.Value.Year <= dateMinus1.Year).ToList();
+                                                                        && x.EFFECTIVE_DATE.Value <= dateMinus1).ToList();
 
             foreach (var item in listCtfInProgress)
             {
