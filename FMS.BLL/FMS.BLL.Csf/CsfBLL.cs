@@ -302,7 +302,7 @@ namespace FMS.BLL.Csf
             var vehCatNoCar = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
             var vendorData = _vendorService.GetByShortName(csfData.VENDOR_NAME);
             var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
-            var vendorName = vendorData == null ? "Vendor" : vendorData.VENDOR_NAME;
+            var vendorName = vendorData == null ? string.Empty : vendorData.VENDOR_NAME;
 
             var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
             var isNoCar = csfData.VEHICLE_CATEGORY == vehCatNoCar.ToString() ? true : false;
@@ -610,7 +610,7 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
@@ -646,7 +646,7 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
