@@ -16,6 +16,26 @@
 <section class="content">
     @using (Html.BeginForm("ExportMasterFleet", "MstFleet", FormMethod.Post, new { @id = "ExportToXls" }))
     {
+        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "export_PoliceNumber"})
+        @Html.HiddenFor(model => model.SearchView.EmployeeName, new { @id = "export_EmployeeName" })
+        @Html.HiddenFor(model => model.SearchView.EngineNumber, new { @id = "export_EngineNumber" })
+        @Html.HiddenFor(model => model.SearchView.EmployeeID, new { @id = "export_EmployeeID" })
+        @Html.HiddenFor(model => model.SearchView.ChasisNumber, new { @id = "export_ChasisNumber" })
+        @Html.HiddenFor(model => model.SearchView.StatusSource, new { @id = "export_StatusSource" })
+        @Html.HiddenFor(model => model.SearchView.SupplyMethod, new { @id = "export_SupplyMethod" })
+        @Html.HiddenFor(model => model.SearchView.BodyType, new { @id = "export_BodyType" })
+        @Html.HiddenFor(model => model.SearchView.VehicleType, new { @id = "export_VehicleType" })
+        @Html.HiddenFor(model => model.SearchView.VehicleUsage, new { @id = "export_VehicleUsage" })
+        @Html.HiddenFor(model => model.SearchView.Vendor, new { @id = "export_Vendor" })
+        @Html.HiddenFor(model => model.SearchView.Function, new { @id = "export_Function" })
+        @Html.HiddenFor(model => model.SearchView.Regional, new { @id = "export_Regional" })
+        @Html.HiddenFor(model => model.SearchView.City, new { @id = "export_City" })
+        @Html.HiddenFor(model => model.SearchView.StartRent, new { @id = "export_StartRent" })
+        @Html.HiddenFor(model => model.SearchView.StartRentTo, new { @id = "export_StartRentTo" })
+        @Html.HiddenFor(model => model.SearchView.EndRent, new { @id = "export_EndRent" })
+        @Html.HiddenFor(model => model.SearchView.EndRentTo, new { @id = "export_EndRentTo" })
+        @Html.HiddenFor(model => model.SearchView.EndDate, new { @id = "export_EndDate" })
+        @Html.HiddenFor(model => model.SearchView.EndDateTo, new { @id = "export_EndDateTo" })
     }
     <div class="wpanel">
         <div class="row">
@@ -190,6 +210,27 @@
     });
 
     function ExportXls() {
+
+        $('#export_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#export_EmployeeName').val($('#SearchView_EmployeeName').val());
+        $('#export_EngineNumber').val($('#SearchView_EngineNumber').val());
+        $('#export_EmployeeID').val($('#SearchView_EmployeeID').val());
+        $('#export_StatusSource').val($('#SearchView_StatusSource').val());
+        $('#export_SupplyMethod').val($('#SearchView_SupplyMethod').val());
+        $('#export_BodyType').val($('#SearchView_BodyType').val());
+        $('#export_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#export_VehicleUsage').val($('#SearchView_VehicleUsage').val());
+        $('#export_Vendor').val($('#SearchView_Vendor').val());
+        $('#export_Function').val($('#SearchView_Function').val());
+        $('#export_Regional').val($('#SearchView_Regional').val());
+        $('#export_City').val($('#SearchView_City').val());
+        $('#export_StartRent').val($('#SearchView_StartRent').val());
+        $('#export_StartRentTo').val($('#SearchView_StartRentTo').val());
+        $('#export_EndRent').val($('#SearchView_EndRent').val());
+        $('#export_EndRentTo').val($('#SearchView_EndRentTo').val());
+        $('#export_EndDate').val($('#SearchView_EndDate').val());
+        $('#export_EndDateTo').val($('#SearchView_EndDateTo').val());
+
         $('#ExportToXls').submit();
     }
 
