@@ -483,6 +483,32 @@ namespace FMS.Website.Controllers
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.TMP).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
+                //set data from cfm idle
+                if (model.Detail.CfmIdleId != null)
+                {
+                    var cfmData = _fleetBLL.GetFleetById((int)model.Detail.CfmIdleId);
+
+                    if (cfmData != null)
+                    {
+                        model.Detail.ModelsVendor = cfmData.Models;
+                        model.Detail.PoliceNumberVendor = cfmData.PoliceNumber;
+                        model.Detail.ManufacturerVendor = cfmData.Manufacturer;
+                        model.Detail.SeriesVendor = cfmData.Series;
+                        model.Detail.BodyTypeVendor = cfmData.BodyType;
+                        model.Detail.ColorVendor = cfmData.Color;
+                        model.Detail.VendorNameVendor = cfmData.VendorName;
+                        model.Detail.ChasisNumberVendor = cfmData.ChasisNumber;
+                        model.Detail.EngineNumberVendor = cfmData.EngineNumber;
+                        model.Detail.IsAirBagVendor = cfmData.Airbag;
+                        model.Detail.TransmissionVendor = cfmData.Transmission;
+                        model.Detail.BrandingVendor = cfmData.Branding;
+                        model.Detail.PurposeVendor = cfmData.Purpose;
+                        model.Detail.VatDecimalVendor = cfmData.VatDecimal == null ? 0 : cfmData.VatDecimal.Value;
+                        model.Detail.IsRestitutionVendor = cfmData.Restitution;
+                        model.Detail.CommentsVendor = cfmData.Comments;
+                    }
+                }
+
                 return View(model);
             }
             catch (Exception exception)
@@ -521,6 +547,11 @@ namespace FMS.Website.Controllers
                 tempData.COMMENTS = model.Detail.CommentsVendor;
 
                 var saveResult = _tempBLL.Save(tempData, CurrentUser);
+                //send email to user if police number and contract start date is fill
+                if (tempData.VENDOR_CONTRACT_START_DATE != null && !string.IsNullOrEmpty(tempData.VENDOR_POLICE_NUMBER))
+                {
+                    TempWorkflow(tempData.TRA_TEMPORARY_ID, Enums.ActionType.InProgress, null);
+                }
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("InProgress", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = model.IsPersonalDashboard });

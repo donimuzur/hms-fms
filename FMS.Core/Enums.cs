@@ -136,6 +136,8 @@ namespace FMS.Core
 			Cancelled = 9,
             [Description("Extend")]
             Extend = 10,
+            [Description("In Progress")]
+            InProgress = 11,
         }
 
 		/// <summary>

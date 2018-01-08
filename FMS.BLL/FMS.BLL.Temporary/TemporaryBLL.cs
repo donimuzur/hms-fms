@@ -666,6 +666,32 @@ namespace FMS.BLL.Temporary
 
                     rc.IsCCExist = true;
                     break;
+                case Enums.ActionType.InProgress:
+                    rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Document In Progress";
+
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+                    rc.CC.Add(creatorDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    break;
             }
 
             rc.Body = bodyMail.ToString();
@@ -687,7 +713,8 @@ namespace FMS.BLL.Temporary
 
             var dataTemp = _TemporaryService.GetTemporaryById(id);
 
-            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)
+                                                                            && x.MST_FLEET_ID != dataTemp.CFM_IDLE_ID).ToList();
 
             foreach (var inputItem in inputs)
             {
@@ -814,7 +841,8 @@ namespace FMS.BLL.Temporary
                 else
                 {
                     //check police number active in mst_fleet
-                    if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()).FirstOrDefault() != null)
+                    if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()
+                                                            && x.MST_FLEET_ID != dataTemp.CFM_IDLE_ID).FirstOrDefault() != null)
                     {
                         messageList.Add("Police number already exists in master fleet");
                         messageListStopper.Add("Police number already exists in master fleet");
