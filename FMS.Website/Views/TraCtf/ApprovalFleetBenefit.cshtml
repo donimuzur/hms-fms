@@ -9,6 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("ApprovalFleetBenefit", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
@@ -327,7 +328,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
