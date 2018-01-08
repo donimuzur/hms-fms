@@ -943,6 +943,11 @@ namespace FMS.Website.Controllers
                                                                      && !string.IsNullOrEmpty(x.Series)
                                                                      && x.Year == createdDate.Year).ToList();
 
+            if (vehUsage == "CFM" || vehUsage == "COP")
+            {
+                priceListData = priceListData.Where(p => p.VehicleUsage == vehUsage).ToList();
+            }
+
             var vehicleDataNoNull = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacturer)
                                                                      && !string.IsNullOrEmpty(x.Models)
                                                                      && !string.IsNullOrEmpty(x.Series)).ToList();
