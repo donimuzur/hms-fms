@@ -826,6 +826,10 @@ namespace FMS.Website.Controllers
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
                 //send email to user if police number and contract start date is fill
+                if (csfData.VENDOR_CONTRACT_START_DATE != null && !string.IsNullOrEmpty(csfData.VENDOR_POLICE_NUMBER))
+                {
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.InProgress, null);
+                }
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = model.IsPersonalDashboard });

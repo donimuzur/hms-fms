@@ -809,6 +809,32 @@ namespace FMS.BLL.Csf
 
                     rc.IsCCExist = true;
                     break;
+                case Enums.ActionType.InProgress:
+                    rc.Subject = csfData.DOCUMENT_NUMBER + " - Document In Progress";
+
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " will be arrived at " + csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+                    rc.CC.Add(creatorDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    break;
             }
 
             rc.Body = bodyMail.ToString();
