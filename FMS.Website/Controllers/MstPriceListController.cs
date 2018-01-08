@@ -191,7 +191,11 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = listdata(model);
-            
+
+            model.InstallmenEMPStr = model.InstallmenEMP == 0 ? "0" : string.Format("{0:n0}", model.InstallmenEMP);
+            model.InstallmenHMSStr = model.InstallmenHMS == 0 ? "0" : string.Format("{0:n0}", model.InstallmenHMS);
+            model.PriceStr = model.Price == 0 ? "0" : string.Format("{0:n0}", model.Price);
+
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, MstPriceListid.Value);
 
             return View(model);
