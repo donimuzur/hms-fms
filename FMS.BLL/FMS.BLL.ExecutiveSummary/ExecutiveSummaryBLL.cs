@@ -97,7 +97,7 @@ namespace FMS.BLL.ExecutiveSummary
                     VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
                     REPORT_MONTH = p.FirstOrDefault().REPORT_MONTH,
                     REPORT_YEAR = p.FirstOrDefault().REPORT_YEAR,
-                    TOTAL_KM = p.Max(c => c.TOTAL_KM)
+                    TOTAL_KM = p.Sum(c => c.TOTAL_KM)
                 }).ToList();
 
             return groupData;

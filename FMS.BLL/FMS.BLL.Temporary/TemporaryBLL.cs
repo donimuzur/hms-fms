@@ -388,7 +388,7 @@ namespace FMS.BLL.Temporary
             var vehTypeBenefit = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
             var vendorData = _vendorService.GetByShortName(tempData.VENDOR_NAME);
             var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
-            var vendorName = vendorData == null ? "Vendor" : vendorData.VENDOR_NAME;
+            var vendorName = vendorData == null ? string.Empty : vendorData.VENDOR_NAME;
 
             var isBenefit = tempData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
 
@@ -485,7 +485,7 @@ namespace FMS.BLL.Temporary
                     {
                         rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
@@ -556,7 +556,7 @@ namespace FMS.BLL.Temporary
                     {
                         rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
