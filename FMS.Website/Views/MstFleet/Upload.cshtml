@@ -46,13 +46,14 @@
                         <th>Vehicle Usage</th>
                         <th>Project</th>
                         <th>Project Name</th>
-                        <th style="min-width: 80px">Start Date</th>
-                        <th style="min-width: 80px">End Date</th>
+                        <th style="min-width: 80px">Start Contract</th>
+                        <th style="min-width: 80px">End Contract</th>
                         <th>Vendor Name</th>
                         <th>City</th>
                         <th>Supply Method</th>
                         <th>Restitution</th>
                         <th>Monthly HMS Installment</th>
+                        <th>Price</th>--
                         <th>Vat</th>
                         <th>PO Number</th>
                         <th>PO Line</th>
@@ -60,8 +61,8 @@
                         <th>Employee Group Level</th>
                         <th>Assigned To</th>
                         <th>Address</th>
-                        <th style="min-width: 80px">Start Contract</th>
-                        <th style="min-width: 80px">End Contract</th>
+                        <th style="min-width: 80px">Start Date</th>
+                        <th style="min-width: 80px">End Date</th>
                         <th>Vehicle Status</th>
                         <th>Certificate of Ownership</th>
                         <th>Comments</th>
@@ -69,6 +70,7 @@
                         <th>Total Monthly Charge</th>
                         <th>Function</th>
                         <th>Regional</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -212,6 +214,7 @@
                             createColumnWithHiddenField(uploaditems[i].SupplyMethod, 'Model.Details[' + i + '].SupplyMethod') +
                             createColumnWithHiddenField(uploaditems[i].Restitution, 'Model.Details[' + i + '].Restitution') +
                             createColumnWithHiddenField(uploaditems[i].MonthlyHMSInstallment, 'Model.Details[' + i + '].MonthlyHMSInstallment') +
+                            createColumnWithHiddenField(uploaditems[i].Price, 'Model.Details[' + i + '].Price') +
                             createColumnWithHiddenField(uploaditems[i].VatDecimal, 'Model.Details[' + i + '].VatDecimal') +
                             createColumnWithHiddenField(uploaditems[i].PoNumber, 'Model.Details[' + i + '].PoNumber') +
                             createColumnWithHiddenField(uploaditems[i].PoLine, 'Model.Details[' + i + '].PoLine') +
@@ -228,11 +231,14 @@
                             createColumnWithHiddenField(uploaditems[i].TotalMonthlyCharge, 'Model.Details[' + i + '].TotalMonthlyCharge') +
                             createColumnWithHiddenField(uploaditems[i].Function, 'Model.Details[' + i + '].Function') +
                             createColumnWithHiddenField(uploaditems[i].Regional, 'Model.Details[' + i + '].Regional') +
+                            createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                             '</tr>';
-                    $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                                $('#tb-upload-excel').append(tr);
+                                error += uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
             }
         });
     };

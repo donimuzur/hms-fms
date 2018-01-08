@@ -6,6 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+    <label class="label-warning">@Model.ErrorMessage</label>
     @using (Html.BeginForm("Edit", "MstRemark"))
     {
         <div class="row">
@@ -15,19 +16,19 @@
                     @Html.HiddenFor(model => model.MstRemarkId)
                     @Html.HiddenFor(model => model.CreatedDate)
                     @Html.HiddenFor(model => model.CreatedBy)
-                    @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, new { @class = "form-control", @required = "required" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Remark<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.Remark, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Remark, new { @class = "form-control", @required = "required" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">RoleType<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, new { @class = "form-control", @required = "required" })
                 </div>
             </div>
             <div class="col-md-6">

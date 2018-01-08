@@ -81,5 +81,6 @@ namespace FMS.BusinessObject.Dto
         public string RelocateLocation { get; set; }
 
         public bool? IsActive { get; set; }
+        public DateTime? EffectiveDateComplete { get; set; }
     }
 }

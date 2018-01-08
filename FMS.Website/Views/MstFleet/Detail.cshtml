@@ -2,7 +2,7 @@
 @using FMS.Core
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Fleet Edit</h5>
+    <h5 class="title-page">Master Data Fleet Details</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Chasis Number<span class="red">*</span></label>
+                    <label class="control-label">Chassis Number<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
@@ -50,7 +50,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">Employee Group Level</label>
+                    <label class="control-label">Employee Group Level></label>
                     @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
@@ -93,7 +93,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Body Type<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, new { @class = "form-control ", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control ", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -108,7 +108,7 @@
                     @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control ", @disabled = "disabled" })
                 </div>
             </div>
-             <div class="col-md-6">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Car Group Level<span class="red">*</span></label>
                     @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control", @disabled = "disabled" })
@@ -117,7 +117,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Fuel Type<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -129,7 +129,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">AirBag<span class="red">*</span></label>
-                    <div class="form-control" disabled = "disabled">
+                    <div class="form-control">
                         @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()", @disabled = "disabled" })
                         @if (Model.Airbag == true)
                         {
@@ -137,7 +137,7 @@
                         }
                         else
                         {
-                           <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
+                            <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
                         }
                     </div>
                 </div>
@@ -151,13 +151,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Vehicle Usage<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -177,13 +177,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Project Name<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Supply Method<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -201,7 +201,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">VAT<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -223,8 +223,8 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Start Date</label>
-                    <div class="input-group">
-                        @Html.TextBoxFor(model => model.StartDate, new {@class = "form-control", @disabled = "disabled" })
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @disabled = "disabled" })
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
@@ -234,7 +234,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">End Date</label>
-                    <div class="input-group">
+                    <div class="input-group date">
                         @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @disabled = "disabled" })
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
@@ -245,7 +245,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Monthly HMS Installment<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.MonthlyHMSInstallment, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -262,47 +262,69 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
+                    <label class="control-label">Start Contract Date</label>
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">End Contract Date</label>
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label class="control-label">Vehicle Status<span class="red">*</span></label>
-                    <div class="form-control" disabled="disabled">
-                        @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
-                        @Html.Label("Active", new { @id = "lblStatus" })
+                    <div class="form-control" disabled>
+                        @Html.CheckBoxFor(model => model.IsActive,new { @disabled = "disabled" })
+                        @Html.Label("Active", new { @id = "lblStatus", @disabled = "disabled" })
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Certificate of Ownership<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Comments<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Asset<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Assets, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
-                    @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Function<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Regional<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" ,@disabled = "disabled"})
                 </div>
             </div>
             <div class="col-md-12">

@@ -6,6 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Edit", "MstComplaint"))
         {
             <div class="row col-md-12">
@@ -27,8 +28,10 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Status<span class="red">*</span></label>
-                        @Html.CheckBoxFor(model => model.IsActive, new { @required = "required" })
-                        @Html.Label("Active", new { @id = "lblStatus" })
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.IsActive, new { @required = "required" })
+                            @Html.Label("Active", new { @id = "lblStatus" })
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12">

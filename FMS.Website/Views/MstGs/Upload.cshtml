@@ -5,11 +5,9 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Upload", "MstGs"))
         {
-            <h5 class="text-info text-red">
-                @Model.ErrorMessage
-            </h5>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -56,6 +54,28 @@
 </section>
 <script type="text/javascript">
 
+    $(function () {
+        // DataTable
+        var table = $('#example2').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "info": false,
+            "bInfo": false,
+            "ordering": false
+        });
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+    });
     $('#btnSave').prop('disabled', true);
 
     function createColumn(text) {
@@ -125,21 +145,31 @@
                 createColumnWithHiddenField(uploaditems[i].ErrorMessage, 'Model.Details[' + i + '].ErrorMessage') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
-                    error += uploaditems[i].Message;
+                    error += uploaditems[i].ErrorMessage;
                 }
-                $('#btnSave').prop('disabled', false);
+                if (error == '') {
+                    $('#btnSave').prop('disabled', false);
+                }
+                else {
+                    $('#btnSave').prop('disabled', true);
+                }
             }
         });
     };
 
     function convertDate(date) {
-        var dt = new Date(parseInt(date.substr(6)));
-        var dtStr = dt.toString();
-        var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
-
-        return str;
+        try {
+            var dt = new Date(parseInt(date.substr(6)));
+            var dtStr = dt.toString();
+            var date = dtStr.substr(8, 2) + " " + (dtStr.substr(4, 3)) + " " + dtStr.substr(11, 4);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var str = dt.getDate() + '-' + (months[dt.getMonth()]) + '-' + dt.getFullYear();
+            return str;
+        } catch (e) {
+            return '';
+        }
+       
+        
     }
 </script>
 

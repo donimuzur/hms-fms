@@ -2,7 +2,7 @@
 @model FMS.Website.Models.VehicleSpectItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Vehicle Spect Create</h5>
+    <h5 class="title-page">Master Data Vehicle Spec Create</h5>
 </div>
 <section class="content">
 
@@ -16,49 +16,49 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Manufacturer <span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control ", @autocomplete = "off" })
+                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control ", @autocomplete = "off", @required="required" })
                      </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Model <span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @autocomplete = "off" })
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @autocomplete = "off", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Series <span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @autocomplete = "off" })
+                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @autocomplete = "off", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Transmission <span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "-- Please Select --", new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "-- Please Select --", new { @class = "form-control ", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Body Type <span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "-- Please Select --", new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "-- Please Select --", new { @class = "form-control ", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Fuel Type <span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.FuelTypeSpect, Model.FuelTypeList, "-- Please Select --", new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.FuelTypeSpect, Model.FuelTypeList, "-- Please Select --", new { @class = "form-control ", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Request Year <span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", @autocomplete = "off", onkeypress = "return IsAngka(event)", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Colour <span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Colour, new { @class = "form-control ", @autocomplete = "off"})
+                        @Html.TextBoxFor(model => model.Colour, new { @class = "form-control ", @autocomplete = "off", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -85,7 +85,8 @@
                     <div class="form-group">
                         <label class="control-label">Image <span class="red"></span></label>
                         <img id="preview" src="/files_upload/noimage.jpeg" alt="image" border="5" width="220" height="250" />
-                        @Html.TextBoxFor(model => model.Image, new { @type = "file" })
+                        @*@Html.TextBoxFor(model => model.Image, new { @type = "file" })*@
+                        <input type="file" name="ImageFile" />
                     </div>
                 </div>
 

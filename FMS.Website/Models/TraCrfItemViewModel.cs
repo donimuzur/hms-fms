@@ -107,7 +107,7 @@ namespace FMS.Website.Models
         
     }
 
-    public class TraCrfItemDetails
+    public class TraCrfItemDetails : BaseModel
     {
         public long TraCrfId { get; set; }
         public string DocumentNumber { get; set; }
@@ -147,6 +147,9 @@ namespace FMS.Website.Models
         public string DeliveryAddress { get; set; }
         public string DeliveryPic { get; set; }
         public string DeliveryPhone { get; set; }
+
+        
+        public string Region { get; set; }
         public bool ChangePoliceNumber { get; set; }
         public DateTime? ExpectedDate { get; set; }
         public string PoNumber { get; set; }
@@ -172,6 +175,45 @@ namespace FMS.Website.Models
         public string NewPoliceNumber { get; set; }
 
         public long? MstFleetId { get; set; }
+
+        public bool AllowEdit {
+            get
+            {
+                bool isAllowed = false;
+                if (this.CurrentLogin == null)
+                {
+                    return false;
+                }
+                switch (this.DocumentStatus)
+                {
+                    case (int)Enums.DocumentStatus.WaitingHRApproval:
+                    case (int) Enums.DocumentStatus.AssignedForHR:
+                        if (this.CurrentLogin.UserRole == Enums.UserRole.HR)
+                        {
+                            isAllowed = true;
+                        }
+                        break;
+                    case (int)Enums.DocumentStatus.WaitingFleetApproval:
+                    case (int)Enums.DocumentStatus.AssignedForFleet:
+                        if (this.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            isAllowed = true;
+                        }
+                        break;
+                    case (int)Enums.DocumentStatus.Draft:
+                        if (this.CurrentLogin.USER_ID == this.CreatedBy)
+                        {
+                            isAllowed = true;
+                        }
+                        break;
+                    default:
+                        isAllowed = false;
+                        break;
+                }
+
+                return isAllowed;
+            }
+        }
 
         public List<TemporaryIndexModel> ListTemporary { get; set; } 
     }

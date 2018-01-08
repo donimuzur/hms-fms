@@ -9,6 +9,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("ApprovalHR", "TraCtf", FormMethod.Post, new { @id = "FormEdit" }))
         {
             @Html.AntiForgeryToken()
@@ -54,6 +55,7 @@
                                                             @Html.HiddenFor(model => model.DocumentStatus)
                                                             @Html.HiddenFor(model => model.IsPenalty)
                                                             @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.Region)
                                                             @*--------------------- calculation----------------*@
                                                             @Html.HiddenFor(model => model.Penalty)
                                                             @Html.HiddenFor(model => model.EmployeeContribution)
@@ -161,11 +163,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12" id="idBuyCost">
-                                                        <div class="form-group">
+                                                        @*<div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
                                                             @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control ", @readonly = "readonly" })
-                                                        </div>
+                                                        </div>*@
                                                     </div>
                                                     <div id="idcfmonly">
                                                         <div class="col-md-12">
@@ -229,6 +231,12 @@
                                                     <div class="col-md-12">
                                                         <h5>Extend Details</h5>
                                                         <hr />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Police Number</label>
+                                                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoliceNumber, new { @class = "form-control", @id = "extNewPoliceNumber", @readonly = "readonly" })
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
@@ -314,7 +322,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Buy Cost</label>
-                                                            @Html.TextBoxFor(model => model.BuyCostStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.BuyCostTotalStr, new { @class = "decimal form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -360,8 +368,8 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            <div class="input-group date" id="empDate">
-                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                            <div class="input-group datetime" id="empDate">
+                                                                @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy HH:mm}", new { @class = "form-control", @readonly = "readonly" })
                                                                 <span class="input-group-addon btn btn-primary">
                                                                     <i class="fa fa-calendar "></i>
                                                                 </span>

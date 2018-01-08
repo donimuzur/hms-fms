@@ -48,5 +48,9 @@ namespace FMS.BLL.Remark
             var dbVRemark = Mapper.Map<MST_REMARK>(RemarkDto);
             _remarkService.save(dbVRemark, userLogin);
         }
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
+        }
     }
 }

@@ -8,7 +8,6 @@
     <div class="wpanel">
         @using (Html.BeginForm("Edit", "MstPriceList"))
         {
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -16,68 +15,78 @@
                         @Html.HiddenFor(model => model.MstPriceListId)
                         @Html.HiddenFor(model => model.CreatedBy)
                         @Html.HiddenFor(model => model.CreatedDate)
-                        @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control ", @disabled = "disabled"})
+                        @Html.TextBoxFor(model => model.Manufacture,new { @class = "form-control", required = "required", onchange = "GetModels()", @disabled = "disabled" })
+                        @* @Html.TextBoxFor(model => model.Manufacture, new { @class = "form-control ", @required = "required" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Model<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Model, new { @class = "form-control ", @disabled = "disabled" })
+                        <label class="control-label">Model<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control", required = "required", onchange = "GetSeries()", @disabled = "disabled" })
+                        @*@Html.TextBoxFor(model => model.Models, new { @class = "form-control ", @required = "required" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Series<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @disabled = "disabled" })
+                        <label class="control-label">Series<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Series,  new { @class = "form-control", required = "required", @disabled = "disabled" })
+                        @* @Html.TextBoxFor(model => model.Series, new { @class = "form-control ", @required = "required" })*@
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Year<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                        <label class="control-label">Year<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control ", @maxlength = "5", onkeypress = "return IsAngka(event)", @required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Zone Price List<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control ", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.ZonePriceList,  new { @class = "form-control", @disabled = "disabled" })
+                        @*@Html.TextBoxFor(model => model.ZonePriceList, new { @class = "form-control ", @required = "required" })*@
+                    </div>
+                </div>
+                @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Price<span class="red"></span>*</label>
+                        @Html.TextBoxFor(model => model.PriceStr, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)", @required = "required", @disabled = "disabled" })
+                    </div>
+                </div>*@
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Installment HMS<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.InstallmenHMSStr, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)", @required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Price<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.Price, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                        <label class="control-label">Installment Employee<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.InstallmenEMPStr, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)", @required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Installmen HMS<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.InstallmenHMS, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                        <label class="control-label">Vendor<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.Vendor,  new { @class = "form-control", @style = "width: 100%;", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Installmen Employee<span class="red"></span></label>
-                        @Html.TextBoxFor(model => model.InstallmenEMP, new { @class = "form-control ", onkeypress = "return IsAngka(event)", @disabled = "disabled" })
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @style = "width: 100%;", onchange = "VehicleTypeChange()", required = "required", @disabled = "disabled" })
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" id="VehicleUsageDiv" style="visibility:visible">
                     <div class="form-group">
-                        <label class="control-label">Vendor<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.Vendor, Model.VendorList, "Select", new { @class = "form-control", @style = "width: 100%;", @disabled = "disabled" })
-                    </div>
-                </div>
-                <div class="col-md-6" id="VehicleUsageDiv" hidden="hidden">
-                    <div class="form-group">
-                        <label class="control-label">Vehicle Usage<span class="red"></span></label>
-                        @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                        <label class="control-label">Vehicle Usage</label>
+                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control", @style = "width: 100%;", @disabled = "disabled" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Status<span class="red">*</span></label>
                         <div class="form-control" disabled="disabled">
-                            @Html.CheckBoxFor(model => model.IsActive, new { @disabled ="disabled"})
+                            @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
                             @Html.Label("Active", new { @id = "lblStatus" })
                         </div>
                     </div>
@@ -96,19 +105,31 @@
         @Html.Partial("_ChangesLog");
     </div>
 </section>
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
+
+    $('#InstallmenHMSStr').val(ThausandSeperator($('#InstallmenHMSStr').val(), 2));
+    $('#InstallmenEMPStr').val(ThausandSeperator($('#InstallmenEMPStr').val(), 2));
+    $('#PriceStr').val(ThausandSeperator($('#PriceStr').val(), 2));
+
     function IsAngka(evt) {
         var charCode = (evt.which);
         if (charCode > 31 && (charCode < 48 || charCode > 57)) {
             return false;
         } return true;
     }
-    $(document).ready(function () {
-        if ($("#VehicleType").val() === "BENEFIT") {
-            $("#VehicleUsageDiv").removeAttr("hidden");
+
+    function VehicleTypeChange() {
+        if ($("#VehicleType").val().toUpperCase() == "WTC") {
+            $("#VehicleUsageDiv").hide();
         }
         else {
-            $("#VehicleUsageDiv").attr("hidden", "hidden");
+            $("#VehicleUsageDiv").show();
         }
-    });
+    }
+
+    $(document).ready()
+    {
+        VehicleTypeChange();
+    }
 </script>

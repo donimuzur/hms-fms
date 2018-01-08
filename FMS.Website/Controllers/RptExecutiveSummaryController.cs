@@ -46,9 +46,748 @@ namespace FMS.Website.Controllers
 
         public MultiSelectList GetFunctionsMultiSelectList()
         {
-            var functionList = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive).Select(x => new { x.FunctionName }).Distinct().ToList();
-            return new MultiSelectList(functionList, "FunctionName", "FunctionName");
+            var items = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "SALES", Value = "Sales" },
+                new SelectListItem() {Text = "MARKETING", Value = "Marketing" },
+                new SelectListItem() {Text = "OPERATIONS", Value = "Operations" },
+                new SelectListItem() {Text = "OTHERS", Value = "Others" }
+            };
+
+            return new MultiSelectList(items, "Value", "Text");
         }
+
+        #endregion
+
+        #region --------- Get Data Json -----------------------
+
+        [HttpPost]
+        public JsonResult GetVehicleDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new VehicleGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
+
+            var groupData = data.GroupBy(x => new { x.VEHICLE_TYPE })
+                .Select(p => new NoVehicleDto()
+                {
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
+                }).ToList();
+
+            if (isByRegion)
+            {
+                groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new NoVehicleDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
+                }).ToList();
+            }
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult GetVehicleWtcDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new VehicleWtcGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new NoVehicleWtcDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult GetVehicleMakeDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new VehicleMakeGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+
+            List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
+
+            var groupData = data.GroupBy(x => new { x.MANUFACTURER })
+                .Select(p => new NoVehicleMakeDto()
+                {
+                    MANUFACTURER = p.FirstOrDefault().MANUFACTURER,
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult GetOdometerDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new OdometerGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
+
+            var groupData = data.GroupBy(x => new { x.VEHICLE_TYPE })
+                .Select(p => new OdometerDto()
+                {
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    TOTAL_KM = p.Sum(c => c.TOTAL_KM)
+                }).ToList();
+
+            if (isByRegion)
+            {
+                groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new OdometerDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    TOTAL_KM = p.Sum(c => c.TOTAL_KM)
+                }).ToList();
+            }
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult GetLiterByFunctionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new LiterFuncGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
+
+            var groupData = data.GroupBy(x => new { x.VEHICLE_TYPE })
+                .Select(p => new LiterByFunctionDto()
+                {
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    TOTAL_LITER = p.Sum(c => c.TOTAL_LITER)
+                }).ToList();
+
+            if (isByRegion)
+            {
+                groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new LiterByFunctionDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    TOTAL_LITER = p.Sum(c => c.TOTAL_LITER)
+                }).ToList();
+            }
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult GetFuelCostByFunctionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new FuelCostFuncGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
+
+            var groupData = data.GroupBy(x => new { x.VEHICLE_TYPE })
+                .Select(p => new FuelCostByFunctionDto()
+                {
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    TOTAL_FUEL_COST = p.Sum(c => c.TOTAL_FUEL_COST)
+                }).ToList();
+
+            if (isByRegion)
+            {
+                groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new FuelCostByFunctionDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    TOTAL_FUEL_COST = p.Sum(c => c.TOTAL_FUEL_COST)
+                }).ToList();
+            }
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult GetLeaseCostByFunctionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new LeaseCostFuncGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new LeaseCostByFunctionDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    TOTAL_LEASE_COST = p.Sum(c => c.TOTAL_LEASE_COST)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult SalesByRegionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new SalesRegionGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+
+            List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
+
+            var groupData = data.GroupBy(x => new { x.REGION })
+                .Select(p => new SalesByRegionDto()
+                {
+                    REGION = p.FirstOrDefault().REGION,
+                    STICK = p.Sum(c => c.STICK)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult AccidentDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new AccidentGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
+
+            var groupData = data.GroupBy(x => new { x.VEHICLE_TYPE })
+                .Select(p => new AccidentDto()
+                {
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    ACCIDENT_COUNT = p.Sum(c => c.ACCIDENT_COUNT)
+                }).ToList();
+
+            if (isByRegion)
+            {
+                groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new AccidentDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    ACCIDENT_COUNT = p.Sum(c => c.ACCIDENT_COUNT)
+                }).ToList();
+            }
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult AcObDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        {
+            var input = new AcVsObGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new AcVsObDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    COST_OB = p.Sum(c => c.COST_OB),
+                    ACTUAL_COST = p.Sum(c => c.ACTUAL_COST)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        #endregion
+
+        #region --------- Summary All --------------
+
+        public ActionResult SummaryAll()
+        {
+            var model = new SummaryAllModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
+            model.TitleForm = "Executive Summary All";
+            model.TitleExport = "ExportSummaryAll";
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View(model);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportSummaryAll(SummaryAllModel model)
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsSummaryAll(model.SearchViewExport);
+            //pathFile = createChart();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsSummaryAll(SummarySearchViewExport inputExport)
+        {
+            //get data
+            var input = Mapper.Map<VehicleGetByParamInput>(inputExport);
+            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
+            var listData = Mapper.Map<List<NoVehicleData>>(data);
+
+            var inputWtc = Mapper.Map<VehicleWtcGetByParamInput>(inputExport);
+            List<NoVehicleWtcDto> dataWtc = _execSummBLL.GetNoOfVehicleWtcData(inputWtc);
+            var listDataWtc = Mapper.Map<List<NoVehicleWtcData>>(dataWtc);
+
+            var inputMake = Mapper.Map<VehicleMakeGetByParamInput>(inputExport);
+            List<NoVehicleMakeDto> dataMake = _execSummBLL.GetNoOfVehicleMakeData(inputMake);
+            var listDataMake = Mapper.Map<List<NoVehicleMakeData>>(dataMake);
+
+            var inputOdo = Mapper.Map<OdometerGetByParamInput>(inputExport);
+            List<OdometerDto> dataOdo = _execSummBLL.GetOdometerData(inputOdo);
+            var listDataOdo = Mapper.Map<List<OdometerData>>(dataOdo);
+
+            var inputLiter = Mapper.Map<LiterFuncGetByParamInput>(inputExport);
+            List<LiterByFunctionDto> dataLiter = _execSummBLL.GetLiterByFunctionData(inputLiter);
+            var listDataLiter = Mapper.Map<List<LiterByFunctionData>>(dataLiter);
+
+            var inputFuel = Mapper.Map<FuelCostFuncGetByParamInput>(inputExport);
+            List<FuelCostByFunctionDto> dataFuel = _execSummBLL.GetFuelCostByFunctionData(inputFuel);
+            var listDataFuel = Mapper.Map<List<FuelCostByFunctionData>>(dataFuel);
+
+            var inputLease = Mapper.Map<LeaseCostFuncGetByParamInput>(inputExport);
+            List<LeaseCostByFunctionDto> dataLease = _execSummBLL.GetLeaseCostByFunctionData(inputLease);
+            var listDataLease = Mapper.Map<List<LeaseCostByFunctionData>>(dataLease);
+
+            var inputSales = Mapper.Map<SalesRegionGetByParamInput>(inputExport);
+            List<SalesByRegionDto> dataSales = _execSummBLL.GetSalesByRegionData(inputSales);
+            var listDataSales = Mapper.Map<List<SalesByRegionData>>(dataSales);
+
+            var inputAccident = Mapper.Map<AccidentGetByParamInput>(inputExport);
+            List<AccidentDto> dataAccident = _execSummBLL.GetAccidentData(inputAccident);
+            var listDataAccident = Mapper.Map<List<AccidentData>>(dataAccident);
+
+            var inputAcOb = Mapper.Map<AcVsObGetByParamInput>(inputExport);
+            List<AcVsObDto> dataAcOb = _execSummBLL.GetAcVsObData(inputAcOb);
+            var listDataAcOb = Mapper.Map<List<AcVsObData>>(dataAcOb);
+
+            var slDocument = new SLDocument();
+
+            //title no of vehicle
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle");
+            slDocument.MergeWorksheetCells(1, 1, 1, 7);
+            slDocument.RenameWorksheet("Sheet1", "Number Of Vehicle");
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboard(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboard(slDocument, listData);
+
+
+            //title no of vehicle wtc
+            slDocument.AddWorksheet("Number Of Vehicle WTC");
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle WTC");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardWtc(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardWtc(slDocument, listDataWtc);
+            
+
+            //title no of vehicle Make
+            slDocument.AddWorksheet("Number Of Vehicle Make-Type");
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle Make-Type");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardMake(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardMake(slDocument, listDataMake);
+
+
+            //title Odometer
+            slDocument.AddWorksheet("Odometer");
+            slDocument.SetCellValue(1, 1, "Odometer");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            //create style
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardOdometer(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardOdometer(slDocument, listDataOdo);
+
+
+            //title Liter By Function
+            slDocument.AddWorksheet("Liter By Function");
+            slDocument.SetCellValue(1, 1, "Liter By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardLiterByFunction(slDocument, listDataLiter);
+
+            
+            //title Fuel Cost By Function
+            slDocument.AddWorksheet("Fuel Cost By Function");
+            slDocument.SetCellValue(1, 1, "Fuel Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardFuelCostByFunction(slDocument, listDataFuel);
+
+
+            //title Lease Cost By Function
+            slDocument.AddWorksheet("Lease Cost By Function");
+            slDocument.SetCellValue(1, 1, "Lease Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardLeaseCostByFunction(slDocument, listDataLease);
+
+
+            //title Sales By Region
+            slDocument.AddWorksheet("Sales By Region");
+            slDocument.SetCellValue(1, 1, "Sales By Region");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardSalesByRegion(slDocument, listDataSales);
+
+
+            //title Accident
+            slDocument.AddWorksheet("Accident");
+            slDocument.SetCellValue(1, 1, "Accident");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardAccident(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardAccident(slDocument, listDataAccident);
+
+
+            //title AC Vs OB
+            slDocument.AddWorksheet("AC Vs OB");
+            slDocument.SetCellValue(1, 1, "AC Vs OB");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardAcVsOb(slDocument, listDataAcOb);
+
+
+            var fileName = "ExecSum_SummaryAll" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        #endregion
+
+        #endregion
+
+        #region --------- Summary By Region --------------
+
+        public ActionResult SummaryRegion()
+        {
+            var model = new SummaryAllModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
+            model.IsByRegion = true;
+            model.TitleForm = "Executive Summary By Region";
+            model.TitleExport = "ExportSummaryRegion";
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            return View("SummaryAll", model);
+        }
+
+        #region --------- Export --------------
+
+        public void ExportSummaryRegion(SummaryAllModel model)
+        {
+            string pathFile = "";
+
+            pathFile = CreateXlsSummaryRegion(model.SearchViewExport);
+            //pathFile = createChart();
+
+            var newFile = new FileInfo(pathFile);
+
+            var fileName = Path.GetFileName(pathFile);
+
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            newFile.Delete();
+            Response.End();
+        }
+
+        private string CreateXlsSummaryRegion(SummarySearchViewExport inputExport)
+        {
+            //get data
+            var input = Mapper.Map<VehicleGetByParamInput>(inputExport);
+            input.Function = "Sales,Marketing";
+            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
+            var listData = Mapper.Map<List<NoVehicleData>>(data);
+
+            var inputWtc = Mapper.Map<VehicleWtcGetByParamInput>(inputExport);
+            inputWtc.Function = "Sales,Marketing";
+            List<NoVehicleWtcDto> dataWtc = _execSummBLL.GetNoOfVehicleWtcData(inputWtc);
+            var listDataWtc = Mapper.Map<List<NoVehicleWtcData>>(dataWtc);
+
+            var inputMake = Mapper.Map<VehicleMakeGetByParamInput>(inputExport);
+            //inputMake.Function = "Sales,Marketing";
+            List<NoVehicleMakeDto> dataMake = _execSummBLL.GetNoOfVehicleMakeData(inputMake);
+            var listDataMake = Mapper.Map<List<NoVehicleMakeData>>(dataMake);
+
+            var inputOdo = Mapper.Map<OdometerGetByParamInput>(inputExport);
+            inputOdo.Function = "Sales,Marketing";
+            List<OdometerDto> dataOdo = _execSummBLL.GetOdometerData(inputOdo);
+            var listDataOdo = Mapper.Map<List<OdometerData>>(dataOdo);
+
+            var inputLiter = Mapper.Map<LiterFuncGetByParamInput>(inputExport);
+            inputLiter.Function = "Sales,Marketing";
+            List<LiterByFunctionDto> dataLiter = _execSummBLL.GetLiterByFunctionData(inputLiter);
+            var listDataLiter = Mapper.Map<List<LiterByFunctionData>>(dataLiter);
+
+            var inputFuel = Mapper.Map<FuelCostFuncGetByParamInput>(inputExport);
+            inputFuel.Function = "Sales,Marketing";
+            List<FuelCostByFunctionDto> dataFuel = _execSummBLL.GetFuelCostByFunctionData(inputFuel);
+            var listDataFuel = Mapper.Map<List<FuelCostByFunctionData>>(dataFuel);
+
+            var inputLease = Mapper.Map<LeaseCostFuncGetByParamInput>(inputExport);
+            inputLease.Function = "Sales,Marketing";
+            List<LeaseCostByFunctionDto> dataLease = _execSummBLL.GetLeaseCostByFunctionData(inputLease);
+            var listDataLease = Mapper.Map<List<LeaseCostByFunctionData>>(dataLease);
+
+            var inputSales = Mapper.Map<SalesRegionGetByParamInput>(inputExport);
+            //inputSales.Function = "Sales,Marketing";
+            List<SalesByRegionDto> dataSales = _execSummBLL.GetSalesByRegionData(inputSales);
+            var listDataSales = Mapper.Map<List<SalesByRegionData>>(dataSales);
+
+            var inputAccident = Mapper.Map<AccidentGetByParamInput>(inputExport);
+            inputAccident.Function = "Sales,Marketing";
+            List<AccidentDto> dataAccident = _execSummBLL.GetAccidentData(inputAccident);
+            var listDataAccident = Mapper.Map<List<AccidentData>>(dataAccident);
+
+            var inputAcOb = Mapper.Map<AcVsObGetByParamInput>(inputExport);
+            inputAcOb.Function = "Sales,Marketing";
+            List<AcVsObDto> dataAcOb = _execSummBLL.GetAcVsObData(inputAcOb);
+            var listDataAcOb = Mapper.Map<List<AcVsObData>>(dataAcOb);
+
+            var slDocument = new SLDocument();
+
+            //title no of vehicle
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle");
+            slDocument.MergeWorksheetCells(1, 1, 1, 7);
+            slDocument.RenameWorksheet("Sheet1", "Number Of Vehicle");
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboard(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboard(slDocument, listData);
+
+
+            //title no of vehicle wtc
+            slDocument.AddWorksheet("Number Of Vehicle WTC");
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle WTC");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardWtc(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardWtc(slDocument, listDataWtc);
+
+
+            //title no of vehicle Make
+            slDocument.AddWorksheet("Number Of Vehicle Make-Type");
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle Make-Type");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardMake(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardMake(slDocument, listDataMake);
+
+
+            //title Odometer
+            slDocument.AddWorksheet("Odometer");
+            slDocument.SetCellValue(1, 1, "Odometer");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            //create style
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardOdometer(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardOdometer(slDocument, listDataOdo);
+
+
+            //title Liter By Function
+            slDocument.AddWorksheet("Liter By Function");
+            slDocument.SetCellValue(1, 1, "Liter By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardLiterByFunction(slDocument, listDataLiter);
+
+
+            //title Fuel Cost By Function
+            slDocument.AddWorksheet("Fuel Cost By Function");
+            slDocument.SetCellValue(1, 1, "Fuel Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardFuelCostByFunction(slDocument, listDataFuel);
+
+
+            //title Lease Cost By Function
+            slDocument.AddWorksheet("Lease Cost By Function");
+            slDocument.SetCellValue(1, 1, "Lease Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardLeaseCostByFunction(slDocument, listDataLease);
+
+
+            //title Sales By Region
+            slDocument.AddWorksheet("Sales By Region");
+            slDocument.SetCellValue(1, 1, "Sales By Region");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardSalesByRegion(slDocument, listDataSales);
+
+
+            //title Accident
+            slDocument.AddWorksheet("Accident");
+            slDocument.SetCellValue(1, 1, "Accident");
+            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardAccident(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardAccident(slDocument, listDataAccident);
+
+
+            //title AC Vs OB
+            slDocument.AddWorksheet("AC Vs OB");
+            slDocument.SetCellValue(1, 1, "AC Vs OB");
+            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.SetCellStyle(1, 1, valueStyle);
+            //create header
+            slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
+            //create data
+            slDocument = CreateDataExcelDashboardAcVsOb(slDocument, listDataAcOb);
+
+
+            var fileName = "ExecSum_SummaryByRegion" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        #endregion
 
         #endregion
 
@@ -57,6 +796,9 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             var model = new ExecutiveSummaryModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<VehicleGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var settingData = _settingBLL.GetSetting();
@@ -93,6 +835,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<VehicleGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetNoOfVehicleData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -250,7 +993,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -288,10 +1031,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 9, 22, 18);
+            chart.SetChartPosition(endRowYear + 2, 9, endRowYear + 24, 18);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -312,6 +1055,9 @@ namespace FMS.Website.Controllers
         public ActionResult VehicleWtc()
         {
             var model = new NumberVehicleWtcModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<VehicleWtcGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -343,6 +1089,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<VehicleWtcGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -495,7 +1242,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -533,10 +1280,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 7, 22, 16);
+            chart.SetChartPosition(endRowYear + 2, 7, endRowYear + 24, 16);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -557,6 +1304,9 @@ namespace FMS.Website.Controllers
         public ActionResult VehicleMake()
         {
             var model = new NumberVehicleMakeModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<VehicleMakeGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleMakeData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
@@ -737,7 +1487,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Manufacturer" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -775,10 +1525,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 7, 22, 16);
+            chart.SetChartPosition(endRowYear + 2, 7, endRowYear + 24, 16);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -799,6 +1549,9 @@ namespace FMS.Website.Controllers
         public ActionResult Odometer()
         {
             var model = new OdometerModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<OdometerGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -832,6 +1585,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<OdometerGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -986,7 +1740,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -1024,10 +1778,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 8, 22, 17);
+            chart.SetChartPosition(endRowYear + 2, 8, endRowYear + 24, 17);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -1048,6 +1802,9 @@ namespace FMS.Website.Controllers
         public ActionResult LiterByFunction()
         {
             var model = new LiterByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1081,6 +1838,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<LiterFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -1235,7 +1993,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -1273,10 +2031,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 8, 22, 17);
+            chart.SetChartPosition(endRowYear + 2, 8, endRowYear + 24, 17);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -1297,6 +2055,9 @@ namespace FMS.Website.Controllers
         public ActionResult FuelCostByFunction()
         {
             var model = new FuelCostByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1330,6 +2091,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -1484,7 +2246,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -1522,10 +2284,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 8, 22, 17);
+            chart.SetChartPosition(endRowYear + 2, 8, endRowYear + 24, 17);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -1546,6 +2308,9 @@ namespace FMS.Website.Controllers
         public ActionResult LeaseCostByFunction()
         {
             var model = new LeaseCostByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1577,6 +2342,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -1729,7 +2495,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -1767,10 +2533,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 7, 22, 16);
+            chart.SetChartPosition(endRowYear + 2, 7, endRowYear + 24, 16);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -1791,6 +2557,9 @@ namespace FMS.Website.Controllers
         public ActionResult SalesByRegion()
         {
             var model = new SalesByRegionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetSalesByRegionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -1977,7 +2746,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Region" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -2015,10 +2784,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 8, 22, 17);
+            chart.SetChartPosition(endRowYear + 2, 8, endRowYear + 24, 17);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -2039,6 +2808,9 @@ namespace FMS.Website.Controllers
         public ActionResult Accident()
         {
             var model = new AccidentModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<AccidentGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -2072,6 +2844,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<AccidentGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -2226,7 +2999,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -2264,10 +3037,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 8, 22, 17);
+            chart.SetChartPosition(endRowYear + 2, 8, endRowYear + 24, 17);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -2288,6 +3061,9 @@ namespace FMS.Website.Controllers
         public ActionResult AcVsOb()
         {
             var model = new AcVsObModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<AcVsObGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
@@ -2317,6 +3093,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<AcVsObGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -2470,7 +3247,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -2508,10 +3285,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 7, 22, 16);
+            chart.SetChartPosition(endRowYear + 2, 7, endRowYear + 24, 16);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
@@ -2532,6 +3309,9 @@ namespace FMS.Website.Controllers
         public ActionResult SumPtdByFunction()
         {
             var model = new SumPtdByFunctionModel();
+            model.SearchView.YearFrom = DateTime.Now.Year;
+            model.SearchView.YearTo = DateTime.Now.Year;
+
             var input = Mapper.Map<SumPtdFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetSumPtdByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -2565,6 +3345,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.Function = filter.FunctionId;
             var input = Mapper.Map<SumPtdFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetSumPtdByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -2737,7 +3518,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in functionList)
             {
-                slDocument.SetCellValue(startRow, endColum, item);
+                slDocument.SetCellValue(startRow, endColum, string.IsNullOrEmpty(item) ? "No Function" : item);
                 startRowCount = 3;
 
                 foreach (var year in yearList)
@@ -2775,10 +3556,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
             slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum);
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(7, 14, 22, 23);
+            chart.SetChartPosition(endRowYear + 2, 14, endRowYear + 24, 23);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);

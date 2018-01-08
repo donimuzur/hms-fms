@@ -14,5 +14,7 @@ namespace FMS.Contract.Service
         MST_VEHICLE_SPECT GetVehicleSpectById(int MstVehicleSpectId);
         void save(MST_VEHICLE_SPECT dbVehicleSpect);
         void save(MST_VEHICLE_SPECT dbVehicleSpect, Login userLogin);
+
+        List<MST_VEHICLE_SPECT> GetExistingVehicleSpectByParam(BusinessObject.Dto.VehicleSpectDto dto);
     }
 }

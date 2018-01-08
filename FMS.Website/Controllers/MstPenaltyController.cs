@@ -70,30 +70,13 @@ namespace FMS.Website.Controllers
             };
             model.VehicleList = new SelectList(Vehiclelist, "Value", "Text");
             
-            var PenaltyList = new List<SelectListItem>();
-            List<PenaltyLogicDto> PenaltyLogicDataList = _penaltyLogicBLL.GetPenaltyLogic();
+            var PenaltyLogicDataList = _penaltyLogicBLL.GetPenaltyLogic().Where(x => x.IsActive).Select(x => new { x.MstPenaltyLogicId}).Distinct().ToList();
+        
+            model.PenaltyList = new SelectList(PenaltyLogicDataList, "MstPenaltyLogicId", "MstPenaltyLogicId");
             
-            foreach (PenaltyLogicDto item in PenaltyLogicDataList)
-            {
-                var temp = new SelectListItem();
-                temp.Text = item.MstPenaltyLogicId.ToString();
-                temp.Value = item.MstPenaltyLogicId.ToString();
-                PenaltyList.Add(temp);
-            }
-
-            model.PenaltyList = new SelectList(PenaltyList, "Value", "Text");
-
-            var VendorList = new List<SelectListItem>();
-            List<VendorDto> VendorDataList = _vendorBLL.GetVendor();
-
-            foreach(VendorDto item in VendorDataList)
-            {
-                var temp = new SelectListItem();
-                temp.Text = item.VendorName.ToString();
-                temp.Value = item.MstVendorId.ToString();
-                VendorList.Add(temp);
-            }
-            model.VendorList = new SelectList(VendorList, "Value", "Text");
+            var  VendorDataList = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new { x.VendorName, x.MstVendorId}).Distinct().ToList();
+            
+            model.VendorList = new SelectList(VendorDataList, "MstVendorId", "VendorName");
             return model;
         }
 
@@ -107,7 +90,6 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = listdata(model);
-            model.Year = null;
             return View(model);
         }
 
@@ -117,12 +99,44 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<PenaltyDto>(model);
-                data.CreatedBy = CurrentUser.USERNAME;
-                data.CreatedDate = DateTime.Now;
-                data.ModifiedDate = null;
-                data.IsActive = true;
-                _penaltyBLL.Save(data);
+                try
+                {
+                    var Exist = _penaltyBLL.GetPenalty().Where(x => (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (model.BodyType == null ? "" : model.BodyType.ToUpper())
+                                && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (model.Manufacturer == null? "" : model.Manufacturer.ToUpper())
+                                && (x.Model == null ? "" : x.Model.ToUpper()) == (model.Models == null ? "" : model.Models.ToUpper())
+                                && (x.VehicleType == null ? "" :x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper())
+                                && (x.BodyType == null ? "" :x.BodyType.ToUpper()) == (model.BodyType == null ? "" : model.BodyType.ToUpper())
+                                && (x.Series == null ? "" : x.Series.ToUpper()) == (model.Series == null ? "" : model.Series.ToUpper())
+                                && x.Year == model.Year && x.Vendor == model.Vendor && x.Penalty == model.Penalty && x.MonthEnd == model.MonthEnd && x.MonthStart == model.MonthStart && x.IsActive ).FirstOrDefault();
+
+                    if (Exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exist in Master Penalty";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        model.PenaltyLogic = this.GetPenaltyLogicById(model.Penalty).Data.ToString();
+                        model = listdata(model);
+                        return View(model);
+                    }
+
+                    var data = Mapper.Map<PenaltyDto>(model);
+                    data.CreatedBy = CurrentUser.USER_ID;
+                    data.CreatedDate = DateTime.Now;
+                    data.ModifiedDate = null;
+                    data.IsActive = true;
+
+                    _penaltyBLL.Save(data);
+                    _penaltyBLL.SaveChanges();
+                }
+                catch (Exception exp)
+                {
+                    model.ErrorMessage = exp.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    model = listdata(model);
+                    return View(model);
+                }
+                
             }
             return RedirectToAction("Index", "MstPenalty");
         }
@@ -172,11 +186,41 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = Mapper.Map<PenaltyDto>(model);
-                data.ModifiedDate = DateTime.Now;
-                data.ModifiedBy = CurrentUser.USERNAME;
+                try
+                {
+                    var Exist = _penaltyBLL.GetPenalty().Where(x => (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (model.BodyType == null ? "" : model.BodyType.ToUpper())
+                               && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (model.Manufacturer == null ? "" : model.Manufacturer.ToUpper())
+                               && (x.Model == null ? "" : x.Model.ToUpper()) == (model.Models == null ? "" : model.Models.ToUpper())
+                               && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper())
+                               && (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (model.BodyType == null ? "" : model.BodyType.ToUpper())
+                               && (x.Series == null ? "" : x.Series.ToUpper()) == (model.Series == null ? "" : model.Series.ToUpper())
+                               && x.Year == model.Year && x.Vendor == model.Vendor && x.Penalty == model.Penalty && x.MonthEnd == model.MonthEnd && x.MonthStart == model.MonthStart && x.IsActive && x.MstPenaltyId != model.MstPenaltyId).FirstOrDefault();
 
-                _penaltyBLL.Save(data, CurrentUser);
+                    if (Exist != null)
+                    {
+                        model.ErrorMessage = "Data Already Exist in Master Penalty";
+                        model.MainMenu = _mainMenu;
+                        model.CurrentLogin = CurrentUser;
+                        model = listdata(model);
+                        model.PenaltyLogic = this.GetPenaltyLogicById(model.Penalty).Data.ToString();
+                        return View(model);
+                    }
+
+                    var data = Mapper.Map<PenaltyDto>(model);
+                    data.ModifiedDate = DateTime.Now;
+                    data.ModifiedBy = CurrentUser.USER_ID;
+
+                    _penaltyBLL.Save(data, CurrentUser);
+                    _penaltyBLL.SaveChanges();
+                }
+                catch (Exception EXP)
+                {
+                    model.ErrorMessage = EXP.Message;
+                    model.MainMenu = _mainMenu;
+                    model.CurrentLogin = CurrentUser;
+                    model = listdata(model);
+                    return View(model);
+                }
             }
             return RedirectToAction("Index", "MstPenalty");
         }
@@ -207,20 +251,49 @@ namespace FMS.Website.Controllers
                 {
                     try
                     {
+                        var Exist = _penaltyBLL.GetPenalty().Where(x => (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (data.BodyType == null ? "" : data.BodyType.ToUpper())
+                                && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (data.Manufacturer == null ? "" : data.Manufacturer.ToUpper())
+                                && (x.Model == null ? "" : x.Model.ToUpper()) == (data.Models == null ? "" : data.Models.ToUpper())
+                                && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (data.VehicleType == null ? "" : data.VehicleType.ToUpper())
+                                && (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (data.BodyType == null ? "" : data.BodyType.ToUpper())
+                                && (x.Series == null ? "" : x.Series.ToUpper()) == (data.Series == null ? "" : data.Series.ToUpper())
+                                && x.Year == data.Year && x.Vendor == data.Vendor && x.Penalty == data.Penalty && x.MonthEnd == data.MonthEnd && x.MonthStart == data.MonthStart && x.IsActive).FirstOrDefault();
+
+                        if (Exist != null)
+                        {
+                            Exist.IsActive = false;
+                            Exist.ModifiedBy = "SYSTEM";
+                            Exist.ModifiedDate = DateTime.Now;
+                            _penaltyBLL.Save(Exist);
+                        }
+
                         data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USERNAME; ;
+                        data.CreatedBy = CurrentUser.USER_ID; ;
                         data.ModifiedDate = null;
                         data.IsActive = true;
 
                         var dto = Mapper.Map<PenaltyDto>(data);
                         _penaltyBLL.Save(dto);
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.ErrorMessage = exception.Message;
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
+                }
+                try
+                {
+                    _penaltyBLL.SaveChanges();
+                }
+                catch (Exception EXP)
+                {
+                    Model.ErrorMessage = EXP.Message;
+                    Model.MainMenu = _mainMenu;
+                    Model.CurrentLogin = CurrentUser;
+                    return View(Model);
                 }
             }
             return RedirectToAction("Index", "MstPenalty");
@@ -229,9 +302,6 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
-            var qtyPacked = string.Empty;
-            var qty = string.Empty;
-
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<PenaltyItem>();
             if (data != null)
@@ -247,25 +317,106 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new PenaltyItem();
+                    item.ErrorMessage = "";
+
                     var vendorName = dataRow[0].ToString();
-                    int vendorId = _vendorBLL.GetExist(vendorName) == null? 0 : _vendorBLL.GetExist(vendorName).MstVendorId;
-                    item.VendorName = vendorName;
-                    item.Vendor = vendorId;
-                    item.Year = Convert.ToInt32(dataRow[1].ToString());
-                    item.MonthStart = Convert.ToInt32(dataRow[2].ToString());
-                    item.MonthEnd = Convert.ToInt32(dataRow[3].ToString());
+                    if (vendorName == "")
+                    {
+                        item.ErrorMessage = "Vendor Name Can't be Empty";
+                    }
+                    else
+                    {
+                        item.VendorName = vendorName;
+                        var vendor = _vendorBLL.GetVendor().Where(x => x.IsActive && (x.VendorName == null ? "" : x.VendorName.ToUpper()) == (vendorName == null ? "" : vendorName.ToUpper())).FirstOrDefault();
+                        if (vendor == null)
+                        {
+                            item.ErrorMessage = "Vendor is not in the Master Vendor";
+                        }
+                        else
+                        {
+                            item.Vendor = vendor.MstVendorId;
+                        }
+                    }
+                   
+                    if(dataRow[1] == "")
+                    {
+                        item.ErrorMessage = "Request Year Can't be Empty";
+                    }
+                    else
+                    {
+                        try
+                        {
+                            item.Year = Convert.ToInt32(dataRow[1].ToString());
+                        }
+                        catch (Exception)
+                        {
+                            item.ErrorMessage = "Request year must be number";
+                        }
+                    }
+
+                    if (dataRow[2] == "")
+                    {
+                        item.ErrorMessage = "Minimum lease Term Can't be Empty";
+                    }
+                    else
+                    {
+                        try
+                        {
+                            item.MonthStart = Convert.ToInt32(dataRow[2].ToString());
+                        }
+                        catch (Exception)
+                        {
+                            item.ErrorMessage = "Minimum lease Term must be number";
+                        }
+                    }
+
+                    if (dataRow[3] == "")
+                    {
+                        item.ErrorMessage = "Maximum lease Term Can't be Empty";
+                    }
+                    else
+                    {
+                        try
+                        {
+                            item.MonthEnd = Convert.ToInt32(dataRow[3].ToString());
+                        }
+                        catch (Exception)
+                        {
+                            item.ErrorMessage = "Maximum lease must be number";
+                        }
+                    }
+                    
                     item.Manufacturer = dataRow[4].ToString();
                     item.Models = dataRow[5].ToString();
                     item.Series = dataRow[6].ToString();
                     item.BodyType = dataRow[7].ToString();
-                    item.VehicleType = dataRow[8].ToString();
-                    if(dataRow.Count<= 9)
+
+                    item.VehicleType = (dataRow[8] == null ?"" :dataRow[8].ToUpper());
+                    if (item.VehicleType == "")
                     {
-                        item.Penalty = 0;
+                        item.ErrorMessage = "Vehicle Type can't be empty";
+                    }
+
+                    if(dataRow[9] == "")
+                    {
+                        item.ErrorMessage = "Penalty Id Can't be empty";
                     }
                     else
                     {
-                        item.Penalty = Convert.ToInt32(dataRow[9].ToString());
+                        try
+                        {
+                            item.Penalty = Convert.ToInt32(dataRow[9].ToString());
+                            var PenaltyLogic = _penaltyLogicBLL.GetPenaltyLogicById(item.Penalty);
+                            if(PenaltyLogic == null)
+                            {
+                                item.ErrorMessage = "This Penalty Id is not in master penalty Logic";
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                            item.ErrorMessage = "Penalty Id must be number";
+                        }
                     }
                     model.Add(item);
                 }

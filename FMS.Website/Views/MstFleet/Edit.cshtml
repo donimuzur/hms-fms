@@ -93,7 +93,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Body Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, new { @class = "form-control " })
+                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control " })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -117,7 +117,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Fuel Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -151,13 +151,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VehicleUsage, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -177,13 +177,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Project Name<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Supply Method<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -201,7 +201,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">VAT<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VatDecimal, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -224,7 +224,7 @@
                     <div class="form-group">
                         <label class="control-label">Start Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.StartDate, new {@class = "form-control" })
+                            @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new {@class = "form-control" })
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -235,7 +235,7 @@
                     <div class="form-group">
                         <label class="control-label">End Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -245,7 +245,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Monthly HMS Installment<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.MonthlyHMSInstallment, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -312,7 +312,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.TotalMonthlyCharge, new { @class = "form-control", onkeypress = "return IsAngka(event)" })
+                        @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -340,6 +340,10 @@
 </section>
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        SetDataVehUsage();
+    });
+
     function checkAirbag() {
         if (document.getElementById('ChkAirbag').checked == true) {
             document.getElementById('lblAirbag').innerHTML = "Yes";
@@ -374,12 +378,44 @@
         return true;
 
     }
-    $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
-    $('#MonthlyHMSInstallment').val(ThausandSeperator($('#MonthlyHMSInstallment').val(), 2));
-    $('#TotalMonthlyCharge').val(ThausandSeperator($('#TotalMonthlyCharge').val(), 2));
+    $('#VatDecimalStr').val(ThausandSeperator($('#VatDecimalStr').val(), 2));
+    $('#MonthlyHMSInstallmentStr').val(ThausandSeperator($('#MonthlyHMSInstallmentStr').val(), 2));
+    $('#TotalMonthlyChargeStr').val(ThausandSeperator($('#TotalMonthlyChargeStr').val(), 2));
 
     function calculateVAT() {
         $('#VatDecimal').val($('MonthlyHMSInstallment').val()*10/100);
         $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
+    }
+
+    function ajaxSelectVehUsage(urlFunction, vehType, vehUsage) {
+        $.ajax({
+            type: 'POST',
+            url: urlFunction,
+            data: { vehType: vehType },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#VehicleUsage').append('<option value="' + data[i].SettingValue + '">' + data[i].SettingValue + '</option>');
+                }
+
+                $('#VehicleUsage').val(vehUsage);
+            }
+        });
+    }
+
+    $("#VehicleType").change(function () {
+        $('#VehicleUsage').html('');
+        $('#VehicleUsage').append('<option value="">Select</option>');
+        if ($("#VehicleType").length) {
+            ajaxSelectVehUsage('@Url.Action("GetVehUsageByVehType", "MstFleet")', $(this).val(), '');
+        }
+    });
+
+    function SetDataVehUsage() {
+        var vehType = '@Model.VehicleType';
+        var vehUsage = '@Model.VehicleUsage';
+
+        $('#VehicleUsage').html('');
+        $('#VehicleUsage').append('<option value="">Select</option>');
+        ajaxSelectVehUsage('@Url.Action("GetVehUsageByVehType", "MstFleet")', vehType, vehUsage);
     }
 </script>

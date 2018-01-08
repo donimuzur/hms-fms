@@ -16,6 +16,26 @@
 <section class="content">
     @using (Html.BeginForm("ExportMasterFleet", "MstFleet", FormMethod.Post, new { @id = "ExportToXls" }))
     {
+        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "export_PoliceNumber"})
+        @Html.HiddenFor(model => model.SearchView.EmployeeName, new { @id = "export_EmployeeName" })
+        @Html.HiddenFor(model => model.SearchView.EngineNumber, new { @id = "export_EngineNumber" })
+        @Html.HiddenFor(model => model.SearchView.EmployeeID, new { @id = "export_EmployeeID" })
+        @Html.HiddenFor(model => model.SearchView.ChasisNumber, new { @id = "export_ChasisNumber" })
+        @Html.HiddenFor(model => model.SearchView.StatusSource, new { @id = "export_StatusSource" })
+        @Html.HiddenFor(model => model.SearchView.SupplyMethod, new { @id = "export_SupplyMethod" })
+        @Html.HiddenFor(model => model.SearchView.BodyType, new { @id = "export_BodyType" })
+        @Html.HiddenFor(model => model.SearchView.VehicleType, new { @id = "export_VehicleType" })
+        @Html.HiddenFor(model => model.SearchView.VehicleUsage, new { @id = "export_VehicleUsage" })
+        @Html.HiddenFor(model => model.SearchView.Vendor, new { @id = "export_Vendor" })
+        @Html.HiddenFor(model => model.SearchView.Function, new { @id = "export_Function" })
+        @Html.HiddenFor(model => model.SearchView.Regional, new { @id = "export_Regional" })
+        @Html.HiddenFor(model => model.SearchView.City, new { @id = "export_City" })
+        @Html.HiddenFor(model => model.SearchView.StartRent, new { @id = "export_StartRent" })
+        @Html.HiddenFor(model => model.SearchView.StartRentTo, new { @id = "export_StartRentTo" })
+        @Html.HiddenFor(model => model.SearchView.EndRent, new { @id = "export_EndRent" })
+        @Html.HiddenFor(model => model.SearchView.EndRentTo, new { @id = "export_EndRentTo" })
+        @Html.HiddenFor(model => model.SearchView.EndDate, new { @id = "export_EndDate" })
+        @Html.HiddenFor(model => model.SearchView.EndDateTo, new { @id = "export_EndDateTo" })
     }
     <div class="wpanel">
         <div class="row">
@@ -73,7 +93,6 @@
                     @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
-            <div class="clearfix"></div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
@@ -94,25 +113,6 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="SearchView_StartRent">Start Rent</label>
-                    @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin" })
-                </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_EndRent">End Rent</label>
-                    @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end" })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="SearchView_EndRent">End Date</label>
-                    @Html.TextBoxFor(model => model.SearchView.EndDate, new { @class = "form-control date-end" })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
                     <label for="SearchView_RegionalList">Regional</label>
                     @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
@@ -121,6 +121,42 @@
                 <div class="form-group">
                     <label for="SearchView_CityList">City</label>
                     @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_StartRent">Start Rent From</label>
+                    @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_StartRent">Start Rent To</label>
+                    @Html.TextBoxFor(model => model.SearchView.StartRentTo, new { @class = "form-control date-begin" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Rent From</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Rent To</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndRentTo, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Date From</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndDate, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Date To</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndDateTo, new { @class = "form-control date-end" })
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -168,13 +204,33 @@
 
         $(document).on('click', '#btn-reset', function () {
             $('input[type=text]').val('');
-            $("select").val('');
-            $("select").selectpicker("refresh");
+            $('.chosen-single > span').html('select');
             setupDataTables();
         });
     });
 
     function ExportXls() {
+
+        $('#export_PoliceNumber').val($('#SearchView_PoliceNumber').val());
+        $('#export_EmployeeName').val($('#SearchView_EmployeeName').val());
+        $('#export_EngineNumber').val($('#SearchView_EngineNumber').val());
+        $('#export_EmployeeID').val($('#SearchView_EmployeeID').val());
+        $('#export_StatusSource').val($('#SearchView_StatusSource').val());
+        $('#export_SupplyMethod').val($('#SearchView_SupplyMethod').val());
+        $('#export_BodyType').val($('#SearchView_BodyType').val());
+        $('#export_VehicleType').val($('#SearchView_VehicleType').val());
+        $('#export_VehicleUsage').val($('#SearchView_VehicleUsage').val());
+        $('#export_Vendor').val($('#SearchView_Vendor').val());
+        $('#export_Function').val($('#SearchView_Function').val());
+        $('#export_Regional').val($('#SearchView_Regional').val());
+        $('#export_City').val($('#SearchView_City').val());
+        $('#export_StartRent').val($('#SearchView_StartRent').val());
+        $('#export_StartRentTo').val($('#SearchView_StartRentTo').val());
+        $('#export_EndRent').val($('#SearchView_EndRent').val());
+        $('#export_EndRentTo').val($('#SearchView_EndRentTo').val());
+        $('#export_EndDate').val($('#SearchView_EndDate').val());
+        $('#export_EndDateTo').val($('#SearchView_EndDateTo').val());
+
         $('#ExportToXls').submit();
     }
 
@@ -203,44 +259,12 @@
             { "data": "VehicleYear", "orderable": false },
             { "data": "VehicleType", "orderable": true },
             { "data": "VehicleUsage", "orderable": true },
-            { "data": "Project", "orderable": false },
+            {
+                "data": "Project", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
             { "data": "ProjectName", "orderable": false },
-            {
-                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
-                }
-            },
-            {
-                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
-                }
-            },
-            { "data": "VendorName", "orderable": true },
-            { "data": "City", "orderable": true },
-            { "data": "SupplyMethod", "orderable": true },
-            {
-                "data": "TerminationDate", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
-                }
-            },
-            {
-                "data": "Restitution", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? "Yes" : "No";
-                }
-            },
-            { "data": "Price", "orderable": false },
-            {
-                "data": "Vat", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? "Yes" : "No";
-                }
-            },
-            { "data": "PoNumber", "orderable": false },
-            { "data": "PoLine", "orderable": false },
-            { "data": "CarGroupLevel", "orderable": false },
-            { "data": "GroupLevel", "orderable": false },
-            { "data": "ActualGroup", "orderable": false },
-            { "data": "AssignedTo", "orderable": false },
-            { "data": "Address", "orderable": false },
             {
                 "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
@@ -251,10 +275,53 @@
                     return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             },
-            { "data": "GrLeftQty", "orderable": false },
+            { "data": "VendorName", "orderable": true },
+            { "data": "City", "orderable": true },
+            { "data": "SupplyMethod", "orderable": true },
+            {
+                "data": "Restitution", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
+            { "data": "MonthlyHMSInstallment", "orderable": false },
+            { "data": "VatDecimal", "orderable": false },
+            { "data": "PoNumber", "orderable": false },
+            { "data": "PoLine", "orderable": false },
+            { "data": "CarGroupLevel", "orderable": false },
+            { "data": "GroupLevel", "orderable": false },
+            { "data": "AssignedTo", "orderable": false },
+            { "data": "Address", "orderable": false },
+            {
+                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
             {
                 "data": "IsActive", "orderable": false, "render": function (datum, type, record) {
                     return (datum) ? "Active" : "InActive";
+                }
+            },
+            { "data": "CertificateOwnership", "orderable": false },
+            { "data": "Comments", "orderable": false },
+            { "data": "Assets", "orderable": false },
+            { "data": "TotalMonthlyCharge", "orderable": false },
+            { "data": "Function", "orderable": false },
+            { "data": "Regional", "orderable": false },
+            { "data": "CreatedBy", "orderable": false },
+            {
+                "data": "CreatedDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { "data": "ModifiedBy", "orderable": false },
+            {
+                "data": "ModifiedDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
                 }
             }
         ];
@@ -319,8 +386,11 @@
                         "Vendor": $('#SearchView_Vendor').val(),
                         "Function": $('#SearchView_Function').val(),
                         "StartRent": $('#SearchView_StartRent').val(),
+                        "StartRentTo": $('#SearchView_StartRentTo').val(),
                         "EndRent": $('#SearchView_EndRent').val(),
+                        "EndRentTo": $('#SearchView_EndRentTo').val(),
                         "EndDate": $('#SearchView_EndDate').val(),
+                        "EndDateTo": $('#SearchView_EndDateTo').val(),
                         "Regional": $('#SearchView_Regional').val(),
                         "City": $('#SearchView_City').val()
                     });

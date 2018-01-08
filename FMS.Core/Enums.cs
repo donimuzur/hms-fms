@@ -53,15 +53,16 @@ namespace FMS.Core
             RptCcf = 41
 		}
 
-	    public enum DocumentType
-	    {
-	        CSF = 1,
+        public enum DocumentType
+        {
+            CSF = 1,
             TMP = 2,
             CRF = 3,
             CAF = 4,
             CCF = 5,
-            CTF = 6
-	    }
+            CTF = 6,
+            GS = 7
+        }
 
         public enum DocumentStatus
         {
@@ -135,6 +136,8 @@ namespace FMS.Core
 			Cancelled = 9,
             [Description("Extend")]
             Extend = 10,
+            [Description("In Progress")]
+            InProgress = 11,
         }
 
 		/// <summary>
@@ -209,6 +212,10 @@ namespace FMS.Core
             BodyType = 9,
             [Description("BODY_MAIL_CSF")]
             BodyMailCsf = 10,
+            [Description("FUEL_TYPE")]
+            FuelType = 11,
+            [Description("TRANSMISSION")]
+            Transmission = 12,
         }
 
 		

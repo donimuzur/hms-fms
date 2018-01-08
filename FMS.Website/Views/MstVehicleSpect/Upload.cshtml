@@ -2,11 +2,11 @@
 @using FMS.Core;
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Vehicle Spect Upload</h5>
+    <h5 class="title-page">Master Data Vehicle Spec Upload</h5>
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
     <div class="wpanel">
-        @using (Html.BeginForm("Upload", "MstVehicleSpect", FormMethod.Post))
+        @using (Html.BeginForm("Upload", "MstVehicleSpect", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <div class="row">
                 <div class="col-md-6">
@@ -39,6 +39,7 @@
                         <th>Flex Point</th>
                         <th>Image</th>
                         <th>Status</th>
+                        <th>Message</th>
                     </tr>
                 </thead>
                 <tbody id="tb-upload-excel"></tbody>
@@ -74,9 +75,13 @@
     function createColumnWithHiddenFieldDecimal(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '"><span class="decimal">' + text + '</span></td>';
     }
+    
+    function createColumnHiddenField(text, name) {
+        return '<td style="display : none"><input type="hidden" name="' + name + '" value="' + text + '"></td>';
+    }
 
     function createColumnWithHiddenFieldImage(text, name) {
-        return '<td><input type="file" name="' + name + '" src="' + text + '"><span class="decimal">' + text + '</span></td>';
+        return '<td><input type="file" name="' + name + '" style="width : 95px"></td>';
     }
     $('#btnupload').click(function () {
         uploadXmlFile();
@@ -112,6 +117,7 @@
                 uploaditems = JSON.parse(response);
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
+                    
                     var tr = '<tr>' +
                 createColumn(i + 1) +
                 createColumnWithHiddenField(uploaditems[i].Manufacturer, 'Model.Details[' + i + '].Manufacturer') +
@@ -124,13 +130,23 @@
                 createColumnWithHiddenField(uploaditems[i].Colour, 'Model.Details[' + i + '].Colour') +
                 createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                 createColumnWithHiddenField(uploaditems[i].FlexPoint, 'Model.Details[' + i + '].FlexPoint') +
-                createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
+                //createColumnWithHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
+                
+                createColumnWithHiddenFieldImage(uploaditems[i].Image, 'Model.Details[' + i + '].ImageFile') +
                 createColumnWithHiddenFieldDiferentValue(uploaditems[i].IsActiveS, 'Model.Details[' + i + '].IsActive', uploaditems[i].IsActive) +
+                createColumnWithHiddenField(uploaditems[i].Message, 'Model.Details[' + i + '].Message') +
+                createColumnHiddenField(uploaditems[i].Image, 'Model.Details[' + i + '].Image') +
                 '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].Message;
                 }
-               $('#btnSave').prop('disabled', false);
+                
+                if (error == "") {
+                    $('#btnSave').removeAttr('disabled');
+                } else {
+                    $('#btnSave').attr('disabled', "disabled");
+                }
+               
             }
         });
     };

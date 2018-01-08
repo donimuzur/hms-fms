@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using AutoMapper;
@@ -7,6 +8,7 @@ using FMS.AutoMapperExtensions;
 using FMS.BusinessObject.Dto;
 using FMS.Website.Models;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Code
 {
@@ -79,7 +81,10 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<FleetItem, FleetDto>().IgnoreAllNonExisting();
 
-            Mapper.CreateMap<FleetDto, FleetItem>().IgnoreAllNonExisting();
+            Mapper.CreateMap<FleetDto, FleetItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
+                ;
           
             //Begin Map Master Employee//
             Mapper.CreateMap<EmployeeDto, EmployeeItem>().IgnoreAllNonExisting()
@@ -158,11 +163,13 @@ namespace FMS.Website.Code
            
            
             Mapper.CreateMap<PriceListDto, PriceListItem>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
-            Mapper.CreateMap<PriceListItem, PriceListDto>().IgnoreAllNonExisting();
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model));
 
-            Mapper.CreateMap<PriceListItem, PriceListItem>().IgnoreAllNonExisting()
-           .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
+            Mapper.CreateMap<PriceListItem, PriceListDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models));
+
+            Mapper.CreateMap<PriceListItem, PriceListItem>().IgnoreAllNonExisting();
+
             Mapper.CreateMap<ReasonItem, ReasonDto>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<LocationMappingDto, LocationMappingItem>().IgnoreAllNonExisting();
@@ -340,7 +347,8 @@ namespace FMS.Website.Code
             Mapper.CreateMap<FuelOdometerDto, FuelOdometerItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             //END FuelOdometer
-
+            Mapper.CreateMap<FuelOdometerItem, FuelOdometerDto>().IgnoreAllNonExisting()
+           .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
             //BEGIN Delegation
             Mapper.CreateMap<DelegationDto, DelegationItem>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
@@ -350,22 +358,29 @@ namespace FMS.Website.Code
 
             //BEGIN Sales Volume
             Mapper.CreateMap<SalesVolumeDto, SalesVolumeItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.MonthS, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.Month)))
                 .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
 
             Mapper.CreateMap<SalesVolumeItem, SalesVolumeDto>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<SearchView, SalesVolumeParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<SearchViewExport, SalesVolumeParamInput>().IgnoreAllNonExisting();
             //END Sales Volume
 
             Mapper.CreateMap<SysAccessDto, SysAccessItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<SysAccessItem, SysAccessDto>().IgnoreAllNonExisting();
 
-            Mapper.CreateMap<GsDto, GsItem>().IgnoreAllNonExisting();
-            Mapper.CreateMap<GsItem, GsDto>().IgnoreAllNonExisting();
+            Mapper.CreateMap<GsDto, GsItem>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model)); ;
+            Mapper.CreateMap<GsItem, GsDto>().IgnoreAllNonExisting()
+                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models)); ;
 
             // Start --- Master Data -> CostOb
             Mapper.CreateMap<CostObDto, CostObItem>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate));
-            Mapper.CreateMap<CostObItem, CostObDto>().IgnoreAllNonExisting();
+                .ForMember(dest => dest.Models, opt => opt.MapFrom(src => src.Model));
+            Mapper.CreateMap<CostObItem, CostObDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.Models));
 
             Mapper.CreateMap<MST_COST_OB, CostObDto>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.MstCostObId, opt => opt.MapFrom(src => src.MST_COST_OB_ID))
@@ -395,6 +410,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
+            Mapper.CreateMap<CostObSearchView, CostObParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<CostObParamInput, CostObSearchView>().IgnoreAllNonExisting();
             // End --- Master Data -> CostOb
 
             #region AutoGR

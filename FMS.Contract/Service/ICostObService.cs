@@ -1,5 +1,6 @@
 ﻿using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace FMS.Contract.Service
         MST_COST_OB GetExist(string Model);
         void save(MST_COST_OB dbCostOb);
         void save(MST_COST_OB dbCostOb, Login userlogin);
+        List<MST_COST_OB> GetCostObByFilter(CostObParamInput filter);
     }
 }

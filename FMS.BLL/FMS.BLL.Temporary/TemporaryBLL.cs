@@ -38,6 +38,8 @@ namespace FMS.BLL.Temporary
         private IFleetService _fleetService;
         private IPriceListService _priceListService;
         private IVendorService _vendorService;
+        private IGroupCostCenterService _groupCostService;
+        private IVehicleSpectService _vehicleSpectService;
 
         public TemporaryBLL(IUnitOfWork uow)
         {
@@ -54,6 +56,8 @@ namespace FMS.BLL.Temporary
             _fleetService = new FleetService(_uow);
             _priceListService = new PriceListService(_uow);
             _vendorService = new VendorService(_uow);
+            _groupCostService = new GroupCostCenterService(_uow);
+            _vehicleSpectService = new VehicleSpectService(_uow);
         }
 
         public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted)
@@ -384,7 +388,7 @@ namespace FMS.BLL.Temporary
             var vehTypeBenefit = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().MST_SETTING_ID;
             var vendorData = _vendorService.GetByShortName(tempData.VENDOR_NAME);
             var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
-            var vendorName = vendorData == null ? "Vendor" : vendorData.VENDOR_NAME;
+            var vendorName = vendorData == null ? string.Empty : vendorData.VENDOR_NAME;
 
             var isBenefit = tempData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
 
@@ -481,7 +485,7 @@ namespace FMS.BLL.Temporary
                     {
                         rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
@@ -552,7 +556,7 @@ namespace FMS.BLL.Temporary
                     {
                         rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
@@ -662,6 +666,32 @@ namespace FMS.BLL.Temporary
 
                     rc.IsCCExist = true;
                     break;
+                case Enums.ActionType.InProgress:
+                    rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Document In Progress";
+
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+                    rc.CC.Add(creatorDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    break;
             }
 
             rc.Body = bodyMail.ToString();
@@ -683,7 +713,8 @@ namespace FMS.BLL.Temporary
 
             var dataTemp = _TemporaryService.GetTemporaryById(id);
 
-            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)).ToList();
+            var policeNumberActive = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && !string.IsNullOrEmpty(x.POLICE_NUMBER)
+                                                                            && x.MST_FLEET_ID != dataTemp.CFM_IDLE_ID).ToList();
 
             foreach (var inputItem in inputs)
             {
@@ -810,7 +841,8 @@ namespace FMS.BLL.Temporary
                 else
                 {
                     //check police number active in mst_fleet
-                    if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()).FirstOrDefault() != null)
+                    if (policeNumberActive.Where(x => x.POLICE_NUMBER.ToLower() == inputItem.PoliceNumber.ToLower()
+                                                            && x.MST_FLEET_ID != dataTemp.CFM_IDLE_ID).FirstOrDefault() != null)
                     {
                         messageList.Add("Police number already exists in master fleet");
                         messageListStopper.Add("Police number already exists in master fleet");
@@ -925,26 +957,76 @@ namespace FMS.BLL.Temporary
                 //add new master fleet
                 MST_FLEET dbFleet;
 
-                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.LOCATION == item.LOCATION_CITY
+                var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.BASETOWN == item.LOCATION_CITY
                                                                                                  && x.IS_ACTIVE).FirstOrDefault();
 
-                var zonePrice = getZonePriceList == null ? "" : getZonePriceList.ZONE_PRICE_LIST;
+                var vSpecList = _vehicleSpectService.GetVehicleSpect().Where(x => x.YEAR == item.CREATED_DATE.Year
+                                                                        && x.MANUFACTURER == item.MANUFACTURER
+                                                                        && x.MODEL == item.MODEL
+                                                                        && x.SERIES == item.SERIES
+                                                                        && x.BODY_TYPE == item.BODY_TYPE
+                                                                        && x.IS_ACTIVE).FirstOrDefault();
 
-                var priceList = _priceListService.GetPriceList().Where(x => x.YEAR == item.CREATED_DATE.Year
-                                                                        && x.MANUFACTURER == item.VENDOR_MANUFACTURER
-                                                                        && x.MODEL == item.VENDOR_MODEL
-                                                                        && x.SERIES == item.VENDOR_SERIES
-                                                                        && x.IS_ACTIVE
-                                                                        && x.ZONE_PRICE_LIST == zonePrice).FirstOrDefault();
+                var functionList = _groupCostService.GetGroupCostCenter().Where(x => x.COST_CENTER == item.COST_CENTER).FirstOrDefault();
+
+                var vehType = string.Empty;
+                var vehUsage = string.Empty;
+                var projectName = string.Empty;
+                var isProject = false;
+                var hmsPrice = item.PRICE == null ? 0 : item.PRICE;
+                var address = getZonePriceList == null ? "" : getZonePriceList.ADDRESS;
+                var regional = getZonePriceList == null ? "" : getZonePriceList.REGION;
+                var function = functionList == null ? "" : functionList.FUNCTION_NAME;
+                var fuelType = vSpecList == null ? string.Empty : vSpecList.FUEL_TYPE;
+                var transmission = vSpecList == null ? string.Empty : vSpecList.TRANSMISSION;
+
+                if (!string.IsNullOrEmpty(item.VEHICLE_TYPE))
+                {
+                    var vehTypeData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE));
+                    if (vehTypeData != null)
+                    {
+                        vehType = vehTypeData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(item.VEHICLE_USAGE))
+                {
+                    var vehUsageData = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_USAGE));
+                    if (vehUsageData != null)
+                    {
+                        vehUsage = vehUsageData.SETTING_VALUE.ToUpper();
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(item.PROJECT_NAME))
+                {
+                    var projectNameData = _settingService.GetSettingById(Convert.ToInt32(item.PROJECT_NAME));
+                    if (projectNameData != null)
+                    {
+                        projectName = projectNameData.SETTING_VALUE.ToUpper();
+                        isProject = true;
+                        if (projectName == "NO PROJECT")
+                        {
+                            isProject = false;
+                        }
+                    }
+                }
 
                 dbFleet = Mapper.Map<MST_FLEET>(item);
                 dbFleet.IS_ACTIVE = true;
                 dbFleet.CREATED_DATE = DateTime.Now;
-                dbFleet.VEHICLE_TYPE = _settingService.GetSettingById(Convert.ToInt32(item.VEHICLE_TYPE)).SETTING_VALUE.ToUpper();
-                dbFleet.VEHICLE_USAGE = string.Empty;
+                dbFleet.VEHICLE_TYPE = vehType;
+                dbFleet.VEHICLE_USAGE = vehUsage;
                 dbFleet.SUPPLY_METHOD = "TEMPORARY";
-                dbFleet.MONTHLY_HMS_INSTALLMENT = priceList == null ? 0 : priceList.PRICE;
-                dbFleet.FUEL_TYPE = string.Empty;
+                dbFleet.PROJECT = isProject;
+                dbFleet.PROJECT_NAME = projectName;
+                dbFleet.MONTHLY_HMS_INSTALLMENT = hmsPrice;
+                dbFleet.TOTAL_MONTHLY_CHARGE = hmsPrice + (item.VAT_DECIMAL == null ? 0 : item.VAT_DECIMAL.Value);
+                dbFleet.FUEL_TYPE = fuelType;
+                dbFleet.ADDRESS = address;
+                dbFleet.REGIONAL = regional;
+                dbFleet.VEHICLE_FUNCTION = function;
+                dbFleet.TRANSMISSION = transmission;
 
                 _fleetService.save(dbFleet);
 

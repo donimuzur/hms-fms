@@ -49,7 +49,7 @@
 <body>
     <header class="clearfloat">
         <div class="logo-toggle">
-            <a href="@Url.Action("Index", "Home")"><img src="~/Content/images/logo-mini.png" alt="" class="logo"></a>
+            <a href="@Url.Action("Index", "Home")"><img src="~/Content/images/logo-hms-mini.png" alt="" class="logo" style="width:53px;height:26px"></a>
             <button class="sidebar-toggler" type="button">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -108,22 +108,22 @@
                         <li><a href="@Url.Action("Index","MstPenalty")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty</h5></a></li>
                         <li><a href="@Url.Action("Index","MstPriceList")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Price List</h5></a></li>
                         <li><a href="@Url.Action("Index","MstSalesVolume")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Sales Volume</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstVehicleSpect")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vehicle Spect</h5></a></li>
+                        <li><a href="@Url.Action("Index","MstVehicleSpect")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vehicle Spec</h5></a></li>
                         <li><a href="@Url.Action("Index","MstVendor")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vendor</h5></a></li>
                         <li><a href="#"><h5>------------------</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstComplaint")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Complaint Category</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstDelegation")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Delegation</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstEmployee")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Employee</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstEpaf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Epaf</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstFuelOdometer")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fuel OdoMeter</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstGroupCostCenter")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Group Cost Center</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstHolidayCalender")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Holiday</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstLocationMapping")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Location Mapping</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstPenaltyLogic")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty Logic</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstReason")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Reason</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstRemark")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Remark</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstSetting")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Setting</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstSysAccess")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>SysAccess</h5></a></li>
+                        <li id="MstComplaint"><a href="@Url.Action("Index","MstComplaint")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Complaint Category</h5></a></li>
+                        <li id="MstDelegation"><a href="@Url.Action("Index","MstDelegation")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Delegation</h5></a></li>
+                        <li id="MstEmployee"><a href="@Url.Action("Index","MstEmployee")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Employee</h5></a></li>
+                        <li id="MstEpaf"><a href="@Url.Action("Index","MstEpaf")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Epaf</h5></a></li>
+                        <li id="MstFuelOdometer"><a href="@Url.Action("Index","MstFuelOdometer")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fuel OdoMeter</h5></a></li>
+                        <li id="MstGroupCostCenter"><a href="@Url.Action("Index","MstGroupCostCenter")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Group Cost Center</h5></a></li>
+                        <li id="MstHolidayCalender"><a href="@Url.Action("Index","MstHolidayCalender")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Holiday</h5></a></li>
+                        <li id="MstLocationMapping"><a href="@Url.Action("Index","MstLocationMapping")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Location Mapping</h5></a></li>
+                        <li id="MstPenaltyLogic"><a href="@Url.Action("Index","MstPenaltyLogic")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty Logic</h5></a></li>
+                        <li id="MstReason"><a href="@Url.Action("Index","MstReason")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Reason</h5></a></li>
+                        <li id="MstRemark"><a href="@Url.Action("Index","MstRemark")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Remark</h5></a></li>
+                        <li id="MstSetting"><a href="@Url.Action("Index","MstSetting")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Setting</h5></a></li>
+                        <li id="MstSysAccess"><a href="@Url.Action("Index","MstSysAccess")"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>SysAccess</h5></a></li>
                     </ul>
                     break;
                 case Enums.MenuList.Transaction:
@@ -147,30 +147,30 @@
                             </ul>
 			            </li>
 			            <li>
-				            <a href="#childmenu2" data-toggle="collapse"  >
+				            <a href="#CrfMenu" id="CrfParent" data-toggle="collapse"  >
 					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
 					            <h5>Car Relocation</h5>
 				            </a>
-			                <ul class="childmenu collapse" id="childmenu2" data-parent="#sidemenu">
-			                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                            <ul class="childmenu collapse" id="CrfMenu" data-parent="#sidemenu">
+                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                                 {
-                                    <li><a href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
+                                    <li><a id="CrfDahsboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
                                 }
-			                    
-			                    <li><a href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
-			                    <li><a href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
-			                </ul>
+
+                                <li><a id="CrfOpen" href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
+                                <li><a id="CrfCompleted" href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
+                            </ul>
 			            </li>
 			            <li>
-                            <a href="#CafMenu" data-toggle="collapse">
+                            <a href="#CafMenu" id="CafParent" data-toggle="collapse">
                                 <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
                                 <h5>Car Accident</h5>
                             </a>
                             <ul class="childmenu collapse" id="CafMenu" data-parent="#sidemenu">
                                 
 
-                                <li><a href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
-                                <li><a href="@Url.Action("Completed","TraCaf")">Completed Documents</a></li>
+                                <li><a id="CafOpen" href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
+                                <li><a id="CafCompleted" href="@Url.Action("Completed","TraCaf")">Completed Documents</a></li>
                             </ul>
 			            </li>
 			            <li>
@@ -317,6 +317,8 @@
                                 <h5>Executive Summary</h5>
                             </a>
                             <ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
+                                <li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary All</a></li>
+                                <li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary By Region</a></li>
                                 <li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
                                 <li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></li>
                                 <li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
@@ -343,6 +345,7 @@
         <footer>
             <p>© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
         </footer>
+        
     </main>
 
     <style type="text/css">
@@ -360,6 +363,7 @@
 
         //    $('.dataTables_filter input').attr("placeholder", "Search Here");
         //})
-    </script>
+        </script>
+    @*@{ Html.RenderAction("MessageInfo", "Login");}*@    
 </body>
 </html>

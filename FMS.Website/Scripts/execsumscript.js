@@ -11,6 +11,8 @@
     $('#Accident').removeClass('active');
     $('#AcVsOb').removeClass('active');
     $('#SumPtdByFunction').removeClass('active');
+    $('#SummAll').removeClass('active');
+    $('#SummRegion').removeClass('active');
 
     if ($('.title-page').html() == 'Number Of Vehicle') {
         $('#NumbVehicle').addClass('active');
@@ -34,7 +36,24 @@
         $('#AcVsOb').addClass('active');
     } else if ($('.title-page').html() == 'Sum PTD By Function') {
         $('#SumPtdByFunction').addClass('active');
+    } else if ($('.title-page').html() == 'Executive Summary All') {
+        $('#SummAll').addClass('active');
+    } else if ($('.title-page').html() == 'Executive Summary By Region') {
+        $('#SummRegion').addClass('active');
     }
 
     $(".chosen").chosen();
+
+});
+
+$('.chosen').on('change', function (evt, params) {
+    var theList = "";
+
+    $("li.search-choice span").each(function (e) {
+        theList += $(this).text() + ",";
+    });
+
+    theList = theList.slice(0, -1);
+
+    $('#SearchView_FunctionId').val(theList);
 });

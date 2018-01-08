@@ -53,6 +53,7 @@
                                                             @Html.HiddenFor(model => model.ApprovedFleetDate)
                                                             @Html.HiddenFor(model => model.IsPenalty)
                                                             @Html.HiddenFor(model => model.VehicleLocation)
+                                                            @Html.HiddenFor(model => model.Region)
 
                                                             @Html.HiddenFor(model => Model.WithdPic)
                                                             @Html.HiddenFor(model => Model.WithdPhone)
@@ -274,7 +275,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="control-label">Date</label>
-                                                            @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                                            @Html.TextBoxFor(model => model.WithdDate, "{0:dd-MMM-yyyy HH:mm}", new { @class = "form-control", @readonly = "readonly" })
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -335,7 +336,7 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label">Penalty Cost</label>
+                                                            <label class="control-label">Penalty For Fleet</label>
                                                             @Html.TextBoxFor(model => model.PenaltyPriceStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
                                                         </div>
                                                     </div>

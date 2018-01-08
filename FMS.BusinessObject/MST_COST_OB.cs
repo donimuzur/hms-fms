@@ -29,5 +29,8 @@ namespace FMS.BusinessObject
         public string COST_CENTER { get; set; }
         public Nullable<int> QTY { get; set; }
         public Nullable<int> MONTH { get; set; }
+        public string VEHICLE_TYPE { get; set; }
+        public string FUNCTION_NAME { get; set; }
+        public string REGIONAL { get; set; }
     }
 }

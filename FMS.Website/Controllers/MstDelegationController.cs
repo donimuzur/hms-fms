@@ -50,7 +50,7 @@ namespace FMS.Website.Controllers
         {
             foreach(DelegationItem item in data)
             {
-                if(DateTime.Now <= item.DateTo.AddDays(1))
+                if(DateTime.Today > item.DateTo & item.IsActive)
                 {
                     item.IsActive = false;
 
@@ -351,6 +351,14 @@ namespace FMS.Website.Controllers
                     item.DateTo = DateTime.FromOADate(DateTo);
                     item.IsComplaintFrom = Convert.ToBoolean(Convert.ToInt16(dataRow[6]));
                     item.IsComplaintFromS = dataRow[6] == "1"? "True": "False";
+                    item.ErrorMessage = string.Empty;
+
+                    var existEmp = _employeeBLL.GetByID(dataRow[0]);
+                    var existEmpTo = _employeeBLL.GetByID(dataRow[2]);
+
+                    if (existEmp == null) { item.ErrorMessage += "Data Employee ID From Not Exist in master employee,"; }
+                    if (existEmpTo == null) { item.ErrorMessage += "Data Employee ID To Not Exist in master employee,"; }
+
                     model.Add(item);
                 }
             }

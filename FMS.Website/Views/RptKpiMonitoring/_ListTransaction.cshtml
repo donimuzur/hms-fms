@@ -9,17 +9,17 @@
                 <th>Form Type</th>
                 <th>Employee Id</th>
                 <th>Employee Name</th>
-                <th>Cost Center</th>
                 <th>Effective Date</th>
                 <th>Reason</th>
+                <th>Vehicle Usage</th>
                 <th>Address</th>
+                <th>Cost Center</th>
                 <th>Previous Base Town</th>
                 <th>New Base Town</th>
-                <th>Vehicle Usage</th>
-                <th>Vehicle Group Level</th>
-                <th>Vehicle Model</th>
-                <th>Color</th>
+                <th>Group Level</th>
                 <th>Police Number</th>
+                <th>Color</th>
+                <th>Vehicle Model</th>
                 <th>Send To Employee</th>
                 <th>Send Back To Hr</th>
                 <th>Days Difference</th>
@@ -59,17 +59,17 @@
                     <td>@Html.Raw(data.FormType)</td>
                     <td>@Html.Raw(data.EmployeeId)</td>
                     <td>@Html.Raw(data.EmployeeName)</td>
-                    <td>@Html.Raw(data.CostCenter)</td>
                     <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MMM-yyyy"))</td>
                     <td>@Html.Raw(data.Reason)</td>
+                    <td>@Html.Raw(data.VehicleUsage)</td>
                     <td>@Html.Raw(data.Address)</td>
+                    <td>@Html.Raw(data.CostCenter)</td>
                     <td>@Html.Raw(data.PreviousBaseTown)</td>
                     <td>@Html.Raw(data.NewBaseTown)</td>
-                    <td>@Html.Raw(data.VehicleUsage)</td>
                     <td>@Html.Raw(data.VehicleGroup)</td>
-                    <td>@Html.Raw(data.Model)</td>
-                    <td>@Html.Raw(data.Color)</td>
                     <td>@Html.Raw(data.PoliceNumber)</td>
+                    <td>@Html.Raw(data.Color)</td>
+                    <td>@Html.Raw(data.Model)</td>
                     <td>@Html.Raw((data.SendToEmpDate != null) ? data.SendToEmpDate.Value.ToString("dd-MMM-yyyy") : null)</td>
                     <td>@Html.Raw((data.SendBackToHr != null) ? data.SendBackToHr.Value.ToString("dd-MMM-yyyy") : null)</td>
                     <td>@Html.Raw(data.Kpi1 == null?"": data.Kpi1.Value.ToString() )</td>

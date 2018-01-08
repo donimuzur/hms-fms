@@ -4,6 +4,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using FMS.Website.Utility;
 using SpreadsheetLight;
@@ -20,14 +21,16 @@ namespace FMS.Website.Controllers
     {
         private IPageBLL _pageBLL;
         private IRemarkBLL _remarkBLL;
+        private ISettingBLL _settingBLL;
         private IDocumentTypeBLL _documentTypeBLL;
         private Enums.MenuList _mainMenu;
         private ISysAccessBLL _sysAccessBLL;
            
         // GET: /MstRemark/
-        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL , ISysAccessBLL SysAccessBLL) : base(PageBll, Enums.MenuList.MasterVendor)
+        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL , ISysAccessBLL SysAccessBLL, ISettingBLL SettingBLL) : base(PageBll, Enums.MenuList.MasterVendor)
         {
             _pageBLL = PageBll;
+            _settingBLL = SettingBLL;
             _remarkBLL = RemarkBll;
             _documentTypeBLL = DocTypeBLL;
             _sysAccessBLL = SysAccessBLL;
@@ -45,11 +48,8 @@ namespace FMS.Website.Controllers
             return View(model);
         }
         
-
-        public ActionResult Create()
+        public RemarkItem Initial(RemarkItem model)
         {
-
-            var model = new RemarkItem();
             var list1 = _documentTypeBLL.GetDocumentType();
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
 
@@ -59,10 +59,18 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Fleet", Value = "Fleet" },
                 new SelectListItem { Text = "Admin", Value = "Admin" },
             };
-            
+
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            return model;
+        }
+        public ActionResult Create()
+        {
+
+            var model = new RemarkItem();
+            model = Initial(model);
             return View(model);
         }
 
@@ -71,17 +79,33 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<RemarkDto>(model);
-                dto.CreatedBy = CurrentUser.USERNAME;
-                dto.createdDate = DateTime.Now;
-                dto.IsActive = true;
                 try
                 {
+                    var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                                                                  && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                                  && x.DocumentType == model.DocumentType
+                                                                  && x.IsActive).FirstOrDefault();
+                    if (Exist != null)
+                    {
+                        model = Initial(model);
+                        model.ErrorMessage = "Data Already Exist";
+                       
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<RemarkDto>(model);
+                    dto.CreatedBy = CurrentUser.USERNAME;
+                    dto.createdDate = DateTime.Now;
+                    dto.IsActive = true;
+                  
                     _remarkBLL.Save(dto);
+                    _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    model = Initial(model);
+                    model.ErrorMessage = ex.Message;
+                    return View(model);
                 }
             }
             
@@ -91,22 +115,7 @@ namespace FMS.Website.Controllers
         {
             var data = _remarkBLL.GetRemarkById(MstRemarkId);
             var model = Mapper.Map<RemarkItem>(data);
-
-            
-            var list1 = _documentTypeBLL.GetDocumentType();
-            
-            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-            var list2 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "HR", Value = "HR"},
-                new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                new SelectListItem { Text = "Admin", Value = "Admin" },
-            };
-
-            model.RoleTypeList = new SelectList(list2, "Value", "Text");
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
+            model = Initial(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
             return View(model);
         }
@@ -116,17 +125,31 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dto = Mapper.Map<RemarkDto>(model);
-                dto.ModifiedBy = CurrentUser.USERNAME;
-                dto.ModifiedDate = DateTime.Now;
-               
                 try
                 {
+                    var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (model.Remark == null ? "" : model.Remark.ToUpper())
+                                                              && (x.RoleType == null ? "" : x.RoleType.ToUpper()) == (model.RoleType == null ? "" : model.RoleType.ToUpper())
+                                                              && x.DocumentType == model.DocumentType
+                                                              && x.IsActive && x.MstRemarkId != model.MstRemarkId).FirstOrDefault();
+                    if (Exist != null)
+                    {
+                        model = Initial(model);
+                        model.ErrorMessage = "Data Already Exist";
+                        return View(model);
+                    }
+
+                    var dto = Mapper.Map<RemarkDto>(model);
+                    dto.ModifiedBy = CurrentUser.USERNAME;
+                    dto.ModifiedDate = DateTime.Now;
+
                     _remarkBLL.Save(dto, CurrentUser);
+                    _remarkBLL.SaveChanges();
                 }
                 catch (Exception ex)
                 {
-                    var msg = ex.Message;
+                    model = Initial(model);
+                    model.ErrorMessage = ex.Message;
+                    return View(model);
                 }
             }
 
@@ -136,22 +159,7 @@ namespace FMS.Website.Controllers
         {
             var data = _remarkBLL.GetRemarkById(MstRemarkId);
             var model = Mapper.Map<RemarkItem>(data);
-
-
-            var list1 = _documentTypeBLL.GetDocumentType();
-
-            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-            var list2 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "HR", Value = "HR"},
-                new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                new SelectListItem { Text = "Admin", Value = "Admin" },
-            };
-
-            model.RoleTypeList = new SelectList(list2, "Value", "Text");
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
+            model = Initial(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
             return View(model);
         }
@@ -178,18 +186,41 @@ namespace FMS.Website.Controllers
                         data.IsActive = true;
                         if (data.ErrorMessage == "" | data.ErrorMessage == null)
                         {
+                            var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (data.Remark == null ? "" : data.Remark.ToUpper())
+                                                                    && (x.RoleType == null ? ""  : x.RoleType.ToUpper()) == (data.RoleType == null ? "" : data.RoleType.ToUpper())
+                                                                    && x.DocumentType == data.DocumentType && x.IsActive).FirstOrDefault();
+                            if (Exist != null)
+                            {
+                                Exist.IsActive = false;
+                                Exist.ModifiedBy = "SYSTEM";
+                                Exist.ModifiedDate = DateTime.Now;
+                                _remarkBLL.Save(Exist);
+                            }
+
                             var dto = Mapper.Map<RemarkDto>(data);
                             _remarkBLL.Save(dto);
                         }
-                        
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
                     catch (Exception exception)
                     {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                        Model.ErrorMessage = exception.Message;
+                        Model.MainMenu = _mainMenu;
+                        Model.CurrentLogin = CurrentUser;
                         return View(Model);
                     }
                 }
+                try
+                {
+                    _remarkBLL.SaveChanges();
+                }
+                catch (Exception exp)
+                {
+                    Model.ErrorMessage = exp.Message;
+                    Model.MainMenu = _mainMenu;
+                    Model.CurrentLogin = CurrentUser;
+                    return View(Model);
+                }
+                
             }
             return RedirectToAction("Index", "MstRemark");
         }
@@ -211,28 +242,37 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new RemarkItem();
+                    item.ErrorMessage = "";
                     try
                     {
                         var getdto = _documentTypeBLL.GetDocumentType().Where(x => x.DocumentType == dataRow[0]).FirstOrDefault();
                         item.MstDocumentType = dataRow[0];
                         if (getdto == null)
                         {
-                            item.ErrorMessage = "Document " + dataRow[0] + " tidak ada di database";
+                            item.ErrorMessage = "Document " + dataRow[0] + " is not in the Master Document Type";
                         }
                         else if (getdto != null)
                         {
                             item.DocumentType = getdto.MstDocumentTypeId;
-                            item.ErrorMessage = "";
                         }
 
                         item.Remark= dataRow[1].ToString();
-                        item.RoleType = dataRow[2].ToString();
+                        if (item.Remark == "")
+                        {
+                            item.ErrorMessage = "Remark Can't be empty";
+                        }
+
+                        item.RoleType = dataRow[2] == null ? "" : dataRow[2].ToUpper();
+                        if (item.RoleType == "")
+                        {
+                            item.ErrorMessage = "Role Type Can't be empty";
+                        }
 
                         model.Add(item);
                     }
                     catch (Exception ex)
                     {
-                        var a = ex.Message;
+                        item.ErrorMessage = ex.Message;
                     }
                 }
             }

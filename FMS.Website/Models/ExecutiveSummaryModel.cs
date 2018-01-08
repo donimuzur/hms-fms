@@ -6,6 +6,88 @@ using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
+    #region --------- Summary All --------------
+
+    public class SummaryAllModel : BaseModel
+    {
+        public SummaryAllModel()
+        {
+            NoVehicleList = new List<NoVehicleData>();
+            NoVehicleWtcList = new List<NoVehicleWtcData>();
+            NoVehicleMakeList = new List<NoVehicleMakeData>();
+            OdometerDataList = new List<OdometerData>();
+            LiterByFuncDataList = new List<LiterByFunctionData>();
+            FuelCostByFuncDataList = new List<FuelCostByFunctionData>();
+            LeaseCostByFuncDataList = new List<LeaseCostByFunctionData>();
+            SalesByRegionDataList = new List<SalesByRegionData>();
+            AccidentDataList = new List<AccidentData>();
+            AcVsObDataList = new List<AcVsObData>();
+            SearchViewExport = new SummarySearchViewExport();
+            SearchView = new SummarySearchView();
+            SearchView.MonthFrom = DateTime.Now.Month;
+            SearchView.MonthTo = DateTime.Now.Month;
+        }
+
+        public bool IsByRegion { get; set; }
+        public string TitleForm { get; set; }
+        public string TitleExport { get; set; }
+        public List<NoVehicleData> NoVehicleList { get; set; }
+        public List<NoVehicleWtcData> NoVehicleWtcList { get; set; }
+        public List<NoVehicleMakeData> NoVehicleMakeList { get; set; }
+        public List<OdometerData> OdometerDataList { get; set; }
+        public List<LiterByFunctionData> LiterByFuncDataList { get; set; }
+        public List<FuelCostByFunctionData> FuelCostByFuncDataList { get; set; }
+        public List<LeaseCostByFunctionData> LeaseCostByFuncDataList { get; set; }
+        public List<SalesByRegionData> SalesByRegionDataList { get; set; }
+        public List<AccidentData> AccidentDataList { get; set; }
+        public List<AcVsObData> AcVsObDataList { get; set; }
+        public SummarySearchView SearchView { get; set; }
+        public SummarySearchViewExport SearchViewExport { get; set; }
+    }
+
+    public class SummarySearchView
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+
+        public SelectList MonthList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "ALL", Value = "0" },
+                    new SelectListItem() {Text = "January", Value = "1" },
+                    new SelectListItem() {Text = "February", Value = "2" },
+                    new SelectListItem() {Text = "March", Value = "3" },
+                    new SelectListItem() {Text = "April", Value = "4" },
+                    new SelectListItem() {Text = "May", Value = "5" },
+                    new SelectListItem() {Text = "June", Value = "6" },
+                    new SelectListItem() {Text = "July", Value = "7" },
+                    new SelectListItem() {Text = "August", Value = "8" },
+                    new SelectListItem() {Text = "September", Value = "9" },
+                    new SelectListItem() {Text = "October", Value = "10" },
+                    new SelectListItem() {Text = "November", Value = "11" },
+                    new SelectListItem() {Text = "December", Value = "12" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+
+        }
+    }
+
+    public class SummarySearchViewExport
+    {
+        public int MonthFrom { get; set; }
+        public int MonthTo { get; set; }
+        public int YearFrom { get; set; }
+        public int YearTo { get; set; }
+    }
+
+    #endregion
+
     #region --------- Number Of Vehicle --------------
 
     public class ExecutiveSummaryModel : BaseModel
@@ -17,8 +99,6 @@ namespace FMS.Website.Models
             SearchView = new VehicleSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -52,6 +132,7 @@ namespace FMS.Website.Models
         public string Regional { get; set; }
         public string SupplyMethod { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -110,8 +191,6 @@ namespace FMS.Website.Models
             SearchView = new VehicleSearchViewWtc();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -141,6 +220,7 @@ namespace FMS.Website.Models
         public int YearTo { get; set; }
         public string Regional { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -195,8 +275,6 @@ namespace FMS.Website.Models
             SearchView = new VehicleSearchViewMake();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -276,8 +354,6 @@ namespace FMS.Website.Models
             SearchView = new OdometerSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -309,6 +385,7 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
         public string Region { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -365,8 +442,6 @@ namespace FMS.Website.Models
             SearchView = new LiterByFuncSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -398,6 +473,7 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
         public string Region { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -454,8 +530,6 @@ namespace FMS.Website.Models
             SearchView = new FuelCostByFuncSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -487,6 +561,7 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
         public string Region { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -543,8 +618,6 @@ namespace FMS.Website.Models
             SearchView = new LeaseCostByFuncSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -574,6 +647,7 @@ namespace FMS.Website.Models
         public int YearTo { get; set; }
         public string Region { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -628,8 +702,6 @@ namespace FMS.Website.Models
             SearchView = new SalesByRegionSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -710,8 +782,6 @@ namespace FMS.Website.Models
             SearchView = new AccidentSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -743,6 +813,7 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
         public string Region { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -799,8 +870,6 @@ namespace FMS.Website.Models
             SearchView = new AcVsObSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -829,6 +898,7 @@ namespace FMS.Website.Models
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 
@@ -880,8 +950,6 @@ namespace FMS.Website.Models
             SearchView = new SumPtdByFuncSearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
             SearchView.MonthTo = DateTime.Now.Month;
-            SearchView.YearFrom = DateTime.Now.Year;
-            SearchView.YearTo = DateTime.Now.Year;
         }
 
         public string TitleForm { get; set; }
@@ -919,6 +987,7 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
         public string Region { get; set; }
         public string Function { get; set; }
+        public string FunctionId { get; set; }
 
         public MultiSelectList Functions { get; set; }
 

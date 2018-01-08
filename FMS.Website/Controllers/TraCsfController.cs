@@ -90,7 +90,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Personal Dashboard";
             model.TitleExport = "ExportPersonal";
-            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderBy(x => x.CREATED_DATE));
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
@@ -129,7 +129,7 @@ namespace FMS.Website.Controllers
             var model = new CsfIndexModel();
             model.TitleForm = "CSF Completed Document";
             model.TitleExport = "ExportCompleted";
-            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
+            model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.MODIFIED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
@@ -158,7 +158,7 @@ namespace FMS.Website.Controllers
             var employeeData = _employeeBLL.GetByID(model.Detail.EmployeeId);
             if (employeeData != null)
             {
-                model.Detail.LocationCity = employeeData.CITY;
+                model.Detail.LocationCity = employeeData.BASETOWN;
                 model.Detail.LocationAddress = employeeData.ADDRESS;
             }
 
@@ -213,9 +213,9 @@ namespace FMS.Website.Controllers
             model.Detail.TemporaryId = tempData.Count();
 
             var employeeList = _employeeBLL.GetEmployee();
-            var CityList = employeeList.Select(x => new { x.CITY }).Distinct().ToList();
+            var CityList = employeeList.Select(x => new { x.BASETOWN }).Distinct().ToList();
             var AddressList = employeeList.Select(x => new { x.ADDRESS }).Distinct().ToList();
-            model.Detail.LocationCityList = new SelectList(CityList, "CITY", "CITY");
+            model.Detail.LocationCityList = new SelectList(CityList, "BASETOWN", "BASETOWN");
             model.Detail.LocationAddressList = new SelectList(AddressList, "ADDRESS", "ADDRESS");
 
             return model;
@@ -282,7 +282,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -420,7 +420,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -567,7 +567,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = InitialModel(model);
-                model.ErrorMessage = exception.Message;
+                model.ErrorMessage = "Error when save data, please contact administrator";
                 return View(model);
             }
         }
@@ -772,8 +772,9 @@ namespace FMS.Website.Controllers
                         model.Detail.TransmissionVendor = cfmData.Transmission;
                         model.Detail.BrandingVendor = cfmData.Branding;
                         model.Detail.PurposeVendor = cfmData.Purpose;
-                        model.Detail.IsVatVendor = cfmData.Vat;
+                        model.Detail.VatDecimalVendor = cfmData.VatDecimal == null ? 0 : cfmData.VatDecimal.Value;
                         model.Detail.IsRestitutionVendor = cfmData.Restitution;
+                        model.Detail.CommentsVendor = cfmData.Comments;
 
                         model.Detail.StartPeriodVendor = model.Detail.EffectiveDate;
                         model.Detail.EndRentDate = cfmData.EndContract;
@@ -814,8 +815,9 @@ namespace FMS.Website.Controllers
                 csfData.VENDOR_BRANDING = model.Detail.BrandingVendor;
                 csfData.VENDOR_PURPOSE = model.Detail.PurposeVendor;
                 csfData.VENDOR_PO_LINE = model.Detail.PoLineVendor;
-                csfData.VENDOR_VAT = model.Detail.IsVatVendor;
+                csfData.VAT_DECIMAL = model.Detail.VatDecimalVendor;
                 csfData.VENDOR_RESTITUTION = model.Detail.IsRestitutionVendor;
+                csfData.COMMENTS = model.Detail.CommentsVendor;
 
                 csfData.EXPECTED_DATE = model.Detail.ExpectedDate;
                 csfData.END_RENT_DATE = model.Detail.EndRentDate;
@@ -824,6 +826,10 @@ namespace FMS.Website.Controllers
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
                 //send email to user if police number and contract start date is fill
+                if (csfData.VENDOR_CONTRACT_START_DATE != null && !string.IsNullOrEmpty(csfData.VENDOR_POLICE_NUMBER))
+                {
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.InProgress, null);
+                }
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = model.IsPersonalDashboard });
@@ -932,9 +938,22 @@ namespace FMS.Website.Controllers
         public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate, string location)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
-            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
+            var priceListData = _priceListBLL.GetPriceList().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacture)
+                                                                     && !string.IsNullOrEmpty(x.Model) 
+                                                                     && !string.IsNullOrEmpty(x.Series)
+                                                                     && x.Year == createdDate.Year).ToList();
 
-            var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Location == location)
+            var vehicleDataNoNull = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacturer)
+                                                                     && !string.IsNullOrEmpty(x.Models)
+                                                                     && !string.IsNullOrEmpty(x.Series)).ToList();
+
+            var vehicleData = vehicleDataNoNull.Where(x => x.Year == createdDate.Year
+                                                            && priceListData.Select(p => p.Manufacture.ToUpper()).ToList().Contains(x.Manufacturer.ToUpper())
+                                                            && priceListData.Select(p => p.Model.ToUpper()).ToList().Contains(x.Models.ToUpper())
+                                                            && priceListData.Select(p => p.Series.ToUpper()).ToList().Contains(x.Series.ToUpper())
+                                                            && priceListData.Select(p => p.Year).ToList().Contains(x.Year)).ToList();
+
+            var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Basetown == location)
                                                                                         .OrderByDescending(x => x.ValidFrom).FirstOrDefault();
 
             var zonePriceListByUserCsf = zonePriceList == null ? string.Empty : zonePriceList.ZonePriceList;
@@ -985,7 +1004,9 @@ namespace FMS.Website.Controllers
                     var cfmIdleListSelectedCrf = _crfBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled 
                                                                             && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
 
-                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
+                    var fleetDataGood = _fleetBLL.GetFleet().Where(x => x.VehicleUsage != null);
+
+                    var fleetData = fleetDataGood.Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
                                                                     && x.IsActive
                                                                     && !cfmIdleListSelected.Contains(x.MstFleetId)
                                                                     && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
@@ -1066,8 +1087,9 @@ namespace FMS.Website.Controllers
                     item.BodyType = dataRow[15];
                     item.Branding = dataRow[17];
                     item.Purpose = dataRow[18];
-                    item.IsVat = dataRow[22].ToUpper() == "YES" ? true : false;
+                    item.VatDecimal = Convert.ToDecimal(dataRow[22]);
                     item.IsRestitution = dataRow[23].ToUpper() == "YES" ? true : false;
+                    item.Comments = dataRow[25];
 
                     if (cfmData != null)
                     {
@@ -1084,8 +1106,9 @@ namespace FMS.Website.Controllers
                         item.BodyType = cfmData.BodyType;
                         item.Branding = cfmData.Branding;
                         item.Purpose = cfmData.Purpose;
-                        item.IsVat = cfmData.Vat;
+                        item.VatDecimal = cfmData.VatDecimal == null ? 0 : cfmData.VatDecimal.Value;
                         item.IsRestitution = cfmData.Restitution;
+                        item.Comments = cfmData.Comments;
                     }
 
                     model.Add(item);
@@ -1165,7 +1188,7 @@ namespace FMS.Website.Controllers
         {
             var data = _locationMappingBLL.GetLocationMapping();
 
-            data = data.Where(x => x.Location == location).ToList();
+            data = data.Where(x => x.Basetown == location).ToList();
 
             return Json(data);
         }
@@ -1402,8 +1425,9 @@ namespace FMS.Website.Controllers
                         csfData.VENDOR_BRANDING = data.Branding;
                         csfData.VENDOR_PURPOSE = data.Purpose;
                         csfData.VENDOR_PO_LINE = data.PoLine;
-                        csfData.VENDOR_VAT = data.IsVat;
+                        csfData.VAT_DECIMAL = data.VatDecimal;
                         csfData.VENDOR_RESTITUTION = data.IsRestitution;
+                        csfData.COMMENTS = data.Comments;
 
                         var saveResult = _csfBLL.Save(csfData, CurrentUser);
                         //send email to user if police number and contract start date is fill
@@ -1444,7 +1468,7 @@ namespace FMS.Website.Controllers
             slDocument.MergeWorksheetCells(2, 11, 2, 17);
 
             slDocument.SetCellValue(2, 18, "Fleet");
-            slDocument.MergeWorksheetCells(2, 18, 2, 24);
+            slDocument.MergeWorksheetCells(2, 18, 2, 26);
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -1455,7 +1479,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 24, valueStyle);
+            slDocument.SetCellStyle(2, 2, 2, 26, valueStyle);
 
             //create header
             slDocument = CreateHeaderExcelForVendor(slDocument);
@@ -1494,11 +1518,13 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 17, "Location");
             slDocument.SetCellValue(iRow, 18, "Branding");
             slDocument.SetCellValue(iRow, 19, "Purpose");
-            slDocument.SetCellValue(iRow, 20, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 20, "Request Year");
             slDocument.SetCellValue(iRow, 21, "PO");
             slDocument.SetCellValue(iRow, 22, "PO Line");
             slDocument.SetCellValue(iRow, 23, "Vat");
             slDocument.SetCellValue(iRow, 24, "Restitution");
+            slDocument.SetCellValue(iRow, 25, "Price");
+            slDocument.SetCellValue(iRow, 26, "Comments");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1507,7 +1533,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.SetCellStyle(iRow, 2, iRow, 24, headerStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 26, headerStyle);
 
             return slDocument;
 
@@ -1517,19 +1543,45 @@ namespace FMS.Website.Controllers
         {
             int iRow = 4; //starting row data
 
+            var vSpecListData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.Year == csfData.CREATED_DATE.Year
+                                                                        && x.Manufacturer != null
+                                                                        && x.Models != null
+                                                                        && x.Series != null
+                                                                        && x.BodyType != null
+                                                                        && x.IsActive).ToList();
+
+            var vSpecList = vSpecListData.Where(x => x.Manufacturer.ToUpper() == csfData.MANUFACTURER.ToUpper()
+                                                    && x.Models.ToUpper() == csfData.MODEL.ToUpper()
+                                                    && x.Series.ToUpper() == csfData.SERIES.ToUpper()
+                                                    && x.BodyType.ToUpper() == csfData.BODY_TYPE.ToUpper()).FirstOrDefault();
+
+            var transmissionData = vSpecList == null ? string.Empty : vSpecList.Transmission;
+
+            var policeNumberCfmIdle = string.Empty;
+            var chasCfmIdle = string.Empty;
+            var engCfmIdle = string.Empty;
+            if (csfData.CFM_IDLE_ID != null)
+            {
+                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID);
+                policeNumberCfmIdle = cfmData == null ? string.Empty : (cfmData.PoliceNumber == null ? string.Empty : cfmData.PoliceNumber);
+                chasCfmIdle = cfmData == null ? string.Empty : (cfmData.ChasisNumber == null ? string.Empty : cfmData.ChasisNumber);
+                engCfmIdle = cfmData == null ? string.Empty : (cfmData.EngineNumber == null ? string.Empty : cfmData.EngineNumber);
+                transmissionData = cfmData == null ? string.Empty : (cfmData.Transmission == null ? string.Empty : cfmData.Transmission);
+            }
+
             slDocument.SetCellValue(iRow, 2, csfData.DOCUMENT_NUMBER);
             slDocument.SetCellValue(iRow, 3, csfData.EMPLOYEE_NAME);
             slDocument.SetCellValue(iRow, 4, csfData.VENDOR_NAME);
-            slDocument.SetCellValue(iRow, 5, string.Empty);
-            slDocument.SetCellValue(iRow, 6, string.Empty);
-            slDocument.SetCellValue(iRow, 7, string.Empty);
+            slDocument.SetCellValue(iRow, 5, policeNumberCfmIdle);
+            slDocument.SetCellValue(iRow, 6, chasCfmIdle);
+            slDocument.SetCellValue(iRow, 7, engCfmIdle);
             slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToOADate());
-            slDocument.SetCellValue(iRow, 9, csfData.EFFECTIVE_DATE.ToOADate());
+            slDocument.SetCellValue(iRow, 9, string.Empty);
             slDocument.SetCellValue(iRow, 10, "YES");
             slDocument.SetCellValue(iRow, 11, csfData.MANUFACTURER);
             slDocument.SetCellValue(iRow, 12, csfData.MODEL);
             slDocument.SetCellValue(iRow, 13, csfData.SERIES);
-            slDocument.SetCellValue(iRow, 14, string.Empty);
+            slDocument.SetCellValue(iRow, 14, transmissionData);
             slDocument.SetCellValue(iRow, 15, csfData.COLOUR);
             slDocument.SetCellValue(iRow, 16, csfData.BODY_TYPE);
             slDocument.SetCellValue(iRow, 17, csfData.LOCATION_CITY);
@@ -1538,8 +1590,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 20, csfData.CREATED_DATE.Year.ToString());
             slDocument.SetCellValue(iRow, 21, string.Empty);
             slDocument.SetCellValue(iRow, 22, string.Empty);
-            slDocument.SetCellValue(iRow, 23, "YES");
+            slDocument.SetCellValue(iRow, 23, 0);
             slDocument.SetCellValue(iRow, 24, "NO");
+            slDocument.SetCellValue(iRow, 25, 0);
+            slDocument.SetCellValue(iRow, 26, string.Empty);
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -1548,13 +1602,13 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(2, 24);
-            slDocument.SetCellStyle(iRow, 2, iRow, 24, valueStyle);
+            slDocument.AutoFitColumn(2, 26);
+            slDocument.SetCellStyle(iRow, 2, iRow, 26, valueStyle);
 
             SLStyle dateStyle = slDocument.CreateStyle();
             dateStyle.FormatCode = "dd/MM/yyyy";
 
-            slDocument.SetCellStyle(iRow, 8, iRow, 9, dateStyle);
+            slDocument.SetCellStyle(iRow, 8, iRow, 8, dateStyle);
 
             return slDocument;
         }
@@ -1627,8 +1681,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 5, "Employee Name");
             slDocument.SetCellValue(iRow, 6, "Cost Centre");
             slDocument.SetCellValue(iRow, 7, "Group Level");
-            slDocument.SetCellValue(iRow, 8, "Modified By");
-            slDocument.SetCellValue(iRow, 9, "Modified Date");
+            slDocument.SetCellValue(iRow, 8, "Updated By");
+            slDocument.SetCellValue(iRow, 9, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1651,7 +1705,7 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 1, data.EpafEffectiveDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 2, data.LetterSend ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 3, data.Action);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeId);
@@ -1807,7 +1861,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "CSF No");
+            slDocument.SetCellValue(iRow, 1, "CSF Number");
             slDocument.SetCellValue(iRow, 2, "CSF Status");
             slDocument.SetCellValue(iRow, 3, "Vehicle Type");
             slDocument.SetCellValue(iRow, 4, "Employee ID");
@@ -1816,8 +1870,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 7, "Effective Date");
             slDocument.SetCellValue(iRow, 8, "Regional");
             slDocument.SetCellValue(iRow, 9, "Coordinator");
-            slDocument.SetCellValue(iRow, 10, "Modified By");
-            slDocument.SetCellValue(iRow, 11, "Modified Date");
+            slDocument.SetCellValue(iRow, 10, "Updated By");
+            slDocument.SetCellValue(iRow, 11, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1846,7 +1900,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 4, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 5, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 6, data.Reason);
-                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.Regional);
                 slDocument.SetCellValue(iRow, 9, data.CreateBy);
                 slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);

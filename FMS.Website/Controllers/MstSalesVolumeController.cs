@@ -8,6 +8,7 @@ using FMS.Contract.BLL;
 using FMS.Core;
 using AutoMapper;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using System.Web;
 using System.IO;
 using ExcelDataReader;
@@ -41,13 +42,14 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
-            var data = _SalesVolumeBLL.GetSalesVolume();
             var model = new SalesVolumeModel();
+            var input = Mapper.Map<SalesVolumeParamInput>(model.SearchView);
+            var data = _SalesVolumeBLL.GetSalesVolume(input);
+            var allData = _SalesVolumeBLL.GetAllSalesVolume();
+
             model.Details = Mapper.Map<List<SalesVolumeItem>>(data);
-            foreach(SalesVolumeItem item in model.Details)
-            {
-                item.MonthS = this.SetMonthToString(item.Month);
-            }
+            model.SearchView.TypeList = new SelectList(allData.Select(x => new { x.Type }).Distinct().ToList(), "Type", "Type");
+            model.SearchView.RegionalList = new SelectList(allData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -58,18 +60,43 @@ namespace FMS.Website.Controllers
         {
             var data = _SalesVolumeBLL.GetSalesVolumeById(MstSalesVolumeId);
             var model = Mapper.Map<SalesVolumeItem>(data);
-            model.MonthS = this.SetMonthToString(model.Month);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
 
+        [HttpPost]
+        public PartialViewResult FilterData(SalesVolumeModel model)
+        {
+            model.Details = GetData(model.SearchView);
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListData", model);
+        }
+
+        private List<SalesVolumeItem> GetData(SearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _SalesVolumeBLL.GetSalesVolume(new SalesVolumeParamInput());
+                return Mapper.Map<List<SalesVolumeItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<SalesVolumeParamInput>(filter);
+
+            var dbData = _SalesVolumeBLL.GetSalesVolume(input);
+            return Mapper.Map<List<SalesVolumeItem>>(dbData);
+        }
+
         #region ExportExcel
-        public void ExportMasterSalesVolume()
+        public void ExportMasterSalesVolume(SalesVolumeModel model)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsMasterSalesVolume();
+            var input = Mapper.Map<SalesVolumeParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsMasterSalesVolume(input);
 
             var newFile = new FileInfo(pathFile);
 
@@ -85,10 +112,11 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsMasterSalesVolume()
+        private string CreateXlsMasterSalesVolume(SalesVolumeParamInput input)
         {
             //get data
-            List<SalesVolumeDto> SalesVolume = _SalesVolumeBLL.GetSalesVolume();
+
+            List<SalesVolumeDto> SalesVolume = _SalesVolumeBLL.GetSalesVolume(input);
             var listData = Mapper.Map<List<SalesVolumeItem>>(SalesVolume);
 
             var slDocument = new SLDocument();
@@ -148,81 +176,21 @@ namespace FMS.Website.Controllers
 
         }
 
-        public string SetMonthToString(int Month)
-        {
-            if(Month == 0)
-            {
-                return "Month 0 is not exist";
-            }
-            else if (Month == 1)
-            {
-                return "Jan";
-            }
-            else if(Month == 2)
-            {
-                return "Feb";
-            }
-            else if (Month == 3)
-            {
-                return "Mar";
-            }
-            else if (Month == 4)
-            {
-                return "Apr";
-            }
-            else if (Month == 5)
-            {
-                return "May";
-            }
-            else if (Month == 6)
-            {
-                return "Jun";
-            }
-            else if (Month == 7)
-            {
-                return "Jul";
-            }
-            else if (Month == 8)
-            {
-                return "Aug";
-            }
-            else if (Month == 9)
-            {
-                return "Sep";
-            }
-            else if (Month == 10)
-            {
-                return "Nov";
-            }
-            else if (Month == 11)
-            {
-                return "Oct";
-            }
-            else if (Month == 12)
-            {
-                return "Dec";
-            }
-
-            return "An Error Occurred";
-        }
-
         private SLDocument CreateDataExcelMasterSalesVolume(SLDocument slDocument, List<SalesVolumeItem> listData)
         {
             int iRow = 3; //starting row data
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.MstSalesVolumeId);
-                slDocument.SetCellValue(iRow, 2, data.Type);
-                slDocument.SetCellValue(iRow, 3, data.Region);
-                data.MonthS = this.SetMonthToString(data.Month);
-                slDocument.SetCellValue(iRow, 4, data.MonthS);
-                slDocument.SetCellValue(iRow, 5, data.Year);
-                slDocument.SetCellValue(iRow, 6, data.Value);
-                slDocument.SetCellValue(iRow, 7, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 8, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 9, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 10, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 1, data.Type);
+                slDocument.SetCellValue(iRow, 2, data.Region);
+                slDocument.SetCellValue(iRow, 3, data.MonthS);
+                slDocument.SetCellValue(iRow, 4, data.Year);
+                slDocument.SetCellValue(iRow, 5, string.Format("{0:N0}", data.Value));
+                slDocument.SetCellValue(iRow, 6, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 7, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 8, data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 9, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MM-yyyy HH:mm:ss"));
                 if (data.IsActive)
                 {
                     slDocument.SetCellValue(iRow, 10, "Active");

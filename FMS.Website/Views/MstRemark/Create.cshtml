@@ -6,25 +6,26 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Create", "MstRemark"))
         {
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Document Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, "Select",new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.DocumentType, Model.DocumentTypeList, "Select",new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Remark<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Remark, new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">RoleType<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, "Select", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.RoleType, Model.RoleTypeList, "Select", new { @class = "form-control", @required = "required" })
                     </div>
                 </div>
                 <div class="col-md-12">

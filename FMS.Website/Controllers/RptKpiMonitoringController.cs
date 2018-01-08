@@ -311,7 +311,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "KPI MONITORING");
-            slDocument.MergeWorksheetCells(1, 1, 1, 19);
+            slDocument.MergeWorksheetCells(1, 1, 1, 20);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -341,20 +341,21 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 3, "EMPLOYEE NAME");
             slDocument.SetCellValue(iRow, 4, "EFFECTIVE DATE");
             slDocument.SetCellValue(iRow, 5, "REASON");
-            slDocument.SetCellValue(iRow, 6, "ADDRESS");
-            slDocument.SetCellValue(iRow, 7, "PREVIOUS BASE TOWN");
-            slDocument.SetCellValue(iRow, 8, "NEW BASE TOWN");
-            slDocument.SetCellValue(iRow, 9, "VEHICLE USAGE");
-            slDocument.SetCellValue(iRow, 10, "VEHICLE GROUP LEVEL");
-            slDocument.SetCellValue(iRow, 11, "VEHICLE MODEL");
-            slDocument.SetCellValue(iRow, 12, "COLOR");
-            slDocument.SetCellValue(iRow, 13, "POLICE NUMBER");
-            slDocument.SetCellValue(iRow, 14, "SEND TO EMP DATE");
-            slDocument.SetCellValue(iRow, 15, "SEND BACK TO HR");
-            slDocument.SetCellValue(iRow, 16, "DAYS DIFFERENCE");
-            slDocument.SetCellValue(iRow, 17, "SEND TO FLEET DATE");
-            slDocument.SetCellValue(iRow, 18, "SEND TO EMPLOYEE BENEFIT DATE");
-            slDocument.SetCellValue(iRow, 19, "REMARK");
+            slDocument.SetCellValue(iRow, 6, "VEHICLE USAGE");
+            slDocument.SetCellValue(iRow, 7, "ADDRESS");
+            slDocument.SetCellValue(iRow, 8, "COST CENTER");
+            slDocument.SetCellValue(iRow, 9, "PREVIOUS BASE TOWN");
+            slDocument.SetCellValue(iRow, 10, "NEW BASE TOWN");
+            slDocument.SetCellValue(iRow, 11, "GROUP LEVEL");
+            slDocument.SetCellValue(iRow, 12, "POLICE NUMBER");
+            slDocument.SetCellValue(iRow, 13, "COLOR");
+            slDocument.SetCellValue(iRow, 14, "VEHICLE MODEL");
+            slDocument.SetCellValue(iRow, 15, "SEND TO EMP DATE");
+            slDocument.SetCellValue(iRow, 16, "SEND BACK TO HR");
+            slDocument.SetCellValue(iRow, 17, "DAYS DIFFERENCE");
+            slDocument.SetCellValue(iRow, 18, "SEND TO FLEET DATE");
+            slDocument.SetCellValue(iRow, 19, "SEND TO EMPLOYEE BENEFIT DATE");
+            slDocument.SetCellValue(iRow, 20, "REMARK");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -365,7 +366,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 19, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 20, headerStyle);
 
             return slDocument;
 
@@ -381,20 +382,21 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 3, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 4, data.EffectiveDate == null ? "":data.EffectiveDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 5, data.Reason);
-                slDocument.SetCellValue(iRow, 6, data.Address);
-                slDocument.SetCellValue(iRow, 7, data.PreviousBaseTown);
-                slDocument.SetCellValue(iRow, 8, data.NewBaseTown);
-                slDocument.SetCellValue(iRow, 9, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 10, data.VehicleGroup == null ? "" : data.VehicleGroup.ToString());
-                slDocument.SetCellValue(iRow, 11, data.Model);
-                slDocument.SetCellValue(iRow, 12, data.Color);
-                slDocument.SetCellValue(iRow, 13, data.PoliceNumber);
-                slDocument.SetCellValue(iRow, 14, data.SendToEmpDate == null ?"": data.SendToEmpDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 15, data.SendBackToHr == null ? "":data.SendBackToHr.Value.ToString("dd-MMM-yyyy") );
-                slDocument.SetCellValue(iRow, 16, data.Kpi1 == null ? "" : data.Kpi1.Value.ToString());
-                slDocument.SetCellValue(iRow, 17, data.SendToFleetDate == null ?"": data.SendToFleetDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 18, data.SendToEmpBenefit == null ? "":data.SendToEmpBenefit.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 19, data.Remark);
+                slDocument.SetCellValue(iRow, 6, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 7, data.Address);
+                slDocument.SetCellValue(iRow, 8, data.CostCenter);
+                slDocument.SetCellValue(iRow, 9, data.PreviousBaseTown);
+                slDocument.SetCellValue(iRow, 10, data.NewBaseTown);
+                slDocument.SetCellValue(iRow, 11, data.VehicleGroup == null ? "" : data.VehicleGroup.ToString());
+                slDocument.SetCellValue(iRow, 12, data.PoliceNumber);
+                slDocument.SetCellValue(iRow, 13, data.Color);
+                slDocument.SetCellValue(iRow, 14, data.Model);
+                slDocument.SetCellValue(iRow, 15, data.SendToEmpDate == null ?"": data.SendToEmpDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 16, data.SendBackToHr == null ? "":data.SendBackToHr.Value.ToString("dd-MMM-yyyy") );
+                slDocument.SetCellValue(iRow, 17, data.Kpi1 == null ? "" : data.Kpi1.Value.ToString());
+                slDocument.SetCellValue(iRow, 18, data.SendToFleetDate == null ?"": data.SendToFleetDate.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 19, data.SendToEmpBenefit == null ? "":data.SendToEmpBenefit.Value.ToString("dd-MMM-yyyy"));
+                slDocument.SetCellValue(iRow, 20, data.Remark);
 
                 iRow++;
             }
@@ -406,8 +408,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 19);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 19, valueStyle);
+            slDocument.AutoFitColumn(1, 20);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 20, valueStyle);
 
             return slDocument;
         }

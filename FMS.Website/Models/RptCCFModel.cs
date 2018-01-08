@@ -64,8 +64,8 @@ namespace FMS.Website.Models
         public int Category { get; set; }
         public string Coordinator { get; set; }
         public string Location { get; set; }
-        public int CoorKPI { get; set; }
-        public int VendorKPI { get; set; }
+        public int? CoorKPI { get; set; }
+        public int? VendorKPI { get; set; }
         
         public SelectList Categorylist { get; set; }
         public SelectList Coordinatorlist { get; set; }
@@ -79,7 +79,7 @@ namespace FMS.Website.Models
         public int Category { get; set; }
         public string Coordinator { get; set; }
         public string Location { get; set; }
-        public int CoorKPI { get; set; }
-        public int VendorKPI { get; set; }
+        public int? CoorKPI { get; set; }
+        public int? VendorKPI { get; set; }
     }
 }

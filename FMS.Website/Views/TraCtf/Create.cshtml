@@ -264,6 +264,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label class="control-label">Extend Police Number</label>
+                            @Html.TextBoxFor(model => model.CtfExtend.ExtendPoliceNumber, new { @class = "form-control ", @id = "modalExtPoliceNumber" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="control-label">Extend PO Number</label>
                             @Html.TextBoxFor(model => model.CtfExtend.ExtendPoNumber, new { @class = "form-control ", @id = "modalPoNumber" })
                         </div>
@@ -284,7 +290,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Reason</label>
-                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
+                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonExtendList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
                         </div>
                     </div>
                 </div>
@@ -452,11 +458,12 @@
         }
         else if (reasonval == '')
         {
-            $('#idExtend').show();
-            $('#ExtendVehicle').prop('disabled', false);
+            checkVehicletype();
+            checkVehicleusage();
             $('#idExtend').prop('disabled', false);
+            $('#ExtendVehicle').prop('disabled', false);
+            $('#EffectiveDate').prop('readonly', true);
             onExtendVehicle();
-
         }
         else
         {
@@ -497,7 +504,6 @@
         }
         else if(data == 'cop')
         {
-            btnSend
             $('#idBuyCost').show();
             $('#btnSend').hide();
             $('#BuyCostTotalStr').prop('required', true);
@@ -529,7 +535,7 @@
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.EmployeeName;
                 document.getElementById("CostCenter").value = response.CostCenter;
-                document.getElementById("GroupLevel").value = response.GroupLevel;
+               
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
@@ -539,6 +545,9 @@
                     if (response.VehicleType == 'WTC')
                     {
                         document.getElementById("CostCenter").value = response.CostCenterFleet;
+                    }
+                    if (response.VehicleType.toLowerCase() == 'benefit') {
+                        document.getElementById("GroupLevel").value = response.GroupLevel;
                     }
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     
@@ -556,6 +565,7 @@
                 }
             },
             complete: function (data) {
+                GetReasonList();
                 checkVehicletype();
                 checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
@@ -601,6 +611,7 @@
 
             },
             complete: function (data) {
+                GetReasonList();
                 checkVehicletype();
                 checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
@@ -625,6 +636,7 @@
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
 
+            $('#modalExtPoliceNumber').prop('required', true);
             $('#modalPoNumber').prop('required', true);
             $('#modalPoLine').prop('required', true);
             $('#modalReason').prop('required', true);
@@ -634,7 +646,7 @@
         else if ($('#ExtendVehicle').val() == 'False')
         {
             document.getElementById('extButton').style.display = 'none';
-
+            $('#modalExtPoliceNumber').prop('required', false);
             $('#modalPoNumber').prop('required', false);
             $('#modalPoLine').prop('required', false);
             $('#modalReason').prop('required', false);
@@ -706,4 +718,32 @@
         $('#isSubmit').val('submit');
         $("#btnSubmit").trigger('click');
     });
+
+    function GetReasonList() {
+        if ($("#VehicleType").length) {
+            var VehicleType = $('#VehicleType').val();
+            $('#Reason option').remove();
+            if (VehicleType == '' || $('#VehicleType').find("option:selected").val() == '') {
+                $('#Reason').append('<option value="">-- Please Select --</option>');
+
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetReasonByVehicleType", "TraCtf")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { VehicleType: VehicleType },
+                    success: function (list) {
+                        $('#Reason').append('<option value="">-- Please Select --</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#Reason').append('<option value=' + list[i].MstReasonId + '>' + list[i].Reason + '</option>');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
 </script>

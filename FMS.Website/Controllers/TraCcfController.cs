@@ -69,7 +69,7 @@ namespace FMS.Website.Controllers
             var model = new CcfModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            model.TitleForm = "Car Complaint Form";
+            model.TitleForm = "CCF Open Document";
 
             if (CurrentUser.EMPLOYEE_ID == "")
             {
@@ -114,7 +114,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.DocumentStatus = "Completed";
-            model.TitleForm = "Car Complaint Form";
+            model.TitleForm = "CCF Completed Document";
             if (CurrentUser.EMPLOYEE_ID == "")
             {
                 return RedirectToAction("Unauthorized", "Error");
@@ -366,7 +366,7 @@ namespace FMS.Website.Controllers
                 model.LocationAddress = data.ADDRESS;
                 model.LocationCity = data.CITY;
                 model.IsPersonalDashboard = IsPersonalDashboard;
-                model.TitleForm = "Create Car Complaint Form";
+                model.TitleForm = "CCF Create";
                 model = listdata(model, model.EmployeeID);
                 model.DocumentStatus = Enums.DocumentStatus.Draft;
                 model.DocumentStatusDoc = Enums.DocumentStatus.Draft.ToString();
@@ -375,7 +375,7 @@ namespace FMS.Website.Controllers
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = listdata(model, model.EmployeeID);
-                model.TitleForm = "Car Complaint Form Create";
+                model.TitleForm = "CCF Create";
                 model.ErrorMessage = exception.Message;
                 model.CurrentLogin = CurrentUser;
                 return View(model);
@@ -966,7 +966,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Data Car Complaint Form (CCF)");
-            slDocument.MergeWorksheetCells(1, 1, 1, 25);
+            slDocument.MergeWorksheetCells(1, 1, 1, 26);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -992,31 +992,32 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Document Number");
-            slDocument.SetCellValue(iRow, 2, "Complaint Category");
-            slDocument.SetCellValue(iRow, 3, "Employee ID");
-            slDocument.SetCellValue(iRow, 4, "Employee Name");
-            slDocument.SetCellValue(iRow, 5, "Employee ID Complaint For");
-            slDocument.SetCellValue(iRow, 6, "Employee Name Complaint For");
-            slDocument.SetCellValue(iRow, 7, "Police Number");
-            slDocument.SetCellValue(iRow, 8, "Police Number GS");
-            slDocument.SetCellValue(iRow, 9, "Location City");
-            slDocument.SetCellValue(iRow, 10, "Location Address");
-            slDocument.SetCellValue(iRow, 11, "Vehicle Type");
-            slDocument.SetCellValue(iRow, 12, "Vehicle Usage");
-            slDocument.SetCellValue(iRow, 13, "Manufacture");
-            slDocument.SetCellValue(iRow, 14, "Model");
-            slDocument.SetCellValue(iRow, 15, "Series");
-            slDocument.SetCellValue(iRow, 16, "Vendor");
-            slDocument.SetCellValue(iRow, 17, "Start Period");
-            slDocument.SetCellValue(iRow, 18, "End Period");
-            slDocument.SetCellValue(iRow, 19, "Coordinator KPI");
-            slDocument.SetCellValue(iRow, 20, "Vendor KPI");
-            slDocument.SetCellValue(iRow, 21, "Created By");
-            slDocument.SetCellValue(iRow, 22, "Created Date");
-            slDocument.SetCellValue(iRow, 23, "Modified By");
-            slDocument.SetCellValue(iRow, 24, "Modified Date");
-            slDocument.SetCellValue(iRow, 25, "Status");
+            slDocument.SetCellValue(iRow, 1, "CCF Number");
+            slDocument.SetCellValue(iRow, 2, "CCF Status");
+            slDocument.SetCellValue(iRow, 3, "Vehicle Type");
+            slDocument.SetCellValue(iRow, 4, "Complaint Category");
+            slDocument.SetCellValue(iRow, 5, "Employee ID");
+            slDocument.SetCellValue(iRow, 6, "Employee Name");
+            slDocument.SetCellValue(iRow, 7, "Employee ID Complaint For");
+            slDocument.SetCellValue(iRow, 8, "Employee Name Complaint For");
+            slDocument.SetCellValue(iRow, 9, "Police Number");
+            slDocument.SetCellValue(iRow, 10, "Police Number GS");
+            slDocument.SetCellValue(iRow, 11, "Location City");
+            slDocument.SetCellValue(iRow, 12, "Location Address");
+            slDocument.SetCellValue(iRow, 13, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 14, "Manufacture");
+            slDocument.SetCellValue(iRow, 15, "Model");
+            slDocument.SetCellValue(iRow, 16, "Series");
+            slDocument.SetCellValue(iRow, 17, "Vendor");
+            slDocument.SetCellValue(iRow, 18, "Start Contract");
+            slDocument.SetCellValue(iRow, 19, "End Contract");
+            slDocument.SetCellValue(iRow, 20, "Coordinator KPI");
+            slDocument.SetCellValue(iRow, 21, "Vendor KPI");
+            slDocument.SetCellValue(iRow, 22, "Coordinator");
+            slDocument.SetCellValue(iRow, 23, "Created By");
+            slDocument.SetCellValue(iRow, 24, "Created Date");
+            slDocument.SetCellValue(iRow, 25, "Modified By");
+            slDocument.SetCellValue(iRow, 26, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1027,7 +1028,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 25, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 26, headerStyle);
 
             return slDocument;
 
@@ -1041,30 +1042,31 @@ namespace FMS.Website.Controllers
                 foreach (var data in listData)
                 {
                     slDocument.SetCellValue(iRow, 1, data.DocumentNumber);
-                    slDocument.SetCellValue(iRow, 2, data.ComplaintCategoryName);
-                    slDocument.SetCellValue(iRow, 3, data.EmployeeID);
-                    slDocument.SetCellValue(iRow, 4, data.EmployeeName);
-                    slDocument.SetCellValue(iRow, 5, data.EmployeeIdComplaintFor);
-                    slDocument.SetCellValue(iRow, 6, data.EmployeeNameComplaintFor);
-                    slDocument.SetCellValue(iRow, 7, data.PoliceNumber);
-                    slDocument.SetCellValue(iRow, 8, data.PoliceNumberGS);
-                    slDocument.SetCellValue(iRow, 9, data.LocationCity);
-                    slDocument.SetCellValue(iRow, 10, data.LocationAddress);
-                    slDocument.SetCellValue(iRow, 11, data.VehicleType);
-                    slDocument.SetCellValue(iRow, 12, data.VehicleUsage);
-                    slDocument.SetCellValue(iRow, 13, data.Manufacturer);
-                    slDocument.SetCellValue(iRow, 14, data.Models);
-                    slDocument.SetCellValue(iRow, 15, data.Series);
-                    slDocument.SetCellValue(iRow, 16, data.Vendor);
-                    slDocument.SetCellValue(iRow, 17, data.StartPeriod.ToString("dd-MM-yyyy"));
-                    slDocument.SetCellValue(iRow, 18, data.EndPeriod.ToString("dd-MMM-yyyy"));
-                    slDocument.SetCellValue(iRow, 19, data.CoordinatorKPI);
-                    slDocument.SetCellValue(iRow, 20, data.VendorKPI);
-                    slDocument.SetCellValue(iRow, 21, data.CreatedBy);
-                    slDocument.SetCellValue(iRow, 22, data.CreatedDate.ToString("dd-MM-yyyy"));
-                    slDocument.SetCellValue(iRow, 23, data.ModifiedBy);
-                    slDocument.SetCellValue(iRow, 24, data.ModifiedDate.Value.ToString("dd-MM-yyyy"));
-                    slDocument.SetCellValue(iRow, 25, data.DocumentStatus.ToString());
+                    slDocument.SetCellValue(iRow, 2, data.DocumentStatus.ToString());
+                    slDocument.SetCellValue(iRow, 3, data.VehicleType);
+                    slDocument.SetCellValue(iRow, 4, data.ComplaintCategoryName);
+                    slDocument.SetCellValue(iRow, 5, data.EmployeeID);
+                    slDocument.SetCellValue(iRow, 6, data.EmployeeName);
+                    slDocument.SetCellValue(iRow, 7, data.EmployeeIdComplaintFor);
+                    slDocument.SetCellValue(iRow, 8, data.EmployeeNameComplaintFor);
+                    slDocument.SetCellValue(iRow, 9, data.PoliceNumber);
+                    slDocument.SetCellValue(iRow, 10, data.PoliceNumberGS);
+                    slDocument.SetCellValue(iRow, 11, data.LocationCity);
+                    slDocument.SetCellValue(iRow, 12, data.LocationAddress);
+                    slDocument.SetCellValue(iRow, 13, data.VehicleUsage);
+                    slDocument.SetCellValue(iRow, 14, data.Manufacturer);
+                    slDocument.SetCellValue(iRow, 15, data.Models);
+                    slDocument.SetCellValue(iRow, 16, data.Series);
+                    slDocument.SetCellValue(iRow, 17, data.Vendor);
+                    slDocument.SetCellValue(iRow, 18, data.StartPeriod.ToString("dd-MM-yyyy"));
+                    slDocument.SetCellValue(iRow, 19, data.EndPeriod.ToString("dd-MMM-yyyy"));
+                    slDocument.SetCellValue(iRow, 20, data.CoordinatorKPI);
+                    slDocument.SetCellValue(iRow, 21, data.VendorKPI);
+                    slDocument.SetCellValue(iRow, 22, data.CoordinatorName);
+                    slDocument.SetCellValue(iRow, 23, data.CreatedBy);
+                    slDocument.SetCellValue(iRow, 24, data.CreatedDate.ToString("dd-MM-yyyy"));
+                    slDocument.SetCellValue(iRow, 25, data.ModifiedBy);
+                    slDocument.SetCellValue(iRow, 26, data.ModifiedDate.Value.ToString("dd-MM-yyyy"));
                     iRow++;
                 }
 
@@ -1078,8 +1080,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 24);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 25, valueStyle);
+            slDocument.AutoFitColumn(1, 26);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 26, valueStyle);
 
             return slDocument;
         }

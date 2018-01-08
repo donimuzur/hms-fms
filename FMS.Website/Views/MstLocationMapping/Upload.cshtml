@@ -6,6 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Upload", "MstLocationMapping", FormMethod.Post))
             {
             <div class="row">
@@ -145,7 +146,9 @@
                 {
                     $('#btnSave').prop('disabled', false);
                 }
-                
+                else {
+                    $('#btnSave').prop('disabled', true);
+                }
             }
         });
     };

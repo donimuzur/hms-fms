@@ -6,6 +6,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <label class="label-warning">@Model.ErrorMessage</label>
         @using (Html.BeginForm("Upload", "MstReason", FormMethod.Post))
         {
             <div class="row">
@@ -137,6 +138,9 @@
                 }
                 if (error == '') {
                     $('#btnSave').prop('disabled', false);
+                }
+                else {
+                    $('#btnSave').prop('disabled', true);
                 }
             }
         });

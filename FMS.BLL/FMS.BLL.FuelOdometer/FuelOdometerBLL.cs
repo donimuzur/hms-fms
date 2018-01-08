@@ -1,5 +1,6 @@
 ﻿using FMS.Contract.BLL;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Business;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,17 @@ namespace FMS.BLL.FuelOdometer
         {
             var data = _fuelodometerService.GetByID(MstFuelOdometerID);
             return Mapper.Map<FuelOdometerDto>(data);
+        }
+
+        public void Save(FuelOdometerDto SettingDto, Login userLogin)
+        {
+            var dbSetting = Mapper.Map<MST_FUEL_ODOMETER>(SettingDto);
+            _fuelodometerService.save(dbSetting, userLogin);
+        }
+
+        public void SaveChanges()
+        {
+            _uow.SaveChanges();
         }
     }
 }

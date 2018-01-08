@@ -1,14 +1,6 @@
--- ================================================
--- Template generated from Template Explorer using:
--- Create Procedure (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the procedure.
--- ================================================
+USE [FMS]
+GO
+/****** Object:  StoredProcedure [dbo].[xmlAutoGRCreate]    Script Date: 12/21/2017 1:41:36 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -18,9 +10,9 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE xmlAutoGRCreate 
+ALTER PROCEDURE [dbo].[xmlAutoGRCreate] 
 	-- Add the parameters for the stored procedure here
-	@auto_gr_id as int = 0
+	@auto_gr_id as int
 	
 AS
 BEGIN
@@ -43,9 +35,8 @@ BEGIN
 			(SELECT  LINE_ITEM, QTY_ITEM, 'EA' AS UNIT_ENTRY
 			FROM 
 			AUTO_GR
-			WHERE AUTO_GR.AUTO_GR_ID = @auto_gr_id FOR XML PATH('ITEM'), TYPE) FOR XML PATH('GOOD_RECEIPT'), 
+			WHERE AUTO_GR.AUTO_GR_ID = @auto_gr_id FOR XML PATH('ITEM'), TYPE) FOR XML PATH('GOODS_RECEIPT'), 
 	ROOT('ROOT'))
 	select @XmlOutput as XML_CON;
 	
 END
-GO

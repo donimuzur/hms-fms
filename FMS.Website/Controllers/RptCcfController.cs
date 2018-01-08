@@ -36,7 +36,7 @@ namespace FMS.Website.Controllers
             _rptCcfBLL = rptCcfBLL;
             _rptComplaintBLL = rptComplaintBLL;
             _settingBLL = SettingBLL;
-            _mainMenu = Enums.MenuList.RptCcf;
+            _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace FMS.Website.Controllers
             var model = new RptCCFModel();
             var input = Mapper.Map<RptCCFInput>(model.SearchView);
             var data = _rptCcfBLL.GetRptCcf(input);
-            model.MainMenu = Enums.MenuList.RptExecutiveSummary;
+            model.MainMenu = _mainMenu;
             model.TitleForm = "CCF Report";
             model.TitleExport = "ExportCCF";
             model.CurrentLogin = CurrentUser;
@@ -55,8 +55,8 @@ namespace FMS.Website.Controllers
             model.RptCCFItem = Mapper.Map<List<RptCCFItem>>(data);
 
             var listCategory = _rptComplaintBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId,x.CategoryName }).Distinct().OrderBy(x => x.MstComplaintCategoryId).ToList();
-            var listCoordinator= _rptCcfBLL.GetRptCcfData().Select(x => new { x.CoordinatorName }).Distinct().OrderBy(x => x.CoordinatorName).ToList();
-            var listLocation = _rptCcfBLL.GetRptCcfData().Select(x => new { x.LocationCity }).Distinct().OrderBy(x => x.LocationCity).ToList();
+            var listCoordinator= _rptCcfBLL.GetRptCcfData().Where(x => x.CoordinatorName != null).Select(x => new { x.CoordinatorName }).Distinct().OrderBy(x => x.CoordinatorName).ToList();
+            var listLocation = _rptCcfBLL.GetRptCcfData().Where(x=>x.LocationCity != null).Select(x => new { x.LocationCity }).Distinct().OrderBy(x => x.LocationCity).ToList();
 
             model.SearchView.Categorylist = new SelectList(listCategory, "MstComplaintCategoryId", "CategoryName");
             model.SearchView.Coordinatorlist = new SelectList(listCoordinator, "CoordinatorName", "CoordinatorName");

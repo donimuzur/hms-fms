@@ -89,6 +89,12 @@
     </div>
 </section>
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstReason").offset().top
+        }, 1000);
+    });
+
       function ExportXls() {
             $('#ExportToXls').submit();
       }
