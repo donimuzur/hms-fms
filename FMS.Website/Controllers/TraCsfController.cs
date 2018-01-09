@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -937,6 +938,7 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate, string location)
         {
+            var flexBen = ConfigurationManager.AppSettings["FlexBen"];
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
             var priceListData = _priceListBLL.GetPriceList().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacture)
                                                                      && !string.IsNullOrEmpty(x.Model) 
@@ -990,7 +992,7 @@ namespace FMS.Website.Controllers
             if (vehicleType == "benefit")
             {
                 var modelVehicle = vehicleData.Where(x => x.GroupLevel == Convert.ToInt32(groupLevel)).ToList();
-                if (vehCat.ToLower() == "flexi benefit")
+                if (vehCat.ToLower() == flexBen)
                 {
                     modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel) && x.GroupLevel > 0).ToList();
                 }
@@ -1019,7 +1021,7 @@ namespace FMS.Website.Controllers
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
-                    if (vehCat.ToLower() == "flexi benefit")
+                    if (vehCat.ToLower() == flexBen)
                     {
                         modelCFMIdle = fleetData.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
                     }
@@ -1201,6 +1203,7 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetFlexBen(string vehCat, int? carGroupLevel, int? empGroupLevel)
         {
+            var flexBen = ConfigurationManager.AppSettings["FlexBen"];
             var flexPoint = 0;
 
             var data = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == empGroupLevel && x.GroupLevel > 0).FirstOrDefault();
@@ -1210,7 +1213,7 @@ namespace FMS.Website.Controllers
                 if (vehCat.ToLower() == "no car") { 
                     flexPoint = data.FlexPoint;
                 }
-                else if (vehCat.ToLower() == "flexi benefit")
+                else if (vehCat.ToLower() == flexBen)
                 {
                     var dataFlex = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == carGroupLevel && x.GroupLevel > 0).FirstOrDefault();
 
