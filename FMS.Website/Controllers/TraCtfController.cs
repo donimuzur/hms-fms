@@ -203,8 +203,7 @@ namespace FMS.Website.Controllers
                             var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
 
                             var VehType = GetSetting.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (item.VehicleType == null ? "" : item.VehicleType.ToUpper()) && x.IsActive).FirstOrDefault();
-                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MstSettingId.ToString()) && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
-
+                            
                             ctfitem.Reason = ReasonID;
                             ctfitem.ReasonS = "End Rent";
                             ctfitem.lessthan2month = true;
@@ -216,14 +215,8 @@ namespace FMS.Website.Controllers
                                 ctfitem.lessthan7day = false;
                                 IsTerminate = true;
                             }
-
-                            if (csfdata.Count() > 0)
-                            {
-                                ctfitem.lessthan2month = false;
-                                IsSendCsf = true;
-                            }
-
-                            if (!IsTerminate && !IsSendCsf)
+                            
+                            if (!IsTerminate )
                             {
                                 model.Details.Add(ctfitem);
                             }
