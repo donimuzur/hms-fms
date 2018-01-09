@@ -46,6 +46,7 @@ namespace FMS.Website.Models
         public DateTime? EndRendDate { get; set; }
         public string EndRendDateS { get; set; }
         public DateTime? EffectiveDate { get; set; }
+        public string EffectiveDateStr { get; set; }
         public bool IsTransferToIdle { get; set; }
         public decimal? BuyCost { get; set; }
         public string BuyCostStr { get; set; }

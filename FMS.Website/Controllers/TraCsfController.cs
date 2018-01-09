@@ -943,6 +943,11 @@ namespace FMS.Website.Controllers
                                                                      && !string.IsNullOrEmpty(x.Series)
                                                                      && x.Year == createdDate.Year).ToList();
 
+            if (vehUsage == "CFM" || vehUsage == "COP")
+            {
+                priceListData = priceListData.Where(p => p.VehicleUsage == vehUsage).ToList();
+            }
+
             var vehicleDataNoNull = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacturer)
                                                                      && !string.IsNullOrEmpty(x.Models)
                                                                      && !string.IsNullOrEmpty(x.Series)).ToList();
@@ -1563,10 +1568,13 @@ namespace FMS.Website.Controllers
             if (csfData.CFM_IDLE_ID != null)
             {
                 var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID);
-                policeNumberCfmIdle = cfmData == null ? string.Empty : (cfmData.PoliceNumber == null ? string.Empty : cfmData.PoliceNumber);
-                chasCfmIdle = cfmData == null ? string.Empty : (cfmData.ChasisNumber == null ? string.Empty : cfmData.ChasisNumber);
-                engCfmIdle = cfmData == null ? string.Empty : (cfmData.EngineNumber == null ? string.Empty : cfmData.EngineNumber);
-                transmissionData = cfmData == null ? string.Empty : (cfmData.Transmission == null ? string.Empty : cfmData.Transmission);
+                if (cfmData != null)
+                {
+                    policeNumberCfmIdle = cfmData.PoliceNumber == null ? string.Empty : cfmData.PoliceNumber;
+                    chasCfmIdle = cfmData.ChasisNumber == null ? string.Empty : cfmData.ChasisNumber;
+                    engCfmIdle = cfmData.EngineNumber == null ? string.Empty : cfmData.EngineNumber;
+                    transmissionData = cfmData.Transmission == null ? string.Empty : cfmData.Transmission;
+                }
             }
 
             slDocument.SetCellValue(iRow, 2, csfData.DOCUMENT_NUMBER);
