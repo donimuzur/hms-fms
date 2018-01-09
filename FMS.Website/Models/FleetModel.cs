@@ -33,7 +33,9 @@ namespace FMS.Website.Models
         public string Vendor { get; set; }
         public string Function { get; set; }
         public string StartRent { get; set; }
+        public string StartRentTo { get; set; }
         public string EndRent { get; set; }
+        public string EndRentTo { get; set; }
         public string Regional { get; set; }
         public string City { get; set; }
         public string PoliceNumber { get; set; }
@@ -42,6 +44,7 @@ namespace FMS.Website.Models
         public string EmployeeID { get; set; }
         public string EmployeeName { get; set; }
         public string EndDate { get; set; }
+        public string EndDateTo { get; set; }
 
         public SelectList PoliceNumberList { get; set; }
 

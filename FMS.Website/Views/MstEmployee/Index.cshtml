@@ -166,6 +166,10 @@
             $("select").selectpicker("refresh");
             setupDataTables();
         });
+
+        $('aside').animate({
+            scrollTop: $("#MstEmployee").offset().top
+        }, 1000);
     });
 
     function ExportXls() {

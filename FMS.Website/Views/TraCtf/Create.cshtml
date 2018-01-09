@@ -290,7 +290,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Reason</label>
-                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
+                            @Html.DropDownListFor(model => model.CtfExtend.Reason, Model.ReasonExtendList, "-- Please Select --", new { @class = "form-control", @id = "modalReason" })
                         </div>
                     </div>
                 </div>
@@ -310,8 +310,11 @@
                 <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:none" />
+                </div>   
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
             </div>
         </div>
@@ -342,6 +345,20 @@
         checkVehicletype();
         checkVehicleusage();
 
+        $("#btnConfirmSend").click(function () {
+            $('#isSubmit').val('submit');
+            $("#btnSubmit").trigger('click');
+
+            $("#imgLoader").css("display", "");
+            $("#btnCloseSend").css("display", "none");
+            $("#btnConfirmSend").css("display", "none");
+        });
+
+        $('#sendmodal').on('hidden.bs.modal', function () {
+            $("#imgLoader").css("display", "none");
+            $("#btnCloseSend").css("display", "");
+            $("#btnConfirmSend").css("display", "");
+        })
     }
 
     $('#EffDate').on('dp.change', function (e) {
@@ -458,11 +475,12 @@
         }
         else if (reasonval == '')
         {
-            $('#idExtend').show();
-            $('#ExtendVehicle').prop('disabled', false);
+            checkVehicletype();
+            checkVehicleusage();
             $('#idExtend').prop('disabled', false);
+            $('#ExtendVehicle').prop('disabled', false);
+            $('#EffectiveDate').prop('readonly', true);
             onExtendVehicle();
-
         }
         else
         {
@@ -534,7 +552,7 @@
             success: function (response) {
                 document.getElementById("EmployeeName").value = response.EmployeeName;
                 document.getElementById("CostCenter").value = response.CostCenter;
-                document.getElementById("GroupLevel").value = response.GroupLevel;
+               
                 if (response.PoliceNumber != null) {
                     document.getElementById("PoliceNumber").value = response.PoliceNumber;
                     document.getElementById("VehicleYear").value = response.VehicleYear;
@@ -544,6 +562,9 @@
                     if (response.VehicleType == 'WTC')
                     {
                         document.getElementById("CostCenter").value = response.CostCenterFleet;
+                    }
+                    if (response.VehicleType.toLowerCase() == 'benefit') {
+                        document.getElementById("GroupLevel").value = response.GroupLevel;
                     }
                     document.getElementById("SupplyMethod").value = response.SupplyMethod;
                     
@@ -561,6 +582,7 @@
                 }
             },
             complete: function (data) {
+                GetReasonList();
                 checkVehicletype();
                 checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
@@ -606,6 +628,7 @@
 
             },
             complete: function (data) {
+                GetReasonList();
                 checkVehicletype();
                 checkVehicleusage();
                 var data = $('#Reason').find("option:selected").text().toLowerCase()
@@ -704,12 +727,32 @@
         $('#TraCtfIdSend').val(value);
         $('#sendmodal').modal('show');
     }
-    function Confirm() {
-        $('#isSubmit').val('submit');
-        $("#btnSubmit").trigger('click');
+
+    function GetReasonList() {
+        if ($("#VehicleType").length) {
+            var VehicleType = $('#VehicleType').val();
+            $('#Reason option').remove();
+            if (VehicleType == '' || $('#VehicleType').find("option:selected").val() == '') {
+                $('#Reason').append('<option value="">-- Please Select --</option>');
+
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetReasonByVehicleType", "TraCtf")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { VehicleType: VehicleType },
+                    success: function (list) {
+                        $('#Reason').append('<option value="">-- Please Select --</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#Reason').append('<option value=' + list[i].MstReasonId + '>' + list[i].Reason + '</option>');
+                            }
+                        }
+                    }
+                });
+            }
+        }
     }
-    $("#btnConfirmSend").click(function () {
-        $('#isSubmit').val('submit');
-        $("#btnSubmit").trigger('click');
-    });
+
 </script>

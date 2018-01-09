@@ -196,6 +196,12 @@
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript" language="javascript" class="init">
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstFuelOdometer").offset().top
+        }, 1000);
+    });
+
     function ExportXls() {
         $('#ExportToXls').submit();
     }

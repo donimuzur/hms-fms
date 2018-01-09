@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -826,6 +827,10 @@ namespace FMS.Website.Controllers
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
                 //send email to user if police number and contract start date is fill
+                if (csfData.VENDOR_CONTRACT_START_DATE != null && !string.IsNullOrEmpty(csfData.VENDOR_POLICE_NUMBER))
+                {
+                    CsfWorkflow(csfData.TRA_CSF_ID, Enums.ActionType.InProgress, null);
+                }
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = model.IsPersonalDashboard });
@@ -933,10 +938,29 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetVehicleData(string vehUsage, string vehType, string vehCat, string groupLevel, DateTime createdDate, string location)
         {
+            var flexBen = ConfigurationManager.AppSettings["FlexBen"];
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
-            var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.Year == createdDate.Year).ToList();
+            var priceListData = _priceListBLL.GetPriceList().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacture)
+                                                                     && !string.IsNullOrEmpty(x.Model) 
+                                                                     && !string.IsNullOrEmpty(x.Series)
+                                                                     && x.Year == createdDate.Year).ToList();
 
-            var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Location == location)
+            if (vehUsage == "CFM" || vehUsage == "COP")
+            {
+                priceListData = priceListData.Where(p => p.VehicleUsage == vehUsage).ToList();
+            }
+
+            var vehicleDataNoNull = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && !string.IsNullOrEmpty(x.Manufacturer)
+                                                                     && !string.IsNullOrEmpty(x.Models)
+                                                                     && !string.IsNullOrEmpty(x.Series)).ToList();
+
+            var vehicleData = vehicleDataNoNull.Where(x => x.Year == createdDate.Year
+                                                            && priceListData.Select(p => p.Manufacture.ToUpper()).ToList().Contains(x.Manufacturer.ToUpper())
+                                                            && priceListData.Select(p => p.Model.ToUpper()).ToList().Contains(x.Models.ToUpper())
+                                                            && priceListData.Select(p => p.Series.ToUpper()).ToList().Contains(x.Series.ToUpper())
+                                                            && priceListData.Select(p => p.Year).ToList().Contains(x.Year)).ToList();
+
+            var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Basetown == location)
                                                                                         .OrderByDescending(x => x.ValidFrom).FirstOrDefault();
 
             var zonePriceListByUserCsf = zonePriceList == null ? string.Empty : zonePriceList.ZonePriceList;
@@ -968,7 +992,7 @@ namespace FMS.Website.Controllers
             if (vehicleType == "benefit")
             {
                 var modelVehicle = vehicleData.Where(x => x.GroupLevel == Convert.ToInt32(groupLevel)).ToList();
-                if (vehCat.ToLower() == "flexi benefit")
+                if (vehCat.ToLower() == flexBen)
                 {
                     modelVehicle = vehicleData.Where(x => x.GroupLevel < Convert.ToInt32(groupLevel) && x.GroupLevel > 0).ToList();
                 }
@@ -987,7 +1011,9 @@ namespace FMS.Website.Controllers
                     var cfmIdleListSelectedCrf = _crfBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled 
                                                                             && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
 
-                    var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
+                    var fleetDataGood = _fleetBLL.GetFleet().Where(x => x.VehicleUsage != null);
+
+                    var fleetData = fleetDataGood.Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" 
                                                                     && x.IsActive
                                                                     && !cfmIdleListSelected.Contains(x.MstFleetId)
                                                                     && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
@@ -995,7 +1021,7 @@ namespace FMS.Website.Controllers
 
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
-                    if (vehCat.ToLower() == "flexi benefit")
+                    if (vehCat.ToLower() == flexBen)
                     {
                         modelCFMIdle = fleetData.Where(x => x.CarGroupLevel < Convert.ToInt32(groupLevel)).ToList();
                     }
@@ -1177,6 +1203,7 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetFlexBen(string vehCat, int? carGroupLevel, int? empGroupLevel)
         {
+            var flexBen = ConfigurationManager.AppSettings["FlexBen"];
             var flexPoint = 0;
 
             var data = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == empGroupLevel && x.GroupLevel > 0).FirstOrDefault();
@@ -1186,7 +1213,7 @@ namespace FMS.Website.Controllers
                 if (vehCat.ToLower() == "no car") { 
                     flexPoint = data.FlexPoint;
                 }
-                else if (vehCat.ToLower() == "flexi benefit")
+                else if (vehCat.ToLower() == flexBen)
                 {
                     var dataFlex = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive && x.GroupLevel == carGroupLevel && x.GroupLevel > 0).FirstOrDefault();
 
@@ -1499,7 +1526,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 17, "Location");
             slDocument.SetCellValue(iRow, 18, "Branding");
             slDocument.SetCellValue(iRow, 19, "Purpose");
-            slDocument.SetCellValue(iRow, 20, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 20, "Request Year");
             slDocument.SetCellValue(iRow, 21, "PO");
             slDocument.SetCellValue(iRow, 22, "PO Line");
             slDocument.SetCellValue(iRow, 23, "Vat");
@@ -1524,19 +1551,48 @@ namespace FMS.Website.Controllers
         {
             int iRow = 4; //starting row data
 
+            var vSpecListData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.Year == csfData.CREATED_DATE.Year
+                                                                        && x.Manufacturer != null
+                                                                        && x.Models != null
+                                                                        && x.Series != null
+                                                                        && x.BodyType != null
+                                                                        && x.IsActive).ToList();
+
+            var vSpecList = vSpecListData.Where(x => x.Manufacturer.ToUpper() == csfData.MANUFACTURER.ToUpper()
+                                                    && x.Models.ToUpper() == csfData.MODEL.ToUpper()
+                                                    && x.Series.ToUpper() == csfData.SERIES.ToUpper()
+                                                    && x.BodyType.ToUpper() == csfData.BODY_TYPE.ToUpper()).FirstOrDefault();
+
+            var transmissionData = vSpecList == null ? string.Empty : vSpecList.Transmission;
+
+            var policeNumberCfmIdle = string.Empty;
+            var chasCfmIdle = string.Empty;
+            var engCfmIdle = string.Empty;
+            if (csfData.CFM_IDLE_ID != null)
+            {
+                var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID);
+                if (cfmData != null)
+                {
+                    policeNumberCfmIdle = cfmData.PoliceNumber == null ? string.Empty : cfmData.PoliceNumber;
+                    chasCfmIdle = cfmData.ChasisNumber == null ? string.Empty : cfmData.ChasisNumber;
+                    engCfmIdle = cfmData.EngineNumber == null ? string.Empty : cfmData.EngineNumber;
+                    transmissionData = cfmData.Transmission == null ? string.Empty : cfmData.Transmission;
+                }
+            }
+
             slDocument.SetCellValue(iRow, 2, csfData.DOCUMENT_NUMBER);
             slDocument.SetCellValue(iRow, 3, csfData.EMPLOYEE_NAME);
             slDocument.SetCellValue(iRow, 4, csfData.VENDOR_NAME);
-            slDocument.SetCellValue(iRow, 5, string.Empty);
-            slDocument.SetCellValue(iRow, 6, string.Empty);
-            slDocument.SetCellValue(iRow, 7, string.Empty);
+            slDocument.SetCellValue(iRow, 5, policeNumberCfmIdle);
+            slDocument.SetCellValue(iRow, 6, chasCfmIdle);
+            slDocument.SetCellValue(iRow, 7, engCfmIdle);
             slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToOADate());
-            slDocument.SetCellValue(iRow, 9, csfData.EFFECTIVE_DATE.ToOADate());
+            slDocument.SetCellValue(iRow, 9, string.Empty);
             slDocument.SetCellValue(iRow, 10, "YES");
             slDocument.SetCellValue(iRow, 11, csfData.MANUFACTURER);
             slDocument.SetCellValue(iRow, 12, csfData.MODEL);
             slDocument.SetCellValue(iRow, 13, csfData.SERIES);
-            slDocument.SetCellValue(iRow, 14, string.Empty);
+            slDocument.SetCellValue(iRow, 14, transmissionData);
             slDocument.SetCellValue(iRow, 15, csfData.COLOUR);
             slDocument.SetCellValue(iRow, 16, csfData.BODY_TYPE);
             slDocument.SetCellValue(iRow, 17, csfData.LOCATION_CITY);
@@ -1563,7 +1619,7 @@ namespace FMS.Website.Controllers
             SLStyle dateStyle = slDocument.CreateStyle();
             dateStyle.FormatCode = "dd/MM/yyyy";
 
-            slDocument.SetCellStyle(iRow, 8, iRow, 9, dateStyle);
+            slDocument.SetCellStyle(iRow, 8, iRow, 8, dateStyle);
 
             return slDocument;
         }
@@ -1816,7 +1872,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "CSF No");
+            slDocument.SetCellValue(iRow, 1, "CSF Number");
             slDocument.SetCellValue(iRow, 2, "CSF Status");
             slDocument.SetCellValue(iRow, 3, "Vehicle Type");
             slDocument.SetCellValue(iRow, 4, "Employee ID");

@@ -4,6 +4,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Core;
+using FMS.Utils;
 using FMS.Website.Models;
 using FMS.Website.Utility;
 using SpreadsheetLight;
@@ -20,14 +21,16 @@ namespace FMS.Website.Controllers
     {
         private IPageBLL _pageBLL;
         private IRemarkBLL _remarkBLL;
+        private ISettingBLL _settingBLL;
         private IDocumentTypeBLL _documentTypeBLL;
         private Enums.MenuList _mainMenu;
         private ISysAccessBLL _sysAccessBLL;
            
         // GET: /MstRemark/
-        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL , ISysAccessBLL SysAccessBLL) : base(PageBll, Enums.MenuList.MasterVendor)
+        public MstRemarkController(IPageBLL PageBll, IRemarkBLL RemarkBll, IDocumentTypeBLL DocTypeBLL , ISysAccessBLL SysAccessBLL, ISettingBLL SettingBLL) : base(PageBll, Enums.MenuList.MasterVendor)
         {
             _pageBLL = PageBll;
+            _settingBLL = SettingBLL;
             _remarkBLL = RemarkBll;
             _documentTypeBLL = DocTypeBLL;
             _sysAccessBLL = SysAccessBLL;
@@ -45,11 +48,8 @@ namespace FMS.Website.Controllers
             return View(model);
         }
         
-
-        public ActionResult Create()
+        public RemarkItem Initial(RemarkItem model)
         {
-
-            var model = new RemarkItem();
             var list1 = _documentTypeBLL.GetDocumentType();
             model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
 
@@ -59,10 +59,18 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "Fleet", Value = "Fleet" },
                 new SelectListItem { Text = "Admin", Value = "Admin" },
             };
-            
+
             model.RoleTypeList = new SelectList(list2, "Value", "Text");
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            return model;
+        }
+        public ActionResult Create()
+        {
+
+            var model = new RemarkItem();
+            model = Initial(model);
             return View(model);
         }
 
@@ -79,22 +87,9 @@ namespace FMS.Website.Controllers
                                                                   && x.IsActive).FirstOrDefault();
                     if (Exist != null)
                     {
-                        var list1 = _documentTypeBLL.GetDocumentType();
-
-                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-                        var list2 = new List<SelectListItem>
-                        {
-                            new SelectListItem { Text = "HR", Value = "HR"},
-                            new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                            new SelectListItem { Text = "Admin", Value = "Admin" },
-                        };
-
-                        model.RoleTypeList = new SelectList(list2, "Value", "Text");
-
+                        model = Initial(model);
                         model.ErrorMessage = "Data Already Exist";
-                        model.MainMenu = _mainMenu;
-                        model.CurrentLogin = CurrentUser;
+                       
                         return View(model);
                     }
 
@@ -108,21 +103,8 @@ namespace FMS.Website.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var list1 = _documentTypeBLL.GetDocumentType();
-
-                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-                    var list2 = new List<SelectListItem>
-                    {
-                        new SelectListItem { Text = "HR", Value = "HR"},
-                        new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                        new SelectListItem { Text = "Admin", Value = "Admin" },
-                    };
-
-                    model.RoleTypeList = new SelectList(list2, "Value", "Text");
+                    model = Initial(model);
                     model.ErrorMessage = ex.Message;
-                    model.MainMenu = _mainMenu;
-                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }
@@ -133,22 +115,7 @@ namespace FMS.Website.Controllers
         {
             var data = _remarkBLL.GetRemarkById(MstRemarkId);
             var model = Mapper.Map<RemarkItem>(data);
-
-            
-            var list1 = _documentTypeBLL.GetDocumentType();
-            
-            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-            var list2 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "HR", Value = "HR"},
-                new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                new SelectListItem { Text = "Admin", Value = "Admin" },
-            };
-
-            model.RoleTypeList = new SelectList(list2, "Value", "Text");
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
+            model = Initial(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
             return View(model);
         }
@@ -166,21 +133,8 @@ namespace FMS.Website.Controllers
                                                               && x.IsActive && x.MstRemarkId != model.MstRemarkId).FirstOrDefault();
                     if (Exist != null)
                     {
-                        var list1 = _documentTypeBLL.GetDocumentType();
-
-                        model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-                        var list2 = new List<SelectListItem>
-                        {
-                            new SelectListItem { Text = "HR", Value = "HR"},
-                            new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                            new SelectListItem { Text = "Admin", Value = "Admin" },
-                        };
-
-                        model.RoleTypeList = new SelectList(list2, "Value", "Text");
+                        model = Initial(model);
                         model.ErrorMessage = "Data Already Exist";
-                        model.MainMenu = _mainMenu;
-                        model.CurrentLogin = CurrentUser;
                         return View(model);
                     }
 
@@ -193,22 +147,8 @@ namespace FMS.Website.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var list1 = _documentTypeBLL.GetDocumentType();
-
-                    model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-                    var list2 = new List<SelectListItem>
-                    {
-                        new SelectListItem { Text = "HR", Value = "HR"},
-                        new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                        new SelectListItem { Text = "Admin", Value = "Admin" },
-                    };
-
-                    model.RoleTypeList = new SelectList(list2, "Value", "Text");
-
+                    model = Initial(model);
                     model.ErrorMessage = ex.Message;
-                    model.MainMenu = _mainMenu;
-                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }
@@ -219,22 +159,7 @@ namespace FMS.Website.Controllers
         {
             var data = _remarkBLL.GetRemarkById(MstRemarkId);
             var model = Mapper.Map<RemarkItem>(data);
-
-
-            var list1 = _documentTypeBLL.GetDocumentType();
-
-            model.DocumentTypeList = new SelectList(list1, "MstDocumentTypeId", "DocumentType");
-
-            var list2 = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "HR", Value = "HR"},
-                new SelectListItem { Text = "Fleet", Value = "Fleet" },
-                new SelectListItem { Text = "Admin", Value = "Admin" },
-            };
-
-            model.RoleTypeList = new SelectList(list2, "Value", "Text");
-            model.MainMenu = _mainMenu;
-            model.CurrentLogin = CurrentUser;
+            model = Initial(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterRemark, MstRemarkId);
             return View(model);
         }
@@ -263,7 +188,7 @@ namespace FMS.Website.Controllers
                         {
                             var Exist = _remarkBLL.GetRemark().Where(x => (x.Remark == null ? "" : x.Remark.ToUpper()) == (data.Remark == null ? "" : data.Remark.ToUpper())
                                                                     && (x.RoleType == null ? ""  : x.RoleType.ToUpper()) == (data.RoleType == null ? "" : data.RoleType.ToUpper())
-                                                                    && x.IsActive).FirstOrDefault();
+                                                                    && x.DocumentType == data.DocumentType && x.IsActive).FirstOrDefault();
                             if (Exist != null)
                             {
                                 Exist.IsActive = false;

@@ -1,64 +1,100 @@
 ﻿@using FMS.Core;
-@model FMS.Website.Models.CostObItem 
+@model FMS.Website.Models.CostObItem
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Master Data Cost OB Edit</h5>
 </div>
 <section class="content">
     <div class="wpanel">
-        @using (Html.BeginForm("Edit", "MstCostOb", new { @id="costObForm"}))
+        <label class="label-warning">@Model.ErrorMessage</label>
+        @using (Html.BeginForm("Edit", "MstCostOb"))
         {
-            <h5 class="text-info text-red">
-                @Model.ErrorMessage
-            </h5>
             <div class="row col-md-12">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Year<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", required = "required" })
+                        @Html.HiddenFor(model => model.MstCostObId)
+                        @Html.HiddenFor(model => model.CreatedBy)
+                        @Html.HiddenFor(model => model.CreatedDate)
+                        @Html.TextBoxFor(model => model.Year, new { @class = "form-control", required = "required" ,maxlength="4"})
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Month<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Month, Model.MonthList, "-- Please Select --", new { @class = "form-control ", required = "required" })
+                        @Html.DropDownListFor(model => model.Month, Model.MonthList, "-- Please Select --", new { @class = "form-control ", required = "required"})
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Body Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Model, Model.ModelList, "-- Please Select --", new { @class = "form-control ", required = "required" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Type, Model.TypeList, "-- Please Select --", new { @class = "form-control ", required = "required" })
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label">Cost OB<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ObCost, new { @class = "form-control", onkeypress = "return IsAngka(event)", required = "required" })
+                        <label class="control-label">Function<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.FunctionName, Model.FunctionList, "--Please Select--", new { @class = "form-control", required = "required" , onchange="FunctionChange()"})
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost Center<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", required = "required" })
+                        @*@Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", required = "required", maxlength="10"})*@
+                        @Html.DropDownListFor(model => model.CostCenter, Model.CostCenterList, "--Please Select--", new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Vehicle Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.VehicleType,Model.VehicleTypeList,"--Please Select--", new { @class = "form-control", required = "required"})
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Body Type<span class="red">*</span></label>
+                        @*@Html.TextBoxFor(model => model.Models, new { @class = "form-control", required = "required" })*@
+                        @Html.DropDownListFor(model => model.Models, Model.ModelList,"--Please Select--", new { @class = "form-control", required = "required"})
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Type<span class="red">*</span></label>
+                        @Html.DropDownListFor(model => model.Type, Model.TypeList, "--Please Select--", new { @class = "form-control" , required = "required", onchange= "TypeChange()" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Regional</label>
+                        @Html.DropDownListFor(model => model.Regional, Model.RegionalList,"--Please Select--", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Cost OB</label>
+                        @Html.TextBoxFor(model => model.ObCostS, new { @class = "decimal form-control ", onkeypress = "return IsAngka(event)" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">QTY</label>
+                        @Html.TextBoxFor(model => model.Qty, new { @class = "form-control ", onkeypress = "return IsAngka(event)", maxlength = "10"  })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Status<span class="red"></span></label>
+                        <div class="form-control">
+                            @Html.CheckBoxFor(model => model.IsActive)
+                            @Html.Label("Active", new { @id = "lblStatus" })
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-12">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                <a href="@Url.Action("Index", "MstCostOb")" class="btn btn-default">Back</a>
+                <a href="@Url.Action("Index", "MstCostOb" )" class="btn btn-default">Back</a>
             </div>
         }
-        </div>
+    </div>
     <div id="changes" class="tab-pane">
         @Html.Partial("_ChangesLog");
     </div>
-    </section>
+</section>
 
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
@@ -71,7 +107,49 @@
     }
     $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
 
-    $('form').submit(function () {
-        $('#ObCost').val(separatorRemover($('#ObCost').val()));
-    });
+    $(document).ready()
+    {
+        TypeChange();
+    }
+
+    function FunctionChange(){
+        if ($("#FunctionName").length) {
+           var FunctionName = $("#FunctionName option:selected").text();
+           $('#CostCenter option').remove();
+            $('#Address').val('')
+            if (FunctionName == '' || $('#FunctionName').find("option:selected").val() == '') {
+                $('#CostCenter').append('<option value="">--Please Select--</option>');
+            }
+            else {
+                $.ajax({
+                    url: '@Url.Action("GetCostCenter", "MstCostOb")',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { FunctionName: FunctionName },
+                    success: function (list) {
+                        $('#CostCenter').append('<option value="">--Please Select--</option>');
+                        if (list.length > 0) {
+                            for (var i = 0; i < list.length; i++) {
+                                $('#CostCenter').append('<option value="' + list[i].CostCenter.toString() + '">' + list[i].CostCenter.toString() + '</option>');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+    function TypeChange()
+    {
+        var Type = $('#Type').val();
+        if(Type == 'OB')
+        {
+            $('#ObCostS').prop('required', true);
+            $('#Qty').prop('required', false);
+        }
+        else if(Type =='QTY')
+        {
+            $('#ObCostS').prop('required', false);
+            $('#Qty').prop('required', true);
+        }
+    }
 </script>

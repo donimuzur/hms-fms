@@ -483,6 +483,32 @@ namespace FMS.Website.Controllers
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.TMP).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
 
+                //set data from cfm idle
+                if (model.Detail.CfmIdleId != null)
+                {
+                    var cfmData = _fleetBLL.GetFleetById((int)model.Detail.CfmIdleId);
+
+                    if (cfmData != null)
+                    {
+                        model.Detail.ModelsVendor = cfmData.Models;
+                        model.Detail.PoliceNumberVendor = cfmData.PoliceNumber;
+                        model.Detail.ManufacturerVendor = cfmData.Manufacturer;
+                        model.Detail.SeriesVendor = cfmData.Series;
+                        model.Detail.BodyTypeVendor = cfmData.BodyType;
+                        model.Detail.ColorVendor = cfmData.Color;
+                        model.Detail.VendorNameVendor = cfmData.VendorName;
+                        model.Detail.ChasisNumberVendor = cfmData.ChasisNumber;
+                        model.Detail.EngineNumberVendor = cfmData.EngineNumber;
+                        model.Detail.IsAirBagVendor = cfmData.Airbag;
+                        model.Detail.TransmissionVendor = cfmData.Transmission;
+                        model.Detail.BrandingVendor = cfmData.Branding;
+                        model.Detail.PurposeVendor = cfmData.Purpose;
+                        model.Detail.VatDecimalVendor = cfmData.VatDecimal == null ? 0 : cfmData.VatDecimal.Value;
+                        model.Detail.IsRestitutionVendor = cfmData.Restitution;
+                        model.Detail.CommentsVendor = cfmData.Comments;
+                    }
+                }
+
                 return View(model);
             }
             catch (Exception exception)
@@ -521,6 +547,11 @@ namespace FMS.Website.Controllers
                 tempData.COMMENTS = model.Detail.CommentsVendor;
 
                 var saveResult = _tempBLL.Save(tempData, CurrentUser);
+                //send email to user if police number and contract start date is fill
+                if (tempData.VENDOR_CONTRACT_START_DATE != null && !string.IsNullOrEmpty(tempData.VENDOR_POLICE_NUMBER))
+                {
+                    TempWorkflow(tempData.TRA_TEMPORARY_ID, Enums.ActionType.InProgress, null);
+                }
 
                 AddMessageInfo("Save Successfully", Enums.MessageInfoType.Info);
                 return RedirectToAction("InProgress", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = model.IsPersonalDashboard });
@@ -613,7 +644,7 @@ namespace FMS.Website.Controllers
 
             if (vehicleType == "benefit")
             {
-                var modelVehicle = vehicleData.Where(x => x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
+                var modelVehicle = vehicleData.Where(x => x.GroupLevel > 0 && x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
 
                 //get selectedCfmIdle temp
                 var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
@@ -626,8 +657,10 @@ namespace FMS.Website.Controllers
                 //get selectedCfmIdle crf
                 var cfmIdleListSelectedCrf = _crfBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int)Enums.DocumentStatus.Cancelled
                                                                         && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
-                
-                var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
+
+                var fleetDataGood = _fleetBLL.GetFleet().Where(x => x.VehicleUsage != null);
+
+                var fleetData = fleetDataGood.Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
                                                                 x.IsActive &&
                                                                 !cfmIdleListSelected.Contains(x.MstFleetId) &&
                                                                 !cfmIdleListSelectedCsf.Contains(x.MstFleetId) &&
@@ -917,7 +950,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 17, "Location");
             slDocument.SetCellValue(iRow, 18, "Branding");
             slDocument.SetCellValue(iRow, 19, "Purpose");
-            slDocument.SetCellValue(iRow, 20, "Vehicle Year");
+            slDocument.SetCellValue(iRow, 20, "Request Year");
             slDocument.SetCellValue(iRow, 21, "PO");
             slDocument.SetCellValue(iRow, 22, "PO Line");
             slDocument.SetCellValue(iRow, 23, "Vat");
@@ -942,19 +975,48 @@ namespace FMS.Website.Controllers
         {
             int iRow = 4; //starting row data
 
+            var vSpecListData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.Year == tempData.CREATED_DATE.Year
+                                                                        && x.Manufacturer != null
+                                                                        && x.Models != null
+                                                                        && x.Series != null
+                                                                        && x.BodyType != null
+                                                                        && x.IsActive).ToList();
+
+            var vSpecList = vSpecListData.Where(x => x.Manufacturer.ToUpper() == tempData.MANUFACTURER.ToUpper()
+                                                    && x.Models.ToUpper() == tempData.MODEL.ToUpper()
+                                                    && x.Series.ToUpper() == tempData.SERIES.ToUpper()
+                                                    && x.BodyType.ToUpper() == tempData.BODY_TYPE.ToUpper()).FirstOrDefault();
+
+            var transmissionData = vSpecList == null ? string.Empty : vSpecList.Transmission;
+
+            var policeNumberCfmIdle = string.Empty;
+            var chasCfmIdle = string.Empty;
+            var engCfmIdle = string.Empty;
+            if (tempData.CFM_IDLE_ID != null)
+            {
+                var cfmData = _fleetBLL.GetFleetById((int)tempData.CFM_IDLE_ID);
+                if (cfmData != null)
+                {
+                    policeNumberCfmIdle = cfmData.PoliceNumber == null ? string.Empty : cfmData.PoliceNumber;
+                    chasCfmIdle = cfmData.ChasisNumber == null ? string.Empty : cfmData.ChasisNumber;
+                    engCfmIdle = cfmData.EngineNumber == null ? string.Empty : cfmData.EngineNumber;
+                    transmissionData = cfmData.Transmission == null ? string.Empty : cfmData.Transmission;
+                }
+            }
+
             slDocument.SetCellValue(iRow, 2, tempData.DOCUMENT_NUMBER_TEMP);
             slDocument.SetCellValue(iRow, 3, tempData.EMPLOYEE_NAME);
             slDocument.SetCellValue(iRow, 4, tempData.VENDOR_NAME);
-            slDocument.SetCellValue(iRow, 5, string.Empty);
-            slDocument.SetCellValue(iRow, 6, string.Empty);
-            slDocument.SetCellValue(iRow, 7, string.Empty);
+            slDocument.SetCellValue(iRow, 5, policeNumberCfmIdle);
+            slDocument.SetCellValue(iRow, 6, chasCfmIdle);
+            slDocument.SetCellValue(iRow, 7, engCfmIdle);
             slDocument.SetCellValue(iRow, 8, tempData.START_DATE.Value.ToOADate());
             slDocument.SetCellValue(iRow, 9, tempData.END_DATE.Value.ToOADate());
             slDocument.SetCellValue(iRow, 10, "YES");
             slDocument.SetCellValue(iRow, 11, tempData.MANUFACTURER);
             slDocument.SetCellValue(iRow, 12, tempData.MODEL);
             slDocument.SetCellValue(iRow, 13, tempData.SERIES);
-            slDocument.SetCellValue(iRow, 14, string.Empty);
+            slDocument.SetCellValue(iRow, 14, transmissionData);
             slDocument.SetCellValue(iRow, 15, tempData.COLOR);
             slDocument.SetCellValue(iRow, 16, tempData.BODY_TYPE);
             slDocument.SetCellValue(iRow, 17, tempData.LOCATION_CITY);
@@ -1120,7 +1182,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Temporary No");
+            slDocument.SetCellValue(iRow, 1, "Temporary Number");
             slDocument.SetCellValue(iRow, 2, "Temporary Status");
             slDocument.SetCellValue(iRow, 3, "Vehicle Type");
             slDocument.SetCellValue(iRow, 4, "Employee ID");

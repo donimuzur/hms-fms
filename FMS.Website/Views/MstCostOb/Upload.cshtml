@@ -24,25 +24,33 @@
                     </div>
                 </div>
             </div>
-            <table id="example2" class="table table-bordered dataTables table-striped">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Year</th>
-                        <th>Month</th>
-                        <th>Body Type</th>
-                        <th>Cost Center</th>
-                        <th>function Name</th>
-                        <th>Regional</th>
-                        <th>Vehicle Type</th>
-                        <th>Type</th>
-                        <th>Qty</th>
-                        <th>Cost</th>
-                        <th>Message</th>
-                    </tr>
-                </thead>
-                <tbody id="tb-upload-excel"></tbody>
-            </table>
+            <div class="col-md-12">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Year<span class="red">*</span></label>
+                        @Html.TextBox("Year",Model.Year, new { @class = "form-control", maxlength = "4" })
+                    </div>
+                </div>
+                <table id="example2" class="table table-bordered dataTables table-striped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Year</th>
+                            <th>Month</th>
+                            <th>Body Type</th>
+                            <th>Cost Center</th>
+                            <th>function Name</th>
+                            <th>Regional</th>
+                            <th>Vehicle Type</th>
+                            <th>Type</th>
+                            <th>Qty</th>
+                            <th>Cost</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tb-upload-excel"></tbody>
+                </table>
+            </div>         
             <div class="row mt-2">
                 <div class="col-md-12">
                     <button class="btn btn-primary" type="submit" id="btnSave">Save</button>
@@ -109,7 +117,7 @@
             $('#LoadingModal').hide();
             return false;
         }
-
+        var Year = $('#Year').val()
         var formData = new FormData();
         var totalFiles = document.getElementById("upload").files.length;
 
@@ -117,6 +125,7 @@
             var file = document.getElementById("upload").files[i];
             formData.append("upload", file);
         }
+        formData.append("Year", Year);
         $.ajax({
             type: "POST",
             url: postUrl,

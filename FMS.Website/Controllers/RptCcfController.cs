@@ -55,8 +55,8 @@ namespace FMS.Website.Controllers
             model.RptCCFItem = Mapper.Map<List<RptCCFItem>>(data);
 
             var listCategory = _rptComplaintBLL.GetComplaints().Select(x => new { x.MstComplaintCategoryId,x.CategoryName }).Distinct().OrderBy(x => x.MstComplaintCategoryId).ToList();
-            var listCoordinator= _rptCcfBLL.GetRptCcfData().Select(x => new { x.CoordinatorName }).Distinct().OrderBy(x => x.CoordinatorName).ToList();
-            var listLocation = _rptCcfBLL.GetRptCcfData().Select(x => new { x.LocationCity }).Distinct().OrderBy(x => x.LocationCity).ToList();
+            var listCoordinator= _rptCcfBLL.GetRptCcfData().Where(x => x.CoordinatorName != null).Select(x => new { x.CoordinatorName }).Distinct().OrderBy(x => x.CoordinatorName).ToList();
+            var listLocation = _rptCcfBLL.GetRptCcfData().Where(x=>x.LocationCity != null).Select(x => new { x.LocationCity }).Distinct().OrderBy(x => x.LocationCity).ToList();
 
             model.SearchView.Categorylist = new SelectList(listCategory, "MstComplaintCategoryId", "CategoryName");
             model.SearchView.Coordinatorlist = new SelectList(listCoordinator, "CoordinatorName", "CoordinatorName");

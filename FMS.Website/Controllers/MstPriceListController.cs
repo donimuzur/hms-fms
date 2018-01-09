@@ -191,7 +191,11 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = listdata(model);
-            
+
+            model.InstallmenEMPStr = model.InstallmenEMP == 0 ? "0" : string.Format("{0:n0}", model.InstallmenEMP);
+            model.InstallmenHMSStr = model.InstallmenHMS == 0 ? "0" : string.Format("{0:n0}", model.InstallmenHMS);
+            model.PriceStr = model.Price == 0 ? "0" : string.Format("{0:n0}", model.Price);
+
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterPriceList, MstPriceListid.Value);
 
             return View(model);
@@ -212,6 +216,12 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+
+            model.InstallmenEMPStr = model.InstallmenEMP == 0 ? "0" : string.Format("{0:n0}", model.InstallmenEMP);
+            model.InstallmenHMSStr = model.InstallmenHMS == 0 ? "0" : string.Format("{0:n0}", model.InstallmenHMS);
+            model.PriceStr = model.Price == 0 ? "0" : string.Format("{0:n0}", model.Price);
+        
+
             model = listdata(model);
           
           
@@ -426,7 +436,7 @@ namespace FMS.Website.Controllers
 
                         try
                         {
-                            item.InstallmenHMS = Convert.ToInt32(dataRow[8]);
+                            item.InstallmenHMS = Convert.ToDecimal(dataRow[8]);
                         }
                         catch (Exception)
                         {
@@ -436,7 +446,7 @@ namespace FMS.Website.Controllers
 
                         try
                         {
-                            item.InstallmenEMP = Convert.ToInt32(dataRow[9]);
+                            item.InstallmenEMP = Convert.ToDecimal(dataRow[9]);
                         }
                         catch (Exception)
                         {
@@ -571,8 +581,8 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                var vendorName = _vendorBLL.GetByID(data.Vendor).VendorName;
-                slDocument.SetCellValue(iRow, 1, vendorName);
+                var vendor = _vendorBLL.GetByID(data.Vendor);
+                slDocument.SetCellValue(iRow, 1, vendor == null ? "" : vendor.VendorName);
                 slDocument.SetCellValue(iRow, 2, data.VehicleType);
                 slDocument.SetCellValue(iRow, 3, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 4, data.ZonePriceList);

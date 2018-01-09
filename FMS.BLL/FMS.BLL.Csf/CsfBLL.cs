@@ -302,7 +302,7 @@ namespace FMS.BLL.Csf
             var vehCatNoCar = settingData.Where(x => x.SETTING_GROUP == "VEHICLE_CATEGORY" && x.SETTING_NAME == "NO_CAR").FirstOrDefault().MST_SETTING_ID;
             var vendorData = _vendorService.GetByShortName(csfData.VENDOR_NAME);
             var vendorEmail = vendorData == null ? string.Empty : vendorData.EMAIL_ADDRESS;
-            var vendorName = vendorData == null ? "Vendor" : vendorData.VENDOR_NAME;
+            var vendorName = vendorData == null ? string.Empty : vendorData.VENDOR_NAME;
 
             var isBenefit = csfData.VEHICLE_TYPE == vehTypeBenefit.ToString() ? true : false;
             var isNoCar = csfData.VEHICLE_CATEGORY == vehCatNoCar.ToString() ? true : false;
@@ -399,21 +399,19 @@ namespace FMS.BLL.Csf
                     if (csfData.CREATED_BY == input.UserId && isBenefit) {
                         var bodyMailCsf = settingData.Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.BodyMailCsf)).ToList();
                         
-                        var cfmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_URL").FirstOrDefault();
-                        var ctmUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_TYPE_MODEL_URL").FirstOrDefault();
-                        var fbpUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_PRACTICE_URL").FirstOrDefault();
-                        var fbdUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_DESIGN_URL").FirstOrDefault();
-                        var cbUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "CORE_BENEFIT_URL").FirstOrDefault();
-                        var csUrlData = bodyMailCsf.Where(x => x.SETTING_NAME == "COVERAGE_SELECTION_URL").FirstOrDefault();
+                        var hrDocCar1Data = bodyMailCsf.Where(x => x.SETTING_NAME == "HR_DOCUMENTS_CAR_1").FirstOrDefault();
+                        var hrDocCar2Data = bodyMailCsf.Where(x => x.SETTING_NAME == "HR_DOCUMENTS_CAR_2").FirstOrDefault();
+                        var hrDocFlex1Data = bodyMailCsf.Where(x => x.SETTING_NAME == "HR_DOCUMENTS_FLEXBEN_1").FirstOrDefault();
+                        var hrDocFlex2Data = bodyMailCsf.Where(x => x.SETTING_NAME == "HR_DOCUMENTS_FLEXBEN_2").FirstOrDefault();
+                        var hrDocFlex3Data = bodyMailCsf.Where(x => x.SETTING_NAME == "HR_DOCUMENTS_FLEXBEN_3").FirstOrDefault();
                         var cfmTextData = bodyMailCsf.Where(x => x.SETTING_NAME == "CAR_FOR_MANAGER_TEXT").FirstOrDefault();
                         var fbTextData = bodyMailCsf.Where(x => x.SETTING_NAME == "FLEXIBLE_BENEFIT_TEXT").FirstOrDefault();
 
-                        var cfmUrl = cfmUrlData == null ? string.Empty : cfmUrlData.SETTING_VALUE;
-                        var ctmUrl = ctmUrlData == null ? string.Empty : ctmUrlData.SETTING_VALUE;
-                        var fbpUrl = fbpUrlData == null ? string.Empty : fbpUrlData.SETTING_VALUE;
-                        var fbdUrl = fbdUrlData == null ? string.Empty : fbdUrlData.SETTING_VALUE;
-                        var cbUrl = cbUrlData == null ? string.Empty : cbUrlData.SETTING_VALUE;
-                        var csUrl = csUrlData == null ? string.Empty : csUrlData.SETTING_VALUE;
+                        var hrDocCar1Url = hrDocCar1Data == null ? string.Empty : hrDocCar1Data.SETTING_VALUE;
+                        var hrDocCar2Url = hrDocCar2Data == null ? string.Empty : hrDocCar2Data.SETTING_VALUE;
+                        var hrDocFlex1Url = hrDocFlex1Data == null ? string.Empty : hrDocFlex1Data.SETTING_VALUE;
+                        var hrDocFlex2Url = hrDocFlex2Data == null ? string.Empty : hrDocFlex2Data.SETTING_VALUE;
+                        var hrDocFlex3Url = hrDocFlex3Data == null ? string.Empty : hrDocFlex3Data.SETTING_VALUE;
                         var cfmText = cfmTextData == null ? string.Empty : cfmTextData.SETTING_VALUE;
                         var fbText = fbTextData == null ? string.Empty : fbTextData.SETTING_VALUE;
 
@@ -429,21 +427,19 @@ namespace FMS.BLL.Csf
                         bodyMail.AppendLine();
                         bodyMail.Append("To support you in understanding benefit car (COP/CFM) scheme, the circumstances, and other the terms and conditions, we advise you to read following HR Documents before selecting car scheme and type.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (<a href='" + cfmUrl + "'>link</a>)<br />");
+                        bodyMail.Append("- P&P Car For Manager along with the attachments >> click Car for Manager, Affiliate Practices (<a href='" + hrDocCar1Url + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (<a href='" + ctmUrl + "'>link</a>)<br />");
+                        bodyMail.Append("- Car types, models, contribution and early termination terms and conditions >> click Car Types and Models, Communication (<a href='" + hrDocCar2Url + "'>link</a>)<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("The procurement process will start after receiving the signed forms with approximately 2-3 months lead time, and may be longer depending on the car availability in vendor. Thus, during lead time of procurement, you will be using temporary car.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("If you are interested to modify your CAR current entitlement, we encourage you to read following HR Documents regarding flexible benefits.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- P&P Flexible Benefit >> click Flexible Benefits Practices (<a href='" + fbpUrl + "'>link</a>)<br />");
+                        bodyMail.Append("- P&P Flexible Benefit >> click Flexible Benefits Practices (<a href='" + hrDocFlex1Url + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Flexible Benefit Design >> click Flexible Benefit Design (<a href='" + fbdUrl + "'>link</a>)<br />");
+                        bodyMail.Append("- Coverage Selection >> click Coverage Selection (<a href='" + hrDocFlex2Url + "'>link</a>)<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("- Core Benefits & Allocated Flex Points Communication >> click Core Benefits & Allocated Flex Points Communication (<a href='" + cbUrl + "'>link</a>)<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("- Coverage Selection Communication >> click Coverage Selection Communication (<a href='" + csUrl + "'>link</a>)<br /><br />");
+                        bodyMail.Append("- Flexible Spending Account List >> click Flexible Spending Account List (<a href='" + hrDocFlex3Url + "'>link</a>)<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Should you need any help or have any questions, please do not hesitate to contact the HR Services team:<br />");
                         bodyMail.AppendLine();
@@ -610,7 +606,7 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
@@ -646,7 +642,7 @@ namespace FMS.BLL.Csf
                     {
                         rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear " + vendorName + ",<br /><br />");
+                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("You have new car request. Please check attached file<br /><br />");
                         bodyMail.AppendLine();
@@ -789,6 +785,32 @@ namespace FMS.BLL.Csf
                     bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " has been cancelled by " + creatorDataName + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+                    rc.CC.Add(creatorDataEmail);
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    break;
+                case Enums.ActionType.InProgress:
+                    rc.Subject = csfData.DOCUMENT_NUMBER + " - Document In Progress";
+
+                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " will be arrived at " + csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                     bodyMail.AppendLine();
@@ -1591,6 +1613,10 @@ namespace FMS.BLL.Csf
                     {
                         projectName = projectNameData.SETTING_VALUE.ToUpper();
                         isProject = true;
+                        if (projectName == "NO PROJECT")
+                        {
+                            isProject = false;
+                        }
                     }
                 }
 

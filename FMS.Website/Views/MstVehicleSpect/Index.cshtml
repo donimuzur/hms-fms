@@ -2,7 +2,7 @@
 @model FMS.Website.Models.VehicleSpectModel
 <!-- Main content -->
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data Vehicle Spect</h5>
+    <h5 class="title-page">Master Data Vehicle Spec</h5>
     @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstVehicleSpect")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
@@ -97,7 +97,7 @@
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
-                        @if (data.ModifiedDate == data.CreatedDate)
+                        @if (data.ModifiedDate.HasValue)
                         {
                             <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         }
