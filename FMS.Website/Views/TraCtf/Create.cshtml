@@ -310,8 +310,11 @@
                 <h4 class="modal-title">Send document ?</h4>
             </div>
             <div class="modal-footer">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:none" />
+                </div>   
                 <input type="hidden" name="TraCtfId" id="TraCtfIdSend">
-                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
             </div>
         </div>
@@ -342,6 +345,20 @@
         checkVehicletype();
         checkVehicleusage();
 
+        $("#btnConfirmSend").click(function () {
+            $('#isSubmit').val('submit');
+            $("#btnSubmit").trigger('click');
+
+            $("#imgLoader").css("display", "");
+            $("#btnCloseSend").css("display", "none");
+            $("#btnConfirmSend").css("display", "none");
+        });
+
+        $('#sendmodal').on('hidden.bs.modal', function () {
+            $("#imgLoader").css("display", "none");
+            $("#btnCloseSend").css("display", "");
+            $("#btnConfirmSend").css("display", "");
+        })
     }
 
     $('#EffDate').on('dp.change', function (e) {
@@ -710,14 +727,6 @@
         $('#TraCtfIdSend').val(value);
         $('#sendmodal').modal('show');
     }
-    function Confirm() {
-        $('#isSubmit').val('submit');
-        $("#btnSubmit").trigger('click');
-    }
-    $("#btnConfirmSend").click(function () {
-        $('#isSubmit').val('submit');
-        $("#btnSubmit").trigger('click');
-    });
 
     function GetReasonList() {
         if ($("#VehicleType").length) {
