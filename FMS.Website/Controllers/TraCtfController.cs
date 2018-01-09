@@ -99,9 +99,10 @@ namespace FMS.Website.Controllers
             var VehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
             var CfmUsage = VehUsage.Where(x => x.SettingName.ToUpper() == "CFM").FirstOrDefault().SettingName;
 
-            var fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(60).Where(x => x.VehicleType == benefitType && x.VehicleUsage == CfmUsage && x.IsActive == true).ToList();
-            var fleetWTC = _fleetBLL.GetFleetForEndContractLessThan(90).Where(x => x.VehicleType == wtcType && x.IsActive == true).ToList();
+            var fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(60).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper()  && x.IsActive == true).ToList();
+            var fleetWTC = _fleetBLL.GetFleetForEndContractLessThan(90).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == wtcType.ToUpper() && x.IsActive == true).ToList();
             bool IsSend = false;
+
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 IsSend = false;
@@ -114,8 +115,8 @@ namespace FMS.Website.Controllers
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
-                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
-                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
+                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
 
                             if (ctfdata.Count() > 0 || csfdata.Count() > 0) IsSend = true;
 
@@ -149,8 +150,9 @@ namespace FMS.Website.Controllers
                         {
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
-                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
-                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
+                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
 
                             var days7 = DateTime.Now.AddDays(7);
                             if (ctfdata.Count() > 0 || csfdata.Count() > 0) IsSend = true;
@@ -181,10 +183,9 @@ namespace FMS.Website.Controllers
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
                             var days7 = DateTime.Now.AddDays(7);
-                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
-                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && x.EMPLOYEE_NAME == ctfitem.EmployeeName && x.COST_CENTER == ctfitem.CostCenter && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
 
-                            if (ctfdata.Count() > 0 || csfdata.Count() > 0) IsSend = true;
+                            if (ctfdata.Count() > 0) IsSend = true;
                             ctfitem.Reason = ReasonID;
                             ctfitem.ReasonS = "End Rent";
                             ctfitem.lessthan2month = true;
@@ -212,6 +213,8 @@ namespace FMS.Website.Controllers
             var ReasonId = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent" && x.DocumentType == (int)Enums.DocumentType.CSF).FirstOrDefault().MstReasonId;
             if (ReasonId == 0) ReasonId = 1;
 
+            var VehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (FleetData.VehicleType == null ? "" : FleetData.VehicleType.ToUpper())).FirstOrDefault();
+
             item.CREATED_DATE = DateTime.Today;
             item.CREATED_BY = CurrentUser.USER_ID;
             item.REASON_ID = ReasonId;
@@ -220,6 +223,7 @@ namespace FMS.Website.Controllers
             item.EMPLOYEE_NAME = FleetData.EmployeeName;
             item.COST_CENTER = FleetData.CostCenter;
             item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
+            item.VEHICLE_TYPE = VehType.MstSettingId.ToString();
             item.IS_ACTIVE = true;
 
             var csfData = _csfBLL.Save(item, CurrentUser);
@@ -1974,18 +1978,17 @@ namespace FMS.Website.Controllers
         #region -------- Upload ---------------
         public ActionResult UploadCtf()
         {
-            var model = new CtfUploadModel();
+            var model = new CtfModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = false;
-            
-            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive == true && x.DocumentType == 6).ToList().OrderBy(x => x.Reason);
-            var ExtendList = new Dictionary<bool, string> { { false, "No" }, { true, "Yes" } };
-
-            model.ReasonList = new SelectList(ReasonList, "MstReasonId", "Reason");
-            model.ExtendList = new SelectList(ExtendList, "Key", "Value");
-
+           
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult UploadCtf(HttpPostedFileBase upload, CtfModel model)
+        {
+            return View("");
         }
         #endregion
 
@@ -2099,7 +2102,6 @@ namespace FMS.Website.Controllers
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
         }
-
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
@@ -2120,64 +2122,189 @@ namespace FMS.Website.Controllers
                     var item = new CtfItem();
                     try
                     {
-                       
+
                         item.EmployeeId = dataRow[0];
-                        if(item.EmployeeId == "")
+                        if (item.EmployeeId == "")
                         {
                             item.ErrorMessage = "Employee ID can't be empty";
                         }
 
                         item.EmployeeName = dataRow[1];
-                        if(item.EmployeeName == "")
+                        if (item.EmployeeName == "")
                         {
-                            item.ErrorMessage = "Employee Name can't be empty"; 
+                            item.ErrorMessage = "Employee Name can't be empty";
                         }
 
+                        if (dataRow[3] == "")
+                        {
+                            item.ErrorMessage = "Effective Date Can't be empty";
+                        }
+                        else
+                        {
+                            try
+                            {
+                                double dEffectiveDate = double.Parse(dataRow[3]);
+                                DateTime dtEffectiveDate = DateTime.FromOADate(dEffectiveDate);
+                                item.EffectiveDate = dtEffectiveDate;
+                            }
+                            catch (Exception)
+                            {
+                                item.ErrorMessage = "Effective date format is not valid";
+                            }
+                        }
+
+                        item.PoliceNumber = dataRow[4];
+                        if (item.PoliceNumber == "")
+                        {
+                            item.ErrorMessage = "Police Number can't be empty";
+                        }
+
+                        item.CostCenter = dataRow[5];
+                        if (item.CostCenter == "")
+                        {
+                            item.ErrorMessage = "Cost Center can't be empty";
+                        }
+
+                        item.VehicleType = dataRow[6];
+                        if(item.VehicleType == "")
+                        {
+                            item.ErrorMessage = "Vehicle Type Can't be empty";
+                        }
+
+                        item.ReasonS = dataRow[2];
+                        if (item.ReasonS == "")
+                        {
+                            item.ErrorMessage = "Reason Can't be empty";
+                        }
+                        else
+                        {
+                            var Reason = _reasonBLL.GetReason().Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == item.ReasonS.ToUpper()
+                                        && x.IsActive && x.DocumentType == (int)Enums.DocumentType.CTF
+                                        && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
+
+                            if (Reason == null)
+                            {
+                                item.ErrorMessage = item.ReasonS + " is not found in master Reason";
+                            }
+                            else
+                            {
+                                item.Reason = Reason.MstReasonId;
+                            }
+                        }
+
+                        if (dataRow[7] == "")
+                        {
+                            item.ErrorMessage = "Year can't be empty";
+                        }
+                        else
+                        {
+                            try
+                            {
+                                item.VehicleYear = Convert.ToInt32(dataRow[7]);
+                            }
+                            catch (Exception)
+                            {
+                                item.ErrorMessage = "Vehicle Year format is not valid";
+                            }    
+                        }
+
+                        item.SupplyMethod = dataRow[8];
+                        if(item.SupplyMethod == "" )
+                        {
+                            item.ErrorMessage = "Supply Method can't be empty";
+                        }
+
+                        if (dataRow[9] == "")
+                        {
+                            item.ErrorMessage = "Extend Vehicle can't be empty";
+                        }
+                        else
+                        {
+                            if (dataRow[9].ToUpper() == "YES") item.ExtendVehicle = true;
+                            else if (dataRow[9].ToUpper() == "NO") item.ExtendVehicle = false;
+                            else { item.ErrorMessage = "Extend Vehicle is unknown"; }
+                        } 
+
+                        if(item.ExtendVehicle == true)
+                        {
+                            item.CtfExtend = new CtfExtendDto();
+
+                            if (dataRow[10] == "")
+                            {
+                                item.ErrorMessage = "Extend New Date can't be empty";
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    double dNewDate = double.Parse(dataRow[10]);
+                                    DateTime dtNewDate = DateTime.FromOADate(dNewDate);
+                                    item.CtfExtend.NewProposedDate = dtNewDate;
+                                }
+                                catch (Exception)
+                                {
+                                    item.ErrorMessage = "Extend New Date format is not valid";
+                                }
+                            }
+
+                            item.CtfExtend.ExtendPoliceNumber = dataRow[11];
+                            if(dataRow[11] == "")
+                            {
+                                item.ErrorMessage = "Extend Police Number can't be empty";
+                            }
+
+                            item.CtfExtend.ExtendPoNumber = dataRow[12];
+                            if(dataRow[12] == "")
+                            {
+                                item.ErrorMessage = "Extend PO Number can't be empty";
+                            }
+
+                            item.CtfExtend.ExtedPoLine = dataRow[13];
+                            if(dataRow[13] == "" )
+                            {
+                                item.ErrorMessage = "Extend PO Line can't be empty";
+                            }
+
+                            if(dataRow[14] == "")
+                            {
+                                item.ErrorMessage = "Extend Price can't be empty";
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    item.CtfExtend.ExtendPrice = Convert.ToDecimal(dataRow[14]);
+                                }
+                                catch (Exception)
+                                {
+                                    item.ErrorMessage = "Extend Price must be number";
+                                }
+                            }
+
+                            item.CtfExtend.ReasonStr = dataRow[15];
+                            if(dataRow[15] == "")
+                            {
+                                item.ErrorMessage = "Extend Reason Can't be empty";
+                            }
+                            else
+                            {
+                                var ExtendReason =  _reasonBLL.GetReason().Where(x => x.IsActive && x.DocumentType == 8 
+                                                    && (x.Reason == null ? "" : x.Reason.ToUpper()) == (dataRow[15].ToUpper())).FirstOrDefault();
+                                if(ExtendReason == null)
+                                {
+                                    item.ErrorMessage = "Reason " + dataRow[15] + " is not found in Master Reason";
+                                }
+                                else
+                                {
+                                    item.CtfExtend.Reason = ExtendReason.MstReasonId;
+                                }
+                            }
+                        }
                         
-                        if(item.CostCenter == "" )
-                        {
-                            item.ErrorMessage = "Cost Center Can't be empty";
-                        }
-
-                        item.PoliceNumber = dataRow[3];
-
-
-                        item.VehicleType = dataRow[4];
-                        item.VehicleYear= dataRow[5] != "" && dataRow[5] != null ? 0: Convert.ToInt32(dataRow[5]);
-                        item.SupplyMethod = dataRow[6];
-
-                        double dEffectiveDate = double.Parse(dataRow[7].ToString());
-                        DateTime dyEffectiveDate = DateTime.FromOADate(dEffectiveDate);
-                        item.EffectiveDate = dyEffectiveDate;
-
-                        var employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID== item.EmployeeId && x.IS_ACTIVE).FirstOrDefault();
-                        if (employee== null)
-                        {
-                            item.ErrorMessage = "Employee ID " +item.EmployeeId+" is not in Master Emplloyee";
-                        }
-
-                        var vehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == item.PoliceNumber && x.EmployeeID == item.EmployeeId && x.IsActive).FirstOrDefault();
-                        if (vehicle == null)
-                        {
-                            item.ErrorMessage = "this data is not in Master Fleet";
-                        }
-
-                        var CtfDto = Mapper.Map<TraCtfDto>(item);
-                        var exist = _ctfBLL.CheckCtfExists(CtfDto);
-                        if (exist)
-                        {
-                            item.ErrorMessage = "document with Police Number "+item.PoliceNumber+ " already Exist ";
-                        }
                     }
                     catch (Exception exp)
                     {
                         item.ErrorMessage = exp.Message;
-                    }
-
-                    var existinTable = model.Where(x => x.PoliceNumber == item.PoliceNumber).FirstOrDefault();
-                    if (existinTable != null)
-                    {
-                        item.ErrorMessage = "There is a more than one data with this Police Number";
                     }
 
                     model.Add(item);
