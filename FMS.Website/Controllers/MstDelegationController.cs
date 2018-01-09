@@ -297,27 +297,59 @@ namespace FMS.Website.Controllers
 
 
         [HttpPost]
-        public ActionResult Upload(DelegationModel Model)
+        public ActionResult Upload(DelegationModel Model, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
-                foreach (DelegationItem data in Model.Details)
+                var data = (new ExcelReader()).ReadExcel(upload);
+                if (data != null)
                 {
-                    try
+                    foreach (var dataRow in data.DataRows)
                     {
-                        data.CreatedDate = DateTime.Now;
-                        data.CreatedBy = CurrentUser.USERNAME;
-                        data.ModifiedDate = null;
-                        data.IsActive = true;
+                        if (dataRow[0] == "")
+                        {
+                            continue;
+                        }
+                        var item = new DelegationItem();
+                        item.ErrorMessage = "";
+                        item.EmployeeFrom = dataRow[0];
+                        item.EmployeeFromS = dataRow[1];
+                        item.EmployeeTo = dataRow[2];
+                        item.EmployeeToS = dataRow[3];
+                        double DateFrom = double.Parse(dataRow[4].ToString());
+                        item.DateFrom = DateTime.FromOADate(DateFrom);
 
-                        var dto = Mapper.Map<DelegationDto>(data);
-                        _DelegationBLL.Save(dto);
-                        AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
-                    }
-                    catch (Exception exception)
-                    {
-                        AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
-                        return View(Model);
+                        double DateTo = double.Parse(dataRow[5].ToString());
+                        item.DateTo = DateTime.FromOADate(DateTo);
+
+                        if ((dataRow[6] == null ? "" : dataRow[6].ToUpper()) == "YES")
+                        {
+                            item.IsComplaintFrom = true;
+                        }
+                        else
+                        {
+                            item.IsComplaintFrom = false;
+                        }
+                        
+                        try
+                        {
+                            item.CreatedDate = DateTime.Now;
+                            item.CreatedBy = CurrentUser.USERNAME;
+                            item.ModifiedDate = null;
+                            item.IsActive = true;
+
+                            var dto = Mapper.Map<DelegationDto>(item);
+                            _DelegationBLL.Save(dto);
+                            AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
+                        }
+                        catch (Exception exception)
+                        {
+                            AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                            Model.CurrentLogin = CurrentUser;
+                            Model.MainMenu = _mainMenu;
+                            Model.ErrorMessage = exception.Message;
+                            return View(Model);
+                        }
                     }
                 }
             }
@@ -327,9 +359,6 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
-            var qtyPacked = string.Empty;
-            var qty = string.Empty;
-
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<DelegationItem>();
             if (data != null)
@@ -341,17 +370,56 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new DelegationItem();
+                    item.ErrorMessage = "";
                     item.EmployeeFrom = dataRow[0].ToString();
+                    if (item.EmployeeFrom == "") item.ErrorMessage = "Employee ID From can't be empty";
                     item.EmployeeFromS = dataRow[1].ToString();
                     item.EmployeeTo = dataRow[2].ToString();
+                    if (item.EmployeeTo == "") item.ErrorMessage = "Employee ID To can't be empty";
                     item.EmployeeToS = dataRow[3].ToString();
-                    double DateFrom = double.Parse(dataRow[4].ToString());
-                    double DateTo = double.Parse(dataRow[5].ToString());
-                    item.DateFrom = DateTime.FromOADate(DateFrom);
-                    item.DateTo = DateTime.FromOADate(DateTo);
-                    item.IsComplaintFrom = Convert.ToBoolean(Convert.ToInt16(dataRow[6]));
-                    item.IsComplaintFromS = dataRow[6] == "1"? "True": "False";
-                    item.ErrorMessage = string.Empty;
+                    if(dataRow[4] == "")
+                    {
+                        item.ErrorMessage = "Date From can't be empty";
+                    }
+                    else
+                    {
+                        try
+                        {
+                            double DateFrom = double.Parse(dataRow[4].ToString());
+                            item.DateFrom = DateTime.FromOADate(DateFrom);
+                        }
+                        catch (Exception)
+                        {
+                            item.ErrorMessage = "Date from format is not valid";
+                        }
+                    }
+                    
+                    if(dataRow[5] == "")
+                    {
+                        item.ErrorMessage = "Date To Can't be empty";
+                    }
+                    else
+                    {
+                        try
+                        {
+                            double DateTo = double.Parse(dataRow[5].ToString());
+                            item.DateTo = DateTime.FromOADate(DateTo);
+                        }
+                        catch (Exception)
+                        {
+
+                            item.ErrorMessage = "Date To format is not valid";
+                        }
+                    }
+                    
+                    if((dataRow[6] == null ? "" : dataRow[6].ToUpper()) == "YES")
+                    {
+                        item.IsComplaintFrom = true;
+                    }
+                    else
+                    {
+                        item.IsComplaintFrom = false;   
+                    }
 
                     var existEmp = _employeeBLL.GetByID(dataRow[0]);
                     var existEmpTo = _employeeBLL.GetByID(dataRow[2]);
