@@ -64,7 +64,7 @@
                         {
                             <a href="#" class="action" onclick="SendCSF(@Model.Details[Model.Details.IndexOf(data)].MstFleetId)" title="Send CSF" ><i class="fa fa-car"></i></a>
                         }
-                        if (data.lessthan7day)
+                        if (data.lessthan7day && (data.VehicleUsage == null ? "" : data.VehicleUsage.ToUpper()) != "COP")
                         {
                             <a href="#" class="action" onclick="Terminate(@Model.Details[Model.Details.IndexOf(data)].MstFleetId)"  title="Terminate" ><i class="fa fa-key"></i></a>
                         }
