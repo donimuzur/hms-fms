@@ -980,6 +980,14 @@ namespace FMS.Website.Controllers
                                                         && x.Year == createdDate.Year
                                                         && x.ZonePriceList.ToLower() == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
 
+                if (vehicleType == "benefit")
+                {
+                    dataVendor = dataAllPricelist.Where(x => x.Manufacture.ToLower() == item.Manufacturer.ToLower()
+                                                        && x.Model.ToLower() == item.Models.ToLower()
+                                                        && x.Series.ToLower() == item.Series.ToLower()
+                                                        && x.Year == createdDate.Year).FirstOrDefault();
+                }
+
                 var vendorId = dataVendor == null ? 0 : dataVendor.Vendor;
 
                 var dataVendorDetail = allVendor.Where(x => x.MstVendorId == vendorId).FirstOrDefault();
