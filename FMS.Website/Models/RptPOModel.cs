@@ -16,12 +16,12 @@ namespace FMS.Website.Models
             //SearchView.PeriodFrom = DateTime.Today;
             //SearchView.PeriodTo = DateTime.Today;
             SearchView.MonthFrom = DateTime.Now.Month;
-            SearchView.MonthFrom = SearchView.MonthFrom - 2;
+            SearchView.MonthFrom = SearchView.MonthFrom;
             SearchView.YearFrom = DateTime.Now.Year;
             SearchView.MonthTo = DateTime.Now.Month;
             SearchView.YearTo = DateTime.Now.Year;
             SearchView.SupplyMethod = "TEMPORARY";
-            SearchView.GroupLevel = 1;
+            //SearchView.GroupLevel = 1;
         }
         public List<RptPOItem> RptPOItem { get; set; }
         public RptPOSearchView SearchView { get; set; }
@@ -128,7 +128,7 @@ namespace FMS.Website.Models
         public string CostCenter { get; set; }
         public string SupplyMethod { get; set; }
         public string PoliceNumber { get; set; }
-        public int GroupLevel { get; set; }
+        public int? GroupLevel { get; set; }
         public SelectList SupplyMethodList { get; set; }
         public SelectList EmployeeNameList { get; set; }
         public SelectList CostCenterList { get; set; }

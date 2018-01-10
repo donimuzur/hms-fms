@@ -231,12 +231,21 @@ namespace FMS.Website.Controllers
             }
             return model;
         }
-        public ActionResult SendCSF(int MstFleetId)
+        public ActionResult SendCSF(long MstFleetId)
         {
-            var FleetData = _fleetBLL.GetFleetById(MstFleetId);
+            var FleetData = _fleetBLL.GetFleetById((int)MstFleetId);
+            int ReasonId;
             TraCsfDto item = new TraCsfDto();
-            var ReasonId = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent" && x.DocumentType == (int)Enums.DocumentType.CSF).FirstOrDefault().MstReasonId;
-            if (ReasonId == 0) ReasonId = 1;
+            var Reason = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent" && x.DocumentType == (int)Enums.DocumentType.CSF && x.IsActive
+                                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (FleetData.VehicleType == null ? "" : FleetData.VehicleType.ToUpper())).FirstOrDefault();
+            if (Reason == null)
+            {
+                ReasonId = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CSF && x.IsActive).FirstOrDefault().MstReasonId;
+            }
+            else
+            {
+                ReasonId = Reason.MstReasonId;
+            }
 
             var VehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (FleetData.VehicleType == null ? "" : FleetData.VehicleType.ToUpper())).FirstOrDefault();
 
@@ -269,11 +278,19 @@ namespace FMS.Website.Controllers
         {
             var FleetData = _fleetBLL.GetFleetById((int)MstFleetId);
             var Employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID == FleetData.EmployeeID && x.IS_ACTIVE).FirstOrDefault();
-
+            int ReasonId;
+            var Reason = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent" && x.DocumentType == (int)Enums.DocumentType.CTF && x.IsActive 
+                                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (FleetData.VehicleType == null  ? "" : FleetData.VehicleType.ToUpper())).FirstOrDefault();
             TraCtfDto item = new TraCtfDto();
-            var ReasonId = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
-            if (ReasonId == 0) ReasonId = 1;
-            
+            if (Reason == null)
+            {
+                ReasonId = _reasonBLL.GetReason().Where(x => x.DocumentType == (int)Enums.DocumentType.CTF && x.IsActive).FirstOrDefault().MstReasonId;
+            }
+            else
+            {
+                ReasonId = Reason.MstReasonId;
+            }
+
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
 
