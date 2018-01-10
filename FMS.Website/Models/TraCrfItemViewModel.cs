@@ -201,6 +201,7 @@ namespace FMS.Website.Models
                         }
                         break;
                     case (int)Enums.DocumentStatus.Draft:
+                    case (int)Enums.DocumentStatus.AssignedForUser:
                         if (this.CurrentLogin.USER_ID == this.CreatedBy)
                         {
                             isAllowed = true;

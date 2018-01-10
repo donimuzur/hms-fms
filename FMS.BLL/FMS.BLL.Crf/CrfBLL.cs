@@ -427,8 +427,8 @@ namespace FMS.BLL.Crf
                 && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.AssignedForUser) 
                 return true;
 
-            if (currentUser.UserRole == Enums.UserRole.HR 
-                && data.DOCUMENT_STATUS == (int) Enums.DocumentStatus.Draft)
+            if (currentUser.UserRole == Enums.UserRole.HR
+                && (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Draft || data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser))
                 return true;
             if (currentUser.UserRole == Enums.UserRole.Fleet 
                 && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress)
