@@ -7,8 +7,8 @@
 <section class="content">
     <div class="wpanel">
         <label class="label-warning">@Model.ErrorMessage</label>
-        @using (Html.BeginForm("UploadCtf", "TraCtf", FormMethod.Post))
-            {
+        @using (Html.BeginForm("UploadCtf", "TraCtf", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -158,13 +158,11 @@
             dataType: 'html',
             contentType: false,
             processData: false,
-
             success: function (response) {
                 $('#tb-upload-excel').html('');
                 uploaditems = JSON.parse(response);
                 var error = "";
-                for (var i = 0; i < uploaditems.length; i++) {
-                 
+                for (var i = 0; i < uploaditems.length; i++) {                 
                     var tr = '<tr>' +
                     createColumn(i + 1) +
                     createColumnWithHiddenField(uploaditems[i].EmployeeId, 'Model.Details[' + i + '].EmployeeId') +
@@ -176,7 +174,7 @@
                     createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
                     createColumnWithHiddenField(uploaditems[i].VehicleYear, 'Model.Details[' + i + '].VehicleYear') +
                     createColumnWithHiddenField(uploaditems[i].SupplyMethod, 'Model.Details[' + i + '].SupplyMethod') +
-                    createColumnWithHiddenField(uploaditems[i].ExtendVehicle == true ? "Yes" : "No", 'Model.Details[' + i + '].CtfExtend.ExtendVehicle', uploaditems[i].ExtendVehicle) +
+                    createColumnWithHiddenField(uploaditems[i].ExtendVehicle == true ? "Yes" : "No", 'Model.Details[' + i + '].CtfExtend.ExtendVehicle') +
                     createColumnWithHiddenField(uploaditems[i].ExtendVehicle == false ? "" : jsonDateToDatetime(uploaditems[i].CtfExtend.NewProposedDate), 'Model.Details[' + i + '].CtfExtend.NewProposedDate') +
                     createColumnWithHiddenField(uploaditems[i].ExtendVehicle == false ? "" : (uploaditems[i].CtfExtend.ExtendPoliceNumber == null ? "" : uploaditems[i].CtfExtend.ExtendPoliceNumber), 'Model.Details[' + i + '].CtfExtend.ExtendPoliceNumber') +
                     createColumnWithHiddenField(uploaditems[i].ExtendVehicle == false ? "" : (uploaditems[i].CtfExtend.ExtendPoNumber == null ? "" : uploaditems[i].CtfExtend.ExtendPoNumber), 'Model.Details[' + i + '].CtfExtend.ExtendPoNumber') +
@@ -201,5 +199,4 @@
             }
         });
     };
-
 </script>

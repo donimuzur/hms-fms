@@ -642,6 +642,7 @@ namespace FMS.BLL.Crf
             }
 
             _workflowService.Save(dbData);
+            _uow.SaveChanges();
 
         }
 
