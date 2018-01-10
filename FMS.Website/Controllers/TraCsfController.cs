@@ -653,53 +653,53 @@ namespace FMS.Website.Controllers
             }
         }
 
-        public ActionResult ApproveCsf(long TraCsfId, bool IsPersonalDashboard)
+        public ActionResult ApproveCsf(long TraCsfIdApp, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
             {
-                CsfWorkflow(TraCsfId, Enums.ActionType.Approve, null);
+                CsfWorkflow(TraCsfIdApp, Enums.ActionType.Approve, null);
                 isSuccess = true;
             }
             catch (Exception ex)
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdApp, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
-        public ActionResult ApproveCsfFleet(long TraCsfId, bool IsPersonalDashboard, DateTime expectedDateId, DateTime endRentDateId, string supplyMethodId)
+        public ActionResult ApproveCsfFleet(long TraCsfIdApp, bool IsPersonalDashboard, DateTime expectedDateId, DateTime endRentDateId, string supplyMethodId)
         {
             bool isSuccess = false;
             try
             {
-                var csfData = _csfBLL.GetCsfById(TraCsfId);
+                var csfData = _csfBLL.GetCsfById(TraCsfIdApp);
                 csfData.EXPECTED_DATE = expectedDateId;
                 csfData.END_RENT_DATE = endRentDateId;
                 csfData.SUPPLY_METHOD = supplyMethodId;
 
                 var saveResult = _csfBLL.Save(csfData, CurrentUser);
 
-                CsfWorkflow(TraCsfId, Enums.ActionType.Approve, null);
+                CsfWorkflow(TraCsfIdApp, Enums.ActionType.Approve, null);
                 isSuccess = true;
             }
             catch (Exception ex)
             {
                 AddMessageInfo(ex.Message, Enums.MessageInfoType.Error);
             }
-            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfId, isPersonalDashboard = IsPersonalDashboard });
+            if (!isSuccess) return RedirectToAction("Detail", "TraCsf", new { id = TraCsfIdApp, isPersonalDashboard = IsPersonalDashboard });
             AddMessageInfo("Success Approve Document", Enums.MessageInfoType.Success);
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
-        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkId, bool IsPersonalDashboard)
+        public ActionResult RejectCsf(int TraCsfIdReject, int RemarkIdReject, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
             {
-                CsfWorkflow(TraCsfIdReject, Enums.ActionType.Reject, RemarkId);
+                CsfWorkflow(TraCsfIdReject, Enums.ActionType.Reject, RemarkIdReject);
                 isSuccess = true;
             }
             catch (Exception ex)
