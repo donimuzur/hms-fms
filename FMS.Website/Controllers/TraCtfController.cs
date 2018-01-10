@@ -2024,6 +2024,7 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult UploadCtf(HttpPostedFileBase upload, CtfModel model)
         {
+
             return View("");
         }
         #endregion
@@ -2341,6 +2342,14 @@ namespace FMS.Website.Controllers
                     catch (Exception exp)
                     {
                         item.ErrorMessage = exp.Message;
+                    }
+
+                    var Dto = Mapper.Map<TraCtfDto>(item);
+
+                    var exist = _ctfBLL.CheckCtfExists(Dto);
+                    if(exist )
+                    {
+                        item.ErrorMessage = "There is an Open Document ";
                     }
 
                     model.Add(item);
