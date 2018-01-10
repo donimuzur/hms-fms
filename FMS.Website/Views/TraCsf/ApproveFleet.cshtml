@@ -351,6 +351,10 @@
             <div class="row col-md-12">
                 <a href="#" class="btn btn-primary" onclick="AppCsf(@Model.Detail.TraCsfId)" id="btnAppFleet"><i class="glyphicon glyphicon-ok"></i> Approve</a>
                 <a href="#" class="btn btn-primary" onclick="RejectCsf(@Model.Detail.TraCsfId)"><i class="glyphicon glyphicon-alert"></i> Reject</a>
+                @if (Model.CurrentLogin.USER_ID == Model.Detail.CreateBy)
+                {
+                    <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCsf(@Model.Detail.TraCsfId)" />
+                }
                 <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCsf")" class="btn btn-default">Back</a>
             </div>
         }
@@ -366,7 +370,7 @@
             {
                 <div class="modal-footer">
                     @Html.HiddenFor(model => model.IsPersonalDashboard)
-                    <input type="hidden" name="TraCsfId" id="TraCsfId">
+                    <input type="hidden" name="TraCsfIdApp" id="TraCsfIdApp">
                     <input type="hidden" name="expectedDateId" id="expectedDateId">
                     <input type="hidden" name="endRentDateId" id="endRentDateId">
                     <input type="hidden" name="supplyMethodId" id="supplyMethodId">
@@ -393,7 +397,7 @@
                                 @Html.HiddenFor(model => model.IsPersonalDashboard)
                                 <input type="hidden" name="TraCsfIdReject" id="TraCsfIdReject">
                                 <label class="control-label">Select Remark</label>
-                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
+                                @Html.DropDownList("RemarkIdReject", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
                             </div>
                         </div>
                     </div>
@@ -450,6 +454,35 @@
                     <input type="hidden" name="endDateId" id="endDateId">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnTemporaryCsf" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cancel document ?</h4>
+            </div>
+            @using (Html.BeginForm("CancelCsf", "TraCsf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                <input type="hidden" name="TraCsfId" id="TraCsfId">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
                 </div>
             }
         </div>
@@ -514,8 +547,8 @@
             $("#btnConfirmReject").css("display", "");
         })
 
-        $("#RemarkId").change(function () {
-            var str = $('#RemarkId').find("option:selected").text();
+        $("#RemarkIdReject").change(function () {
+            var str = $('#RemarkIdReject').find("option:selected").text();
 
             if (str.toLowerCase() != "") {
                 $("#imgLoaderReject").css("display", "none");
@@ -526,7 +559,7 @@
     });
 
     function AppCsf(value) {
-        $('#TraCsfId').val(value);
+        $('#TraCsfIdApp').val(value);
         $('#expectedDateId').val($('#Detail_ExpectedDate').val());
         $('#endRentDateId').val($('#Detail_EndRentDate').val());
         $('#supplyMethodId').val($('#Detail_SupplyMethod').find("option:selected").val());
@@ -543,5 +576,10 @@
         $('#startDateId').val($('#Temporary_StartPeriod').val());
         $('#endDateId').val($('#Temporary_EndPeriod').val());
         $('#temporarymodal').modal('show');
+    }
+
+    function CancelCsf(value) {
+        $('#TraCsfId').val(value);
+        $('#cancelmodal').modal('show');
     }
 </script>
