@@ -850,7 +850,6 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 4, "Employee ID");
             slDocument.SetCellValue(iRow, 5, "Employee Name");
             slDocument.SetCellValue(iRow, 6, "Reason");
-            
             slDocument.SetCellValue(iRow, 7, "Effective Date");
             slDocument.SetCellValue(iRow, 8, "Current Location");
             slDocument.SetCellValue(iRow, 9, "Relocate Location");
