@@ -126,6 +126,22 @@
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
 
+    $('#EffDate').on('dp.change', function (e) {
+        var todayDate = new Date();
+        var effDateStr = $("#Detail_EffectiveDate").val().split("-");
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var month = months.indexOf(effDateStr[1].toLowerCase());
+        var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
+        todayDate = todayDate.setHours(00, 00, 00, 00);
+        if (effDateStr == '') effDate = todayDate;
+        if (effDate < todayDate) {
+            alert('Effective Date must bigger or equal wih today')
+            $("#Detail_EffectiveDate").val('');
+            return false;
+        }
+        return true;
+    });
+
     function SelectVeh(value) {
         $('#TraCrfIdVeh').val(value);
         selectVehicle('@Url.Action("GetVehicleData", "TraCrf")');
