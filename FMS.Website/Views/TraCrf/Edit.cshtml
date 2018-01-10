@@ -44,7 +44,15 @@
                                         }
                                         @if(Model.CurrentLogin.UserRole == Enums.UserRole.HR)
                                         {
-                                            @Html.Partial("_CreateInformation")
+                                            if (Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForUser)
+                                            {
+                                                @Html.Partial("_CreateInformationReadonly")
+                                            }
+                                            else
+                                            {
+                                                @Html.Partial("_CreateInformation")
+                                            }
+                                            
                                             @Html.Partial("_RelocationVehicleInfoReadonly")
                                             @Html.Partial("_FleetConfirmationReadonly")
                                             @Html.Partial("_TemporaryCarInfo")
@@ -130,10 +138,27 @@
                                         {
                                             if (Model.Detail.DocumentStatus != (int)Enums.DocumentStatus.InProgress)
                                             {
-                                                <a onclick="submit()" class="btn btn-primary">Send</a>
+                                                if(Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForUser &&
+                                                    Model.Detail.CreatedBy == Model.CurrentLogin.USER_ID)
+                                                {
+                                                    
+                                                }
+                                                else
+                                                {
+                                                    <a onclick="submit()" class="btn btn-primary">Send</a>
+                                                }
                                             }
 
-                                            <a onclick="save()" class="btn btn-primary">Save</a>
+                                            if(Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.AssignedForUser &&
+                                                    Model.Detail.CreatedBy == Model.CurrentLogin.USER_ID)
+                                            {
+                                                    
+                                            }
+                                            else
+                                            {
+                                                <a onclick="save()" class="btn btn-primary">Save</a>
+                                            }
+                                            
                                             @*<input type="submit" value="Send" class="btn btn-primary" id="btnSend" />*@
                                             <input type="submit" value="Save" class="btn btn-primary" style="display: none" id="btnSubmit" />
                                             
