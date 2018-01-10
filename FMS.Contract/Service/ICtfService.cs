@@ -15,5 +15,6 @@ namespace FMS.Contract.Service
         void Save(TRA_CTF dbCtf, Login userlogin);
         TRA_CTF GetCtfById(long TraCtfId);
         void CancelCtf(long id, int Remark, Login userlogin);
+        void SaveUpload(TRA_CTF dbCtf, Login userlogin);
     }
 }

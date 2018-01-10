@@ -142,6 +142,61 @@ namespace FMS.BLL.Ctf
             Dto = Mapper.Map<TraCtfDto>(data);
             return Dto;
         }
+        public TraCtfDto SaveUpload(TraCtfDto Dto, Login userLogin)
+        {
+            TRA_CTF dbTraCtf;
+            if (Dto == null)
+            {
+                throw new Exception("Invalid Data Entry");
+            }
+            try
+            {
+                bool changed = false;
+
+                if (Dto.TraCtfId > 0)
+                {
+                    //update
+                    var Exist = _ctfService.GetCtf().Where(c => c.TRA_CTF_ID == Dto.TraCtfId).FirstOrDefault();
+
+                    if (Exist == null)
+                        throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
+
+                    //changed = SetChangesHistory(model, item, userId);
+                    dbTraCtf = Mapper.Map<TRA_CTF>(Dto);
+                    _ctfService.SaveUpload(dbTraCtf, userLogin);
+                }
+                else
+                {
+                    var inputDoc = new GenerateDocNumberInput();
+                    inputDoc.Month = DateTime.Now.Month;
+                    inputDoc.Year = DateTime.Now.Year;
+                    inputDoc.DocType = (int)Enums.DocumentType.CTF;
+
+                    Dto.DocumentNumber = _docNumberService.GenerateNumber(inputDoc);
+
+                    dbTraCtf = Mapper.Map<TRA_CTF>(Dto);
+                    _ctfService.SaveUpload(dbTraCtf, userLogin);
+
+                }
+                var input = new CtfWorkflowDocumentInput()
+                {
+                    DocumentId = dbTraCtf.TRA_CTF_ID,
+                    ActionType = Enums.ActionType.Modified,
+                    UserId = userLogin.USER_ID
+                };
+                if (changed)
+                {
+                    AddWorkflowHistory(input);
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            var data = _ctfService.GetCtf().Where(x => x.DOCUMENT_NUMBER == Dto.DocumentNumber).FirstOrDefault();
+            Dto = Mapper.Map<TraCtfDto>(data);
+            return Dto;
+        }
         private string ReplaceToValue(TraCtfDto CtfDto, MST_FLEET Fleet, string Value)
         {
             if (Value.ToUpper().Contains("MST_FLEET.END_CONTRACT"))
@@ -857,7 +912,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData == null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br />");
+                        bodyMail.Append("Termination Date : " + (ctfData == null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy")) + " <br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
@@ -894,7 +949,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Reason : " + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + " <br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData== null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br />");
+                        bodyMail.Append("Termination Date : " + (ctfData== null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy")) + " <br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                         bodyMail.AppendLine();
@@ -957,7 +1012,7 @@ namespace FMS.BLL.Ctf
                     bodyMail.AppendLine();
                     bodyMail.Append("Reason : " + _reasonService.GetReasonById(extend.REASON.Value).REASON + " <br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("New End Contract Date  : " + extend == null ? "" : extend.NEW_PROPOSED_DATE.Value.ToString("dd-MMM-yyyy") + " <br />");
+                    bodyMail.Append("New End Contract Date  : " + (extend == null ? "" : extend.NEW_PROPOSED_DATE.Value.ToString("dd-MMM-yyyy")) + " <br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
                     bodyMail.AppendLine();
@@ -1287,7 +1342,8 @@ namespace FMS.BLL.Ctf
         {
             var isExist = false;
             var exist = _ctfService.GetCtf().Where(x => x.IS_ACTIVE && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled 
-                                                && x.POLICE_NUMBER == item.PoliceNumber && x.EMPLOYEE_ID == item.EmployeeId 
+                                                && (x.POLICE_NUMBER == null ? "" : x.POLICE_NUMBER.ToUpper()) == (item.PoliceNumber == null ? ""  : item.PoliceNumber.ToUpper()) 
+                                                && x.EMPLOYEE_ID == item.EmployeeId 
                                                 && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).ToList();
             if (exist.Count > 0)
             {
