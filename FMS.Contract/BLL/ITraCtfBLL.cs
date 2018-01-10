@@ -23,5 +23,6 @@ namespace FMS.Contract.BLL
         decimal? RefundCost(TraCtfDto CtfDto);
         decimal? EmployeeContribution(TraCtfDto CtfDto);
         void CheckCtfInProgress();
+        TraCtfDto SaveUpload(TraCtfDto Dto, Login userLogin);
     }
 }
