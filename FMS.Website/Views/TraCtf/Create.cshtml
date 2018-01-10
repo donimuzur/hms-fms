@@ -464,17 +464,19 @@
     function CheckEndrent(reason)
     {
         var reasonval = $("#Reason").val();
-        
-        if(reason == 'end rent')
+        console.log("a"+reasonval);
+        if (reasonval == 'end rent')
         {
+            console.log("1");
             $('#idcfmonly').hide();
             $('#idExtend').hide();
             var EndRent = $('#EndRendDate').val()
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
-        else if (reasonval == '')
+        else if (reasonval == '' || !reasonval)
         {
+            console.log("2");
             checkVehicletype();
             checkVehicleusage();
             $('#idExtend').prop('disabled', false);
@@ -484,6 +486,8 @@
         }
         else
         {
+
+            console.log("3");
             checkVehicletype();
             checkVehicleusage();
             $('#idExtend').prop('disabled', true);
