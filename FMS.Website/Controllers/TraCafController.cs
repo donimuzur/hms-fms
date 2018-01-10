@@ -565,7 +565,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.SirsNumber);
                 slDocument.SetCellValue(iRow, 7, data.PoliceNumber);
                 slDocument.SetCellValue(iRow, 8, data.VehicleModel);
-                slDocument.SetCellValue(iRow, 9, data.Region);
+                slDocument.SetCellValue(iRow, 9, data.Area);
                 slDocument.SetCellValue(iRow, 10, data.VendorName);
                 slDocument.SetCellValue(iRow, 11, data.IncidentDateString);
                 slDocument.SetCellValue(iRow, 12, data.CreatedBy);
