@@ -2024,7 +2024,212 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public ActionResult UploadCtf(HttpPostedFileBase upload, CtfModel model)
         {
+            var data = (new ExcelReader()).ReadExcel(upload);
+            if (data != null)
+            {
+                foreach (var dataRow in data.DataRows)
+                {
+                    if (dataRow.Count <= 0)
+                    {
+                        continue;
+                    }
+                    if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    var item = new CtfItem();
+                    try
+                    {
 
+                        item.EmployeeId = dataRow[0];
+                        if (item.EmployeeId == "")
+                        {
+                            item.ErrorMessage = "Employee ID can't be empty";
+                        }
+
+                        item.EmployeeName = dataRow[1];
+                        if (item.EmployeeName == "")
+                        {
+                            item.ErrorMessage = "Employee Name can't be empty";
+                        }
+
+                        if (dataRow[3] == "")
+                        {
+                            item.ErrorMessage = "Effective Date Can't be empty";
+                        }
+                        else
+                        {
+                            try
+                            {
+                                double dEffectiveDate = double.Parse(dataRow[3]);
+                                DateTime dtEffectiveDate = DateTime.FromOADate(dEffectiveDate);
+                                item.EffectiveDate = dtEffectiveDate;
+                            }
+                            catch (Exception)
+                            {
+                                item.ErrorMessage = "Effective date format is not valid";
+                            }
+                        }
+
+                        item.PoliceNumber = dataRow[4];
+                        if (item.PoliceNumber == "")
+                        {
+                            item.ErrorMessage = "Police Number can't be empty";
+                        }
+
+                        item.CostCenter = dataRow[5];
+                        if (item.CostCenter == "")
+                        {
+                            item.ErrorMessage = "Cost Center can't be empty";
+                        }
+
+                        item.VehicleType = dataRow[6];
+                        if (item.VehicleType == "")
+                        {
+                            item.ErrorMessage = "Vehicle Type Can't be empty";
+                        }
+
+                        item.ReasonS = dataRow[2];
+                        if (item.ReasonS == "")
+                        {
+                            item.ErrorMessage = "Reason Can't be empty";
+                        }
+                        else
+                        {
+                            var Reason = _reasonBLL.GetReason().Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == item.ReasonS.ToUpper()
+                                        && x.IsActive && x.DocumentType == (int)Enums.DocumentType.CTF
+                                        && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
+
+                            if (Reason == null)
+                            {
+                                item.ErrorMessage = item.ReasonS + " is not found in master Reason";
+                            }
+                            else
+                            {
+                                item.Reason = Reason.MstReasonId;
+                            }
+                        }
+
+                        if (dataRow[7] == "")
+                        {
+                            item.ErrorMessage = "Year can't be empty";
+                        }
+                        else
+                        {
+                            try
+                            {
+                                item.VehicleYear = Convert.ToInt32(dataRow[7]);
+                            }
+                            catch (Exception)
+                            {
+                                item.ErrorMessage = "Vehicle Year format is not valid";
+                            }
+                        }
+
+                        item.SupplyMethod = dataRow[8];
+                        if (item.SupplyMethod == "")
+                        {
+                            item.ErrorMessage = "Supply Method can't be empty";
+                        }
+
+                        if (dataRow[9] == "")
+                        {
+                            item.ErrorMessage = "Extend Vehicle can't be empty";
+                        }
+                        else
+                        {
+                            if (dataRow[9].ToUpper() == "YES") item.ExtendVehicle = true;
+                            else if (dataRow[9].ToUpper() == "NO") item.ExtendVehicle = false;
+                            else { item.ErrorMessage = "Extend Vehicle is unknown"; }
+                        }
+
+                        if (item.ExtendVehicle == true)
+                        {
+                            item.CtfExtend = new CtfExtendDto();
+
+                            if (dataRow[10] == "")
+                            {
+                                item.ErrorMessage = "Extend New Date can't be empty";
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    double dNewDate = double.Parse(dataRow[10]);
+                                    DateTime dtNewDate = DateTime.FromOADate(dNewDate);
+                                    item.CtfExtend.NewProposedDate = dtNewDate;
+                                }
+                                catch (Exception)
+                                {
+                                    item.ErrorMessage = "Extend New Date format is not valid";
+                                }
+                            }
+
+                            item.CtfExtend.ExtendPoliceNumber = dataRow[11];
+                            if (dataRow[11] == "")
+                            {
+                                item.ErrorMessage = "Extend Police Number can't be empty";
+                            }
+
+                            item.CtfExtend.ExtendPoNumber = dataRow[12];
+                            if (dataRow[12] == "")
+                            {
+                                item.ErrorMessage = "Extend PO Number can't be empty";
+                            }
+
+                            item.CtfExtend.ExtedPoLine = dataRow[13];
+                            if (dataRow[13] == "")
+                            {
+                                item.ErrorMessage = "Extend PO Line can't be empty";
+                            }
+
+                            if (dataRow[14] == "")
+                            {
+                                item.ErrorMessage = "Extend Price can't be empty";
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    item.CtfExtend.ExtendPrice = Convert.ToDecimal(dataRow[14]);
+                                }
+                                catch (Exception)
+                                {
+                                    item.ErrorMessage = "Extend Price must be number";
+                                }
+                            }
+
+                            item.CtfExtend.ReasonStr = dataRow[15];
+                            if (dataRow[15] == "")
+                            {
+                                item.ErrorMessage = "Extend Reason Can't be empty";
+                            }
+                            else
+                            {
+                                var ExtendReason = _reasonBLL.GetReason().Where(x => x.IsActive && x.DocumentType == 8
+                                                   && (x.Reason == null ? "" : x.Reason.ToUpper()) == (dataRow[15].ToUpper())).FirstOrDefault();
+                                if (ExtendReason == null)
+                                {
+                                    item.ErrorMessage = "Reason " + dataRow[15] + " is not found in Master Reason";
+                                }
+                                else
+                                {
+                                    item.CtfExtend.Reason = ExtendReason.MstReasonId;
+                                }
+                            }
+                        }
+
+                    }
+                    catch (Exception exp)
+                    {
+                        item.ErrorMessage = exp.Message;
+                    }
+
+                    #region ---- Save Data------
+
+                    #endregion
+                }
+            }
             return View("");
         }
         #endregion
@@ -2349,7 +2554,7 @@ namespace FMS.Website.Controllers
                     var exist = _ctfBLL.CheckCtfExists(Dto);
                     if(exist )
                     {
-                        item.ErrorMessage = "There is an Open Document ";
+                        item.ErrorMessage = "Data Already Exist";
                     }
 
                     model.Add(item);
