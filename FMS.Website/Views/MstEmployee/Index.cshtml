@@ -152,6 +152,10 @@
 
     $(document).ready(function () {
         
+        if ($('.title-page').html() == 'Master Data Employee') {
+            $('#MstEmployeeMenu').addClass('active');
+        }
+
         setupDataTables();
 
         $(document).on('click', '#btn-filter', function () {

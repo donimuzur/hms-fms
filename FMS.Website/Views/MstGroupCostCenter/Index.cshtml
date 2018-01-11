@@ -80,17 +80,18 @@
 <!-- /.content -->
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('aside').animate({
-            scrollTop: $("#MstGroupCostCenter").offset().top
-        }, 1000);
-    });
-
     function ExportXls() {
         $('#ExportToXls').submit();
     }
 
     $(function () {
+        $('aside').animate({
+            scrollTop: $("#MstGroupCostCenter").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Group Cost Center') {
+            $('#MstGroupCostCenterMenu').addClass('active');
+        }
         // DataTable
         var table = $('#tbGroupCostCenter').DataTable({
             "dom": 'lf<"table-overflow"t>pi',

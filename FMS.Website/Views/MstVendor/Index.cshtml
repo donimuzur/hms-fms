@@ -86,6 +86,9 @@
     }
 
     $(function () {
+        if ($('.title-page').html() == 'Master Data Vendor') {
+            $('#MstVendorMenu').addClass('active');
+        }
         // DataTable
         var table = $('#tbVendor').DataTable({
             "dom": 'lf<"table-overflow"t>pi',

@@ -200,6 +200,10 @@
         $('aside').animate({
             scrollTop: $("#MstFuelOdometer").offset().top
         }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Fuel and Odometer') {
+            $('#MstFuelOdometerMenu').addClass('active');
+        }
     });
 
     function ExportXls() {

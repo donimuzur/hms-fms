@@ -2035,13 +2035,17 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = false;
-
             return View(model);
         }
         [HttpPost]
         public ActionResult UploadCtf(HttpPostedFileBase upload, CtfModel model)
         {
             var data = (new ExcelReader()).ReadExcel(upload);
+
+            var VehicleList = _fleetBLL.GetFleet().Where(x => x.IsActive).ToList();
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive).ToList();
+
             if (data != null)
             {
                 foreach (var dataRow in data.DataRows)
@@ -2065,8 +2069,9 @@ namespace FMS.Website.Controllers
                         item.PoliceNumber = dataRow[4];
                         item.CostCenter = dataRow[5];
                         item.VehicleType = dataRow[6];
-                        var Reason = _reasonBLL.GetReason().Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == dataRow[2].ToUpper()
-                                    && x.IsActive && x.DocumentType == (int)Enums.DocumentType.CTF
+
+                        var Reason = ReasonList.Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == dataRow[2].ToUpper()
+                                    && x.DocumentType == (int)Enums.DocumentType.CTF
                                     && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
 
                         item.Reason = Reason.MstReasonId;
@@ -2074,6 +2079,12 @@ namespace FMS.Website.Controllers
                         item.SupplyMethod = dataRow[8];
                         if (dataRow[9].ToUpper() == "YES") item.ExtendVehicle = true;
                         else if (dataRow[9].ToUpper() == "NO") item.ExtendVehicle = false;
+
+                        var Vehicle = VehicleList.Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())
+                                                                   && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
+                                                                   && x.EmployeeID == item.EmployeeId).FirstOrDefault();
+
+                        item.EndRendDate = Vehicle.EndContract;
 
                         if (item.ExtendVehicle == true)
                         {
@@ -2088,7 +2099,7 @@ namespace FMS.Website.Controllers
                             item.CtfExtend.ExtedPoLine = dataRow[13];
                             item.CtfExtend.ExtendPrice = Convert.ToDecimal(dataRow[14]);
 
-                            var ExtendReason = _reasonBLL.GetReason().Where(x => x.IsActive && x.DocumentType == 8
+                            var ExtendReason = ReasonList.Where(x => x.DocumentType == 8
                                                 && (x.Reason == null ? "" : x.Reason.ToUpper()) == (dataRow[15].ToUpper())).FirstOrDefault();
 
                             item.CtfExtend.Reason = ExtendReason.MstReasonId;
@@ -2129,14 +2140,29 @@ namespace FMS.Website.Controllers
                             if (PenaltyForEmployee == true) CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
                             if (PenaltyForFleet == true) CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
                         }
-                        
-                        var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
-                        AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
-                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, false, item.DocumentNumber);
-                        if (IsEndRent)
+                        try
                         {
-                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, false, item.DocumentNumber);
+                            var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
+                            AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                            if (IsEndRent)
+                            {
+                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, false, item.DocumentNumber);
+                                AddMessageInfo("Submit Success", Enums.MessageInfoType.Success);
+                            }
+                            else
+                            {
+                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, false, item.DocumentNumber);
+                                AddMessageInfo("Submit Success", Enums.MessageInfoType.Success);
+                            }
+                        }
+                        catch (Exception exp)
+                        {
+                            model.ErrorMessage = "Send Failed, Error : " + exp.Message;
+                            model.MainMenu = _mainMenu;
+                            model.CurrentLogin = CurrentUser;
+                            model.IsPersonalDashboard = false;
+                            return View(model);
                         }
                     }
                     else
@@ -2145,7 +2171,7 @@ namespace FMS.Website.Controllers
                     #endregion
                 }
             }
-            return View("");
+            return RedirectToAction("Index", "TraCtf");
         }
         #endregion
 
@@ -2262,6 +2288,10 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult UploadFile(HttpPostedFileBase upload)
         {
+            var VehicleList = _fleetBLL.GetFleet().Where(x => x.IsActive).ToList();
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive).ToList();
+
             var data = (new ExcelReader()).ReadExcel(upload);
             var model = new List<CtfItem>();
             if (data != null)
@@ -2277,6 +2307,7 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     var item = new CtfItem();
+                    item.ErrorMessage = "";
                     try
                     {
 
@@ -2335,8 +2366,8 @@ namespace FMS.Website.Controllers
                         }
                         else
                         {
-                            var Reason = _reasonBLL.GetReason().Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == item.ReasonS.ToUpper()
-                                        && x.IsActive && x.DocumentType == (int)Enums.DocumentType.CTF
+                            var Reason = ReasonList.Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == item.ReasonS.ToUpper()
+                                        && x.DocumentType == (int)Enums.DocumentType.CTF
                                         && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
 
                             if (Reason == null)
@@ -2382,8 +2413,29 @@ namespace FMS.Website.Controllers
                             else { item.ErrorMessage = "Extend Vehicle is unknown"; }
                         }
 
+                        #region -- Vehicle & Employee Validation ----
+
+                        var Employee = EmployeeList.Where(x => x.EMPLOYEE_ID == item.EmployeeId ).FirstOrDefault();
+                        if (Employee == null)
+                        {
+                            item.ErrorMessage = "Employee is not found in Master Employee";
+                        }
+
+                        var Vehicle = VehicleList.Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())
+                                                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
+                                                                    && x.EmployeeID == item.EmployeeId).FirstOrDefault();
+                        if (Vehicle == null)
+                        {
+                            item.ErrorMessage = "Vehicle is not found in Master Fleet";
+                        }
+
+                        #endregion
+                   
                         if (item.ExtendVehicle == true)
                         {
+
+                            #region -- Extend --
+                            
                             item.CtfExtend = new CtfExtendDto();
 
                             if (dataRow[10] == "")
@@ -2445,7 +2497,7 @@ namespace FMS.Website.Controllers
                             }
                             else
                             {
-                                var ExtendReason = _reasonBLL.GetReason().Where(x => x.IsActive && x.DocumentType == 8
+                                var ExtendReason = ReasonList.Where(x => x.DocumentType == 8
                                                    && (x.Reason == null ? "" : x.Reason.ToUpper()) == (dataRow[15].ToUpper())).FirstOrDefault();
                                 if (ExtendReason == null)
                                 {
@@ -2456,6 +2508,8 @@ namespace FMS.Website.Controllers
                                     item.CtfExtend.Reason = ExtendReason.MstReasonId;
                                 }
                             }
+                            #endregion
+
                         }
 
                     }
