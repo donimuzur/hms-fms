@@ -1732,14 +1732,18 @@ namespace FMS.Website.Controllers
         {
 
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
             settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
             var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
+
             var TraCtfId = Model.TraCtfId;
+
             if (TraCtfId == 0)
             {
+
                 var employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID == Model.EmployeeId).FirstOrDefault();
                 var vehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == Model.PoliceNumber && x.EmployeeID == Model.EmployeeId && x.IsActive).FirstOrDefault();
 
@@ -1763,6 +1767,7 @@ namespace FMS.Website.Controllers
 
                 var TraCtfDto = Mapper.Map<TraCtfDto>(Model);
                 var checkExistCtf = _ctfBLL.CheckCtfExists(TraCtfDto);
+
                 if (checkExistCtf)
                 {
                     Model = initCreate(Model);
@@ -1771,9 +1776,12 @@ namespace FMS.Website.Controllers
                     Model.ErrorMessage = "Data already exists";
                     return View("Create", Model);
                 }
+
                 var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
+
                 AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                 CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, IsBenefit, Model.DocumentNumber);
+
                 TraCtfId = CtfData.TraCtfId;
             }
 
@@ -1789,7 +1797,6 @@ namespace FMS.Website.Controllers
 
             var IsBenefitExtend = CtfDto.VehicleType == benefitType;
             CtfDto = _ctfBLL.Save(CtfDto, CurrentUser);
-
 
             if (Model.CtfExtend.ExtendPriceStr != null)
             {
@@ -2167,6 +2174,18 @@ namespace FMS.Website.Controllers
                     }
                     else
                     {
+                        var TraCtfDtoExtend = new CtfExtendDto();
+                        TraCtfDtoExtend.ExtendPoliceNumber = item.CtfExtend.ExtendPoliceNumber;
+                        TraCtfDtoExtend.ExtedPoLine = item.CtfExtend.ExtedPoLine;
+                        TraCtfDtoExtend.ExtendPoNumber = item.CtfExtend.ExtendPoNumber;
+                        TraCtfDtoExtend.ExtendPrice = item.CtfExtend.ExtendPrice;
+                        TraCtfDtoExtend.NewProposedDate = item.CtfExtend.NewProposedDate;
+                        TraCtfDtoExtend.Reason = item.CtfExtend.Reason;
+                        TraCtfDtoExtend.TraCtfId = item.TraCtfId;
+
+                        _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
+                        AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
+                        CtfWorkflow(CtfDt.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
                     }
                     #endregion
                 }
