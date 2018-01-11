@@ -162,7 +162,7 @@
                 $('#tb-upload-excel').html('');
                 uploaditems = JSON.parse(response);
                 var error = "";
-                for (var i = 0; i < uploaditems.length; i++) {                 
+                for (var i = 0; i < uploaditems.length; i++) {
                     var tr = '<tr>' +
                     createColumn(i + 1) +
                     createColumnWithHiddenField(uploaditems[i].EmployeeId, 'Model.Details[' + i + '].EmployeeId') +
@@ -192,6 +192,7 @@
                 else {
                     $('#btnSave').prop('disabled', true);
                 }
+                console.log(error);
                 $('#LoadingModal').hide();
             },
             error: function () {

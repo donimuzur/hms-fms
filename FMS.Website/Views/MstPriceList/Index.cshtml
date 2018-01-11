@@ -120,6 +120,9 @@
     }
 
     $(function () {
+        if ($('.title-page').html() == 'Master Data PriceList') {
+            $('#MstPriceListMenu').addClass('active');
+        }
         // DataTable
         var table = $('#tbPriceList').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
