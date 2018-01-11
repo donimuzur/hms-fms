@@ -127,6 +127,11 @@
     }
 
     $(function () {
+
+        if ($('.title-page').html() == 'Master Data Sales Volume') {
+            $('#MstSalesVolumeMenu').addClass('active');
+        }
+
         setupDataTables();
     });
 </script>
