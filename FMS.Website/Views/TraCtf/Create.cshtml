@@ -464,8 +464,7 @@
     function CheckEndrent(reason)
     {
         var reasonval = $("#Reason").val();
-        
-        if(reason == 'end rent')
+        if (reason == 'end rent')
         {
             $('#idcfmonly').hide();
             $('#idExtend').hide();
@@ -473,7 +472,7 @@
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
-        else if (reasonval == '')
+        else if (reasonval == '' || !reasonval)
         {
             checkVehicletype();
             checkVehicleusage();

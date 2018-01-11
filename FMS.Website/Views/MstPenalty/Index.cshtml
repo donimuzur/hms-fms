@@ -116,6 +116,10 @@
     }
 
     $(function () {
+        if ($('.title-page').html() == 'Master Data Penalty') {
+            $('#MstPenaltyMenu').addClass('active');
+        }
+
         // DataTable
         var table = $('#tbPenalty').DataTable({
             "dom": 'lf<"table-overflow"t>pi',

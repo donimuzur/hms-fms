@@ -453,7 +453,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Personal Dashboard CAF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 8);
+            slDocument.MergeWorksheetCells(1, 1, 1, 14);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -494,7 +494,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document CAF" : "Open Document CAF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 8);
+            slDocument.MergeWorksheetCells(1, 1, 1, 14);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -565,7 +565,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.SirsNumber);
                 slDocument.SetCellValue(iRow, 7, data.PoliceNumber);
                 slDocument.SetCellValue(iRow, 8, data.VehicleModel);
-                slDocument.SetCellValue(iRow, 9, data.Region);
+                slDocument.SetCellValue(iRow, 9, data.Area);
                 slDocument.SetCellValue(iRow, 10, data.VendorName);
                 slDocument.SetCellValue(iRow, 11, data.IncidentDateString);
                 slDocument.SetCellValue(iRow, 12, data.CreatedBy);

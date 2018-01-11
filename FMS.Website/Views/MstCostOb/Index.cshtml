@@ -110,6 +110,10 @@
         $('#LoadingModal').hide();
     }
     $(function () {
+        if ($('.title-page').html() == 'Master Data Cost OB') {
+            $('#MstCostObMenu').addClass('active');
+        }
+
         setupDataTables();
     });
     function setupDataTables() {

@@ -84,6 +84,10 @@
         $('aside').animate({
             scrollTop: $("#MstPenaltyLogic").offset().top
         }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Penalty Logic') {
+            $('#MstPenaltyLogicMenu').addClass('active');
+        }
     });
 
     function ExportXls() {

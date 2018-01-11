@@ -126,6 +126,10 @@
     }
 
     $(function () {
+        if ($('.title-page').html() == 'Master Data Vehicle Spec') {
+            $('#MstVehicleSpectMenu').addClass('active');
+        }
+
         // DataTable
         var table = $('#tbVehicleSpect').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
