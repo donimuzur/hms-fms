@@ -126,19 +126,9 @@
                         <td>@Html.Raw(data.PoliceNumber)</td>
                         <td>@Html.Raw(data.VehicleModel)</td>
                         <td>@Html.Raw(data.Area)</td>
-                        
-                        
-                        
                         <td>@Html.Raw(data.VendorName)</td>
-                        
-                        
-                        
-                        
                         <td>@Html.Raw(data.IncidentDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                        
                         <td>@Html.Raw(data.CreatedBy)</td>
-                        
-                        
                         <td>@Html.Raw(data.ModifiedBy)</td>
                         @if (data.ModifiedDate.HasValue)
                         {
@@ -148,8 +138,6 @@
                         {
                             <td></td>
                         }
-
-
                     </tr>
                 }
 

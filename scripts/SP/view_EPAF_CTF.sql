@@ -10,11 +10,10 @@ COST_CENTER as CC,
 EFFDT as EFFDATE,
 GRADE_LVL as GROUP_LEVEL,
 'SYSTEM' as LASTUPDOPRID
+ FROM [PSFT_FMS]..SYSADM.PS_HMS_JOB_FLEET_VW
+ join (select EMPLOYEE_ID,GROUP_LEVEL from MST_FLEET group by EMPLOYEE_ID,GROUP_LEVEL) as a on a.EMPLOYEE_ID = EMPLID
+where ACTION in ('PRO') and a.GROUP_LEVEL <> GRADE_LVL 
 
-from [PSFT_FMS]..SYSADM.PS_HMS_JOB_FLEET_VW 
-where ACTION in ('PRO') and 
-EMPLID  in (
-select employee_id from mst_employee)
 UNION
 select 
 (case ACTION_REASON  

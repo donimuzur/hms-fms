@@ -522,7 +522,7 @@
             document.getElementById("EffectiveDate").value = EndRent;
             $('#EffectiveDate').prop('readonly', true);
         }
-        else if (reasonval == '') {
+        else if (reasonval == '' || !reasonval) {
             $('#idExtend').prop('disabled', false);
             $('#ExtendVehicle').prop('disabled', false);
             $('#EffectiveDate').prop('readonly', true);
