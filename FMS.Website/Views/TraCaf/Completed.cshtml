@@ -29,15 +29,20 @@
             <thead>
                 <tr>
                     <th>Action</th>
-                    <th>CAF No.</th>
-                    <th>SIRS No.</th>
-                    <th>Police No.</th>
+                    <th>CAF Number</th>
+                    <th>CAF Status</th>
+                    <th>Vehicle Type</th>
+                    <th>Employee Id</th>
                     <th>Employee Name</th>
-                    <th>Regional</th>
+                    <th>SIRS Number</th>
+                    <th>Police Number</th>
                     <th>Vehicle Model</th>
+                    <th>Regional</th>
                     <th>Vendor</th>
-                    <th>Status</th>
                     <th>Incident Date</th>
+                    <th>Coordinator</th>
+                    <th>Updated By</th>
+                    <th>Updated Date</th>
                 </tr>
             </thead>
             <thead class="filters">
@@ -57,7 +62,11 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                 </tr>
             </thead>
             <tbody>
@@ -65,8 +74,6 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-
-
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
                                 <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
@@ -75,41 +82,31 @@
                             {
                                 <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                             }
-
-
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.DocumentStatusString)</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
                         <td>@Html.Raw(data.SirsNumber)</td>
                         <td>@Html.Raw(data.PoliceNumber)</td>
-                        <td>@Html.Raw(data.EmployeeName)</td>
-                        <td>@Html.Raw(data.Area)</td>
                         <td>@Html.Raw(data.VehicleModel)</td>
+                        <td>@Html.Raw(data.Area)</td>
                         <td>@Html.Raw(data.VendorName)</td>
-
-
-                        <td>@Html.Raw(data.DocumentStatusString)</td>
-
                         <td>@Html.Raw(data.IncidentDate.ToString("dd-MM-yyyy hh:mm"))</td>
-
-
-
-
-                        @*<td>@Html.Raw(data.ModifiedBy)</td>
-                            @if (data.ModifiedDate.HasValue)
-                            {
-                                <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }*@
-
-
+                        <td>@Html.Raw(data.CreatedBy)</td>
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        @if (data.ModifiedDate.HasValue)
+                        {
+                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
                     </tr>
                 }
-
             </tbody>
-
         </table>
     </div>
     <div id="closemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">

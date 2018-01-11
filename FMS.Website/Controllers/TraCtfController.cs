@@ -2101,7 +2101,47 @@ namespace FMS.Website.Controllers
                     }
 
                     #region ---- Save Data------
+                    if(!item.ExtendVehicle )
+                    {
+                        item.CreatedBy = CurrentUser.USER_ID;
+                        item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
+                        item.CreatedDate = DateTime.Now;
+                        item.DocumentStatus = Enums.DocumentStatus.Draft;
+                        item.ExtendVehicle = false;
+                        item.IsActive = true;
 
+                        var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+                        var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+                        
+                        var ReasonData = _reasonBLL.GetReasonById(item.Reason.Value);
+
+                        var reasonStr = ReasonData.Reason;
+                        var IsPenalty = ReasonData.IsPenalty;
+                        var PenaltyForFleet = ReasonData.PenaltyForFleet;
+                        var PenaltyForEmployee = ReasonData.PenaltyForEmplloyee;
+                        
+                        var IsEndRent = reasonStr.ToLower() == "end rent";
+
+                        //only check for benefit
+                        var CtfDto = Mapper.Map<TraCtfDto>(item);
+                        if (IsPenalty)
+                        {
+                            if (PenaltyForEmployee == true) CtfDto.Penalty = _ctfBLL.PenaltyCost(CtfDto);
+                            if (PenaltyForFleet == true) CtfDto.PenaltyPrice = _ctfBLL.PenaltyCost(CtfDto);
+                        }
+                        
+                        var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
+                        AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
+                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, false, item.DocumentNumber);
+                        if (IsEndRent)
+                        {
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, false, item.DocumentNumber);
+                        }
+                    }
+                    else
+                    {
+                    }
                     #endregion
                 }
             }
