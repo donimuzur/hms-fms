@@ -1676,6 +1676,12 @@ namespace FMS.BLL.Csf
 
                 _uow.SaveChanges();
             }
+
+            //add reminder
+            CheckCsfBenefitAssignedForUser10Days();
+            CheckCsfBenefitAssignedForUser13Days();
+            CheckCsfWtcAssignedForUser7Days();
+            CheckCsfWtcAssignedForUser10Days();
         }
 
 
