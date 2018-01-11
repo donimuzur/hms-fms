@@ -496,7 +496,7 @@
 
     function IsAngka(evt) {
         var charCode = (evt.which);
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 45) {
             return false;
         }
         return true;
