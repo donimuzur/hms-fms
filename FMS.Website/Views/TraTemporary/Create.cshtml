@@ -95,6 +95,15 @@
                                                             @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control", @required = "required" })
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Include CFM Idle</label>
+                                                            <div class="form-control">
+                                                                @Html.CheckBoxFor(model => model.Detail.IsIncludeCfmIdle)
+                                                                @Html.Label("Include", new { @id = "lblStatus" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
