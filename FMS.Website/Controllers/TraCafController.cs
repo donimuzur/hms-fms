@@ -486,7 +486,7 @@ namespace FMS.Website.Controllers
             }
             else
             {
-                CRF = _cafBLL.GetCaf().Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed || x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled).ToList();
+                CRF = _cafBLL.GetCaf().Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled).ToList();
             }
             var listData = Mapper.Map<List<TraCafItemDetails>>(CRF);
 
@@ -533,8 +533,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 10, "Vendor Name");
             slDocument.SetCellValue(iRow, 11, "Incident Date");
             slDocument.SetCellValue(iRow, 12, "Coordinator");
-            slDocument.SetCellValue(iRow, 13, "Modified By");
-            slDocument.SetCellValue(iRow, 14, "Modified Date");
+            slDocument.SetCellValue(iRow, 13, "Updated By");
+            slDocument.SetCellValue(iRow, 14, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;

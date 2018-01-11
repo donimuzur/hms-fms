@@ -138,6 +138,8 @@ namespace FMS.Core
             Extend = 10,
             [Description("In Progress")]
             InProgress = 11,
+            [Description("Reminder")]
+            Remind = 12,
         }
 
 		/// <summary>

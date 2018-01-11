@@ -855,8 +855,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 9, "Relocate Location");
             slDocument.SetCellValue(iRow, 10, "Regional");
             slDocument.SetCellValue(iRow, 11, "Coordinator");
-            slDocument.SetCellValue(iRow, 12, "Modified By");
-            slDocument.SetCellValue(iRow, 13, "Modified Date");
+            slDocument.SetCellValue(iRow, 12, "Updated By");
+            slDocument.SetCellValue(iRow, 13, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;

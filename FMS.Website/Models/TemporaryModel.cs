@@ -99,6 +99,7 @@ namespace FMS.Website.Models
 
         public bool IsBenefit { get; set; }
         public bool IsActive { get; set; }
+        public bool IsIncludeCfmIdle { get; set; }
 
         public SelectList EmployeeList { get; set; }
         public SelectList ReasonList { get; set; }

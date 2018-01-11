@@ -124,6 +124,7 @@ namespace FMS.Website.Controllers
             model.Detail.CreateDate = DateTime.Now;
             model.Detail.CreateBy = CurrentUser.USERNAME;
             model.Detail.IsBenefit = CurrentUser.UserRole == Enums.UserRole.HR ? true : false;
+            model.Detail.IsIncludeCfmIdle = true;
 
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             model.Detail.VehicleType = listVehType.Where(x => x.SettingValue.ToLower() == "benefit").FirstOrDefault().MstSettingId.ToString();
@@ -321,6 +322,7 @@ namespace FMS.Website.Controllers
                 model.IsPersonalDashboard = isPersonalDashboard;
                 model.Detail = Mapper.Map<TempData>(tempData);
                 model = InitialModel(model);
+                model.Detail.IsIncludeCfmIdle = true;
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.TMP).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -635,7 +637,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehType, string groupLevel, DateTime createdDate)
+        public JsonResult GetVehicleData(string vehType, string groupLevel, DateTime createdDate, bool includeCfm)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
             var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive).ToList();
@@ -645,6 +647,11 @@ namespace FMS.Website.Controllers
             if (vehicleType == "benefit")
             {
                 var modelVehicle = vehicleData.Where(x => x.GroupLevel > 0 && x.GroupLevel <= Convert.ToInt32(groupLevel)).ToList();
+
+                if (!includeCfm)
+                {
+                    return Json(modelVehicle);
+                }
 
                 //get selectedCfmIdle temp
                 var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed

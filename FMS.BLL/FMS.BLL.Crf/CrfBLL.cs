@@ -770,15 +770,19 @@ namespace FMS.BLL.Crf
                     {
                         rc.Subject = crfData.DOCUMENT_NUMBER + " - Benefit Car Relocation";
 
-                        bodyMail.Append("Dear " + crfData.EMPLOYEE_NAME + ",<br />");
+                        bodyMail.Append("Dear " + crfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("new operational car has been recorded as " + crfData.DOCUMENT_NUMBER + "<br />");
+                        bodyMail.Append("Kindly be advised due to your relocation, you are entitled to move your COP/CFM.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE.</a><br />");
+                        bodyMail.Append("Please confirm the relocation details, and fill in the information for the withdrawal and delivery <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE.</a><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("We kindly ask you to complete the form back to within 7 calendar days<br />");
+                        bodyMail.Append("For any assistance please contact " + crfData.CREATED_BY + "<br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact Fleet Name<br />");
+                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("HR Team");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
