@@ -831,6 +831,42 @@ namespace FMS.BLL.Csf
 
                     rc.IsCCExist = true;
                     break;
+                case Enums.ActionType.Remind:
+                    rc.Subject = csfData.DOCUMENT_NUMBER + " - Reminder";
+
+                    bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Thanks<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Regards,<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Fleet Team");
+                    bodyMail.AppendLine();
+
+                    rc.To.Add(employeeDataEmail);
+                    if (isBenefit)
+                    {
+                        foreach (var item in hrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                    }
+
+                    rc.IsCCExist = true;
+                    break;
             }
 
             rc.Body = bodyMail.ToString();
@@ -1678,6 +1714,106 @@ namespace FMS.BLL.Csf
             }
 
             return isExist;
+        }
+
+        public void CheckCsfBenefitAssignedForUser10Days()
+        {
+            var datePlus10 = DateTime.Now.AddDays(10);
+            var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
+
+            listCsfAssignedForUser = listCsfAssignedForUser.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser
+                                                                        && x.VEHICLE_TYPE == benefitType
+                                                                        && x.CREATED_DATE.Day == datePlus10.Day
+                                                                        && x.CREATED_DATE.Month == datePlus10.Month
+                                                                        && x.CREATED_DATE.Year == datePlus10.Year).ToList();
+
+            foreach (var item in listCsfAssignedForUser)
+            {
+                var input = new CsfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Remind;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CSF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                SendEmailWorkflow(input);
+            }
+        }
+
+        public void CheckCsfBenefitAssignedForUser13Days()
+        {
+            var datePlus13 = DateTime.Now.AddDays(13);
+            var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
+
+            listCsfAssignedForUser = listCsfAssignedForUser.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser
+                                                                        && x.VEHICLE_TYPE == benefitType
+                                                                        && x.CREATED_DATE.Day == datePlus13.Day
+                                                                        && x.CREATED_DATE.Month == datePlus13.Month
+                                                                        && x.CREATED_DATE.Year == datePlus13.Year).ToList();
+
+            foreach (var item in listCsfAssignedForUser)
+            {
+                var input = new CsfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Remind;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CSF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                SendEmailWorkflow(input);
+            }
+        }
+
+        public void CheckCsfWtcAssignedForUser7Days()
+        {
+            var datePlus7 = DateTime.Now.AddDays(7);
+            var wtcType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
+
+            listCsfAssignedForUser = listCsfAssignedForUser.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser
+                                                                        && x.VEHICLE_TYPE == wtcType
+                                                                        && x.CREATED_DATE.Day == datePlus7.Day
+                                                                        && x.CREATED_DATE.Month == datePlus7.Month
+                                                                        && x.CREATED_DATE.Year == datePlus7.Year).ToList();
+
+            foreach (var item in listCsfAssignedForUser)
+            {
+                var input = new CsfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Remind;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CSF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                SendEmailWorkflow(input);
+            }
+        }
+
+        public void CheckCsfWtcAssignedForUser10Days()
+        {
+            var datePlus10 = DateTime.Now.AddDays(10);
+            var wtcType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
+
+            var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
+
+            listCsfAssignedForUser = listCsfAssignedForUser.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser
+                                                                        && x.VEHICLE_TYPE == wtcType
+                                                                        && x.CREATED_DATE.Day == datePlus10.Day
+                                                                        && x.CREATED_DATE.Month == datePlus10.Month
+                                                                        && x.CREATED_DATE.Year == datePlus10.Year).ToList();
+
+            foreach (var item in listCsfAssignedForUser)
+            {
+                var input = new CsfWorkflowDocumentInput();
+                input.ActionType = Enums.ActionType.Remind;
+                input.UserId = "SYSTEM";
+                input.DocumentId = item.TRA_CSF_ID;
+                input.DocumentNumber = item.DOCUMENT_NUMBER;
+
+                SendEmailWorkflow(input);
+            }
         }
     }
 }
