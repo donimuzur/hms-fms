@@ -674,6 +674,7 @@ namespace FMS.BLL.Crf
 
             var isBenefit = crfData.VEHICLE_TYPE.ToUpper().Contains("BENEFIT");
             string creatorDataEmail = "";
+            var creatorName = string.Empty;
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
@@ -725,14 +726,13 @@ namespace FMS.BLL.Crf
 
             var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
             var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
-            var creatorQuery =
-                "SELECT EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+            var creatorQuery = "SELECT EMAIL, INTERNAL_EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
                 crfData.CREATED_BY + "'";
             if (typeEnv == "VTI")
             {
                 hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
                 fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
-                creatorQuery = "SELECT EMAIL FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CREATED_BY + "'";
+                creatorQuery = "SELECT EMAIL, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CREATED_BY + "'";
             }
 
             query = new SqlCommand(hrQueryEmail, con);
@@ -753,7 +753,8 @@ namespace FMS.BLL.Crf
             reader = query.ExecuteReader();
             while (reader.Read())
             {
-                creatorDataEmail = reader["EMAIL"].ToString();
+                creatorDataEmail = reader[0].ToString();
+                creatorName = reader[1].ToString();
             }
 
             reader.Close();
@@ -772,11 +773,11 @@ namespace FMS.BLL.Crf
 
                         bodyMail.Append("Dear " + crfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Kindly be advised due to your relocation, you are entitled to move your COP/CFM.<br /><br />");
+                        bodyMail.Append("Kindly be advised due to your relocation, you are entitled to move your " + crfData.VEHICLE_USAGE + ".<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Please confirm the relocation details, and fill in the information for the withdrawal and delivery <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE.</a><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + crfData.CREATED_BY + "<br />");
+                        bodyMail.Append("For any assistance please contact " + creatorName + "<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks<br /><br />");
                         bodyMail.AppendLine();
