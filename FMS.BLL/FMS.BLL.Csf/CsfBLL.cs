@@ -836,7 +836,7 @@ namespace FMS.BLL.Csf
 
                     bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br />");
+                    bodyMail.Append("Reminder, your new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                     bodyMail.AppendLine();
