@@ -1730,7 +1730,6 @@ namespace FMS.Website.Controllers
         #region ---------- Extend CTF --------
         public ActionResult CtfExtend(CtfItem Model)
         {
-
             var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
 
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
@@ -2092,7 +2091,7 @@ namespace FMS.Website.Controllers
                                                                    && x.EmployeeID == item.EmployeeId).FirstOrDefault();
 
                         item.EndRendDate = Vehicle.EndContract;
-
+                        item.VehicleLocation = Vehicle.City;
                         if (item.ExtendVehicle == true)
                         {
                             item.CtfExtend = new CtfExtendDto();
@@ -2174,6 +2173,31 @@ namespace FMS.Website.Controllers
                     }
                     else
                     {
+
+                        var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+
+                        var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+                        var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+
+                        settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
+                        var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
+
+
+                        item.CreatedBy = CurrentUser.USER_ID;
+                        item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
+                        item.CreatedDate = DateTime.Now;
+                        item.DocumentStatus = Enums.DocumentStatus.Extended;
+                        item.Reason = null;
+                        item.ModifiedBy = CurrentUser.USER_ID;
+                        item.ModifiedDate = DateTime.Now;
+                        item.ExtendVehicle = true;
+
+                        var TraCtfDto = Mapper.Map<TraCtfDto>(item);
+                        var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
+
+                        AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
+                        
                         var TraCtfDtoExtend = new CtfExtendDto();
                         TraCtfDtoExtend.ExtendPoliceNumber = item.CtfExtend.ExtendPoliceNumber;
                         TraCtfDtoExtend.ExtedPoLine = item.CtfExtend.ExtedPoLine;
@@ -2181,11 +2205,11 @@ namespace FMS.Website.Controllers
                         TraCtfDtoExtend.ExtendPrice = item.CtfExtend.ExtendPrice;
                         TraCtfDtoExtend.NewProposedDate = item.CtfExtend.NewProposedDate;
                         TraCtfDtoExtend.Reason = item.CtfExtend.Reason;
-                        TraCtfDtoExtend.TraCtfId = item.TraCtfId;
+                        TraCtfDtoExtend.TraCtfId = CtfData.TraCtfId;
 
                         _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
                         AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
-                        CtfWorkflow(CtfDt.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
+                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Extend, null, false, false, item.DocumentNumber);
                     }
                     #endregion
                 }
