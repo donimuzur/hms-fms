@@ -38,17 +38,6 @@
                     <th>Relocate Location</th>
                     <th>Regional</th>
                     <th>Coordinator</th>
-
-
-
-
-
-
-
-
-
-
-
                     <th>Updated By</th>
                     <th>Updated Date</th>
 
@@ -84,7 +73,7 @@
                         
                         @*else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
                         {*@
-                            <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                         @*}*@
 
 

@@ -305,11 +305,6 @@ namespace FMS.Website.Controllers
             }
             var data = _fleetBLL.GetFleetById(MstFleetId.Value);
 
-            if (data.VehicleType.ToUpper() == "BENEFIT")
-            {
-                return RedirectToAction("Detail", "MstFleet", new { MstFleetId = data.MstFleetId });
-            }
-
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.VatDecimalStr = model.VatDecimal == null ? "" : string.Format("{0:n0}", model.VatDecimal);
