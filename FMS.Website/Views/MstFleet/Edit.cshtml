@@ -21,149 +21,325 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Chassis Number<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.ChasisNumber, new { @class = "form-control" })
+                        }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Engine Number<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.EngineNumber, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.EngineNumber, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.EngineNumber, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee ID</label>
-                        @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee Name</label>
-                        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Car Group Level<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Employee Group Level></label>
-                        @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Assigned To<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost Center<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vendor Name<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Manufacturer<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Models<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Series<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Body Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control " })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control " })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Exterior Color<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Color, new { @class = "form-control " })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Color, new { @class = "form-control ", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Color, new { @class = "form-control " })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Transmision<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control " })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control " })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Car Group Level<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Fuel Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Branding<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Branding, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Branding, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Branding, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">AirBag<span class="red">*</span></label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()" })
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()" })
+                            }
+                            
                             @if (Model.Airbag == true)
-                        {
-                        <span>@Html.Label("Yes", new { @id = "lblAirbag" })</span>
-                        }
-                        else
-                        {
-                        <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
-                        }
+                            {
+                            <span>@Html.Label("Yes", new { @id = "lblAirbag" })</span>
+                            }
+                            else
+                            {
+                            <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
+                            }
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Request Year<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Usage<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Project<span class="red">*</span></label>
                         @Html.CheckBoxFor(model => model.Project, new { @id = "ChkProject", onclick = "checkProject()", @disabled = "disabled" })
+                        
                         @if (Model.Project == true)
                         {
                             @Html.Label("Yes", new { @id = "lblProject" })
@@ -177,31 +353,71 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Project Name<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Supply Method<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">City<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.City, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Address<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">VAT<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -209,6 +425,7 @@
                         <label class="control-label">Restitution<span class="red">*</span></label>
                         <div class="form-control" disabled="disabled">
                             @Html.CheckBoxFor(model => model.Restitution, new { @id = "ChkRestitution", onclick = "checkRestitution()", @disabled = "disabled" })
+                            
                             @if (Model.Restitution == true)
                             {
                                 @Html.Label("Yes", new { @id = "lblRestitution" })
@@ -224,7 +441,15 @@
                     <div class="form-group">
                         <label class="control-label">Start Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new {@class = "form-control" })
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new {@class = "form-control" })
+                            }
+                            
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -235,7 +460,15 @@
                     <div class="form-group">
                         <label class="control-label">End Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            }
+                            
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -245,26 +478,58 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Monthly HMS Installment<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">PO Number<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">PO Line<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Start Contract Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            }
+                            
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -275,7 +540,15 @@
                     <div class="form-group">
                         <label class="control-label">End Contract Date</label>
                         <div class="input-group date">
-                            @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            }
+                            
                             <span class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -286,7 +559,15 @@
                     <div class="form-group">
                         <label class="control-label">Vehicle Status<span class="red">*</span></label>
                         <div class="form-control">
-                            @Html.CheckBoxFor(model => model.IsActive)
+                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                            {
+                                @Html.CheckBoxFor(model => model.IsActive)
+                            }
+                            else
+                            {
+                                @Html.CheckBoxFor(model => model.IsActive)
+                            }
+                            
                             @Html.Label("Active", new { @id = "lblStatus" })
                         </div>
                     </div>
@@ -294,37 +575,82 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Certificate of Ownership<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Comments<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Asset<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
-                        @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
+                        }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Function<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                        }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Regional<span class="red">*</span></label>
-                        @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                        }
                     </div>
                 </div>
                 <div class="col-md-12">

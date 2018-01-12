@@ -2185,7 +2185,7 @@ namespace FMS.Website.Controllers
 
                         _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
                         AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
-                        CtfWorkflow(CtfDt.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
+                        //CtfWorkflow(CtfDto.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
                     }
                     #endregion
                 }
