@@ -1724,7 +1724,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfBenefitAssignedForUser10Days()
         {
-            var datePlus10 = DateTime.Now.AddDays(10);
+            var datePlus10 = DateTime.Now.AddDays(-10);
             var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
@@ -1749,7 +1749,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfBenefitAssignedForUser13Days()
         {
-            var datePlus13 = DateTime.Now.AddDays(13);
+            var datePlus13 = DateTime.Now.AddDays(-13);
             var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
@@ -1774,7 +1774,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfWtcAssignedForUser7Days()
         {
-            var datePlus7 = DateTime.Now.AddDays(7);
+            var datePlus7 = DateTime.Now.AddDays(-7);
             var wtcType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
@@ -1799,7 +1799,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfWtcAssignedForUser10Days()
         {
-            var datePlus10 = DateTime.Now.AddDays(10);
+            var datePlus10 = DateTime.Now.AddDays(-10);
             var wtcType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();

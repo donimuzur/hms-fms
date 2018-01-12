@@ -2209,7 +2209,7 @@ namespace FMS.Website.Controllers
 
                         _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
                         AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
-                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Extend, null, false, false, item.DocumentNumber);
+                        //CtfWorkflow(CtfDto.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
                     }
                     #endregion
                 }
