@@ -1184,6 +1184,16 @@ namespace FMS.BLL.Ctf
         {
             var dateMinus1 = DateTime.Today.AddDays(-1);
 
+            var CopEndRentList = _fleetService.GetFleet().Where(x => x.IS_ACTIVE
+                                && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                && (x.VEHICLE_USAGE == null ? "" : x.VEHICLE_USAGE.ToUpper()) == "COP"
+                                && x.END_CONTRACT.Value <= dateMinus1).ToList();
+
+            foreach (var copitem in CopEndRentList)
+            {
+                InActiveCOPEndRent(copitem.MST_FLEET_ID);
+            }
+
             var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
                                                                         && x.EFFECTIVE_DATE.Value <= dateMinus1).ToList();
 
@@ -1351,6 +1361,17 @@ namespace FMS.BLL.Ctf
             }
 
             return isExist;
+        }
+
+        public void InActiveCOPEndRent(long id)
+        {
+            var CopVehicle = _fleetService.GetFleetById((int)id);
+            CopVehicle.IS_ACTIVE = false;
+            CopVehicle.END_DATE = DateTime.Now;
+            CopVehicle.MODIFIED_DATE = DateTime.Now;
+            CopVehicle.MODIFIED_BY = "SYSTEM";
+            CopVehicle.VEHICLE_STATUS = "IN ACTIVE";
+            _fleetService.save(CopVehicle);
         }
     }
 }

@@ -19,6 +19,7 @@ function selectVehicle(urlFunction) {
     var vehType = $('#Detail_VehicleType').val();
     var groupLevel = $('#Detail_GroupLevel').val();
     var createdDate = $('#Detail_CreateDate').val();
+    var vendor = $('#Detail_VendorName').find("option:selected").text();
     var includeCfm = false;
     if ($('#Detail_IsIncludeCfmIdle').is(":checked")) {
         includeCfm = true;
@@ -32,7 +33,7 @@ function selectVehicle(urlFunction) {
         $.ajax({
             type: 'POST',
             url: urlFunction,
-            data: { vehType: vehType, groupLevel: groupLevel, createdDate: createdDate, includeCfm: includeCfm },
+            data: { vehType: vehType, groupLevel: groupLevel, createdDate: createdDate, includeCfm: includeCfm, vendor: vendor },
             success: function (data) {
                 if (data.length > 0) {
                     $('#tb-body-select-veh').html("");

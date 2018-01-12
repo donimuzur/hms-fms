@@ -25,7 +25,6 @@ namespace FMS.Website.Models
             SearchViewExport = new SummarySearchViewExport();
             SearchView = new SummarySearchView();
             SearchView.MonthFrom = DateTime.Now.Month;
-            SearchView.MonthTo = DateTime.Now.Month;
         }
 
         public bool IsByRegion { get; set; }
@@ -48,9 +47,7 @@ namespace FMS.Website.Models
     public class SummarySearchView
     {
         public int MonthFrom { get; set; }
-        public int MonthTo { get; set; }
         public int YearFrom { get; set; }
-        public int YearTo { get; set; }
 
         public SelectList MonthList
         {
@@ -81,8 +78,8 @@ namespace FMS.Website.Models
     public class SummarySearchViewExport
     {
         public int MonthFrom { get; set; }
-        public int MonthTo { get; set; }
         public int YearFrom { get; set; }
+        public int MonthTo { get; set; }
         public int YearTo { get; set; }
     }
 

@@ -836,7 +836,7 @@ namespace FMS.BLL.Csf
 
                     bodyMail.Append("Dear " + csfData.EMPLOYEE_NAME + ",<br /><br />");
                     bodyMail.AppendLine();
-                    bodyMail.Append("new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br />");
+                    bodyMail.Append("Reminder, your new operational car has been recorded as " + csfData.DOCUMENT_NUMBER + "<br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Please submit detail vehicle information <a href='" + webRootUrl + "/TraCsf/EditForEmployee/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a><br /><br />");
                     bodyMail.AppendLine();
@@ -1724,7 +1724,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfBenefitAssignedForUser10Days()
         {
-            var datePlus10 = DateTime.Now.AddDays(10);
+            var datePlus10 = DateTime.Now.AddDays(-10);
             var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
@@ -1749,7 +1749,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfBenefitAssignedForUser13Days()
         {
-            var datePlus13 = DateTime.Now.AddDays(13);
+            var datePlus13 = DateTime.Now.AddDays(-13);
             var benefitType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
@@ -1774,7 +1774,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfWtcAssignedForUser7Days()
         {
-            var datePlus7 = DateTime.Now.AddDays(7);
+            var datePlus7 = DateTime.Now.AddDays(-7);
             var wtcType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
@@ -1799,7 +1799,7 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfWtcAssignedForUser10Days()
         {
-            var datePlus10 = DateTime.Now.AddDays(10);
+            var datePlus10 = DateTime.Now.AddDays(-10);
             var wtcType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();

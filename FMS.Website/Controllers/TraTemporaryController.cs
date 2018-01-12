@@ -637,7 +637,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleData(string vehType, string groupLevel, DateTime createdDate, bool includeCfm)
+        public JsonResult GetVehicleData(string vehType, string groupLevel, DateTime createdDate, bool includeCfm, string vendor)
         {
             var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
             var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive).ToList();
@@ -666,6 +666,11 @@ namespace FMS.Website.Controllers
                                                                         && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0).Select(x => x.MST_FLEET_ID.Value).ToList();
 
                 var fleetDataGood = _fleetBLL.GetFleet().Where(x => x.VehicleUsage != null);
+
+                if (!string.IsNullOrEmpty(vendor))
+                {
+                    fleetDataGood = fleetDataGood.Where(x => (x.VendorName == null ? string.Empty : x.VendorName.ToUpper()) == vendor.ToUpper()).ToList();
+                }
 
                 var fleetData = fleetDataGood.Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE" && 
                                                                 x.IsActive &&

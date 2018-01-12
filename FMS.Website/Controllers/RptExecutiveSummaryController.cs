@@ -62,13 +62,13 @@ namespace FMS.Website.Controllers
         #region --------- Get Data Json -----------------------
 
         [HttpPost]
-        public JsonResult GetVehicleDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult GetVehicleDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new VehicleGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -97,13 +97,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleWtcDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult GetVehicleWtcDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new VehicleWtcGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -122,13 +122,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetVehicleMakeDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult GetVehicleMakeDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new VehicleMakeGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
@@ -143,13 +143,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetOdometerDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult GetOdometerDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new OdometerGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -178,13 +178,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetLiterByFunctionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult GetLiterByFunctionDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new LiterFuncGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -213,13 +213,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetFuelCostByFunctionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult GetFuelCostByFunctionDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new FuelCostFuncGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -248,13 +248,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetLeaseCostByFunctionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult GetLeaseCostByFunctionDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new LeaseCostFuncGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -273,13 +273,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult SalesByRegionDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult SalesByRegionDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new SalesRegionGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
 
             List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
 
@@ -294,13 +294,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult AccidentDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult AccidentDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new AccidentGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -329,13 +329,13 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult AcObDataVisual(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult AcObDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
             var input = new AcVsObGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthTo;
-            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -362,7 +362,6 @@ namespace FMS.Website.Controllers
         {
             var model = new SummaryAllModel();
             model.SearchView.YearFrom = DateTime.Now.Year;
-            model.SearchView.YearTo = DateTime.Now.Year;
 
             model.TitleForm = "Executive Summary All";
             model.TitleExport = "ExportSummaryAll";
@@ -574,7 +573,6 @@ namespace FMS.Website.Controllers
         {
             var model = new SummaryAllModel();
             model.SearchView.YearFrom = DateTime.Now.Year;
-            model.SearchView.YearTo = DateTime.Now.Year;
 
             model.IsByRegion = true;
             model.TitleForm = "Executive Summary By Region";
