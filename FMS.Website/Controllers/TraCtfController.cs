@@ -2963,7 +2963,7 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 28, data.UserDecision == 1 ? "Buy" : "Refund");
+                    slDocument.SetCellValue(iRow, 28, data.UserDecision == 1 ? "Buy" : (data.UserDecision == 2 ? "Refund":""));
                 }
 
                 slDocument.SetCellValue(iRow, 29, data.BuyCost.HasValue ? data.BuyCost.Value : 0);
