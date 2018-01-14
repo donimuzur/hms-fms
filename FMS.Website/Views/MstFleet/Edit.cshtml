@@ -50,11 +50,27 @@
                         <label class="control-label">Employee ID</label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control" })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeID, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -64,11 +80,27 @@
                         <label class="control-label">Employee Name</label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -82,7 +114,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -96,7 +136,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -106,11 +154,27 @@
                         <label class="control-label">Assigned To<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control" })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.AssignedTo, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -118,15 +182,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Cost Center<span class="red">*</span></label>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10", @readonly = "readonly" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10" })
-                        }
-                        
+                        @Html.TextBoxFor(model => model.CostCenter, new { @class = "form-control", @maxlength = "10" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -135,10 +191,20 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.VendorName)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.VendorName)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -152,7 +218,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -166,7 +240,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Models, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Models, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -180,7 +262,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Series, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Series, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -191,10 +281,20 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.BodyType)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control " })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.BodyType)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control " })
+                            }
+                            
                         }
                         
                     </div>
@@ -204,11 +304,27 @@
                         <label class="control-label">Exterior Color<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.TextBoxFor(model => model.Color, new { @class = "form-control ", @readonly = "readonly" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Color, new { @class = "form-control ", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Color, new { @class = "form-control " })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.Color, new { @class = "form-control " })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Color, new { @class = "form-control ", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Color, new { @class = "form-control " })
+                            }
+                            
                         }
                         
                     </div>
@@ -219,10 +335,20 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.Transmission)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control " })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Transmission)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control " })
+                            }
+                            
                         }
                         
                     </div>
@@ -236,7 +362,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.CarGroupLevel, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -247,10 +381,20 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.FuelType)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.FuelType)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -260,11 +404,27 @@
                         <label class="control-label">Branding<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.TextBoxFor(model => model.Branding, new { @class = "form-control", @readonly = "readonly" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Branding, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Branding, new { @class = "form-control" })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.Branding, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Branding, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Branding, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -272,25 +432,57 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">AirBag<span class="red">*</span></label>
-                        <div class="form-control">
-                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            <div class="form-control" disabled>
+                                @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()", @disabled = "disabled" })
+                            
+                                @if (Model.Airbag == true)
+                                {
+                                <span>@Html.Label("Yes", new { @id = "lblAirbag" })</span>
+                                }
+                                else
+                                {
+                                <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
+                                }
+                            </div>
+
+                        }
+                        else
+                        {
+                            if (Model.VehicleType.ToLower() == "benefit")
                             {
-                                @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()", @readonly = "readonly" })
+                                <div class="form-control" disabled>
+                                    @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()", @disabled = "disabled" })
+
+                                    @if (Model.Airbag == true)
+                                    {
+                                        <span>@Html.Label("Yes", new { @id = "lblAirbag" })</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
+                                    }
+                                </div>
                             }
                             else
                             {
-                                @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()" })
+                                <div class="form-control">
+                                    @Html.CheckBoxFor(model => model.Airbag, new { @id = "ChkAirbag", onclick = "checkAirbag()" })
+                            
+                                    @if (Model.Airbag == true)
+                                    {
+                                    <span>@Html.Label("Yes", new { @id = "lblAirbag" })</span>
+                                    }
+                                    else
+                                    {
+                                    <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
+                                    }
+                                </div>
                             }
                             
-                            @if (Model.Airbag == true)
-                            {
-                            <span>@Html.Label("Yes", new { @id = "lblAirbag" })</span>
-                            }
-                            else
-                            {
-                            <span>@Html.Label("No", new { @id = "lblAirbag" })</span>
-                            }
-                        </div>
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -302,7 +494,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.VehicleYear, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -313,10 +513,20 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.VehicleType)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.VehicleType)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -326,11 +536,29 @@
                         <label class="control-label">Vehicle Usage<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.VehicleUsage)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control" })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.VehicleUsage)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -355,11 +583,29 @@
                         <label class="control-label">Project Name<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.ProjectName)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control" })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.ProjectName)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -370,10 +616,20 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.SupplyMethod)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.SupplyMethod)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -383,11 +639,27 @@
                         <label class="control-label">City<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.TextBoxFor(model => model.City, new { @class = "form-control", @readonly = "readonly" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.City, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                            }
+                            
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.City, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -401,7 +673,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                            }
+                            
                         }
                         
                     </div>
@@ -415,7 +695,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.VatDecimalStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                            }
+                            
                         }
                         
                     </div>
@@ -447,7 +735,15 @@
                             }
                             else
                             {
-                                @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new {@class = "form-control" })
+                                if (Model.VehicleType.ToLower() == "benefit")
+                                {
+                                    @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                }
+                                
                             }
                             
                             <span class="input-group-addon">
@@ -466,7 +762,15 @@
                             }
                             else
                             {
-                                @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                if (Model.VehicleType.ToLower() == "benefit")
+                                {
+                                    @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                }
+                                
                             }
                             
                             <span class="input-group-addon">
@@ -484,7 +788,15 @@
                         }
                         else
                         {
-                            @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)", @readonly = "readonly" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.MonthlyHMSInstallmentStr, new { @class = "decimal form-control", onkeypress = "return IsAngka(event)" })
+                            }
+                            
                         }
                         
                     </div>
@@ -492,29 +804,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">PO Number<span class="red">*</span></label>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control", @readonly = "readonly" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control" })
-                        }
-                        
+                        @Html.TextBoxFor(model => model.PoNumber, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">PO Line<span class="red">*</span></label>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control", @readonly = "readonly" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control" })
-                        }
-                        
+                        @Html.TextBoxFor(model => model.PoLine, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -527,7 +823,15 @@
                             }
                             else
                             {
-                                @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                if (Model.VehicleType.ToLower() == "benefit")
+                                {
+                                    @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(model => model.StartContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                }
+                                
                             }
                             
                             <span class="input-group-addon">
@@ -546,7 +850,15 @@
                             }
                             else
                             {
-                                @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                if (Model.VehicleType.ToLower() == "benefit")
+                                {
+                                    @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(model => model.EndContract, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                                }
+                                
                             }
                             
                             <span class="input-group-addon">
@@ -558,73 +870,58 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Vehicle Status<span class="red">*</span></label>
-                        <div class="form-control">
-                            @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            <div class="form-control" disabled>
+                                @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.IsActive)
+                                @Html.Label("Active", new { @id = "lblStatus" })
+                            </div>
+
+                        }
+                        else
+                        {
+                            if (Model.VehicleType.ToLower() == "benefit")
                             {
-                                @Html.CheckBoxFor(model => model.IsActive)
+                                <div class="form-control" disabled>
+                                    @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                    @Html.Label("Active", new { @id = "lblStatus" })
+                                </div>
                             }
                             else
                             {
-                                @Html.CheckBoxFor(model => model.IsActive)
+                                <div class="form-control">
+                                    @Html.CheckBoxFor(model => model.IsActive)
+                                    @Html.Label("Active", new { @id = "lblStatus" })
+                                </div>
                             }
-                            
-                            @Html.Label("Active", new { @id = "lblStatus" })
-                        </div>
+
+                        }
+                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Certificate of Ownership<span class="red">*</span></label>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
-                        }
-                        
+                        @Html.TextBoxFor(model => model.CertificateOwnership, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Comments<span class="red">*</span></label>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
-                        }
-                        
+                        @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Asset<span class="red">*</span></label>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
-                        }
-                        
+                        @Html.TextBoxFor(model => model.Assets, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Total Monthly Charge<span class="red">*</span></label>
-                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-                        {
-                            @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
-                        }
+                        @Html.TextBoxFor(model => model.TotalMonthlyChargeStr, new { @class = "decimal form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -632,11 +929,21 @@
                         <label class="control-label">Function<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.Function)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Function)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                            }
+                            
                         }
                     </div>
                 </div>
@@ -645,11 +952,21 @@
                         <label class="control-label">Regional<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.HiddenFor(model => model.Regional)
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                            if (Model.VehicleType.ToLower() == "benefit")
+                            {
+                                @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Regional)
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                            }
+                            
                         }
                     </div>
                 </div>

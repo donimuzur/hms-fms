@@ -321,20 +321,21 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var exist = _fleetBLL.GetFleet().Where(x => (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (model.EmployeeName == null ? "" : model.EmployeeName.ToUpper())
-                           && (x.EmployeeID == null ? "" : x.EmployeeID.ToUpper()) == (model.EmployeeID == null ? "" : model.EmployeeID.ToUpper())
-                           && (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (model.ChasisNumber == null ? "" : model.ChasisNumber.ToUpper())
+                var exist = _fleetBLL.GetFleet().Where(x => (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (model.ChasisNumber == null ? "" : model.ChasisNumber.ToUpper())
                            && (x.EngineNumber == null ? "" : x.EngineNumber.ToUpper()) == (model.EngineNumber == null ? "" : model.EngineNumber.ToUpper())
                            && x.IsActive).FirstOrDefault();
 
                 if (exist != null)
                 {
-                    exist.IsActive = false;
-                    exist.ModifiedBy = "SYSTEM";
-                    exist.ModifiedDate = DateTime.Now;
-                    _fleetBLL.Save(exist);
+                    if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                    {
+                        exist.IsActive = false;
+                        exist.ModifiedBy = "SYSTEM";
+                        exist.ModifiedDate = DateTime.Now;
+                        _fleetBLL.Save(exist);
 
-                    model.MstFleetId = 0;
+                        model.MstFleetId = 0;
+                    }
                 }
 
                 if (model.MonthlyHMSInstallmentStr != null)
@@ -426,22 +427,86 @@ namespace FMS.Website.Controllers
                             data.EmployeeID = null;
                         }
 
-                        var exist = _fleetBLL.GetFleet().Where(x => (x.EmployeeName == null ? "" : x.EmployeeName.ToUpper()) == (data.EmployeeName == null ? "" : data.EmployeeName.ToUpper())
-                           && (x.EmployeeID == null ? "" : x.EmployeeID.ToUpper()) == (data.EmployeeID == null ? "" : data.EmployeeID.ToUpper())
-                           && (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (data.ChasisNumber == null ? "" : data.ChasisNumber.ToUpper())
+                        var exist = _fleetBLL.GetFleet().Where(x => (x.ChasisNumber == null ? "" : x.ChasisNumber.ToUpper()) == (data.ChasisNumber == null ? "" : data.ChasisNumber.ToUpper())
                            && (x.EngineNumber == null ? "" : x.EngineNumber.ToUpper()) == (data.EngineNumber == null ? "" : data.EngineNumber.ToUpper())
                            && x.IsActive).FirstOrDefault();
 
                         if (exist != null)
                         {
-                            exist.IsActive = false;
-                            exist.ModifiedBy = "SYSTEM";
-                            exist.ModifiedDate = DateTime.Now;
-                            _fleetBLL.Save(exist);
-
+                            if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                            {
+                                exist.IsActive = false;
+                                exist.ModifiedBy = "SYSTEM";
+                                exist.ModifiedDate = DateTime.Now;
+                                _fleetBLL.Save(exist);
+                            }
                         }
 
                         var dto = Mapper.Map<FleetDto>(data);
+
+                        if (CurrentUser.UserRole == Enums.UserRole.Administrator)
+                        {
+                            if (exist != null)
+                            {
+                                if ((exist.VehicleType == null ? string.Empty : exist.VehicleType.ToUpper()) == "BENEFIT")
+                                {
+                                    dto = exist;
+                                    dto.CostCenter = data.CostCenter;
+                                    dto.PoNumber = data.PoNumber;
+                                    dto.PoLine = data.PoLine;
+                                    dto.PoliceNumber = data.PoliceNumber;
+                                    dto.CertificateOwnership = data.CertificateOwnership;
+                                    dto.Comments = data.Comments;
+                                    dto.Assets = data.Assets;
+                                    dto.ChasisNumber = data.ChasisNumber;
+                                    dto.EngineNumber = data.EngineNumber;
+                                }
+                                else
+                                {
+                                    dto.MstFleetId = exist.MstFleetId;
+                                }
+                            }
+                        }
+                        else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+                        {
+                            if (exist != null)
+                            {
+                                if ((exist.VehicleType == null ? string.Empty : exist.VehicleType.ToUpper()) == "BENEFIT")
+                                {
+                                    dto = exist;
+                                    dto.CostCenter = data.CostCenter;
+                                    dto.PoNumber = data.PoNumber;
+                                    dto.PoLine = data.PoLine;
+                                    dto.PoliceNumber = data.PoliceNumber;
+                                    dto.CertificateOwnership = data.CertificateOwnership;
+                                    dto.Comments = data.Comments;
+                                    dto.Assets = data.Assets;
+                                    dto.MstFleetId = data.MstFleetId;
+                                }
+                                else
+                                {
+                                    dto = exist;
+                                    dto.CostCenter = data.CostCenter;
+                                    dto.PoNumber = data.PoNumber;
+                                    dto.PoLine = data.PoLine;
+                                    dto.PoliceNumber = data.PoliceNumber;
+                                    dto.CertificateOwnership = data.CertificateOwnership;
+                                    dto.Comments = data.Comments;
+                                    dto.Assets = data.Assets;
+                                    dto.EmployeeID = data.EmployeeID;
+                                    dto.EmployeeName = data.EmployeeName;
+                                    dto.Branding = data.Branding;
+                                    dto.Color = data.Color;
+                                    dto.VehicleUsage = data.VehicleUsage;
+                                    dto.City = data.City;
+                                    dto.AssignedTo = data.AssignedTo;
+                                    dto.Project = data.Project;
+                                    dto.ProjectName = data.ProjectName;
+                                    dto.MstFleetId = data.MstFleetId;
+                                }
+                            }
+                        }
+
                         _fleetBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }
@@ -767,7 +832,7 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 36, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 37, data.IsActive ? "Active" : "Not Active");
                 slDocument.SetCellValue(iRow, 38, data.CertificateOwnership);
-                slDocument.SetCellValue(iRow, 39, data.Comments);
+                slDocument.SetCellValue(iRow, 39, "'" + data.Comments);
                 slDocument.SetCellValue(iRow, 40, data.Assets);
                 slDocument.SetCellValue(iRow, 41, data.TotalMonthlyCharge == null ? 0 : data.TotalMonthlyCharge.Value);
                 slDocument.SetCellValue(iRow, 42, data.Function);
