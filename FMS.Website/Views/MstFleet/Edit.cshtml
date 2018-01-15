@@ -190,19 +190,19 @@
                         <label class="control-label">Vendor Name<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.DropDownListFor(model => model.VendorName, Model.VendorList, "Select", new { @class = "form-control", @disabled = "disabled" })
                             @Html.HiddenFor(model => model.VendorName)
                         }
                         else
                         {
                             if (Model.VehicleType.ToLower() == "benefit")
                             {
-                                @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.DropDownListFor(model => model.VendorName, Model.VendorList, "Select", new { @class = "form-control", @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.VendorName)
                             }
                             else
                             {
-                                @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.VendorName, Model.VendorList, "Select", new { @class = "form-control" })
                             }
                             
                         }
@@ -929,19 +929,19 @@
                         <label class="control-label">Function<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.DropDownListFor(model => model.Function, Model.FunctionList, "Select", new { @class = "form-control", @disabled = "disabled" })
                             @Html.HiddenFor(model => model.Function)
                         }
                         else
                         {
                             if (Model.VehicleType.ToLower() == "benefit")
                             {
-                                @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.DropDownListFor(model => model.Function, Model.FunctionList, "Select", new { @class = "form-control", @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.Function)
                             }
                             else
                             {
-                                @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.Function, Model.FunctionList, "Select", new { @class = "form-control" })
                             }
                             
                         }
@@ -952,19 +952,19 @@
                         <label class="control-label">Regional<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
-                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.DropDownListFor(model => model.Regional, Model.RegionalList, "Select", new { @class = "form-control", @disabled = "disabled" })
                             @Html.HiddenFor(model => model.Regional)
                         }
                         else
                         {
                             if (Model.VehicleType.ToLower() == "benefit")
                             {
-                                @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control", @disabled = "disabled" })
+                                @Html.DropDownListFor(model => model.Regional, Model.RegionalList, "Select", new { @class = "form-control", @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.Regional)
                             }
                             else
                             {
-                                @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.Regional, Model.RegionalList, "Select", new { @class = "form-control" })
                             }
                             
                         }
