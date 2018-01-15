@@ -83,11 +83,10 @@ namespace FMS.Website.Controllers
                     if (item.Odometer != 0)
                     {
                         var data_temp = dataFuel
-                            .Where(x => x.PoliceNumber == item.PoliceNumber 
-                                    && x.ReportMonth == input.MonthFrom 
-                                    && x.ReportYear == input.YearFrom)
+                            .Where(x => (x.PoliceNumber == item.PoliceNumber) 
+                                    && (x.Odometer < item.Odometer)).OrderByDescending(x => x.Odometer)
                                 .Select(x => x.Odometer)
-                                .FirstOrDefault();
+                                .First();
                         if (data_temp == 0)
                         {
                             item.Usage = item.Odometer;
@@ -108,7 +107,7 @@ namespace FMS.Website.Controllers
                 }
 
                 return View(model);
-            }n
+            }
             catch (Exception exception)
             {
                 var model = new RptFuelModel();
