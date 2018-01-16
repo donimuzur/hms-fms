@@ -124,4 +124,14 @@
 
         $("#employeeToSelect").easyAutocomplete(options);
     }
+
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstDelegation").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Delegation') {
+            $('#MstDelegationMenu').addClass('active');
+        }
+    });
 </script>

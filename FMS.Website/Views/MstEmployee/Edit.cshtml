@@ -166,4 +166,14 @@
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
     }
+    $(document).ready(function () {
+
+        if ($('.title-page').html() == 'Master Data Employee') {
+            $('#MstEmployeeMenu').addClass('active');
+        }
+
+        $('aside').animate({
+            scrollTop: $("#MstEmployee").offset().top
+        }, 1000);
+    });
 </script>

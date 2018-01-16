@@ -90,4 +90,10 @@
         return true;
     }
     $('#ObCost').val(ThausandSeperator($('#ObCost').val(), 2));
+
+    $(function () {
+        if ($('.title-page').html() == 'Master Data Cost OB') {
+            $('#MstCostObMenu').addClass('active');
+        }
+    });
 </script>

@@ -148,4 +148,14 @@
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
     }
+
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstSysAccess").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data SysAccess') {
+            $('#MstSysAccessMenu').addClass('active');
+        }
+    });
 </script>

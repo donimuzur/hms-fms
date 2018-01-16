@@ -100,4 +100,13 @@
             $('#PenaltyForFleet').prop('disabled', true);
         }
     }
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstReason").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Reason') {
+            $('#MstReasonMenu').addClass('active');
+        }
+    });
 </script>
