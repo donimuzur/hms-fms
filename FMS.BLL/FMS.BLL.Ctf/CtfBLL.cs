@@ -930,6 +930,8 @@ namespace FMS.BLL.Ctf
                         {
                             rc.CC.Add(item);
                         }
+                        rc.CC.Add(vendorDataEmail);
+
                         rc.IsCCExist = true;
                     }
                     else if (isBenefit && !ctfData.ExtendVehicle.Value)
@@ -971,6 +973,8 @@ namespace FMS.BLL.Ctf
                         {
                             rc.CC.Add(item);
                         }
+                        rc.CC.Add(vendorDataEmail);
+
                         rc.IsCCExist = true;
                     }
                     break;

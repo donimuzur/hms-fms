@@ -34,10 +34,13 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.START_IDLE >= filter.FromDate);
                 }
+
                 if (filter.ToDate.HasValue)
                 {
-                    queryFilter = queryFilter.And(c => c.END_IDLE <= filter.ToDate);
+                    //changed!
+                    queryFilter = queryFilter.And(c => (c.END_IDLE == null ? filter.ToDate:c.END_IDLE) <= filter.ToDate);
                 }
+
                 if (!string.IsNullOrEmpty(filter.CostCenter))
                 {
                     queryFilter = queryFilter.And(c => c.COST_CENTER == filter.CostCenter);
