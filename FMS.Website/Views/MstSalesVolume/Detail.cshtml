@@ -1,7 +1,7 @@
 ﻿@model FMS.Website.Models.SalesVolumeItem
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Sales Volume</h5>
+    <h5 class="title-page">Master Data Sales Volume</h5>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -64,4 +64,10 @@
             return false;
         } return true;
     }
+
+    $(function () {
+        if ($('.title-page').html() == 'Master Data Sales Volume') {
+            $('#MstSalesVolumeMenu').addClass('active');
+        }
+    });
 </script>

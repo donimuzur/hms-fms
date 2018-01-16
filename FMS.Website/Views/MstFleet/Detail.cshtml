@@ -375,4 +375,10 @@
     $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
     $('#MonthlyHMSInstallment').val(ThausandSeperator($('#MonthlyHMSInstallment').val(), 2));
     $('#TotalMonthlyCharge').val(ThausandSeperator($('#TotalMonthlyCharge').val(), 2));
+
+    jQuery(function ($) {
+        if ($('.title-page').html() == 'Master Data Fleet') {
+            $('#MstFleetMenu').addClass('active');
+        }
+    });
 </script>

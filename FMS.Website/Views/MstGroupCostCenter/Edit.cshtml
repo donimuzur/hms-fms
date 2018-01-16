@@ -46,3 +46,14 @@
         @Html.Partial("_ChangesLog");
     </div>
 </section>
+<script type="text/javascript">
+    $(function () {
+        $('aside').animate({
+            scrollTop: $("#MstGroupCostCenter").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Group Cost Center') {
+            $('#MstGroupCostCenterMenu').addClass('active');
+        }
+    });
+</script>
