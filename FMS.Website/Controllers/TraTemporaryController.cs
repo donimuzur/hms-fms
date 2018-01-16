@@ -803,8 +803,10 @@ namespace FMS.Website.Controllers
                     item.BodyType = dataRow[15];
                     item.Branding = dataRow[17];
                     item.Purpose = dataRow[18];
-                    item.IsVat = dataRow[22].ToUpper() == "YES" ? true : false;
+                    item.VatDecimal = Convert.ToDecimal(dataRow[22]);
                     item.IsRestitution = dataRow[23].ToUpper() == "YES" ? true : false;
+                    item.Price = Convert.ToDecimal(dataRow[24]);
+                    item.Comments = dataRow[25];
 
                     model.Add(item);
                 }
