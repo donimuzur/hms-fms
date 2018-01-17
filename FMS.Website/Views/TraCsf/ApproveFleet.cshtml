@@ -371,9 +371,6 @@
                 <div class="modal-footer">
                     @Html.HiddenFor(model => model.IsPersonalDashboard)
                     <input type="hidden" name="TraCsfIdApp" id="TraCsfIdApp">
-                    <input type="hidden" name="expectedDateId" id="expectedDateId">
-                    <input type="hidden" name="endRentDateId" id="endRentDateId">
-                    <input type="hidden" name="supplyMethodId" id="supplyMethodId">
                     <img src="~/Content/img/loader2.gif" id="imgLoaderApp" style="display:none" />
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseApp" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmApp" />
@@ -560,9 +557,6 @@
 
     function AppCsf(value) {
         $('#TraCsfIdApp').val(value);
-        $('#expectedDateId').val($('#Detail_ExpectedDate').val());
-        $('#endRentDateId').val($('#Detail_EndRentDate').val());
-        $('#supplyMethodId').val($('#Detail_SupplyMethod').find("option:selected").val());
         $('#appmodal').modal('show');
     }
 

@@ -486,9 +486,9 @@ namespace FMS.BLL.Crf
 
                 }
             }
-            
 
-            
+            data.MODIFIED_BY = currentUser.USER_ID;
+            data.MODIFIED_DATE = DateTime.Now;
 
             _uow.SaveChanges();
         }

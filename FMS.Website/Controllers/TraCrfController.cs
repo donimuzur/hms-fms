@@ -72,7 +72,7 @@ namespace FMS.Website.Controllers
 
             
             model.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "FORMAL_NAME");
-            model.LocationList = new SelectList(listLocation, "City", "City");
+            model.LocationList = new SelectList(listLocation.Select(x => new { x.City }).Distinct().ToList(), "City", "City");
             model.ReasonList = new SelectList(listReason, "MstReasonId", "Reason");
             model.VehicleTypeList = new SelectList(listVehType, "SettingName", "SettingValue");
             model.VehicleCatList = new SelectList(listVehCat, "SettingName", "SettingValue");
