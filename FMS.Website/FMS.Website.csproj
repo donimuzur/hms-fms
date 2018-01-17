@@ -31,6 +31,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>12.0</OldToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -329,6 +330,7 @@
     <Compile Include="Models\RptFuelModel.cs" />
     <Compile Include="Models\RptKpiMonitoringModel.cs" />
     <Compile Include="Models\RptPOModel.cs" />
+    <Compile Include="Models\RptVehicleMakeDataGrouped.cs" />
     <Compile Include="Models\SalesVolumeModel.cs" />
     <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\ReasonModel.cs" />

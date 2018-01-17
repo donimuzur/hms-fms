@@ -132,6 +132,9 @@ namespace FMS.Website.Controllers
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
+            RptVehicleMakeFirstGroupedData rptVehicleMakeFirstGroupedData = new RptVehicleMakeFirstGroupedData();
+      
+
             var groupData = data.GroupBy(x => new { x.MANUFACTURER })
                 .Select(p => new NoVehicleMakeDto()
                 {
@@ -139,7 +142,18 @@ namespace FMS.Website.Controllers
                     NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
                 }).ToList();
 
-            return Json(groupData);
+            rptVehicleMakeFirstGroupedData.Manufacturer = groupData.FirstOrDefault() != null ? groupData.FirstOrDefault().MANUFACTURER : null;
+            rptVehicleMakeFirstGroupedData.NoOfVehicle = groupData.FirstOrDefault() != null ? groupData.FirstOrDefault().NO_OF_VEHICLE : null;
+            int? totalAll = groupData.Skip(1).Take(groupData.Count - 1).Sum(x => x.NO_OF_VEHICLE);
+
+            RptVehicleMakeDataGrouped rptVehicleMakeDataGrouped = new RptVehicleMakeDataGrouped
+            {
+                FirstData = rptVehicleMakeFirstGroupedData,
+                TotalAll = totalAll,
+                GroupedData = groupData
+            };
+
+            return Json(rptVehicleMakeDataGrouped);
         }
 
         [HttpPost]
