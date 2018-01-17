@@ -132,4 +132,15 @@
             }
         });
     });
+
+    $(document).ready(function () {
+
+        if ($('.title-page').html() == 'Master Data Employee') {
+            $('#MstEmployeeMenu').addClass('active');
+        }
+
+        $('aside').animate({
+            scrollTop: $("#MstEmployee").offset().top
+        }, 1000);
+    });
 </script>

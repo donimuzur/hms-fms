@@ -230,7 +230,7 @@ namespace FMS.Website.Controllers
 
                 item.IdleDuration = Math.Round((decimal)(EndIdle - StartIdle) / 30, 2);
 
-                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * item.MonthlyInstallment), 2);
+                item.TotalMonthly = Math.Round((decimal)(item.IdleDuration * (item.MonthlyInstallment == null ? 0 : item.MonthlyInstallment)), 2);
 
                 var Ctf = _ctfBLL.GetCtf().Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())).FirstOrDefault();
                 if (Ctf != null)
@@ -271,7 +271,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "CFM IDLE Report");
-            slDocument.MergeWorksheetCells(1, 1, 1, 16);
+            slDocument.MergeWorksheetCells(1, 1, 1, 18);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -306,11 +306,13 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 9, "End Contract");
             slDocument.SetCellValue(iRow, 10, "Supplier");
             slDocument.SetCellValue(iRow, 11, "Cost Center");
-            slDocument.SetCellValue(iRow, 12, "Start Idle");
-            slDocument.SetCellValue(iRow, 13, "End Idle");
-            slDocument.SetCellValue(iRow, 14, "Idle Duration");
-            slDocument.SetCellValue(iRow, 15, "Monthly Installment");
-            slDocument.SetCellValue(iRow, 16, "Total");
+            slDocument.SetCellValue(iRow, 12, "Supply Method");
+            slDocument.SetCellValue(iRow, 13, "Transmission");
+            slDocument.SetCellValue(iRow, 14, "Start Idle");
+            slDocument.SetCellValue(iRow, 15, "End Idle");
+            slDocument.SetCellValue(iRow, 16, "Idle Duration");
+            slDocument.SetCellValue(iRow, 17, "Monthly Installment");
+            slDocument.SetCellValue(iRow, 18, "Total");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -321,7 +323,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
 
             return slDocument;
 
@@ -346,11 +348,13 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 9, data.EndContract.HasValue ? data.EndContract.Value.ToString("dd-MMM-yyyy") : "");
                     slDocument.SetCellValue(iRow, 10, data.Vendor);
                     slDocument.SetCellValue(iRow, 11, data.CostCenter);
-                    slDocument.SetCellValue(iRow, 12, data.StartIdle.HasValue ? data.StartIdle.Value.ToString("dd-MMM-yyyy") : "");
-                    slDocument.SetCellValue(iRow, 13, data.EndIdle.HasValue ? data.EndIdle.Value.ToString("dd-MMM-yyyy") : "");
-                    slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
-                    slDocument.SetCellValue(iRow, 15, data.MonthlyInstallment.HasValue ? data.MonthlyInstallment.Value.ToString() : "");
-                    slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+                    slDocument.SetCellValue(iRow, 12, data.SupplyMethod);
+                    slDocument.SetCellValue(iRow, 13, data.Transmission);
+                    slDocument.SetCellValue(iRow, 14, data.StartIdle.HasValue ? data.StartIdle.Value.ToString("dd-MMM-yyyy") : "");
+                    slDocument.SetCellValue(iRow, 15, data.EndIdle.HasValue ? data.EndIdle.Value.ToString("dd-MMM-yyyy") : "");
+                    slDocument.SetCellValue(iRow, 16, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
+                    slDocument.SetCellValue(iRow, 17, data.MonthlyInstallment.HasValue ? data.MonthlyInstallment.Value.ToString() : "");
+                    slDocument.SetCellValue(iRow, 18, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
 
                     SLStyle valueStyle = slDocument.CreateStyle();
                     valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
@@ -358,8 +362,8 @@ namespace FMS.Website.Controllers
                     valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
                     valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-                    slDocument.AutoFitColumn(1, 16);
-                    slDocument.SetCellStyle(iRow, 1, iRow , 16, valueStyle);
+                    slDocument.AutoFitColumn(1, 18);
+                    slDocument.SetCellStyle(iRow, 1, iRow , 18, valueStyle);
                     
                 }
                 else if (data.Note == "SubTotal")
@@ -376,10 +380,12 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 10, "");
                     slDocument.SetCellValue(iRow, 11, "");
                     slDocument.SetCellValue(iRow, 12, "");
-                    slDocument.SetCellValue(iRow, 13, "Total Idle Duration");
-                    slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
-                    slDocument.SetCellValue(iRow, 15, "Total Installment");
-                    slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+                    slDocument.SetCellValue(iRow, 13, "");
+                    slDocument.SetCellValue(iRow, 14, "");
+                    slDocument.SetCellValue(iRow, 15, "Total Idle Duration");
+                    slDocument.SetCellValue(iRow, 16, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
+                    slDocument.SetCellValue(iRow, 17, "Total Installment");
+                    slDocument.SetCellValue(iRow, 18, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
 
                     SLStyle headerStyle = slDocument.CreateStyle();
                     headerStyle.Font.Bold = true;
@@ -389,7 +395,7 @@ namespace FMS.Website.Controllers
                     headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
                     headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-                    slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
+                    slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
                 }
                 else if (data.Note == "GrandTotal")
                 {
@@ -404,11 +410,13 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 9, "");
                     slDocument.SetCellValue(iRow, 10, "");
                     slDocument.SetCellValue(iRow, 11, "");
-                    slDocument.SetCellValue(iRow, 12, "Grand Total");
-                    slDocument.SetCellValue(iRow, 13, "Idle Duration");
-                    slDocument.SetCellValue(iRow, 14, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
-                    slDocument.SetCellValue(iRow, 15, "Installment");
-                    slDocument.SetCellValue(iRow, 16, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
+                    slDocument.SetCellValue(iRow, 12, "");
+                    slDocument.SetCellValue(iRow, 13, "");
+                    slDocument.SetCellValue(iRow, 14, "Grand Total");
+                    slDocument.SetCellValue(iRow, 15, "Idle Duration");
+                    slDocument.SetCellValue(iRow, 16, data.IdleDuration.HasValue ? data.IdleDuration.Value.ToString() : "");
+                    slDocument.SetCellValue(iRow, 17, "Installment");
+                    slDocument.SetCellValue(iRow, 18, data.TotalMonthly.HasValue ? data.TotalMonthly.Value.ToString() : "");
 
                     SLStyle headerStyle = slDocument.CreateStyle();
                     headerStyle.Font.Bold = true;
@@ -418,12 +426,12 @@ namespace FMS.Website.Controllers
                     headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
                     headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-                    slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
+                    slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
                 }
                    
                 iRow++;
             }
-            slDocument.AutoFitColumn(1, 16);
+            slDocument.AutoFitColumn(1, 18);
             return slDocument;
         }
         #endregion

@@ -2,7 +2,7 @@
 @model FMS.Website.Models.PriceListModel
 <!-- Main content -->
 <div class="opt-content clearfloat">
-    <h5 class="title-page">Master Data PriceList</h5>
+    <h5 class="title-page">Master Data Price List</h5>
     @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstPriceList")" class="btn btn-primary line" title="Upload & View">
@@ -120,7 +120,7 @@
     }
 
     $(function () {
-        if ($('.title-page').html() == 'Master Data PriceList') {
+        if ($('.title-page').html() == 'Master Data Price List') {
             $('#MstPriceListMenu').addClass('active');
         }
         // DataTable
