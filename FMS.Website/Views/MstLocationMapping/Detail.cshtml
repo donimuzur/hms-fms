@@ -92,4 +92,14 @@
     function onValidFrom() {
         $('#ValidFrom').focus();
     }
+
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstLocationMapping").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Location Mapping') {
+            $('#MstLocationMappingMenu').addClass('active');
+        }
+    });
 </script>

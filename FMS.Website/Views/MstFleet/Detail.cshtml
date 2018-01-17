@@ -69,7 +69,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Vendor Name<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.VendorName, Model.VendorList, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.VendorName, Model.VendorList, "Select", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -318,13 +318,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Function<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.Function, Model.FunctionList, new { @class = "form-control", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.Function, Model.FunctionList, "Select", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Regional<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.Regional, Model.RegionalList, new { @class = "form-control" ,@disabled = "disabled"})
+                    @Html.DropDownListFor(model => model.Regional, Model.RegionalList, "Select", new { @class = "form-control" ,@disabled = "disabled"})
                 </div>
             </div>
             <div class="col-md-12">
@@ -375,4 +375,10 @@
     $('#VatDecimal').val(ThausandSeperator($('#VatDecimal').val(), 2));
     $('#MonthlyHMSInstallment').val(ThausandSeperator($('#MonthlyHMSInstallment').val(), 2));
     $('#TotalMonthlyCharge').val(ThausandSeperator($('#TotalMonthlyCharge').val(), 2));
+
+    jQuery(function ($) {
+        if ($('.title-page').html() == 'Master Data Fleet') {
+            $('#MstFleetMenu').addClass('active');
+        }
+    });
 </script>

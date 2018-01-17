@@ -19,6 +19,7 @@ using System.Data.Entity.Core.EntityClient;
 using System.Threading.Tasks;
 using FMS.Utils;
 using System.Data;
+using System.Diagnostics;
 
 namespace FMS.BLL.Ctf
 {
@@ -929,6 +930,8 @@ namespace FMS.BLL.Ctf
                         {
                             rc.CC.Add(item);
                         }
+                        rc.CC.Add(vendorDataEmail);
+
                         rc.IsCCExist = true;
                     }
                     else if (isBenefit && !ctfData.ExtendVehicle.Value)
@@ -970,6 +973,8 @@ namespace FMS.BLL.Ctf
                         {
                             rc.CC.Add(item);
                         }
+                        rc.CC.Add(vendorDataEmail);
+
                         rc.IsCCExist = true;
                     }
                     break;
@@ -1378,114 +1383,254 @@ namespace FMS.BLL.Ctf
 
         public void EmailNotifChangeCC()
         {
-            var bodyMail = new StringBuilder();
-            var rc = new CtfMailNotification();
-
-            var fleetList = string.Empty;
-            var fleetEmailList = new List<string>();
-            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
-                                                                && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
-            var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
-
-            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-            var typeEnv = ConfigurationManager.AppSettings["Environment"];
-            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
-
-            if (typeEnv == "VTI")
+            try
             {
-                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
-            }
+                var bodyMail = new StringBuilder();
+                var rc = new CtfMailNotification();
 
-            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
-            string connectionString = e.ProviderConnectionString;
-            SqlConnection con = new SqlConnection(connectionString);
-            con.Open();
-            SqlCommand query = new SqlCommand(fleetQuery, con);
-            SqlDataReader reader = query.ExecuteReader();
-            while (reader.Read())
-            {
-                var fleetLogin = "'" + reader[0].ToString() + "',";
-                fleetList += fleetLogin;
-            }
+                var fleetList = string.Empty;
+                var fleetEmailList = new List<string>();
+                var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+                var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
 
-            fleetList = fleetList.TrimEnd(',');
-            
-            var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+                var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                var typeEnv = ConfigurationManager.AppSettings["Environment"];
+                var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
 
-            if (typeEnv == "VTI")
-            {
-                fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
-            }
-           
-            query = new SqlCommand(fleetQueryEmail, con);
-            reader = query.ExecuteReader();
+                if (typeEnv == "VTI")
+                {
+                    fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+                }
 
-            var EmployeeId = new List<string>();
-            var FormalName = new List<string>();
-            var CostCenterOld = new List<string>();
-            var CostCenterNew = new List<string>();
-            var ChangeDate = new List<string>();
-            var Processed = new List<int>();
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlCommand query = null;
+                SqlDataReader reader = null;
+                string fleetQueryEmail = string.Empty;
+                using(SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (query = new SqlCommand(fleetQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var fleetLogin = "'" + reader[0].ToString() + "',";
+                            fleetList += fleetLogin;
+                        }
+                    }
+                    fleetList = fleetList.TrimEnd(',');
 
-            while (reader.Read())
-            {
-                fleetEmailList.Add(reader[0].ToString());
-            }
-            
-            var EmpChangeQuery = "SELECT * FROM EMP_CHANGE WHERE PROCESSED = 0";
-            query = new SqlCommand(EmpChangeQuery, con);
-            reader = query.ExecuteReader();
-            
-            while (reader.Read())
-            {
+                    fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (@fleetList)";
+
+
+                    if (typeEnv == "VTI")
+                    {
+                        fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (@fleetList)";
+                    }
+                    using (query = new SqlCommand(fleetQueryEmail, con))
+                    {
+                        query.Parameters.AddWithValue("@fleetList", fleetList);
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            fleetEmailList.Add(reader[0].ToString());
+                        }
+                    }
+                    var EmployeeId = new List<string>();
+                    var FormalName = new List<string>();
+                    var CostCenterOld = new List<string>();
+                    var CostCenterNew = new List<string>();
+                    var ChangeDate = new List<string>();
+                    var Processed = new List<int>();
+                    var EmpChangeQuery = "SELECT EMPLOYEE_ID, FORMAL_NAME, COST_CENTER, CC, CHANGE_DATE, PROCESSED FROM EMP_CHANGE WHERE PROCESSED = 0";
+                    using(query = new SqlCommand(EmpChangeQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+
+                            EmployeeId.Add(reader["EMPLOYEE_ID"].ToString());
+                            FormalName.Add(reader["FORMAL_NAME"].ToString());
+                            CostCenterOld.Add(reader["COST_CENTER"].ToString());
+                            CostCenterNew.Add(reader["CC"].ToString());
+                            ChangeDate.Add(reader["CHANGE_DATE"].ToString());
+                        }
+
+                        rc.Subject = "Cost Center Changes ";
+
+                        bodyMail.Append("Dear Fleet,<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("There are Change Cost Center in Master Employee, Here is the List : <br /><br />");
+                        bodyMail.AppendLine();
+                        for (int i = 0; i < EmployeeId.Count; i++)
+                        {
+                            bodyMail.Append("Employee ID = " + EmployeeId[i] + ", New Cost Center = " + CostCenterNew[i] + "   <br /><br />");
+                            bodyMail.AppendLine();
+                        }
+                        bodyMail.Append("<br />Thanks <br /><br />");
+                        bodyMail.AppendLine();
+
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.To.Add(item);
+                        }
+
+                        rc.IsCCExist = false;
+                        rc.Body = bodyMail.ToString();
+
+
+                        //distinct double To email
+                        List<string> ListTo = rc.To.Distinct().ToList();
+
+                        if (rc.IsCCExist)
+                            //Send email with CC
+                            _messageService.SendEmailToListWithCC(ListTo, rc.CC, rc.Subject, rc.Body, true);
+                        else
+                            _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+
+                        for (int i = 0; i < EmployeeId.Count; i++)
+                        {
+                            //old code
+                            //var UpdateProcessed = "UPDATE EMP_CHANGE SET PROCESSED = 1" +
+                            //    " WHERE EMPLOYEE_ID ='" + EmployeeId[i] + "' AND COST_CENTER ='" + CostCenterOld[i] + "' AND CC ='" + CostCenterNew[i] + "'";
+
+
+                            var UpdateProcessed = "UPDATE EMP_CHANGE SET PROCESSED = 1" +
+                                " WHERE EMPLOYEE_ID = @employeeID AND COST_CENTER = @costCenter AND CC = @cc";
+                            using(query = new SqlCommand(UpdateProcessed, con))
+                            {
+                                query.Parameters.AddWithValue("@employeeID", EmployeeId[i]);
+                                query.Parameters.AddWithValue("@costCenter", CostCenterOld[i]);
+                                query.Parameters.AddWithValue("@cc", CostCenterNew[i]);
+                                query.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                   
+                  
+                }
                 
-                EmployeeId.Add(reader[0].ToString());
-                FormalName.Add(reader[1].ToString());
-                CostCenterOld.Add(reader[2].ToString());
-                CostCenterNew.Add(reader[3].ToString());
-                ChangeDate.Add(reader[4].ToString());
             }
-
-            rc.Subject = "Cost Center Changes ";
-
-            bodyMail.Append("Dear Fleet,<br /><br />");
-            bodyMail.AppendLine();
-            bodyMail.Append("There are Change Cost Center in Master Employee, Here is the List : <br /><br />");
-            bodyMail.AppendLine();
-            for (int i = 0; i < EmployeeId.Count; i++)
+            catch(Exception ex)
             {
-                bodyMail.Append("Employee ID = "+ EmployeeId[i]+", New Cost Center = "+CostCenterNew[i]+"   <br /><br />");
-                bodyMail.AppendLine();
-            }
-            bodyMail.Append("<br />Thanks <br /><br />");
-            bodyMail.AppendLine();
-
-            foreach (var item in fleetEmailList)
-            {
-                rc.To.Add(item);
+                Trace.WriteLine(ex);
             }
 
-            rc.IsCCExist = false;
-            rc.Body = bodyMail.ToString();
-            
-            
-            //distinct double To email
-            List<string> ListTo = rc.To.Distinct().ToList();
 
-            if (rc.IsCCExist)
-                //Send email with CC
-                _messageService.SendEmailToListWithCC(ListTo, rc.CC, rc.Subject, rc.Body, true);
-            else
-                _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
 
-            for (int i = 0; i < EmployeeId.Count; i++)
-            {
-                var UpdateProcessed = "UPDATE EMP_CHANGE SET PROCESSED = 1 WHERE EMPLOYEE_ID ='" + EmployeeId[i] + "' AND COST_CENTER ='" + CostCenterOld[i] + "' AND CC ='" + CostCenterNew[i] + "'";
-                query = new SqlCommand(UpdateProcessed, con);
-                reader = query.ExecuteReader();
-            }
-            reader.Close();
-            con.Close();
+
+
+            //var bodyMail = new StringBuilder();
+            //var rc = new CtfMailNotification();
+
+            //var fleetList = string.Empty;
+            //var fleetEmailList = new List<string>();
+            //var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+            //                                                    && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+            //var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+            //var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            //var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            //var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+            //if (typeEnv == "VTI")
+            //{
+            //    fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+            //}
+
+            //EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            //string connectionString = e.ProviderConnectionString;
+            //SqlConnection con = new SqlConnection(connectionString);
+            //con.Open();
+            //SqlCommand query = new SqlCommand(fleetQuery, con);
+            //SqlDataReader reader = query.ExecuteReader();
+            //while (reader.Read())
+            //{
+            //    var fleetLogin = "'" + reader[0].ToString() + "',";
+            //    fleetList += fleetLogin;
+            //}
+
+            //fleetList = fleetList.TrimEnd(',');
+
+            //var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+
+            //if (typeEnv == "VTI")
+            //{
+            //    fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
+            //}
+
+            //query = new SqlCommand(fleetQueryEmail, con);
+            //reader = query.ExecuteReader();
+
+            //var EmployeeId = new List<string>();
+            //var FormalName = new List<string>();
+            //var CostCenterOld = new List<string>();
+            //var CostCenterNew = new List<string>();
+            //var ChangeDate = new List<string>();
+            //var Processed = new List<int>();
+
+            //while (reader.Read())
+            //{
+            //    fleetEmailList.Add(reader[0].ToString());
+            //}
+
+            //var EmpChangeQuery = "SELECT * FROM EMP_CHANGE WHERE PROCESSED = 0";
+            //query = new SqlCommand(EmpChangeQuery, con);
+            //reader = query.ExecuteReader();
+
+            //while (reader.Read())
+            //{
+
+            //    EmployeeId.Add(reader[0].ToString());
+            //    FormalName.Add(reader[1].ToString());
+            //    CostCenterOld.Add(reader[2].ToString());
+            //    CostCenterNew.Add(reader[3].ToString());
+            //    ChangeDate.Add(reader[4].ToString());
+            //}
+
+            //rc.Subject = "Cost Center Changes ";
+
+            //bodyMail.Append("Dear Fleet,<br /><br />");
+            //bodyMail.AppendLine();
+            //bodyMail.Append("There are Change Cost Center in Master Employee, Here is the List : <br /><br />");
+            //bodyMail.AppendLine();
+            //for (int i = 0; i < EmployeeId.Count; i++)
+            //{
+            //    bodyMail.Append("Employee ID = " + EmployeeId[i] + ", New Cost Center = " + CostCenterNew[i] + "   <br /><br />");
+            //    bodyMail.AppendLine();
+            //}
+            //bodyMail.Append("<br />Thanks <br /><br />");
+            //bodyMail.AppendLine();
+
+            //foreach (var item in fleetEmailList)
+            //{
+            //    rc.To.Add(item);
+            //}
+
+            //rc.IsCCExist = false;
+            //rc.Body = bodyMail.ToString();
+
+
+            ////distinct double To email
+            //List<string> ListTo = rc.To.Distinct().ToList();
+
+            //if (rc.IsCCExist)
+            //    //Send email with CC
+            //    _messageService.SendEmailToListWithCC(ListTo, rc.CC, rc.Subject, rc.Body, true);
+            //else
+            //    _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+
+            //for (int i = 0; i < EmployeeId.Count; i++)
+            //{
+            //    var UpdateProcessed = "UPDATE EMP_CHANGE SET PROCESSED = 1 WHERE EMPLOYEE_ID ='" + EmployeeId[i] + "' AND COST_CENTER ='" + CostCenterOld[i] + "' AND CC ='" + CostCenterNew[i] + "'";
+            //    query = new SqlCommand(UpdateProcessed, con);
+            //    reader = query.ExecuteReader();
+            //}
+            //reader.Close();
+            //con.Close();
         }
     }
 }

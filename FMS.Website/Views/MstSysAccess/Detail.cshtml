@@ -138,4 +138,14 @@
             document.getElementById('lblUploadAccess').innerHTML = "No";
         }
     }
+
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstSysAccess").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data SysAccess') {
+            $('#MstSysAccessMenu').addClass('active');
+        }
+    });
 </script>

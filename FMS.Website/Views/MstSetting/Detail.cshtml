@@ -53,5 +53,16 @@
         @Html.Partial("_ChangesLog");
     </div>
 </section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstSetting").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Setting') {
+            $('#MstSettingMenu').addClass('active');
+        }
+    });
+</script>
 
 

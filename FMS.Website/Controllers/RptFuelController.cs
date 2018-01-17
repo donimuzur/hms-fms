@@ -69,6 +69,7 @@ namespace FMS.Website.Controllers
 
                 foreach (var item in model.RptFuelItem)
                 {
+                   
                     if (input.MonthFrom == 1)
                     {
                         input.MonthFrom = 12;
@@ -78,12 +79,14 @@ namespace FMS.Website.Controllers
                     {
                         input.MonthFrom = input.MonthFrom - 1;
                     }
-
-
-
+                    
                     if (item.Odometer != 0)
                     {
-                        var data_temp = dataFuel.Where(x => x.PoliceNumber == item.PoliceNumber && x.ReportMonth == input.MonthFrom && x.ReportYear == input.YearFrom).Select(x => x.Odometer).FirstOrDefault();
+                        var data_temp = dataFuel
+                            .Where(x => (x.PoliceNumber == item.PoliceNumber) 
+                                    && (x.Odometer < item.Odometer)).OrderByDescending(x => x.Odometer)
+                                .Select(x => x.Odometer)
+                                .First();
                         if (data_temp == 0)
                         {
                             item.Usage = item.Odometer;

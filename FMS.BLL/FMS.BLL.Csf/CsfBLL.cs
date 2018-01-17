@@ -1530,14 +1530,10 @@ namespace FMS.BLL.Csf
 
         public void CheckCsfInProgress()
         {
-            var dateMinus1 = DateTime.Now.AddDays(-1);
-
             var listCsfInProgress = _CsfService.GetAllCsf().Where(x => x.VENDOR_CONTRACT_START_DATE != null).ToList();
 
             listCsfInProgress = listCsfInProgress.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
-                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Day == dateMinus1.Day
-                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Month == dateMinus1.Month
-                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Year == dateMinus1.Year
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value < DateTime.Now
                                                                         && !string.IsNullOrEmpty(x.VENDOR_PO_NUMBER)).ToList();
 
             foreach (var item in listCsfInProgress)
@@ -1681,7 +1677,7 @@ namespace FMS.BLL.Csf
             CheckCsfBenefitAssignedForUser10Days();
             CheckCsfBenefitAssignedForUser13Days();
             CheckCsfWtcAssignedForUser7Days();
-            CheckCsfWtcAssignedForUser10Days();
+            CheckCsfWtcAssignedForUser13Days();
         }
 
 
@@ -1797,18 +1793,18 @@ namespace FMS.BLL.Csf
             }
         }
 
-        public void CheckCsfWtcAssignedForUser10Days()
+        public void CheckCsfWtcAssignedForUser13Days()
         {
-            var datePlus10 = DateTime.Now.AddDays(-10);
+            var datePlus13 = DateTime.Now.AddDays(-13);
             var wtcType = _settingService.GetSetting().Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var listCsfAssignedForUser = _CsfService.GetAllCsf().Where(x => x.CREATED_DATE != null).ToList();
 
             listCsfAssignedForUser = listCsfAssignedForUser.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser
                                                                         && x.VEHICLE_TYPE == wtcType
-                                                                        && x.CREATED_DATE.Day == datePlus10.Day
-                                                                        && x.CREATED_DATE.Month == datePlus10.Month
-                                                                        && x.CREATED_DATE.Year == datePlus10.Year).ToList();
+                                                                        && x.CREATED_DATE.Day == datePlus13.Day
+                                                                        && x.CREATED_DATE.Month == datePlus13.Month
+                                                                        && x.CREATED_DATE.Year == datePlus13.Year).ToList();
 
             foreach (var item in listCsfAssignedForUser)
             {
