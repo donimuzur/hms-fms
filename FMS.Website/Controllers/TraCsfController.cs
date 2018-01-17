@@ -638,8 +638,6 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
-                model.Detail.ExpectedDate = model.Detail.EffectiveDate;
-                model.Detail.EndRentDate = model.Detail.EffectiveDate;
 
                 var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType == CurrentUser.UserRole.ToString() && x.DocumentType == (int)Enums.DocumentType.CSF).ToList();
                 model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
@@ -670,18 +668,11 @@ namespace FMS.Website.Controllers
             return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
-        public ActionResult ApproveCsfFleet(long TraCsfIdApp, bool IsPersonalDashboard, DateTime expectedDateId, DateTime endRentDateId, string supplyMethodId)
+        public ActionResult ApproveCsfFleet(long TraCsfIdApp, bool IsPersonalDashboard)
         {
             bool isSuccess = false;
             try
             {
-                var csfData = _csfBLL.GetCsfById(TraCsfIdApp);
-                csfData.EXPECTED_DATE = expectedDateId;
-                csfData.END_RENT_DATE = endRentDateId;
-                csfData.SUPPLY_METHOD = supplyMethodId;
-
-                var saveResult = _csfBLL.Save(csfData, CurrentUser);
-
                 CsfWorkflow(TraCsfIdApp, Enums.ActionType.Approve, null);
                 isSuccess = true;
             }
@@ -740,10 +731,6 @@ namespace FMS.Website.Controllers
                 var model = new CsfItemModel();
                 model.Detail = Mapper.Map<CsfData>(csfData);
                 model = InitialModel(model);
-                if (model.Detail.ExpectedDate == null) { 
-                    model.Detail.ExpectedDate = model.Detail.EffectiveDate;
-                    model.Detail.EndRentDate = model.Detail.EffectiveDate;
-                }
                 model.Temporary.StartPeriod = DateTime.Now;
                 model.Temporary.EndPeriod = DateTime.Now;
 

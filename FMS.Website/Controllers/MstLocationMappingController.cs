@@ -384,7 +384,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Location Mapping");
-            slDocument.MergeWorksheetCells(1, 1, 1,11);
+            slDocument.MergeWorksheetCells(1, 1, 1,12);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -413,15 +413,16 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(iRow, 1, "Location");
             slDocument.SetCellValue(iRow, 2, "Address");
-            slDocument.SetCellValue(iRow, 3, "Region");
-            slDocument.SetCellValue(iRow, 4, "Zone Sales");
-            slDocument.SetCellValue(iRow, 5, "Zone Price List");
-            slDocument.SetCellValue(iRow, 6, "Validity From");
-            slDocument.SetCellValue(iRow, 7, "Created Date");
-            slDocument.SetCellValue(iRow, 8, "Created By");
-            slDocument.SetCellValue(iRow, 9, "Modified Date");
-            slDocument.SetCellValue(iRow, 10, "Modified By");
-            slDocument.SetCellValue(iRow, 11, "Status");
+            slDocument.SetCellValue(iRow, 3, "Basetown");
+            slDocument.SetCellValue(iRow, 4, "Region");
+            slDocument.SetCellValue(iRow, 5, "Zone Sales");
+            slDocument.SetCellValue(iRow, 6, "Zone Price List");
+            slDocument.SetCellValue(iRow, 7, "Validity From");
+            slDocument.SetCellValue(iRow, 8, "Created Date");
+            slDocument.SetCellValue(iRow, 9, "Created By");
+            slDocument.SetCellValue(iRow, 10, "Modified Date");
+            slDocument.SetCellValue(iRow, 11, "Modified By");
+            slDocument.SetCellValue(iRow, 12, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -432,7 +433,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 12, headerStyle);
 
             return slDocument;
 
@@ -446,21 +447,22 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(iRow, 1, data.Location );
                 slDocument.SetCellValue(iRow, 2, data.Address);
-                slDocument.SetCellValue(iRow, 3, data.Region );
-                slDocument.SetCellValue(iRow, 4, data.ZoneSales);
-                slDocument.SetCellValue(iRow, 5, data.ZonePriceList);
-                slDocument.SetCellValue(iRow, 6, data.ValidFrom.Value.ToString("dd-MMM-yyyy hh:mm"));
-                slDocument.SetCellValue(iRow, 7, data.CreatedDate.Value.ToString("dd-MMM-yyyy hh:mm"));
-                slDocument.SetCellValue(iRow, 8, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 9, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 10, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 3, data.Basetown);
+                slDocument.SetCellValue(iRow, 4, data.Region );
+                slDocument.SetCellValue(iRow, 5, data.ZoneSales);
+                slDocument.SetCellValue(iRow, 6, data.ZonePriceList);
+                slDocument.SetCellValue(iRow, 7, data.ValidFrom.Value.ToString("dd-MMM-yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 8, data.CreatedDate.Value.ToString("dd-MMM-yyyy hh:mm"));
+                slDocument.SetCellValue(iRow, 9, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 10, data.ModifiedDate == null ? data.CreatedDate.Value.ToString("dd-MMM-yyyy hh:mm") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 11, data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 11, "Active");
+                    slDocument.SetCellValue(iRow, 12, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 11, "InActive");
+                    slDocument.SetCellValue(iRow, 12, "InActive");
                 }
 
                 iRow++;
@@ -473,8 +475,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
+            slDocument.AutoFitColumn(1, 12);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 12, valueStyle);
 
             return slDocument;
         }
