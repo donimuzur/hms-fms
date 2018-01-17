@@ -200,6 +200,19 @@ namespace FMS.Website.Models
                             isAllowed = true;
                         }
                         break;
+                    case (int)Enums.DocumentStatus.InProgress:
+                        if (this.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            if (this.VehicleType.ToUpper() == "BENEFIT" && this.ModifiedBy == this.CurrentLogin.USER_ID)
+                            {
+                                isAllowed = true;
+                            }
+                            else if (this.VehicleType.ToUpper() == "WTC" && this.CreatedBy == this.CurrentLogin.USER_ID)
+                            {
+                                isAllowed = true;
+                            }
+                        }
+                        break;
                     case (int)Enums.DocumentStatus.Draft:
                     case (int)Enums.DocumentStatus.AssignedForUser:
                         if (this.CurrentLogin.USER_ID == this.CreatedBy)
