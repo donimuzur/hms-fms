@@ -1061,4 +1061,10 @@
         $('#VehicleUsage').append('<option value="">Select</option>');
         ajaxSelectVehUsage('@Url.Action("GetVehUsageByVehType", "MstFleet")', vehType, vehUsage);
     }
+
+    jQuery(function ($) {
+        if ($('.title-page').html() == 'Master Data Fleet') {
+            $('#MstFleetMenu').addClass('active');
+        }
+    });
 </script>

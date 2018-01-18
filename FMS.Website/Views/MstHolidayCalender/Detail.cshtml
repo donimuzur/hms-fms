@@ -56,4 +56,14 @@
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
     }
+
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstHolidayCalender").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Holiday Calender') {
+            $('#MstHolidayCalenderMenu').addClass('active');
+        }
+    });
 </script>

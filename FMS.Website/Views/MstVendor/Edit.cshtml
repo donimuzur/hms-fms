@@ -61,4 +61,10 @@
             document.getElementById('lblStatus').innerHTML = "InActive";
         }
     }
+
+    $(function () {
+        if ($('.title-page').html() == 'Master Data Vendor') {
+            $('#MstVendorMenu').addClass('active');
+        }
+    });
 </script>
