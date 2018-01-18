@@ -46,8 +46,17 @@ namespace FMS.BusinessObject.Dto
         public int ReportYear { get; set; }
         public DateTime CreatedDate { get; set; }
         public long MstFleetId { get; set; }
-
-
-
+        public int? carGrouplevel { get; set; }
+        public int? VehicleYear { get; set; }
+        public string VehicleUsage { get; set; }
+        public bool Project { get; set; }
+        public string ProjectName { get; set; }
+        public int? EmployeeGroupLevel { get; set; }
+        public string AssignedTo { get; set; }
+        public string Address { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string CertificateOfOwnership { get; set; }
+        public string Comments { get; set; }
     }
 }

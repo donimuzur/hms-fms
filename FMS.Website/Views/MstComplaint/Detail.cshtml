@@ -59,4 +59,13 @@
     </div>
 </section>
 <script type="text/javascript">
+    $(document).ready(function () {
+        $('aside').animate({
+            scrollTop: $("#MstComplaint").offset().top
+        }, 1000);
+
+        if ($('.title-page').html() == 'Master Data Complaint Category') {
+            $('#MstComplaintMenu').addClass('active');
+        }
+    });
 </script>

@@ -566,7 +566,7 @@ namespace FMS.Website.Controllers
                         item.AirbagS = dataRow[12];
                         item.ChasisNumber = dataRow[13];
                         item.EngineNumber = dataRow[14];
-                        item.VehicleYear = Convert.ToInt32(dataRow[15]);
+                        item.VehicleYear = Convert.ToInt32(dataRow[15] == "" ? "0" : dataRow[15]);
                         item.VehicleType = dataRow[16];
                         item.VehicleUsage = dataRow[17];
                         item.Project = dataRow[18] == "Yes" ? true : false;
@@ -589,49 +589,48 @@ namespace FMS.Website.Controllers
                         item.SupplyMethod = dataRow[24];
                         item.Restitution = dataRow[25] == "Yes" ? true : false;
                         item.RestitutionS = dataRow[25];
-                        item.MonthlyHMSInstallment = Convert.ToInt32(dataRow[26]);
-                        item.Price = Convert.ToInt32(dataRow[27]);
-                        item.VatDecimal = Convert.ToInt64(dataRow[28]);
-                        item.PoNumber = dataRow[29];
-                        item.PoLine = dataRow[30];
-                        item.CarGroupLevel = Convert.ToInt32(dataRow[31]);
-                        if(dataRow[32] != "NULL" && dataRow[32] != "")
+                        item.MonthlyHMSInstallment = Convert.ToInt32(dataRow[26] == "" ? "0" : dataRow[26]);
+                        item.VatDecimal = Convert.ToInt64(dataRow[27] == "" ? "0" : dataRow[27]);
+                        item.PoNumber = dataRow[28];
+                        item.PoLine = dataRow[29];
+                        item.CarGroupLevel = Convert.ToInt32(dataRow[30] == "" ? "0" : dataRow[30]);
+                        if(dataRow[31] != "NULL" && dataRow[31] != "")
                         {
-                            item.GroupLevel = Convert.ToInt32(dataRow[32]);
+                            item.GroupLevel = Convert.ToInt32(dataRow[31]);
                         }
                         else
                         {
                             item.GroupLevel = 0;
                         }
-                        item.AssignedTo = dataRow[33];
-                        item.Address = dataRow[34];
-                        if (dataRow[35] != "NULL" && dataRow[35] != "")
+                        item.AssignedTo = dataRow[32];
+                        item.Address = dataRow[33];
+                        if (dataRow[34] != "NULL" && dataRow[34] != "")
                         {
-                            double dStartDate = double.Parse(dataRow[35].ToString());
+                            double dStartDate = double.Parse(dataRow[34].ToString());
                             DateTime dtStartDate = DateTime.FromOADate(dStartDate);
                             item.StartDate = dtStartDate;
                         }
-                        if (dataRow[36] != "NULL" && dataRow[36] != "")
+                        if (dataRow[35] != "NULL" && dataRow[35] != "")
                         {
-                            double dEndDate = double.Parse(dataRow[36].ToString());
+                            double dEndDate = double.Parse(dataRow[35].ToString());
                             DateTime dtEndDate = DateTime.FromOADate(dEndDate);
                             item.EndDate = dtEndDate;
                         }
-                        item.VehicleStatus = dataRow[37];
-                        item.CertificateOwnership = dataRow[38];
-                        item.Comments = dataRow[39];
-                        item.Assets = dataRow[40];
-                        string TotalMonthlyCharge = dataRow[41];
+                        item.VehicleStatus = dataRow[36];
+                        item.CertificateOwnership = dataRow[37];
+                        item.Comments = dataRow[38];
+                        item.Assets = dataRow[39];
+                        string TotalMonthlyCharge = dataRow[40];
                         TotalMonthlyCharge = TotalMonthlyCharge.Trim(',');
                         item.TotalMonthlyCharge = Int64.Parse(String.IsNullOrEmpty(TotalMonthlyCharge) ? "0" : TotalMonthlyCharge);
-                        item.Function = dataRow[42];
-                        if(dataRow.Count<= 43)
+                        item.Function = dataRow[41];
+                        if(dataRow.Count<= 42)
                         {
                             item.Regional = "";
                         }
                         else
                         {
-                            item.Regional = dataRow[43];
+                            item.Regional = dataRow[42];
                         }
                         item.ErrorMessage = string.Empty;
 

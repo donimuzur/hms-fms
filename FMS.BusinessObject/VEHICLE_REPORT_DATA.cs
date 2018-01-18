@@ -52,5 +52,17 @@ namespace FMS.BusinessObject
         public Nullable<int> REPORT_YEAR { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
         public Nullable<long> MST_FLEET_ID { get; set; }
+        public Nullable<int> CAR_GROUP_LEVEL { get; set; }
+        public Nullable<int> VEHICLE_YEAR { get; set; }
+        public string VEHICLE_USAGE { get; set; }
+        public Nullable<bool> PROJECT { get; set; }
+        public string PROJECT_NAME { get; set; }
+        public Nullable<int> EMPLOYEE_GROUP_LEVEL { get; set; }
+        public string ASSIGNED_TO { get; set; }
+        public string ADDRESS { get; set; }
+        public Nullable<System.DateTime> START_DATE { get; set; }
+        public Nullable<System.DateTime> END_DATE { get; set; }
+        public string CERTIFICATE_OF_OWNERSHIP { get; set; }
+        public string COMMENTS { get; set; }
     }
 }

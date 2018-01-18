@@ -933,14 +933,10 @@ namespace FMS.BLL.Temporary
 
         public void CheckTempInProgress()
         {
-            var dateMinus1 = DateTime.Now.AddDays(-1);
-
             var allTemp = _TemporaryService.GetAllTemp().Where(x => x.VENDOR_CONTRACT_START_DATE != null).ToList();
 
             var listTempInProgress = allTemp.Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
-                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Day == dateMinus1.Day
-                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Month == dateMinus1.Month
-                                                                        && x.VENDOR_CONTRACT_START_DATE.Value.Year == dateMinus1.Year
+                                                                        && x.VENDOR_CONTRACT_START_DATE.Value < DateTime.Now
                                                                         && !string.IsNullOrEmpty(x.VENDOR_PO_NUMBER)).ToList();
 
             foreach (var item in listTempInProgress)
@@ -960,8 +956,7 @@ namespace FMS.BLL.Temporary
                 var getZonePriceList = _locationMappingService.GetLocationMapping().Where(x => x.BASETOWN == item.LOCATION_CITY
                                                                                                  && x.IS_ACTIVE).FirstOrDefault();
 
-                var vSpecList = _vehicleSpectService.GetVehicleSpect().Where(x => x.YEAR == item.CREATED_DATE.Year
-                                                                        && x.MANUFACTURER == item.MANUFACTURER
+                var vSpecList = _vehicleSpectService.GetVehicleSpect().Where(x => x.MANUFACTURER == item.MANUFACTURER
                                                                         && x.MODEL == item.MODEL
                                                                         && x.SERIES == item.SERIES
                                                                         && x.BODY_TYPE == item.BODY_TYPE

@@ -152,4 +152,10 @@
             $('#Qty').prop('required', true);
         }
     }
+
+    $(function () {
+        if ($('.title-page').html() == 'Master Data Cost OB') {
+            $('#MstCostObMenu').addClass('active');
+        }
+    });
 </script>
