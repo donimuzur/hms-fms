@@ -69,7 +69,7 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             //check csf in progress
-            _csfBLL.CheckCsfInProgress();
+            //_csfBLL.CheckCsfInProgress();
 
             var data = _csfBLL.GetCsf(CurrentUser, false);
             var model = new CsfIndexModel();
