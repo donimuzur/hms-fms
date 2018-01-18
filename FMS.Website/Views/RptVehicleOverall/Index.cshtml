@@ -31,6 +31,9 @@
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "contenttable",
                     OnComplete = "setupDataTables",
+                    OnFailure = "HideLoading",
+                    OnSuccess= "HideLoading",
+                    OnBegin= "ShowLoading"
                 }))
             {
             <div class="col-md-3">
@@ -122,12 +125,32 @@
         @Html.Partial("_ListVehicleOverall")
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/Scripts/thousand-separator.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/VehicleOverall.js"></script>
 <script type="text/javascript">
 
+    function HideLoading()
+    {
+        $('#LoadingModal').hide();
+    }
+
+    function ShowLoading()
+    {
+        $('#LoadingModal').show();
+    }
     function ExportXls() {
         $('#filter_FromDate').val($('#From_Date').val());
         $('#filter_ToDate').val($('#To_Date').val());
@@ -142,7 +165,7 @@
 
         $('#ExportToXls').submit();
     }
-
+    
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({

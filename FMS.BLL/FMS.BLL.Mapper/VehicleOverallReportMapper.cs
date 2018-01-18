@@ -50,7 +50,19 @@ namespace FMS.BLL.Mapper
             .ForMember(dest => dest.ReportMonth, opt => opt.MapFrom(src => src.REPORT_MONTH))
             .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
             .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
-            .ForMember(dest => dest.MstFleetId, opt => opt.MapFrom(src => src.MST_FLEET_ID));
+            .ForMember(dest => dest.MstFleetId, opt => opt.MapFrom(src => src.MST_FLEET_ID))
+            .ForMember(dest => dest.carGrouplevel, opt => opt.MapFrom(src => src.CAR_GROUP_LEVEL))
+            .ForMember(dest => dest.VehicleYear, opt => opt.MapFrom(src => src.VEHICLE_YEAR))
+            .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
+            .ForMember(dest => dest.Project, opt => opt.MapFrom(src => src.PROJECT))
+            .ForMember(dest => dest.ProjectName, opt => opt.MapFrom(src => src.PROJECT_NAME))
+            .ForMember(dest => dest.EmployeeGroupLevel, opt => opt.MapFrom(src => src.EMPLOYEE_GROUP_LEVEL))
+            .ForMember(dest => dest.AssignedTo, opt => opt.MapFrom(src => src.ASSIGNED_TO))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.ADDRESS))
+            .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.START_DATE))
+            .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.END_DATE))
+            .ForMember(dest => dest.CertificateOfOwnership, opt => opt.MapFrom(src => src.CERTIFICATE_OF_OWNERSHIP))
+            .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.COMMENTS));
 
             AutoMapper.Mapper.CreateMap<VehicleOverallReportDto, VEHICLE_REPORT_DATA >()
               .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.Id))
@@ -90,7 +102,19 @@ namespace FMS.BLL.Mapper
             .ForMember(dest => dest.REPORT_MONTH, opt => opt.MapFrom(src => src.ReportMonth))
             .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
             .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
-            .ForMember(dest => dest.MST_FLEET_ID, opt => opt.MapFrom(src => src.MstFleetId));
+            .ForMember(dest => dest.MST_FLEET_ID, opt => opt.MapFrom(src => src.MstFleetId))
+            .ForMember(dest => dest.CAR_GROUP_LEVEL, opt => opt.MapFrom(src => src.carGrouplevel))
+            .ForMember(dest => dest.VEHICLE_YEAR, opt => opt.MapFrom(src => src.VehicleYear))
+            .ForMember(dest => dest.VEHICLE_USAGE, opt => opt.MapFrom(src => src.VehicleUsage))
+            .ForMember(dest => dest.PROJECT, opt => opt.MapFrom(src => src.Project))
+            .ForMember(dest => dest.PROJECT_NAME, opt => opt.MapFrom(src => src.ProjectName))
+            .ForMember(dest => dest.EMPLOYEE_GROUP_LEVEL, opt => opt.MapFrom(src => src.EmployeeGroupLevel))
+            .ForMember(dest => dest.ASSIGNED_TO, opt => opt.MapFrom(src => src.AssignedTo))
+            .ForMember(dest => dest.ADDRESS, opt => opt.MapFrom(src => src.Address))
+            .ForMember(dest => dest.START_DATE, opt => opt.MapFrom(src => src.StartDate))
+            .ForMember(dest => dest.END_DATE, opt => opt.MapFrom(src => src.EndDate))
+            .ForMember(dest => dest.CERTIFICATE_OF_OWNERSHIP, opt => opt.MapFrom(src => src.CertificateOfOwnership))
+            .ForMember(dest => dest.COMMENTS, opt => opt.MapFrom(src => src.Comments)); ;
         }
     }
 }
