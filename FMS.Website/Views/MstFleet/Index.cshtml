@@ -170,8 +170,17 @@
         @Html.Partial("_FleetList")
     </div>
 </section>
-
-<div class="loading"></div>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript" language="javascript" class="init">
@@ -213,7 +222,6 @@
     });
 
     function ExportXls() {
-
         $('#export_PoliceNumber').val($('#SearchView_PoliceNumber').val());
         $('#export_EmployeeName').val($('#SearchView_EmployeeName').val());
         $('#export_EngineNumber').val($('#SearchView_EngineNumber').val());
@@ -402,11 +410,11 @@
         });
 
         table.on('preXhr', function(e, settings, data) {
-            $(".loading").show();
+            $('#LoadingModal').show();
         });
 
         table.on('xhr', function(e, settings, data) {
-            $(".loading").hide();
+            $('#LoadingModal').hide();
         });
     }
 </script>
