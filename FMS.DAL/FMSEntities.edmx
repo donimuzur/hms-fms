@@ -1191,6 +1191,18 @@
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
+          <Property Name="VEHICLE_YEAR" Type="int" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="PROJECT" Type="bit" />
+          <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMPLOYEE_GROUP_LEVEL" Type="int" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="50" />
+          <Property Name="ADDRESS" Type="text" />
+          <Property Name="START_DATE" Type="date" />
+          <Property Name="END_DATE" Type="date" />
+          <Property Name="CERTIFICATE_OF_OWNERSHIP" Type="nvarchar" MaxLength="50" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
@@ -3408,6 +3420,18 @@
           <Property Name="REPORT_YEAR" Type="Int32" />
           <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="MST_FLEET_ID" Type="Int64" />
+          <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
+          <Property Name="VEHICLE_YEAR" Type="Int32" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PROJECT" Type="Boolean" />
+          <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_GROUP_LEVEL" Type="Int32" />
+          <Property Name="ASSIGNED_TO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="CERTIFICATE_OF_OWNERSHIP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COMMENTS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_TRA_CCF_MST_COMPLAINT_CATEGORY">
           <End Type="FMSModel.MST_COMPLAINT_CATEGORY" Role="MST_COMPLAINT_CATEGORY" Multiplicity="1" />
@@ -5095,6 +5119,18 @@
           <EntitySetMapping Name="VEHICLE_REPORT_DATA">
             <EntityTypeMapping TypeName="FMSModel.VEHICLE_REPORT_DATA">
               <MappingFragment StoreEntitySet="VEHICLE_REPORT_DATA">
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="CERTIFICATE_OF_OWNERSHIP" ColumnName="CERTIFICATE_OF_OWNERSHIP" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
+                <ScalarProperty Name="EMPLOYEE_GROUP_LEVEL" ColumnName="EMPLOYEE_GROUP_LEVEL" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="PROJECT" ColumnName="PROJECT" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_YEAR" ColumnName="VEHICLE_YEAR" />
+                <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
                 <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
                 <ScalarProperty Name="REPORT_YEAR" ColumnName="REPORT_YEAR" />
