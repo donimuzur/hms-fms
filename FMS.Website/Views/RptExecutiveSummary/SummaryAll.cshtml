@@ -4,7 +4,116 @@
 @{
     ViewBag.Title = Model.TitleForm;
 }
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+<style>
+	.datepicker{
+		margin-left:15px;
+	}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
+<script>
+	function loadSummaryAllBoxes() {
+		var isByRegion = '@Model.IsByRegion';
+		$.ajax({
+			type: 'POST',
+			url: '@Url.Action("GetVehicleDataVisual", "RptExecutiveSummary")',
+			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
+			success: function (response) {
+				var total = 0;
+				var novBenefit = 0;
+				var novWTC = 0;
+				for (var i = 0; i < response.length; i++) {
+
+					if (response[i].VEHICLE_TYPE == 'BENEFIT') {
+						novBenefit += response[i].NO_OF_VEHICLE;
+					}
+					else if (response[i].VEHICLE_TYPE == 'WTC') {
+						novWTC += response[i].NO_OF_VEHICLE;
+					}
+					total += response[i].NO_OF_VEHICLE;
+				}
+				console.log("GetVehicleDataVisual");
+				console.log(response);
+				$("#totalNumberOfVehicle").text(total);
+				$("#numberOfVehicleBenefit").text(novBenefit + " BENEFIT");
+				$("#numberOfVehicleWTC").text(novWTC + " WTC");
+			}
+	});
+	$.ajax({
+			type: 'POST',
+			url: '@Url.Action("GetVehicleWtcDataVisual", "RptExecutiveSummary")',
+			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
+			success: function (response) {
+				var total = 0;
+				var novMarketing = 0;
+				var novSales = 0;
+				for (var i = 0; i < response.length; i++) {
+
+					if (response[i].FUNCTION == 'MARKETING') {
+						novMarketing += response[i].NO_OF_VEHICLE;
+					}
+					else if (response[i].FUNCTION == 'SALES') {
+						novSales += response[i].NO_OF_VEHICLE;
+					}
+					total += response[i].NO_OF_VEHICLE;
+				}
+				console.log("GetVehicleWtcDataVisual");
+				console.log(response);
+				$("#totalNumberOfVehicleWtc").text(total);
+				$("#numberOfVehicleMarketingWtc").text(novMarketing + " MARKETING");
+				$("#numberOfVehicleSalesWtc").text(novSales + " SALES");
+			}
+		});
+		$.ajax({
+		type: 'POST',
+		url: '@Url.Action("AccidentDataVisual", "RptExecutiveSummary")',
+		data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
+		success: function (response) {
+			console.log("AccidentDataVisual");
+			console.log(response);
+			var total = 0;
+			var countBenefit = 0;
+			var countWTC = 0;
+			for (var i = 0; i < response.length; i++) {
+
+				if (response[i].VEHICLE_TYPE == 'WTC') {
+					countWTC += response[i].ACCIDENT_COUNT;
+				}
+				else if (response[i].VEHICLE_TYPE == 'BENEFIT') {
+					countBenefit += response[i].ACCIDENT_COUNT;
+				}
+				total += response[i].ACCIDENT_COUNT;
+			}
+			$("#totalNumberOfVehicleAccident").text(total);
+			$("#numberOfBenefitAccident").text(countBenefit + " BENEFIT");
+			$("#numberOfWTCSalesAccident").text(countWTC + " WTC");
+		}
+	});
+		 $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetVehicleMakeDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
+			success: function (response) {
+				console.log("GetVehicleMakeDataVisual");
+				console.log(response);
+				var totalManufacture = response.FirstData.NoOfVehicle;
+				var manufacturerName = response.FirstData.Manufacturer;
+				var totalOrder = response.TotalAll;
+				var totalAll = totalManufacture + totalOrder;
+				$("#totalNumberOfVehicleMake").text(totalAll);
+				$("#numberOfVehicleManufacturer").text(totalManufacture + " " + manufacturerName.toString().toUpperCase());
+				$("#numberOfVehicleTotalOrder").text(totalOrder + " OTHERS");
+            }
+        });
+
+}
+
+	loadSummaryAllBoxes();
+</script>
 <div class="opt-content clearfloat">
     <h5 class="title-page">@ViewBag.Title</h5>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
@@ -17,6 +126,7 @@
         @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
         @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
     }
+
     <div class="wpanel">
         <div class="row">
             <div class="col-md-3">
@@ -26,9 +136,9 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="form-group">
+                <div class="form-group" id="xz">
                     <label for="">Year</label>
-                    @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
+					<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker"  />
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -38,6 +148,18 @@
             </div>
         </div>
     </div>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#SearchView_YearFrom').datepicker({
+			  minViewMode: 2,
+			  format: 'yyyy',
+			  autoclose: true,
+			  position: 'right bottom',
+			  container: '#xz'
+		  });
+		});
+	</script>
+
     <div class="wpanel">
         @*<table id="tbSummary" class="table table-bordered table-striped">
             <thead>
@@ -64,138 +186,113 @@
                 <div class="col-md-3">
                     <div class="block-card bblue">
                         <div class="title">
-                            <h3>230.000</h3>
+							<h3 id="totalNumberOfVehicle">0</h3>
                         </div>
                         <div class="subtitle">
-                            <p>120.000 Benefits</p>
-                            <p>210.000 WTC</p>
+                            <p id="numberOfVehicleBenefit">0 BENEFIT</p>
+                            <p id="numberOfVehicleWTC">0 WTC</p>
                         </div>
                     </div>
                 </div>
+				
                 <div class="col-md-3">
                     <div class="block-card bblue odometer">
                         <div class="title">
-                            <h3>230.010</h3>
+                            <h3 id="totalNumberOfVehicleWtc">0</h3>
                         </div>
                         <div class="subtitle">
-                            <p>120.000 Marketing</p>
-                            <p>210.010 Sales</p>
+                            <p id="numberOfVehicleMarketingWtc">0 MARKETING</p>
+                            <p id="numberOfVehicleSalesWtc">0 SALES</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="block-card bblue accident">
                         <div class="title">
-                            <h3>230.000</h3>
+                            <h3 id="totalNumberOfVehicleMake">0</h3>
                         </div>
                         <div class="subtitle">
-                            <p>120.000 Benefits</p>
-                            <p>210.000 WTC</p>
+                            <p id="numberOfVehicleManufacturer">0</p>
+                            <p id="numberOfVehicleTotalOrder">0</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="block-card bblue key">
                         <div class="title">
-                            <h3>230.000</h3>
+                            <h3 id="totalNumberOfVehicleAccident">0</h3>
                         </div>
                         <div class="subtitle">
-                            <p>120.000 Benefits</p>
-                            <p>210.000 WTC</p>
+                            <p id="numberOfBenefitAccident">0 BENEFIT</p>
+                            <p id="numberOfWTCSalesAccident">0 WTC</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></h5>
-                            <canvas id="pieChart"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></h5>
-                            <canvas id="canvasDoughnut"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></h5>
-                            <canvas id="polarArea"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></h5>
-                            <canvas id="canvasDoughnut2"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></h5>
-                            <canvas id="polarArea2"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></h5>
-                            <canvas id="pieChart2"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></h5>
-                            <canvas id="polarArea3"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></h5>
-                            <canvas id="pieChart3"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></h5>
-                            <canvas id="canvasDoughnut3"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-bullseye"></i> AC Vs OB</h5>
-                            <canvas id="mybarChart"></canvas>
-                        </div>
-                        <div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-                    </div>
-                </div>
-            </div>
+			</div>
+			<div class="row">
+				@*<div class="col-md-2"></div>*@
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></h5>
+							<canvas id="canvasBarOdometer"></canvas>
+						</div>
+						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></h5>
+							<canvas id="literByFunctionLine"></canvas>
+						</div>
+						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+					</div>
+				</div>
+				@*<div class="col-md-2"></div>*@
+
+
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></h5>
+							<canvas id="pieChart2"></canvas>
+						</div>
+						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></h5>
+							<canvas id="polarArea3"></canvas>
+						</div>
+						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></h5>
+							<canvas id="pieChart3"></canvas>
+						</div>
+						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title"><i class="fa fa-bullseye"></i> AC Vs OB</h5>
+							<canvas id="mybarChart"></canvas>
+						</div>
+						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+					</div>
+				</div>
+			</div>
         </div>
         <!-- end summary grid -->
     </div>
@@ -214,106 +311,9 @@
 
         console.log('init_charts');
 
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("GetVehicleDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
-            success: function (response) {
-                var labels_chart = [];
-                var value_chart = [];
-                var color_chart = [];
-
-                for (var i = 0; i < response.length; i++) {
-                    if (isByRegion === 'True') {
-                        labels_chart.push(response[i].FUNCTION);
-                    } else if (isByRegion === 'False') {
-                        labels_chart.push(response[i].VEHICLE_TYPE);
-                    }
-                    value_chart.push(response[i].NO_OF_VEHICLE);
-
-                    if (i == 0) {
-                        color_chart.push("#828282");
-                    } else if (i == 1) {
-                        color_chart.push("#B21B1B");
-                    } else if (i == 2) {
-                        color_chart.push("#BDC3C7");
-                    } else if (i == 3) {
-                        color_chart.push("#344F67");
-                    } else if (i == 4) {
-                        color_chart.push("#21A4FF");
-                    }
-                }
-
-                // Pie chart
-                if ($('#pieChart').length) {
-
-                    var ctx = document.getElementById("pieChart");
-                    var data = {
-                        labels: labels_chart,
-                        datasets: [{
-                            data: value_chart,
-                            backgroundColor: color_chart,
-                            hoverBackgroundColor: color_chart
-                        }]
-                    };
-
-                    var pieChart = new Chart(ctx, {
-                        data: data,
-                        type: 'pie'
-                    });
-
-                }
-            }
-        });
-
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("GetVehicleWtcDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
-            success: function (response) {
-                var labels_chart = [];
-                var value_chart = [];
-                var color_chart = [];
-
-                for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].FUNCTION);
-                    value_chart.push(response[i].NO_OF_VEHICLE);
-
-                    if (i == 4) {
-                        color_chart.push("#828282");
-                    } else if (i == 3) {
-                        color_chart.push("#B21B1B");
-                    } else if (i == 2) {
-                        color_chart.push("#BDC3C7");
-                    } else if (i == 1) {
-                        color_chart.push("#344F67");
-                    } else if (i == 0) {
-                        color_chart.push("#21A4FF");
-                    }
-                }
-
-                // Doughnut chart
-                if ($('#canvasDoughnut').length) {
-
-                    var ctx = document.getElementById("canvasDoughnut");
-                    var data = {
-                        labels: labels_chart,
-                        datasets: [{
-                            data: value_chart,
-                            backgroundColor: color_chart,
-                            hoverBackgroundColor: color_chart
-                        }]
-                    };
-
-                    var canvasDoughnut = new Chart(ctx, {
-                        data: data,
-                        type: 'doughnut'
-                    });
-
-                }
-            }
-        });
-
+		//boxes--------
+		loadSummaryAllBoxes();
+		//-------------
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetVehicleMakeDataVisual", "RptExecutiveSummary")',
@@ -323,9 +323,9 @@
                 var value_chart = [];
                 var color_chart = [];
 
-                for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].MANUFACTURER);
-                    value_chart.push(response[i].NO_OF_VEHICLE);
+                for (var i = 0; i < response.GroupedData.length; i++) {
+					labels_chart.push(response.GroupedData[i].MANUFACTURER);
+					value_chart.push(response.GroupedData[i].NO_OF_VEHICLE);
 
                     if (i == 0) {
                         color_chart.push("#828282");
@@ -361,111 +361,114 @@
                 }
             }
         });
-
+		
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("GetOdometerDataVisual", "RptExecutiveSummary")',
+            url: '@Url.Action("GetOdometerDataVisualDetail", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
             success: function (response) {
-                var labels_chart = [];
-                var value_chart = [];
-                var color_chart = [];
+            	if ($('#canvasBarOdometer').length) {
+            		var functions = [];
+            		var benefits = [];
+            		var wtcs = [];
 
-                for (var i = 0; i < response.length; i++) {
-                    if (isByRegion === 'True') {
-                        labels_chart.push(response[i].FUNCTION);
-                    } else if (isByRegion === 'False') {
-                        labels_chart.push(response[i].VEHICLE_TYPE);
-                    }
-                    value_chart.push(response[i].TOTAL_KM);
+            		for (var i in response)
+            		{
+            			functions.push(response[i].Function);
+            			if (response[i].Benefit == null)
+            				benefits.push(0);
+            			else
+            				benefits.push(response[i].Benefit.TotalKM);
 
-                    if (i == 4) {
-                        color_chart.push("#828282");
-                    } else if (i == 3) {
-                        color_chart.push("#B21B1B");
-                    } else if (i == 2) {
-                        color_chart.push("#BDC3C7");
-                    } else if (i == 1) {
-                        color_chart.push("#344F67");
-                    } else if (i == 0) {
-                        color_chart.push("#21A4FF");
-                    }
-                }
+            			if (response[i].WTC == null)
+            				wtcs.push(0);
+            			else
+            				wtcs.push(response[i].WTC.TotalKM);
+            		}
+            		var ctx = document.getElementById("canvasBarOdometer");
+            		var mybarChart = new Chart(ctx, {
+            			type: 'bar',
+            			data: {
+            				labels: functions,
+            				datasets: [{
+            					label: '# of Benefits',
+            					backgroundColor: "#21A4FF",
+            					data: benefits
+            				}, {
+            					label: '# of WTCs',
+            					backgroundColor: "#828282",
+            					data: wtcs
+            				}]
+            			},
 
-                // Doughnut chart
-                if ($('#canvasDoughnut2').length) {
+            			options: {
+            				scales: {
+            					yAxes: [{
+            						ticks: {
+            							beginAtZero: true
+            						}
+            					}]
+            				}
+            			}
+            		});
 
-                    var ctx = document.getElementById("canvasDoughnut2");
-                    var data = {
-                        labels: labels_chart,
-                        datasets: [{
-                            data: value_chart,
-                            backgroundColor: color_chart,
-                            hoverBackgroundColor: color_chart
-                        }]
-                    };
-
-                    var canvasDoughnut2 = new Chart(ctx, {
-                        data: data,
-                        type: 'doughnut'
-                    });
-
-                }
+            	}
             }
         });
 
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("GetLiterByFunctionDataVisual", "RptExecutiveSummary")',
+            url: '@Url.Action("GetLiterByFunctionDataVisualDetail", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
             success: function (response) {
-                var labels_chart = [];
-                var value_chart = [];
-                var color_chart = [];
+            	console.log("Get liter by func response");
+            	console.log(response);
+            	if ($('#literByFunctionLine').length) {
+            		var functions = [];
+            		var benefits = [];
+            		var wtcs = [];
 
-                for (var i = 0; i < response.length; i++) {
-                    if (isByRegion === 'True') {
-                        labels_chart.push(response[i].FUNCTION);
-                    } else if (isByRegion === 'False') {
-                        labels_chart.push(response[i].VEHICLE_TYPE);
-                    }
-                    value_chart.push(response[i].TOTAL_LITER);
+            		for (var i in response) {
+            			functions.push(response[i].Function);
+            			if (response[i].Benefit == null)
+            				benefits.push(0);
+            			else
+            				benefits.push(response[i].Benefit.TotalLiter);
 
-                    if (i == 0) {
-                        color_chart.push("#828282");
-                    } else if (i == 1) {
-                        color_chart.push("#B21B1B");
-                    } else if (i == 2) {
-                        color_chart.push("#BDC3C7");
-                    } else if (i == 3) {
-                        color_chart.push("#344F67");
-                    } else if (i == 4) {
-                        color_chart.push("#21A4FF");
-                    }
-                }
+            			if (response[i].WTC == null)
+            				wtcs.push(0);
+            			else
+            				wtcs.push(response[i].WTC.TotalLiter);
+            		}
+            		var ctx = document.getElementById("literByFunctionLine");
+            		var mybarChart = new Chart(ctx, {
+            			type: 'line',
+            			data: {
+            				labels: functions,
+            				datasets: [{
+            					label: '# of Benefits',
+            					backgroundColor: "#21A4FF",
+            					data: benefits
+            				}, {
+            					label: '# of WTCs',
+            					backgroundColor: "#828282",
+            					data: wtcs
+            				}]
+            			},
+            			options: {
+            				scales: {
+            					yAxes: [{
+            						ticks: {
+            							beginAtZero: true
+            						}
+            					}]
+            				}
+            			}
+            		});
 
-                // PolarArea chart
-                if ($('#polarArea2').length) {
-
-                    var ctx = document.getElementById("polarArea2");
-                    var data = {
-                        labels: labels_chart,
-                        datasets: [{
-                            data: value_chart,
-                            backgroundColor: color_chart,
-                            hoverBackgroundColor: color_chart
-                        }]
-                    };
-
-                    var polarArea2 = new Chart(ctx, {
-                        data: data,
-                        type: 'polarArea'
-                    });
-
-                }
+            	}
             }
         });
-
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetFuelCostByFunctionDataVisual", "RptExecutiveSummary")',
@@ -474,7 +477,6 @@
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
-
                 for (var i = 0; i < response.length; i++) {
                     if (isByRegion === 'True') {
                         labels_chart.push(response[i].FUNCTION);
@@ -482,17 +484,16 @@
                         labels_chart.push(response[i].VEHICLE_TYPE);
                     }
                     value_chart.push(response[i].TOTAL_FUEL_COST);
-
                     if (i == 0) {
-                        color_chart.push("#828282");
+                    	color_chart.push("#00FFFF");
                     } else if (i == 1) {
-                        color_chart.push("#B21B1B");
+                    	color_chart.push("#00FF00");
                     } else if (i == 2) {
                         color_chart.push("#BDC3C7");
                     } else if (i == 3) {
-                        color_chart.push("#344F67");
+                    	color_chart.push("#4169E1");
                     } else if (i == 4) {
-                        color_chart.push("#21A4FF");
+                    	color_chart.push("#DC143C");
                     }
                 }
 
@@ -511,7 +512,7 @@
 
                     var pieChart2 = new Chart(ctx, {
                         data: data,
-                        type: 'pie'
+                        type: 'doughnut'
                     });
 
                 }
@@ -530,17 +531,16 @@
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     value_chart.push(response[i].TOTAL_LEASE_COST);
-
                     if (i == 0) {
-                        color_chart.push("#828282");
+                    	color_chart.push("#00FFFF");
                     } else if (i == 1) {
-                        color_chart.push("#B21B1B");
+                    	color_chart.push("#00FF00");
                     } else if (i == 2) {
-                        color_chart.push("#BDC3C7");
+                    	color_chart.push("#BDC3C7");
                     } else if (i == 3) {
-                        color_chart.push("#344F67");
+                    	color_chart.push("#4169E1");
                     } else if (i == 4) {
-                        color_chart.push("#21A4FF");
+                    	color_chart.push("#DC143C");
                     }
                 }
 
@@ -559,7 +559,7 @@
 
                     var polarArea3 = new Chart(ctx, {
                         data: data,
-                        type: 'polarArea'
+                        type: 'pie'
                     });
 
                 }
@@ -578,17 +578,16 @@
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     value_chart.push(response[i].STICK);
-
                     if (i == 0) {
-                        color_chart.push("#828282");
+                    	color_chart.push("#00FFFF");
                     } else if (i == 1) {
-                        color_chart.push("#B21B1B");
+                    	color_chart.push("#00FF00");
                     } else if (i == 2) {
-                        color_chart.push("#BDC3C7");
+                    	color_chart.push("#BDC3C7");
                     } else if (i == 3) {
-                        color_chart.push("#344F67");
+                    	color_chart.push("#4169E1");
                     } else if (i == 4) {
-                        color_chart.push("#21A4FF");
+                    	color_chart.push("#DC143C");
                     }
                 }
 
@@ -629,7 +628,7 @@
                     } else if (isByRegion === 'False') {
                         labels_chart.push(response[i].VEHICLE_TYPE);
                     }
-                    
+
                     value_chart.push(response[i].ACCIDENT_COUNT);
 
                     if (i == 4) {
@@ -672,35 +671,44 @@
             url: '@Url.Action("AcObDataVisual", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
             success: function (response) {
+            	console.log('AC vs OB');
+            	console.log(response);
                 var labels_chart = [];
                 var ob_chart = [];
                 var ac_chart = [];
-
-                for (var i = 0; i < response.length; i++) {
+            	for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     ob_chart.push(response[i].COST_OB);
                     ac_chart.push(response[i].ACTUAL_COST);
-                }
-
-                // Bar chart
-                if ($('#mybarChart').length) {
-
+            	}
+            	if ($('#mybarChart').length) {
                     var ctx = document.getElementById("mybarChart");
                     var mybarChart = new Chart(ctx, {
-                        type: 'bar',
+                        type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
                                 label: '# of Operational Budget',
-                                backgroundColor: "#21A4FF",
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
                                 data: ob_chart
                             }, {
                                 label: '# of Actual Cost',
-                                backgroundColor: "#828282",
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
                                 data: ac_chart
                             }]
                         },
-
                         options: {
                             scales: {
                                 yAxes: [{
@@ -711,7 +719,6 @@
                             }
                         }
                     });
-
                 }
             }
         });

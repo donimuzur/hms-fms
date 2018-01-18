@@ -132,6 +132,9 @@ namespace FMS.Website.Controllers
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
+            RptVehicleMakeFirstGroupedData rptVehicleMakeFirstGroupedData = new RptVehicleMakeFirstGroupedData();
+      
+
             var groupData = data.GroupBy(x => new { x.MANUFACTURER })
                 .Select(p => new NoVehicleMakeDto()
                 {
@@ -139,12 +142,25 @@ namespace FMS.Website.Controllers
                     NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
                 }).ToList();
 
-            return Json(groupData);
+            rptVehicleMakeFirstGroupedData.Manufacturer = groupData.FirstOrDefault() != null ? groupData.FirstOrDefault().MANUFACTURER : null;
+            rptVehicleMakeFirstGroupedData.NoOfVehicle = groupData.FirstOrDefault() != null ? groupData.FirstOrDefault().NO_OF_VEHICLE : null;
+            int? totalAll = groupData.Skip(1).Take(groupData.Count - 1).Sum(x => x.NO_OF_VEHICLE);
+
+            RptVehicleMakeDataGrouped rptVehicleMakeDataGrouped = new RptVehicleMakeDataGrouped
+            {
+                FirstData = rptVehicleMakeFirstGroupedData,
+                TotalAll = totalAll,
+                GroupedData = groupData
+            };
+
+            return Json(rptVehicleMakeDataGrouped);
         }
 
         [HttpPost]
         public JsonResult GetOdometerDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
         {
+            Dictionary<string, OdometerProps> dictionaryResult = new Dictionary<string, OdometerProps>();
+
             var input = new OdometerGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
@@ -154,27 +170,101 @@ namespace FMS.Website.Controllers
             {
                 input.Function = "Sales,Marketing";
             }
-
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
-            var groupData = data.GroupBy(x => new { x.VEHICLE_TYPE })
+            var groupData = data.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE })
                 .Select(p => new OdometerDto()
                 {
                     VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
-                    TOTAL_KM = p.Sum(c => c.TOTAL_KM)
-                }).ToList();
-
-            if (isByRegion)
-            {
-                groupData = data.GroupBy(x => new { x.FUNCTION })
-                .Select(p => new OdometerDto()
-                {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     TOTAL_KM = p.Sum(c => c.TOTAL_KM)
                 }).ToList();
-            }
-
+            //if (isByRegion)
+            //{
+            //    groupData = data.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE })
+            //    .Select(p => new OdometerDto()
+            //    {
+            //        FUNCTION = p.FirstOrDefault().FUNCTION,
+            //        TOTAL_KM = p.Sum(c => c.TOTAL_KM)
+            //    }).ToList();
+            //}
             return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult GetOdometerDataVisualDetail(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            Dictionary<string, OdometerProps> dictionaryResult = new Dictionary<string, OdometerProps>();
+
+            var input = new OdometerGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE })
+                .Select(p => new OdometerDto()
+                {
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    TOTAL_KM = p.Sum(c => c.TOTAL_KM)
+                }).ToList();
+
+            foreach (var item in groupData)
+            {
+                if (string.IsNullOrEmpty(item.FUNCTION))
+                {
+                    dictionaryResult["#Empty"] = new OdometerProps();
+                    dictionaryResult["#Empty"].Function = "#Empty";
+                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
+                    {
+                        dictionaryResult["#Empty"].Benefit = new VehicleTypeDetail
+                        {
+                            VehicleType = "Benefit",
+                            TotalKM = item.TOTAL_KM
+                        };
+                    }
+                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
+                    {
+                        dictionaryResult["#Empty"].WTC = new VehicleTypeDetail
+                        {
+                            VehicleType = "WTC",
+                            TotalKM = item.TOTAL_KM
+                        };
+                    }
+                }
+                else
+                {
+                    if (!dictionaryResult.ContainsKey(item.FUNCTION))
+                    {
+                        dictionaryResult[item.FUNCTION] = new OdometerProps();
+                        dictionaryResult[item.FUNCTION].Function = item.FUNCTION;
+                    }
+                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
+                    {
+                        dictionaryResult[item.FUNCTION].Benefit = new VehicleTypeDetail
+                        {
+                            VehicleType = "Benefit",
+                            TotalKM = item.TOTAL_KM
+                        };
+                    }
+                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
+                    {
+                        dictionaryResult[item.FUNCTION].WTC = new VehicleTypeDetail
+                        {
+                            VehicleType = "WTC",
+                            TotalKM = item.TOTAL_KM
+                        };
+                    }
+                }
+                
+            }
+            return Json(dictionaryResult);
         }
 
         [HttpPost]
@@ -210,7 +300,85 @@ namespace FMS.Website.Controllers
             }
 
             return Json(groupData);
+            }
+
+        [HttpPost]
+        public JsonResult GetLiterByFunctionDataVisualDetail(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            Dictionary<string, LiterByFunctionProps> dictionaryResult = new Dictionary<string, LiterByFunctionProps>();
+
+            var input = new LiterFuncGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+
+            List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE })
+                .Select(p => new LiterByFunctionDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    TOTAL_LITER = p.Sum(c => c.TOTAL_LITER)
+                }).ToList();
+
+            foreach (var item in groupData)
+            {
+                if (string.IsNullOrEmpty(item.FUNCTION))
+                {
+                    dictionaryResult["#Empty"] = new LiterByFunctionProps();
+                    dictionaryResult["#Empty"].Function = "#Empty";
+                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
+                    {
+                        dictionaryResult["#Empty"].Benefit = new VehicleTypeDetailLiterByFunction
+                        {
+                            VehicleType = "Benefit",
+                            TotalLiter = item.TOTAL_LITER
+                        };
+                    }
+                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
+                    {
+                        dictionaryResult["#Empty"].WTC = new VehicleTypeDetailLiterByFunction
+                        {
+                            VehicleType = "WTC",
+                            TotalLiter = item.TOTAL_LITER
+                        };
+                    }
+                }
+                else
+                {
+                    if (!dictionaryResult.ContainsKey(item.FUNCTION))
+                    {
+                        dictionaryResult[item.FUNCTION] = new LiterByFunctionProps();
+                        dictionaryResult[item.FUNCTION].Function = item.FUNCTION;
+                    }
+                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
+                    {
+                        dictionaryResult[item.FUNCTION].Benefit = new VehicleTypeDetailLiterByFunction
+                        {
+                            VehicleType = "Benefit",
+                            TotalLiter = item.TOTAL_LITER
+                        };
+                    }
+                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
+                    {
+                        dictionaryResult[item.FUNCTION].WTC = new VehicleTypeDetailLiterByFunction
+                        {
+                            VehicleType = "WTC",
+                            TotalLiter = item.TOTAL_LITER
+                        };
+                    }
+                }
+            }
+            return Json(dictionaryResult);
         }
+
+
 
         [HttpPost]
         public JsonResult GetFuelCostByFunctionDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
@@ -340,7 +508,6 @@ namespace FMS.Website.Controllers
             {
                 input.Function = "Sales,Marketing";
             }
-
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
