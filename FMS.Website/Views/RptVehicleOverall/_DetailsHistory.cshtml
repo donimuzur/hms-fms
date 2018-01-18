@@ -21,7 +21,7 @@
         @foreach (var data in Model.DetailsHistory)
         {
         <tr>
-            <td>@Html.Raw(data.Date.HasValue ? data.Date.Value.ToString("yyyy-MMM-dd"): "")</td>
+            <td>@Html.Raw(data.Date.HasValue ? data.Date.Value.ToString("dd-MMM-yyyy"): "")</td>
             <td>@Html.Raw(data.Employee)</td>
             <td>@Html.Raw(data.Description)</td>
         </tr>
