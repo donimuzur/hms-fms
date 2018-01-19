@@ -13,11 +13,18 @@
         <i class="fa fa-upload"></i> Export
     </a>
 </div>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div align="center">
+					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <section class="content">
-    @using (Html.BeginForm("ExportMasterSetting", "MstSetting", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-    }
-
     <div class="wpanel">
         <table id="tbSetting" class="table table-bordered table-striped">
             <thead>
@@ -101,7 +108,27 @@
     });
 
     function ExportXls() {
-        $('#ExportToXls').submit();
+    	console.log('Submitting');
+    	var url = '@Url.Action("ExportMasterSetting", "MstSetting")';
+    	var getFileUrl = '@Url.Action("GetExcelFile", "MstSetting")';
+    	console.log(url);
+    	$.ajax({
+    		url: url,
+    		beforeSend: function () {
+    			$('#LoadingModal').show();
+    		},
+    		success: function (response, status, jqxhr) {
+    			console.log("DONE");
+    			window.location = getFileUrl + "?pathFile=" + response;
+    			$('#LoadingModal').hide();
+    		},
+    		error: function (jqhxr) {
+    			console.log("ERROR");
+    			console.log(jqhxr.responseText);
+    			$('#LoadingModal').hide();
+    		},
+    		type: 'POST'
+    	});
     }
 
     $(function () {

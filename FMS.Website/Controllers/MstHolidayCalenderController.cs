@@ -121,16 +121,16 @@ namespace FMS.Website.Controllers
         }
 
         #region ExportXLS
-        public void ExportMasterHolidayCalender()
+        public string ExportMasterHolidayCalender()
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterHolidayCalender();
-
+            return pathFile; 
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -139,6 +139,7 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
+
         }
         private string CreateXlsMasterHolidayCalender()
         {
