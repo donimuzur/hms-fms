@@ -666,24 +666,7 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public void ExportMasterFleet(FleetModel model = null)
-        {
-            string pathFile = "";
-
-            pathFile = CreateXlsMasterFleet(model);
-
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
-        }
+        
         public string ExportMasterFleetGenerateReport(FleetModel model = null)
         {
             string pathFile = "";
