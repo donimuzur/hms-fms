@@ -35,11 +35,11 @@ namespace FMS.DAL.Services
                 }
                 if (filter.FromDate.HasValue)
                 {
-                    queryFilter = queryFilter.And(c => c.END_RENT >= filter.FromDate);
+                    queryFilter = queryFilter.And(c => c.START_RENT >= filter.FromDate);
                 }
                 if (filter.ToDate.HasValue)
                 {
-                    queryFilter = queryFilter.And(c => c.END_RENT <= filter.ToDate);
+                    queryFilter = queryFilter.And(c => c.START_RENT <= filter.ToDate);
                 }
                 if (!string.IsNullOrEmpty(filter.SupplyMethod))
                 {
