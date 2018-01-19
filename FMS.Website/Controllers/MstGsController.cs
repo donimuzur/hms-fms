@@ -479,16 +479,16 @@ namespace FMS.Website.Controllers
 
         #region export xls
 
-        public void ExportReportGs(GsModel model)
+        public string ExportReportGs(GsModel model)
         {
             string pathFile = "";
-
             pathFile = CreateXlsReportGs(model.FilterReport);
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -497,8 +497,8 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
+        }
         public void ExportMasterGs(GsModel model)
         {
             string pathFile = "";
