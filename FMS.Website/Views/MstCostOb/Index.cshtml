@@ -14,14 +14,7 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportMasterCostOb", "MstCostOb", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchView.Year, new { @id = "filter_Year" })
-        @Html.HiddenFor(model => model.SearchView.Regional, new { @id = "filter_Regional" })
-        @Html.HiddenFor(model => model.SearchView.Function, new { @id = "filter_Function" })
-        @Html.HiddenFor(model => model.SearchView.VehicleType, new { @id = "filter_VehicleType" })
-        @Html.HiddenFor(model => model.SearchView.Status, new { @id = "filter_Status" })
-    }
+
     <div class="wpanel">
         <div class="row col-md-12">
             @using (Ajax.BeginForm("ListCostOb", "MstCostOb",
@@ -92,14 +85,38 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#filter_Year').val($('#SearchView_Year').val());
-        $('#filter_Regional').val($('#SearchView_Regional').val());
-        $('#filter_Function').val($('#SearchView_Function').val());
-        $('#filter_VehicleType').val($('#SearchView_VehicleType').val());
-        $('#filter_Status').val($('#SearchView_Status').val());
-
-
-        $('#ExportToXls').submit();
+        var url = '@Url.Action("ExportMasterCostOb", "MstCostOb")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstCostOb")';
+        console.log(url);
+        var objToUpload =
+			{
+				SearchView: {
+					Year: $('#SearchView_Year').val(),
+					Regional: $('#SearchView_Regional').val(),
+					Function: $('#SearchView_Function').val(),
+					VehicleType: $('#SearchView_VehicleType').val(),
+					Status: $('#SearchView_Status').val(),
+				}
+			};
+        $.ajax({
+        	url: url,
+        	data: JSON.stringify(objToUpload),
+        	contentType: 'application/json; charset=utf-8',
+        	beforeSend: function () {
+        		$('#LoadingModal').show();
+        	},
+        	success: function (response, status, jqxhr) {
+        		console.log("DONE");
+        		window.location = getFileUrl + "?pathFile=" + response;
+        		$('#LoadingModal').hide();
+        	},
+        	error: function (jqhxr) {
+        		console.log("ERROR");
+        		console.log(jqhxr.responseText);
+        		$('#LoadingModal').hide();
+        	},
+        	type: 'POST'
+        });
     }
 
     function OnBegin()
