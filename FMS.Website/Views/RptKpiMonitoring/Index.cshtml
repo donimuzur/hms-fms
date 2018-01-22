@@ -9,14 +9,6 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportKpiMonitoring", "RptKpiMonitoring", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchView.FormDate, new { @id = "filter_FromDate" })
-        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
-        @Html.HiddenFor(model => model.SearchView.FormType, new { @id = "filter_FormType" })
-        @Html.HiddenFor(model => model.SearchView.VehicleUsage, new { @id = "filter_VehicleUsage" })
-        @Html.HiddenFor(model => model.SearchView.Location, new { @id = "filter_Location" })
-    }
     <div class="wpanel">
         <label class="label-warning">@Model.ErrorMessage</label>
         <div class="row col-md-12">
@@ -27,6 +19,9 @@
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "contenttable",
                     OnComplete = "setupDataTables",
+                    OnBegin = "LoadingShow",
+                    OnSuccess = "LoadingHide",
+                    OnFailure = "LoadingHide",
                 }))
             {
                 <div class="col-md-3">
@@ -84,23 +79,67 @@
         @Html.Partial("_ListTransaction")
     </div>
 </section>
-
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/KpiMonitoring.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     function ExportXls() {
-        $('#filter_FromDate').val($('#From_Date').val());
-        $('#filter_ToDate').val($('#To_Date').val());
-        $('#filter_VehicleUsage').val($('#SearchView_VehicleUsage').val());
-        $('#filter_FormType').val($('#SearchView_FormType').val());
-        var val = $("#SearchView_Location option:selected").text()
-        $('#filter_Location').val(val);
+        console.log('Submitting');
+        var url = '@Url.Action("ExportKpiMonitoringGenerateReport", "RptKpiMonitoring")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptKpiMonitoring")';
+        console.log(url);
+        var val = $("#SearchView_Location option:selected").text();
         if (val == 'ALL')
         {
-            $('#filter_Location').val('');
+            val='';
         }
-        //$("#SearchView_Location option:selected").text()
-        $('#ExportToXls').submit();
+        var objToUpload =
+			{
+			    SearchView: {
+			        FromDate: $('#From_Date').val(),
+			        ToDate: $('#To_Date').val(),
+			        VehicleUsage: $('#SearchView_VehicleUsage').val(),
+			        FormType: $('#SearchView_FormType').val(),
+			        Location: val,
+			    }
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
     }
 
     function setupDataTables() {

@@ -90,18 +90,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportCCF(RptCCFModel model)
+        public string ExportCcfReportGenerateReport(RptCCFModel model = null)
         {
             string pathFile = "";
-
             var input = Mapper.Map<RptCCFInput>(model.SearchViewExport);
             pathFile = CreateXlsRptCCF(input);
+            return pathFile;
 
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -110,8 +110,8 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
+        }
         private string CreateXlsRptCCF(RptCCFInput input)
         {
             //get data

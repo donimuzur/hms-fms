@@ -138,7 +138,26 @@ namespace FMS.Website.Controllers
             var data = _fuelodometerBLL.GetFuelOdometerByParam(param);
             return Mapper.Map<List<FuelOdometerItem>>(data);
         }
+        private List<FuelOdometerItem> SearchDataFuelOdometerExport(FuelOdometerSearchView searchView = null)
+        {
+            var param = new FuelOdometerParamInput();
+            param.Status = searchView.Status;
+            param.VehicleType = searchView.VehicleType;
+            param.DateOfCost = searchView.DateOfCost;
+            param.PostedTime = searchView.PostedTime;
+            param.EmployeeId = searchView.EmployeeId;
+            param.EmployeeName = searchView.EmployeeName;
+            param.PoliceNumber = searchView.PoliceNumber;
+            param.SeqNumber = searchView.SeqNumber;
+            param.LastKM = searchView.LastKM;
+            param.ClaimComment = searchView.ClaimComment;
+            param.ClaimType = searchView.ClaimType;
+            param.CostCenter = searchView.CostCenter;
+            param.EcsRmbTransId = searchView.EcsRmbTransId;
 
+            var data = _fuelodometerBLL.GetFuelOdometerByParam(param);
+            return Mapper.Map<List<FuelOdometerItem>>(data);
+        }
         private IEnumerable<FuelOdometerItem> FuelOdometerDataOrder(string column, DTOrderDir dir, IEnumerable<FuelOdometerItem> data)
         {
 
@@ -167,16 +186,16 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region ExportExcel
-        public void ExportMasterFuelOdometer()
+        public string ExportMasterFuelOdometer(FuelOdometerModel model = null)
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterFuelOdometer();
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -185,9 +204,9 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
-        private string CreateXlsMasterFuelOdometer()
+        }
+        private string CreateXlsMasterFuelOdometer(FuelOdometerModel model = null)
         {
             //get data
             List<FuelOdometerDto> vendor = _fuelodometerBLL.GetFuelOdometer();
