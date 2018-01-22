@@ -154,7 +154,7 @@
                             <ul class="childmenu collapse" id="CrfMenu" data-parent="#sidemenu">
                                 @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
                                 {
-                                    <li><a id="CrfDahsboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
+                                    <li><a id="CrfDashboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
                                 }
 
                                 <li><a id="CrfOpen" href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
