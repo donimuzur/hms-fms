@@ -1,6 +1,5 @@
 ﻿@model FMS.Website.Models.FleetModel
 @using FMS.Core;
-
 <div class="opt-content clearfloat">
 	<h5 class="title-page">Master Data Fleet</h5>
 	@if (Model.CurrentPageAccess.UploadAccess == true)
@@ -56,13 +55,13 @@
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_SupplyMethodList">Supply Method</label>
-					@Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, new { @class = "form-control chosen", @data_live_search = true, @multiple="multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_BodyTypeList">Body Type</label>
-					@Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple="mulltiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
@@ -74,31 +73,31 @@
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_VehicleUsageList">Vehicle Usage</label>
-					@Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, new { @class = "form-control chosen", @data_live_search = true, @multiple="multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_VendorList">Vendor Name</label>
-					@Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_FunctionList">Function</label>
-					@Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, new { @class = "form-control chosen", @data_live_search = true, @multiple="multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_RegionalList">Regional</label>
-					@Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_CityList">City</label>
-					@Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
@@ -193,7 +192,14 @@
 
         $(document).on('click', '#btn-reset', function () {
             $('input[type=text]').val('');
-            $('.chosen-single > span').html('select');
+        	//$('.chosen-single > span').html('select');
+            $('#SearchView_Function').val('').trigger('chosen:updated');
+            $("#SearchView_SupplyMethod").val('').trigger('chosen:updated');
+            $("#SearchView_BodyType").val('').trigger('chosen:updated');
+            $("#SearchView_VehicleUsage").val('').trigger('chosen:updated');
+            $("#SearchView_Vendor").val('').trigger('chosen:updated');
+            $("#SearchView_Regional").val('').trigger('chosen:updated');
+            $("#SearchView_City").val('').trigger('chosen:updated');
             setupDataTables();
         });
     });
@@ -207,17 +213,17 @@
 				SearchView: {
 					StatusSource: $('#SearchView_StatusSource').val(),
 					VehicleType: $('#SearchView_VehicleType').val(),
-					VehicleUsage: $('#SearchView_VehicleUsage').val(),
-					SupplyMethod: $('#SearchView_SupplyMethod').val(),
-					BodyType: $('#SearchView_BodyType').val(),
-					Vendor:  $('#SearchView_Vendor').val(),
-					Function: $('#SearchView_Function').val(),
+					VehicleUsage: getFunctionStr($('#SearchView_VehicleUsage').val()),
+					SupplyMethod: getFunctionStr($('#SearchView_SupplyMethod').val()),
+					BodyType: getFunctionStr($('#SearchView_BodyType').val()),
+					Vendor:  getFunctionStr($('#SearchView_Vendor').val()),
+					Function: getFunctionStr($('#SearchView_Function').val()),
 					StartRent: $("#SearchView_StartRent").val(),
 					StartRentTo: $("#SearchView_StartRentTo").val(),
 					EndRent: $("#SearchView_EndRent").val(),
 					EndRentTo: $("#SearchView_EndRentTo").val(),
-					Regional: $("#SearchView_Regional").val(),
-					City: $("#SearchView_City").val(),
+					Regional: getFunctionStr($("#SearchView_Regional").val()),
+					City: getFunctionStr($("#SearchView_City").val()),
 					PoliceNumber: $("#SearchView_PoliceNumber").val(),
 					EngineNumber: $("#SearchView_EngineNumber").val(),
 					ChasisNumber: $("#SearchView_ChasisNumber").val(),
@@ -343,7 +349,13 @@
 
         return columns;
     }
-
+    function getFunctionStr(arr){
+    	var dataStr = "";
+    	if(arr.length>0){
+    		dataStr = arr.toString();
+    	}
+    	return dataStr;
+    }
     function setupDataTables() {
         var actionHtml = '';
         var table = null;
@@ -394,20 +406,20 @@
                         "EmployeeId": $('#SearchView_EmployeeID').val(),
                         "ChasisNumber": $('#SearchView_ChasisNumber').val(),
                         "StatusSource": $('#SearchView_StatusSource').val(),
-                        "SupplyMethod": $('#SearchView_SupplyMethod').val(),
-                        "BodyType": $('#SearchView_BodyType').val(),
+                        "SupplyMethod": getFunctionStr($('#SearchView_SupplyMethod').val()),
+                        "BodyType": getFunctionStr($('#SearchView_BodyType').val()),
                         "VehicleType": $('#SearchView_VehicleType').val(),
-                        "VehicleUsage": $('#SearchView_VehicleUsage').val(),
-                        "Vendor": $('#SearchView_Vendor').val(),
-                        "Function": $('#SearchView_Function').val(),
+                        "VehicleUsage": getFunctionStr($('#SearchView_VehicleUsage').val()),
+                        "Vendor": getFunctionStr($('#SearchView_Vendor').val()),
+                        "Function": getFunctionStr($('#SearchView_Function').val()),
                         "StartRent": $('#SearchView_StartRent').val(),
                         "StartRentTo": $('#SearchView_StartRentTo').val(),
                         "EndRent": $('#SearchView_EndRent').val(),
                         "EndRentTo": $('#SearchView_EndRentTo').val(),
                         "EndDate": $('#SearchView_EndDate').val(),
                         "EndDateTo": $('#SearchView_EndDateTo').val(),
-                        "Regional": $('#SearchView_Regional').val(),
-                        "City": $('#SearchView_City').val()
+                        "Regional": getFunctionStr($('#SearchView_Regional').val()),
+                        "City": getFunctionStr($('#SearchView_City').val())
                     });
                 }
             }
