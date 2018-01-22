@@ -255,16 +255,16 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public void ExportMasterSetting()
+        public string ExportMasterSetting()
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterSetting();
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -273,8 +273,8 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
+        }
         private string CreateXlsMasterSetting()
         {
             //get data

@@ -354,16 +354,17 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region export xls
-        public void ExportMasterLocationMapping()
+        public string ExportMasterLocationMapping()
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterLocationMapping();
+            return pathFile;
+        }
 
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -372,6 +373,7 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
+
         }
 
         private string CreateXlsMasterLocationMapping()
