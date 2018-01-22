@@ -39,7 +39,7 @@ namespace FMS.DAL.Services
                 queryFilterEmployee = c => c.IS_ACTIVE == input.Status;
             }
             
-            if (input != null)
+            if (input != null && queryFilterEmployee != null)
             {
                 if (!string.IsNullOrEmpty(input.Address))
                 {
