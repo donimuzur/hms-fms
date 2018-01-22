@@ -284,13 +284,10 @@
 
         $(document).on('click', '#btn-reset', function () {
             $('input[type=text]').val('');
-            $("select").val('');
-            $("select").selectpicker("refresh");
+            $('select').val('').trigger('chosen:updated');
             setupDataTables();
         });
     });
-
-
     function setupColumns() {
         var columns = [
             { "data": null, "orderable" : false },
@@ -397,11 +394,11 @@
         });
 
         table.on('preXhr', function(e, settings, data) {
-            $(".loading").show();
+        	$('#LoadingModal').show();
         });
 
         table.on('xhr', function(e, settings, data) {
-            $(".loading").hide();
+        	$('#LoadingModal').hide();
         });
     }
 </script>

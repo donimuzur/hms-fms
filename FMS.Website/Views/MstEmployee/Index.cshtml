@@ -238,7 +238,7 @@
             });
         });
         setupDataTables();
-        $('.loading').hide();
+        $('#LoadingModal').hide();
     }
 
     function setupColumns() {
@@ -267,7 +267,8 @@
     }
 
     function setupDataTables(blFirst) {
-        // DataTable
+        
+    	// DataTable
         var table = null;
         var actionHtml = '';
 
@@ -330,10 +331,12 @@
             }
         });
         table.on('preXhr', function(e, settings, data) {
-            $(".loading").show();
+        	$('#LoadingModal').show();
+
         });
         table.on('xhr', function(e, settings, data) {
-            $(".loading").hide();
+        	$('#LoadingModal').hide();
+
         });
     }
 
