@@ -86,7 +86,7 @@
 			<div class="col-md-3">
 				<div class="form-group">
 					<label for="SearchView_FunctionList">Function</label>
-					@Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					@Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, new { @class = "form-control chosen", @data_live_search = true, @multiple="multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
@@ -211,7 +211,7 @@
 					SupplyMethod: $('#SearchView_SupplyMethod').val(),
 					BodyType: $('#SearchView_BodyType').val(),
 					Vendor:  $('#SearchView_Vendor').val(),
-					Function: $('#SearchView_Function').val(),
+					Function: getFunctionStr($('#SearchView_Function').val()),
 					StartRent: $("#SearchView_StartRent").val(),
 					StartRentTo: $("#SearchView_StartRentTo").val(),
 					EndRent: $("#SearchView_EndRent").val(),
@@ -343,7 +343,13 @@
 
         return columns;
     }
-
+    function getFunctionStr(arr){
+    	var dataStr = "";
+    	if(arr.length>0){
+    		dataStr = arr.toString();
+    	}
+    	return dataStr;
+    }
     function setupDataTables() {
         var actionHtml = '';
         var table = null;
@@ -399,7 +405,7 @@
                         "VehicleType": $('#SearchView_VehicleType').val(),
                         "VehicleUsage": $('#SearchView_VehicleUsage').val(),
                         "Vendor": $('#SearchView_Vendor').val(),
-                        "Function": $('#SearchView_Function').val(),
+                        "Function": getFunctionStr($('#SearchView_Function').val()),
                         "StartRent": $('#SearchView_StartRent').val(),
                         "StartRentTo": $('#SearchView_StartRentTo').val(),
                         "EndRent": $('#SearchView_EndRent').val(),

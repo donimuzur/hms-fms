@@ -91,24 +91,18 @@ namespace FMS.DAL.Services
                 {
 
                     queryFilterFleet = queryFilterFleet.And(c => c.EMPLOYEE_NAME == input.FormalName);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.PoliceNumber))
                 {
 
                     queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.EngineNumber))
                 {
 
                     queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.ChasisNumber))
@@ -128,11 +122,7 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.PoliceNumber))
                 {
-
-
                     queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.VehicleType))
@@ -189,7 +179,20 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(input.Function))
                 {
-                    queryFilterFleet = queryFilterFleet.And(c => (c.VEHICLE_FUNCTION == null ? "" : c.VEHICLE_FUNCTION.ToUpper()) == input.Function.ToUpper());
+                    var listFunction = input.Function.ToUpper().Split(',').ToList();
+
+                    if (listFunction.Any(x=>x.ToLower() == "others"))
+                    {
+                        queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.VEHICLE_FUNCTION.ToUpper()) ||
+                                                            (c.VEHICLE_FUNCTION.ToUpper() != "SALES" && c.VEHICLE_FUNCTION.ToUpper() != "MARKETING"));
+                    }
+                    else
+                    {
+                        queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.VEHICLE_FUNCTION.ToUpper()));
+                    }
+
+                    //queryFilterFleet = queryFilterFleet
+                    //    .And(c => (c.VEHICLE_FUNCTION == null ? "" : c.VEHICLE_FUNCTION.ToUpper()) == input.Function.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(input.EndRent))
                 {
