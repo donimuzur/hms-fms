@@ -367,10 +367,10 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public string ExportMasterEmployee()
+        public string ExportMasterEmployee(EmployeeModel model = null)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterEmployee();
+            pathFile = CreateXlsMasterEmployee(model);
             return pathFile;
         }
         public void GetExcelFile(string pathFile)
@@ -387,11 +387,33 @@ namespace FMS.Website.Controllers
             Response.End();
 
         }
-        private string CreateXlsMasterEmployee()
+        private List<EmployeeItem> SearchDataEmployeeExport(EmployeeSearchView searchView = null)
+        {
+            var param = new EmployeeParamInput();
+            param.Address = searchView.Address;
+            param.BaseTown = searchView.BaseTown;
+            param.City = searchView.City;
+            param.Company = searchView.Company;
+            param.CostCenter = searchView.CostCenter;
+            param.Directorate = searchView.Directorate;
+            param.Division = searchView.Division;
+            param.EmailAddress = searchView.EmailAddress;
+            param.EmployeeId = searchView.EmployeeId;
+            param.FlexPoint = searchView.FlexPoint;
+            param.FormalName = searchView.FormalName;
+            param.GroupLevel = searchView.GroupLevel;
+            param.PositionTitle = searchView.PositionTitle;
+            param.Status = searchView.Status;
+            var data = _employeeBLL.GetEmployeeByParam(param);
+            return Mapper.Map<List<EmployeeItem>>(data);
+        }
+
+        private string CreateXlsMasterEmployee(EmployeeModel model = null)
         {
             //get data
             List<EmployeeDto> employee = _employeeBLL.GetEmployee();
-            var listData = Mapper.Map<List<EmployeeItem>>(employee);
+            //var listData = Mapper.Map<List<EmployeeItem>>(employee);
+            var listData = SearchDataEmployeeExport(model.SearchView);
 
             var slDocument = new SLDocument();
 
