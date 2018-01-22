@@ -18,5 +18,15 @@ namespace FMS.BusinessObject.Inputs
         public DateTime? ToDate { get; set; }
         public string Regional { get; set; }
         public string City { get; set; }
+        public string PoliceNumber { get; set; }
+        public string EmployeeName { get; set; }
+        public string EngineNumber { get; set; }
+        public string EmployeeID { get; set; }
+        public string ChasisNumber { get; set; }
+        public string VehicleUsage { get; set; }
+        public DateTime? EndContract_FromDate { get; set; }
+        public DateTime? EndContract_ToDate { get; set; }
+        public DateTime? EndDate_FromDate { get; set; }
+        public DateTime? EndDate_ToDate { get; set; }
     }
 }
