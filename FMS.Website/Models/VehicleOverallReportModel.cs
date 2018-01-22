@@ -101,8 +101,25 @@ namespace FMS.Website.Models
         public string Function { get; set; }
         public string Regional { get; set; }
         public string City { get; set; }
+        public string PoliceNumber { get; set; }
+        public string EmployeeName { get; set; }
+        public string EngineNumber { get; set; }
+        public string EmployeeID { get; set; }
+        public string ChasisNumber { get; set; }
+        public string VehicleUsage { get; set; }
+        public DateTime? EndContract_FromDate { get; set; }
+        public DateTime? EndContract_ToDate { get; set; }
+        public DateTime? EndDate_FromDate { get; set; }
+        public DateTime? EndDate_ToDate { get; set; }
 
-        
+        public SelectList FunctionList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList PoliceNumberList { get; set; }
+        public SelectList ChasisNumberList { get; set; }
+        public SelectList EmployeeIDList { get; set; }
+        public SelectList EmployeeNameList { get; set; }
+        public SelectList EngineNumberList { get; set; }
+
         public SelectList StatusList { get; set; }
         public SelectList VehicleTypeList { get; set; }
         public SelectList SupplyMethodList { get; set; }

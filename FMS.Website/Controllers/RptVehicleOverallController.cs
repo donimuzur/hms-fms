@@ -24,36 +24,48 @@ namespace FMS.Website.Controllers
         private ILocationMappingBLL _locationMappingBLL;
         private IFleetBLL _fleetBLL;
         private IVendorBLL _vendorBLL;
+        private IGroupCostCenterBLL _groupCostCenterBLL;
 
-        public RptVehicleOverallController(IPageBLL pageBll,  IVehicleOverallReportBLL VehicleOverallReportBLL, ISettingBLL SettingBLL, IVendorBLL VendorBLL, ILocationMappingBLL LocationMappingBLL, IFleetBLL FleetBLL) : base(pageBll, Enums.MenuList.RptVehicle)
+        public RptVehicleOverallController(IPageBLL pageBll,  IVehicleOverallReportBLL VehicleOverallReportBLL, ISettingBLL SettingBLL, IVendorBLL VendorBLL, ILocationMappingBLL LocationMappingBLL, IFleetBLL FleetBLL, IGroupCostCenterBLL GroupCostCenterBLL ) : base(pageBll, Enums.MenuList.RptVehicle)
         {
             _pageBLL = pageBll;
             _vehicleOverallReportBLL = VehicleOverallReportBLL;
             _settingBLL = SettingBLL;
             _fleetBLL = FleetBLL;
-            _locationMappingBLL = LocationMappingBLL;
+            _locationMappingBLL = LocationMappingBLL;                             
             _vendorBLL = VendorBLL;
-            _mainMenu = Enums.MenuList.RptExecutiveSummary ;
+            _groupCostCenterBLL= GroupCostCenterBLL;
+             _mainMenu = Enums.MenuList.RptExecutiveSummary ;
         }
 
         public VehicleOverallReportModel Initial(VehicleOverallReportModel model)
         {
-            var settingData = _settingBLL.GetSetting();
-            var listStatus = new Dictionary<bool, string> { { true ,"Active" }, {false,"InActive" } };
-            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
-            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
-            var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
-            var listBodyType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
-            var listVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new { x.VendorName }).Distinct().ToList();
-            var listCity = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Location }).Distinct().ToList();
+            var fleetList = _fleetBLL.GetFleet().ToList();
 
-            model.SearchView.StatusList = new SelectList(listStatus, "Key", "Value");
-            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            var settingData = _settingBLL.GetSetting().Where(x => x.IsActive);
+            var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.SettingValue }).OrderBy(x => x.SettingValue).ToList();
+            var listBodType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType)).Select(x => new { x.SettingValue }).OrderBy(x => x.SettingValue).ToList();
+            var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.SettingValue }).OrderBy(x => x.SettingValue).ToList();
+            var locationMappingData = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true);
+            var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
+            var data = _vendorBLL.GetVendor().Where(x => x.IsActive == true).OrderBy(x => x.VendorName).ToList();
+            var listStatus = new Dictionary<bool, string> { { true, "Active" }, { false, "InActive" } };
+
+            model.SearchView.PoliceNumberList = new SelectList(fleetList.Select(x => new { x.PoliceNumber }).Distinct().OrderBy(x => x.PoliceNumber).ToList(), "PoliceNumber", "PoliceNumber");
+            model.SearchView.EmployeeNameList = new SelectList(fleetList.Select(x => new { x.EmployeeName }).Distinct().OrderBy(x => x.EmployeeName).ToList(), "EmployeeName", "EmployeeName");
+            model.SearchView.ChasisNumberList = new SelectList(fleetList.Select(x => new { x.ChasisNumber }).Distinct().OrderBy(x => x.ChasisNumber).ToList(), "ChasisNumber", "ChasisNumber");
+            model.SearchView.EmployeeIDList = new SelectList(fleetList.Select(x => new { x.EmployeeID }).Distinct().OrderBy(x => x.EmployeeID).ToList(), "EmployeeID", "EmployeeID");
+            model.SearchView.EngineNumberList = new SelectList(fleetList.Select(x => new { x.EngineNumber }).Distinct().OrderBy(x => x.EngineNumber ).ToList(), "EngineNumber", "EngineNumber");
             model.SearchView.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
-            model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
-            model.SearchView.BodyTypeList = new SelectList(listBodyType, "SettingValue", "SettingValue"); ;
-            model.SearchView.VendorList = new SelectList(listVendor, "VendorName", "VendorName");
-            model.SearchView.CityList = new SelectList(listCity, "Location", "Location");
+            model.SearchView.BodyTypeList = new SelectList(listBodType, "SettingValue", "SettingValue");
+            model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
+            model.SearchView.VehicleUsageList = new SelectList(fleetList.Select(x => new { x.VehicleUsage }).Distinct().OrderBy(x => x.VehicleUsage).ToList(), "VehicleUsage", "VehicleUsage");
+            model.SearchView.VendorList = new SelectList(data, "ShortName", "ShortName");
+            model.SearchView.FunctionList = new SelectList(groupCostData.Select(x => new { x.FunctionName }).Distinct().OrderBy(x => x.FunctionName).ToList(), "FunctionName", "FunctionName");
+            model.SearchView.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().OrderBy(x => x.Region).ToList(), "Region", "Region");
+            model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().OrderBy(x => x.Basetown).ToList(), "Basetown", "Basetown");
+            model.SearchView.StatusList = new SelectList(listStatus, "Key", "Value");
+            
             model.SearchView.FromDate  = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.ToDate = DateTime.Today;
             model.MainMenu = _mainMenu;
@@ -72,8 +84,10 @@ namespace FMS.Website.Controllers
             filter.ToDate = DateTime.Today;
 
             var data = _vehicleOverallReportBLL.GetVehicle(filter);
+
             var ListData = Mapper.Map<List<VehicleOverallItem>>(data);
             model.ListVehicle = ListData;
+
             return View(model);
         }
         

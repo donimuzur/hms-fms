@@ -10,6 +10,12 @@
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
         <i class="fa fa-download"></i> Export
     </a>
+    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+    {
+        <a href="@Url.Action("UploadCtf", "TraCtf")" class="btn btn-primary line" title="Upload CTF">
+            <i class="fa fa-download"></i> Mass Upload
+        </a>
+    }
 </div>
 <section class="content">
     @using (Html.BeginForm("ExportOpen", "TraCtf", FormMethod.Post, new { @id = "ExportToXls" }))
