@@ -35,6 +35,7 @@
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "contenttable",
                     OnComplete = "setupDataTables",
+					OnBegin = "beginFilter"
                 }))
             {
                 <div class="col-md-3">
@@ -138,7 +139,9 @@
 
         $("#btn-filter").trigger('click');
     });
-
+    function beginFilter() {
+    	$('#LoadingModal').show();
+    }
     function setupDataTables() {
         // DataTable
         var table = $('#tbSalesVolume').DataTable({
@@ -154,6 +157,7 @@
                     .draw();
             });
         });
+        $('#LoadingModal').hide();
     }
 
     $(function () {
