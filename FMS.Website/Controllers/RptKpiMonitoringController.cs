@@ -277,16 +277,17 @@ namespace FMS.Website.Controllers
         }
 
         #region -------------- Export Excel ------------------
-        public void ExportKpiMonitoring(RptKpiMonitoringModel model)
+        public string ExportKpiMonitoringGenerateReport(RptKpiMonitoringModel model = null)
         {
             string pathFile = "";
-
             pathFile = CreateXlsKpiMonitoring(model);
+            return pathFile;
 
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -295,7 +296,9 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
+
         }
+      
         private string CreateXlsKpiMonitoring(RptKpiMonitoringModel model)
         {
 

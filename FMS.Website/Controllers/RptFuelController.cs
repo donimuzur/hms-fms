@@ -195,18 +195,17 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportFuel(RptFuelModel model)
+        public string ExportFuelReportGenerateReport(RptFuelModel model = null)
         {
             string pathFile = "";
-
             var input = Mapper.Map<RptFuelByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsRptFuel(input);
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -216,7 +215,6 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-
         private string CreateXlsRptFuel(RptFuelByParamInput input)
         {
             //get data
@@ -249,7 +247,6 @@ namespace FMS.Website.Controllers
             return path;
 
         }
-
         private SLDocument CreateHeaderExcelDashboard(SLDocument slDocument)
         {
             int iRow = 2;
@@ -288,7 +285,6 @@ namespace FMS.Website.Controllers
             return slDocument;
 
         }
-
         private SLDocument CreateDataExcelDashboard(SLDocument slDocument, List<RptFuelItem> listData, RptFuelByParamInput input)
         {
             int iRow = 3; //starting row data
@@ -362,7 +358,6 @@ namespace FMS.Website.Controllers
 
             return slDocument;
         }
-
         #endregion
 
     }

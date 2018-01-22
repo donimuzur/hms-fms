@@ -12,15 +12,6 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm(Model.TitleExport, "RptExecutiveSummary", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
-        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
-        @Html.HiddenFor(model => model.SearchViewExport.Regional)
-        @Html.HiddenFor(model => model.SearchViewExport.Function)
-    }
     <div class="wpanel">
         <div class="row">
             @using (Ajax.BeginForm("FilterNoVehicleWtc", "RptExecutiveSummary",
@@ -30,6 +21,9 @@
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "contenttable",
                     OnComplete = "setupDataTables",
+                    OnBegin = "LoadingShow",
+                    OnSuccess = "LoadingHide",
+                    OnFailure = "LoadingHide",
                 }))
             {
                 <div class="col-md-3">
@@ -82,25 +76,71 @@
         @Html.Partial("_ListVehicleWtc")
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
-    function ExportXls() {
-        var theList = "";
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
+   function ExportXls() {
+        console.log('Submitting');
 
+        var theList = "";
         $("li.search-choice span").each(function (e) {
             theList += $(this).text() + ",";
         });
 
         theList = theList.slice(0, -1);
 
-        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
-        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
-        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
-        $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
-        $('#SearchViewExport_Function').val(theList);
-        $('#ExportToXls').submit();
+        var url = '@Url.Action(Model.TitleExport , "RptExecutiveSummary")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchViewExport: {
+			        MonthFrom: $('#SearchView_MonthFrom').val(),
+			        MonthTo: $('#SearchView_MonthTo').val(),
+			        YearFrom: $('#SearchView_YearFrom').val(),
+			        YearTo: $('#SearchView_YearTo').val(),
+			        Regional:$('#SearchView_Regional').val(),
+			        Function:theList,
+			    }
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
     }
 
     function setupDataTables() {
