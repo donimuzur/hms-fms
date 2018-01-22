@@ -469,7 +469,7 @@ namespace FMS.BLL.Ccf
             //Email Employee to Fleet / HR
             if (ccfData.EmployeeID == input.EmployeeId)
             {
-                if (complaintCategory.ROLE_TYPE == "Fleet")
+                if (complaintCategory.ROLE_TYPE.ToUpper() == "FLEET")
                 {
                     //rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
                     rc.Subject = ccfData.DocumentNumber + " - User Complaint";
@@ -505,7 +505,7 @@ namespace FMS.BLL.Ccf
                         rc.CC.Add(creatorDataEmail);
                     }
                 }
-                else if (complaintCategory.ROLE_TYPE == "HR")
+                else if (complaintCategory.ROLE_TYPE.ToUpper() == "HR")
                 {
                     //rc.Subject = ccfData.DocumentNumber + " has been submitted by " + creatorDataName;
                     rc.Subject = ccfData.DocumentNumber + " - User Complaint";
@@ -548,7 +548,7 @@ namespace FMS.BLL.Ccf
                 switch (input.ActionType)
                 {
                     case Enums.ActionType.Submit:
-                        if (complaintCategory.ROLE_TYPE == "Fleet")
+                        if (complaintCategory.ROLE_TYPE.ToUpper() == "FLEET")
                         {
                             //rc.Subject = ccfData.DocumentNumber + " In Progress by Fleet";
                             rc.Subject = ccfData.DocumentNumber + " - Complaint Response";
@@ -579,7 +579,7 @@ namespace FMS.BLL.Ccf
                                 rc.CC.Add(creatorDataEmailComplaintFor);
                             }
                         }
-                        else if (complaintCategory.ROLE_TYPE == "HR")
+                        else if (complaintCategory.ROLE_TYPE.ToUpper() == "HR")
                         {
                             //rc.Subject = ccfData.DocumentNumber + " In Progress by HR";
                             rc.Subject = ccfData.DocumentNumber + " - Complaint Response";
@@ -612,7 +612,7 @@ namespace FMS.BLL.Ccf
                         }
                         break;
                     case Enums.ActionType.Completed:
-                        if (complaintCategory.ROLE_TYPE == "Fleet")
+                        if (complaintCategory.ROLE_TYPE.ToUpper() == "FLEET")
                         {
                             //rc.Subject = ccfData.DocumentNumber + " has been completed by Fleet";
                             rc.Subject = ccfData.DocumentNumber + " - Completed Document";
