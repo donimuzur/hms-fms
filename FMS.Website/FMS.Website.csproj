@@ -1071,8 +1071,13 @@
     <Content Include="Scripts\bootstrap-select.min.js" />
     <Content Include="Scripts\ccfscript.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\AutoGr.js" />
+    <Content Include="Scripts\CCF.js" />
+    <Content Include="Scripts\Gs.js" />
+    <Content Include="Scripts\PO.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
+    <Content Include="Scripts\Fuel.js" />
     <Content Include="Scripts\KpiMonitoring.js" />
     <Content Include="Scripts\VehicleOverall.js" />
     <Content Include="Scripts\CfmIdle.js" />

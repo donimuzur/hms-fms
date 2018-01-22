@@ -9,19 +9,6 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportVehicleReport", "RptVehicleOverall", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchView.FromDate,new { @id="filter_FromDate"})
-        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
-        @Html.HiddenFor(model => model.SearchView.BodyType, new { @id = "filter_BodyType" })
-        @Html.HiddenFor(model => model.SearchView.City, new { @id = "filter_City" })
-        @Html.HiddenFor(model => model.SearchView.Function, new { @id = "filter_Function" })
-        @Html.HiddenFor(model => model.SearchView.Regional, new { @id = "filter_Regional" })
-        @Html.HiddenFor(model => model.SearchView.SupplyMethod, new { @id = "filter_SupplyMethod" })
-        @Html.HiddenFor(model => model.SearchView.VehicleStatus, new { @id = "filter_VehicleStatus" })
-        @Html.HiddenFor(model => model.SearchView.VehicleType, new { @id = "filter_VehicleType" })
-        @Html.HiddenFor(model => model.SearchView.Vendor, new { @id = "filter_Vendor" })
-    }
     <div class="wpanel">
         <div class="row col-md-12">
             @using (Ajax.BeginForm("ListVehicle", "RptVehicleOverall",
@@ -151,21 +138,50 @@
     {
         $('#LoadingModal').show();
     }
-    function ExportXls() {
-        $('#filter_FromDate').val($('#From_Date').val());
-        $('#filter_ToDate').val($('#To_Date').val());
-        $('#filter_BodyType').val($('#SearchView_BodyType').val());
-        $('#filter_City').val($('#SearchView_City').val());
-        $('#filter_Function').val($('#SearchView_Function').val());
-        $('#filter_Regional').val($('#SearchView_Regional').val());
-        $('#filter_SupplyMethod').val($('#SearchView_SupplyMethod').val());
-        $('#filter_VehicleStatus').val($('#SearchView_VehicleStatus').val());
-        $('#filter_VehicleType').val($('#SearchView_VehicleType').val());
-        $('#filter_Vendor').val($('#SearchView_Vendor').val());
 
-        $('#ExportToXls').submit();
+    function ExportXls() {
+        console.log('Submitting');
+        var url = '@Url.Action("ExportVehicleReportGenerateReport", "RptVehicleOverall")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptVehicleOverall")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        FromDate: $('#From_Date').val(),
+			        ToDate: $('#To_Date').val(),
+			        BodyType: $('#SearchView_BodyType').val(),
+			        City: $('#SearchView_City').val(),
+			        Function: $('#SearchView_Function').val(),
+			        Regional:$('#SearchView_Regional').val(),
+			        SupplyMethod:$('#SearchView_SupplyMethod').val(),
+			        VehicleStatus:$('#SearchView_VehicleStatus').val(),
+			        VehicleType:$('#SearchView_VehicleType').val(),
+			        Vendor:$('#SearchView_Vendor').val(),
+			    }
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
     }
-    
+
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({
