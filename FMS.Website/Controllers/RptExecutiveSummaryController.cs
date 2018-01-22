@@ -538,18 +538,16 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportSummaryAll(SummaryAllModel model)
+        public string ExportSummaryAllReportGenerateReport(SummaryAllModel model = null)
         {
             string pathFile = "";
-
             pathFile = CreateXlsSummaryAll(model.SearchViewExport);
-            //pathFile = createChart();
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -559,7 +557,6 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-
         private string CreateXlsSummaryAll(SummarySearchViewExport inputExport)
         {
             //get data
@@ -1008,27 +1005,14 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportNoVehicle(ExecutiveSummaryModel model)
+        public string ExportNoVehicle(ExecutiveSummaryModel model = null)
         {
             string pathFile = "";
-
             var input = Mapper.Map<VehicleGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsNoVehicle(input);
             //pathFile = createChart();
+            return pathFile;
 
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
 
         private string CreateXlsNoVehicle(VehicleGetByParamInput input)
@@ -1216,7 +1200,6 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Number Of Vehicle WTC --------------
-
         public ActionResult VehicleWtc()
         {
             var model = new NumberVehicleWtcModel();
@@ -1262,28 +1245,15 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportNoVehicleWtc(NumberVehicleWtcModel model)
+        public string ExportNoVehicleWtc(NumberVehicleWtcModel model = null)
         {
             string pathFile = "";
-
             var input = Mapper.Map<VehicleWtcGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsNoVehicleWtc(input);
+            //pathFile = createChart();
+            return pathFile;
 
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
         private string CreateXlsNoVehicleWtc(VehicleWtcGetByParamInput input)
         {
             //get data
@@ -1507,28 +1477,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportNoVehicleMake(NumberVehicleMakeModel model)
+        public string ExportNoVehicleMake(NumberVehicleMakeModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<VehicleMakeGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsNoVehicleMake(input);
 
-            var newFile = new FileInfo(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
+       
         private string CreateXlsNoVehicleMake(VehicleMakeGetByParamInput input)
         {
             //get data
@@ -1758,28 +1718,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportOdometer(OdometerModel model)
+        public string ExportOdometer(OdometerModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<OdometerGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsOdometer(input);
 
-            var newFile = new FileInfo(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
+      
         private string CreateXlsOdometer(OdometerGetByParamInput input)
         {
             //get data
@@ -2011,28 +1961,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportLiterByFunction(LiterByFunctionModel model)
+        public string ExportLiterByFunction(LiterByFunctionModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsLiterByFunction(input);
 
-            var newFile = new FileInfo(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
+      
         private string CreateXlsLiterByFunction(LiterFuncGetByParamInput input)
         {
             //get data
@@ -2264,28 +2204,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportFuelCostByFunction(FuelCostByFunctionModel model)
+        public string ExportFuelCostByFunction(FuelCostByFunctionModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsFuelCostByFunction(input);
 
-            var newFile = new FileInfo(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
+     
         private string CreateXlsFuelCostByFunction(FuelCostFuncGetByParamInput input)
         {
             //get data
@@ -2515,26 +2445,16 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportLeaseCostByFunction(LeaseCostByFunctionModel model)
+        public string ExportLeaseCostByFunction(LeaseCostByFunctionModel model = null)
         {
             string pathFile = "";
-
+            
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsLeaseCostByFunction(input);
 
-            var newFile = new FileInfo(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
 
         private string CreateXlsLeaseCostByFunction(LeaseCostFuncGetByParamInput input)
@@ -2762,27 +2682,19 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportSalesByRegion(SalesByRegionModel model)
+        public string ExportSalesByRegion(SalesByRegionModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsSalesByRegion(input);
 
-            var newFile = new FileInfo(pathFile);
 
-            var fileName = Path.GetFileName(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
+      
 
         private string CreateXlsSalesByRegion(SalesRegionGetByParamInput input)
         {
@@ -3017,28 +2929,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportAccident(AccidentModel model)
+        public string ExportAccident(AccidentModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<AccidentGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsAccident(input);
+            
+            //pathFile = createChart();
+            return pathFile;
 
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
+    
         private string CreateXlsAccident(AccidentGetByParamInput input)
         {
             //get data
@@ -3266,28 +3168,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportAcVsOb(AcVsObModel model)
+        public string ExportAcVsOb(AcVsObModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<AcVsObGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsLeaseCostByFunction(input);
 
-            var newFile = new FileInfo(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
+      
         private string CreateXlsLeaseCostByFunction(AcVsObGetByParamInput input)
         {
             //get data
@@ -3518,28 +3410,18 @@ namespace FMS.Website.Controllers
         }
 
         #region --------- Export --------------
-
-        public void ExportSumPtdByFunction(SumPtdByFunctionModel model)
+        public string ExportSumPtdByFunction(SumPtdByFunctionModel model = null)
         {
             string pathFile = "";
 
             var input = Mapper.Map<SumPtdFuncGetByParamInput>(model.SearchViewExport);
             pathFile = CreateXlsSumPtdByFunction(input);
 
-            var newFile = new FileInfo(pathFile);
+            //pathFile = createChart();
+            return pathFile;
 
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
         }
-
+  
         private string CreateXlsSumPtdByFunction(SumPtdFuncGetByParamInput input)
         {
             //get data

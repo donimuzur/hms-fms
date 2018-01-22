@@ -105,7 +105,7 @@
 				var totalOrder = response.TotalAll;
 				var totalAll = totalManufacture + totalOrder;
 				$("#totalNumberOfVehicleMake").text(totalAll);
-				$("#numberOfVehicleManufacturer").text(totalManufacture + " " + manufacturerName.toString().toUpperCase());
+				$("#numberOfVehicleManufacturer").text(totalManufacture + " " + (!manufacturerName ? "" : manufacturerName.toString().toUpperCase()));
 				$("#numberOfVehicleTotalOrder").text(totalOrder + " OTHERS");
             }
         });
@@ -121,12 +121,6 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm(Model.TitleExport, "RptExecutiveSummary", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-    }
-
     <div class="wpanel">
         <div class="row">
             <div class="col-md-3">
@@ -297,11 +291,23 @@
         <!-- end summary grid -->
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/js/Chart.bundle.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
     function init_charts() {
+        $('#LoadingModal').show();
 
         var isByRegion = '@Model.IsByRegion';
 
@@ -359,9 +365,14 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
-		
+
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetOdometerDataVisualDetail", "RptExecutiveSummary")',
@@ -413,6 +424,11 @@
             		});
 
             	}
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -479,6 +495,11 @@
             		});
 
             	}
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
         $.ajax({
@@ -528,6 +549,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -575,6 +601,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -622,6 +653,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -675,6 +711,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -732,8 +773,15 @@
                         }
                     });
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
+
+        $('#LoadingModal').hide();
     }
 
     $(document).ready(function () {
@@ -741,13 +789,41 @@
     });
 
     function ExportXls() {
-        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
-        $('#SearchViewExport_YearTo').val($('#SearchView_YearFrom').val());
-        $('#ExportToXls').submit();
-    }
+        console.log('Submitting');
+        var url = '@Url.Action("ExportSummaryAllReportGenerateReport", "RptExecutiveSummary")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        MonthFrom: $('#SearchView_MonthFrom').val(),
+			        MonthTo: $('#SearchView_MonthFrom').val(),
+			        YearFrom: $('#SearchView_YearFrom').val(),
+			        YearTo: $('#SearchView_YearFrom').val(),
+			    }
 
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
+    }
     //function setupDataTables() {
     //    // DataTable
     //    var table = $('#tbSummary').DataTable({

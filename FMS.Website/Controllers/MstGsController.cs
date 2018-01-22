@@ -478,12 +478,12 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region export xls
-
-        public string ExportReportGs(GsModel model)
+        public string ExportGsReportGenerateReport(GsModel model = null)
         {
             string pathFile = "";
             pathFile = CreateXlsReportGs(model.FilterReport);
             return pathFile;
+
         }
         public void GetExcelFile(string pathFile)
         {
@@ -518,7 +518,6 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-
         private string CreateXlsReportGs(ReportFilter filter)
         {
             //get data
@@ -537,7 +536,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Gs Report");
-            slDocument.MergeWorksheetCells(1, 1, 1, 13);
+            slDocument.MergeWorksheetCells(1, 1, 1, 18);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -559,7 +558,6 @@ namespace FMS.Website.Controllers
             return path;
 
         }
-
         private SLDocument CreateDataExcelReportGs(SLDocument slDocument, List<GsItem> listData)
         {
             int iRow = 3; //starting row data
@@ -602,7 +600,6 @@ namespace FMS.Website.Controllers
 
             
         }
-
         private SLDocument CreateHeaderExcelReportGs(SLDocument slDocument)
         {
             int iRow = 2;
@@ -651,7 +648,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Gs");
-            slDocument.MergeWorksheetCells(1, 1, 1, 17);
+            slDocument.MergeWorksheetCells(1, 1, 1, 18);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);

@@ -9,13 +9,6 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm("ExportCfmIdle", "RptCfmIdle", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchView.FromDate,new { @id = "filter_FromDate" })
-        @Html.HiddenFor(model => model.SearchView.ToDate, new { @id = "filter_ToDate" })
-        @Html.HiddenFor(model => model.SearchView.CostCenter, new { @id = "filter_CostCenter" })
-        @Html.HiddenFor(model => model.SearchView.PoliceNumber, new { @id = "filter_PoliceNumber" })
-    }
     <div class="wpanel">
         <div class="row col-md-12">
             @using (Ajax.BeginForm("ListCfmIdleVehicle", "RptCfmIdle",
@@ -25,6 +18,9 @@
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "contenttable",
                     OnComplete = "setupDataTables",
+                    OnBegin ="LoadingShow",
+                    OnSuccess= "LoadingHide",
+                    OnFailure= "LoadingHide",
                 }))
             {
 
@@ -74,18 +70,65 @@
         @Html.Partial("_ListCfmIdleVehicle")
     </div>
 </section>
-
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/CfmIdle.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#filter_FromDate').val($('#From_Date').val());
-        $('#filter_ToDate').val($('#To_Date').val());
-        $('#filter_CostCenter').val($('#SearchView_CostCenter').val());
-        $('#filter_PoliceNumber').val($('#SearchView_PoliceNumber').val());
-        $('#ExportToXls').submit();
+        console.log('Submitting');
+        var url = '@Url.Action("ExportCfmIdleReportGenerateReport", "RptCfmIdle")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptCfmIdle")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        FromDate: $('#From_Date').val(),
+			        ToDate: $('#To_Date').val(),
+			        CostCenter: $('#SearchView_CostCenter').val(),
+			        PoliceNumber: $('#SearchView_PoliceNumber').val(),
+			    }
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
     }
 
+    function LoadingShow()
+    {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide()
+    {
+        $('#LoadingModal').hide();
+    }
     function setupDataTables() {
         // DataTable
         var table = $('#tbVehicle').DataTable({
