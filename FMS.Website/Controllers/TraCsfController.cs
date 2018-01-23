@@ -489,6 +489,8 @@ namespace FMS.Website.Controllers
                         dataToSave.SERIES = item.Series;
                         dataToSave.BODY_TYPE = item.BodyType;
                         dataToSave.COLOUR = item.Color;
+                        dataToSave.VEHICLE_USAGE = item.VehicleUsage;
+                        dataToSave.ASSIGNED_TO = item.AssignedTo;
                         dataToSave.VENDOR_NAME = item.Vendor;
 
                         if (no > 0)
@@ -1244,6 +1246,8 @@ namespace FMS.Website.Controllers
                     item.Series = dataRow[2];
                     item.BodyType = dataRow[3];
                     item.Color = dataRow[4];
+                    item.VehicleUsage = dataRow[5];
+                    item.AssignedTo = dataRow[6];
                     item.Vendor = string.Empty;
 
                     model.Add(item);
