@@ -58,7 +58,7 @@ EFFDT as EFFDATE,
 GRADE_LVL as GROUP_LEVEL,
 'SYSTEM' as LASTUPDOPRID
 from [PSFT_FMS]..SYSADM.PS_HMS_JOB_FLEET_VW 
-where ACTION in ('PRO') and 
+where (ACTION in ('PRO') or ACTION_REASON in ('PRO'))and 
 EMPLID  in (
 select employee_id from mst_employee) 
 
