@@ -17,4 +17,7 @@
     else if ($('.title-page').html() == 'CTF Personal Dashboard') {
         $('#CtfParent').addClass('active');
     }
+    else if ($('.title-page').html() == 'Mass Upload Ctf') {
+        $('#CtfOpen').addClass('active');
+    }
 });

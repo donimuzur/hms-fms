@@ -69,7 +69,7 @@
         </div>
     </div>
 </div>
-
+<script src="~/Scripts/ctfscript.js"></script>
 <script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
 
@@ -140,7 +140,7 @@
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
         if (extension != '.xlsx' && extension != '.csv') {
             alert('Please browse a correct excel file to upload');
-            $('#LoadingModal').show();
+            $('#LoadingModal').hide();
             return false;
         }
 
