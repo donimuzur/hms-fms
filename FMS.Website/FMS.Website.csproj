@@ -4419,6 +4419,7 @@
     <Content Include="Views\Service\CompleteTransaction.cshtml" />
     <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SummaryAll.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleWtc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -216,6 +216,9 @@ namespace FMS.Website.Models
         public string Series { get; set; }
         public string BodyType { get; set; }
         public string Color { get; set; }
+        public string VehicleUsage { get; set; }
+        public string VehicleUsageValue { get; set; }
+        public string AssignedTo { get; set; }
         public string Vendor { get; set; }
         public string MessageError { get; set; }
     }
