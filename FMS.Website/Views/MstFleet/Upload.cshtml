@@ -49,7 +49,7 @@
                         <th style="min-width: 80px">Start Contract</th>
                         <th style="min-width: 80px">End Contract</th>
                         <th>Vendor Name</th>
-                        <th>City</th>
+                        <th>Basetown</th>
                         <th>Supply Method</th>
                         <th>Restitution</th>
                         <th>Monthly HMS Installment</th>
@@ -83,6 +83,17 @@
         }
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 
     $(function () {
@@ -154,6 +165,7 @@
 
     }
     function uploadXmlFile() {
+        $('#LoadingModal').show();
         var postUrl = '@Url.Action("UploadFile", "MstFleet")';
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
@@ -161,6 +173,7 @@
 
         if (extension != '.xlsx') {
             alert('Please browse a correct excel file to upload');
+            $('#LoadingModal').hide();
             return false;
         }
 
@@ -177,7 +190,7 @@
             dataType: 'html',
             contentType: false,
             processData: false,
-
+            
             success: function (response) {
                 $('#tb-upload-excel').html('');
                 uploaditems = JSON.parse(response);
@@ -206,8 +219,8 @@
                             createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
                             createColumnWithHiddenField(uploaditems[i].Project, 'Model.Details[' + i + '].Project') +
                             createColumnWithHiddenField(uploaditems[i].ProjectName, 'Model.Details[' + i + '].ProjectName') +
-                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartDate), 'Model.Details[' + i + '].StartDate') +
-                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndDate), 'Model.Details[' + i + '].EndDate') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartContract), 'Model.Details[' + i + '].StartContract') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndContract), 'Model.Details[' + i + '].EndContract') +
                             createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
                             createColumnWithHiddenField(uploaditems[i].City, 'Model.Details[' + i + '].City') +
                             createColumnWithHiddenField(uploaditems[i].SupplyMethod, 'Model.Details[' + i + '].SupplyMethod') +
@@ -220,8 +233,8 @@
                             createColumnWithHiddenField(uploaditems[i].GroupLevel, 'Model.Details[' + i + '].GroupLevel') +
                             createColumnWithHiddenField(uploaditems[i].AssignedTo, 'Model.Details[' + i + '].AssignedTo') +
                             createColumnWithHiddenField(uploaditems[i].Address, 'Model.Details[' + i + '].Address') +
-                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartContract), 'Model.Details[' + i + '].StartContract') +
-                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndContract), 'Model.Details[' + i + '].EndContract') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartDate), 'Model.Details[' + i + '].StartDate') +
+                            createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndDate), 'Model.Details[' + i + '].EndDate') +
                             createColumnWithHiddenField(uploaditems[i].VehicleStatus, 'Model.Details[' + i + '].VehicleStatus') +
                             createColumnWithHiddenField(uploaditems[i].CertificateOwnership, 'Model.Details[' + i + '].CertificateOwnership') +
                             createColumnWithHiddenField(uploaditems[i].Comments, 'Model.Details[' + i + '].Comments') +
@@ -233,10 +246,18 @@
                             '</tr>';
                                 $('#tb-upload-excel').append(tr);
                                 error += uploaditems[i].ErrorMessage;
-                }
+                            }
                 if (error == '') {
                     $('#btnSave').prop('disabled', false);
                 }
+                else {
+                    $('#btnSave').prop('disabled', true);
+                }
+                console.log(error);
+                $('#LoadingModal').hide();
+            },
+            error: function () {
+                $('#LoadingModal').hide();
             }
         });
     };

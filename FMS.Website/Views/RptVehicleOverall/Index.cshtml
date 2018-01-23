@@ -10,7 +10,7 @@
 </div>
 <section class="content">
     <div class="wpanel">
-        <div class="row col-md-12">
+        
             @using (Ajax.BeginForm("ListVehicle", "RptVehicleOverall",
                 new AjaxOptions
                 {
@@ -19,95 +19,178 @@
                     UpdateTargetId = "contenttable",
                     OnComplete = "setupDataTables",
                     OnFailure = "HideLoading",
-                    OnSuccess= "HideLoading",
-                    OnBegin= "ShowLoading"
-                }))
+                    OnSuccess = "HideLoading",
+                    OnBegin = "ShowLoading"
+                }, new { id="begin"}))
             {
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Start Rent From</label>
-                    <div class="input-group date" id="FromDate">
-                        @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
-                        <span class="input-group-addon btn btn-primary">
-                            <i class="fa fa-calendar "></i>
-                        </span>
+            <div class="row col-md-12">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_CityList">Police Number</label>
+                        @Html.DropDownListFor(model => model.SearchView.PoliceNumber, Model.SearchView.PoliceNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_CityList">Employee Name</label>
+                        @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_CityList">Engine Number</label>
+                        @Html.DropDownListFor(model => model.SearchView.EngineNumber, Model.SearchView.EngineNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_CityList">Employee ID</label>
+                        @Html.DropDownListFor(model => model.SearchView.EmployeeID, Model.SearchView.EmployeeIDList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_CityList">Chasis Number</label>
+                        @Html.DropDownListFor(model => model.SearchView.ChasisNumber, Model.SearchView.ChasisNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_Status">Status</label>
+                        @Html.DropDownListFor(model => model.SearchView.VehicleStatus, Model.SearchView.StatusList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_SupplyMethodList">Supply Method</label>
+                        @Html.HiddenFor(model => model.SearchView.SupplyMethod)
+                        @Html.DropDownList("SupplyMethod", Model.SearchView.SupplyMethodList,  new { @class = "form-control chosen", @data_live_search = true,@multiple = "mulltiple", id="SupplyMethod" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_BodyTypeList">Body Type</label>
+                        @Html.HiddenFor(model => model.SearchView.BodyType)
+                        @Html.DropDownList("BodyType", Model.SearchView.BodyTypeList,  new { @class = "form-control chosen", @data_live_search = true, @multiple = "mulltiple",id="BodyType" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_VehicleTypeList">Vehicle Type</label>
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
+                        @Html.HiddenFor(model => model.SearchView.VehicleUsage)
+                        @Html.DropDownList("VehicleUsage", Model.SearchView.VehicleUsageList,  new { @class = "form-control chosen", @data_live_search = true, @multiple = "mulltiple" ,id="VehicleUsage"})
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_VendorList">Vendor Name</label>
+                        @Html.HiddenFor(model => model.SearchView.Vendor)
+                        @Html.DropDownList("Vendor", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "mulltiple", id="Vendor" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_FunctionList">Function</label>
+                        @Html.HiddenFor(model => model.SearchView.Function)
+                        @Html.DropDownList("Function", Model.SearchView.FunctionList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "mulltiple",id="Function" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_RegionalList">Regional</label>
+                        @Html.HiddenFor(model => model.SearchView.Regional)
+                        @Html.DropDownList("Regional", Model.SearchView.RegionalList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "mulltiple",id="Regional" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_CityList">Basetown</label>
+                        @Html.HiddenFor(model => model.SearchView.City)
+                        @Html.DropDownList("City", Model.SearchView.CityList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "mulltiple",id="City" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Start Contract From</label>
+                        <div class="input-group date" id="FromDate">
+                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Start Contract To</label>
+                        <div class="input-group date" id="ToDate">
+                            @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To", @id = "To_Date" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Start Rent To</label>
-                    <div class="input-group date" id="ToDate">
-                        @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" ,@id= "To_Date" })
-                        <span class="input-group-addon btn btn-primary">
-                            <i class="fa fa-calendar "></i>
-                        </span>
+            <div class="row col-md-12">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_EndContract">End Contract From</label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.SearchView.EndContract_FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Status</label>
-                    @Html.DropDownListFor(model => model.SearchView.VehicleStatus, Model.SearchView.StatusList, "ALL", new { @class = "form-control"})
-                    @*@Html.TextBoxFor(model => model.SearchView.VehicleStatus, new { @class = "form-control " })*@
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_StartContract">End Contract To</label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.SearchView.EndContract_ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Supply Method</label>
-                    @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.SupplyMethod, new { @class = "form-control " })*@
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_EndDate">End Date From</label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.SearchView.EndDate_FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Body Type</label>
-                    @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.BodyType, new { @class = "form-control "})*@
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Vehicle Type</label>
-                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control " })*@
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Vendor</label>
-                    @Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.Vendor, new { @class = "form-control " })*@
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Function</label>
-                    @Html.TextBoxFor(model => model.SearchView.Function, new { @class = "form-control " })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">Regional</label>
-                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.Regional, new { @class = "form-control " })*@
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label class="control-label">City</label>
-                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.City, new { @class = "form-control " })*@
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_EndDate">End Date To</label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(model => model.SearchView.EndDate_ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            <span class="input-group-addon btn btn-primary">
+                                <i class="fa fa-calendar "></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12">
-                <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                <button id="btn-filter" type="submit" class="btn btn-primary" onclick="Begin()">Filter</button>
                 <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
             </div>
             }
         </div>
-    </div>
     <div id="contenttable" class="wpanel">
         @Html.Partial("_ListVehicleOverall")
     </div>
@@ -128,7 +211,16 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/VehicleOverall.js"></script>
 <script type="text/javascript">
-
+    function Begin()
+    {
+        $('#SearchView_BodyType').val(getFunctionStr($('#BodyType').val()));
+        $('#SearchView_SupplyMethod').val(getFunctionStr($('#SupplyMethod').val()));
+        $('#SearchView_VehicleUsage').val(getFunctionStr($('#VehicleUsage').val()));
+        $('#SearchView_Vendor').val(getFunctionStr($('#Vendor').val()));
+        $('#SearchView_Function').val(getFunctionStr($('#Function').val()));
+        $('#SearchView_Regional').val(getFunctionStr($('#Regional').val()));
+        $('#SearchView_City').val(getFunctionStr($('#City').val()));
+    }
     function HideLoading()
     {
         $('#LoadingModal').hide();
@@ -149,14 +241,24 @@
 			    SearchView: {
 			        FromDate: $('#From_Date').val(),
 			        ToDate: $('#To_Date').val(),
-			        BodyType: $('#SearchView_BodyType').val(),
-			        City: $('#SearchView_City').val(),
-			        Function: $('#SearchView_Function').val(),
-			        Regional:$('#SearchView_Regional').val(),
-			        SupplyMethod:$('#SearchView_SupplyMethod').val(),
+			        PoliceNumber: $('#SearchView_PoliceNumber').val(),
+			        EmployeeName: $('#SearchView_EmployeeName').val(),
+			        EngineNumber: $('#SearchView_EngineNumber').val(),
+			        EmployeeID: $('#SearchView_EmployeeID').val(),
+			        ChasisNumber: $('#SearchView_ChasisNumber').val(),
+			        VehicleUsage: getFunctionStr($('#VehicleUsage').val()),
+			        EndContract_FromDate: $('#SearchView_EndContract_FromDate').val(),
+			        EndContract_ToDate: $('#SearchView_EndContract_ToDate').val(),
+			        EndDate_FromDate: $('#SearchView_EndDate_FromDate').val(),
+			        EndDate_ToDate: $('#SearchView_EndDate_ToDate').val(),
+			        BodyType: getFunctionStr($('#BodyType').val()),
+			        City: getFunctionStr($('#City').val()),
+			        Function: getFunctionStr($('#Function').val()),
+			        Regional: getFunctionStr($('#Regional').val()),
+			        SupplyMethod: getFunctionStr($('#SupplyMethod').val()),
 			        VehicleStatus:$('#SearchView_VehicleStatus').val(),
 			        VehicleType:$('#SearchView_VehicleType').val(),
-			        Vendor:$('#SearchView_Vendor').val(),
+			        Vendor: getFunctionStr($('#Vendor').val()),
 			    }
 
 			};
@@ -179,7 +281,14 @@
             },
             type: 'POST'
         });
+    }
 
+    function getFunctionStr(arr) {
+        var dataStr = "";
+        if (arr.length > 0) {
+            dataStr = arr.toString();
+        }
+        return dataStr;
     }
 
     function setupDataTables() {
@@ -219,20 +328,28 @@
 
         $('#From_Date').val(datestr);
         $('#To_Date').val(todayDatestr);
-      
-        $('#SearchView_BodyType').val('');
-        $('#SearchView_City').val('');
-        $('#SearchView_Function').val('');
-        $('#SearchView_Regional').val('');
-        $('#SearchView_SupplyMethod').val('');
+        
+        $('#SearchView_EndContract_FromDate').val('');
+        $('#SearchView_EndContract_ToDate').val('');
+
+        $('#SearchView_EndDate_FromDate').val('');
+        $('#SearchView_EndDate_ToDate').val('');
         $('#SearchView_VehicleStatus').val('');
         $('#SearchView_VehicleType').val('');
-        $('#SearchView_Vendor').val('');
-
+        
+        $('#Function').val('').trigger('chosen:updated');
+        $("#SupplyMethod").val('').trigger('chosen:updated');
+        $("#BodyType").val('').trigger('chosen:updated');
+        $("#VehicleUsage").val('').trigger('chosen:updated');
+        $("#Vendor").val('').trigger('chosen:updated');
+        $("#Regional").val('').trigger('chosen:updated');
+        $("#City").val('').trigger('chosen:updated');
+        
         $("#btn-filter").trigger('click');
     });
 
     $(function () {
+        $(".chosen").chosen();
         setupDataTables();
     });
 </script>

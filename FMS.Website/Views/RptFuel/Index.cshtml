@@ -34,9 +34,9 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="form-group">
+                    <div class="form-group" id="xz">
                         <label for="">Year From</label>
-                        @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
+                        <input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -45,10 +45,10 @@
                         @Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
+                 <div class="col-md-3">
+                    <div class="form-group" id="xz">
                         <label for="">Year To</label>
-                        @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
+                        <input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -186,5 +186,9 @@
 
     $(function () {
         setupDataTables();
+
+        $('.year').datetimepicker({
+            format: 'YYYY'
+        });
     });
 </script>
