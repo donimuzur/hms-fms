@@ -680,12 +680,16 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("HR Team");
                         bodyMail.AppendLine();
-
-                        rc.To.Add(employeeDataEmail);
+                                                
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.To.Add(item);
+                        }
                         foreach (var item in hrEmailList)
                         {
                             rc.CC.Add(item);
                         }
+                        rc.CC.Add(employeeDataEmail);
                     }
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
@@ -728,7 +732,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("City: " + (ctfData.WithdCity == null ? "" : ctfData.WithdCity.ToUpper()) + " <br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                        bodyMail.Append("For any assistance please contact " + fleetApprovalDataName + "<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks <br /><br />");
                         bodyMail.AppendLine();

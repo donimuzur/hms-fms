@@ -739,7 +739,7 @@ namespace FMS.Website.Controllers
             model.SearchView.YearFrom = DateTime.Now.Year;
 
             model.IsByRegion = true;
-            model.TitleForm = "Executive Summary By Region";
+            model.TitleForm = "Executive Summary By Sales & Marketing";
             model.TitleExport = "ExportSummaryRegion";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -940,7 +940,7 @@ namespace FMS.Website.Controllers
             slDocument = CreateDataExcelDashboardAcVsOb(slDocument, listDataAcOb);
 
 
-            var fileName = "ExecSum_SummaryByRegion" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "ExecSum_SummaryBySalesAndMarketing" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
