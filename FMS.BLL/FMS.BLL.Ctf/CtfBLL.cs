@@ -668,7 +668,7 @@ namespace FMS.BLL.Ctf
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Employee Submission";
 
-                        bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                        bodyMail.Append("Dear Fleet, <br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your Car Termination Form " + ctfData.DocumentNumber + " has been approved by " + creatorDataName + "<br /><br />");
                         bodyMail.AppendLine();
@@ -958,7 +958,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("Termination Date : " + (ctfData== null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy")) + " <br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                        bodyMail.Append("For any assistance please contact " + fleetApprovalDataName + "<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thanks <br /><br />");
                         bodyMail.AppendLine();
