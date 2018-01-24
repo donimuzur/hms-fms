@@ -1464,6 +1464,8 @@ namespace FMS.BLL.Csf
 
             var allVendor = _vendorService.GetVendor().Where(x => x.IS_ACTIVE).ToList();
 
+            var vehUsageWtc = _settingService.GetSetting().Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc)).ToList();
+
             foreach (var inputItem in inputs)
             {
                 messageList.Clear();
@@ -1502,6 +1504,20 @@ namespace FMS.BLL.Csf
                 if (string.IsNullOrEmpty(inputItem.Vendor))
                 {
                     messageList.Add("Vendor not exists in master price list");
+                }
+
+                //check vehicle usage
+                var vehUsage = vehUsageWtc.Where(x => (x.SETTING_VALUE == null ? "" : x.SETTING_VALUE.ToUpper()) == 
+                    (inputItem.VehicleUsage == null ? "" : inputItem.VehicleUsage.ToUpper())).FirstOrDefault();
+
+                if (vehUsage != null)
+                {
+                    inputItem.VehicleUsage = vehUsage.MST_SETTING_ID.ToString();
+                    inputItem.VehicleUsageValue = vehUsage.SETTING_VALUE;
+                }
+                else
+                {
+                    messageList.Add("Vehicle Usage not exists in master setting");
                 }
 
                 #region -------------- Set Message Info if exists ---------------
