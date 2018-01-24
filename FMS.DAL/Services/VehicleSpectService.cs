@@ -66,6 +66,7 @@ namespace FMS.DAL.Services
             queryFilterCrf = queryFilterCrf.And(x => x.BODY_TYPE == dto.BodyType);
             queryFilterCrf = queryFilterCrf.And(x => x.COLOUR == dto.Color);
             queryFilterCrf = queryFilterCrf.And(x => x.FUEL_TYPE == dto.FuelTypeSpect);
+            queryFilterCrf = queryFilterCrf.And(x => x.GROUP_LEVEL== dto.GroupLevel);
 
             return _vendorRepository.Get(queryFilterCrf, null, "").ToList();
         }
