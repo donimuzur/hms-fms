@@ -69,7 +69,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Vendor Name<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.VendorName, Model.VendorList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -93,7 +93,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Body Type<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.BodyType, Model.BodyTypeList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.BodyType, new { @class = "form-control ", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -105,7 +105,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Transmision<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.Transmission, Model.TransmissionList, "Select", new { @class = "form-control ", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.Transmission, new { @class = "form-control ", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -117,7 +117,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Fuel Type<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.FuelType, Model.FuelTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.FuelType,new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -151,13 +151,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Vehicle Type<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.VehicleType, Model.VehicleTypeList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.VehicleType, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Vehicle Usage<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.VehicleUsage, Model.VehicleUsageList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.VehicleUsage,new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -177,13 +177,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Project Name<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.ProjectName, Model.ProjectList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Supply Method<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.SupplyMethod, Model.SupplyMethodList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.SupplyMethod, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
@@ -224,7 +224,7 @@
                 <div class="form-group">
                     <label class="control-label">Start Date</label>
                     <div class="input-group date">
-                        @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.StartDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
@@ -235,7 +235,7 @@
                 <div class="form-group">
                     <label class="control-label">End Date</label>
                     <div class="input-group date">
-                        @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.EndDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                         <span class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </span>
@@ -318,13 +318,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Function<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.Function, Model.FunctionList, "Select", new { @class = "form-control", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.Function, new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label">Regional<span class="red">*</span></label>
-                    @Html.DropDownListFor(model => model.Regional, Model.RegionalList, "Select", new { @class = "form-control" ,@disabled = "disabled"})
+                    @Html.TextBoxFor(model => model.Regional, new { @class = "form-control" ,@disabled = "disabled"})
                 </div>
             </div>
             <div class="col-md-12">
