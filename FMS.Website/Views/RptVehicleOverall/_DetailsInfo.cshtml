@@ -6,6 +6,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="control-label">Police Number</label>
+                    @Html.HiddenFor(model => model.MstFleetId)
                     @Html.TextBoxFor(model => model.PoliceNumber, new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
@@ -79,12 +80,6 @@
                 <div class="form-group">
                     <label class="control-label">Air Bag</label>
                     @Html.TextBox("AirBag",Model.Airbag == false ? "No": "Yes", new { @class = "form-control ", @readonly = "readonly" })
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="control-label">ABS</label>
-                    @Html.TextBox("ABS", Model.Abs == false ? "No" : "Yes", new { @class = "form-control ", @readonly = "readonly" })
                 </div>
             </div>
             <div class="col-md-12">

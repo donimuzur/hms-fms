@@ -129,7 +129,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Employee Group Level></label>
+                        <label class="control-label">Employee Group Level</label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", @readonly = "readonly" })
@@ -636,7 +636,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">City<span class="red">*</span></label>
+                        <label class="control-label">Basetown<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             if (Model.VehicleType.ToLower() == "benefit")
