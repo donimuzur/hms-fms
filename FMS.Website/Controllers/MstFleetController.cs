@@ -77,6 +77,8 @@ namespace FMS.Website.Controllers
             model.SearchView.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region");
             model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().ToList(), "Basetown", "Basetown");
 
+            model.SearchView.StatusSource = "True";
+
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;

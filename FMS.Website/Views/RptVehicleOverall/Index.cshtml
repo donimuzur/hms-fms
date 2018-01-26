@@ -172,7 +172,7 @@
                     .draw();
             });
         });*/
-        if ($('.title-page').html() == 'Master Data Fleet') {
+        if ($('.title-page').html() == 'Vehicles Report') {
             $('#MstFleetMenu').addClass('active');
         }
 
@@ -201,8 +201,8 @@
     });
     function ExportXls() {
         console.log('Submitting');
-    	var url = '@Url.Action("ExportMasterFleetGenerateReport", "MstFleet")';
-    	var getFileUrl = '@Url.Action("GetExcelFile","MstFleet")';
+    	var url = '@Url.Action("ExportMasterFleetGenerateReport", "RptVehicleOverall")';
+    	var getFileUrl = '@Url.Action("GetExcelFile", "RptVehicleOverall")';
         console.log(url);
         var objToUpload =
 			{
