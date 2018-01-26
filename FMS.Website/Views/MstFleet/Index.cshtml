@@ -96,31 +96,31 @@
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
-					<label for="SearchView_CityList">City</label>
+					<label for="SearchView_CityList">Basetown</label>
 					@Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
-					<label for="SearchView_StartRent">Start Rent From</label>
+					<label for="SearchView_StartRent">Start Contract From</label>
 					@Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
-					<label for="SearchView_StartRent">Start Rent To</label>
+					<label for="SearchView_StartRent">Start Contract To</label>
 					@Html.TextBoxFor(model => model.SearchView.StartRentTo, new { @class = "form-control date-begin" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
-					<label for="SearchView_EndRent">End Rent From</label>
+					<label for="SearchView_EndRent">End Contract From</label>
 					@Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end" })
 				</div>
 			</div>
 			<div class="col-md-3">
 				<div class="form-group">
-					<label for="SearchView_EndRent">End Rent To</label>
+					<label for="SearchView_EndRent">End Contract To</label>
 					@Html.TextBoxFor(model => model.SearchView.EndRentTo, new { @class = "form-control date-end" })
 				</div>
 			</div>

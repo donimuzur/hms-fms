@@ -1,114 +1,143 @@
-﻿@using FMS.Core;
-@model FMS.Website.Models.VehicleOverallReportModel
-
-
+﻿@model FMS.Website.Models.FleetModel
+@using FMS.Core;
 <div class="opt-content clearfloat">
     <h5 class="title-page">Vehicles Report</h5>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-download"></i> Export
+        <i class="fa fa-upload"></i> Export
     </a>
 </div>
+
 <section class="content">
     <div class="wpanel">
-        <div class="row col-md-12">
-            @using (Ajax.BeginForm("ListVehicle", "RptVehicleOverall",
-                new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    InsertionMode = InsertionMode.Replace,
-                    UpdateTargetId = "contenttable",
-                    OnComplete = "setupDataTables",
-                    OnFailure = "HideLoading",
-                    OnSuccess= "HideLoading",
-                    OnBegin= "ShowLoading"
-                }))
-            {
+        <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Start Rent From</label>
-                    <div class="input-group date" id="FromDate">
-                        @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
-                        <span class="input-group-addon btn btn-primary">
-                            <i class="fa fa-calendar "></i>
-                        </span>
-                    </div>
+                    <label for="SearchView_CityList">Police Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.PoliceNumber, Model.SearchView.PoliceNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Start Rent To</label>
-                    <div class="input-group date" id="ToDate">
-                        @Html.TextBoxFor(model => model.SearchView.ToDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To" ,@id= "To_Date" })
-                        <span class="input-group-addon btn btn-primary">
-                            <i class="fa fa-calendar "></i>
-                        </span>
-                    </div>
+                    <label for="SearchView_CityList">Employee Name</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Status</label>
-                    @Html.DropDownListFor(model => model.SearchView.VehicleStatus, Model.SearchView.StatusList, "ALL", new { @class = "form-control"})
-                    @*@Html.TextBoxFor(model => model.SearchView.VehicleStatus, new { @class = "form-control " })*@
+                    <label for="SearchView_CityList">Engine Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.EngineNumber, Model.SearchView.EngineNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Supply Method</label>
-                    @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.SupplyMethod, new { @class = "form-control " })*@
+                    <label for="SearchView_CityList">Employee ID</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeID, Model.SearchView.EmployeeIDList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Body Type</label>
-                    @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.BodyType, new { @class = "form-control "})*@
+                    <label for="SearchView_CityList">Chasis Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.ChasisNumber, Model.SearchView.ChasisNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Vehicle Type</label>
-                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control " })*@
+                    <label for="SearchView_Status">Status</label>
+                    @Html.DropDownListFor(model => model.SearchView.StatusSource, Model.SearchView.StatusList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Vendor</label>
-                    @Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.Vendor, new { @class = "form-control " })*@
+                    <label for="SearchView_SupplyMethodList">Supply Method</label>
+                    @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Function</label>
-                    @Html.TextBoxFor(model => model.SearchView.Function, new { @class = "form-control " })
+                    <label for="SearchView_BodyTypeList">Body Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.BodyType, Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "mulltiple" })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">Regional</label>
-                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.Regional, new { @class = "form-control " })*@
+                    <label for="SearchView_VehicleTypeList">Vehicle Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label">City</label>
-                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, "ALL", new { @class = "form-control" })
-                    @*@Html.TextBoxFor(model => model.SearchView.City, new { @class = "form-control " })*@
+                    <label for="SearchView_VehicleUsageList">Vehicle Usage</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleUsage, Model.SearchView.VehicleUsageList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_VendorList">Vendor Name</label>
+                    @Html.DropDownListFor(model => model.SearchView.Vendor, Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_FunctionList">Function</label>
+                    @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_RegionalList">Regional</label>
+                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Basetown</label>
+                    @Html.DropDownListFor(model => model.SearchView.City, Model.SearchView.CityList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_StartRent">Start Contract From</label>
+                    @Html.TextBoxFor(model => model.SearchView.StartRent, new { @class = "form-control date-begin" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_StartRent">Start Contract To</label>
+                    @Html.TextBoxFor(model => model.SearchView.StartRentTo, new { @class = "form-control date-begin" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Contract From</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndRent, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Contract To</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndRentTo, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Date From</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndDate, new { @class = "form-control date-end" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_EndRent">End Date To</label>
+                    @Html.TextBoxFor(model => model.SearchView.EndDateTo, new { @class = "form-control date-end" })
                 </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-12">
-                <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
                 <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
             </div>
-            }
         </div>
     </div>
-    <div id="contenttable" class="wpanel">
+    <div class="wpanel">
         @Html.Partial("_ListVehicleOverall")
     </div>
 </section>
@@ -123,75 +152,15 @@
         </div>
     </div>
 </div>
-
 <script src="~/Scripts/thousand-separator.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/VehicleOverall.js"></script>
-<script type="text/javascript">
-
-    function HideLoading()
-    {
-        $('#LoadingModal').hide();
-    }
-
-    function ShowLoading()
-    {
-        $('#LoadingModal').show();
-    }
-
-    function ExportXls() {
-        console.log('Submitting');
-        var url = '@Url.Action("ExportVehicleReportGenerateReport", "RptVehicleOverall")';
-        var getFileUrl = '@Url.Action("GetExcelFile", "RptVehicleOverall")';
-        console.log(url);
-        var objToUpload =
-			{
-			    SearchView: {
-			        FromDate: $('#From_Date').val(),
-			        ToDate: $('#To_Date').val(),
-			        BodyType: $('#SearchView_BodyType').val(),
-			        City: $('#SearchView_City').val(),
-			        Function: $('#SearchView_Function').val(),
-			        Regional:$('#SearchView_Regional').val(),
-			        SupplyMethod:$('#SearchView_SupplyMethod').val(),
-			        VehicleStatus:$('#SearchView_VehicleStatus').val(),
-			        VehicleType:$('#SearchView_VehicleType').val(),
-			        Vendor:$('#SearchView_Vendor').val(),
-			    }
-
-			};
-        $.ajax({
-            url: url,
-            data: JSON.stringify(objToUpload),
-            contentType: 'application/json; charset=utf-8',
-            beforeSend: function () {
-                $('#LoadingModal').show();
-            },
-            success: function (response, status, jqxhr) {
-                console.log("DONE");
-                window.location = getFileUrl + "?pathFile=" + response;
-                $('#LoadingModal').hide();
-            },
-            error: function (jqhxr) {
-                console.log("ERROR");
-                console.log(jqhxr.responseText);
-                $('#LoadingModal').hide();
-            },
-            type: 'POST'
-        });
-
-    }
-
-    function setupDataTables() {
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript" language="javascript" class="init">
+    jQuery(function ($) {
         // DataTable
-        var table = $('#tbVehicle').DataTable({
-            "sDom": 'lf<"table-overflow"t>pi',
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "info": true,
-            "bInfo": true,
-            "ordering": true
+        /*var table = $('#tbFleet').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
         });
 
         // Apply the search
@@ -202,37 +171,240 @@
                     .search(this.value)
                     .draw();
             });
+        });*/
+        if ($('.title-page').html() == 'Vehicles Report') {
+            $('#MstFleetMenu').addClass('active');
+        }
+
+        $(".chosen").chosen();
+
+        setupDataTables();
+
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbFleet').DataTable();
+
+            table.ajax.reload();
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $('input[type=text]').val('');
+        	//$('.chosen-single > span').html('select');
+            $('#SearchView_Function').val('').trigger('chosen:updated');
+            $("#SearchView_SupplyMethod").val('').trigger('chosen:updated');
+            $("#SearchView_BodyType").val('').trigger('chosen:updated');
+            $("#SearchView_VehicleUsage").val('').trigger('chosen:updated');
+            $("#SearchView_Vendor").val('').trigger('chosen:updated');
+            $("#SearchView_Regional").val('').trigger('chosen:updated');
+            $("#SearchView_City").val('').trigger('chosen:updated');
+            setupDataTables();
+        });
+    });
+    function ExportXls() {
+        console.log('Submitting');
+    	var url = '@Url.Action("ExportMasterFleetGenerateReport", "RptVehicleOverall")';
+    	var getFileUrl = '@Url.Action("GetExcelFile", "RptVehicleOverall")';
+        console.log(url);
+        var objToUpload =
+			{
+				SearchView: {
+					StatusSource: $('#SearchView_StatusSource').val(),
+					VehicleType: $('#SearchView_VehicleType').val(),
+					VehicleUsage: getFunctionStr($('#SearchView_VehicleUsage').val()),
+					SupplyMethod: getFunctionStr($('#SearchView_SupplyMethod').val()),
+					BodyType: getFunctionStr($('#SearchView_BodyType').val()),
+					Vendor:  getFunctionStr($('#SearchView_Vendor').val()),
+					Function: getFunctionStr($('#SearchView_Function').val()),
+					StartRent: $("#SearchView_StartRent").val(),
+					StartRentTo: $("#SearchView_StartRentTo").val(),
+					EndRent: $("#SearchView_EndRent").val(),
+					EndRentTo: $("#SearchView_EndRentTo").val(),
+					Regional: getFunctionStr($("#SearchView_Regional").val()),
+					City: getFunctionStr($("#SearchView_City").val()),
+					PoliceNumber: $("#SearchView_PoliceNumber").val(),
+					EngineNumber: $("#SearchView_EngineNumber").val(),
+					ChasisNumber: $("#SearchView_ChasisNumber").val(),
+					EmployeeID: $("#SearchView_EmployeeID").val(),
+					EmployeeName: $("#SearchView_EmployeeName").val(),
+					EndDate: $("#SearchView_EndData").val(),
+					EndDateTo: $("#SearchView_EndDateTo").val()
+				}
+
+			};
+        $.ajax({
+        	url: url,
+        	data: JSON.stringify(objToUpload),
+        	contentType:'application/json; charset=utf-8',
+        	beforeSend:function(){
+        		$('#LoadingModal').show();
+        	},
+        	success: function(response,status,jqxhr){
+        		console.log("DONE");
+        		window.location = getFileUrl + "?pathFile=" + response;
+        		$('#LoadingModal').hide();
+        	},
+        	error: function(jqhxr){
+        		console.log("ERROR");
+        		console.log(jqhxr.responseText);
+        		$('#LoadingModal').hide();
+        	},
+        	type:'POST'
+        });
+
+    }
+    function setupColumns() {
+        var columns = [
+            { "data": "PoliceNumber", "orderable": false },
+            { "data": "ChasisNumber", "orderable": false },
+            { "data": "EngineNumber", "orderable": false },
+            { "data": "EmployeeName", "orderable": false },
+            { "data": "EmployeeID", "orderable": false },
+            { "data": "CostCenter", "orderable": false },
+            { "data": "Manufacturer", "orderable": false },
+            { "data": "Models", "orderable": false },
+            { "data": "Series", "orderable": false },
+            { "data": "Transmission", "orderable": false },
+            { "data": "BodyType", "orderable": false },
+            { "data": "FuelType", "orderable": false },
+            { "data": "Branding", "orderable": false },
+            { "data": "Color", "orderable": false },
+            {
+                "data": "Airbag", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
+            { "data": "VehicleYear", "orderable": false },
+            { "data": "VehicleType", "orderable": true },
+            { "data": "VehicleUsage", "orderable": true },
+            {
+                "data": "Project", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
+            { "data": "ProjectName", "orderable": false },
+            {
+                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { "data": "VendorName", "orderable": true },
+            { "data": "City", "orderable": true },
+            { "data": "SupplyMethod", "orderable": true },
+            {
+                "data": "Restitution", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Yes" : "No";
+                }
+            },
+            { "data": "MonthlyHMSInstallment", "orderable": false },
+            { "data": "VatDecimal", "orderable": false },
+            { "data": "PoNumber", "orderable": false },
+            { "data": "PoLine", "orderable": false },
+            { "data": "CarGroupLevel", "orderable": false },
+            { "data": "GroupLevel", "orderable": false },
+            { "data": "AssignedTo", "orderable": false },
+            { "data": "Address", "orderable": false },
+            {
+                "data": "StartDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "IsActive", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? "Active" : "InActive";
+                }
+            },
+            { "data": "CertificateOwnership", "orderable": false },
+            { "data": "Comments", "orderable": false },
+            { "data": "Assets", "orderable": false },
+            { "data": "TotalMonthlyCharge", "orderable": false },
+            { "data": "Function", "orderable": false },
+            { "data": "Regional", "orderable": false }
+        ];
+
+        return columns;
+    }
+    function getFunctionStr(arr){
+    	var dataStr = "";
+    	if(arr.length>0){
+    		dataStr = arr.toString();
+    	}
+    	return dataStr;
+    }
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbFleet')) {
+            table = $('#tbFleet').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+        table = $('#tbFleet').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "rowCallback": function(row, data, index) {
+                actionHtml = '';
+                actionHtml ="<a href='RptVehicleOverall/DetailsVehicle?id="+data.MstFleetId +"'>"+data.ChasisNumber+"</a>";
+                var actionRow = $(row).find("td")[1];
+                $(actionRow).html(actionHtml);
+            },
+            "serverSide": true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchFleetAjax", "MstFleet")",
+                "type": "POST",
+                "data": function(d) {
+                    return $.extend({}, d, {
+                        "PoliceNumber": $('#SearchView_PoliceNumber').val(),
+                        "FormalName": $('#SearchView_EmployeeName').val(),
+                        "EngineNumber": $('#SearchView_EngineNumber').val(),
+                        "EmployeeId": $('#SearchView_EmployeeID').val(),
+                        "ChasisNumber": $('#SearchView_ChasisNumber').val(),
+                        "StatusSource": $('#SearchView_StatusSource').val(),
+                        "SupplyMethod": getFunctionStr($('#SearchView_SupplyMethod').val()),
+                        "BodyType": getFunctionStr($('#SearchView_BodyType').val()),
+                        "VehicleType": $('#SearchView_VehicleType').val(),
+                        "VehicleUsage": getFunctionStr($('#SearchView_VehicleUsage').val()),
+                        "Vendor": getFunctionStr($('#SearchView_Vendor').val()),
+                        "Function": getFunctionStr($('#SearchView_Function').val()),
+                        "StartRent": $('#SearchView_StartRent').val(),
+                        "StartRentTo": $('#SearchView_StartRentTo').val(),
+                        "EndRent": $('#SearchView_EndRent').val(),
+                        "EndRentTo": $('#SearchView_EndRentTo').val(),
+                        "EndDate": $('#SearchView_EndDate').val(),
+                        "EndDateTo": $('#SearchView_EndDateTo').val(),
+                        "Regional": getFunctionStr($('#SearchView_Regional').val()),
+                        "City": getFunctionStr($('#SearchView_City').val())
+                    });
+                }
+            }
+        });
+
+        table.on('preXhr', function(e, settings, data) {
+            $('#LoadingModal').show();
+        });
+
+        table.on('xhr', function(e, settings, data) {
+            $('#LoadingModal').hide();
         });
     }
-
-    $(document).on('click', '#btn-reset', function () {
-        var todayDate = new Date();
-        todayDate.setHours(00, 00, 00, 00);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var todayDatestr = todayDate.getDate() + '-' + (months[todayDate.getMonth()]) + '-' + todayDate.getFullYear();
-
-        var date = new Date();
-        date.setDate(1);
-        date.setHours(00, 00, 00, 00);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
-
-        $('#From_Date').val(datestr);
-        $('#To_Date').val(todayDatestr);
-      
-        $('#SearchView_BodyType').val('');
-        $('#SearchView_City').val('');
-        $('#SearchView_Function').val('');
-        $('#SearchView_Regional').val('');
-        $('#SearchView_SupplyMethod').val('');
-        $('#SearchView_VehicleStatus').val('');
-        $('#SearchView_VehicleType').val('');
-        $('#SearchView_Vendor').val('');
-
-        $("#btn-filter").trigger('click');
-    });
-
-    $(function () {
-        setupDataTables();
-    });
 </script>

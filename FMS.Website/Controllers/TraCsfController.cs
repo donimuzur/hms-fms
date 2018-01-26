@@ -489,6 +489,8 @@ namespace FMS.Website.Controllers
                         dataToSave.SERIES = item.Series;
                         dataToSave.BODY_TYPE = item.BodyType;
                         dataToSave.COLOUR = item.Color;
+                        dataToSave.VEHICLE_USAGE = item.VehicleUsage;
+                        dataToSave.ASSIGNED_TO = item.AssignedTo;
                         dataToSave.VENDOR_NAME = item.Vendor;
 
                         if (no > 0)
@@ -673,6 +675,47 @@ namespace FMS.Website.Controllers
             bool isSuccess = false;
             try
             {
+                var csfData = _csfBLL.GetCsfById(TraCsfIdApp);
+
+                if (string.IsNullOrEmpty(csfData.VENDOR_NAME))
+                {
+                    //get vendor name
+                    var vendorName = string.Empty;
+
+                    var dataAllPricelist = _priceListBLL.GetPriceList().Where(x => x.IsActive).ToList();
+
+                    var allVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
+
+                    var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Basetown == csfData.LOCATION_CITY)
+                                                                                        .OrderByDescending(x => x.ValidFrom).FirstOrDefault();
+
+                    var zonePriceListByUserCsf = zonePriceList == null ? string.Empty : zonePriceList.ZonePriceList;
+
+                    //select vendor from pricelist
+                    var dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (csfData.MANUFACTURER == null ? "" : csfData.MANUFACTURER.ToLower())
+                                                            && (x.Model == null ? "" : x.Model.ToLower()) == (csfData.MODEL == null ? "" : csfData.MODEL.ToLower())
+                                                            && (x.Series == null ? "" : x.Series.ToLower()) == (csfData.SERIES == null ? "" : csfData.SERIES.ToLower())
+                                                            && x.Year == csfData.CREATED_DATE.Year
+                                                            && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
+
+                    if (_settingBLL.GetByID(Convert.ToInt32(csfData.VEHICLE_TYPE)).SettingValue.ToLower() == "benefit")
+                    {
+                        dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (csfData.MANUFACTURER == null ? "" : csfData.MANUFACTURER.ToLower())
+                                                            && (x.Model == null ? "" : x.Model.ToLower()) == (csfData.MODEL == null ? "" : csfData.MODEL.ToLower())
+                                                            && (x.Series == null ? "" : x.Series.ToLower()) == (csfData.SERIES == null ? "" : csfData.SERIES.ToLower())
+                                                            && x.Year == csfData.CREATED_DATE.Year).FirstOrDefault();
+                    }
+
+                    var vendorId = dataVendor == null ? 0 : dataVendor.Vendor;
+
+                    var dataVendorDetail = allVendor.Where(x => x.MstVendorId == vendorId).FirstOrDefault();
+
+                    vendorName = dataVendor == null ? string.Empty : (dataVendorDetail == null ? string.Empty : dataVendorDetail.ShortName);
+
+                    csfData.VENDOR_NAME = vendorName;
+                    var saveResult = _csfBLL.Save(csfData, CurrentUser);
+                }
+
                 CsfWorkflow(TraCsfIdApp, Enums.ActionType.Approve, null);
                 isSuccess = true;
             }
@@ -958,20 +1001,18 @@ namespace FMS.Website.Controllers
 
             foreach (var item in vehicleData)
             {
-                dataAllPricelist = dataAllPricelist.Where(x => x.ZonePriceList != null).ToList();
-
                 //select vendor from pricelist
-                var dataVendor = dataAllPricelist.Where(x => x.Manufacture.ToLower() == item.Manufacturer.ToLower()
-                                                        && x.Model.ToLower() == item.Models.ToLower()
-                                                        && x.Series.ToLower() == item.Series.ToLower()
+                var dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (item.Manufacturer == null ? "" : item.Manufacturer.ToLower())
+                                                        && (x.Model == null ? "" : x.Model.ToLower()) == (item.Models == null ? "" : item.Models.ToLower())
+                                                        && (x.Series == null ? "" : x.Series.ToLower()) == (item.Series == null ? "" : item.Series.ToLower())
                                                         && x.Year == createdDate.Year
-                                                        && x.ZonePriceList.ToLower() == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
+                                                        && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
 
                 if (vehicleType == "benefit")
                 {
-                    dataVendor = dataAllPricelist.Where(x => x.Manufacture.ToLower() == item.Manufacturer.ToLower()
-                                                        && x.Model.ToLower() == item.Models.ToLower()
-                                                        && x.Series.ToLower() == item.Series.ToLower()
+                    dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (item.Manufacturer == null ? "" : item.Manufacturer.ToLower())
+                                                        && (x.Model == null ? "" : x.Model.ToLower()) == (item.Models == null ? "" : item.Models.ToLower())
+                                                        && (x.Series == null ? "" : x.Series.ToLower()) == (item.Series == null ? "" : item.Series.ToLower())
                                                         && x.Year == createdDate.Year).FirstOrDefault();
                 }
 
@@ -1244,6 +1285,8 @@ namespace FMS.Website.Controllers
                     item.Series = dataRow[2];
                     item.BodyType = dataRow[3];
                     item.Color = dataRow[4];
+                    item.VehicleUsage = dataRow[5];
+                    item.AssignedTo = dataRow[6];
                     item.Vendor = string.Empty;
 
                     model.Add(item);

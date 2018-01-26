@@ -473,21 +473,23 @@
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(empDateStr[1].toLowerCase());
         var empDate = new Date(parseInt(empDateStr[2]), month, parseInt(empDateStr[0]));
+        today = new Date();
         todayDate = todayDate.setHours(00, 00, 00, 00);
+        var datestr = today.getDate() + '-' + (months[today.getMonth()]) + '-' + today.getFullYear() + ' 00:00 ';
         if (empDateStr == '') empDate = todayDate;
         if (empDate < todayDate) {
             alert('Withdrawal Date must bigger or equal wih today')
-            $("#WithdDate").val('');
+            $("#WithdDate").val(datestr);
             return false;
         }
 
         var effDateStr = $("#EffectiveDate").val().split("-");
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
         if (empDate > effDate) {
             alert('Withdrawal Date  cannot bigger than Effective Date ')
-            $("#WithdDate").val('');
+            $("#WithdDate").val($("#EffectiveDate").val() + ' 00:00 ');
             return false;
         }
         return true;
