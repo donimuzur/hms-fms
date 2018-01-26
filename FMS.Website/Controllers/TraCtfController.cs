@@ -2064,6 +2064,11 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    if (dataRow[0] == "EMPLOYEE ID")
+                    {
+                        continue;
+                    }
+                    
                     var item = new CtfItem();
                     try
                     {
@@ -2346,6 +2351,10 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    if (dataRow[0] == "EMPLOYEE ID")
                     {
                         continue;
                     }

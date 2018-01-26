@@ -332,6 +332,10 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    if (dataRow[0] == "No")
+                    {
+                        continue;
+                    }
                     var item = new GsItem();
                     item.ErrorMessage = "";
                     try
