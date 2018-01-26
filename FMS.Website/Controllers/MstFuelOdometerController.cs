@@ -345,6 +345,10 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    if (dataRow[0] == "VEHICLE TYPE")
+                    {
+                        continue;
+                    }
                     var item = new FuelOdometerItem();
                     item.ErrorMessage = "";
                     try
@@ -356,7 +360,12 @@ namespace FMS.Website.Controllers
                         item.EcsRmbTransId = Convert.ToInt32(dataRow[4]);
                         item.SeqNumber = Convert.ToInt32(dataRow[5]);
                         item.ClaimType = dataRow[6].ToString();
-                        item.DateOfCost = Convert.ToDateTime(dataRow[7].ToString());
+                        if (dataRow[7] != "NULL" && dataRow[7] != "")
+                        {
+                            double dDateOfCost = double.Parse(dataRow[7].ToString());
+                            DateTime dtDateOfCost = DateTime.FromOADate(dDateOfCost);
+                            item.DateOfCost = dtDateOfCost;
+                        }
                         item.CostCenter = dataRow[8].ToString();
                         item.LastKM = Convert.ToInt32(dataRow[9]);
                         item.Cost = Convert.ToInt32(dataRow[10]);
@@ -364,7 +373,7 @@ namespace FMS.Website.Controllers
 
                         item.PostedTime = DateTime.Now;
 
-                        item.IsActive = dataRow[13].ToString() == "Active" ? true : false;
+                        item.IsActive = (dataRow[13] == null ? "" :  dataRow[13] .ToUpper()) == "Active" ? true : false;
                       
                         item.ErrorMessage = string.Empty;
 
