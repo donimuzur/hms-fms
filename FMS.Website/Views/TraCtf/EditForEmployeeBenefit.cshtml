@@ -596,7 +596,7 @@
     $('#empDate').on('dp.change', function (e) {
         var todayDate = new Date();
         var empDateStr = $("#WithdDate").val().split("-");
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var month = months.indexOf(empDateStr[1].toLowerCase());
         var empDate = new Date(parseInt(empDateStr[2]), month, parseInt(empDateStr[0]));
         today = new Date();
@@ -610,7 +610,7 @@
         }
 
         var effDateStr = $("#EffectiveDate").val().split("-");
-        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
         if (empDate> effDate) {
