@@ -683,7 +683,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -830,7 +830,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             //if user want to edit doc
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -1058,6 +1058,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -1153,8 +1154,10 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
