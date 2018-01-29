@@ -145,7 +145,8 @@
     function setupDataTables() {
         // DataTable
         var table = $('#tbSalesVolume').DataTable({
-            "dom": 'lf<"table-overflow"t>pi'
+            "dom": 'lf<"table-overflow"t>pi',
+            stateSave: true
         });
 
         // Apply the search

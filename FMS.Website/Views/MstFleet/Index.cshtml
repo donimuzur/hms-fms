@@ -7,7 +7,7 @@
 		<a href="@Url.Action("Upload", "MstFleet")" class="btn btn-primary line" title="Upload & View">
 			<i class="fa fa-upload"></i> Import
 		</a>
-	}
+    }
 	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
 		<i class="fa fa-upload"></i> Export
 	</a>
@@ -179,7 +179,7 @@
         if ($('.title-page').html() == 'Master Data Fleet') {
             $('#MstFleetMenu').addClass('active');
         }
-
+      
         $(".chosen").chosen();
 
         setupDataTables();
@@ -203,6 +203,21 @@
             setupDataTables();
         });
     });
+    //function ActionClick()
+    //{
+    //    var page_active = $('.paginate_button.current').text();
+    //    var url = window.location.href;
+    //    setCookie("page_active", page_active, 1);
+    //    setCookie("url_active", url, 1);
+    //    console.log(page_active + url);
+    //}
+    //function setCookie(cname, cvalue, exdays) {
+    //    console.log("1");
+    //    var d = new Date();
+    //    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    //    var expires = "expires=" + d.toUTCString();
+    //    document.cookie = cname + "=" + cvalue + "; " + expires;
+    //}
     function ExportXls() {
         console.log('Submitting');
     	var url = '@Url.Action("ExportMasterFleetGenerateReport", "MstFleet")';
@@ -379,10 +394,10 @@
                 actionHtml = '';
 
                 if (WriteAccess == true) {
-                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action'><img src='Content/images/pin.png' alt='' /></a>";
+                    actionHtml = "<a href='MstFleet/Edit?MstFleetId="+data.MstFleetId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action' ><img src='Content/images/pin.png' alt='' /></a>";
                 }
                 if (ReadAccess == true) {
-                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='Content/images/search.png' alt='' /></a>";
+                    actionHtml = actionHtml + "<a href='MstFleet/Detail?MstFleetId="+data.MstFleetId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action' ><img src='Content/images/search.png' alt='' /></a>";
                 }
 
                 var actionRow = $(row).find("td")[0];
@@ -391,6 +406,7 @@
                 $(actionRow).html(actionHtml);
             },
             "serverSide": true,
+            "stateSave": true,
             //"processing": true,
             "paging": true,
             "deferRender": true,
