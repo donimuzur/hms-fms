@@ -405,6 +405,8 @@ namespace FMS.Website.Controllers
             var a = ModelState;
             try
             {
+                
+                Model.EmployeeId = Model.EmployeeId.Split('-')[0].Trim();
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                 Model.CreatedDate = DateTime.Now;
@@ -750,6 +752,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.EmployeeId = model.EmployeeId.Split('-')[0].Trim();
                 if (model.BuyCostTotalStr != null)
                 {
                     model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
@@ -2227,8 +2230,9 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
+            var data = Id.Split('-')[0].Trim();
             var model = new CtfItem();
-            var employee = _employeeBLL.GetByID(Id);
+            var employee = _employeeBLL.GetByID(data);
             if (employee != null)
             {
                 model.EmployeeName = employee.FORMAL_NAME;
@@ -2244,11 +2248,11 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.EmployeeID == data).FirstOrDefault();
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == data).FirstOrDefault();
             }
             if (vehicle != null)
             {
@@ -2267,7 +2271,16 @@ namespace FMS.Website.Controllers
         }
         public JsonResult GetEmployeeList()
         {
-            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var model = _employeeBLL
+                .GetEmployee()
+                .Where(x => x.IS_ACTIVE)
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                .ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]

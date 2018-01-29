@@ -35,7 +35,6 @@ function selectVehicle(urlFunction) {
             url: urlFunction,
             data: {
                 vehType: vehType,
-                
                 employeeId: employee
             },
             success: function (data) {
@@ -102,8 +101,9 @@ function ToggleTemporary() {
     }
 }
 
-function GetEmployee(urlGet,obj) {
-
+function GetEmployee(urlGet, obj) {
+    console.log("URL: " + urlGet);
+    console.log(obj);
     var Id = $(obj).val();
     $(".vehicle").val("");
     $.ajax({
@@ -179,14 +179,14 @@ function InitEmployee(url,urlsearch) {
     
     var options = {
         url: url,
-        getValue: "EMPLOYEE_ID",
+        getValue: "DATA",
 
-        template: {
-            type: "description",
-            fields: {
-                description: "FORMAL_NAME"
-            }
-        },
+        //template: {
+        //    type: "description",
+        //    fields: {
+        //        description: "FORMAL_NAME"
+        //    }
+        //},
 
         list: {
             match: {
