@@ -193,6 +193,11 @@ namespace FMS.Website.Controllers
         {
             try
             {
+
+                model.Detail.EmployeeId = model
+                    .Detail
+                    .EmployeeId.Split('-')[0].Trim();
+
                 TemporaryDto item = new TemporaryDto();
 
                 item = AutoMapper.Mapper.Map<TemporaryDto>(model.Detail);
@@ -342,6 +347,10 @@ namespace FMS.Website.Controllers
         {
             try
             {
+
+                model.Detail.EmployeeId = model
+                    .Detail
+                    .EmployeeId.Split('-')[0].Trim();
                 var dataToSave = Mapper.Map<TemporaryDto>(model.Detail);
 
                 dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
@@ -625,21 +634,32 @@ namespace FMS.Website.Controllers
 
         public JsonResult GetEmployeeList()
         {
-            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
-            return Json(model, JsonRequestBehavior.AllowGet);
+            var allEmployee = _employeeBLL
+                    .GetEmployee()
+                    .Where(x => x.IS_ACTIVE)
+                    .Select(x
+                        => new
+                        {
+                            DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                        })
+                     .OrderBy(X => X.DATA)
+                     .ToList();
+
+            return Json(allEmployee, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
-            var model = _employeeBLL.GetByID(Id);
+            var data = Id.Split('-');
+            var model = _employeeBLL.GetByID(data[0].Trim());
             return Json(model);
         }
 
         [HttpPost]
         public JsonResult GetVehicleData(string vehType, string groupLevel, DateTime createdDate, bool includeCfm, string vendor)
         {
-            var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
+            var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName?.ToLower();
             var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive).ToList();
 
             var fleetDto = new List<FleetDto>();

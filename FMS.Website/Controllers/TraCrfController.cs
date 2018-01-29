@@ -225,6 +225,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 model.Detail.CurrentLogin = CurrentUser;
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
                 dataToSave.CREATED_BY = CurrentUser.USER_ID;
@@ -339,6 +340,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 model.Detail.CurrentLogin = CurrentUser;
                 var dataToSave = Mapper.Map<TraCrfDto>(model.Detail);
                 dataToSave.IS_ACTIVE = true;
@@ -518,17 +520,20 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
-            var model = _employeeBLL.GetByID(Id);
+            var raw = Id.Split('-');
+            var realId = raw[0].Trim();
+            var model = _employeeBLL.GetByID(realId);
+
             FleetDto data = new FleetDto();
             if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                data = _fleetBLL.GetVehicleByEmployeeId(Id, "WTC");
+                data = _fleetBLL.GetVehicleByEmployeeId(realId, "WTC");
                 model.EmployeeVehicle = data;
                 //model.
             }
             else
             {
-                data = _fleetBLL.GetVehicleByEmployeeId(Id,"BENEFIT");
+                data = _fleetBLL.GetVehicleByEmployeeId(realId,"BENEFIT");
                 model.EmployeeVehicle = data;
             }
             model.EmployeeVehicle = data;
@@ -543,13 +548,23 @@ namespace FMS.Website.Controllers
                 var modelFleet = _fleetBLL.GetFleet().Where(x => x.VehicleType == "WTC" && x.IsActive).ToList();
                 var employeeWtc = modelFleet.GroupBy(x => x.EmployeeID).Select(x => x.Key).ToList();
 
-                var modelWtc = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && employeeWtc.Contains(x.EMPLOYEE_ID)).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                var modelWtc = _employeeBLL
+                    .GetEmployee()
+                    .Where(x => x.IS_ACTIVE && employeeWtc.Contains(x.EMPLOYEE_ID))
+                    .Select(x => new { DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)})
+                    .OrderBy(x => x.DATA)
+                    .ToList();
 
                 return Json(modelWtc, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                var model = _employeeBLL
+                    .GetEmployee()
+                    .Where(x => x.IS_ACTIVE && x.GROUP_LEVEL > 0)
+                    .Select(x => new { DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)})
+                    .OrderBy(x => x.DATA)
+                    .ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
             
