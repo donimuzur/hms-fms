@@ -229,7 +229,7 @@ namespace FMS.Website.Controllers
             try
             {
                 TraCsfDto item = new TraCsfDto();
-
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 item = AutoMapper.Mapper.Map<TraCsfDto>(model.Detail);
 
                 item.EMPLOYEE_ID_CREATOR = CurrentUser.EMPLOYEE_ID;
@@ -395,8 +395,8 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
-
                 dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
@@ -949,17 +949,35 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
-            var model = _employeeBLL.GetByID(Id);
+            var data = Id.Split('-');
+            var model = _employeeBLL.GetByID(data[0].Trim());
             return Json(model);
         }
 
         public JsonResult GetEmployeeList()
         {
-            var allEmployee = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var allEmployee = _employeeBLL
+                .GetEmployee()
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X=>X.DATA)
+                    .ToList();
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                allEmployee = _employeeBLL.GetEmployee().Where(x => x.GROUP_LEVEL > 0).ToList().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                allEmployee = _employeeBLL
+                    .GetEmployee()
+                    .Where(x => x.GROUP_LEVEL > 0)
+                    .ToList()
+                    .Select(x =>new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                    .ToList();
             }
 
             return Json(allEmployee, JsonRequestBehavior.AllowGet);

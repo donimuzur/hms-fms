@@ -313,6 +313,10 @@ namespace FMS.Website.Controllers
                         {
                             continue;
                         }
+                        if (dataRow[0] == "Employee ID From")
+                        {
+                            continue;
+                        }
                         var item = new DelegationItem();
                         item.ErrorMessage = "";
                         item.EmployeeFrom = dataRow[0];
@@ -369,6 +373,10 @@ namespace FMS.Website.Controllers
                 foreach (var dataRow in data.DataRows)
                 {
                     if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    if (dataRow[0] == "Employee ID From")
                     {
                         continue;
                     }

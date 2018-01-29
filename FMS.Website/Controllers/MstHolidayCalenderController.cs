@@ -296,6 +296,10 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    if (dataRow[0] == "Holiday Date")
+                    {
+                        continue;
+                    }
                     var item = new HolidayCalenderItem();
                     try
                     {

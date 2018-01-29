@@ -277,7 +277,10 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-
+                    if (dataRow[0] == "LOCATION")
+                    {
+                        continue;
+                    }
                     var item = new LocationMappingItem();
                     item.ErrorMessage = "";
 
