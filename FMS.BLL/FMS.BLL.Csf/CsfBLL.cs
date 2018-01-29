@@ -71,6 +71,8 @@ namespace FMS.BLL.Csf
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
             var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
+            var vehUsageList = _settingService.GetSetting();
+
             var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
 
             var data = _CsfService.GetCsf(userLogin, isCompleted, benefitType, wtcType);
@@ -87,6 +89,12 @@ namespace FMS.BLL.Csf
                 if (item.VEHICLE_TYPE == wtcType)
                 {
                     item.VEHICLE_TYPE_NAME = "WTC";
+                }
+
+                var vehUsage = vehUsageList.Where(x => x.MST_SETTING_ID == Convert.ToInt32(item.VEHICLE_USAGE == null ? 0 : Convert.ToInt32(item.VEHICLE_USAGE))).FirstOrDefault();
+                if(vehUsage != null)
+                {
+                    item.VEHICLE_USAGE_NAME = vehUsage.SETTING_VALUE;
                 }
             }
 
