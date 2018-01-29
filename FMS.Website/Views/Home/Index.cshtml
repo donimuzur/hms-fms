@@ -174,53 +174,68 @@
 				</div>
 			</div>
 		</div>
-		<div class="splashscreen">
+		<div id="splashscreen_id" @*class="splashscreen"*@>
 			<div class="text">
 				<img src="~/Content/img/fix3.png" alt="">
 				@{
-				string[] fullname = Model.CurrentLogin.USERNAME.Split(',');
-				string name = string.Empty;
-				if (fullname.Length > 1)
+					string name = string.Empty;
+					if (!string.IsNullOrEmpty(Model.CurrentLogin.USERNAME))
+					{
+						string[] fullname = Model.CurrentLogin.USERNAME.Split(',');
+						if (fullname.Length > 1)
+						{
+							name = fullname[1] + " " + fullname[0];
+						}
+						else
+						{
+							name = fullname[0];
+						}
+					}
+				}
+				@if (!string.IsNullOrEmpty(name))
 				{
-					name = fullname[1] + " " + fullname[0];
+					<p><span>Welcome,</span> @name</p>
 				}
-				else
-				{
-					name = fullname[0];
-				}
-				}
-				<p><span>Welcome,</span> @name</p>
-		</div>
-		<div class="accesory">
-			<img src="~/Content/img/cloud.png" alt="" class="cloud1">
-			<img src="~/Content/img/cloud.png" alt="" class="cloud2">
-			<img src="~/Content/img/hills.png" alt="" class="hills">
-		</div>
-		<div class="animate">
-			<div class="car">
-				<img src="~/Content/img/body.png" alt="" class="body">
-				<img src="~/Content/img/tire.png" alt="" class="tire n1">
-				<img src="~/Content/img/tire.png" alt="" class="tire n2">
 			</div>
-			<img src="~/Content/img/trees.png" alt="" class="tree">
-			<img src="~/Content/img/tree.png" alt="" class="tree1">
+			<div id="accesory_id" @*class="accesory"*@>
+				<img src="~/Content/img/cloud.png" alt="" class="cloud1">
+				<img src="~/Content/img/cloud.png" alt="" class="cloud2">
+				<img src="~/Content/img/hills.png" alt="" class="hills">
+			</div>
+			<div id="animate_id" @*class="animate"*@>
+				<div class="car">
+					<img src="~/Content/img/body.png" alt="" class="body">
+					<img src="~/Content/img/tire.png" alt="" class="tire n1">
+					<img src="~/Content/img/tire.png" alt="" class="tire n2">
+				</div>
+				<img src="~/Content/img/trees.png" alt="" class="tree">
+				<img src="~/Content/img/tree.png" alt="" class="tree1">
+			</div>
 		</div>
-	</div>
-	<script type="text/javascript">
 
+		<script type="text/javascript">
 		$(document).ready(function () {
-			var afterLogin = sessionStorage.getItem("afterLogin");
-			if (afterLogin == "false" || afterLogin == null) {
-				setTimeout(function () {
-					$('.splashscreen').hide();
-				}, 5000);
-				sessionStorage.setItem("afterLogin", "true");
+			var counter = sessionStorage["counter"];
+			if (counter == undefined)
+				counter = 0;
+			if (counter != 0) {
+				$("#splashscreen_id").hide();
 			} else {
-				$(".splashscreen").hide();
+				$("#splashscreen_id").addClass("splashscreen");
+				$("#accesory_id").addClass("accesory");
+				$("#animate_id").addClass("animate");
+				setTimeout(function () {
+					$('#splashscreen_id').hide();
+					$("#splashscreen_id").removeClass("splashscreen");
+					$("#accesory_id").removeClass("accesory");
+					$("#animate_id").removeClass("animate");
+				}, 5000);
 			}
-		});	
-	
-	</script>
+			counter++;
+			sessionStorage["counter"] = counter;
+		});
+
+		</script>
 	</div>
 </body>
 </html>
