@@ -44,6 +44,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.Regional, opt => opt.MapFrom(src => src.REGIONAL))
                 .ForMember(dest => dest.VehicleCat, opt => opt.MapFrom(src => src.VEHICLE_CATEGORY))
                 .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
+                .ForMember(dest => dest.VehicleUsageName, opt => opt.MapFrom(src => src.VEHICLE_USAGE_NAME))
                 .ForMember(dest => dest.LocationCity, opt => opt.MapFrom(src => src.LOCATION_CITY))
                 .ForMember(dest => dest.LocationAddress, opt => opt.MapFrom(src => src.LOCATION_ADDRESS))
                 .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.MANUFACTURER))
