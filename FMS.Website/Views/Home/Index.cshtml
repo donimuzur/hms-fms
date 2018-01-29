@@ -210,14 +210,14 @@
 
 		$(document).ready(function () {
 			var afterLogin = sessionStorage.getItem("afterLogin");
-			if (afterLogin == "false") {
+			if (afterLogin == "false" || afterLogin == null) {
 				setTimeout(function () {
 					$('.splashscreen').hide();
-				}, 15000);
+				}, 5000);
+				sessionStorage.setItem("afterLogin", "true");
 			} else {
 				$(".splashscreen").hide();
 			}
-			sessionStorage.setItem("afterLogin", "true");
 		});	
 	
 	</script>

@@ -154,7 +154,8 @@
     function setupDataTables() {
         // DataTable
         var table = $('#tbFuelCostByFunction').DataTable({
-            "dom": 'lf<"table-overflow"t>pi'
+            "dom": 'lf<"table-overflow"t>pi',
+            stateSave: true
         });
 
         // Apply the search

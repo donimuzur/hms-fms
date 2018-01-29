@@ -659,7 +659,7 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetVehicleData(string vehType, string groupLevel, DateTime createdDate, bool includeCfm, string vendor)
         {
-            var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName?.ToLower();
+            var vehicleType = _settingBLL.GetByID(Convert.ToInt32(vehType)).SettingName.ToLower();
             var vehicleData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.IsActive).ToList();
 
             var fleetDto = new List<FleetDto>();
