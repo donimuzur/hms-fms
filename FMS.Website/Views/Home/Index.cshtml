@@ -41,137 +41,186 @@
 
 <body class="landing">
     <!-- content -->
-    <div class="main-content">
-        <div class="container head-landing">           
-             <div class="logo animated fadeIn pull-left">
-                  <img src="~/Content/images/logo-hms.png" alt="">
-                  <h5>Fleet Management System</h5>
-             </div>
-             <ul class="menu pull-right">
-                  <li><a href="@Url.Action("PersonalDashboard", "TraCsf")">Personal Dashboard</a></li>
-                  @if (Model.CurrentLogin.UserRole != Enums.UserRole.User) { 
-                      <li><a href="@Url.Action("Index","MstFleet")">Master Data</a></li>
-                      <li><a href="@Url.Action("Index", "RptCfmIdle")">Report</a></li>
-                  }
-                  <li><a href="#">Help</a></li>
-             </ul>            
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
-                    {
-                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
-                            <div class="text-layer">
-                                <h4>Car Selection</h4>
-                            </div>
-                            <img src="~/Content/images/key.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Index","TraCsf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
-                            <div class="text-layer">
-                                <h4>Car Selection</h4>
-                            </div>
-                            <img src="~/Content/images/key.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                </div>
-                <div class="col">
-                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
-                    {
-                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
-                            <div class="text-layer">
-                                <h4>Car Relocation</h4>
-                            </div>
-                            <img src="~/Content/images/plang.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Index","TraCrf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
-                            <div class="text-layer">
-                                <h4>Car Relocation</h4>
-                            </div>
-                            <img src="~/Content/images/plang.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                </div>
-                <div class="col">
-                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
-                    {
-                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
-                            <div class="text-layer">
-                                <h4>Car Termination</h4>
-                            </div>
-                            <img src="~/Content/images/hammer.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Index","TraCtf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
-                            <div class="text-layer">
-                                <h4>Car Termination</h4>
-                            </div>
-                            <img src="~/Content/images/hammer.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                </div>
-                <div class="w-100"></div>
-                <div class="col">
-                    <a href="@Url.Action("CreateCcf", "TraCcf", new { IsPersonalDashboard = true })" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/4.jpg")')">
-                        <div class="text-layer">
-                            <h4>Car Complaint</h4>
-                        </div>
-                        <img src="~/Content/images/cc.png" alt="" class="icon-item">
-                        <div class="blue-layer"></div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="@Url.Action("Index","TraCaf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/3.jpg")')">
-                        <div class="text-layer">
-                            <h4>Car Accident</h4>
-                        </div>
-                        <img src="~/Content/images/ca.png" alt="" class="icon-item">
-                        <div class="blue-layer"></div>
-                    </a>
-                </div>
-                <div class="col">
-                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
-                    {
-                        <a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
-                            <div class="text-layer">
-                                <h4>Temporary Car</h4>
-                            </div>
-                            <img src="~/Content/images/clock.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Index","TraTemporary")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
-                            <div class="text-layer">
-                                <h4>Temporary Car</h4>
-                            </div>
-                            <img src="~/Content/images/clock.png" alt="" class="icon-item">
-                            <div class="blue-layer"></div>
-                        </a>
-                    }
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-center animated fadeIn">
-                    <p class="cright">© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
-                </div>
-            </div>         
-        </div>
-    </div>
+	<div class="main-content">
+		<div class="container head-landing">
+			<div class="logo animated fadeIn pull-left">
+				<img src="~/Content/images/logo-hms.png" alt="">
+				<h5>Fleet Management System</h5>
+			</div>
+			<ul class="menu pull-right">
+				<li><a href="@Url.Action("PersonalDashboard", "TraCsf")">Personal Dashboard</a></li>
+				@if (Model.CurrentLogin.UserRole != Enums.UserRole.User)
+			{
+				<li><a href="@Url.Action("Index","MstFleet")">Master Data</a></li>
+				<li><a href="@Url.Action("Index", "RptCfmIdle")">Report</a></li>
+		}
+
+				<li><a href="#">Help</a></li>
+			</ul>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					@if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+				{
+					<a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
+						<div class="text-layer">
+							<h4>Car Selection</h4>
+						</div>
+						<img src="~/Content/images/key.png" alt="" class="icon-item">
+						<div class="blue-layer"></div>
+					</a>
+			}
+			else
+			{
+				<a href="@Url.Action("Index","TraCsf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/1.jpg")')">
+					<div class="text-layer">
+						<h4>Car Selection</h4>
+					</div>
+					<img src="~/Content/images/key.png" alt="" class="icon-item">
+					<div class="blue-layer"></div>
+				</a>
+		}
+				</div>
+				<div class="col">
+					@if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+				{
+					<a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
+						<div class="text-layer">
+							<h4>Car Relocation</h4>
+						</div>
+						<img src="~/Content/images/plang.png" alt="" class="icon-item">
+						<div class="blue-layer"></div>
+					</a>
+			}
+			else
+			{
+				<a href="@Url.Action("Index","TraCrf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/2.jpg")')">
+					<div class="text-layer">
+						<h4>Car Relocation</h4>
+					</div>
+					<img src="~/Content/images/plang.png" alt="" class="icon-item">
+					<div class="blue-layer"></div>
+				</a>
+		}
+				</div>
+				<div class="col">
+					@if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+				{
+					<a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
+						<div class="text-layer">
+							<h4>Car Termination</h4>
+						</div>
+						<img src="~/Content/images/hammer.png" alt="" class="icon-item">
+						<div class="blue-layer"></div>
+					</a>
+			}
+			else
+			{
+				<a href="@Url.Action("Index","TraCtf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/5.jpg")')">
+					<div class="text-layer">
+						<h4>Car Termination</h4>
+					</div>
+					<img src="~/Content/images/hammer.png" alt="" class="icon-item">
+					<div class="blue-layer"></div>
+				</a>
+		}
+				</div>
+				<div class="w-100"></div>
+				<div class="col">
+					<a href="@Url.Action("CreateCcf", "TraCcf", new { IsPersonalDashboard = true })" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/4.jpg")')">
+						<div class="text-layer">
+							<h4>Car Complaint</h4>
+						</div>
+						<img src="~/Content/images/cc.png" alt="" class="icon-item">
+						<div class="blue-layer"></div>
+					</a>
+				</div>
+				<div class="col">
+					<a href="@Url.Action("Index","TraCaf")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/3.jpg")')">
+						<div class="text-layer">
+							<h4>Car Accident</h4>
+						</div>
+						<img src="~/Content/images/ca.png" alt="" class="icon-item">
+						<div class="blue-layer"></div>
+					</a>
+				</div>
+				<div class="col">
+					@if (Model.CurrentLogin.UserRole == Enums.UserRole.User)
+				{
+					<a href="#" class="menu-link animated fadeIn disabled" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
+						<div class="text-layer">
+							<h4>Temporary Car</h4>
+						</div>
+						<img src="~/Content/images/clock.png" alt="" class="icon-item">
+						<div class="blue-layer"></div>
+					</a>
+			}
+			else
+			{
+				<a href="@Url.Action("Index","TraTemporary")" class="menu-link animated fadeIn" style="background-image: url('@Url.Content("~/Content/images/6.jpg")')">
+					<div class="text-layer">
+						<h4>Temporary Car</h4>
+					</div>
+					<img src="~/Content/images/clock.png" alt="" class="icon-item">
+					<div class="blue-layer"></div>
+				</a>
+		}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col text-center animated fadeIn">
+					<p class="cright">© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
+				</div>
+			</div>
+		</div>
+		<div class="splashscreen">
+			<div class="text">
+				<img src="~/Content/img/fix3.png" alt="">
+				@{
+				string[] fullname = Model.CurrentLogin.USERNAME.Split(',');
+				string name = string.Empty;
+				if (fullname.Length > 1)
+				{
+					name = fullname[1] + " " + fullname[0];
+				}
+				else
+				{
+					name = fullname[0];
+				}
+				}
+				<p><span>Welcome,</span> @name</p>
+		</div>
+		<div class="accesory">
+			<img src="~/Content/img/cloud.png" alt="" class="cloud1">
+			<img src="~/Content/img/cloud.png" alt="" class="cloud2">
+			<img src="~/Content/img/hills.png" alt="" class="hills">
+		</div>
+		<div class="animate">
+			<div class="car">
+				<img src="~/Content/img/body.png" alt="" class="body">
+				<img src="~/Content/img/tire.png" alt="" class="tire n1">
+				<img src="~/Content/img/tire.png" alt="" class="tire n2">
+			</div>
+			<img src="~/Content/img/trees.png" alt="" class="tree">
+			<img src="~/Content/img/tree.png" alt="" class="tree1">
+		</div>
+	</div>
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+			var afterLogin = sessionStorage.getItem("afterLogin");
+			if (afterLogin == "false") {
+				setTimeout(function () {
+					$('.splashscreen').hide();
+				}, 15000);
+			} else {
+				$(".splashscreen").hide();
+			}
+			sessionStorage.setItem("afterLogin", "true");
+		});	
+	
+	</script>
+	</div>
 </body>
 </html>
