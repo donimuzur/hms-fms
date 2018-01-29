@@ -419,8 +419,21 @@ namespace FMS.BLL.Ctf
             var bodyMail = new StringBuilder();
             var rc = new CtfMailNotification();
 
-            var fleetdata = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == ctfData.PoliceNumber).FirstOrDefault();
-            var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME).FirstOrDefault();
+            var fleetdata = _fleetService.GetFleet().Where(x => (x.POLICE_NUMBER == null ? "" : x.POLICE_NUMBER.ToUpper())== (ctfData.PoliceNumber == null ? "" : ctfData.PoliceNumber.ToUpper()) 
+                                                            && x.IS_ACTIVE && ctfData.EmployeeId== x.EMPLOYEE_ID 
+                                                            && (x.SUPPLY_METHOD == null ? "" : x.SUPPLY_METHOD.ToUpper()) == (ctfData.SupplyMethod == null ? "" : ctfData.SupplyMethod.ToUpper())
+                                                            && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (ctfData.VehicleType == null ? "" : ctfData.VehicleType.ToUpper())).FirstOrDefault();
+            if(fleetdata == null)
+            {
+                throw new Exception("Vehicle is not found in Master Fleet or it's already InActive");
+            }
+
+            var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
+            if (vendor == null)
+            {
+                throw new Exception("Vendor is not found in Master Vendor");
+            }
+
             var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
 
             var isBenefit = ctfData.VehicleType == vehTypeBenefit.ToString() ? true : false;
