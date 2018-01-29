@@ -421,6 +421,7 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 foreach(var data in model.Details)
                 {
                     try
@@ -540,6 +541,10 @@ namespace FMS.Website.Controllers
             var model = new List<FleetItem>();
             if (data != null)
             {
+                var ListEmployee = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+                var ListFunction = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive).ToList();
+                var listLocation = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+
                 foreach (var dataRow in data.DataRows)
                 {
                     try
@@ -553,13 +558,20 @@ namespace FMS.Website.Controllers
                             continue;
                         }
                         var item = new FleetItem();
+
                         item.PoliceNumber = dataRow[0];
                         if (dataRow[2] != "NULL" & dataRow[2] != "")
                         {
                             item.EmployeeID = dataRow[2];
                         }
-                        item.EmployeeName = dataRow[1];
+
+                        var GetEmployee = ListEmployee.Where(x => (x.EMPLOYEE_ID == null ? "" : x.EMPLOYEE_ID.ToUpper()) == (item.EmployeeID == null ? "" : item.EmployeeID.ToUpper())).FirstOrDefault();
+                        item.EmployeeName = GetEmployee.FORMAL_NAME ;
+
                         item.CostCenter = dataRow[3];
+                        var GetFunction = ListFunction.Where(x => (x.CostCenter == null ? "" : x.CostCenter.ToUpper()) == (item.CostCenter == null ? "" : item.CostCenter.ToUpper())).FirstOrDefault();
+                        item.Function = GetFunction.FunctionName;
+
                         item.Manufacturer = dataRow[4];
                         item.Models = dataRow[5];
                         item.Series = dataRow[6];
@@ -591,7 +603,12 @@ namespace FMS.Website.Controllers
                             item.EndContract = dtEndContract;
                         }
                         item.VendorName = dataRow[22];
+
                         item.City = dataRow[23];
+                        var GetLocation = listLocation.Where(x => (x.Basetown == null ? "" : x.Basetown.ToUpper()) == (item.City == null ? "" : item.City.ToUpper())).FirstOrDefault();
+                        item.Address = GetLocation.Address == null ? "" : GetLocation.Address.ToUpper();
+                        item.Regional = GetLocation.Region == null ? "" : GetLocation.Region.ToUpper();
+
                         item.SupplyMethod = dataRow[24];
                         item.Restitution = dataRow[25] == "Yes" ? true : false;
                         item.RestitutionS = dataRow[25];
@@ -609,7 +626,6 @@ namespace FMS.Website.Controllers
                             item.GroupLevel = 0;
                         }
                         item.AssignedTo = dataRow[32];
-                        item.Address = dataRow[33];
                         if (dataRow[34] != "NULL" && dataRow[34] != "")
                         {
                             double dStartDate = double.Parse(dataRow[34].ToString());
@@ -629,15 +645,6 @@ namespace FMS.Website.Controllers
                         string TotalMonthlyCharge = dataRow[40];
                         TotalMonthlyCharge = TotalMonthlyCharge.Trim(',');
                         item.TotalMonthlyCharge = Int64.Parse(String.IsNullOrEmpty(TotalMonthlyCharge) ? "0" : TotalMonthlyCharge);
-                        item.Function = dataRow[41];
-                        if(dataRow.Count<= 42)
-                        {
-                            item.Regional = "";
-                        }
-                        else
-                        {
-                            item.Regional = dataRow[42];
-                        }
                         item.ErrorMessage = string.Empty;
 
                         if (item.EmployeeID != null) { 
