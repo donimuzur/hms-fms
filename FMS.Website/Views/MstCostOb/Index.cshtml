@@ -70,6 +70,7 @@
     </div>
 </div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
     function ExportXls() {
         var url = '@Url.Action("ExportMasterCostOb", "MstCostOb")';
@@ -146,8 +147,14 @@
             { "data": "Type", "orderable": false },
             { "data": "FunctionName", "orderable": false },
             { "data": "Regional", "orderable": false },
-            { "data": "ObCost", "orderable": false },
-            { "data": "Qty", "orderable": false },
+            { "data": "ObCost", "orderable": false, "render": function (datum, type, record) {
+                return (datum) ? ThausandSeperator(datum, 2) : "";
+                } 
+            },
+            { "data": "Qty", "orderable": false , "render": function (datum, type, record) {
+                return (datum) ? datum : "";
+                }
+            },
             { "data": "CreatedBy", "orderable": false },
             {
                 "data": "CreatedDate", "orderable": false, "render": function (datum, type, record) {
