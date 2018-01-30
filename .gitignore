@@ -117,3 +117,7 @@ FMS.Website/Web.config
 /.vs/config/applicationhost.config
 /FMS.Website/Properties/PublishProfiles/publish.pubxml
 /.vs/hms-fms/v15/sqlite3/storage.ide
+/.vs/hms-fms/v15/Server/sqlite3/db.lock
+/.vs/hms-fms/v15/Server/sqlite3/storage.ide-shm
+/.vs/hms-fms/v15/Server/sqlite3/storage.ide-wal
+/.vs/hms-fms/v15/Server/sqlite3/storage.ide

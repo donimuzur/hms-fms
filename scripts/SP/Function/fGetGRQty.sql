@@ -1,14 +1,6 @@
--- ================================================
--- Template generated from Template Explorer using:
--- Create Scalar Function (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the function.
--- ================================================
+USE [FMS_HMS]
+GO
+/****** Object:  UserDefinedFunction [dbo].[fGetGRQTY]    Script Date: 1/29/2018 5:12:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -18,7 +10,7 @@ GO
 -- Create date: <Create Date, ,>
 -- Description:	<Description, ,>
 -- =============================================
-ALTER FUNCTION dbo.fGetGRQTY 
+ALTER FUNCTION [dbo].[fGetGRQTY] 
 (
 	-- Add the parameters for the function here
 	@start_contract as date,
@@ -37,11 +29,19 @@ BEGIN
 	if MONTH(@end_contract) = @current_month and YEAR(@end_contract) = @current_year
 	begin
 		set @result = 1;
-
-		if DAY(@start_contract) > 3 and DAY(@start_contract) <= 20 set @result = convert(decimal(18,2), DAY(@start_contract)) / 30;
+		if DAY(@start_contract) > 3 and DAY(@start_contract) <= 20 set @result =1 - convert(decimal(18,2), (31 - DAY(@start_contract)) )/ 30;
 		if DAY(@start_contract) > 20 and DAY(@start_contract) <= DAY(EOMONTH(@start_contract))
-			set @result = 2 - convert(decimal(18,2),DATEDIFF(day,@start_contract,DATEADD(day,3,EOMONTH(@start_contract)))) / 30;
-		
+		begin
+			if DATEDIFF(month, @start_contract, DATEFROMPARTS(@current_year,@current_month,1)) = 1
+			begin 
+				set @result = 1;
+			end 
+			else
+			begin
+				set @result = 2 - convert(decimal(18,2),DATEDIFF(day,@start_contract,DATEADD(day,3,EOMONTH(@start_contract)))) / 30;
+			end
+			
+		end
 
 		return @result;
 		
@@ -63,8 +63,8 @@ BEGIN
 	begin
 		set @result = 0;
 
-		if DAY(@start_contract) > 3 and DAY(@start_contract) <= 20 set @result = convert(decimal(18,2), DAY(@start_contract)) / 30;
-		
+		if DAY(@start_contract) > 3 and DAY(@start_contract) <= 20 set @result = convert(decimal(18,2), (31 - DAY(@start_contract)) )/ 30;
+		if DAY(@start_contract) < 3 set @result = 1;
 
 		return @result;
 	end
@@ -77,5 +77,3 @@ BEGIN
 	
 
 END
-GO
-

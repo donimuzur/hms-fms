@@ -47,314 +47,317 @@
 </head>
 
 <body>
-    <header class="clearfloat">
-        <div class="logo-toggle">
-            <a href="@Url.Action("Index", "Home")"><img src="~/Content/images/logo-hms-mini.png" alt="" class="logo" style="width:53px;height:26px"></a>
-            <button class="sidebar-toggler" type="button">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <h5 class="title-parent">Fleet Management System</h5>
-        <ul class="opt">
-            <li class="notif"><a href="#"><img src="~/Content/images/bell.png" alt=""></a></li>
-            <li class="account dropdown">
-                <a href="#" class="dropdown-toggle" id="accdropdown" data-toggle="dropdown" aria-haspopup="true">
-                    <span>@Model.CurrentLogin.USERNAME<img src="~/Content/images/caret.png" alt=""></span>
-                    <div class="user-pic"><img src="~/Content/images/user.png" alt=""></div>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="accdropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
-        </ul>
-    </header>
+	<header class="clearfloat">
+		<div class="logo-toggle">
+			<a href="@Url.Action("Index", "Home")"><img src="~/Content/images/logo-hms-mini.png" alt="" class="logo" style="width:53px;height:26px"></a>
+			<button class="sidebar-toggler" type="button">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<h5 class="title-parent">Fleet Management System</h5>
+		<ul class="opt">
+			<li class="notif"><a href="#"><img src="~/Content/images/bell.png" alt=""></a></li>
+			<li class="account dropdown">
+				<a href="#" class="dropdown-toggle" id="accdropdown" data-toggle="dropdown" aria-haspopup="true">
+					<span>@Model.CurrentLogin.USERNAME<img src="~/Content/images/caret.png" alt=""></span>
+					<div class="user-pic"><img src="~/Content/images/user.png" alt=""></div>
+				</a>
+				<div class="dropdown-menu" aria-labelledby="accdropdown">
+					<a class="dropdown-item" href="#">Action</a>
+					<a class="dropdown-item" href="#">Another action</a>
+					<a class="dropdown-item" href="#">Something else here</a>
+				</div>
+			</li>
+		</ul>
+	</header>
 
-    <aside>
-        @{
-            switch (Model.MainMenu)
-            {
-                
-                case Enums.MenuList.MasterData:
-			    case Enums.MenuList.MasterEmployee:
-                case Enums.MenuList.MasterFleet:
-			    case Enums.MenuList.MasterComplaintCategory:
-                case Enums.MenuList.MasterPriceList:
-                case Enums.MenuList.MasterVendor:
-                case Enums.MenuList.MasterSetting:
-                case Enums.MenuList.MasterEpaf:
-                case Enums.MenuList.MasterPenalty:
-                case Enums.MenuList.MasterGroupCostCenter:
-                case Enums.MenuList.MasterHoliday:
-                case Enums.MenuList.MasterReason:
-                case Enums.MenuList.MasterFuelOdoMeter:
-                case Enums.MenuList.MasterVehicleSpect:
-                case Enums.MenuList.MasterLocationMapping:
-                case Enums.MenuList.MasterCostOB:
-                case Enums.MenuList.MasterGS:
-                case Enums.MenuList.MasterSalesVolume:
-                case Enums.MenuList.MasterDelegation:
-                case Enums.MenuList.MasterRemark:
-                case Enums.MenuList.MasterSysAccess:
-                case Enums.MenuList.MasterPenaltyLogic:
-                    <h5 class="sb-title">Main Menu - Master Data</h5>
-                    <ul>
-                        <li><a href="@Url.Action("Index","MstCostOb")" id="MstCostObMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Cost OB</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstFleet")" id="MstFleetMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fleet</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstGs")" id="MstGsMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>GS</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstPenalty")" id="MstPenaltyMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstPriceList")" id="MstPriceListMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Price List</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstSalesVolume")" id="MstSalesVolumeMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Sales Volume</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstVehicleSpect")" id="MstVehicleSpectMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vehicle Spec</h5></a></li>
-                        <li><a href="@Url.Action("Index","MstVendor")" id="MstVendorMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vendor</h5></a></li>
-                        <li><a href="#"><h5>------------------</h5></a></li>
-                        <li id="MstComplaint"><a href="@Url.Action("Index","MstComplaint")" id="MstComplaintMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Complaint Category</h5></a></li>
-                        <li id="MstDelegation"><a href="@Url.Action("Index","MstDelegation")" id="MstDelegationMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Delegation</h5></a></li>
-                        <li id="MstEmployee"><a href="@Url.Action("Index","MstEmployee")" id="MstEmployeeMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Employee</h5></a></li>
-                        <li id="MstEpaf"><a href="@Url.Action("Index","MstEpaf")" id="MstEpafMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Epaf</h5></a></li>
-                        <li id="MstFuelOdometer"><a href="@Url.Action("Index","MstFuelOdometer")" id="MstFuelOdometerMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fuel OdoMeter</h5></a></li>
-                        <li id="MstGroupCostCenter"><a href="@Url.Action("Index","MstGroupCostCenter")" id="MstGroupCostCenterMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Group Cost Center</h5></a></li>
-                        <li id="MstHolidayCalender"><a href="@Url.Action("Index","MstHolidayCalender")" id="MstHolidayCalenderMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Holiday</h5></a></li>
-                        <li id="MstLocationMapping"><a href="@Url.Action("Index","MstLocationMapping")" id="MstLocationMappingMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Location Mapping</h5></a></li>
-                        <li id="MstPenaltyLogic"><a href="@Url.Action("Index","MstPenaltyLogic")" id="MstPenaltyLogicMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty Logic</h5></a></li>
-                        <li id="MstReason"><a href="@Url.Action("Index","MstReason")" id="MstReasonMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Reason</h5></a></li>
-                        <li id="MstRemark"><a href="@Url.Action("Index","MstRemark")" id="MstRemarkMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Remark</h5></a></li>
-                        <li id="MstSetting"><a href="@Url.Action("Index","MstSetting")" id="MstSettingMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Setting</h5></a></li>
-                        <li id="MstSysAccess"><a href="@Url.Action("Index","MstSysAccess")" id="MstSysAccessMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>SysAccess</h5></a></li>
-                    </ul>
-                    break;
-                case Enums.MenuList.Transaction:
-                case Enums.MenuList.TraCaf:
-                case Enums.MenuList.TraCrf:
-                case Enums.MenuList.TraCcf:
-                    <h5 class="sb-title">Main Menu - Transaction</h5>
-		            <ul id="sidemenu" role="tablist">
-			            <li>
-				            <a id="CsfParent" href="#CsfMenu" data-toggle="collapse">
-					            <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span> 
-					            <h5>Car Selection</h5>
-				            </a>
-                            <ul class="childmenu collapse" id="CsfMenu" data-parent="#sidemenu">
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
-                                { 
-                                    <li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf", new { IsPersonalDashboard = false })">Dashboard</a></li>
-                                }
-                                <li><a id="CsfOpen" href="@Url.Action("Index", "TraCsf", new { IsPersonalDashboard = false })">Open Documents</a></li>
-                                <li><a id="CsfCompleted" href="@Url.Action("Completed", "TraCsf", new { IsPersonalDashboard = false })">Completed Documents</a></li>
-                            </ul>
-			            </li>
-			            <li>
-				            <a href="#CrfMenu" id="CrfParent" data-toggle="collapse"  >
-					            <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span> 
-					            <h5>Car Relocation</h5>
-				            </a>
-                            <ul class="childmenu collapse" id="CrfMenu" data-parent="#sidemenu">
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
-                                {
-                                    <li><a id="CrfDashboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
-                                }
+	<aside>
+		@{
+			switch (Model.MainMenu)
+			{
 
-                                <li><a id="CrfOpen" href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
-                                <li><a id="CrfCompleted" href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
-                            </ul>
-			            </li>
-			            <li>
-                            <a href="#CafMenu" id="CafParent" data-toggle="collapse">
-                                <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
-                                <h5>Car Accident</h5>
-                            </a>
-                            <ul class="childmenu collapse" id="CafMenu" data-parent="#sidemenu">
-                                
+				case Enums.MenuList.MasterData:
+				case Enums.MenuList.MasterEmployee:
+				case Enums.MenuList.MasterFleet:
+				case Enums.MenuList.MasterComplaintCategory:
+				case Enums.MenuList.MasterPriceList:
+				case Enums.MenuList.MasterVendor:
+				case Enums.MenuList.MasterSetting:
+				case Enums.MenuList.MasterEpaf:
+				case Enums.MenuList.MasterPenalty:
+				case Enums.MenuList.MasterGroupCostCenter:
+				case Enums.MenuList.MasterHoliday:
+				case Enums.MenuList.MasterReason:
+				case Enums.MenuList.MasterFuelOdoMeter:
+				case Enums.MenuList.MasterVehicleSpect:
+				case Enums.MenuList.MasterLocationMapping:
+				case Enums.MenuList.MasterCostOB:
+				case Enums.MenuList.MasterGS:
+				case Enums.MenuList.MasterSalesVolume:
+				case Enums.MenuList.MasterDelegation:
+				case Enums.MenuList.MasterRemark:
+				case Enums.MenuList.MasterSysAccess:
+				case Enums.MenuList.MasterPenaltyLogic:
+					<h5 class="sb-title">Main Menu - Master Data</h5>
+					<ul>
+						<li><a href="@Url.Action("Index","MstCostOb")" id="MstCostObMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Cost OB</h5></a></li>
+						<li><a href="@Url.Action("Index","MstFleet")" id="MstFleetMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fleet</h5></a></li>
+						<li><a href="@Url.Action("Index","MstGs")" id="MstGsMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>GS</h5></a></li>
+						<li><a href="@Url.Action("Index","MstPenalty")" id="MstPenaltyMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty</h5></a></li>
+						<li><a href="@Url.Action("Index","MstPriceList")" id="MstPriceListMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Price List</h5></a></li>
+						<li><a href="@Url.Action("Index","MstSalesVolume")" id="MstSalesVolumeMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Sales Volume</h5></a></li>
+						<li><a href="@Url.Action("Index","MstVehicleSpect")" id="MstVehicleSpectMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vehicle Spec</h5></a></li>
+						<li><a href="@Url.Action("Index","MstVendor")" id="MstVendorMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Vendor</h5></a></li>
+						<li><a href="#"><h5>------------------</h5></a></li>
+						<li id="MstComplaint"><a href="@Url.Action("Index","MstComplaint")" id="MstComplaintMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Complaint Category</h5></a></li>
+						<li id="MstDelegation"><a href="@Url.Action("Index","MstDelegation")" id="MstDelegationMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Delegation</h5></a></li>
+						<li id="MstEmployee"><a href="@Url.Action("Index","MstEmployee")" id="MstEmployeeMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Employee</h5></a></li>
+						<li id="MstEpaf"><a href="@Url.Action("Index","MstEpaf")" id="MstEpafMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Epaf</h5></a></li>
+						<li id="MstFuelOdometer"><a href="@Url.Action("Index","MstFuelOdometer")" id="MstFuelOdometerMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fuel OdoMeter</h5></a></li>
+						<li id="MstGroupCostCenter"><a href="@Url.Action("Index","MstGroupCostCenter")" id="MstGroupCostCenterMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Group Cost Center</h5></a></li>
+						<li id="MstHolidayCalender"><a href="@Url.Action("Index","MstHolidayCalender")" id="MstHolidayCalenderMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Holiday</h5></a></li>
+						<li id="MstLocationMapping"><a href="@Url.Action("Index","MstLocationMapping")" id="MstLocationMappingMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Location Mapping</h5></a></li>
+						<li id="MstPenaltyLogic"><a href="@Url.Action("Index","MstPenaltyLogic")" id="MstPenaltyLogicMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty Logic</h5></a></li>
+						<li id="MstReason"><a href="@Url.Action("Index","MstReason")" id="MstReasonMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Reason</h5></a></li>
+						<li id="MstRemark"><a href="@Url.Action("Index","MstRemark")" id="MstRemarkMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Remark</h5></a></li>
+						<li id="MstSetting"><a href="@Url.Action("Index","MstSetting")" id="MstSettingMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Setting</h5></a></li>
+						<li id="MstSysAccess"><a href="@Url.Action("Index","MstSysAccess")" id="MstSysAccessMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>SysAccess</h5></a></li>
+					</ul>
+					break;
+				case Enums.MenuList.Transaction:
+				case Enums.MenuList.TraCaf:
+				case Enums.MenuList.TraCrf:
+				case Enums.MenuList.TraCcf:
+					<h5 class="sb-title">Main Menu - Transaction</h5>
+					<ul id="sidemenu" role="tablist">
+						<li>
+							<a id="CsfParent" href="#CsfMenu" data-toggle="collapse">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>Car Selection</h5>
+							</a>
+							<ul class="childmenu collapse" id="CsfMenu" data-parent="#sidemenu">
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								{
+									<li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf", new { IsPersonalDashboard = false })">Dashboard</a></li>
+								}
+								<li><a id="CsfOpen" href="@Url.Action("Index", "TraCsf", new { IsPersonalDashboard = false })">Open Documents</a></li>
+								<li><a id="CsfCompleted" href="@Url.Action("Completed", "TraCsf", new { IsPersonalDashboard = false })">Completed Documents</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#CrfMenu" id="CrfParent" data-toggle="collapse">
+								<span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span>
+								<h5>Car Relocation</h5>
+							</a>
+							<ul class="childmenu collapse" id="CrfMenu" data-parent="#sidemenu">
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								{
+									<li><a id="CrfDashboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
+								}
 
-                                <li><a id="CafOpen" href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
-                                <li><a id="CafCompleted" href="@Url.Action("Completed","TraCaf")">Completed Documents</a></li>
-                            </ul>
-			            </li>
-			            <li>
-				            <a id="CcfParent" href="#CCFMenu" data-toggle="collapse">
-					            <span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span> 
-					            <h5>Car Complaint</h5>
-				            </a>
-                            <ul class="childmenu collapse" id="CCFMenu" data-parent="#sidemenu">
-                                @if (Model.MainMenu == Enums.MenuList.PersonalDashboard)
-                                {
-                                    <li><a href="@Url.Action("PersonalDashboard","TraCcf",new { IsPersonalDashboard = true })">Open Documents</a></li>
-                                    <li><a href="@Url.Action("Completed","TraCcf",new { IsPersonalDashboard = true })">Completed Documents</a></li>
-                                }
-                                else
-                                {
-                                    <li><a href="@Url.Action("Index", "TraCcf")">Open Documents</a></li>
-                                    <li><a href="@Url.Action("Completed", "TraCcf")">Completed Documents</a></li>
-                                }
-                            </ul>
-			            </li>
-			            <li>
-				            <a id="CtfParent" href="#CtfMenu" data-toggle="collapse" >
-					            <span class="icon-col"><img src="~/Content/images/hammer-mini.png" alt=""></span> 
-					            <h5>Car Termination</h5>
-				            </a>
-                            <ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
-                                @if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
-                                {
-                                    <li><a id="CtfDashboard" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
-                                }
-                                <li><a id="CtfOpen" href="@Url.Action("Index", "TraCtf")">Open Documents</a></li>
-                                <li><a id="CtfCompleted" href="@Url.Action("Completed", "TraCtf")">Completed Documents</a></li>
-                            </ul>
-			            </li>
-			            <li>
-                            <a id="TempParent" href="#TempMenu" data-toggle="collapse">
-                                <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
-                                <h5>Temporary Car</h5>
-                            </a>
-                            <ul class="childmenu collapse" id="TempMenu" data-parent="#sidemenu">
-                                <li><a id="TempOpen" href="@Url.Action("Index", "TraTemporary")">Open Documents</a></li>
-                                <li><a id="TempCompleted" href="@Url.Action("Completed", "TraTemporary")">Completed Documents</a></li>
-                            </ul>
-			            </li>
-		            </ul>
-                    break;
-                case Enums.MenuList.PersonalDashboard:
-                    <h5 class="sb-title">Main Menu - Transaction</h5>
-		            <ul id="sidemenu" role="tablist">
-			            <li>
-                            <a id="CsfParent" href="@Url.Action("PersonalDashboard", "TraCsf")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>Car Selection</h5>
-                            </a>
-			            </li>
-			            <li>
-                            <a href="@Url.Action("PersonalDashboard", "TraCrf")">
-                                <span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span>
-                                <h5>Car Relocation</h5>
-                            </a>
-			            </li>
-			            <li>
-                            <a href="@Url.Action("PersonalDashboard","TraCaf")">
-                                <span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
-                                <h5>Car Accident</h5>
-                            </a>
-			            </li>
-			            <li>
-                            <a href="@Url.Action("PersonalDashboard","TraCcf",new { IsPersonalDashboard = true })">
-                                <span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span>
-                                <h5>Car Complaint</h5>
-                            </a>
-                        </li>
-			            <li>
-                            <a id="CtfParent" href="@Url.Action("PersonalDashboard", "TraCtf")">
-                                <span class="icon-col"><img src="~/Content/images/hammer-mini.png" alt=""></span>
-                                <h5>Car Termination</h5>
-                            </a>
-			            </li>
-			            <li>
-                            <a id="TempParent" href="@Url.Action("PersonalDashboard", "TraTemporary")">
-                                <span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
-                                <h5>Temporary Car</h5>
-                            </a>
-			            </li>
-		            </ul>
-                    break;
-                case Enums.MenuList.RptExecutiveSummary:
-                case Enums.MenuList.RptGs:
-                case Enums.MenuList.RptAutoGr:
-                    <h5 class="sb-title">Main Menu - Report</h5>
-		            <ul id="sidemenu" role="tablist">
-			            <li>
-                            <a id="CfmIdleParent" href="@Url.Action("Index", "RptCfmIdle")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>CFM Idle</h5>
-                            </a>
-			            </li>
-                        <li>
-                            <a id="KpiMonitoringParent" href="@Url.Action("Index", "RptKpiMonitoring")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>KPI Monitoring</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="VehicleParent" href="@Url.Action("Index", "RptVehicleOverall")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>Vehicle</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="FuelParent" href="@Url.Action("Index", "RptFuel")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>Fuel</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="PoParent" href="@Url.Action("Index","RptPo")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>PO</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="AutoGrParent" href="@Url.Action("Index","RptAutoGr")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>Auto GR</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="GsParent" href="@Url.Action("ReportGs","MstGs")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>GS</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="RptCcfParent" href="@Url.Action("Index","RptCcf")">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>CCF</h5>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="ExecutiveSummaryParent" href="#ExecSummMenu" data-toggle="collapse">
-                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
-                                <h5>Executive Summary</h5>
-                            </a>
-                            <ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
-                                <li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary All</a></li>
-                                <li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary By Sales & Marketing</a></li>
-                                <li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
-                                <li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></li>
-                                <li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
-                                <li><a id="Odometer" href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></li>
-                                <li><a id="LiterByFunction" href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></li>
-                                <li><a id="FuelCostByFunction" href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></li>
-                                <li><a id="LeaseCostByFunction" href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></li>
-                                <li><a id="SalesByRegion" href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></li>
-                                <li><a id="Accident" href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></li>
-                                <li><a id="AcVsOb" href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC Vs OB</a></li>
-                                <li><a id="SumPtdByFunction" href="@Url.Action("SumPtdByFunction", "RptExecutiveSummary")">Sum PTD By Function</a></li>
-                            </ul>
-                        </li>
-		            </ul>
-                    break;
+								<li><a id="CrfOpen" href="@Url.Action("Index","TraCrf")">Open Documents</a></li>
+								<li><a id="CrfCompleted" href="@Url.Action("Completed","TraCrf")">Completed Documents</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#CafMenu" id="CafParent" data-toggle="collapse">
+								<span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
+								<h5>Car Accident</h5>
+							</a>
+							<ul class="childmenu collapse" id="CafMenu" data-parent="#sidemenu">
 
-            }
-        }
-</aside>
-    <main>
-        @*<div class="content">*@
-        @RenderBody()
-        @*</div>*@
-        <footer>
-            <p>© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
-        </footer>
-        
-    </main>
 
-    <style type="text/css">
-        .collapse{display:none !important}
-        .collapse.show {
-            display: block !important;
-        }
-    </style>
-    <script type="text/javascript">
+								<li><a id="CafOpen" href="@Url.Action("Index", "TraCaf")">Open Documents</a></li>
+								<li><a id="CafCompleted" href="@Url.Action("Completed","TraCaf")">Completed Documents</a></li>
+							</ul>
+						</li>
+						<li>
+							<a id="CcfParent" href="#CCFMenu" data-toggle="collapse">
+								<span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span>
+								<h5>Car Complaint</h5>
+							</a>
+							<ul class="childmenu collapse" id="CCFMenu" data-parent="#sidemenu">
+								@if (Model.MainMenu == Enums.MenuList.PersonalDashboard)
+								{
+									<li><a href="@Url.Action("PersonalDashboard","TraCcf",new { IsPersonalDashboard = true })">Open Documents</a></li>
+									<li><a href="@Url.Action("Completed","TraCcf",new { IsPersonalDashboard = true })">Completed Documents</a></li>
+								}
+								else
+								{
+									<li><a href="@Url.Action("Index", "TraCcf")">Open Documents</a></li>
+									<li><a href="@Url.Action("Completed", "TraCcf")">Completed Documents</a></li>
+								}
+							</ul>
+						</li>
+						<li>
+							<a id="CtfParent" href="#CtfMenu" data-toggle="collapse">
+								<span class="icon-col"><img src="~/Content/images/hammer-mini.png" alt=""></span>
+								<h5>Car Termination</h5>
+							</a>
+							<ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								{
+									<li><a id="CtfDashboard" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
+								}
+								<li><a id="CtfOpen" href="@Url.Action("Index", "TraCtf")">Open Documents</a></li>
+								<li><a id="CtfCompleted" href="@Url.Action("Completed", "TraCtf")">Completed Documents</a></li>
+							</ul>
+						</li>
+						<li>
+							<a id="TempParent" href="#TempMenu" data-toggle="collapse">
+								<span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
+								<h5>Temporary Car</h5>
+							</a>
+							<ul class="childmenu collapse" id="TempMenu" data-parent="#sidemenu">
+								<li><a id="TempOpen" href="@Url.Action("Index", "TraTemporary")">Open Documents</a></li>
+								<li><a id="TempCompleted" href="@Url.Action("Completed", "TraTemporary")">Completed Documents</a></li>
+							</ul>
+						</li>
+					</ul>
+					break;
+				case Enums.MenuList.PersonalDashboard:
+					<h5 class="sb-title">Main Menu - Transaction</h5>
+					<ul id="sidemenu" role="tablist">
+						<li>
+							<a id="CsfParent" href="@Url.Action("PersonalDashboard", "TraCsf")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>Car Selection</h5>
+							</a>
+						</li>
+						<li>
+							<a href="@Url.Action("PersonalDashboard", "TraCrf")">
+								<span class="icon-col"><img src="~/Content/images/plang-mini.png" alt=""></span>
+								<h5>Car Relocation</h5>
+							</a>
+						</li>
+						<li>
+							<a href="@Url.Action("PersonalDashboard","TraCaf")">
+								<span class="icon-col"><img src="~/Content/images/ca-mini.png" alt=""></span>
+								<h5>Car Accident</h5>
+							</a>
+						</li>
+						<li>
+							<a href="@Url.Action("PersonalDashboard","TraCcf",new { IsPersonalDashboard = true })">
+								<span class="icon-col"><img src="~/Content/images/cc-mini.png" alt=""></span>
+								<h5>Car Complaint</h5>
+							</a>
+						</li>
+						<li>
+							<a id="CtfParent" href="@Url.Action("PersonalDashboard", "TraCtf")">
+								<span class="icon-col"><img src="~/Content/images/hammer-mini.png" alt=""></span>
+								<h5>Car Termination</h5>
+							</a>
+						</li>
+						<li>
+							<a id="TempParent" href="@Url.Action("PersonalDashboard", "TraTemporary")">
+								<span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span>
+								<h5>Temporary Car</h5>
+							</a>
+						</li>
+					</ul>
+					break;
+				case Enums.MenuList.RptExecutiveSummary:
+				case Enums.MenuList.RptGs:
+				case Enums.MenuList.RptAutoGr:
+					<h5 class="sb-title">Main Menu - Report</h5>
+					<ul id="sidemenu" role="tablist">
+						<li>
+							<a id="CfmIdleParent" href="@Url.Action("Index", "RptCfmIdle")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>CFM Idle</h5>
+							</a>
+						</li>
+						<li>
+							<a id="KpiMonitoringParent" href="@Url.Action("Index", "RptKpiMonitoring")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>KPI Monitoring</h5>
+							</a>
+						</li>
+						<li>
+							<a id="VehicleParent" href="@Url.Action("Index", "RptVehicleOverall")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>Vehicle</h5>
+							</a>
+						</li>
+						<li>
+							<a id="FuelParent" href="@Url.Action("Index", "RptFuel")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>Fuel</h5>
+							</a>
+						</li>
+						<li>
+							<a id="PoParent" href="@Url.Action("Index","RptPo")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>PO</h5>
+							</a>
+						</li>
+						<li>
+							<a id="AutoGrParent" href="@Url.Action("Index","RptAutoGr")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>Auto GR</h5>
+							</a>
+						</li>
+						<li>
+							<a id="GsParent" href="@Url.Action("ReportGs","MstGs")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>GS</h5>
+							</a>
+						</li>
+						<li>
+							<a id="RptCcfParent" href="@Url.Action("Index","RptCcf")">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>CCF</h5>
+							</a>
+						</li>
+						<li>
+							<a id="ExecutiveSummaryParent" href="#ExecSummMenu" data-toggle="collapse">
+								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<h5>Executive Summary</h5>
+							</a>
+							<ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
+								<li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary All</a></li>
+								<li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary By Sales & Marketing</a></li>
+								<li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
+								<li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></li>
+								<li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
+								<li><a id="Odometer" href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></li>
+								<li><a id="LiterByFunction" href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></li>
+								<li><a id="FuelCostByFunction" href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></li>
+								<li><a id="LeaseCostByFunction" href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></li>
+								<li><a id="SalesByRegion" href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></li>
+								<li><a id="Accident" href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></li>
+								<li><a id="AcVsOb" href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC Vs OB</a></li>
+								<li><a id="SumPtdByFunction" href="@Url.Action("SumPtdByFunction", "RptExecutiveSummary")">Sum PTD By Function</a></li>
+							</ul>
+						</li>
+					</ul>
+					break;
+
+			}
+		}
+	</aside>
+	<main>
+		@*<div class="content">*@
+		@RenderBody()
+		@*</div>*@
+		<footer>
+			<p>© 2017 Fleet Management System. PT HM Sampoerna, Tbk</p>
+		</footer>
+
+	</main>
+
+	<style type="text/css">
+		.collapse {
+			display: none !important
+		}
+
+			.collapse.show {
+				display: block !important;
+			}
+	</style>
+	<script type="text/javascript">
         //$(document).ready(function () {
         //    $('.dataTables').DataTable({
         //        "dom": 'lf<"table-overflow"t>pi',
@@ -363,7 +366,7 @@
 
         //    $('.dataTables_filter input').attr("placeholder", "Search Here");
         //})
-        </script>
-    @*@{ Html.RenderAction("MessageInfo", "Login");}*@    
+	</script>
+	@*@{ Html.RenderAction("MessageInfo", "Login");}*@
 </body>
 </html>

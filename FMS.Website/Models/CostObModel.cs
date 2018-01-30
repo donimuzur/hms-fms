@@ -20,6 +20,8 @@ namespace FMS.Website.Models
         public HttpPostedFileBase upload{ get; set; }
         public List<CostObItem> Details { get; set; }
         public List<CostOBUpload> UploadedData { get; set; }
+        public int TotalData { get; set; }
+        public int TotalDataPerPage { get; set; }
 
         public int CurrentPage { get; set; }
     }
@@ -42,7 +44,7 @@ namespace FMS.Website.Models
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
-
+       
         public SelectList ZoneList { get; set; }
         public SelectList RemarkList { get; set; }
         public SelectList ModelList { get; set; }
