@@ -566,11 +566,11 @@ namespace FMS.Website.Controllers
                         }
 
                         var GetEmployee = ListEmployee.Where(x => (x.EMPLOYEE_ID == null ? "" : x.EMPLOYEE_ID.ToUpper()) == (item.EmployeeID == null ? "" : item.EmployeeID.ToUpper())).FirstOrDefault();
-                        item.EmployeeName = GetEmployee.FORMAL_NAME ;
+                        item.EmployeeName = GetEmployee == null ? "" : GetEmployee.FORMAL_NAME ;
 
                         item.CostCenter = dataRow[3];
                         var GetFunction = ListFunction.Where(x => (x.CostCenter == null ? "" : x.CostCenter.ToUpper()) == (item.CostCenter == null ? "" : item.CostCenter.ToUpper())).FirstOrDefault();
-                        item.Function = GetFunction.FunctionName;
+                        item.Function = GetFunction == null ? "" : GetFunction.FunctionName;
 
                         item.Manufacturer = dataRow[4];
                         item.Models = dataRow[5];
@@ -606,8 +606,8 @@ namespace FMS.Website.Controllers
 
                         item.City = dataRow[23];
                         var GetLocation = listLocation.Where(x => (x.Basetown == null ? "" : x.Basetown.ToUpper()) == (item.City == null ? "" : item.City.ToUpper())).FirstOrDefault();
-                        item.Address = GetLocation.Address == null ? "" : GetLocation.Address.ToUpper();
-                        item.Regional = GetLocation.Region == null ? "" : GetLocation.Region.ToUpper();
+                        item.Address = GetLocation == null ? "" : GetLocation.Address.ToUpper();
+                        item.Regional = GetLocation== null ? "" : GetLocation.Region.ToUpper();
 
                         item.SupplyMethod = dataRow[24];
                         item.Restitution = dataRow[25] == "Yes" ? true : false;
@@ -655,8 +655,9 @@ namespace FMS.Website.Controllers
 
                         model.Add(item);
                     }
-                    catch (Exception)
+                    catch (Exception exp)
                     {
+                        var msg = exp.Message;
                     }
                 }
             }
