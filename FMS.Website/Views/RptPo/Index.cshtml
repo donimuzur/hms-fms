@@ -51,28 +51,6 @@
 											   OnFailure = "LoadingHide",
 										   }))
 			{
-				@*<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Period From</label>
-							<div class="input-group date" id="FromDate">
-								@Html.TextBoxFor(model => model.SearchView.PeriodFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "From", @id = "From_Date" })
-								<span class="input-group-addon btn btn-primary">
-									<i class="fa fa-calendar "></i>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label class="control-label">Period To</label>
-							<div class="input-group date" id="FromDate">
-								@Html.TextBoxFor(model => model.SearchView.PeriodTo, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "To", @id = "To_Date" })
-								<span class="input-group-addon btn btn-primary">
-									<i class="fa fa-calendar "></i>
-								</span>
-							</div>
-						</div>
-					</div>*@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Month From</label>
@@ -82,7 +60,6 @@
 				<div class="col-md-3">
 					<div class="form-group" id="xz">
 						<label for="">Year From</label>
-						@*						@Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })*@
 						<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
 					</div>
 				</div>
@@ -95,7 +72,6 @@
 				<div class="col-md-3">
 					<div class="form-group" id="xy">
 						<label for="">Year To</label>
-						@*@Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })*@
 						<input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />
 					</div>
 				</div>
