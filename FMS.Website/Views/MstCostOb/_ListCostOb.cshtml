@@ -1,52 +1,31 @@
 ﻿@using FMS.Core;
 @model FMS.Website.Models.CostObModel 
+
+<input type="hidden" id="returnTotalData" value="@Model.TotalData" />
+<input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
+<input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
 <table id="tbCostOb" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="min-width: 50px">Action</th>
-            <th>Year</th>
-            <th>Month</th>
-            <th>Body Type</th>
-            <th>Cost Center</th>
-            <th>Vehicle Type</th>
-            <th>Type</th>
-            <th>Function</th>
-            <th>Regional</th>
-            <th>Cost OB</th>
-            <th>Qty</th>
-            <th>Created By</th>
-            <th>Created Date</th>
-            <th>Modified By</th>
-            <th>Modified Date</th>
-            <th>Status</th>
+            <th style="min-width: 100px">Action</th>
+            <th style="min-width: 100px">Year</th>
+            <th style="min-width: 100px">Month</th>
+            <th style="min-width: 100px">Body Type</th>
+            <th style="min-width: 100px">Cost Center</th>
+            <th style="min-width: 100px">Vehicle Type</th>
+            <th style="min-width: 100px">Type</th>
+            <th style="min-width: 100px">Function</th>
+            <th style="min-width: 100px">Regional</th>
+            <th style="min-width: 100px">Cost OB</th>
+            <th style="min-width: 100px">Qty</th>
+            <th style="min-width: 100px">Created By</th>
+            <th style="min-width: 100px">Created Date</th>
+            <th style="min-width: 100px">Modified By</th>
+            <th style="min-width: 100px">Modified Date</th>
+            <th style="min-width: 100px">Status</th>
         </tr>
     </thead>
-    <thead class="filters">
-        <tr>
-            <th>
-                @*@if (Model.CurrentPageAccess.WriteAccess == true)
-                    {
-                        <a href="@Url.Action("Create", "MstCostOb")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a>
-                    }*@
-            </th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-        </tr>
-    </thead>
-    <tbody>
+    @*<tbody>
         @foreach (var data in Model.Details)
         {
             <tr>
@@ -85,5 +64,5 @@
             </tr>
         }
 
-    </tbody>
+    </tbody>*@
 </table>
