@@ -93,7 +93,7 @@ namespace FMS.Website.Controllers
             var model = new TraCrfIndexViewModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-            var data = _CRFBLL.GetList(CurrentUser);
+            var data = _CRFBLL.GetList(CurrentUser).OrderByDescending(x => x.CREATED_DATE).ToList();
             model.CurrentPageAccess = CurrentPageAccess;
             if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.Administrator)
             {
@@ -138,7 +138,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
-            var data = _CRFBLL.GetCompleted();
+            var data = _CRFBLL.GetCompleted().OrderByDescending(x => x.MODIFIED_DATE).ToList();
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
