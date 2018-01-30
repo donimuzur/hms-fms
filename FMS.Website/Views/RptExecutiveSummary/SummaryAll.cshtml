@@ -323,7 +323,10 @@
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
 	function formatNumber(x) {
-		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		if (x != null) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		return null;
 	}
 	function loadSummaryAllBoxes() {
 		var isByRegion = '@Model.IsByRegion';
@@ -472,7 +475,8 @@
                         color_chart.push("#21A4FF");
                     }
                 }
-
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // PolarArea chart
                 if ($('#polarArea').length) {
 
@@ -523,14 +527,22 @@
             			else
             				wtcs.push(response[i].WTC.TotalKM);
             		}
+
             		var totalBenefits = 0;
             		var totalWtcs = 0;
+					
             		for (var index in benefits) {
             			totalBenefits += benefits[index];
             		}
             		for (var index in wtcs) {
             			totalWtcs += wtcs[index];
             		}
+
+            		if (benefits == undefined || benefits == null || benefits.length == 0)
+            			benefits = [1];
+            		if (wtcs == undefined || wtcs == null || wtcs.length == 0)
+            			wtcs = [1];
+
             		$("#totalOdometerBenefit").text(formatNumber(totalBenefits));
             		$("#totalOdometerWtc").text(formatNumber(totalWtcs));
             		var ctx = document.getElementById("canvasBarOdometer");
@@ -600,6 +612,11 @@
             		for (var index in wtcs) {
             			totalWtcs += wtcs[index];
             		}
+            		if (benefits == undefined || benefits == null || benefits.length == 0)
+            			benefits = [1];
+            		if (wtcs == undefined || wtcs == null || wtcs.length == 0)
+            			wtcs = [1];
+
             		$("#totalNumberOfLiterByFunction").text(formatNumber(totalBenefits + totalWtcs));
             		$("#numberOfBenefitAndWtcLiters").text("Benefit: " + formatNumber(totalBenefits) + " - WTC: " + formatNumber(totalWtcs));
             		var ctx = document.getElementById("literByFunctionLine");
@@ -658,6 +675,7 @@
                 var color_chart = [];
                 var totalBenefits = 0;
                 var totalWtcs = 0;
+
                 for (var i = 0; i < response.length; i++) {
                 	if (response[i].VEHICLE_TYPE == 'Benefit') {
                 		totalBenefits += response[i].TOTAL_FUEL_COST;
@@ -665,6 +683,7 @@
                 		totalWtcs += response[i].TOTAL_FUEL_COST;
                 	}
                 }
+
                 $("#totalFuelCostByFunction2").text(formatNumber(totalBenefits + totalWtcs));
                 $("#numberOfBeneiftAndWtcFuelCostByFunction2").text("Benefit: " + formatNumber(totalBenefits) + " - WTC: " + formatNumber(totalWtcs));
                 for (var i = 0; i < response.length; i++) {
@@ -686,7 +705,8 @@
                     	color_chart.push("#DC143C");
                     }
                 }
-
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // Pie chart
                 if ($('#pieChart2').length) {
 
@@ -739,7 +759,10 @@
                     	color_chart.push("#DC143C");
                     }
                 }
+
                 $("#totalLeastCost2").text(formatNumber(totalLeaseCost));
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // PolarArea chart
                 if ($('#polarArea3').length) {
 
@@ -793,6 +816,9 @@
                     }
                 }
                 $("#totalSalesCostByRegion").text(formatNumber(totalSticks));
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
+
                 // Pie chart
                 if ($('#pieChart3').length) {
 
@@ -850,7 +876,8 @@
                         color_chart.push("#21A4FF");
                     }
                 }
-
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // Doughnut chart
                 if ($('#canvasDoughnut3').length) {
 
@@ -882,8 +909,7 @@
             type: 'POST',
             url: '@Url.Action("AcObDataVisual", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
-            success: function (response) {
-            	
+            success: function (response) { 	
                 var labels_chart = [];
                 var ob_chart = [];
                 var ac_chart = [];
@@ -896,13 +922,20 @@
                     totalCostOb += response[i].COST_OB;
                     totalActualCost += response[i].ACTUAL_COST;
             	}
-
+            	console.log("ob_chart");
+            	console.log(ob_chart);
+            	console.log("ac_chart");
+            	console.log(ac_chart);
+            	console.log("labels_chart");
+            	console.log(labels_chart);
             	var totalAcOb = totalCostOb + totalActualCost;
             	var percentOb = ((totalCostOb / totalAcOb) * 100).toFixed(2);
             	var percenAc = ((totalActualCost / totalAcOb) * 100).toFixed(2);
             	var newDataChart = [];
             	newDataChart.push(totalCostOb);
             	newDataChart.push(totalActualCost);
+            	if (totalAcOb == 0 && totalActualCost == 0)
+					newDataChart.push(1);
             	$("#percentAcOb").text("In percent : OB [" + percentOb + "%], AC [" + percenAc + "%]")
             	if ($('#mybarChart').length) {
                     var ctx = document.getElementById("mybarChart");
