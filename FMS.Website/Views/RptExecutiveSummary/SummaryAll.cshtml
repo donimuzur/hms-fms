@@ -2,43 +2,46 @@
 @model FMS.Website.Models.SummaryAllModel
 
 @{
-	ViewBag.Title = Model.TitleForm;
+    ViewBag.Title = Model.TitleForm;
 }
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
-<style>
-	.datepicker {
-		margin-left: 15px;
-	}
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+	<style>
+		.datepicker{
+			margin-left:15px;
+		}
+	</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <div class="opt-content clearfloat">
-	<h5 class="title-page">@ViewBag.Title</h5>
-	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-		<i class="fa fa-download"></i> Export
-	</a>
+    <h5 class="title-page">@ViewBag.Title</h5>
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
 </div>
 <section class="content">
-	<div class="wpanel">
-		<div class="row">
-			<div class="col-md-3">
-				<div class="form-group">
-					<label for="">Month</label>
-					@Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="form-group" id="xz">
-					<label for="">Year</label>
-					<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
-				</div>
-			</div>
-			<div class="clearfix"></div>
-			<div class="col-md-12">
-				<button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-				<button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-			</div>
-		</div>
-	</div>
+    <div class="wpanel">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Month</label>
+                    @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group" id="xz">
+                    <label for="">Year</label>
+					<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker"  />
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </div>
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('#SearchView_YearFrom').datepicker({
@@ -51,7 +54,7 @@
 		});
 	</script>
 
-	<div class="wpanel">
+    <div class="wpanel">
 		<ul class="nav nav-pills">
 			<li class="active"><a href="#visual1" data-toggle="tab">Visual 1</a></li>
 			<li><a href="#visual2" data-toggle="tab">Visual 2</a></li>
@@ -76,11 +79,11 @@
 						<div class="col-md-3">
 							<div class="block-card bblue odometer" style="background-color:#FBBC05">
 								<div class="title">
-									<h3 id="totalNumberOfVehicleWtc">0</h3>
+									<h3 style="text-align:left" id="totalNumberOfVehicleWtc">0</h3>
 								</div>
 								<div class="subtitle">
-									<p id="numberOfVehicleMarketingWtc">0 MARKETING</p>
-									<p id="numberOfVehicleSalesWtc">0 SALES</p>
+									<p style="text-align:left" id="numberOfVehicleMarketingWtc">0 MARKETING</p>
+									<p style="text-align:left" id="numberOfVehicleSalesWtc">0 SALES</p>
 								</div>
 							</div>
 						</div>
@@ -88,7 +91,7 @@
 							<div class="block-card bblue accident" style="background-color:#c70000">
 								<div class="title">
 									<h3 id="totalNumberOfVehicleAccident">0</h3>
-								</div>
+								</div>	
 								<div class="subtitle">
 									<p id="numberOfBenefitAccident">0 BENEFIT</p>
 									<p id="numberOfWTCSalesAccident">0 WTC</p>
@@ -104,7 +107,7 @@
 									<p id="numberOfVehicleManufacturer">0</p>
 									<p id="numberOfVehicleTotalOrder">0</p>
 								</div>
-
+								
 							</div>
 						</div>
 					</div>
@@ -299,21 +302,21 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>	
 			</div>
 		</div>
-	</div>
+    </div>
 </section>
 <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body">
-				<div align="center">
-					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="~/Scripts/js/Chart.bundle.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -571,7 +574,7 @@
             url: '@Url.Action("GetLiterByFunctionDataVisualDetail", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
             success: function (response) {
-
+       
             	if ($('#literByFunctionLine').length) {
             		var functions = [];
             		var benefits = [];
@@ -880,7 +883,7 @@
             url: '@Url.Action("AcObDataVisual", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
             success: function (response) {
-
+            	
                 var labels_chart = [];
                 var ob_chart = [];
                 var ac_chart = [];
