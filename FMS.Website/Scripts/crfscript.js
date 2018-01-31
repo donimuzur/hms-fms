@@ -86,6 +86,21 @@ function fillDropdownFromAjax(url, data, dropdown) {
     });
 }
 
+function fillDropdownAddress(url, data, textbox) {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        success: function (res) {
+            if (res.length > 0) {
+                for (var i = 0; i < res.length; i++) {
+                    $(textbox).val(res[i].Address);
+                }
+            }
+        }
+    });
+}
+
 function ToggleTemporary() {
     
     var expectedDate = $("#expectedToggle").val();
@@ -158,6 +173,7 @@ function changeCity(obj) {
     var cityParam = $(obj).val();
     if (cityParam != null) {
         fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        $("[name='Detail.DeliveryCity']").val(cityParam);
     }
 }
 

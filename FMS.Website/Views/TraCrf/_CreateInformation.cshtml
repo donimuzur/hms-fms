@@ -207,7 +207,7 @@
                                     <div class="form-group">
                                         <label class="control-label">New Office Location</label>
                                         @*@Html.TextBoxFor(model => model.Detail.LocationOfficeNew, new { @class = "form-control", @id="newOfficeLocation" })*@
-                                        @Html.DropDownListFor(model => model.Detail.LocationOfficeNew, Model.LocationNewList, "-- Please Select --", new { @class = "form-control", @id = "newOfficeLocation", @required = "required" })
+                                        @Html.DropDownListFor(model => model.Detail.LocationOfficeNew, Model.LocationNewList, "-- Please Select --", new { @class = "form-control", @id = "newOfficeLocation", @onchange = "changeLocation(this)", @required = "required" })
                                     </div>
                                 </div>
                                 
