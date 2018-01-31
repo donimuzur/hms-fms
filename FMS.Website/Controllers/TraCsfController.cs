@@ -229,7 +229,7 @@ namespace FMS.Website.Controllers
             try
             {
                 TraCsfDto item = new TraCsfDto();
-
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 item = AutoMapper.Mapper.Map<TraCsfDto>(model.Detail);
 
                 item.EMPLOYEE_ID_CREATOR = CurrentUser.EMPLOYEE_ID;
@@ -395,8 +395,8 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
-
                 dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
@@ -949,17 +949,35 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
-            var model = _employeeBLL.GetByID(Id);
+            var data = Id.Split('-');
+            var model = _employeeBLL.GetByID(data[0].Trim());
             return Json(model);
         }
 
         public JsonResult GetEmployeeList()
         {
-            var allEmployee = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var allEmployee = _employeeBLL
+                .GetEmployee()
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X=>X.DATA)
+                    .ToList();
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                allEmployee = _employeeBLL.GetEmployee().Where(x => x.GROUP_LEVEL > 0).ToList().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                allEmployee = _employeeBLL
+                    .GetEmployee()
+                    .Where(x => x.GROUP_LEVEL > 0)
+                    .ToList()
+                    .Select(x =>new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                    .ToList();
             }
 
             return Json(allEmployee, JsonRequestBehavior.AllowGet);
@@ -1884,7 +1902,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document CSF" : "Open Document CSF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            slDocument.MergeWorksheetCells(1, 1, 1, 18);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -1919,9 +1937,16 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Reason");
             slDocument.SetCellValue(iRow, 7, "Effective Date");
             slDocument.SetCellValue(iRow, 8, "Regional");
-            slDocument.SetCellValue(iRow, 9, "Coordinator");
-            slDocument.SetCellValue(iRow, 10, "Updated By");
-            slDocument.SetCellValue(iRow, 11, "Updated Date");
+            slDocument.SetCellValue(iRow, 9, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 10, "Manufacturer");
+            slDocument.SetCellValue(iRow, 11, "Model");
+            slDocument.SetCellValue(iRow, 12, "Series");
+            slDocument.SetCellValue(iRow, 13, "Body Type");
+            slDocument.SetCellValue(iRow, 14, "Vendor");
+            slDocument.SetCellValue(iRow, 15, "Colour");
+            slDocument.SetCellValue(iRow, 16, "Coordinator");
+            slDocument.SetCellValue(iRow, 17, "Updated By");
+            slDocument.SetCellValue(iRow, 18, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1932,7 +1957,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
 
             return slDocument;
 
@@ -1952,9 +1977,16 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.Reason);
                 slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.Regional);
-                slDocument.SetCellValue(iRow, 9, data.CreateBy);
-                slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 11, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.VehicleUsageName);
+                slDocument.SetCellValue(iRow, 10, data.Manufacturer);
+                slDocument.SetCellValue(iRow, 11, data.Models);
+                slDocument.SetCellValue(iRow, 12, data.Series);
+                slDocument.SetCellValue(iRow, 13, data.BodyType);
+                slDocument.SetCellValue(iRow, 14, data.VendorName);
+                slDocument.SetCellValue(iRow, 15, data.Color);
+                slDocument.SetCellValue(iRow, 16, data.CreateBy);
+                slDocument.SetCellValue(iRow, 17, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 18, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1966,8 +1998,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
+            slDocument.AutoFitColumn(1, 18);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 18, valueStyle);
 
             return slDocument;
         }

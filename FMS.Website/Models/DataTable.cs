@@ -157,6 +157,8 @@ namespace FMS.Website.Models
         public string EmailAddress { get; set; }
         public string FlexPoint { get; set; }
 
+        public bool IsActive { get; set; }
+        public int Year { get; set; }
     }
 
     /// <summary>

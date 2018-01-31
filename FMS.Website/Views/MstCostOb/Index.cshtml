@@ -14,24 +14,12 @@
     </a>
 </div>
 <section class="content">
-
     <div class="wpanel">
         <div class="row col-md-12">
-            @using (Ajax.BeginForm("ListCostOb", "MstCostOb",
-                new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    InsertionMode = InsertionMode.Replace,
-                    UpdateTargetId = "contenttable",
-                    OnComplete = "setupDataTables",
-                    OnBegin="OnBegin",
-                    OnFailure="OnError"
-                }))
-            {
                 <div class="col-md-3">
                     <div class="form-group">
                         <label class="control-label">Year</label>
-                        @Html.TextBoxFor(model => model.SearchView.Year, new { @class = "form-control", @placeholder = "From"})
+                        @Html.TextBoxFor(model => model.SearchView.Year, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -58,12 +46,11 @@
                         @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "ALL", new { @class = "form-control" })
                     </div>
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-12">
-                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-                </div>
-            }
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
         </div>
     </div>
     <div id="contenttable" class="wpanel">
@@ -83,6 +70,7 @@
     </div>
 </div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/thousand-separator.js"></script>
 <script type="text/javascript">
     function ExportXls() {
         var url = '@Url.Action("ExportMasterCostOb", "MstCostOb")';
@@ -90,32 +78,32 @@
         console.log(url);
         var objToUpload =
 			{
-				SearchView: {
-					Year: $('#SearchView_Year').val(),
-					Regional: $('#SearchView_Regional').val(),
-					Function: $('#SearchView_Function').val(),
-					VehicleType: $('#SearchView_VehicleType').val(),
-					Status: $('#SearchView_Status').val(),
-				}
+			    SearchView: {
+			        Year: $('#SearchView_Year').val(),
+			        Regional: $('#SearchView_Regional').val(),
+			        Function: $('#SearchView_Function').val(),
+			        VehicleType: $('#SearchView_VehicleType').val(),
+			        Status: $('#SearchView_Status').val(),
+			    }
 			};
         $.ajax({
-        	url: url,
-        	data: JSON.stringify(objToUpload),
-        	contentType: 'application/json; charset=utf-8',
-        	beforeSend: function () {
-        		$('#LoadingModal').show();
-        	},
-        	success: function (response, status, jqxhr) {
-        		console.log("DONE");
-        		window.location = getFileUrl + "?pathFile=" + response;
-        		$('#LoadingModal').hide();
-        	},
-        	error: function (jqhxr) {
-        		console.log("ERROR");
-        		console.log(jqhxr.responseText);
-        		$('#LoadingModal').hide();
-        	},
-        	type: 'POST'
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
         });
     }
 
@@ -132,28 +120,121 @@
         }
 
         setupDataTables();
-    });
-    function setupDataTables() {
-        // DataTable
-        var table = $('#tbCostOb').DataTable({
-            "sDom": 'lf<"table-overflow"t>pi',
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "info": true,
-            "bInfo": true,
-            "ordering": true
+
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbCostOb').DataTable();
+
+            table.ajax.reload();
         });
 
-        // Apply the search
-        table.columns().eq(0).each(function (colIdx) {
-            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                table
-                    .column(colIdx)
-                    .search(this.value)
-                    .draw();
-            });
+        $(document).on('click', '#btn-reset', function () {
+            $('#SearchView_Year').val('');
+            $("#SearchView_Regional").val('');
+            $("#SearchView_Function").val('');
+            $("#SearchView_VehicleType").val('');
+            $("#SearchView_Status").val('');
+            setupDataTables();
         });
-        $('#LoadingModal').hide();
+    });
+    function setupColumns() {
+        var columns = [
+            { "data": null, "orderable": false },
+            { "data": "Year", "orderable": true },
+            { "data": "MonthS", "orderable": true },
+            { "data": "Models", "orderable": false },
+            { "data": "CostCenter", "orderable": false },
+            { "data": "VehicleType", "orderable": false },
+            { "data": "Type", "orderable": false },
+            { "data": "FunctionName", "orderable": false },
+            { "data": "Regional", "orderable": false },
+            { "data": "ObCost", "orderable": false, "render": function (datum, type, record) {
+                return (datum) ? ThausandSeperator(datum, 2) : "";
+                } 
+            },
+            { "data": "Qty", "orderable": false , "render": function (datum, type, record) {
+                return (datum) ? datum : "";
+                }
+            },
+            { "data": "CreatedBy", "orderable": false },
+            {
+                "data": "CreatedDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { "data": "ModifiedBy", "orderable": false },
+            {
+                "data": "ModifiedDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { "data": "IsActive", "orderable": false }
+        ];
+
+        return columns;
     }
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbCostOb')) {
+            table = $('#tbCostOb').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+
+        table = $('#tbCostOb').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "rowCallback": function(row, data, index) {
+                actionHtml = '';
+
+                if (WriteAccess == true) {
+                    actionHtml = "<a href='MstCostOb/Edit?MstCostObId="+data.MstCostObId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action' ><img src='Content/images/pin.png' alt='' /></a>";
+                }
+                if (ReadAccess == true) {
+                    actionHtml = actionHtml + "<a href='MstCostOb/Detail?MstCostObId="+data.MstCostObId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action' ><img src='Content/images/search.png' alt='' /></a>";
+                }
+
+                var actionRow = $(row).find("td")[0];
+
+                $(actionRow).addClass('action');
+                $(actionRow).html(actionHtml);
+            },
+            "serverSide": true,
+            "stateSave": true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchObAjax", "MstCostOb")",
+                "type": "POST",
+                "data": function(d) {
+                    return $.extend({}, d, {
+                        "Year": $('#SearchView_Year').val(),
+                        "Regional": $('#SearchView_Regional').val(),
+                        "Function": $('#SearchView_Function').val(),
+                        "VehicleType": $('#SearchView_VehicleType').val(),
+                        "Status": $('#SearchView_Status').val(),
+                    });
+                }
+            }
+        });
+
+        table.on('preXhr', function(e, settings, data) {
+            $('#LoadingModal').show();
+        });
+
+        table.on('xhr', function(e, settings, data) {
+            $('#LoadingModal').hide();
+        });
+    }
+
 </script>

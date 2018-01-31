@@ -83,14 +83,14 @@ function selectVehicle(urlFunction) {
 function InitEmployee(url, urlsearch) {
     var options = {
         url: url,
-        getValue: "EMPLOYEE_ID",
+        getValue: "DATA",
 
-        template: {
-            type: "description",
-            fields: {
-                description: "FORMAL_NAME"
-            }
-        },
+        //template: {
+        //    type: "description",
+        //    fields: {
+        //        description: "FORMAL_NAME"
+        //    }
+        //},
 
         list: {
             match: {
@@ -107,7 +107,8 @@ function InitEmployee(url, urlsearch) {
 }
 
 function GetEmployee(urlGet, obj) {
-
+    console.log("url : " + urlGet);
+    console.log(obj);
     var Id = $(obj).val();
     $.ajax({
         url: urlGet,

@@ -49,6 +49,17 @@
         }
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 
     $(function () {
@@ -93,12 +104,14 @@
     });
 
     function uploadXmlFile() {
+        $('#LoadingModal').show();
         var postUrl = '@Url.Action("UploadFile", "MstLocationMapping")';
         var fileName = $('[name="upload"]').val().trim();
         var pos = fileName.lastIndexOf('.');
         var extension = (pos <= 0) ? '' : fileName.substring(pos);
         if (extension != '.xlsx' && extension != '.csv') {
             alert('Please browse a correct excel file to upload');
+            $('#LoadingModal').hide();
             return false;
         }
 
@@ -142,13 +155,17 @@
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].ErrorMessage;
                 }
-                if (error == '')
-                {
+                if (error == '') {
                     $('#btnSave').prop('disabled', false);
                 }
                 else {
                     $('#btnSave').prop('disabled', true);
                 }
+                console.log(error);
+                $('#LoadingModal').hide();
+            },
+            error: function () {
+                $('#LoadingModal').hide();
             }
         });
     };

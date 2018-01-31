@@ -63,7 +63,7 @@ namespace FMS.DAL.Services
         public List<MST_FLEET> GetFleetByParam(FleetParamInput input)
         {
             Expression<Func<MST_FLEET, bool>> queryFilterFleet = null;
-            queryFilterFleet = c => c.IS_ACTIVE == true;
+            queryFilterFleet = c => c.MST_FLEET_ID > 0;
             if (input != null)
             {
 
