@@ -492,24 +492,35 @@
         $('#empDate').on('dp.change', function (e) {
             var CurrentLogin = $('#CurrentLogin_EMPLOYEE_ID').val();
             var EmployeeId = $('#EmployeeId').val();
-            if ($('#EmployeeId').val() == $('#CurrentLogin_EMPLOYEE_ID').val()) {
+            var SetMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            if ($('#EmployeeId').val() == $('#CurrentLogin_EMPLOYEE_ID').val())
+            {
                 console.log("aaa");
                 var todayDate = new Date();
-                var empDateStr = $("#WithdDate").val().split("-");
-                var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-                var month = months.indexOf(empDateStr[1].toLowerCase());
-                var empDate = new Date(parseInt(empDateStr[2]), month, parseInt(empDateStr[0]));
-                today = new Date();
-                todayDate = todayDate.setHours(00, 00, 00, 00);
-                var datestr = today.getDate() + '-' + (months[today.getMonth()]) + '-' + today.getFullYear() + ' 00:00 ';
+                var WithDate = $("#WithdDate").val().split(' ');
+                if (WithDate.length > 0)
+                {
+                    console.log(WithDate[0]);
+                    var empDateStr = WithDate[0].split("-");
+                    var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+                    console.log(empDateStr[1].toLowerCase());
+                    var month = months.indexOf(empDateStr[1].toLowerCase());
+                    console.log(month);
+                    var empDate = new Date(parseInt(empDateStr[2]), month, parseInt(empDateStr[0]));
+                    console.log(empDate.toString());
+                }
+                var today = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
+                console.log(today.toString());
+                var datestr = today.getDate() + '-' + (SetMonths[today.getMonth()]) + '-' + today.getFullYear() + ' 00:00';
                 if (empDateStr == '') empDate = todayDate;
-                if (empDate < todayDate) {
-                    alert('Withdrawal Date must bigger or equal wih today');
+                if (empDate < today) {
+                    alert('Withdrawal Date must bigger or equal with today');
                     $("#WithdDate").val(datestr);
                     return false;
                 }
+
+
                 var effDateStr = $("#EffectiveDate").val().split("-");
-                var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 var month = months.indexOf(effDateStr[1].toLowerCase());
                 var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
                 if (empDate > effDate) {
