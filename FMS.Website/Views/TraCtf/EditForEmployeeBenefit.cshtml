@@ -619,7 +619,7 @@
     $('#empDate').on('dp.change', function (e) {
         var CurrentLogin = $('#CurrentLogin_EMPLOYEE_ID').val();
         var EmployeeId = $('#EmployeeId').val();
-        if (val != EmployeeId) {
+        if ($('#EmployeeId').val() == $('#CurrentLogin_EMPLOYEE_ID').val()) {
             var todayDate = new Date();
             var empDateStr = $("#WithdDate").val().split("-");
             var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

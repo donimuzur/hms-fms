@@ -2255,7 +2255,7 @@ namespace FMS.Website.Controllers
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == data).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper()) && x.EmployeeID == data).FirstOrDefault();
             }
             if (vehicle != null)
             {
