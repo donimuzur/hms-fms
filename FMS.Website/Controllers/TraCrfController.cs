@@ -32,13 +32,14 @@ namespace FMS.Website.Controllers
         private IFleetBLL _fleetBLL;
         private ITraCsfBLL _csfBLL;
         private ITraTemporaryBLL _tempBLL;
+        private ILocationMappingBLL _locationMappingBLL;
         //private IVendorBLL _vendorBLL;
 
         
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL,IVendorBLL vendorBLL,ITraCsfBLL csfBLL,ITraTemporaryBLL tempBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVendorBLL vendorBLL, ITraCsfBLL csfBLL, ITraTemporaryBLL tempBLL, ILocationMappingBLL LocationMappingBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -53,6 +54,7 @@ namespace FMS.Website.Controllers
             _settingList = _settingBLL.GetSetting();
             _csfBLL = csfBLL;
             _tempBLL = tempBLL;
+            _locationMappingBLL = LocationMappingBLL;
 
         }
 
@@ -638,6 +640,16 @@ namespace FMS.Website.Controllers
                 Text = x.Location,
                 Value = x.Location
             }).OrderBy(x=> x.Text).ToList();
+
+            return Json(data);
+        }
+
+        [HttpPost]
+        public JsonResult GetAddressByCity(string location)
+        {
+            var data = _locationMappingBLL.GetLocationMapping();
+
+            data = data.Where(x => x.Basetown == location).ToList();
 
             return Json(data);
         }

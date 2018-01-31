@@ -416,6 +416,20 @@
         $("#btnSubmit").trigger('click');
     }
 
+    function changeCity(obj) {
+        var cityParam = $(obj).val();
+        if (cityParam != null) {
+            fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+            $("[name='Detail.DeliveryCity']").val(cityParam);
+        }
+    }
+
+    function changeLocation(obj) {
+        var locationParam = $(obj).val();
+        if (locationParam != null) {
+            fillDropdownAddress('@Url.Action("GetAddressByCity","TraCrf")', { location: locationParam }, "[name='Detail.DeliveryAddress']");
+        }
+    }
 
     function cancel() {
         $("#cancelModal").modal('show');

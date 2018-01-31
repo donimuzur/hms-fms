@@ -57,7 +57,8 @@ namespace FMS.BLL.Fleet
             var db = _FleetService.GetFleetByParam(new FleetParamInput()
             {
                 EmployeeId = employeeId,
-                VehicleType = vehicleType
+                VehicleType = vehicleType,
+                Status = "True"
 
             }).FirstOrDefault();
             var data = Mapper.Map<FleetDto>(db);
