@@ -75,19 +75,18 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-
-        public void ExportToExcel(RptAutoGrModel model)
+        #region ----- Export Excel ------
+        public string ExportAutoGrReportGenerateReport(RptAutoGrModel model = null)
         {
-            
-
             string pathFile = "";
-
             pathFile = CreateXlsDashboard(model);
+            return pathFile;
 
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -96,8 +95,8 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
+        }
         private string CreateXlsDashboard(RptAutoGrModel model)
         {
             //get data
@@ -203,5 +202,6 @@ namespace FMS.Website.Controllers
 
             return slDocument;
         }
+        #endregion
     }
 }

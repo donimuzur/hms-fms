@@ -4,10 +4,7 @@
 
 
 <div class="opt-content clearfloat">
-    <h5 class="title-page">
-        @Html.Raw("Auto GR Report") 
-
-    </h5>
+    <h5 class="title-page">Auto GR Report</h5>
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@
@@ -20,32 +17,25 @@
 
 </div>
 <section class="content">
-    
-
     @using (Html.BeginForm("Index", "RptAutoGr", FormMethod.Post, new { @id = "ExportToXls" }))
     {
         <div class="wpanel">
             @Html.Partial("_FilterView")            
         </div>
     }
-
     <div class="wpanel">
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
                 <tr>
-
                     <th>PO Number</th>
                     <th>PO Line</th>
                     <th>GR Date</th>
                     <th>Police Number</th>
                     <th>Start Contract</th>
-
                     <th>End Contract</th>
                     <th>Termination Date</th>
                     <th>All Quantity</th>
                     <th>Quantity Remaining</th>
-
-
                 </tr>
             </thead>
             <thead class="filters">
@@ -59,78 +49,103 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-
-
                 </tr>
             </thead>
             <tbody>
                 @foreach (var data in Model.Details)
                 {
                     <tr>
-
                         <td>@Html.Raw(data.PoNumber)</td>
                         <td>@Html.Raw(data.PoLine)</td>
                         <td>@Html.Raw(data.GrDateString)</td>
                         <td>@Html.Raw(data.PoliceNumber)</td>
-
                         <td>@Html.Raw(data.StartContractString)</td>
-
-
                         <td>@Html.Raw(data.EndContractString)</td>
                         <td>@Html.Raw(data.TerminationDateString)</td>
                         <td>@Html.Raw(data.QtyAutoGr)</td>
                         <td>@Html.Raw(data.QtyRemaining)</td>
-
-
-
                     </tr>
                 }
-
             </tbody>
         </table>
     </div>
-
-    <script type="text/javascript">
+</section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/AutoGr.js"></script>
+<script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     function ExportXls() {
-        //$('#ExportToXls').submit();
-        $("#ExportToXls").attr("action", '@Url.Action("ExportToExcel", "RptAutoGr")');
-            $("#btnSubmit").trigger('click');
-        }
-
-
-        function filter() {
-            $("#ExportToXls").attr("action", '@Url.Action("Index", "RptAutoGr")');
-            $("#btnSubmit").trigger('click');
-        }
-
-        function reset() {
-            $(".form-control").val("");
-        }
-
-        $(function () {
-            // DataTable
-            var table = $('#tbEpaf').DataTable({
-                "dom": 'lf<"table-overflow"t>pi',
-                orderCellsTop: true
-            });
-
-            // Apply the search
-            table.columns().eq(0).each(function (colIdx) {
-                $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                    table
-                        .column(colIdx)
-                        .search(this.value)
-                        .draw();
-                });
-            });
+        console.log('Submitting');
+        var url = '@Url.Action("ExportAutoGrReportGenerateReport", "RptAutoGr")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptAutoGr")';
+        console.log(url);
+        var objToUpload =
+			{
+			    PeriodStart: $('#PeriodStart').val(),
+			    PeriodEnd: $('#PeriodEnd').val(),
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
         });
 
-    </script>
+    }
 
+    function filter() {
+        $('#LoadingModal').show();
+        $("#ExportToXls").attr("action", '@Url.Action("Index", "RptAutoGr")');
+        $("#btnSubmit").trigger('click');
+    }
 
+    function reset() {
+        $(".form-control").val("");
+    }
 
+    $(function () {
+        // DataTable
+        var table = $('#tbEpaf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
-
-
-
-</section>
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+</script>

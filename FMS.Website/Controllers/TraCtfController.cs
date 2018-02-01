@@ -405,6 +405,8 @@ namespace FMS.Website.Controllers
             var a = ModelState;
             try
             {
+                
+                Model.EmployeeId = Model.EmployeeId.Split('-')[0].Trim();
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                 Model.CreatedDate = DateTime.Now;
@@ -683,7 +685,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -750,6 +752,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.EmployeeId = model.EmployeeId.Split('-')[0].Trim();
                 if (model.BuyCostTotalStr != null)
                 {
                     model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
@@ -830,7 +833,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             //if user want to edit doc
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -1058,6 +1061,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -1153,8 +1157,10 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -2064,6 +2070,11 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
+                    if (dataRow[0] == "EMPLOYEE ID")
+                    {
+                        continue;
+                    }
+                    
                     var item = new CtfItem();
                     try
                     {
@@ -2222,8 +2233,9 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
+            var data = Id.Split('-')[0].Trim();
             var model = new CtfItem();
-            var employee = _employeeBLL.GetByID(Id);
+            var employee = _employeeBLL.GetByID(data);
             if (employee != null)
             {
                 model.EmployeeName = employee.FORMAL_NAME;
@@ -2239,11 +2251,11 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.EmployeeID == data).FirstOrDefault();
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper()) && x.EmployeeID == data).FirstOrDefault();
             }
             if (vehicle != null)
             {
@@ -2262,7 +2274,16 @@ namespace FMS.Website.Controllers
         }
         public JsonResult GetEmployeeList()
         {
-            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var model = _employeeBLL
+                .GetEmployee()
+                .Where(x => x.IS_ACTIVE)
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                .ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -2283,11 +2304,11 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.PoliceNumber == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (Id == null ? "" : Id.ToUpper())).FirstOrDefault();
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.PoliceNumber == Id && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper() ) == (Id == null ? "" : Id.ToUpper()) && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).FirstOrDefault();
             }
             if (vehicle != null)
             {
@@ -2319,12 +2340,12 @@ namespace FMS.Website.Controllers
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper())).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.PoliceNumber != null).Select(x => new  {  x.PoliceNumber,  x.VehicleType}).ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper()) && x.PoliceNumber != null ).Select(x => new {x.PoliceNumber , x.VehicleType}).ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
         }
@@ -2346,6 +2367,10 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    if (dataRow[0] == "EMPLOYEE ID")
                     {
                         continue;
                     }

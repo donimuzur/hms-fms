@@ -6,114 +6,14 @@
 }
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-<style>
-	.datepicker{
-		margin-left:15px;
-	}
-</style>
+	<style>
+		.datepicker{
+			margin-left:15px;
+		}
+	</style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-
-<script>
-	function loadSummaryAllBoxes() {
-		var isByRegion = '@Model.IsByRegion';
-		$.ajax({
-			type: 'POST',
-			url: '@Url.Action("GetVehicleDataVisual", "RptExecutiveSummary")',
-			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
-			success: function (response) {
-				var total = 0;
-				var novBenefit = 0;
-				var novWTC = 0;
-				for (var i = 0; i < response.length; i++) {
-
-					if (response[i].VEHICLE_TYPE == 'BENEFIT') {
-						novBenefit += response[i].NO_OF_VEHICLE;
-					}
-					else if (response[i].VEHICLE_TYPE == 'WTC') {
-						novWTC += response[i].NO_OF_VEHICLE;
-					}
-					total += response[i].NO_OF_VEHICLE;
-				}
-				console.log("GetVehicleDataVisual");
-				console.log(response);
-				$("#totalNumberOfVehicle").text(total);
-				$("#numberOfVehicleBenefit").text(novBenefit + " BENEFIT");
-				$("#numberOfVehicleWTC").text(novWTC + " WTC");
-			}
-	});
-	$.ajax({
-			type: 'POST',
-			url: '@Url.Action("GetVehicleWtcDataVisual", "RptExecutiveSummary")',
-			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
-			success: function (response) {
-				var total = 0;
-				var novMarketing = 0;
-				var novSales = 0;
-				for (var i = 0; i < response.length; i++) {
-
-					if (response[i].FUNCTION == 'MARKETING') {
-						novMarketing += response[i].NO_OF_VEHICLE;
-					}
-					else if (response[i].FUNCTION == 'SALES') {
-						novSales += response[i].NO_OF_VEHICLE;
-					}
-					total += response[i].NO_OF_VEHICLE;
-				}
-				console.log("GetVehicleWtcDataVisual");
-				console.log(response);
-				$("#totalNumberOfVehicleWtc").text(total);
-				$("#numberOfVehicleMarketingWtc").text(novMarketing + " MARKETING");
-				$("#numberOfVehicleSalesWtc").text(novSales + " SALES");
-			}
-		});
-		$.ajax({
-		type: 'POST',
-		url: '@Url.Action("AccidentDataVisual", "RptExecutiveSummary")',
-		data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
-		success: function (response) {
-			console.log("AccidentDataVisual");
-			console.log(response);
-			var total = 0;
-			var countBenefit = 0;
-			var countWTC = 0;
-			for (var i = 0; i < response.length; i++) {
-
-				if (response[i].VEHICLE_TYPE == 'WTC') {
-					countWTC += response[i].ACCIDENT_COUNT;
-				}
-				else if (response[i].VEHICLE_TYPE == 'BENEFIT') {
-					countBenefit += response[i].ACCIDENT_COUNT;
-				}
-				total += response[i].ACCIDENT_COUNT;
-			}
-			$("#totalNumberOfVehicleAccident").text(total);
-			$("#numberOfBenefitAccident").text(countBenefit + " BENEFIT");
-			$("#numberOfWTCSalesAccident").text(countWTC + " WTC");
-		}
-	});
-		 $.ajax({
-            type: 'POST',
-            url: '@Url.Action("GetVehicleMakeDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
-			success: function (response) {
-				console.log("GetVehicleMakeDataVisual");
-				console.log(response);
-				var totalManufacture = response.FirstData.NoOfVehicle;
-				var manufacturerName = response.FirstData.Manufacturer;
-				var totalOrder = response.TotalAll;
-				var totalAll = totalManufacture + totalOrder;
-				$("#totalNumberOfVehicleMake").text(totalAll);
-				$("#numberOfVehicleManufacturer").text(totalManufacture + " " + manufacturerName.toString().toUpperCase());
-				$("#numberOfVehicleTotalOrder").text(totalOrder + " OTHERS");
-            }
-        });
-
-}
-
-	loadSummaryAllBoxes();
-</script>
 <div class="opt-content clearfloat">
     <h5 class="title-page">@ViewBag.Title</h5>
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
@@ -121,12 +21,6 @@
     </a>
 </div>
 <section class="content">
-    @using (Html.BeginForm(Model.TitleExport, "RptExecutiveSummary", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-    }
-
     <div class="wpanel">
         <div class="row">
             <div class="col-md-3">
@@ -161,147 +55,389 @@
 	</script>
 
     <div class="wpanel">
-        @*<table id="tbSummary" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Menu</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><a href="@Url.Action("Index", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Number Of Vehicle</a></td></tr>
-                <tr><td><a href="@Url.Action("VehicleWtc", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Number Of Vehicle WTC</a></td></tr>
-                <tr><td><a href="@Url.Action("VehicleMake", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Number Of Vehicle Make</a></td></tr>
-                <tr><td><a href="@Url.Action("Odometer", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Odometer</a></td></tr>
-                <tr><td><a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Liter By Function</a></td></tr>
-                <tr><td><a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Fuel Cost By Function</a></td></tr>
-                <tr><td><a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Lease Cost By Function</a></td></tr>
-                <tr><td><a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Sales By Region</a></td></tr>
-                <tr><td><a href="@Url.Action("Accident", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">Accident</a></td></tr>
-                <tr><td><a href="@Url.Action("AcVsOb", "RptExecutiveSummary")" data-placement="top" title="Detail" class="action">AC Vs OB</a></td></tr>
-            </tbody>
-        </table>*@
-        <!-- summary grid -->
-        <div class="chart-summary">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="block-card bblue">
-                        <div class="title">
-							<h3 id="totalNumberOfVehicle">0</h3>
-                        </div>
-                        <div class="subtitle">
-                            <p id="numberOfVehicleBenefit">0 BENEFIT</p>
-                            <p id="numberOfVehicleWTC">0 WTC</p>
-                        </div>
-                    </div>
-                </div>
-				
-                <div class="col-md-3">
-                    <div class="block-card bblue odometer">
-                        <div class="title">
-                            <h3 id="totalNumberOfVehicleWtc">0</h3>
-                        </div>
-                        <div class="subtitle">
-                            <p id="numberOfVehicleMarketingWtc">0 MARKETING</p>
-                            <p id="numberOfVehicleSalesWtc">0 SALES</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="block-card bblue accident">
-                        <div class="title">
-                            <h3 id="totalNumberOfVehicleMake">0</h3>
-                        </div>
-                        <div class="subtitle">
-                            <p id="numberOfVehicleManufacturer">0</p>
-                            <p id="numberOfVehicleTotalOrder">0</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="block-card bblue key">
-                        <div class="title">
-                            <h3 id="totalNumberOfVehicleAccident">0</h3>
-                        </div>
-                        <div class="subtitle">
-                            <p id="numberOfBenefitAccident">0 BENEFIT</p>
-                            <p id="numberOfWTCSalesAccident">0 WTC</p>
-                        </div>
-                    </div>
-                </div>
-			</div>
-			<div class="row">
-				@*<div class="col-md-2"></div>*@
-				<div class="col-md-6">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></h5>
-							<canvas id="canvasBarOdometer"></canvas>
+		<ul class="nav nav-pills">
+			<li class="active"><a href="#visual1" data-toggle="tab">Visual 1</a></li>
+			<li><a href="#visual2" data-toggle="tab">Visual 2</a></li>
+		</ul>
+		<br />
+		<div class="tab-content">
+			<div id="visual2" class="tab-pane fade">
+				<div class="chart-summary">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="block-card bblue">
+								<div class="title">
+									<h3 id="totalNumberOfVehicle">0</h3>
+								</div>
+								<div class="subtitle">
+									<p id="numberOfVehicleBenefit">0 BENEFIT</p>
+									<p id="numberOfVehicleWTC">0 WTC</p>
+								</div>
+							</div>
 						</div>
-						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></h5>
-							<canvas id="literByFunctionLine"></canvas>
+
+						<div class="col-md-3">
+							<div class="block-card bblue odometer" style="background-color:#FBBC05">
+								<div class="title">
+									<h3 style="text-align:left" id="totalNumberOfVehicleWtc">0</h3>
+								</div>
+								<div class="subtitle">
+									<p style="text-align:left" id="numberOfVehicleMarketingWtc">0 MARKETING</p>
+									<p style="text-align:left" id="numberOfVehicleSalesWtc">0 SALES</p>
+								</div>
+							</div>
 						</div>
-						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+						<div class="col-md-3">
+							<div class="block-card bblue accident" style="background-color:#c70000">
+								<div class="title">
+									<h3 id="totalNumberOfVehicleAccident">0</h3>
+								</div>	
+								<div class="subtitle">
+									<p id="numberOfBenefitAccident">0 BENEFIT</p>
+									<p id="numberOfWTCSalesAccident">0 WTC</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="block-card bblue key" style="background-color:#34a853">
+								<div class="title">
+									<h3 id="totalNumberOfVehicleMake">0</h3>
+								</div>
+								<div class="subtitle">
+									<p id="numberOfVehicleManufacturer">0</p>
+									<p id="numberOfVehicleTotalOrder">0</p>
+								</div>
+								
+							</div>
+						</div>
 					</div>
-				</div>
-				@*<div class="col-md-2"></div>*@
+					<div class="row">
+						@*<div class="col-md-2"></div>*@
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></h5>
+									<canvas id="canvasBarOdometer"></canvas>
+								</div>
+								<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></h5>
+									<canvas id="literByFunctionLine"></canvas>
+								</div>
+								<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+							</div>
+						</div>
+						@*<div class="col-md-2"></div>*@
 
 
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></h5>
+									<canvas id="pieChart2"></canvas>
+								</div>
+								<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></h5>
+									<canvas id="polarArea3"></canvas>
+								</div>
+								<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></h5>
+									<canvas id="pieChart3"></canvas>
+								</div>
+								<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title"><i class="fa fa-bullseye"></i> AC Vs OB</h5>
+									<canvas id="mybarChart"></canvas>
+								</div>
+								<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title"><i class="fa fa-car"></i> <a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></h5>
-							<canvas id="pieChart2"></canvas>
+			<div id="visual1" class="tab-pane fade in active">
+				<div class="content chart-summary">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="row nov">
+								<div class="col-md-4">
+									<img src="~/Content/img/cars.png" alt="">
+								</div>
+								<div class="col-md-8">
+									<h5>Number of Vehicle <span>[unit]</span></h5>
+									<h2 class="number" id="totalNumberOfVehicle2">0</h2>
+									<span class="note" id="numberOfVehicleBenefitAndWtc2">Benefit: 0 - WTC: 0</span>
+								</div>
+							</div>
 						</div>
-						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></h5>
-							<canvas id="polarArea3"></canvas>
+						<div class="col-md-4">
+							<div class="row nov">
+								<div class="col-md-4">
+									<img src="~/Content/img/cars.png" alt="">
+								</div>
+								<div class="col-md-8">
+									<h5>Number of Vehicle WTC <span>[unit]</span></h5>
+									<h2 class="number" id="totalNumberOfVehicleWtc2">0</h2>
+									<span class="note" id="numberOfVehicleMarketingWtcAndSalesWtc2">Marketing: 0 - Sales: 0</span>
+								</div>
+							</div>
 						</div>
-						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title"><i class="fa fa-balance-scale"></i> <a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></h5>
-							<canvas id="pieChart3"></canvas>
+						<div class="col-md-4">
+							<div class="row nov">
+								<div class="col-md-4">
+									<img src="~/Content/img/cars.png" alt="">
+								</div>
+								<div class="col-md-8">
+									<h5>Number of Vehicle Make <span>[unit]</span></h5>
+									<h2 class="number" id="totalNumberOfVehicleMake2">0</h2>
+								</div>
+							</div>
 						</div>
-						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
+
+						<div class="col-md-8">
+							<div class="row">
+								<div class="col-md-5 opac">
+									<canvas id="pieChartAcOB"></canvas>
+								</div>
+								<div class="col-md-7 opac flex vcenter">
+									<div>
+										<h5>Operational Budget <span>v</span> Actual Cost</h5>
+										<span class="note" id="percentAcOb">In percent : OB [0%], AC [0%]</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row odometer">
+								<div class="col">
+									<img src="~/Content/img/odometers.png" alt="">
+								</div>
+								<div class="col-md-12">
+									<h5>Odometer</h5>
+									<h4>Benefit <span class="number" id="totalOdometerBenefit">50</span> - WTC <span class="number" id="totalOdometerWtc">30</span></h4>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="row nov">
+										<div class="col-md-4">
+											<img src="~/Content/img/liter.png" alt="">
+										</div>
+										<div class="col-md-8">
+											<h5>Liter by Function</h5>
+											<h2 class="number" id="totalNumberOfLiterByFunction">00</h2>
+											<span class="note" id="numberOfBenefitAndWtcLiters">Benefit: 0 - WTC: 0</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="row nov">
+										<div class="col-md-4">
+											<img src="~/Content/img/fuel.png" alt="">
+										</div>
+										<div class="col-md-8">
+											<h5>Fuel Cost by Function</h5>
+											<h2 class="number" id="totalFuelCostByFunction2">0</h2>
+											<span class="note" id="numberOfBeneiftAndWtcFuelCostByFunction2">Benefit: 0 - WTC: 0</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="row nov">
+										<div class="col-md-4">
+											<img src="~/Content/img/region.png" alt="">
+										</div>
+										<div class="col-md-8">
+											<h5>Sales Cost by Region</h5>
+											<h2 class="number" id="totalSalesCostByRegion">0</h2>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="row nov">
+										<div class="col-md-4">
+											<img src="~/Content/img/lease.png" alt="">
+										</div>
+										<div class="col-md-8">
+											<h5>Lease Cost by Function</h5>
+											<h2 class="number" id="totalLeastCost2">0</h2>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row odometer">
+								<div class="col">
+									<img src="~/Content/img/accidents.png" alt="">
+								</div>
+								<div class="col-md-12">
+									<h5>Accident</h5>
+									<h4>Benefit <span class="number" id="#numberOfBenefitAccident2">0</span> - WTC <span class="number" id="#numberOfWTCSalesAccident2">0</span></h4>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
+				</div>	
 			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title"><i class="fa fa-bullseye"></i> AC Vs OB</h5>
-							<canvas id="mybarChart"></canvas>
-						</div>
-						<div class="card-footer"><i class="fa fa-clock-o"></i> Updated 2 Sept 2017, 01:22 am</div>
-					</div>
-				</div>
-			</div>
-        </div>
-        <!-- end summary grid -->
+		</div>
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/js/Chart.bundle.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
+	function formatNumber(x) {
+		if (x != null) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		return null;
+	}
+	function loadSummaryAllBoxes() {
+		var isByRegion = '@Model.IsByRegion';
+		$.ajax({
+			type: 'POST',
+			url: '@Url.Action("GetVehicleDataVisual", "RptExecutiveSummary")',
+			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
+			success: function (response) {
+				var total = 0;
+				var novBenefit = 0;
+				var novWTC = 0;
+				for (var i = 0; i < response.length; i++) {
+
+					if (response[i].VEHICLE_TYPE == 'BENEFIT') {
+						novBenefit += response[i].NO_OF_VEHICLE;
+					}
+					else if (response[i].VEHICLE_TYPE == 'WTC') {
+						novWTC += response[i].NO_OF_VEHICLE;
+					}
+					total += response[i].NO_OF_VEHICLE;
+				}
+				console.log("GetVehicleDataVisual");
+				console.log(response);
+				$("#totalNumberOfVehicle").text(formatNumber(total));
+				$("#numberOfVehicleBenefit").text(formatNumber(novBenefit) + " BENEFIT");
+				$("#numberOfVehicleWTC").text(formatNumber(novWTC) + " WTC");
+				$("#totalNumberOfVehicle2").text(formatNumber(total));
+				$("#numberOfVehicleBenefitAndWTC2").text("Benefit: " + formatNumber(novBenefit) + " - WTC: " + formatNumber(novWTC));
+			}
+		});
+		$.ajax({
+			type: 'POST',
+			url: '@Url.Action("GetVehicleWtcDataVisual", "RptExecutiveSummary")',
+			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
+			success: function (response) {
+				var total = 0;
+				var novMarketing = 0;
+				var novSales = 0;
+				for (var i = 0; i < response.length; i++) {
+
+					if (response[i].FUNCTION == 'MARKETING') {
+						novMarketing += response[i].NO_OF_VEHICLE;
+					}
+					else if (response[i].FUNCTION == 'SALES') {
+						novSales += response[i].NO_OF_VEHICLE;
+					}
+					total += response[i].NO_OF_VEHICLE;
+				}
+				console.log("GetVehicleWtcDataVisual");
+				console.log(response);
+				$("#totalNumberOfVehicleWtc").text(formatNumber(total));
+				$("#numberOfVehicleMarketingWtc").text(formatNumber(novMarketing) + " MARKETING");
+				$("#numberOfVehicleSalesWtc").text(formatNumber(novSales) + " SALES");
+				$("#totalNumberOfVehicleWtc2").text(formatNumber(total));
+				$("#numberOfVehicleMarketingWtcAndSalesWtc").text("Marketing: " + formatNumber(novMarketing) + " - Sales: " + formatNumber(novSales));
+			}
+		});
+		$.ajax({
+			type: 'POST',
+			url: '@Url.Action("AccidentDataVisual", "RptExecutiveSummary")',
+			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion  },
+			success: function (response) {
+				console.log("AccidentDataVisual");
+				console.log(response);
+				var total = 0;
+				var countBenefit = 0;
+				var countWTC = 0;
+				for (var i = 0; i < response.length; i++) {
+
+					if (response[i].VEHICLE_TYPE == 'WTC') {
+						countWTC += response[i].ACCIDENT_COUNT;
+					}
+					else if (response[i].VEHICLE_TYPE == 'BENEFIT') {
+						countBenefit += response[i].ACCIDENT_COUNT;
+					}
+					total += response[i].ACCIDENT_COUNT;
+				}
+				$("#totalNumberOfVehicleAccident").text(formatNumber(total));
+				$("#numberOfBenefitAccident").text(formatNumber(countBenefit) + " BENEFIT");
+				$("#numberOfWTCSalesAccident").text(formatNumber(countWTC) + " WTC");
+				$("#numberOfBenefitAccident2").text(formatNumber(countBenefit));
+				$("#numberOfWTCSalesAccident2").text(formatNumber(countWTC));
+
+			}
+		});
+		$.ajax({
+			type: 'POST',
+			url: '@Url.Action("GetVehicleMakeDataVisual", "RptExecutiveSummary")',
+			data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
+			success: function (response) {
+				console.log("GetVehicleMakeDataVisual");
+				console.log(response);
+				var totalManufacture = response.FirstData.NoOfVehicle;
+				var manufacturerName = response.FirstData.Manufacturer;
+				var totalOrder = response.TotalAll;
+				var totalAll = totalManufacture + totalOrder;
+				$("#totalNumberOfVehicleMake").text(formatNumber(totalAll));
+				$("#numberOfVehicleManufacturer").text(formatNumber(totalManufacture) + " " + (!manufacturerName ? "" : manufacturerName.toString().toUpperCase()));
+				$("#numberOfVehicleTotalOrder").text(formatNumber(totalOrder) + " OTHERS");
+				$("#totalNumberOfVehicleMake2").text(formatNumber(totalAll));
+			}
+		});
+
+	}
+
+	$(document).ready(function () {
+		loadSummaryAllBoxes();
+	});
+
     function init_charts() {
+        $('#LoadingModal').show();
 
         var isByRegion = '@Model.IsByRegion';
 
@@ -339,7 +475,8 @@
                         color_chart.push("#21A4FF");
                     }
                 }
-
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // PolarArea chart
                 if ($('#polarArea').length) {
 
@@ -359,9 +496,14 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
-		
+
         $.ajax({
             type: 'POST',
             url: '@Url.Action("GetOdometerDataVisualDetail", "RptExecutiveSummary")',
@@ -385,6 +527,24 @@
             			else
             				wtcs.push(response[i].WTC.TotalKM);
             		}
+
+            		var totalBenefits = 0;
+            		var totalWtcs = 0;
+					
+            		for (var index in benefits) {
+            			totalBenefits += benefits[index];
+            		}
+            		for (var index in wtcs) {
+            			totalWtcs += wtcs[index];
+            		}
+
+            		if (benefits == undefined || benefits == null || benefits.length == 0)
+            			benefits = [1];
+            		if (wtcs == undefined || wtcs == null || wtcs.length == 0)
+            			wtcs = [1];
+
+            		$("#totalOdometerBenefit").text(formatNumber(totalBenefits));
+            		$("#totalOdometerWtc").text(formatNumber(totalWtcs));
             		var ctx = document.getElementById("canvasBarOdometer");
             		var mybarChart = new Chart(ctx, {
             			type: 'bar',
@@ -413,6 +573,11 @@
             		});
 
             	}
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -421,8 +586,7 @@
             url: '@Url.Action("GetLiterByFunctionDataVisualDetail", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
             success: function (response) {
-            	console.log("Get liter by func response");
-            	console.log(response);
+       
             	if ($('#literByFunctionLine').length) {
             		var functions = [];
             		var benefits = [];
@@ -440,6 +604,21 @@
             			else
             				wtcs.push(response[i].WTC.TotalLiter);
             		}
+            		var totalBenefits = 0;
+            		var totalWtcs = 0;
+            		for (var index in benefits) {
+            			totalBenefits += benefits[index];
+            		}
+            		for (var index in wtcs) {
+            			totalWtcs += wtcs[index];
+            		}
+            		if (benefits == undefined || benefits == null || benefits.length == 0)
+            			benefits = [1];
+            		if (wtcs == undefined || wtcs == null || wtcs.length == 0)
+            			wtcs = [1];
+
+            		$("#totalNumberOfLiterByFunction").text(formatNumber(totalBenefits + totalWtcs));
+            		$("#numberOfBenefitAndWtcLiters").text("Benefit: " + formatNumber(totalBenefits) + " - WTC: " + formatNumber(totalWtcs));
             		var ctx = document.getElementById("literByFunctionLine");
             		var mybarChart = new Chart(ctx, {
             			type: 'line',
@@ -479,6 +658,11 @@
             		});
 
             	}
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
         $.ajax({
@@ -486,9 +670,22 @@
             url: '@Url.Action("GetFuelCostByFunctionDataVisual", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
             success: function (response) {
-                var labels_chart = [];
+            	var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
+                var totalBenefits = 0;
+                var totalWtcs = 0;
+
+                for (var i = 0; i < response.length; i++) {
+                	if (response[i].VEHICLE_TYPE == 'Benefit') {
+                		totalBenefits += response[i].TOTAL_FUEL_COST;
+                	} else if (response[i].VEHICLE_TYPE == 'WTC') {
+                		totalWtcs += response[i].TOTAL_FUEL_COST;
+                	}
+                }
+
+                $("#totalFuelCostByFunction2").text(formatNumber(totalBenefits + totalWtcs));
+                $("#numberOfBeneiftAndWtcFuelCostByFunction2").text("Benefit: " + formatNumber(totalBenefits) + " - WTC: " + formatNumber(totalWtcs));
                 for (var i = 0; i < response.length; i++) {
                     if (isByRegion === 'True') {
                         labels_chart.push(response[i].FUNCTION);
@@ -508,7 +705,8 @@
                     	color_chart.push("#DC143C");
                     }
                 }
-
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // Pie chart
                 if ($('#pieChart2').length) {
 
@@ -528,6 +726,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -539,8 +742,9 @@
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
-
+                var totalLeaseCost = 0;
                 for (var i = 0; i < response.length; i++) {
+                	totalLeaseCost += response[i].TOTAL_LEASE_COST;
                     labels_chart.push(response[i].FUNCTION);
                     value_chart.push(response[i].TOTAL_LEASE_COST);
                     if (i == 0) {
@@ -556,6 +760,9 @@
                     }
                 }
 
+                $("#totalLeastCost2").text(formatNumber(totalLeaseCost));
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // PolarArea chart
                 if ($('#polarArea3').length) {
 
@@ -575,6 +782,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -586,8 +798,9 @@
                 var labels_chart = [];
                 var value_chart = [];
                 var color_chart = [];
-
+                var totalSticks = 0;
                 for (var i = 0; i < response.length; i++) {
+                	totalSticks += response[i].STICK;
                     labels_chart.push(response[i].REGION);
                     value_chart.push(response[i].STICK);
                     if (i == 0) {
@@ -602,6 +815,9 @@
                     	color_chart.push("#DC143C");
                     }
                 }
+                $("#totalSalesCostByRegion").text(formatNumber(totalSticks));
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
 
                 // Pie chart
                 if ($('#pieChart3').length) {
@@ -622,6 +838,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -655,7 +876,8 @@
                         color_chart.push("#21A4FF");
                     }
                 }
-
+                if (value_chart == undefined || value_chart == null || value_chart.length == 0)
+                	value_chart = [1];
                 // Doughnut chart
                 if ($('#canvasDoughnut3').length) {
 
@@ -675,6 +897,11 @@
                     });
 
                 }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
 
@@ -682,17 +909,34 @@
             type: 'POST',
             url: '@Url.Action("AcObDataVisual", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: isByRegion },
-            success: function (response) {
-            	console.log('AC vs OB');
-            	console.log(response);
+            success: function (response) { 	
                 var labels_chart = [];
                 var ob_chart = [];
                 var ac_chart = [];
+                var totalCostOb = 0;
+                var totalActualCost = 0;
             	for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     ob_chart.push(response[i].COST_OB);
                     ac_chart.push(response[i].ACTUAL_COST);
+                    totalCostOb += response[i].COST_OB;
+                    totalActualCost += response[i].ACTUAL_COST;
             	}
+            	console.log("ob_chart");
+            	console.log(ob_chart);
+            	console.log("ac_chart");
+            	console.log(ac_chart);
+            	console.log("labels_chart");
+            	console.log(labels_chart);
+            	var totalAcOb = totalCostOb + totalActualCost;
+            	var percentOb = ((totalCostOb / totalAcOb) * 100).toFixed(2);
+            	var percenAc = ((totalActualCost / totalAcOb) * 100).toFixed(2);
+            	var newDataChart = [];
+            	newDataChart.push(totalCostOb);
+            	newDataChart.push(totalActualCost);
+            	if (totalAcOb == 0 && totalActualCost == 0)
+					newDataChart.push(1);
+            	$("#percentAcOb").text("In percent : OB [" + percentOb + "%], AC [" + percenAc + "%]")
             	if ($('#mybarChart').length) {
                     var ctx = document.getElementById("mybarChart");
                     var mybarChart = new Chart(ctx, {
@@ -731,9 +975,53 @@
                             }
                         }
                     });
-                }
+            	}
+
+            	// Pie chart
+            	if ($('#pieChartAcOB').length) {
+            		var ctx = document.getElementById("pieChartAcOB");
+            		var data = {
+            			labels: ['OB','AC'],
+            			datasets: [{
+            				data: newDataChart,
+            				backgroundColor: [
+							"#21A4FF",
+							"#B21B1B",
+							"#828282",
+							"#344F67",
+							"#BDC3C7"
+            				],
+            				hoverBackgroundColor: [
+							"#21A4FF",
+							"#B21B1B",
+							"#828282",
+							"#BDC3C7",
+							"#344F67"
+            				]
+
+            			}]
+            		};
+
+            		var pieChart = new Chart(ctx, {
+            			data: data,
+            			type: 'pie',
+            			otpions: {
+            				legend: false
+            			}
+            		});
+
+            	}
+
+
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
             }
         });
+
+        $('#LoadingModal').hide();
     }
 
     $(document).ready(function () {
@@ -741,13 +1029,41 @@
     });
 
     function ExportXls() {
-        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
-        $('#SearchViewExport_YearTo').val($('#SearchView_YearFrom').val());
-        $('#ExportToXls').submit();
-    }
+        console.log('Submitting');
+        var url = '@Url.Action("ExportSummaryAllReportGenerateReport", "RptExecutiveSummary")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        MonthFrom: $('#SearchView_MonthFrom').val(),
+			        MonthTo: $('#SearchView_MonthFrom').val(),
+			        YearFrom: $('#SearchView_YearFrom').val(),
+			        YearTo: $('#SearchView_YearFrom').val(),
+			    }
 
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
+    }
     //function setupDataTables() {
     //    // DataTable
     //    var table = $('#tbSummary').DataTable({

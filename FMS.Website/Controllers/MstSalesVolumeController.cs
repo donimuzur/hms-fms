@@ -91,17 +91,19 @@ namespace FMS.Website.Controllers
         }
 
         #region ExportExcel
-        public void ExportMasterSalesVolume(SalesVolumeModel model)
+        public string ExportMasterSalesVolume(SalesVolumeModel model)
         {
             string pathFile = "";
 
             var input = Mapper.Map<SalesVolumeParamInput>(model.SearchViewExport);
             pathFile = CreateXlsMasterSalesVolume(input);
+            return pathFile;
+        }
 
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -110,8 +112,8 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
+        }
         private string CreateXlsMasterSalesVolume(SalesVolumeParamInput input)
         {
             //get data

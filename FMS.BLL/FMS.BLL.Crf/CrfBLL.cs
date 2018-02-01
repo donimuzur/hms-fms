@@ -345,7 +345,7 @@ namespace FMS.BLL.Crf
             {
                 EffectiveDateComplete = DateTime.Today
             });
-            var dtoList = Mapper.Map<List<TraCrfDto>>(dataToComplete);
+            var dtoList = Mapper.Map<List<TraCrfDto>>(dataToComplete.Where(x => !string.IsNullOrEmpty(x.PO_NUMBER)));
             foreach (var data in dtoList)
             {
                 try
@@ -354,7 +354,17 @@ namespace FMS.BLL.Crf
                     {
                         USER_ID = "SYSTEM"
                     });
+
+                    var datatosave = Mapper.Map<TRA_CRF>(data);
+                    datatosave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Completed;
+                    datatosave.MODIFIED_BY = "SYSTEM";
+                    datatosave.MODIFIED_DATE = DateTime.Now;
+
+                    _CrfService.SaveCrf(datatosave, null);
+
                     SendEmailWorkflow(data,Enums.ActionType.Completed);
+
+                    _uow.SaveChanges();
                 }
                 catch (Exception ex)
                 {

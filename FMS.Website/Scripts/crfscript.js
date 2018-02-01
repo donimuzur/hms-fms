@@ -35,7 +35,6 @@ function selectVehicle(urlFunction) {
             url: urlFunction,
             data: {
                 vehType: vehType,
-                
                 employeeId: employee
             },
             success: function (data) {
@@ -87,6 +86,21 @@ function fillDropdownFromAjax(url, data, dropdown) {
     });
 }
 
+function fillDropdownAddress(url, data, textbox) {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        success: function (res) {
+            if (res.length > 0) {
+                for (var i = 0; i < res.length; i++) {
+                    $(textbox).val(res[i].Address);
+                }
+            }
+        }
+    });
+}
+
 function ToggleTemporary() {
     
     var expectedDate = $("#expectedToggle").val();
@@ -102,8 +116,9 @@ function ToggleTemporary() {
     }
 }
 
-function GetEmployee(urlGet,obj) {
-
+function GetEmployee(urlGet, obj) {
+    console.log("URL: " + urlGet);
+    console.log(obj);
     var Id = $(obj).val();
     $(".vehicle").val("");
     $.ajax({
@@ -158,6 +173,7 @@ function changeCity(obj) {
     var cityParam = $(obj).val();
     if (cityParam != null) {
         fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        $("[name='Detail.DeliveryCity']").val(cityParam);
     }
 }
 
@@ -179,14 +195,14 @@ function InitEmployee(url,urlsearch) {
     
     var options = {
         url: url,
-        getValue: "EMPLOYEE_ID",
+        getValue: "DATA",
 
-        template: {
-            type: "description",
-            fields: {
-                description: "FORMAL_NAME"
-            }
-        },
+        //template: {
+        //    type: "description",
+        //    fields: {
+        //        description: "FORMAL_NAME"
+        //    }
+        //},
 
         list: {
             match: {

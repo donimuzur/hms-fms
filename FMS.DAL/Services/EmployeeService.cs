@@ -39,59 +39,59 @@ namespace FMS.DAL.Services
                 queryFilterEmployee = c => c.IS_ACTIVE == input.Status;
             }
             
-            if (input != null)
+            if (input != null && queryFilterEmployee != null)
             {
                 if (!string.IsNullOrEmpty(input.Address))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.ADDRESS == input.Address);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.ADDRESS.Contains(input.Address));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.BaseTown))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.BASETOWN == input.BaseTown);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.BASETOWN.Contains(input.BaseTown));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.City))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.CITY == input.City);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.CITY.Contains(input.City));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.Company))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.COMPANY == input.Company);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.COMPANY.Contains(input.Company));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.CostCenter))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.COST_CENTER == input.CostCenter);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.COST_CENTER.Contains(input.CostCenter));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.Directorate))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.DIRECTORATE == input.Directorate);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.DIRECTORATE.Contains(input.Directorate));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.Division))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.DIVISON == input.Division);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.DIVISON.Contains(input.Division));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.EmailAddress))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.EMAIL_ADDRESS == input.EmailAddress);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.EMAIL_ADDRESS.Contains(input.EmailAddress));
 
                 }
 
                 if (!string.IsNullOrEmpty(input.EmployeeId))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.EMPLOYEE_ID == input.EmployeeId);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.EMPLOYEE_ID.Contains(input.EmployeeId));
 
                 }
 
@@ -103,7 +103,7 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.FormalName))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.FORMAL_NAME == input.FormalName);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.FORMAL_NAME.Contains(input.FormalName));
 
                 }
 
@@ -116,7 +116,7 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.PositionTitle))
                 {
-                    queryFilterEmployee = queryFilterEmployee.And(c => c.POSITION_TITLE == input.PositionTitle);
+                    queryFilterEmployee = queryFilterEmployee.And(c => c.POSITION_TITLE.Contains(input.PositionTitle));
 
                 }
 

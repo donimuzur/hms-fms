@@ -71,6 +71,8 @@ namespace FMS.BLL.Csf
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
             var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
+            var vehUsageList = _settingService.GetSetting();
+
             var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
 
             var data = _CsfService.GetCsf(userLogin, isCompleted, benefitType, wtcType);
@@ -87,6 +89,12 @@ namespace FMS.BLL.Csf
                 if (item.VEHICLE_TYPE == wtcType)
                 {
                     item.VEHICLE_TYPE_NAME = "WTC";
+                }
+
+                var vehUsage = vehUsageList.Where(x => x.MST_SETTING_ID == Convert.ToInt32(item.VEHICLE_USAGE == null ? 0 : Convert.ToInt32(item.VEHICLE_USAGE))).FirstOrDefault();
+                if(vehUsage != null)
+                {
+                    item.VEHICLE_USAGE_NAME = vehUsage.SETTING_VALUE;
                 }
             }
 
@@ -1464,6 +1472,8 @@ namespace FMS.BLL.Csf
 
             var allVendor = _vendorService.GetVendor().Where(x => x.IS_ACTIVE).ToList();
 
+            var vehUsageWtc = _settingService.GetSetting().Where(x => x.IS_ACTIVE && x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleUsageWtc)).ToList();
+
             foreach (var inputItem in inputs)
             {
                 messageList.Clear();
@@ -1502,6 +1512,20 @@ namespace FMS.BLL.Csf
                 if (string.IsNullOrEmpty(inputItem.Vendor))
                 {
                     messageList.Add("Vendor not exists in master price list");
+                }
+
+                //check vehicle usage
+                var vehUsage = vehUsageWtc.Where(x => (x.SETTING_VALUE == null ? "" : x.SETTING_VALUE.ToUpper()) == 
+                    (inputItem.VehicleUsage == null ? "" : inputItem.VehicleUsage.ToUpper())).FirstOrDefault();
+
+                if (vehUsage != null)
+                {
+                    inputItem.VehicleUsage = vehUsage.MST_SETTING_ID.ToString();
+                    inputItem.VehicleUsageValue = vehUsage.SETTING_VALUE;
+                }
+                else
+                {
+                    messageList.Add("Vehicle Usage not exists in master setting");
                 }
 
                 #region -------------- Set Message Info if exists ---------------

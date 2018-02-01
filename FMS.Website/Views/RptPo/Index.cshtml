@@ -2,145 +2,183 @@
 @model FMS.Website.Models.RptPOModel
 
 @{
-    ViewBag.Title = Model.TitleForm;
+	ViewBag.Title = Model.TitleForm;
 }
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<style>
+	.datepicker {
+		margin-left: 15px;
+	}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+		$(document).ready(function () {
+			$('#SearchView_YearFrom').datepicker({
+			  minViewMode: 2,
+			  format: 'yyyy',
+			  autoclose: true,
+			  position: 'right bottom',
+			  container: '#xz'
+			});
+			$('#SearchView_YearTo').datepicker({
+				minViewMode: 2,
+				format: 'yyyy',
+				autoclose: true,
+				position: 'right bottom',
+				container: '#xy'
+			});
+		});
+</script>
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title</h5>
-    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-download"></i> Export
-    </a>
+	<h5 class="title-page">@ViewBag.Title</h5>
+	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+		<i class="fa fa-download"></i> Export
+	</a>
 </div>
 <section class="content">
-    @using (Html.BeginForm(Model.TitleExport, "RptPo", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
-        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
-        @Html.HiddenFor(model => model.SearchViewExport.EmployeeName)
-        @Html.HiddenFor(model => model.SearchViewExport.CostCenter)
-        @Html.HiddenFor(model => model.SearchViewExport.SupplyMethod)
-        @Html.HiddenFor(model => model.SearchViewExport.PoliceNumber)
-        @Html.HiddenFor(model => model.SearchViewExport.GroupLevel)
-    }
-    <div class="wpanel">
-        <p>@Model.ErrorMessage</p>
-        <div class="row">
-            @using (Ajax.BeginForm("FilterPo", "RptPo",
-                new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    InsertionMode = InsertionMode.Replace,
-                    UpdateTargetId = "contenttable",
-                    OnComplete = "setupDataTables",
-                }))
-            {
-                @*<div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Period From</label>
-                        <div class="input-group date" id="FromDate">
-                            @Html.TextBoxFor(model => model.SearchView.PeriodFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "From", @id = "From_Date" })
-                            <span class="input-group-addon btn btn-primary">
-                                <i class="fa fa-calendar "></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Period To</label>
-                        <div class="input-group date" id="FromDate">
-                            @Html.TextBoxFor(model => model.SearchView.PeriodTo, "{0:dd-MMM-yyyy}", new { @class = "form-control date", @placeholder = "To", @id = "To_Date" })
-                            <span class="input-group-addon btn btn-primary">
-                                <i class="fa fa-calendar "></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>*@
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Month From</label>
-                        @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Year From</label>
-                        @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Month To</label>
-                        @Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Year To</label>
-                        @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Employee Name</label>
-                        @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Cost Center</label>
-                        @Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "select", new { @class = "form-control chosen", @data_live_search = true })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Supply Method</label>
-                        @Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control chosen", @data_live_search = true })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Police Number</label>
-                        @Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control text" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Group Level</label>
-                        @Html.TextBoxFor(model => model.SearchView.GroupLevel, new { @class = "form-control text" })
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                    <div class="col-md-12">
-                        <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-                        <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-                    </div>
-            }
-        </div>
-    </div>
-    <div id="contenttable" class="wpanel">
-        @Html.Partial("_ListPo")
-    </div>
+	<div class="wpanel">
+		<p>@Model.ErrorMessage</p>
+		<div class="row">
+			@using (Ajax.BeginForm("FilterPo", "RptPo",
+										   new AjaxOptions
+										   {
+											   HttpMethod = "POST",
+											   InsertionMode = InsertionMode.Replace,
+											   UpdateTargetId = "contenttable",
+											   OnComplete = "setupDataTables",
+											   OnBegin = "LoadingShow",
+											   OnSuccess = "LoadingHide",
+											   OnFailure = "LoadingHide",
+										   }))
+			{
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Month From</label>
+						@Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group" id="xz">
+						<label for="">Year From</label>
+						<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Month To</label>
+						@Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group" id="xy">
+						<label for="">Year To</label>
+						<input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Employee Name</label>
+						@Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Cost Center</label>
+						@Html.DropDownListFor(model => model.SearchView.CostCenter, Model.SearchView.CostCenterList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Supply Method</label>
+						@Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "select", new { @class = "form-control chosen", @data_live_search = true })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Police Number</label>
+						@Html.TextBoxFor(model => model.SearchView.PoliceNumber, new { @class = "form-control text" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Group Level</label>
+						@Html.TextBoxFor(model => model.SearchView.GroupLevel, new { @class = "form-control text" })
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-md-12">
+					<button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+					<button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+				</div>
+			}
+		</div>
+	</div>
+	<div id="contenttable" class="wpanel">
+		@Html.Partial("_ListPo")
+	</div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div align="center">
+					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/PO.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     jQuery(function ($) {
         $(".chosen").chosen();
     });
-
     function ExportXls() {
-        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
-        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
-        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
-        $('#SearchViewExport_EmployeeName').val($('#SearchView_EmployeeName').val());
-        $('#SearchViewExport_CostCenter').val($('#SearchView_CostCenter').val());
-        $('#SearchViewExport_SupplyMethod').val($('#SearchView_SupplyMethod').val());
-        $('#SearchViewExport_PoliceNumber').val($('#SearchView_PoliceNumber').val());
-        $('#SearchViewExport_GroupLevel').val($('#SearchView_GroupLevel').val());
-        $('#ExportToXls').submit();
+        console.log('Submitting');
+        var url = '@Url.Action("ExportPoReportGenerateReport", "RptPo")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptPo")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        MonthFrom: $('#SearchView_MonthFrom').val(),
+			        YearFrom: $('#SearchView_YearFrom').val(),
+			        MonthTo: $('#SearchView_MonthTo').val(),
+			        YearTo: $('#SearchView_YearTo').val(),
+			        EmployeeName:$('#SearchView_EmployeeName').val(),
+			        CostCenter:$('#SearchView_CostCenter').val(),
+			        SupplyMethod:$('#SearchView_SupplyMethod').val(),
+			        PoliceNumber:$('#SearchView_PoliceNumber').val(),
+			        GroupLevel: $('#SearchView_GroupLevel').val(),
+			    }
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
     }
 
     function setupDataTables() {

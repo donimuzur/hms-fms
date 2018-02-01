@@ -77,6 +77,8 @@ namespace FMS.Website.Controllers
             model.SearchView.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region");
             model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().ToList(), "Basetown", "Basetown");
 
+            model.SearchView.StatusSource = "True";
+
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -294,6 +296,10 @@ namespace FMS.Website.Controllers
             model.FunctionList = new SelectList(groupCostData.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName", model.Function);
             model.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region", model.Regional);
 
+            model.VatDecimalStr = model.VatDecimal == null ? "" : string.Format("{0:n0}", model.VatDecimal);
+            model.MonthlyHMSInstallmentStr = string.Format("{0:n0}", model.MonthlyHMSInstallment);
+            model.TotalMonthlyChargeStr = model.TotalMonthlyCharge == null ? "" : string.Format("{0:n0}", model.TotalMonthlyCharge);
+
             return model;
         }
 
@@ -307,9 +313,6 @@ namespace FMS.Website.Controllers
 
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
-            model.VatDecimalStr = model.VatDecimal == null ? "" : string.Format("{0:n0}", model.VatDecimal);
-            model.MonthlyHMSInstallmentStr = string.Format("{0:n0}", model.MonthlyHMSInstallment);
-            model.TotalMonthlyChargeStr = model.TotalMonthlyCharge == null ? "" : string.Format("{0:n0}", model.TotalMonthlyCharge);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId.Value);
@@ -396,6 +399,9 @@ namespace FMS.Website.Controllers
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.MainMenu = _mainMenu;
+            model.VatDecimalStr = model.VatDecimal == null ? "" : string.Format("{0:n0}", model.VatDecimal);
+            model.MonthlyHMSInstallmentStr = string.Format("{0:n0}", model.MonthlyHMSInstallment);
+            model.TotalMonthlyChargeStr = model.TotalMonthlyCharge == null ? "" : string.Format("{0:n0}", model.TotalMonthlyCharge);
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterFleet, MstFleetId);
             return View(model);
@@ -415,6 +421,7 @@ namespace FMS.Website.Controllers
         {
             if (ModelState.IsValid)
             {
+               
                 foreach(var data in model.Details)
                 {
                     try
@@ -534,6 +541,10 @@ namespace FMS.Website.Controllers
             var model = new List<FleetItem>();
             if (data != null)
             {
+                var ListEmployee = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+                var ListFunction = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive).ToList();
+                var listLocation = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+
                 foreach (var dataRow in data.DataRows)
                 {
                     try
@@ -547,13 +558,20 @@ namespace FMS.Website.Controllers
                             continue;
                         }
                         var item = new FleetItem();
+
                         item.PoliceNumber = dataRow[0];
                         if (dataRow[2] != "NULL" & dataRow[2] != "")
                         {
                             item.EmployeeID = dataRow[2];
                         }
-                        item.EmployeeName = dataRow[1];
+
+                        var GetEmployee = ListEmployee.Where(x => (x.EMPLOYEE_ID == null ? "" : x.EMPLOYEE_ID.ToUpper()) == (item.EmployeeID == null ? "" : item.EmployeeID.ToUpper())).FirstOrDefault();
+                        item.EmployeeName = GetEmployee == null ? "" : GetEmployee.FORMAL_NAME ;
+
                         item.CostCenter = dataRow[3];
+                        var GetFunction = ListFunction.Where(x => (x.CostCenter == null ? "" : x.CostCenter.ToUpper()) == (item.CostCenter == null ? "" : item.CostCenter.ToUpper())).FirstOrDefault();
+                        item.Function = GetFunction == null ? "" : GetFunction.FunctionName;
+
                         item.Manufacturer = dataRow[4];
                         item.Models = dataRow[5];
                         item.Series = dataRow[6];
@@ -585,7 +603,12 @@ namespace FMS.Website.Controllers
                             item.EndContract = dtEndContract;
                         }
                         item.VendorName = dataRow[22];
+
                         item.City = dataRow[23];
+                        var GetLocation = listLocation.Where(x => (x.Basetown == null ? "" : x.Basetown.ToUpper()) == (item.City == null ? "" : item.City.ToUpper())).FirstOrDefault();
+                        item.Address = GetLocation == null ? "" : GetLocation.Address.ToUpper();
+                        item.Regional = GetLocation== null ? "" : GetLocation.Region.ToUpper();
+
                         item.SupplyMethod = dataRow[24];
                         item.Restitution = dataRow[25] == "Yes" ? true : false;
                         item.RestitutionS = dataRow[25];
@@ -603,7 +626,6 @@ namespace FMS.Website.Controllers
                             item.GroupLevel = 0;
                         }
                         item.AssignedTo = dataRow[32];
-                        item.Address = dataRow[33];
                         if (dataRow[34] != "NULL" && dataRow[34] != "")
                         {
                             double dStartDate = double.Parse(dataRow[34].ToString());
@@ -623,15 +645,6 @@ namespace FMS.Website.Controllers
                         string TotalMonthlyCharge = dataRow[40];
                         TotalMonthlyCharge = TotalMonthlyCharge.Trim(',');
                         item.TotalMonthlyCharge = Int64.Parse(String.IsNullOrEmpty(TotalMonthlyCharge) ? "0" : TotalMonthlyCharge);
-                        item.Function = dataRow[41];
-                        if(dataRow.Count<= 42)
-                        {
-                            item.Regional = "";
-                        }
-                        else
-                        {
-                            item.Regional = dataRow[42];
-                        }
                         item.ErrorMessage = string.Empty;
 
                         if (item.EmployeeID != null) { 
@@ -642,8 +655,9 @@ namespace FMS.Website.Controllers
 
                         model.Add(item);
                     }
-                    catch (Exception)
+                    catch (Exception exp)
                     {
+                        var msg = exp.Message;
                     }
                 }
             }
@@ -666,16 +680,18 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public void ExportMasterFleet(FleetModel model = null)
+        
+        public string ExportMasterFleetGenerateReport(FleetModel model = null)
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterFleet(model);
-
+            return pathFile;
+            
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -684,6 +700,7 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
+
         }
 
         private string CreateXlsMasterFleet(FleetModel model = null)
@@ -747,7 +764,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 21, "Start Contract");
             slDocument.SetCellValue(iRow, 22, "End Contract");
             slDocument.SetCellValue(iRow, 23, "Vendor Name");
-            slDocument.SetCellValue(iRow, 24, "City");
+            slDocument.SetCellValue(iRow, 24, "Basetown");
             slDocument.SetCellValue(iRow, 25, "Supply Method");
             slDocument.SetCellValue(iRow, 26, "Restitution");
             slDocument.SetCellValue(iRow, 27, "Monthly HMS Installment");
@@ -805,20 +822,20 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 10, data.FuelType);
                 slDocument.SetCellValue(iRow, 11, data.Branding);
                 slDocument.SetCellValue(iRow, 12, data.Color);
-                slDocument.SetCellValue(iRow, 13, data.Airbag);
+                slDocument.SetCellValue(iRow, 13, data.Airbag == true ? "Yes": "No");
                 slDocument.SetCellValue(iRow, 14, data.ChasisNumber);
                 slDocument.SetCellValue(iRow, 15, data.EngineNumber);
                 slDocument.SetCellValue(iRow, 16, data.VehicleYear);
                 slDocument.SetCellValue(iRow, 17, data.VehicleType);
                 slDocument.SetCellValue(iRow, 18, data.VehicleUsage);
-                slDocument.SetCellValue(iRow, 19, data.Project);
+                slDocument.SetCellValue(iRow, 19, data.Project == true ?"Yes" : "No");
                 slDocument.SetCellValue(iRow, 20, data.ProjectName);
                 slDocument.SetCellValue(iRow, 21, data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 22, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 23, data.VendorName);
                 slDocument.SetCellValue(iRow, 24, data.City);
                 slDocument.SetCellValue(iRow, 25, data.SupplyMethod);
-                slDocument.SetCellValue(iRow, 26, data.Restitution);
+                slDocument.SetCellValue(iRow, 26, data.Restitution == true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 27, data.MonthlyHMSInstallment);
                 slDocument.SetCellValue(iRow, 28, data.VatDecimal == null ? 0 : data.VatDecimal.Value);
                 slDocument.SetCellValue(iRow, 29, data.PoNumber);

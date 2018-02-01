@@ -435,16 +435,16 @@ namespace FMS.Website.Controllers
             return View("Upload", model);
         }
 
-        public void ExportMasterVehicleSpect()
+        public string ExportMasterVehicleSpect()
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterVehicleSpect();
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -453,8 +453,8 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
+        }
         private string CreateXlsMasterVehicleSpect()
         {
             //get data

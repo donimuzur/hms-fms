@@ -6,12 +6,6 @@
 }
 <div class="opt-content clearfloat">
     <h5 class="title-page">@ViewBag.Title </h5>
-    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
-    {
-        <a href="@Url.Action("UploadCtf", "TraCtf")" class="btn btn-primary line" title="Upload CTF">
-            <i class="fa fa-download"></i> Mass Upload
-        </a>
-    }
 </div>
 <section class="content">
     <div class="wpanel">
@@ -364,15 +358,17 @@
     $('#EffDate').on('dp.change', function (e) {
         var todayDate = new Date();
         var effDateStr = $("#EffectiveDate").val().split("-");
+        var SetMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(effDateStr[1].toLowerCase());
         var effDate = new Date(parseInt(effDateStr[2]), month, parseInt(effDateStr[0]));
-        todayDate = todayDate.setHours(00, 00, 00, 00);
-        if (effDateStr == '') effDate = todayDate;
-        if (effDate < todayDate)
+        var today = new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
+        if (effDateStr == '') effDate = today;
+        var datestr = today.getDate() + '-' + (SetMonths[today.getMonth()]) + '-' + today.getFullYear();
+        if (effDate < today)
         {
             alert('Effective Date must bigger or equal wih today')
-            $("#EffectiveDate").val('');
+            $("#EffectiveDate").val(datestr);
             return false;
         }
         var endDateStr = $("#EndRendDate").val().split("-");
@@ -382,7 +378,7 @@
         if (effDate > endDate)
         {
             alert('Effective Date cannot bigger than End Rent Date ')
-            $("#EffectiveDate").val('');
+            $("#EffectiveDate").val($("#EndRendDate").val());
             return false;
         }
         return true;
@@ -395,7 +391,6 @@
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
         var month = months.indexOf(extDateStr[1].toLowerCase());
         var extDate = new Date(parseInt(extDateStr[2]), month, parseInt(extDateStr[0]));
-        extDate = extDate.setHours(00, 00, 00, 00);
 
         var endDateStr = $("#modalEndRent").val().split("-");
         var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
@@ -439,14 +434,14 @@
     function InitEmployee(url, urlsearch) {
         var options = {
             url: url,
-            getValue: "EMPLOYEE_ID",
+            getValue: "DATA",
 
-            template: {
-                type: "description",
-                fields: {
-                    description: "FORMAL_NAME"
-                }
-            },
+            //template: {
+            //    type: "description",
+            //    fields: {
+            //        description: "FORMAL_NAME"
+            //    }
+            //},
             list: {
                 match: {
                     enabled: true

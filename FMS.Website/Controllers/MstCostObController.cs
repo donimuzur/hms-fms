@@ -26,6 +26,7 @@ namespace FMS.Website.Controllers
 {
     public class MstCostObController : BaseController
     {
+        #region ---- field and constructor ----------
         private ICostObBLL _costObBLL;
         private IPageBLL _pageBLL;
         private IRemarkBLL _remarkBLL;
@@ -47,7 +48,9 @@ namespace FMS.Website.Controllers
             _vehicleSpectBll = VehicleSpectBll;
             _mainMenu = Enums.MenuList.MasterData;
         }
+        #endregion  
 
+        #region -------- view --------------
         public CostObItem InitialModel(CostObItem model)
         {
             var ZoneList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true).ToList();
@@ -115,16 +118,19 @@ namespace FMS.Website.Controllers
             var filter = new CostObParamInput();
             filter.Year = DateTime.Now.Year; 
 
-            var data = _costObBLL.GetByFilter(filter);
+            //var data = _costObBLL.GetByFilter(filter);
             
-            model.Details = Mapper.Map<List<CostObItem>>(data);
+           // model.Details = Mapper.Map<List<CostObItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
-            foreach (CostObItem item in model.Details)
-            {
-                item.MonthS = this.SetMonthToString(item.Month == null ? 0:item.Month.Value);
-            }
+
+            model.WriteAccess = CurrentPageAccess.WriteAccess.Value == true ? 1 : 0;
+            model.ReadAccess = CurrentPageAccess.ReadAccess.Value == true ? 1 : 0;
+            //foreach (CostObItem item in model.Details)
+            //{
+            //    item.MonthS = this.SetMonthToString(item.Month == null ? 0:item.Month.Value);
+            //}
             return View(model);
         }
 
@@ -185,7 +191,9 @@ namespace FMS.Website.Controllers
 
             return "An Error Occurred";
         }
-        
+        #endregion
+
+        #region ----- Create ------------
         public ActionResult Create()
         {
             var model = new CostObItem();
@@ -224,7 +232,9 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("Index", "MstCostOb");
         }
+        #endregion
 
+        #region ----------Edit ---------------
         public ActionResult Edit(int? MstCostObid)
         {
             if (!MstCostObid.HasValue)
@@ -242,7 +252,7 @@ namespace FMS.Website.Controllers
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid.Value);
             return View(model);
         }
-
+        
         [HttpPost]
         public ActionResult Edit(CostObItem item)
         {
@@ -287,7 +297,9 @@ namespace FMS.Website.Controllers
             }
             return RedirectToAction("Index", "MstCostOb");
         }
+        #endregion
 
+        #region --------- Details ----------
         public ActionResult Detail(int MstCostObid)
         {
             var data = _costObBLL.GetByID(MstCostObid);
@@ -299,6 +311,7 @@ namespace FMS.Website.Controllers
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterCostOB, MstCostObid);
             return View(model);
         }
+        #endregion
 
         #region ---- Upload --------------
         public ActionResult Upload()
@@ -710,19 +723,62 @@ namespace FMS.Website.Controllers
 
             return Json(CostCenterList);
         }
+
+        [HttpPost]
+        public JsonResult SearchObAjax(DTParameters<CostObModel> param)
+        {
+            var model = param;
+
+            var data = model != null ? SearchDataOb(model) : SearchDataOb();
+            DTResult<CostObItem> result = new DTResult<CostObItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+
+            data = data.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
+        }
+
+        private List<CostObItem> SearchDataOb(DTParameters<CostObModel> searchView = null)
+        {
+            var param = new CostObParamInput();
+            if (searchView.Status != null) param.Status = searchView.Status == "True" ? true : false;
+            param.Function = searchView.Function;
+            param.Regional = searchView.Regional;
+            param.VehicleType = searchView.VehicleType;
+            param.Year = searchView.Year;
+
+            var dbData = _costObBLL.GetByFilter(param);
+            var redata = Mapper.Map<List<CostObItem>>(dbData);
+            foreach (var item in redata)
+            {
+                item.MonthS = this.SetMonthToString(item.Month == null ? 0 : item.Month.Value);
+            }
+            return redata;
+        }
         #endregion
 
         #region export xls
-        public void ExportMasterCostOb(CostObModel model)
+        public string ExportMasterCostOb(CostObModel model)
         {
             string pathFile = "";
 
             pathFile = CreateXlsMasterCostOb(model);
 
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -731,6 +787,7 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
+
         }
 
         private string CreateXlsMasterCostOb(CostObModel model)
