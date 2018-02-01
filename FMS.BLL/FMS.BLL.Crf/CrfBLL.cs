@@ -393,8 +393,29 @@ namespace FMS.BLL.Crf
             else
             {
                 dataFleet.IS_ACTIVE = false;
+                                
                 try
                 {
+                    if ((data.VEHICLE_USAGE == null ? "" : data.VEHICLE_USAGE.ToUpper()) == "CFM" && (data.RelocationType == null ? "" : data.RelocationType.ToUpper()) == "CHANGE_UNIT")
+                    {
+                        var IdleVehicle = dataFleet;
+                        IdleVehicle.MST_FLEET_ID = 0;
+                        IdleVehicle.IS_ACTIVE = true;
+                        IdleVehicle.EMPLOYEE_ID = null;
+                        IdleVehicle.EMPLOYEE_NAME = null;
+                        IdleVehicle.ASSIGNED_TO = null;
+                        IdleVehicle.START_DATE = DateTime.Now;
+                        IdleVehicle.END_DATE = null;
+                        IdleVehicle.VEHICLE_STATUS = "LIVE";
+                        IdleVehicle.VEHICLE_USAGE = "CFM IDLE";
+                        IdleVehicle.CREATED_BY = "SYSTEM";
+                        IdleVehicle.CREATED_DATE = DateTime.Now;
+                        IdleVehicle.MODIFIED_BY = null;
+                        IdleVehicle.MODIFIED_DATE = null;
+
+                        _fleetService.save(IdleVehicle);
+                    }
+
                     _fleetService.save(dataFleet);
                  
                 }
