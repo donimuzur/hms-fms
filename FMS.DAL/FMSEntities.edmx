@@ -80,6 +80,22 @@
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
         </EntityType>
+        <EntityType Name="FLEET_CHANGE">
+          <Key>
+            <PropertyRef Name="FLEET_CHANGE_ID" />
+          </Key>
+          <Property Name="FLEET_CHANGE_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FLEET_ID" Type="bigint" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="9" />
+          <Property Name="CHASIS_NUMBER" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="FIELD_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="DATE_BEFORE" Type="nvarchar" MaxLength="255" />
+          <Property Name="DATE_AFTER" Type="nvarchar" MaxLength="255" />
+          <Property Name="CHANGE_DATE" Type="datetime" />
+          <Property Name="DATE_SEND" Type="datetime" />
+        </EntityType>
         <EntityType Name="FUEL_COST_BY_FUNC_REPORT_DATA">
           <Key>
             <PropertyRef Name="ID" />
@@ -117,6 +133,19 @@
           <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
           <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="FUNCTION_CHANGE">
+          <Key>
+            <PropertyRef Name="FUNCTION_CHANGE_ID" />
+          </Key>
+          <Property Name="FUNCTION_CHANGE_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="FORMAL_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="COST_CENTER" Type="nvarchar" MaxLength="255" />
+          <Property Name="FUNCTION_OLD" Type="nvarchar" MaxLength="255" />
+          <Property Name="FUNCTION_NEW" Type="nvarchar" MaxLength="255" />
+          <Property Name="CHANGE_DATE" Type="datetime" />
+          <Property Name="DATE_SEND" Type="datetime" />
         </EntityType>
         <EntityType Name="KPI_REPORT_DATA">
           <Key>
@@ -175,6 +204,22 @@
           <Property Name="REPORT_MONTH" Type="int" />
           <Property Name="REPORT_YEAR" Type="int" />
           <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOCATION_CHANGE">
+          <Key>
+            <PropertyRef Name="LOCATION_CHANGE_ID" />
+          </Key>
+          <Property Name="LOCATION_CHANGE_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="FORMAL_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="BASETOWN_OLD" Type="nvarchar" MaxLength="255" />
+          <Property Name="BASETOWN_NEW" Type="nvarchar" MaxLength="255" />
+          <Property Name="ADDRESS_OLD" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ADDRESS_NEW" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CITY_OLD" Type="nvarchar" MaxLength="255" />
+          <Property Name="CITY_NEW" Type="nvarchar" MaxLength="255" />
+          <Property Name="CHANGE_DATE" Type="datetime" />
+          <Property Name="DATE_SEND" Type="datetime" />
         </EntityType>
         <EntityType Name="MST_COMPLAINT_CATEGORY">
           <Key>
@@ -345,6 +390,8 @@
           <Property Name="PROJECT" Type="bit" />
           <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SALES_CODE" Type="nvarchar" MaxLength="255" />
+          <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -913,6 +960,7 @@
           <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
           <Property Name="NEW_POLICE_NUMBER" Type="varchar" MaxLength="50" />
           <Property Name="MST_FLEET_ID" Type="bigint" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
         </EntityType>
         <EntityType Name="TRA_CSF">
           <Key>
@@ -987,6 +1035,7 @@
           <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
           <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -1035,6 +1084,7 @@
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
           <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -1124,6 +1174,7 @@
           <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
           <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -1714,11 +1765,14 @@
           <EntitySet Name="AUTO_GR" EntityType="Self.AUTO_GR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AUTO_GR_DETAIL" EntityType="Self.AUTO_GR_DETAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CFM_IDLE_REPORT_DATA" EntityType="Self.CFM_IDLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FLEET_CHANGE" EntityType="Self.FLEET_CHANGE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FUEL_COST_BY_FUNC_REPORT_DATA" EntityType="Self.FUEL_COST_BY_FUNC_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FUEL_REPORT_DATA" EntityType="Self.FUEL_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FUNCTION_CHANGE" EntityType="Self.FUNCTION_CHANGE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KPI_REPORT_DATA" EntityType="Self.KPI_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LEASE_COST_BY_FUNC_REPORT_DATA" EntityType="Self.LEASE_COST_BY_FUNC_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LITER_BY_FUNC_REPORT_DATA" EntityType="Self.LITER_BY_FUNC_REPORT_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOCATION_CHANGE" EntityType="Self.LOCATION_CHANGE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_COMPLAINT_CATEGORY" EntityType="Self.MST_COMPLAINT_CATEGORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_COST_OB" EntityType="Self.MST_COST_OB" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MST_DELEGATION" EntityType="Self.MST_DELEGATION" Schema="dbo" store:Type="Tables" />
@@ -2151,6 +2205,9 @@
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
+          <EntitySet Name="FLEET_CHANGE" EntityType="FMSModel.FLEET_CHANGE" />
+          <EntitySet Name="FUNCTION_CHANGE" EntityType="FMSModel.FUNCTION_CHANGE" />
+          <EntitySet Name="LOCATION_CHANGE" EntityType="FMSModel.LOCATION_CHANGE" />
         </EntityContainer>
         <EnumType Name="DocumentType" a:ExternalTypeName="FMS.Core.Enums.DocumentType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="DocumentStatus" a:ExternalTypeName="FMS.Core.Enums.DocumentStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -2520,6 +2577,8 @@
           <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MST_EMPLOYEE" Relationship="FMSModel.FK_MST_FLEET_MST_EMPLOYEE" FromRole="MST_FLEET" ToRole="MST_EMPLOYEE" />
           <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SALES_CODE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="MST_FUEL_ODOMETER">
           <Key>
@@ -3127,6 +3186,7 @@
           <NavigationProperty Name="MST_EPAF" Relationship="FMSModel.FK_TRA_CRF_MST_EPAF" FromRole="TRA_CRF" ToRole="MST_EPAF" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CRF_MST_REMARK" FromRole="TRA_CRF" ToRole="MST_REMARK" />
           <NavigationProperty Name="MST_VENDOR" Relationship="FMSModel.FK_TRA_CRF_MST_VENDOR" FromRole="TRA_CRF" ToRole="MST_VENDOR" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TRA_CSF">
           <Key>
@@ -3205,6 +3265,7 @@
           <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TRA_CTF">
           <Key>
@@ -3258,6 +3319,7 @@
           <NavigationProperty Name="MST_REASON" Relationship="FMSModel.FK_TRA_CTF_MST_REASON" FromRole="TRA_CTF" ToRole="MST_REASON" />
           <NavigationProperty Name="MST_REMARK" Relationship="FMSModel.FK_TRA_CTF_MST_REMARK" FromRole="TRA_CTF" ToRole="MST_REMARK" />
           <NavigationProperty Name="TRA_CTF_EXTEND" Relationship="FMSModel.FK_TRA_CTF_EXTEND_TRA_CTF" FromRole="TRA_CTF" ToRole="TRA_CTF_EXTEND" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TRA_CTF_EXTEND">
           <Key>
@@ -3351,6 +3413,7 @@
           <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TRA_WORKFLOW_HISTORY">
           <Key>
@@ -3913,6 +3976,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FLEET_CHANGE">
+          <Key>
+            <PropertyRef Name="FLEET_CHANGE_ID" />
+          </Key>
+          <Property Name="FLEET_CHANGE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FLEET_ID" Type="Int64" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="CHASIS_NUMBER" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FIELD_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DATE_BEFORE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DATE_AFTER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CHANGE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="DATE_SEND" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="FUNCTION_CHANGE">
+          <Key>
+            <PropertyRef Name="FUNCTION_CHANGE_ID" />
+          </Key>
+          <Property Name="FUNCTION_CHANGE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="FORMAL_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION_OLD" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FUNCTION_NEW" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CHANGE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="DATE_SEND" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="LOCATION_CHANGE">
+          <Key>
+            <PropertyRef Name="LOCATION_CHANGE_ID" />
+          </Key>
+          <Property Name="LOCATION_CHANGE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="FORMAL_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BASETOWN_OLD" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BASETOWN_NEW" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS_OLD" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS_NEW" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CITY_OLD" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CITY_NEW" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CHANGE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="DATE_SEND" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4221,6 +4329,8 @@
           <EntitySetMapping Name="MST_FLEET">
             <EntityTypeMapping TypeName="FMSModel.MST_FLEET">
               <MappingFragment StoreEntitySet="MST_FLEET">
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="SALES_CODE" ColumnName="SALES_CODE" />
                 <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
                 <ScalarProperty Name="PROJECT" ColumnName="PROJECT" />
@@ -4823,6 +4933,7 @@
           <EntitySetMapping Name="TRA_CRF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CRF">
               <MappingFragment StoreEntitySet="TRA_CRF">
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
                 <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
                 <ScalarProperty Name="NEW_POLICE_NUMBER" ColumnName="NEW_POLICE_NUMBER" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
@@ -4877,6 +4988,7 @@
           <EntitySetMapping Name="TRA_CSF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CSF">
               <MappingFragment StoreEntitySet="TRA_CSF">
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
                 <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
                 <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
@@ -4952,6 +5064,7 @@
           <EntitySetMapping Name="TRA_CTF">
             <EntityTypeMapping TypeName="FMSModel.TRA_CTF">
               <MappingFragment StoreEntitySet="TRA_CTF">
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
                 <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
                 <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
                 <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
@@ -5026,6 +5139,7 @@
           <EntitySetMapping Name="TRA_TEMPORARY">
             <EntityTypeMapping TypeName="FMSModel.TRA_TEMPORARY">
               <MappingFragment StoreEntitySet="TRA_TEMPORARY">
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
                 <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
                 <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
@@ -5169,6 +5283,54 @@
                 <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
                 <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FLEET_CHANGE">
+            <EntityTypeMapping TypeName="FMSModel.FLEET_CHANGE">
+              <MappingFragment StoreEntitySet="FLEET_CHANGE">
+                <ScalarProperty Name="DATE_SEND" ColumnName="DATE_SEND" />
+                <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
+                <ScalarProperty Name="DATE_AFTER" ColumnName="DATE_AFTER" />
+                <ScalarProperty Name="DATE_BEFORE" ColumnName="DATE_BEFORE" />
+                <ScalarProperty Name="FIELD_NAME" ColumnName="FIELD_NAME" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="CHASIS_NUMBER" ColumnName="CHASIS_NUMBER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="FLEET_ID" ColumnName="FLEET_ID" />
+                <ScalarProperty Name="FLEET_CHANGE_ID" ColumnName="FLEET_CHANGE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUNCTION_CHANGE">
+            <EntityTypeMapping TypeName="FMSModel.FUNCTION_CHANGE">
+              <MappingFragment StoreEntitySet="FUNCTION_CHANGE">
+                <ScalarProperty Name="DATE_SEND" ColumnName="DATE_SEND" />
+                <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
+                <ScalarProperty Name="FUNCTION_NEW" ColumnName="FUNCTION_NEW" />
+                <ScalarProperty Name="FUNCTION_OLD" ColumnName="FUNCTION_OLD" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="FORMAL_NAME" ColumnName="FORMAL_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="FUNCTION_CHANGE_ID" ColumnName="FUNCTION_CHANGE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOCATION_CHANGE">
+            <EntityTypeMapping TypeName="FMSModel.LOCATION_CHANGE">
+              <MappingFragment StoreEntitySet="LOCATION_CHANGE">
+                <ScalarProperty Name="DATE_SEND" ColumnName="DATE_SEND" />
+                <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
+                <ScalarProperty Name="CITY_NEW" ColumnName="CITY_NEW" />
+                <ScalarProperty Name="CITY_OLD" ColumnName="CITY_OLD" />
+                <ScalarProperty Name="ADDRESS_NEW" ColumnName="ADDRESS_NEW" />
+                <ScalarProperty Name="ADDRESS_OLD" ColumnName="ADDRESS_OLD" />
+                <ScalarProperty Name="BASETOWN_NEW" ColumnName="BASETOWN_NEW" />
+                <ScalarProperty Name="BASETOWN_OLD" ColumnName="BASETOWN_OLD" />
+                <ScalarProperty Name="FORMAL_NAME" ColumnName="FORMAL_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="LOCATION_CHANGE_ID" ColumnName="LOCATION_CHANGE_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -79,5 +79,8 @@ namespace FMS.BusinessObject
         public virtual DbSet<TRA_WORKFLOW_HISTORY> TRA_WORKFLOW_HISTORY { get; set; }
         public virtual DbSet<VEHICLE_HISTORY_REPORT_DATA> VEHICLE_HISTORY_REPORT_DATA { get; set; }
         public virtual DbSet<VEHICLE_REPORT_DATA> VEHICLE_REPORT_DATA { get; set; }
+        public virtual DbSet<FLEET_CHANGE> FLEET_CHANGE { get; set; }
+        public virtual DbSet<FUNCTION_CHANGE> FUNCTION_CHANGE { get; set; }
+        public virtual DbSet<LOCATION_CHANGE> LOCATION_CHANGE { get; set; }
     }
 }

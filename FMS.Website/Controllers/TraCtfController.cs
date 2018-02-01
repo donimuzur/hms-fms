@@ -2057,6 +2057,7 @@ namespace FMS.Website.Controllers
             var VehicleList = _fleetBLL.GetFleet().Where(x => x.IsActive).ToList();
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive).ToList();
+            bool isBenefit = false;
 
             if (data != null)
             {
@@ -2074,7 +2075,6 @@ namespace FMS.Website.Controllers
                     {
                         continue;
                     }
-                    
                     var item = new CtfItem();
                     try
                     {
@@ -2101,8 +2101,19 @@ namespace FMS.Website.Controllers
                                                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
                                                                    && x.EmployeeID == item.EmployeeId).FirstOrDefault();
 
+
+
                         item.EndRendDate = Vehicle.EndContract;
                         item.VehicleLocation = Vehicle.City;
+
+                        var Employee = EmployeeList.Where(x => x.EMPLOYEE_ID == item.EmployeeId).FirstOrDefault();
+
+                        if ((item.VehicleType == null ? "" : item.VehicleType.ToUpper()) == "BENEFIT")
+                        {
+                            item.VehicleUsage = Vehicle.VehicleUsage;
+                            item.GroupLevel = Employee.GROUP_LEVEL;
+                        }
+
                         if (item.ExtendVehicle == true)
                         {
                             item.CtfExtend = new CtfExtendDto();
@@ -2129,7 +2140,7 @@ namespace FMS.Website.Controllers
                     }
 
                     #region ---- Save Data------
-                    if(!item.ExtendVehicle )
+                    if (!item.ExtendVehicle)
                     {
                         item.CreatedBy = CurrentUser.USER_ID;
                         item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
@@ -2140,14 +2151,16 @@ namespace FMS.Website.Controllers
 
                         var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
                         var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
-                        
+
                         var ReasonData = _reasonBLL.GetReasonById(item.Reason.Value);
 
                         var reasonStr = ReasonData.Reason;
                         var IsPenalty = ReasonData.IsPenalty;
                         var PenaltyForFleet = ReasonData.PenaltyForFleet;
                         var PenaltyForEmployee = ReasonData.PenaltyForEmplloyee;
-                        
+
+                        isBenefit = item.VehicleType == wtcType ? false : true;
+
                         var IsEndRent = reasonStr.ToLower() == "end rent";
 
                         //only check for benefit
@@ -2160,16 +2173,16 @@ namespace FMS.Website.Controllers
                         try
                         {
                             var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
-                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, isBenefit, item.DocumentNumber);
                             AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                             if (IsEndRent)
                             {
-                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, false, item.DocumentNumber);
+                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, isBenefit, item.DocumentNumber);
                                 AddMessageInfo("Submit Success", Enums.MessageInfoType.Success);
                             }
                             else
                             {
-                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, false, item.DocumentNumber);
+                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, isBenefit, item.DocumentNumber);
                                 AddMessageInfo("Submit Success", Enums.MessageInfoType.Success);
                             }
                         }
@@ -2184,43 +2197,54 @@ namespace FMS.Website.Controllers
                     }
                     else
                     {
+                        try
+                        {
+                            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
 
-                        var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+                            var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+                            var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
-                        var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
-                        var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+                            settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
+                            var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
 
-                        settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
-                        var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
+                            item.CreatedBy = CurrentUser.USER_ID;
+                            item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
+                            item.CreatedDate = DateTime.Now;
+                            item.DocumentStatus = Enums.DocumentStatus.Extended;
+                            item.Reason = null;
+                            item.ModifiedBy = CurrentUser.USER_ID;
+                            item.ModifiedDate = DateTime.Now;
+                            item.ExtendVehicle = true;
 
+                            var TraCtfDto = Mapper.Map<TraCtfDto>(item);
+                            var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
 
-                        item.CreatedBy = CurrentUser.USER_ID;
-                        item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
-                        item.CreatedDate = DateTime.Now;
-                        item.DocumentStatus = Enums.DocumentStatus.Extended;
-                        item.Reason = null;
-                        item.ModifiedBy = CurrentUser.USER_ID;
-                        item.ModifiedDate = DateTime.Now;
-                        item.ExtendVehicle = true;
+                            isBenefit = item.VehicleType == wtcType ? false : true;
 
-                        var TraCtfDto = Mapper.Map<TraCtfDto>(item);
-                        var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
+                            AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, isBenefit, item.DocumentNumber);
 
-                        AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
-                        
-                        var TraCtfDtoExtend = new CtfExtendDto();
-                        TraCtfDtoExtend.ExtendPoliceNumber = item.CtfExtend.ExtendPoliceNumber;
-                        TraCtfDtoExtend.ExtedPoLine = item.CtfExtend.ExtedPoLine;
-                        TraCtfDtoExtend.ExtendPoNumber = item.CtfExtend.ExtendPoNumber;
-                        TraCtfDtoExtend.ExtendPrice = item.CtfExtend.ExtendPrice;
-                        TraCtfDtoExtend.NewProposedDate = item.CtfExtend.NewProposedDate;
-                        TraCtfDtoExtend.Reason = item.CtfExtend.Reason;
-                        TraCtfDtoExtend.TraCtfId = CtfData.TraCtfId;
+                            var TraCtfDtoExtend = new CtfExtendDto();
+                            TraCtfDtoExtend.ExtendPoliceNumber = item.CtfExtend.ExtendPoliceNumber;
+                            TraCtfDtoExtend.ExtedPoLine = item.CtfExtend.ExtedPoLine;
+                            TraCtfDtoExtend.ExtendPoNumber = item.CtfExtend.ExtendPoNumber;
+                            TraCtfDtoExtend.ExtendPrice = item.CtfExtend.ExtendPrice;
+                            TraCtfDtoExtend.NewProposedDate = item.CtfExtend.NewProposedDate;
+                            TraCtfDtoExtend.Reason = item.CtfExtend.Reason;
+                            TraCtfDtoExtend.TraCtfId = CtfData.TraCtfId;
 
-                        _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
-                        AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
-                        //CtfWorkflow(CtfDto.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
+                            _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
+                            AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Extend, null, false, isBenefit, CtfData.DocumentNumber);
+                        }
+                        catch (Exception exp)
+                        {
+                            model.ErrorMessage = "Extend Failed, Error : " + exp.Message;
+                            model.MainMenu = _mainMenu;
+                            model.CurrentLogin = CurrentUser;
+                            model.IsPersonalDashboard = false;
+                            return View(model);
+                        }
                     }
                     #endregion
                 }
@@ -2483,7 +2507,7 @@ namespace FMS.Website.Controllers
 
                         #region -- Vehicle & Employee Validation ----
 
-                        var Employee = EmployeeList.Where(x => x.EMPLOYEE_ID == item.EmployeeId ).FirstOrDefault();
+                        var Employee = EmployeeList.Where(x => x.EMPLOYEE_ID == item.EmployeeId).FirstOrDefault();
                         if (Employee == null)
                         {
                             item.ErrorMessage = "Employee is not found in Master Employee";
@@ -2498,12 +2522,12 @@ namespace FMS.Website.Controllers
                         }
 
                         #endregion
-                   
+
                         if (item.ExtendVehicle == true)
                         {
 
                             #region -- Extend --
-                            
+
                             item.CtfExtend = new CtfExtendDto();
 
                             if (dataRow[10] == "")
