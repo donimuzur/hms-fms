@@ -109,6 +109,9 @@
     <Compile Include="Dto\VehicleSpectDto.cs" />
     <Compile Include="Dto\VendorDto.cs" />
     <Compile Include="Dto\WorkflowHistoryDto.cs" />
+    <Compile Include="FLEET_CHANGE.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="FMSEntities.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -118,6 +121,9 @@
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="FUEL_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FUNCTION_CHANGE.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Inputs\CcfParamInput.cs" />
@@ -145,6 +151,9 @@
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="LITER_BY_FUNC_REPORT_DATA.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOCATION_CHANGE.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="MST_COMPLAINT_CATEGORY.cs">

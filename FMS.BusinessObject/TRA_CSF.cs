@@ -83,6 +83,7 @@ namespace FMS.BusinessObject
         public string COMMENTS { get; set; }
         public Nullable<decimal> PRICE { get; set; }
         public Nullable<decimal> VAT_DECIMAL { get; set; }
+        public Nullable<System.DateTime> DATE_SEND_VENDOR { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
         public virtual MST_EPAF MST_EPAF { get; set; }
