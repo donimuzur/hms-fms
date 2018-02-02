@@ -129,7 +129,9 @@
     function createColumnWithHiddenField(text, name) {
         return '<td><input type="hidden" name="' + name + '" value="' + text + '">' + text + '</td>';
     }
-
+    function createColumnWithHiddenFieldDiff(value,text, name) {
+        return '<td><input type="hidden" name="' + name + '" value="' + value + '">' + text + '</td>';
+    }
     function createColumnWithHiddenFieldDate(text, name) {
         if (new String(text).valueOf() == "null") {
             return '<td><input type="hidden" name="' + name + '" >' + text + '</td>';
@@ -161,7 +163,7 @@
         } catch (e) {
             return '';
         }
-        
+
         return str;
 
     }
@@ -191,7 +193,7 @@
             dataType: 'html',
             contentType: false,
             processData: false,
-            
+
             success: function (response) {
                 $('#tb-upload-excel').html('');
                 uploaditems = JSON.parse(response);
@@ -212,20 +214,20 @@
                             createColumnWithHiddenField(uploaditems[i].FuelType, 'Model.Details[' + i + '].FuelType') +
                             createColumnWithHiddenField(uploaditems[i].Branding, 'Model.Details[' + i + '].Branding') +
                             createColumnWithHiddenField(uploaditems[i].Color, 'Model.Details[' + i + '].Color') +
-                            createColumnWithHiddenField(uploaditems[i].Airbag, 'Model.Details[' + i + '].Airbag') +
+                            createColumnWithHiddenFieldDiff(uploaditems[i].Airbag, (uploaditems[i].Airbag == null ? "" : (uploaditems[i].Airbag ==  true ? "Yes" : "No")), 'Model.Details[' + i + '].Airbag') +
                             createColumnWithHiddenField(uploaditems[i].ChasisNumber, 'Model.Details[' + i + '].ChasisNumber') +
                             createColumnWithHiddenField(uploaditems[i].EngineNumber, 'Model.Details[' + i + '].EngineNumber') +
                             createColumnWithHiddenField(uploaditems[i].VehicleYear, 'Model.Details[' + i + '].VehicleYear') +
                             createColumnWithHiddenField(uploaditems[i].VehicleType, 'Model.Details[' + i + '].VehicleType') +
                             createColumnWithHiddenField(uploaditems[i].VehicleUsage, 'Model.Details[' + i + '].VehicleUsage') +
-                            createColumnWithHiddenField(uploaditems[i].Project, 'Model.Details[' + i + '].Project') +
+                            createColumnWithHiddenFieldDiff(uploaditems[i].Project, (uploaditems[i].Project == null ? "" : (uploaditems[i].Project == true ? "Yes" : "No")), 'Model.Details[' + i + '].Project') +
                             createColumnWithHiddenField(uploaditems[i].ProjectName, 'Model.Details[' + i + '].ProjectName') +
                             createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].StartContract), 'Model.Details[' + i + '].StartContract') +
                             createColumnWithHiddenField(jsonDateToDatetime(uploaditems[i].EndContract), 'Model.Details[' + i + '].EndContract') +
                             createColumnWithHiddenField(uploaditems[i].VendorName, 'Model.Details[' + i + '].VendorName') +
                             createColumnWithHiddenField(uploaditems[i].City, 'Model.Details[' + i + '].City') +
                             createColumnWithHiddenField(uploaditems[i].SupplyMethod, 'Model.Details[' + i + '].SupplyMethod') +
-                            createColumnWithHiddenField(uploaditems[i].Restitution, 'Model.Details[' + i + '].Restitution') +
+                            createColumnWithHiddenFieldDiff(uploaditems[i].Restitution, (uploaditems[i].Restitution == null ? "" : (uploaditems[i].Restitution == true ? "Yes" : "No")), 'Model.Details[' + i + '].Restitution') +
                             createColumnWithHiddenField(uploaditems[i].MonthlyHMSInstallment, 'Model.Details[' + i + '].MonthlyHMSInstallment') +
                             createColumnWithHiddenField(uploaditems[i].VatDecimal, 'Model.Details[' + i + '].VatDecimal') +
                             createColumnWithHiddenField(uploaditems[i].PoNumber, 'Model.Details[' + i + '].PoNumber') +
