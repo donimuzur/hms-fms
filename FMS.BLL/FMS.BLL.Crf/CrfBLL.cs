@@ -541,7 +541,7 @@ namespace FMS.BLL.Crf
 
         public void SubmitCrf(TraCrfDto dataSubmit,Login currentUser)
         {
-            var data = _CrfService.GetById((int)dataSubmit.TRA_CRF_ID);
+            var data = Mapper.Map<TRA_CRF>(dataSubmit);
             var currentDocStatus = data.DOCUMENT_STATUS;
             if (currentUser.UserRole == Enums.UserRole.HR && data.VEHICLE_TYPE.ToUpper() == "BENEFIT")
             {

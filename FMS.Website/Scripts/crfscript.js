@@ -57,6 +57,7 @@ function selectVehicle(urlFunction) {
                         $('#tb-body-select-veh').append(tableData);
                     }
                 } else {
+                    $('#btnSelectVehicle').prop("disabled", true);
                     $('#tb-body-select-veh').html("");
                     $('#tb-body-select-veh').append('<tr><td style="text-align:center" colspan="8">no data<td></tr>');
                 }
@@ -182,7 +183,11 @@ function GetRelocation(obj) {
 
     if (relType == "RELOCATE_UNIT") {
         $("#changeUnitButton").hide();
+        $("#SendDoc").css("display", "");
+        $("#SaveDoc").css("display", "");
     } else if (relType == "CHANGE_UNIT") {
+        $("#SendDoc").css("display", "none");
+        $("#SaveDoc").css("display", "none");
         $("#changeUnitButton").show();
     } else {
         $("#changeUnitButton").hide();
@@ -286,7 +291,8 @@ $(document).ready(function () {
         //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
         //                    '</tr>';
         //$('#tb-body-select-vehicle').html(tableData);
-
+        $("#SendDoc").css("display", "");
+        $("#SaveDoc").css("display", "");
         $('#selectvehmodal').modal('hide');
     });
 });

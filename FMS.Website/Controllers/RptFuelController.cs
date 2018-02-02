@@ -133,9 +133,8 @@ namespace FMS.Website.Controllers
                 return View(model);
             }
         }
-
-        [HttpPost]
-        public PartialViewResult FilterFuel(RptFuelModel model)
+        
+        public List<RptFuelItem> FilterFuel(RptFuelModel model)
         {
             model.RptFuelItem = GetFuelData(model.SearchView);
             var input = Mapper.Map<RptFuelByParamInput>(model.SearchView);
@@ -175,7 +174,7 @@ namespace FMS.Website.Controllers
                     }
                 }
             }
-            return PartialView("_ListFuel", model);
+            return model.RptFuelItem;
         }
 
         private List<RptFuelItem> GetFuelData(RptFuelSearchView filter = null)
@@ -192,6 +191,83 @@ namespace FMS.Website.Controllers
 
             var dbData = _rptFuelBLL.GetRptFuel(input);
             return Mapper.Map<List<RptFuelItem>>(dbData);
+        }
+
+        [HttpPost]
+        public JsonResult SearchFuelAjax(DTParameters<RptFuelModel> param)
+        {
+            var model = param;
+
+            var data = model != null ? SearchDataFuel(model) : SearchDataFuel();
+            DTResult<RptFuelItem> result = new DTResult<RptFuelItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+            IEnumerable<RptFuelItem> dataordered;
+            dataordered = data;
+            if (param.Order.Length > 0)
+            {
+                foreach (var ordr in param.Order)
+                {
+                    if (ordr.Column == 0)
+                    {
+                        continue;
+                    }
+                }
+            }
+            data = dataordered.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
+        }
+
+        private List<RptFuelItem> SearchDataFuel(DTParameters<RptFuelModel> searchView = null)
+        {
+            var param = new RptFuelByParamInput();
+            param.CostCenter = searchView.CostCenter;
+            param.Function= searchView.Function;
+            param.MonthFrom = searchView.MonthFrom;
+            param.MonthTo = searchView.MonthTo;
+            param.PoliceNumber= searchView.PoliceNumber;
+            param.Regional = searchView.Regional;
+            param.VehicleType = searchView.VehicleType;
+            param.YearFrom = searchView.YearFrom;
+            param.YearTo= searchView.YearTo;
+
+            var data = _fleetBLL.GetFleetByParam(param);
+            return Mapper.Map<List<RptFuelItem>>(data);
+        }
+
+        private List<FleetItem> SearchDataFleetExport(FleetSearchView searchView = null)
+        {
+            var param = new FleetParamInput();
+            param.Status = searchView.StatusSource;
+            param.SupplyMethod = searchView.SupplyMethod;
+            param.BodyType = searchView.BodyType;
+            param.VehicleType = searchView.VehicleType;
+            param.VehicleUsage = searchView.VehicleUsage;
+            param.Vendor = searchView.Vendor;
+            param.Function = searchView.Function;
+            param.StartRent = searchView.StartRent;
+            param.StartRentTo = searchView.StartRentTo;
+            param.EndRent = searchView.EndRent;
+            param.EndRentTo = searchView.EndRentTo;
+            param.EndDate = searchView.EndDate;
+            param.EndDateTo = searchView.EndDateTo;
+            param.Regional = searchView.Regional;
+            param.City = searchView.City;
+            param.EmployeeId = searchView.EmployeeID;
+            param.FormalName = searchView.EmployeeName;
+            param.PoliceNumber = searchView.PoliceNumber;
+
+            var data = _fleetBLL.GetFleetByParam(param);
+            return Mapper.Map<List<FleetItem>>(data);
         }
 
         #region --------- Export --------------

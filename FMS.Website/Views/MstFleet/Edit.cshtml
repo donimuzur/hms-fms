@@ -873,7 +873,7 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             <div class="form-control" disabled>
-                                @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                @Html.CheckBox("VehicleStatus", Model.IsActive, new { @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.IsActive)
                                 @Html.Label("Active", new { @id = "lblStatus" })
                             </div>
@@ -884,7 +884,7 @@
                             if (Model.VehicleType.ToLower() == "benefit")
                             {
                                 <div class="form-control" disabled>
-                                    @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                    @Html.CheckBox("VehicleStatus", Model.IsActive, new { @disabled = "disabled" })
                                     @Html.Label("Active", new { @id = "lblStatus" })
                                 </div>
                             }
