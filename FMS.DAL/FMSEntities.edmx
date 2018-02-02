@@ -892,12 +892,12 @@
           <Property Name="START_PERIOD" Type="date" />
           <Property Name="END_PERIOD" Type="date" />
           <Property Name="WITHD_CITY" Type="varchar" MaxLength="50" />
-          <Property Name="WITHD_ADDRESS" Type="varchar" MaxLength="100" />
+          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="1000" />
           <Property Name="WITHD_PIC" Type="varchar" MaxLength="50" />
           <Property Name="WITHD_PHONE" Type="varchar" MaxLength="50" />
           <Property Name="WITHD_DATETIME" Type="datetime" />
           <Property Name="DELIV_CITY" Type="varchar" MaxLength="50" />
-          <Property Name="DELIV_ADDRESS" Type="varchar" MaxLength="100" />
+          <Property Name="DELIV_ADDRESS" Type="nvarchar" MaxLength="1000" />
           <Property Name="DELIV_PIC" Type="varchar" MaxLength="50" />
           <Property Name="DELIV_PHONE" Type="varchar" MaxLength="50" />
           <Property Name="CHANGE_POLICE_NUMBER" Type="bit" />
@@ -1015,7 +1015,7 @@
           <Property Name="WITHD_PHONE" Type="nvarchar" MaxLength="50" />
           <Property Name="WITHD_DATE" Type="datetime" />
           <Property Name="WITHD_CITY" Type="nvarchar" MaxLength="50" />
-          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="50" />
+          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="1000" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PENALTY" Type="decimal" Precision="18" Scale="2" />
           <Property Name="REFUND_COST" Type="decimal" Precision="18" Scale="2" />
@@ -1202,7 +1202,7 @@
           <Property Name="START_DATE" Type="date" />
           <Property Name="END_DATE" Type="date" />
           <Property Name="CERTIFICATE_OF_OWNERSHIP" Type="nvarchar" MaxLength="50" />
-          <Property Name="COMMENTS" Type="nvarchar" MaxLength="50" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
@@ -3102,12 +3102,12 @@
           <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
           <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
           <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="WITHD_DATETIME" Type="DateTime" Precision="3" />
           <Property Name="DELIV_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DELIV_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DELIV_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="DELIV_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DELIV_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CHANGE_POLICE_NUMBER" Type="Boolean" />
@@ -3233,7 +3233,7 @@
           <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_DATE" Type="DateTime" Precision="3" />
           <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PENALTY" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="REFUND_COST" Type="Decimal" Precision="18" Scale="2" />
@@ -3431,7 +3431,7 @@
           <Property Name="START_DATE" Type="DateTime" Precision="0" />
           <Property Name="END_DATE" Type="DateTime" Precision="0" />
           <Property Name="CERTIFICATE_OF_OWNERSHIP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="COMMENTS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_TRA_CCF_MST_COMPLAINT_CATEGORY">
           <End Type="FMSModel.MST_COMPLAINT_CATEGORY" Role="MST_COMPLAINT_CATEGORY" Multiplicity="1" />

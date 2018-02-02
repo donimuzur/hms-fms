@@ -425,13 +425,13 @@ namespace FMS.BLL.Ctf
                                                             && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (ctfData.VehicleType == null ? "" : ctfData.VehicleType.ToUpper())).FirstOrDefault();
             if(fleetdata == null)
             {
-                throw new Exception("Vehicle is not found in Master Fleet or it's already InActive");
+                return rc;
             }
 
             var vendor = _vendorService.GetVendor().Where(x => x.VENDOR_NAME == fleetdata.VENDOR_NAME && x.IS_ACTIVE).FirstOrDefault();
             if (vendor == null)
             {
-                throw new Exception("Vendor is not found in Master Vendor");
+                return rc;
             }
 
             var vehTypeBenefit = _settingService.GetSetting().Where(x => x.SETTING_GROUP == "VEHICLE_TYPE" && x.SETTING_NAME == "BENEFIT").FirstOrDefault().SETTING_NAME;
@@ -1231,9 +1231,15 @@ namespace FMS.BLL.Ctf
         private void UpdateFleet(long id)
         {
             var CtfData = _ctfService.GetCtfById(id);
-
-            var vehicle = _fleetService.GetFleet().Where(x => x.POLICE_NUMBER == CtfData.POLICE_NUMBER && x.IS_ACTIVE && x.EMPLOYEE_ID == CtfData.EMPLOYEE_ID).FirstOrDefault();
-
+            
+            var vehicle = _fleetService.GetFleet().Where(x => (x.POLICE_NUMBER == null ? "" : x.POLICE_NUMBER.ToUpper()) == (CtfData.POLICE_NUMBER == null ? "" : CtfData.POLICE_NUMBER.ToUpper())
+                                                        && x.IS_ACTIVE && CtfData.EMPLOYEE_ID == x.EMPLOYEE_ID
+                                                        && (x.SUPPLY_METHOD == null ? "" : x.SUPPLY_METHOD.ToUpper()) == (CtfData.SUPPLY_METHOD == null ? "" : CtfData.SUPPLY_METHOD.ToUpper())
+                                                        && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (CtfData.VEHICLE_TYPE == null ? "" : CtfData.VEHICLE_TYPE.ToUpper())).FirstOrDefault();
+            if (vehicle == null)
+            {
+                return ;
+            }
             //change status completed
             var input = new CtfWorkflowDocumentInput();
             input.UserId = "SYSTEM";
@@ -1272,12 +1278,12 @@ namespace FMS.BLL.Ctf
                         FleetDto.CreatedDate = DateTime.Now;
                         FleetDto.ModifiedBy = null;
                         FleetDto.ModifiedDate = null;
+                        
+                        input.ActionType = Enums.ActionType.Completed;
+                        CtfWorkflow(input);
 
                         var IdleCar = Mapper.Map<MST_FLEET>(FleetDto);
                         _fleetService.save(IdleCar);
-
-                        input.ActionType = Enums.ActionType.Completed;
-                        CtfWorkflow(input);
                     }
                     else
                     {
@@ -1301,11 +1307,12 @@ namespace FMS.BLL.Ctf
                             FleetDto.EndDate = CtfData.EFFECTIVE_DATE;
                             FleetDto.MstFleetId = 0;
 
-                            var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
-                            _fleetService.save(TerminateCar);
-
+                           
                             input.ActionType = Enums.ActionType.Completed;
                             CtfWorkflow(input);
+
+                            var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
+                            _fleetService.save(TerminateCar);
 
                         }
                         else if (CtfData.MST_REASON.IS_PENALTY && (CtfData.PENALTY_PRICE != 0 && CtfData.PENALTY_PRICE != null) && (CtfData.PENALTY_PO_LINE != "" && CtfData.PENALTY_PO_LINE != null) && (CtfData.PENALTY_PO_NUMBER != "" && CtfData.PENALTY_PO_NUMBER != null))
@@ -1328,11 +1335,12 @@ namespace FMS.BLL.Ctf
                             FleetDto.EndDate = CtfData.EFFECTIVE_DATE;
                             FleetDto.MstFleetId = 0;
 
-                            var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
-                            _fleetService.save(TerminateCar);
-
                             input.ActionType = Enums.ActionType.Completed;
                             CtfWorkflow(input);
+
+                            var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
+                            _fleetService.save(TerminateCar);
+                            
                         }
                     }
                 }
@@ -1364,11 +1372,12 @@ namespace FMS.BLL.Ctf
                 FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;
                 FleetDto.MstFleetId = 0;
 
-                var ExtendCar = Mapper.Map<MST_FLEET>(FleetDto);
-                _fleetService.save(ExtendCar);
-
                 input.ActionType = Enums.ActionType.Completed;
                 CtfWorkflow(input);
+
+                var ExtendCar = Mapper.Map<MST_FLEET>(FleetDto);
+                _fleetService.save(ExtendCar);
+                
             }
 
         }
