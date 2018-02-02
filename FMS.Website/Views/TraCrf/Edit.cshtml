@@ -136,8 +136,8 @@
                                         else if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet
                                              && Model.Detail.VehicleType.ToUpper() == "WTC" && Model.Detail.DocumentStatus == (int)Enums.DocumentStatus.Draft)
                                         {
-                                            <a onclick="submit()" class="btn btn-primary">Send</a>
-                                            <a onclick="save()" class="btn btn-primary">Save</a>
+                                            <a onclick="submit()" class="btn btn-primary" id="SendDoc">Send</a>
+                                            <a onclick="save()" class="btn btn-primary" id="SaveDoc">Save</a>
                                             @*<input type="submit" value="Send" class="btn btn-primary" id="btnSend" />*@
                                             <input type="submit" value="Save" class="btn btn-primary" style="display: none" id="btnSubmit" />
                                         }
@@ -152,7 +152,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a onclick="submit()" class="btn btn-primary">Send</a>
+                                                    <a onclick="submit()" class="btn btn-primary" id="SendDoc">Send</a>
                                                 }
                                             }
 
@@ -163,7 +163,7 @@
                                             }
                                             else
                                             {
-                                                <a onclick="save()" class="btn btn-primary">Save</a>
+                                                <a onclick="save()" class="btn btn-primary" id="SaveDoc">Save</a>
                                             }
 
                                             @*<input type="submit" value="Send" class="btn btn-primary" id="btnSend" />*@
@@ -173,12 +173,12 @@
 
                                         @if (Model.Detail.CreatedBy == Model.CurrentLogin.USER_ID)
                                         {
-                                            <a onclick="cancel()" class="btn btn-primary">Cancel</a>
+                                            <a onclick="cancel()" class="btn btn-primary" >Cancel</a>
                                         }
 
                                         @if (Model.IsPersonalDashboard)
                                         {
-                                            <a href="@Url.Action("PersonalDashboard", "TraCrf")" class="btn btn-default">Back</a>
+                                            <a href="@Url.Action("PersonalDashboard", "TraCrf")" class="btn btn-default" >Back</a>
                                         }
                                         else
                                         {
