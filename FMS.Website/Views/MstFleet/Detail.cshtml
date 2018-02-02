@@ -327,6 +327,18 @@
                     @Html.TextBoxFor(model => model.Regional, new { @class = "form-control" ,@disabled = "disabled"})
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Sales Code<span class="red"></span></label>
+                    @Html.TextBoxFor(model => model.SalesCode, new { @class = "form-control", @disabled = "disabled" } )
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Document Number<span class="red"></span></label>
+                    @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
             <div class="col-md-12">
                 <a href="@Url.Action("Index", "MstFleet" )" class="btn btn-default">Back</a>
             </div>

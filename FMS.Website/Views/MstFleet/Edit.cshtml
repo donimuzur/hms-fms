@@ -970,6 +970,25 @@
                         }
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Sales Code<span class="red"></span></label>
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.SalesCode, new { @class = "form-control",@disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.SalesCode, new { @class = "form-control" })
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Document Number<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control" , @readonly = "readonly" })
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <input type="submit" value="Save" class="btn btn-primary" />
                     <a href="@Url.Action("Index", "MstFleet" )" class="btn btn-default">Back</a>
