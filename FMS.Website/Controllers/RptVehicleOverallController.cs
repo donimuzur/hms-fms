@@ -391,7 +391,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Vehicle Report");
-            slDocument.MergeWorksheetCells(1, 1, 1, 43);
+            slDocument.MergeWorksheetCells(1, 1, 1, 45);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -461,6 +461,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 41, "Total Monthly Charge");
             slDocument.SetCellValue(iRow, 42, "Function");
             slDocument.SetCellValue(iRow, 43, "Regional");
+            slDocument.SetCellValue(iRow, 44, "Sales Code");
+            slDocument.SetCellValue(iRow, 45, "Document Number");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -471,7 +473,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 43, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 45, headerStyle);
 
             return slDocument;
 
@@ -526,6 +528,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 41, data.TotalMonthlyCharge == null ? 0 : data.TotalMonthlyCharge.Value);
                 slDocument.SetCellValue(iRow, 42, data.Function);
                 slDocument.SetCellValue(iRow, 43, data.Regional);
+                slDocument.SetCellValue(iRow, 44, data.SalesCode);
+                slDocument.SetCellValue(iRow, 45, data.DocumentNumber);
                 iRow++;
             }
 
@@ -536,8 +540,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 43);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 43, valueStyle);
+            slDocument.AutoFitColumn(1, 45);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 45, valueStyle);
 
             return slDocument;
         }

@@ -467,6 +467,7 @@ namespace FMS.Website.Controllers
                                     dto.Assets = data.Assets;
                                     dto.ChasisNumber = data.ChasisNumber;
                                     dto.EngineNumber = data.EngineNumber;
+                                    dto.SalesCode = data.SalesCode;
                                 }
                                 else
                                 {
@@ -489,6 +490,7 @@ namespace FMS.Website.Controllers
                                     dto.Comments = data.Comments;
                                     dto.Assets = data.Assets;
                                     dto.MstFleetId = data.MstFleetId;
+                                    dto.SalesCode = data.SalesCode;
                                 }
                                 else
                                 {
@@ -509,6 +511,7 @@ namespace FMS.Website.Controllers
                                     dto.AssignedTo = data.AssignedTo;
                                     dto.Project = data.Project;
                                     dto.ProjectName = data.ProjectName;
+                                    dto.SalesCode = data.SalesCode;
                                     dto.MstFleetId = data.MstFleetId;
                                 }
                             }
@@ -646,7 +649,7 @@ namespace FMS.Website.Controllers
                         TotalMonthlyCharge = TotalMonthlyCharge.Trim(',');
                         item.TotalMonthlyCharge = Int64.Parse(String.IsNullOrEmpty(TotalMonthlyCharge) ? "0" : TotalMonthlyCharge);
                         item.ErrorMessage = string.Empty;
-
+                        item.SalesCode = dataRow[43];
                         if (item.EmployeeID != null) { 
                             var existEmp = _employeeBLL.GetByID(dataRow[2]);
 
@@ -714,7 +717,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Fleet");
-            slDocument.MergeWorksheetCells(1, 1, 1,47);
+            slDocument.MergeWorksheetCells(1, 1, 1,49);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -784,10 +787,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 41, "Total Monthly Charge");
             slDocument.SetCellValue(iRow, 42, "Function");
             slDocument.SetCellValue(iRow, 43, "Regional");
-            slDocument.SetCellValue(iRow, 44, "Created By");
-            slDocument.SetCellValue(iRow, 45, "Created Date");
-            slDocument.SetCellValue(iRow, 46, "Modified By");
-            slDocument.SetCellValue(iRow, 47, "Modified Date");
+            slDocument.SetCellValue(iRow, 44, "Sales Code");
+            slDocument.SetCellValue(iRow, 45, "Document Number");
+            slDocument.SetCellValue(iRow, 46, "Created By");
+            slDocument.SetCellValue(iRow, 47, "Created Date");
+            slDocument.SetCellValue(iRow, 48, "Modified By");
+            slDocument.SetCellValue(iRow, 49, "Modified Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -798,7 +803,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 47, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 49, headerStyle);
 
             return slDocument;
 
@@ -853,10 +858,12 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 41, data.TotalMonthlyCharge == null ? 0 : data.TotalMonthlyCharge.Value);
                 slDocument.SetCellValue(iRow, 42, data.Function);
                 slDocument.SetCellValue(iRow, 43, data.Regional);
-                slDocument.SetCellValue(iRow, 44, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 45, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
-                slDocument.SetCellValue(iRow, 46, data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 47, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 44, data.SalesCode);
+                slDocument.SetCellValue(iRow, 45, data.DocumentNumber);
+                slDocument.SetCellValue(iRow, 46, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 47, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
+                slDocument.SetCellValue(iRow, 48, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 49, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
           
 
                 iRow++;
@@ -869,8 +876,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 47);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 47, valueStyle);
+            slDocument.AutoFitColumn(1, 49);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 49, valueStyle);
 
             return slDocument;
         }

@@ -66,5 +66,11 @@ namespace FMS.BusinessObject.Dto
         public string CertificateOwnership{ get; set; }
 
         public bool IsActive { get; set; }
+
+
+        //-------Cr1 Field-------//
+        public string SalesCode { get; set; }
+        public string DocumentNumber { get; set; }
+        //-----------------------//
     }
 }
