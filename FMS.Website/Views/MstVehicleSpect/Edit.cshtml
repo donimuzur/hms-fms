@@ -78,6 +78,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="control-label">Image Name <span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.ImageS, new { @class = "form-control ", @disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="control-label">Status <span class="red"></span></label><br />
                         @Html.CheckBoxFor(model => model.IsActive)
                         @Html.Label("Active", new { @id = "lblStatus" })
