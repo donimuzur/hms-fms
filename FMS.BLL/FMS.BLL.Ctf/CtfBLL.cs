@@ -1261,6 +1261,7 @@ namespace FMS.BLL.Ctf
                         vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                         vehicle.MODIFIED_BY = "SYSTEM";
                         vehicle.MODIFIED_DATE = DateTime.Now;
+                        vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
 
                         _fleetService.save(vehicle);
 
@@ -1279,6 +1280,7 @@ namespace FMS.BLL.Ctf
                         FleetDto.ModifiedBy = null;
                         FleetDto.ModifiedDate = null;
                         FleetDto.IsActive = true;
+                        FleetDto.DocumentNumber = CtfData.DOCUMENT_NUMBER;
                         
                         input.ActionType = Enums.ActionType.Completed;
                         CtfWorkflow(input);
@@ -1294,6 +1296,7 @@ namespace FMS.BLL.Ctf
                             vehicle.IS_ACTIVE = false;
                             vehicle.MODIFIED_BY = "SYSTEM";
                             vehicle.MODIFIED_DATE = DateTime.Now;
+                            vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
 
                             _fleetService.save(vehicle);
 
@@ -1307,6 +1310,7 @@ namespace FMS.BLL.Ctf
                             FleetDto.IsActive = false;
                             FleetDto.EndDate = CtfData.EFFECTIVE_DATE;
                             FleetDto.MstFleetId = 0;
+                            FleetDto.DocumentNumber = CtfData.DOCUMENT_NUMBER;
 
                            
                             input.ActionType = Enums.ActionType.Completed;
@@ -1322,6 +1326,7 @@ namespace FMS.BLL.Ctf
                             vehicle.IS_ACTIVE = false;
                             vehicle.MODIFIED_BY = "SYSTEM";
                             vehicle.MODIFIED_DATE = DateTime.Now;
+                            vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
 
                             _fleetService.save(vehicle);
 
@@ -1334,6 +1339,7 @@ namespace FMS.BLL.Ctf
                             FleetDto.VehicleStatus = "TERMINATE";
                             FleetDto.IsActive = false;
                             FleetDto.EndDate = CtfData.EFFECTIVE_DATE;
+                            FleetDto.DocumentNumber = CtfData.DOCUMENT_NUMBER;
                             FleetDto.MstFleetId = 0;
 
                             input.ActionType = Enums.ActionType.Completed;
@@ -1352,6 +1358,7 @@ namespace FMS.BLL.Ctf
                 vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                 vehicle.MODIFIED_BY = "SYSTEM";
                 vehicle.MODIFIED_DATE = DateTime.Now;
+                vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
                 _fleetService.save(vehicle);
 
                 var FleetDto = Mapper.Map<FleetDto>(vehicle);
@@ -1371,6 +1378,7 @@ namespace FMS.BLL.Ctf
                 FleetDto.Price = extendDto.EXTEND_PRICE == null ? 0 : extendDto.EXTEND_PRICE.Value;
                 FleetDto.StartContract = vehicle.END_CONTRACT.Value.AddDays(1);
                 FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;
+                FleetDto.DocumentNumber = vehicle.DOCUMENT_NUMBER;
                 FleetDto.MstFleetId = 0;
 
                 input.ActionType = Enums.ActionType.Completed;
