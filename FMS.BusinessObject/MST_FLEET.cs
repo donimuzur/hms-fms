@@ -67,6 +67,8 @@ namespace FMS.BusinessObject
         public Nullable<bool> PROJECT { get; set; }
         public string PROJECT_NAME { get; set; }
         public Nullable<decimal> PRICE { get; set; }
+        public string SALES_CODE { get; set; }
+        public string DOCUMENT_NUMBER { get; set; }
     
         public virtual MST_EMPLOYEE MST_EMPLOYEE { get; set; }
     }

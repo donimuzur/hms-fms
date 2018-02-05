@@ -405,6 +405,8 @@ namespace FMS.Website.Controllers
             var a = ModelState;
             try
             {
+                
+                Model.EmployeeId = Model.EmployeeId.Split('-')[0].Trim();
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
                 Model.CreatedDate = DateTime.Now;
@@ -683,7 +685,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -750,6 +752,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.EmployeeId = model.EmployeeId.Split('-')[0].Trim();
                 if (model.BuyCostTotalStr != null)
                 {
                     model.BuyCostTotal = Convert.ToDecimal(model.BuyCostTotalStr.Replace(",", ""));
@@ -830,7 +833,7 @@ namespace FMS.Website.Controllers
                 return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
             //if user want to edit doc
-            if (CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeWTC", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -1058,6 +1061,7 @@ namespace FMS.Website.Controllers
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -1153,8 +1157,10 @@ namespace FMS.Website.Controllers
             catch (Exception exception)
             {
                 AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
+                model.ErrorMessage = exception.Message;
                 return View(model);
             }
         }
@@ -2051,6 +2057,7 @@ namespace FMS.Website.Controllers
             var VehicleList = _fleetBLL.GetFleet().Where(x => x.IsActive).ToList();
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var ReasonList = _reasonBLL.GetReason().Where(x => x.IsActive).ToList();
+            bool isBenefit = false;
 
             if (data != null)
             {
@@ -2061,6 +2068,10 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    if (dataRow[0] == "EMPLOYEE ID")
                     {
                         continue;
                     }
@@ -2090,8 +2101,19 @@ namespace FMS.Website.Controllers
                                                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
                                                                    && x.EmployeeID == item.EmployeeId).FirstOrDefault();
 
+
+
                         item.EndRendDate = Vehicle.EndContract;
                         item.VehicleLocation = Vehicle.City;
+
+                        var Employee = EmployeeList.Where(x => x.EMPLOYEE_ID == item.EmployeeId).FirstOrDefault();
+
+                        if ((item.VehicleType == null ? "" : item.VehicleType.ToUpper()) == "BENEFIT")
+                        {
+                            item.VehicleUsage = Vehicle.VehicleUsage;
+                            item.GroupLevel = Employee.GROUP_LEVEL;
+                        }
+
                         if (item.ExtendVehicle == true)
                         {
                             item.CtfExtend = new CtfExtendDto();
@@ -2118,7 +2140,7 @@ namespace FMS.Website.Controllers
                     }
 
                     #region ---- Save Data------
-                    if(!item.ExtendVehicle )
+                    if (!item.ExtendVehicle)
                     {
                         item.CreatedBy = CurrentUser.USER_ID;
                         item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
@@ -2129,14 +2151,16 @@ namespace FMS.Website.Controllers
 
                         var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
                         var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
-                        
+
                         var ReasonData = _reasonBLL.GetReasonById(item.Reason.Value);
 
                         var reasonStr = ReasonData.Reason;
                         var IsPenalty = ReasonData.IsPenalty;
                         var PenaltyForFleet = ReasonData.PenaltyForFleet;
                         var PenaltyForEmployee = ReasonData.PenaltyForEmplloyee;
-                        
+
+                        isBenefit = item.VehicleType == wtcType ? false : true;
+
                         var IsEndRent = reasonStr.ToLower() == "end rent";
 
                         //only check for benefit
@@ -2149,16 +2173,16 @@ namespace FMS.Website.Controllers
                         try
                         {
                             var CtfData = _ctfBLL.Save(CtfDto, CurrentUser);
-                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, isBenefit, item.DocumentNumber);
                             AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
                             if (IsEndRent)
                             {
-                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, false, item.DocumentNumber);
+                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Approve, null, true, isBenefit, item.DocumentNumber);
                                 AddMessageInfo("Submit Success", Enums.MessageInfoType.Success);
                             }
                             else
                             {
-                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, false, item.DocumentNumber);
+                                CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Submit, null, false, isBenefit, item.DocumentNumber);
                                 AddMessageInfo("Submit Success", Enums.MessageInfoType.Success);
                             }
                         }
@@ -2173,43 +2197,54 @@ namespace FMS.Website.Controllers
                     }
                     else
                     {
+                        try
+                        {
+                            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
 
-                        var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+                            var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
+                            var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
-                        var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
-                        var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
+                            settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
+                            var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
 
-                        settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
-                        var CopUsage = settingData.Where(x => x.SettingName.ToUpper() == "COP").FirstOrDefault().SettingName;
+                            item.CreatedBy = CurrentUser.USER_ID;
+                            item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
+                            item.CreatedDate = DateTime.Now;
+                            item.DocumentStatus = Enums.DocumentStatus.Extended;
+                            item.Reason = null;
+                            item.ModifiedBy = CurrentUser.USER_ID;
+                            item.ModifiedDate = DateTime.Now;
+                            item.ExtendVehicle = true;
 
+                            var TraCtfDto = Mapper.Map<TraCtfDto>(item);
+                            var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
 
-                        item.CreatedBy = CurrentUser.USER_ID;
-                        item.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;
-                        item.CreatedDate = DateTime.Now;
-                        item.DocumentStatus = Enums.DocumentStatus.Extended;
-                        item.Reason = null;
-                        item.ModifiedBy = CurrentUser.USER_ID;
-                        item.ModifiedDate = DateTime.Now;
-                        item.ExtendVehicle = true;
+                            isBenefit = item.VehicleType == wtcType ? false : true;
 
-                        var TraCtfDto = Mapper.Map<TraCtfDto>(item);
-                        var CtfData = _ctfBLL.Save(TraCtfDto, CurrentUser);
+                            AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, isBenefit, item.DocumentNumber);
 
-                        AddMessageInfo("Create Success", Enums.MessageInfoType.Success);
-                        CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Created, null, false, false, item.DocumentNumber);
-                        
-                        var TraCtfDtoExtend = new CtfExtendDto();
-                        TraCtfDtoExtend.ExtendPoliceNumber = item.CtfExtend.ExtendPoliceNumber;
-                        TraCtfDtoExtend.ExtedPoLine = item.CtfExtend.ExtedPoLine;
-                        TraCtfDtoExtend.ExtendPoNumber = item.CtfExtend.ExtendPoNumber;
-                        TraCtfDtoExtend.ExtendPrice = item.CtfExtend.ExtendPrice;
-                        TraCtfDtoExtend.NewProposedDate = item.CtfExtend.NewProposedDate;
-                        TraCtfDtoExtend.Reason = item.CtfExtend.Reason;
-                        TraCtfDtoExtend.TraCtfId = CtfData.TraCtfId;
+                            var TraCtfDtoExtend = new CtfExtendDto();
+                            TraCtfDtoExtend.ExtendPoliceNumber = item.CtfExtend.ExtendPoliceNumber;
+                            TraCtfDtoExtend.ExtedPoLine = item.CtfExtend.ExtedPoLine;
+                            TraCtfDtoExtend.ExtendPoNumber = item.CtfExtend.ExtendPoNumber;
+                            TraCtfDtoExtend.ExtendPrice = item.CtfExtend.ExtendPrice;
+                            TraCtfDtoExtend.NewProposedDate = item.CtfExtend.NewProposedDate;
+                            TraCtfDtoExtend.Reason = item.CtfExtend.Reason;
+                            TraCtfDtoExtend.TraCtfId = CtfData.TraCtfId;
 
-                        _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
-                        AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
-                        //CtfWorkflow(CtfDto.TraCtfId, Enums.ActionType.Extend, null, false, IsBenefitExtend, Model.DocumentNumber);
+                            _ctfExtendBLL.Save(TraCtfDtoExtend, CurrentUser);
+                            AddMessageInfo("Extend Success", Enums.MessageInfoType.Success);
+                            CtfWorkflow(CtfData.TraCtfId, Enums.ActionType.Extend, null, false, isBenefit, CtfData.DocumentNumber);
+                        }
+                        catch (Exception exp)
+                        {
+                            model.ErrorMessage = "Extend Failed, Error : " + exp.Message;
+                            model.MainMenu = _mainMenu;
+                            model.CurrentLogin = CurrentUser;
+                            model.IsPersonalDashboard = false;
+                            return View(model);
+                        }
                     }
                     #endregion
                 }
@@ -2222,8 +2257,9 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
+            var data = Id.Split('-')[0].Trim();
             var model = new CtfItem();
-            var employee = _employeeBLL.GetByID(Id);
+            var employee = _employeeBLL.GetByID(data);
             if (employee != null)
             {
                 model.EmployeeName = employee.FORMAL_NAME;
@@ -2239,11 +2275,11 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.EmployeeID == data).FirstOrDefault();
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.EmployeeID == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper()) && x.EmployeeID == data).FirstOrDefault();
             }
             if (vehicle != null)
             {
@@ -2262,7 +2298,16 @@ namespace FMS.Website.Controllers
         }
         public JsonResult GetEmployeeList()
         {
-            var model = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var model = _employeeBLL
+                .GetEmployee()
+                .Where(x => x.IS_ACTIVE)
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                .ToList();
             return Json(model, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -2283,11 +2328,11 @@ namespace FMS.Website.Controllers
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.PoliceNumber == Id).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (Id == null ? "" : Id.ToUpper())).FirstOrDefault();
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && x.PoliceNumber == Id && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).FirstOrDefault();
+                vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper() ) == (Id == null ? "" : Id.ToUpper()) && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).FirstOrDefault();
             }
             if (vehicle != null)
             {
@@ -2319,12 +2364,12 @@ namespace FMS.Website.Controllers
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper())).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (benefitType == null ? "" : benefitType.ToUpper()) && x.PoliceNumber != null).Select(x => new  {  x.PoliceNumber,  x.VehicleType}).ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper())).Select(x => new { x.PoliceNumber, x.VehicleType }).ToList();
+                var model = _fleetBLL.GetFleet().Where(x => x.IsActive == true && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (wtcType == null ? "" : wtcType.ToUpper()) && x.PoliceNumber != null ).Select(x => new {x.PoliceNumber , x.VehicleType}).ToList();
                 return Json(model, JsonRequestBehavior.AllowGet);
             }
         }
@@ -2346,6 +2391,10 @@ namespace FMS.Website.Controllers
                         continue;
                     }
                     if (dataRow[0] == "")
+                    {
+                        continue;
+                    }
+                    if (dataRow[0] == "EMPLOYEE ID")
                     {
                         continue;
                     }
@@ -2458,7 +2507,7 @@ namespace FMS.Website.Controllers
 
                         #region -- Vehicle & Employee Validation ----
 
-                        var Employee = EmployeeList.Where(x => x.EMPLOYEE_ID == item.EmployeeId ).FirstOrDefault();
+                        var Employee = EmployeeList.Where(x => x.EMPLOYEE_ID == item.EmployeeId).FirstOrDefault();
                         if (Employee == null)
                         {
                             item.ErrorMessage = "Employee is not found in Master Employee";
@@ -2473,12 +2522,12 @@ namespace FMS.Website.Controllers
                         }
 
                         #endregion
-                   
+
                         if (item.ExtendVehicle == true)
                         {
 
                             #region -- Extend --
-                            
+
                             item.CtfExtend = new CtfExtendDto();
 
                             if (dataRow[10] == "")

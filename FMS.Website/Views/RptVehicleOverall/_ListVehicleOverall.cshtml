@@ -1,149 +1,56 @@
-﻿@using FMS.Core
-@model FMS.Website.Models.VehicleOverallReportModel
+﻿@model FMS.Website.Models.FleetModel
 
-<table id="tbVehicle" class="table table-bordered table-striped">
+<input type="hidden" id="returnTotalData" value="@Model.TotalData" />
+<input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
+<input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
+<table id="tbFleet" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th style="min-width: 100px; text-align: center">Police Number</th>
-            <th style="min-width: 100px; text-align: center">Chasis Number</th>
-            <th style="min-width: 100px; text-align: center">Engine Number</th>
-            <th style="min-width: 100px; text-align: center">Employee Name</th>
-            <th style="min-width: 100px; text-align: center">Employee ID</th>
-            <th style="min-width: 100px; text-align: center">Cost Center</th>
-            <th style="min-width: 100px; text-align: center">Manufacture</th>
-            <th style="min-width: 100px; text-align: center">Model</th>
-            <th style="min-width: 100px; text-align: center">Series</th>
-            <th style="min-width: 100px; text-align: center">Transmission</th>
-            <th style="min-width: 100px; text-align: center">Body Type</th>
-            <th style="min-width: 100px; text-align: center">Fuel Type</th>
-            <th style="min-width: 100px; text-align: center">Branding</th>
-            <th style="min-width: 100px; text-align: center">Color</th>
-            <th style="min-width: 100px; text-align: center">Airbag</th>
-            <th style="min-width: 100px; text-align: center">Request Year</th>
-            <th style="min-width: 100px; text-align: center">Vehicle Type</th>
-            <th style="min-width: 100px; text-align: center">Vehicle Usage</th>
-            <th style="min-width: 100px; text-align: center">Project</th>
-            <th style="min-width: 100px; text-align: center">Project Name</th>
-            <th style="min-width: 100px; text-align: center">Start Contract</th>
-            <th style="min-width: 100px; text-align: center">End Contract</th>
-            <th style="min-width: 100px; text-align: center">Vendor Name</th>
-            <th style="min-width: 100px; text-align: center">City</th>
-            <th style="min-width: 100px; text-align: center">Supply Method</th>
-            <th style="min-width: 100px; text-align: center">Restitution</th>
-            <th style="min-width: 100px; text-align: center">Monthly HMS Installment</th>
-            <th style="min-width: 100px; text-align: center">VAT</th>
-            <th style="min-width: 100px; text-align: center">PO Number</th>
-            <th style="min-width: 100px; text-align: center">PO Line</th>
-            <th style="min-width: 100px; text-align: center">Car Group Level</th>
-            <th style="min-width: 100px; text-align: center">Employee Group Level</th>
-            <th style="min-width: 100px; text-align: center">Assigned To</th>
-            <th style="min-width: 100px; text-align: center">Address</th>
-            <th style="min-width: 100px; text-align: center">Start Date</th>
-            <th style="min-width: 100px; text-align: center">End Date</th>
-            <th style="min-width: 100px; text-align: center">Vehicle Status</th>
-            <th style="min-width: 100px; text-align: center">Certificate of Ownership</th>
-            <th style="min-width: 100px; text-align: center">Comments</th>
-            <th style="min-width: 100px; text-align: center">Assets</th>
-            <th style="min-width: 100px; text-align: center">Total Monthly Charge</th>
-            <th style="min-width: 100px; text-align: center">Function</th>
-            <th style="min-width: 100px; text-align: center">Regional</th>
+            <th>Police Number</th>
+            <th>Chasis Number</th>
+            <th>Engine Number</th>
+            <th style="min-width: 200px">Employee Name</th>
+            <th>Employee ID</th>
+            <th>Cost Center</th>
+            <th>Manufacturer</th>
+            <th>Model</th>
+            <th style="min-width: 200px">Series</th>
+            <th>Transmission</th>
+            <th>Body Type</th>
+            <th>Fuel Type</th>
+            <th>Branding</th>
+            <th>Color</th>
+            <th>Airbag</th>
+            <th>Request Year</th>
+            <th>Vehicle Type</th>
+            <th>Vehicle Usage</th>
+            <th>Project</th>
+            <th>Project Name</th>
+            <th style="min-width: 100px">Start Contract</th>
+            <th style="min-width: 100px">End Contract</th>
+            <th>Vendor Name</th>
+            <th>Basetown</th>
+            <th>Supply Method</th>
+            <th>Restitution</th>
+            <th>Monthly HMS Installment</th>
+            <th>Vat</th>
+            <th>PO Number</th>
+            <th>PO Line</th>
+            <th>Car Group Level</th>
+            <th>Employee Group Level</th>
+            <th>Assigned To</th>
+            <th style="min-width: 350px">Address</th>
+            <th style="min-width: 100px">Start Date</th>
+            <th style="min-width: 100px">End Date</th>
+            <th>Vehicle Status</th>
+            <th>Certificate of Ownership</th>
+            <th>Comments</th>
+            <th>Assets</th>
+            <th>Total Monthly Charge</th>
+            <th>Function</th>
+            <th>Regional</th>
+            <th>Sales Code</th>
+            <th>Document Number</th>
         </tr>
     </thead>
-    <thead class="filters">
-        <tr>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var data in Model.ListVehicle)
-        {
-            <tr>
-                <td>@Html.Raw(data.PoliceNumber)</td>
-                <td><a href="@Url.Action("DetailsVehicle", "RptVehicleOverall", new { @id =data.ChasisNumber, @filter = Model.SearchView})">@Html.Raw(data.ChasisNumber)</a></td>
-                <td>@Html.Raw(data.EngineNumber)</td>
-                <td>@Html.Raw(data.EmployeeName)</td>
-                <td>@Html.Raw(data.EmployeeId)</td>
-                <td>@Html.Raw(data.CostCenter)</td>
-                <td>@Html.Raw(data.Manufacture)</td>
-                <td>@Html.Raw(data.Models)</td>
-                <td>@Html.Raw(data.Series)</td>
-                <td>@Html.Raw(data.Transmission)</td>
-                <td>@Html.Raw(data.BodyType)</td>
-                <td>@Html.Raw(data.FuelType)</td>
-                <td>@Html.Raw(data.Branding)</td>
-                <td>@Html.Raw(data.Colour)</td>
-                <td>@Html.Raw(data.Airbag ==false ? "No" : "Yes" )</td>
-                <td>@Html.Raw(data.VehicleYear.HasValue ? data.VehicleYear.ToString() : "")</td>
-                <td>@Html.Raw(data.VehicleType)</td>
-                <td>@Html.Raw(data.VehicleUsage)</td>
-                <td>@Html.Raw(data.Project == true ? "Yes" : "No")</td>
-                <td>@Html.Raw(data.ProjectName)</td>
-                <td>@Html.Raw(data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"))</td>
-                <td>@Html.Raw(data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"))</td>
-                <td>@Html.Raw(data.Vendor)</td>
-                <td>@Html.Raw(data.City)</td>
-                <td>@Html.Raw(data.SupplyMethod)</td>
-                <td>@Html.Raw(data.Restitution == true ? "Yes" : "No")</td>
-                <td>@Html.Raw(data.MonthlyInstallment)</td>
-                <td>@Html.Raw(data.Vat)</td>
-                <td>@Html.Raw(data.PoNumber)</td>
-                <td>@Html.Raw(data.PoLine)</td>
-                <td>@Html.Raw(data.carGrouplevel)</td>
-                <td>@Html.Raw(data.EmployeeGroupLevel)</td>
-                <td>@Html.Raw(data.AssignedTo)</td>
-                <td>@Html.Raw(data.Address)</td>
-                <td>@Html.Raw(data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
-                <td>@Html.Raw(data.TerminationDate == null ? "" : data.TerminationDate.Value.ToString("dd-MMM-yyyy"))</td>
-                <td>@Html.Raw(data.VehicleStatus == false ? "InActive" : "Active")</td>
-                <td>@Html.Raw(data.CertificateOfOwnership)</td>
-                <td>@Html.Raw(data.Comments)</td>
-                <td>@Html.Raw(data.AssetsNumber)</td>
-                <td>@Html.Raw(data.TotalMonthlyInstallment)</td>
-                <td>@Html.Raw(data.Function)</td>
-                <td>@Html.Raw(data.Regional)</td>
-            </tr>
-        }
-    </tbody>
 </table>

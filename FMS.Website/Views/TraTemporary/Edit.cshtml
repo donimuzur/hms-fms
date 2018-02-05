@@ -106,18 +106,33 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label">Location</label>
-                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control", @required = "required" })
+                                                            @Html.DropDownListFor(model => model.Detail.LocationCity, Model.Detail.LocationCityList, "-- Please Select --", new { @class = "form-control chosen", @required = "required" })
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="control-label">CFM Idle Only</label>
-                                                            <div class="form-control">
-                                                                @Html.CheckBoxFor(model => model.Detail.IsIncludeCfmIdle)
-                                                                @Html.Label("Yes", new { @id = "lblStatus" })
+                                                    @if (Model.Detail.IsBenefit)
+                                                    {
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label">CFM Idle Only</label>
+                                                                <div class="form-control">
+                                                                    @Html.CheckBoxFor(model => model.Detail.IsIncludeCfmIdle)
+                                                                    @Html.Label("Yes", new { @id = "lblStatus" })
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-md-12" style="display:none">
+                                                            <div class="form-group">
+                                                                <label class="control-label">CFM Idle Only</label>
+                                                                <div class="form-control">
+                                                                    @Html.CheckBoxFor(model => model.Detail.IsIncludeCfmIdle)
+                                                                    @Html.Label("Yes", new { @id = "lblStatus" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -369,6 +384,8 @@
 <script src="~/Scripts/tempscript.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        $(".chosen").chosen();
+
         InitEmployee('@Url.Action("GetEmployeeList", "TraTemporary")', '@Url.Action("GetEmployee", "TraTemporary")');
 
         $("#btnConfirmSend").click(function () {

@@ -35,7 +35,6 @@ function selectVehicle(urlFunction) {
             url: urlFunction,
             data: {
                 vehType: vehType,
-                
                 employeeId: employee
             },
             success: function (data) {
@@ -57,7 +56,9 @@ function selectVehicle(urlFunction) {
                             '</tr>';
                         $('#tb-body-select-veh').append(tableData);
                     }
+                    
                 } else {
+                    $('#btnSelectVehicle').prop("disabled", true);
                     $('#tb-body-select-veh').html("");
                     $('#tb-body-select-veh').append('<tr><td style="text-align:center" colspan="8">no data<td></tr>');
                 }
@@ -87,6 +88,21 @@ function fillDropdownFromAjax(url, data, dropdown) {
     });
 }
 
+function fillDropdownAddress(url, data, textbox) {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        success: function (res) {
+            if (res.length > 0) {
+                for (var i = 0; i < res.length; i++) {
+                    $(textbox).val(res[i].Address);
+                }
+            }
+        }
+    });
+}
+
 function ToggleTemporary() {
     
     var expectedDate = $("#expectedToggle").val();
@@ -102,8 +118,9 @@ function ToggleTemporary() {
     }
 }
 
-function GetEmployee(urlGet,obj) {
-
+function GetEmployee(urlGet, obj) {
+    console.log("URL: " + urlGet);
+    console.log(obj);
     var Id = $(obj).val();
     $(".vehicle").val("");
     $.ajax({
@@ -158,6 +175,7 @@ function changeCity(obj) {
     var cityParam = $(obj).val();
     if (cityParam != null) {
         fillDropdownFromAjax('@Url.Action("GetLocationByCity","TraCrf")', { city: cityParam }, "#newOfficeLocation");
+        $("[name='Detail.DeliveryCity']").val(cityParam);
     }
 }
 
@@ -166,7 +184,11 @@ function GetRelocation(obj) {
 
     if (relType == "RELOCATE_UNIT") {
         $("#changeUnitButton").hide();
+        $("#SendDoc").css("display", "");
+        $("#SaveDoc").css("display", "");
     } else if (relType == "CHANGE_UNIT") {
+        $("#SendDoc").css("display", "none");
+        $("#SaveDoc").css("display", "none");
         $("#changeUnitButton").show();
     } else {
         $("#changeUnitButton").hide();
@@ -179,14 +201,14 @@ function InitEmployee(url,urlsearch) {
     
     var options = {
         url: url,
-        getValue: "EMPLOYEE_ID",
+        getValue: "DATA",
 
-        template: {
-            type: "description",
-            fields: {
-                description: "FORMAL_NAME"
-            }
-        },
+        //template: {
+        //    type: "description",
+        //    fields: {
+        //        description: "FORMAL_NAME"
+        //    }
+        //},
 
         list: {
             match: {
@@ -270,7 +292,8 @@ $(document).ready(function () {
         //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
         //                    '</tr>';
         //$('#tb-body-select-vehicle').html(tableData);
-
+        $("#SendDoc").css("display", "");
+        $("#SaveDoc").css("display", "");
         $('#selectvehmodal').modal('hide');
     });
 });

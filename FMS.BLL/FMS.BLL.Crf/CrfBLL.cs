@@ -345,7 +345,7 @@ namespace FMS.BLL.Crf
             {
                 EffectiveDateComplete = DateTime.Today
             });
-            var dtoList = Mapper.Map<List<TraCrfDto>>(dataToComplete);
+            var dtoList = Mapper.Map<List<TraCrfDto>>(dataToComplete.Where(x => !string.IsNullOrEmpty(x.PO_NUMBER)));
             foreach (var data in dtoList)
             {
                 try
@@ -354,7 +354,17 @@ namespace FMS.BLL.Crf
                     {
                         USER_ID = "SYSTEM"
                     });
+
+                    var datatosave = Mapper.Map<TRA_CRF>(data);
+                    datatosave.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Completed;
+                    datatosave.MODIFIED_BY = "SYSTEM";
+                    datatosave.MODIFIED_DATE = DateTime.Now;
+
+                    _CrfService.SaveCrf(datatosave, null);
+
                     SendEmailWorkflow(data,Enums.ActionType.Completed);
+
+                    _uow.SaveChanges();
                 }
                 catch (Exception ex)
                 {
@@ -383,8 +393,29 @@ namespace FMS.BLL.Crf
             else
             {
                 dataFleet.IS_ACTIVE = false;
+                                
                 try
                 {
+                    if ((data.VEHICLE_USAGE == null ? "" : data.VEHICLE_USAGE.ToUpper()) == "CFM" && (data.RelocationType == null ? "" : data.RelocationType.ToUpper()) == "CHANGE_UNIT")
+                    {
+                        var IdleVehicle = dataFleet;
+                        IdleVehicle.MST_FLEET_ID = 0;
+                        IdleVehicle.IS_ACTIVE = true;
+                        IdleVehicle.EMPLOYEE_ID = null;
+                        IdleVehicle.EMPLOYEE_NAME = null;
+                        IdleVehicle.ASSIGNED_TO = null;
+                        IdleVehicle.START_DATE = DateTime.Now;
+                        IdleVehicle.END_DATE = null;
+                        IdleVehicle.VEHICLE_STATUS = "LIVE";
+                        IdleVehicle.VEHICLE_USAGE = "CFM IDLE";
+                        IdleVehicle.CREATED_BY = "SYSTEM";
+                        IdleVehicle.CREATED_DATE = DateTime.Now;
+                        IdleVehicle.MODIFIED_BY = null;
+                        IdleVehicle.MODIFIED_DATE = null;
+
+                        _fleetService.save(IdleVehicle);
+                    }
+
                     _fleetService.save(dataFleet);
                  
                 }
@@ -531,7 +562,7 @@ namespace FMS.BLL.Crf
 
         public void SubmitCrf(TraCrfDto dataSubmit,Login currentUser)
         {
-            var data = _CrfService.GetById((int)dataSubmit.TRA_CRF_ID);
+            var data = Mapper.Map<TRA_CRF>(dataSubmit);
             var currentDocStatus = data.DOCUMENT_STATUS;
             if (currentUser.UserRole == Enums.UserRole.HR && data.VEHICLE_TYPE.ToUpper() == "BENEFIT")
             {

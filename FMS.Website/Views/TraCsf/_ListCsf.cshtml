@@ -13,6 +13,13 @@
             <th style="min-width: 120px">Reason</th>
             <th style="min-width: 120px">Effective Date</th>
             <th style="min-width: 120px">Regional</th>
+            <th style="min-width: 120px">Vehicle Usage</th>
+            <th style="min-width: 120px">Manufacturer</th>
+            <th style="min-width: 120px">Model</th>
+            <th style="min-width: 120px">Series</th>
+            <th style="min-width: 120px">Body Type</th>
+            <th style="min-width: 120px">Vendor</th>
+            <th style="min-width: 120px">Colour</th>
             <th style="min-width: 120px">Coordinator</th>
             <th style="min-width: 120px">Updated By</th>
             <th style="min-width: 150px">Updated Date</th>
@@ -28,6 +35,13 @@
                     }
                 }
             </th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -70,6 +84,13 @@
                 <td>@Html.Raw(data.Reason)</td>
                 <td>@Html.Raw(data.EffectiveDate.ToString("dd-MMM-yyyy"))</td>
                 <td>@Html.Raw(data.Regional)</td>
+                <td>@Html.Raw(data.VehicleUsageName)</td>
+                <td>@Html.Raw(data.Manufacturer)</td>
+                <td>@Html.Raw(data.Models)</td>
+                <td>@Html.Raw(data.Series)</td>
+                <td>@Html.Raw(data.BodyType)</td>
+                <td>@Html.Raw(data.VendorName)</td>
+                <td>@Html.Raw(data.Color)</td>
                 <td>@Html.Raw(data.CreateBy)</td>
                 <td>@Html.Raw(data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy)</td>
                 <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>

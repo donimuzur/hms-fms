@@ -13,17 +13,19 @@
         <i class="fa fa-upload"></i> Export
     </a>
 </div>
-<section class="content">
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div align="center">
+					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-    @using (Html.BeginForm("ExportMasterSalesVolume", "MstSalesVolume", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
-        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
-        @Html.HiddenFor(model => model.SearchViewExport.Type)
-        @Html.HiddenFor(model => model.SearchViewExport.Regional)
-    }
+<section class="content">
     <div class="wpanel">
         <div class="row">
             @using (Ajax.BeginForm("FilterData", "MstSalesVolume",
@@ -33,6 +35,7 @@
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "contenttable",
                     OnComplete = "setupDataTables",
+					OnBegin = "beginFilter"
                 }))
             {
                 <div class="col-md-3">
@@ -89,13 +92,41 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
     function ExportXls() {
-        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
-        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
-        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
-        $('#SearchViewExport_Type').val($('#SearchView_Type').val());
-        $('#SearchViewExport_Regional').val($('#SearchView_Regional').val());
-        $('#ExportToXls').submit();
+        console.log('Submitting');
+        var url = '@Url.Action("ExportMasterSalesVolume", "MstSalesVolume")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstSalesVolume")';
+        console.log(url);
+        var objToUpload =
+			{
+				SearchViewExport: {
+					MonthFrom: $('#SearchView_MonthFrom').val(),
+					MonthTo: $('#SearchView_MonthTo').val(),
+					YearFrom: $('#SearchView_YearFrom').val(),
+					YearTo: $('#SearchView_YearTo').val(),
+					Type: $('#SearchView_Type').val(),
+					Regional: $('#SearchView_Regional').val()
+				}
+			};
+        $.ajax({
+        	url: url,
+        	data: JSON.stringify(objToUpload),
+        	contentType: 'application/json; charset=utf-8',
+        	beforeSend: function () {
+        		$('#LoadingModal').show();
+        	},
+        	success: function (response, status, jqxhr) {
+        		console.log("DONE");
+        		window.location = getFileUrl + "?pathFile=" + response;
+        		$('#LoadingModal').hide();
+        	},
+        	error: function (jqhxr) {
+        		console.log("ERROR");
+        		console.log(jqhxr.responseText);
+        		$('#LoadingModal').hide();
+        	},
+        	type: 'POST'
+        });
+
     }
 
     $(document).on('click', '#btn-reset', function () {
@@ -108,7 +139,9 @@
 
         $("#btn-filter").trigger('click');
     });
-
+    function beginFilter() {
+    	$('#LoadingModal').show();
+    }
     function setupDataTables() {
         // DataTable
         var table = $('#tbSalesVolume').DataTable({
@@ -124,6 +157,7 @@
                     .draw();
             });
         });
+        $('#LoadingModal').hide();
     }
 
     $(function () {

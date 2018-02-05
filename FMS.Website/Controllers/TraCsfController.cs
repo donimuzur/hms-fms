@@ -229,7 +229,7 @@ namespace FMS.Website.Controllers
             try
             {
                 TraCsfDto item = new TraCsfDto();
-
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 item = AutoMapper.Mapper.Map<TraCsfDto>(model.Detail);
 
                 item.EMPLOYEE_ID_CREATOR = CurrentUser.EMPLOYEE_ID;
@@ -395,8 +395,8 @@ namespace FMS.Website.Controllers
         {
             try
             {
+                model.Detail.EmployeeId = model.Detail.EmployeeId.Split('-')[0].Trim();
                 var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
-
                 dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
                 dataToSave.MODIFIED_BY = CurrentUser.USER_ID;
                 dataToSave.MODIFIED_DATE = DateTime.Now;
@@ -489,6 +489,8 @@ namespace FMS.Website.Controllers
                         dataToSave.SERIES = item.Series;
                         dataToSave.BODY_TYPE = item.BodyType;
                         dataToSave.COLOUR = item.Color;
+                        dataToSave.VEHICLE_USAGE = item.VehicleUsage;
+                        dataToSave.ASSIGNED_TO = item.AssignedTo;
                         dataToSave.VENDOR_NAME = item.Vendor;
 
                         if (no > 0)
@@ -673,6 +675,47 @@ namespace FMS.Website.Controllers
             bool isSuccess = false;
             try
             {
+                var csfData = _csfBLL.GetCsfById(TraCsfIdApp);
+
+                if (string.IsNullOrEmpty(csfData.VENDOR_NAME))
+                {
+                    //get vendor name
+                    var vendorName = string.Empty;
+
+                    var dataAllPricelist = _priceListBLL.GetPriceList().Where(x => x.IsActive).ToList();
+
+                    var allVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
+
+                    var zonePriceList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive && x.Basetown == csfData.LOCATION_CITY)
+                                                                                        .OrderByDescending(x => x.ValidFrom).FirstOrDefault();
+
+                    var zonePriceListByUserCsf = zonePriceList == null ? string.Empty : zonePriceList.ZonePriceList;
+
+                    //select vendor from pricelist
+                    var dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (csfData.MANUFACTURER == null ? "" : csfData.MANUFACTURER.ToLower())
+                                                            && (x.Model == null ? "" : x.Model.ToLower()) == (csfData.MODEL == null ? "" : csfData.MODEL.ToLower())
+                                                            && (x.Series == null ? "" : x.Series.ToLower()) == (csfData.SERIES == null ? "" : csfData.SERIES.ToLower())
+                                                            && x.Year == csfData.CREATED_DATE.Year
+                                                            && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
+
+                    if (_settingBLL.GetByID(Convert.ToInt32(csfData.VEHICLE_TYPE)).SettingValue.ToLower() == "benefit")
+                    {
+                        dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (csfData.MANUFACTURER == null ? "" : csfData.MANUFACTURER.ToLower())
+                                                            && (x.Model == null ? "" : x.Model.ToLower()) == (csfData.MODEL == null ? "" : csfData.MODEL.ToLower())
+                                                            && (x.Series == null ? "" : x.Series.ToLower()) == (csfData.SERIES == null ? "" : csfData.SERIES.ToLower())
+                                                            && x.Year == csfData.CREATED_DATE.Year).FirstOrDefault();
+                    }
+
+                    var vendorId = dataVendor == null ? 0 : dataVendor.Vendor;
+
+                    var dataVendorDetail = allVendor.Where(x => x.MstVendorId == vendorId).FirstOrDefault();
+
+                    vendorName = dataVendor == null ? string.Empty : (dataVendorDetail == null ? string.Empty : dataVendorDetail.ShortName);
+
+                    csfData.VENDOR_NAME = vendorName;
+                    var saveResult = _csfBLL.Save(csfData, CurrentUser);
+                }
+
                 CsfWorkflow(TraCsfIdApp, Enums.ActionType.Approve, null);
                 isSuccess = true;
             }
@@ -906,17 +949,35 @@ namespace FMS.Website.Controllers
         [HttpPost]
         public JsonResult GetEmployee(string Id)
         {
-            var model = _employeeBLL.GetByID(Id);
+            var data = Id.Split('-');
+            var model = _employeeBLL.GetByID(data[0].Trim());
             return Json(model);
         }
 
         public JsonResult GetEmployeeList()
         {
-            var allEmployee = _employeeBLL.GetEmployee().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+            var allEmployee = _employeeBLL
+                .GetEmployee()
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X=>X.DATA)
+                    .ToList();
 
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                allEmployee = _employeeBLL.GetEmployee().Where(x => x.GROUP_LEVEL > 0).ToList().Select(x => new { x.EMPLOYEE_ID, x.FORMAL_NAME }).ToList().OrderBy(x => x.FORMAL_NAME);
+                allEmployee = _employeeBLL
+                    .GetEmployee()
+                    .Where(x => x.GROUP_LEVEL > 0)
+                    .ToList()
+                    .Select(x =>new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                    .ToList();
             }
 
             return Json(allEmployee, JsonRequestBehavior.AllowGet);
@@ -958,20 +1019,18 @@ namespace FMS.Website.Controllers
 
             foreach (var item in vehicleData)
             {
-                dataAllPricelist = dataAllPricelist.Where(x => x.ZonePriceList != null).ToList();
-
                 //select vendor from pricelist
-                var dataVendor = dataAllPricelist.Where(x => x.Manufacture.ToLower() == item.Manufacturer.ToLower()
-                                                        && x.Model.ToLower() == item.Models.ToLower()
-                                                        && x.Series.ToLower() == item.Series.ToLower()
+                var dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (item.Manufacturer == null ? "" : item.Manufacturer.ToLower())
+                                                        && (x.Model == null ? "" : x.Model.ToLower()) == (item.Models == null ? "" : item.Models.ToLower())
+                                                        && (x.Series == null ? "" : x.Series.ToLower()) == (item.Series == null ? "" : item.Series.ToLower())
                                                         && x.Year == createdDate.Year
-                                                        && x.ZonePriceList.ToLower() == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
+                                                        && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == zonePriceListByUserCsf.ToLower()).FirstOrDefault();
 
                 if (vehicleType == "benefit")
                 {
-                    dataVendor = dataAllPricelist.Where(x => x.Manufacture.ToLower() == item.Manufacturer.ToLower()
-                                                        && x.Model.ToLower() == item.Models.ToLower()
-                                                        && x.Series.ToLower() == item.Series.ToLower()
+                    dataVendor = dataAllPricelist.Where(x => (x.Manufacture == null ? "" : x.Manufacture.ToLower()) == (item.Manufacturer == null ? "" : item.Manufacturer.ToLower())
+                                                        && (x.Model == null ? "" : x.Model.ToLower()) == (item.Models == null ? "" : item.Models.ToLower())
+                                                        && (x.Series == null ? "" : x.Series.ToLower()) == (item.Series == null ? "" : item.Series.ToLower())
                                                         && x.Year == createdDate.Year).FirstOrDefault();
                 }
 
@@ -1244,6 +1303,8 @@ namespace FMS.Website.Controllers
                     item.Series = dataRow[2];
                     item.BodyType = dataRow[3];
                     item.Color = dataRow[4];
+                    item.VehicleUsage = dataRow[5];
+                    item.AssignedTo = dataRow[6];
                     item.Vendor = string.Empty;
 
                     model.Add(item);
@@ -1841,7 +1902,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document CSF" : "Open Document CSF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 11);
+            slDocument.MergeWorksheetCells(1, 1, 1, 18);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -1876,9 +1937,16 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Reason");
             slDocument.SetCellValue(iRow, 7, "Effective Date");
             slDocument.SetCellValue(iRow, 8, "Regional");
-            slDocument.SetCellValue(iRow, 9, "Coordinator");
-            slDocument.SetCellValue(iRow, 10, "Updated By");
-            slDocument.SetCellValue(iRow, 11, "Updated Date");
+            slDocument.SetCellValue(iRow, 9, "Vehicle Usage");
+            slDocument.SetCellValue(iRow, 10, "Manufacturer");
+            slDocument.SetCellValue(iRow, 11, "Model");
+            slDocument.SetCellValue(iRow, 12, "Series");
+            slDocument.SetCellValue(iRow, 13, "Body Type");
+            slDocument.SetCellValue(iRow, 14, "Vendor");
+            slDocument.SetCellValue(iRow, 15, "Colour");
+            slDocument.SetCellValue(iRow, 16, "Coordinator");
+            slDocument.SetCellValue(iRow, 17, "Updated By");
+            slDocument.SetCellValue(iRow, 18, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1889,7 +1957,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 11, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
 
             return slDocument;
 
@@ -1909,9 +1977,16 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 6, data.Reason);
                 slDocument.SetCellValue(iRow, 7, data.EffectiveDate.ToString("dd-MMM-yyyy"));
                 slDocument.SetCellValue(iRow, 8, data.Regional);
-                slDocument.SetCellValue(iRow, 9, data.CreateBy);
-                slDocument.SetCellValue(iRow, 10, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 11, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 9, data.VehicleUsageName);
+                slDocument.SetCellValue(iRow, 10, data.Manufacturer);
+                slDocument.SetCellValue(iRow, 11, data.Models);
+                slDocument.SetCellValue(iRow, 12, data.Series);
+                slDocument.SetCellValue(iRow, 13, data.BodyType);
+                slDocument.SetCellValue(iRow, 14, data.VendorName);
+                slDocument.SetCellValue(iRow, 15, data.Color);
+                slDocument.SetCellValue(iRow, 16, data.CreateBy);
+                slDocument.SetCellValue(iRow, 17, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 18, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -1923,8 +1998,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 11);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 11, valueStyle);
+            slDocument.AutoFitColumn(1, 18);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 18, valueStyle);
 
             return slDocument;
         }

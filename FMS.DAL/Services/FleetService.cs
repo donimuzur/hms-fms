@@ -63,7 +63,7 @@ namespace FMS.DAL.Services
         public List<MST_FLEET> GetFleetByParam(FleetParamInput input)
         {
             Expression<Func<MST_FLEET, bool>> queryFilterFleet = null;
-            queryFilterFleet = c => c.IS_ACTIVE == true;
+            queryFilterFleet = c => c.MST_FLEET_ID > 0;
             if (input != null)
             {
 
@@ -81,96 +81,71 @@ namespace FMS.DAL.Services
 
                 if (!string.IsNullOrEmpty(input.EmployeeId))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.EMPLOYEE_ID == input.EmployeeId);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.FormalName))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.EMPLOYEE_NAME == input.FormalName);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.PoliceNumber))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.EngineNumber))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.ChasisNumber))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.CHASIS_NUMBER == input.ChasisNumber);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.VehicleCity))
                 {
                     queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.VehicleCity);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.PoliceNumber))
                 {
-
-
                     queryFilterFleet = queryFilterFleet.And(c => c.POLICE_NUMBER == input.PoliceNumber);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.VehicleType))
                 {
-
                     queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_TYPE == input.VehicleType);
-
-
                 }
 
                 if (!string.IsNullOrEmpty(input.VehicleUsage))
                 {
-
-                    queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_USAGE == input.VehicleUsage);
-
-
+                    var listFunction = input.VehicleUsage.ToUpper().Split(',').ToList();
+                    queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.VEHICLE_USAGE.ToUpper()));
+                    //queryFilterFleet = queryFilterFleet.And(c => c.VEHICLE_USAGE == input.VehicleUsage);
                 }
 
 
                 if (!string.IsNullOrEmpty(input.BodyType))
                 {
-
-                    queryFilterFleet = queryFilterFleet.And(c => c.BODY_TYPE == input.BodyType);
-
-
+                    var listFunction = input.BodyType.ToUpper().Split(',').ToList();
+                    queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.BODY_TYPE.ToUpper()));
+                    //queryFilterFleet = queryFilterFleet.And(c => c.BODY_TYPE == input.BodyType);
                 }
 
                 if (!string.IsNullOrEmpty(input.SupplyMethod))
                 {
-
-                    queryFilterFleet = queryFilterFleet.And(c => c.SUPPLY_METHOD == input.SupplyMethod);
-
-
+                    var listFunction = input.SupplyMethod.ToUpper().Split(',').ToList();
+                    queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.SUPPLY_METHOD.ToUpper()));
+                    //queryFilterFleet = queryFilterFleet.And(c => c.SUPPLY_METHOD == input.SupplyMethod);
                 }
 
                 if (!string.IsNullOrEmpty(input.City))
                 {
-                    queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.City);
+                    var listFunction = input.City.ToUpper().Split(',').ToList();
+                    queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.CITY.ToUpper()));
+                    //queryFilterFleet = queryFilterFleet.And(c => c.CITY == input.City);
                 }
 
                 if (!string.IsNullOrEmpty(input.StartRent))
@@ -185,11 +160,25 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(input.Vendor))
                 {
-                    queryFilterFleet = queryFilterFleet.And(c => (c.VENDOR_NAME == null ? "" : c.VENDOR_NAME.ToUpper()) ==input.Vendor.ToUpper());
+                    var listFunction = input.Vendor.ToUpper().Split(',').ToList();
+                    queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.VENDOR_NAME.ToUpper()));
+                    //queryFilterFleet = queryFilterFleet.And(c => (c.VENDOR_NAME == null ? "" : c.VENDOR_NAME.ToUpper()) ==input.Vendor.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(input.Function))
                 {
-                    queryFilterFleet = queryFilterFleet.And(c => (c.VEHICLE_FUNCTION == null ? "" : c.VEHICLE_FUNCTION.ToUpper()) == input.Function.ToUpper());
+                    var listFunction = input.Function.ToUpper().Split(',').ToList();
+                    if (listFunction.Any(x=>x.ToLower() == "others"))
+                    {
+                        queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.VEHICLE_FUNCTION.ToUpper()) ||
+                                                            (c.VEHICLE_FUNCTION.ToUpper() != "SALES" && c.VEHICLE_FUNCTION.ToUpper() != "MARKETING"));
+                    }
+                    else
+                    {
+                        queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.VEHICLE_FUNCTION.ToUpper()));
+                    }
+
+                    //queryFilterFleet = queryFilterFleet
+                    //    .And(c => (c.VEHICLE_FUNCTION == null ? "" : c.VEHICLE_FUNCTION.ToUpper()) == input.Function.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(input.EndRent))
                 {
@@ -213,7 +202,9 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(input.Regional))
                 {
-                    queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
+                    var listFunction = input.Regional.ToUpper().Split(',').ToList();
+                    queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.REGIONAL.ToUpper()));
+                    //queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
                 }
             }
             return _fleetRepository.Get(queryFilterFleet, null, "").ToList();

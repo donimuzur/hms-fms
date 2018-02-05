@@ -90,6 +90,7 @@ namespace FMS.Website.Models
         public string VehicleTypeName { get; set; }
         public string VehicleCat { get; set; }
         public string VehicleUsage { get; set; }
+        public string VehicleUsageName { get; set; }
         public string SupplyMethod { get; set; }
         public string Project { get; set; }
         public string ProjectName { get; set; }
@@ -216,6 +217,9 @@ namespace FMS.Website.Models
         public string Series { get; set; }
         public string BodyType { get; set; }
         public string Color { get; set; }
+        public string VehicleUsage { get; set; }
+        public string VehicleUsageValue { get; set; }
+        public string AssignedTo { get; set; }
         public string Vendor { get; set; }
         public string MessageError { get; set; }
     }

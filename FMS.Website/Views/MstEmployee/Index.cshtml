@@ -19,10 +19,19 @@
         </a>
     }
 </div>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div align="center">
+					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <section class="content">
-    @using (Html.BeginForm("ExportMasterEmployee", "MstEmployee", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-    }
     <div class="wpanel">
         <div class="row">
             <div class="col-md-3">
@@ -177,7 +186,48 @@
     });
 
     function ExportXls() {
-        $('#ExportToXls').submit();
+    	console.log('Submitting');
+    	var url = '@Url.Action("ExportMasterEmployee", "MstEmployee")';
+    	var getFileUrl = '@Url.Action("GetExcelFile", "MstEmployee")';
+    	console.log(url);
+    	var objToUpload =
+			{
+				SearchView: {
+					Status: $('#SearchView_Status').val(),
+					EmployeeId: $('#SearchView_EmployeeId').val(),
+					FormalName: $('#SearchView_FormalName').val(),
+					PositionTitle: $('#SearchView_PositionTitle').val(),
+					Division: $('#SearchView_Division').val(),
+					Directorate:  $('#SearchView_Directorate').val(),
+					Address: $('#SearchView_Address').val(),
+					City: $("#SearchView_City").val(),
+					BaseTown: $("#SearchView_BaseTown").val(),
+					Company: $("#SearchView_Company").val(),
+					CostCenter: $("#SearchView_CostCenter").val(),
+					GroupLevel: $("#SearchView_GroupLevel").val(),
+					EmailAddress: $("#SearchView_EmailAddress").val(),
+					FlexPoint: $("#SearchView_FlexPoint").val()
+				}
+			};
+    	$.ajax({
+    		url: url,
+    		data: JSON.stringify(objToUpload),
+    		contentType:'application/json; charset=utf-8',
+    		beforeSend:function(){
+    			$('#LoadingModal').show();
+    		},
+    		success: function(response,status,jqxhr){
+    			console.log("DONE");
+    			window.location = getFileUrl + "?pathFile=" + response;
+    			$('#LoadingModal').hide();
+    		},
+    		error: function(jqhxr){
+    			console.log("ERROR");
+    			console.log(jqhxr.responseText);
+    			$('#LoadingModal').hide();
+    		},
+    		type:'POST'
+    	});
     }
 
     function ReloadDataTables() {
@@ -188,7 +238,7 @@
             });
         });
         setupDataTables();
-        $('.loading').hide();
+        $('#LoadingModal').hide();
     }
 
     function setupColumns() {
@@ -217,7 +267,8 @@
     }
 
     function setupDataTables(blFirst) {
-        // DataTable
+        
+    	// DataTable
         var table = null;
         var actionHtml = '';
 
@@ -251,7 +302,7 @@
                     $(actionRow).html(actionHtml);
                 },
                 "serverSide": true,
-                //"processing": true,
+                stateSave: true,
                 "paging": true,
                 "deferRender": true,
                 "columns": setupColumns(),
@@ -280,10 +331,12 @@
             }
         });
         table.on('preXhr', function(e, settings, data) {
-            $(".loading").show();
+        	$('#LoadingModal').show();
+
         });
         table.on('xhr', function(e, settings, data) {
-            $(".loading").hide();
+        	$('#LoadingModal').hide();
+
         });
     }
 

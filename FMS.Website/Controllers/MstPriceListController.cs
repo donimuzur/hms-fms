@@ -487,16 +487,16 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region export xls
-        public void ExportMasterPriceList()
+        public string ExportMasterPriceList()
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterPriceList();
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -506,7 +506,6 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-
         private string CreateXlsMasterPriceList()
         {
             //get data
@@ -544,7 +543,7 @@ namespace FMS.Website.Controllers
         {
             int iRow = 2;
 
-            slDocument.SetCellValue(iRow, 1, "Vendor Name");
+            slDocument.SetCellValue(iRow, 1, "Vendor");
             slDocument.SetCellValue(iRow, 2, "Vehicle Type");
             slDocument.SetCellValue(iRow, 3, "Vehicle Usage");
             slDocument.SetCellValue(iRow, 4, "Zone Price List");
@@ -552,8 +551,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 6, "Model");
             slDocument.SetCellValue(iRow, 7, "Series");
             slDocument.SetCellValue(iRow, 8, "Request Year");
-            slDocument.SetCellValue(iRow, 9, "Installment HMS");
-            slDocument.SetCellValue(iRow, 10, "Installment EMP");
+            slDocument.SetCellValue(iRow, 9, "Monthly Installment HMS");
+            slDocument.SetCellValue(iRow, 10, "Monthly Installment EMP");
             slDocument.SetCellValue(iRow, 11, "Created Date");
             slDocument.SetCellValue(iRow, 12, "Created By");
             slDocument.SetCellValue(iRow, 13, "Modified Date");

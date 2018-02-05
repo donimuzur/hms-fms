@@ -194,6 +194,7 @@ namespace FMS.Website.Controllers
             model = Mapper.Map<VehicleSpectItem>(data);
             model.MainMenu = _mainMenu;
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            model.ImageS = model.Image;
             model.Image = webRootUrl + pathUpload + model.Image;
             model = initEdit(model);
             model.CurrentLogin = CurrentUser;
@@ -213,6 +214,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model = initEdit(model);
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            model.ImageS = model.Image;
             model.Image = webRootUrl + pathUpload + model.Image;
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, MstVehicleSpectId);
@@ -435,16 +437,16 @@ namespace FMS.Website.Controllers
             return View("Upload", model);
         }
 
-        public void ExportMasterVehicleSpect()
+        public string ExportMasterVehicleSpect()
         {
             string pathFile = "";
-
             pathFile = CreateXlsMasterVehicleSpect();
-
+            return pathFile;
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -453,8 +455,8 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-        }
 
+        }
         private string CreateXlsMasterVehicleSpect()
         {
             //get data
@@ -465,7 +467,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, "Master Vehicle Spect");
-            slDocument.MergeWorksheetCells(1, 1, 1, 15);
+            slDocument.MergeWorksheetCells(1, 1, 1, 16);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -502,11 +504,12 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 8, "Colour");
             slDocument.SetCellValue(iRow, 9, "Group Level");
             slDocument.SetCellValue(iRow, 10, "Flex Point");
-            slDocument.SetCellValue(iRow, 11, "Created Date");
-            slDocument.SetCellValue(iRow, 12, "Created By");
-            slDocument.SetCellValue(iRow, 13, "Modified Date");
-            slDocument.SetCellValue(iRow, 14, "Modified By");
-            slDocument.SetCellValue(iRow, 15, "Status");
+            slDocument.SetCellValue(iRow, 11, "Image Name");
+            slDocument.SetCellValue(iRow, 12, "Created Date");
+            slDocument.SetCellValue(iRow, 13, "Created By");
+            slDocument.SetCellValue(iRow, 14, "Modified Date");
+            slDocument.SetCellValue(iRow, 15, "Modified By");
+            slDocument.SetCellValue(iRow, 16, "Status");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -517,7 +520,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 15, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 16, headerStyle);
 
             return slDocument;
 
@@ -539,17 +542,18 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 8, data.Colour);
                 slDocument.SetCellValue(iRow, 9, data.GroupLevel);
                 slDocument.SetCellValue(iRow, 10, data.FlexPoint);
-                slDocument.SetCellValue(iRow, 11, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 12, data.CreatedBy);
-                slDocument.SetCellValue(iRow, 13, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
-                slDocument.SetCellValue(iRow, 14, data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 11, data.Image);
+                slDocument.SetCellValue(iRow, 12, data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 13, data.CreatedBy);
+                slDocument.SetCellValue(iRow, 14, data == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 15, data.ModifiedBy);
                 if (data.IsActive)
                 {
-                    slDocument.SetCellValue(iRow, 15, "Active");
+                    slDocument.SetCellValue(iRow, 16, "Active");
                 }
                 else
                 {
-                    slDocument.SetCellValue(iRow, 15, "InActive");
+                    slDocument.SetCellValue(iRow, 16, "InActive");
                 }
 
                 iRow++;
@@ -563,7 +567,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
             slDocument.AutoFitColumn(1, 8);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 15, valueStyle);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 16, valueStyle);
 
             return slDocument;
         }

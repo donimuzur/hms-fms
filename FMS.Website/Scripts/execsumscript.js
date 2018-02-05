@@ -38,7 +38,7 @@
         $('#SumPtdByFunction').addClass('active');
     } else if ($('.title-page').html() == 'Executive Summary All') {
         $('#SummAll').addClass('active');
-    } else if ($('.title-page').html() == 'Executive Summary By Region') {
+    } else if ($('.title-page').html() == 'Executive Summary By Sales &amp; Marketing') {
         $('#SummRegion').addClass('active');
     }
 

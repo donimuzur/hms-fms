@@ -2,97 +2,134 @@
 @model FMS.Website.Models.SumPtdByFunctionModel
 
 @{
-    ViewBag.Title = Model.TitleForm;
+	ViewBag.Title = Model.TitleForm;
 }
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<style>
+	.datepicker {
+		margin-left: 15px;
+	}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+		$(document).ready(function () {
+			$('#SearchView_YearFrom').datepicker({
+			  minViewMode: 2,
+			  format: 'yyyy',
+			  autoclose: true,
+			  position: 'right bottom',
+			  container: '#xz'
+			});
+			$('#SearchView_YearTo').datepicker({
+				minViewMode: 2,
+				format: 'yyyy',
+				autoclose: true,
+				position: 'right bottom',
+				container: '#xy'
+			});
+		});
+</script>
 <div class="opt-content clearfloat">
-    <h5 class="title-page">@ViewBag.Title</h5>
-    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-download"></i> Export
-    </a>
+	<h5 class="title-page">@ViewBag.Title</h5>
+	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+		<i class="fa fa-download"></i> Export
+	</a>
 </div>
 <section class="content">
-    @using (Html.BeginForm(Model.TitleExport, "RptExecutiveSummary", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        @Html.HiddenFor(model => model.SearchViewExport.MonthFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.MonthTo)
-        @Html.HiddenFor(model => model.SearchViewExport.YearFrom)
-        @Html.HiddenFor(model => model.SearchViewExport.YearTo)
-        @Html.HiddenFor(model => model.SearchViewExport.VehicleType)
-        @Html.HiddenFor(model => model.SearchViewExport.Region)
-        @Html.HiddenFor(model => model.SearchViewExport.Function)
-    }
-    <div class="wpanel">
-        <div class="row">
-            @using (Ajax.BeginForm("FilterSumPtdByFunction", "RptExecutiveSummary",
-                new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    InsertionMode = InsertionMode.Replace,
-                    UpdateTargetId = "contenttable",
-                    OnComplete = "setupDataTables",
-                }))
-            {
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Month From</label>
-                        @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Year From</label>
-                        @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Month To</label>
-                        @Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Year To</label>
-                        @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Vehicle Type</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Regional</label>
-                        @Html.DropDownListFor(model => model.SearchView.Region, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="">Function</label>
-                        @Html.HiddenFor(model => model.SearchView.FunctionId)
-                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-md-12">
-                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-                </div>
-            }
-        </div>
-    </div>
-    <div id="contenttable" class="wpanel">
-        @Html.Partial("_ListSumPtdByFunction")
-    </div>
+	<div class="wpanel">
+		<div class="row">
+			@using (Ajax.BeginForm("FilterSumPtdByFunction", "RptExecutiveSummary",
+				new AjaxOptions
+				{
+					HttpMethod = "POST",
+					InsertionMode = InsertionMode.Replace,
+					UpdateTargetId = "contenttable",
+					OnComplete = "setupDataTables",
+					OnBegin = "LoadingShow",
+					OnSuccess = "LoadingHide",
+					OnFailure = "LoadingHide",
+				}))
+			{
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Month From</label>
+						@Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group" id="xz">
+						<label for="">Year From</label>
+						<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Month To</label>
+						@Html.DropDownListFor(model => model.SearchView.MonthTo, Model.SearchView.MonthList, new { @class = "form-control month" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group" id="xy">
+						<label for="">Year To</label>
+						<input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />
+
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Vehicle Type</label>
+						@Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Regional</label>
+						@Html.DropDownListFor(model => model.SearchView.Region, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="">Function</label>
+						@Html.HiddenFor(model => model.SearchView.FunctionId)
+						@Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-md-12">
+					<button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+					<button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+				</div>
+			}
+		</div>
+	</div>
+	<div id="contenttable" class="wpanel">
+		@Html.Partial("_ListSumPtdByFunction")
+	</div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div align="center">
+					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     function ExportXls() {
+        console.log('Submitting');
+
         var theList = "";
 
         $("li.search-choice span").each(function (e) {
@@ -101,14 +138,42 @@
 
         theList = theList.slice(0, -1);
 
-        $('#SearchViewExport_MonthFrom').val($('#SearchView_MonthFrom').val());
-        $('#SearchViewExport_MonthTo').val($('#SearchView_MonthTo').val());
-        $('#SearchViewExport_YearFrom').val($('#SearchView_YearFrom').val());
-        $('#SearchViewExport_YearTo').val($('#SearchView_YearTo').val());
-        $('#SearchViewExport_VehicleType').val($('#SearchView_VehicleType').val());
-        $('#SearchViewExport_Region').val($('#SearchView_Region').val());
-        $('#SearchViewExport_Function').val(theList);
-        $('#ExportToXls').submit();
+        var url = '@Url.Action(Model.TitleExport , "RptExecutiveSummary")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchViewExport: {
+			        MonthFrom: $('#SearchView_MonthFrom').val(),
+			        MonthTo: $('#SearchView_MonthTo').val(),
+			        YearFrom: $('#SearchView_YearFrom').val(),
+			        YearTo: $('#SearchView_YearTo').val(),
+			        VehicleType: $('#SearchView_VehicleType').val(),
+			        Region: $('#SearchView_Region').val(),
+			        Function: theList,
+			    }
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
     }
 
     function setupDataTables() {

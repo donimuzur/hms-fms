@@ -233,7 +233,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @Html.Partial("_ListVehicle")
+                                        @if (Model.Detail.IsBenefit)
+                                        {
+                                            @Html.Partial("_ListVehicle")
+                                        }
+                                        else
+                                        {
+                                            @Html.Partial("_ListVehicleWtc")
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -605,6 +612,7 @@
     }
 
     $("#btnSelectVehicle").click(function () {
+        var vehType = '@Model.Detail.IsBenefit';
         var tr = $("[name='selectvehicleradio']:checked").parents("tr");
         var manufacturer = $(tr).find("[name='manufacturer']").val();
         var model = $(tr).find("[name='model']").val();
@@ -625,6 +633,13 @@
             cglcfm = cgl;
         }
 
+        var rowWtc = '';
+
+        if (vehType == 'False') {
+            rowWtc = '<td></td>' +
+                     '<td></td>';
+        }
+
         var tableData = '<tr>' +
                             '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
                             '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
@@ -632,6 +647,7 @@
                             '<td><input type="hidden" name="Detail.BodyType" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
                             '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
                             '<td><input type="hidden" name="Detail.Color" id="Detail_Color" value="' + color + '"></input>' + color + '</td>' +
+                            rowWtc +
                             '<td><input type="hidden" name="Detail.StartPeriod" id="Detail_StartPeriod" value=""></input></td>' +
                             '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
                             '<td><input type="hidden" name="Detail.EndPeriod" id="Detail_EndPeriod" value=""></input></td>' +
@@ -659,6 +675,7 @@
     });
 
     function uploadXmlFile() {
+        var vehType = '@Model.Detail.IsBenefit';
         var postUrl = '@Url.Action("UploadFileVehicle", "TraCsf")';
         var fileName = $('[name="itemExcelFile"]').val().trim();
         var pos = fileName.lastIndexOf('.');
@@ -691,6 +708,13 @@
                 uploaditems = JSON.parse(response);
                 var error = "";
                 for (var i = 0; i < uploaditems.length; i++) {
+                    var rowWtc = '';
+
+                    if (vehType == 'False') {
+                        rowWtc = '<td><input type="hidden" id="VehicleList[' + i + ']_VehicleUsage" name="VehicleList[' + i + '].VehicleUsage" value="' + uploaditems[i].VehicleUsage + '"></input>' + uploaditems[i].VehicleUsageValue + '</td>' +
+                                 '<td><input type="hidden" id="VehicleList[' + i + ']_AssignedTo" name="VehicleList[' + i + '].AssignedTo" value="' + uploaditems[i].AssignedTo + '"></input>' + uploaditems[i].AssignedTo + '</td>';
+                    }
+
                     var tr = '<tr>' +
                     '<td><input type="hidden" id="VehicleList[' + i + ']_Manufacturer" name="VehicleList[' + i + '].Manufacturer" value="' + uploaditems[i].Manufacturer + '"></input>' + uploaditems[i].Manufacturer + '</td>' +
                     '<td><input type="hidden" id="VehicleList[' + i + ']_Models" name="VehicleList[' + i + '].Models" value="' + uploaditems[i].Models + '"></input>' + uploaditems[i].Models + '</td>' +
@@ -698,6 +722,7 @@
                     '<td><input type="hidden" id="VehicleList[' + i + ']_BodyType" name="VehicleList[' + i + '].BodyType" value="' + uploaditems[i].BodyType + '"></input>' + uploaditems[i].BodyType + '</td>' +
                     '<td><input type="hidden" id="VehicleList[' + i + ']_Vendor" name="VehicleList[' + i + '].Vendor" value="' + uploaditems[i].Vendor + '"></input>' + uploaditems[i].Vendor + '</td>' +
                     '<td><input type="hidden" id="VehicleList[' + i + ']_Color" name="VehicleList[' + i + '].Color" value="' + uploaditems[i].Color + '"></input>' + uploaditems[i].Color + '</td>' +
+                    rowWtc +
                     '<td></td>' +
                     '<td></td>' +
                     '<td><input type="hidden" id="VehicleList[' + i + ']_MessageError" name="VehicleList[' + i + '].MessageError" value="' + uploaditems[i].MessageError + '"></input>' + uploaditems[i].MessageError + '</td>' +

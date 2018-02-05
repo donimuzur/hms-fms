@@ -191,16 +191,17 @@ namespace FMS.Website.Controllers
 
 
         #region ------------ Export ---------------
-        public void ExportCfmIdle(CfmIdleReportModel model)
+        public string ExportCfmIdleReportGenerateReport(CfmIdleReportModel model = null)
         {
             string pathFile = "";
-
             pathFile = CreateXlsCfmIdle(model);
+            return pathFile;
 
+        }
+        public void GetExcelFile(string pathFile)
+        {
             var newFile = new FileInfo(pathFile);
-
             var fileName = Path.GetFileName(pathFile);
-
             string attachment = string.Format("attachment; filename={0}", fileName);
             Response.Clear();
             Response.AddHeader("content-disposition", attachment);
@@ -209,7 +210,27 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
+
         }
+        //public void ExportCfmIdle(CfmIdleReportModel model)
+        //{
+        //    string pathFile = "";
+
+        //    pathFile = CreateXlsCfmIdle(model);
+
+        //    var newFile = new FileInfo(pathFile);
+
+        //    var fileName = Path.GetFileName(pathFile);
+
+        //    string attachment = string.Format("attachment; filename={0}", fileName);
+        //    Response.Clear();
+        //    Response.AddHeader("content-disposition", attachment);
+        //    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        //    Response.WriteFile(newFile.FullName);
+        //    Response.Flush();
+        //    newFile.Delete();
+        //    Response.End();
+        //}
         private string CreateXlsCfmIdle(CfmIdleReportModel model)
         {
             //get data

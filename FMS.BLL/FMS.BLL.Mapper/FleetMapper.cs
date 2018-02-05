@@ -65,7 +65,8 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.COMMENTS))
                 .ForMember(dest => dest.CertificateOwnership, opt => opt.MapFrom(src => src.CERTIFICATE_OWNERSHIP))
                 .ForMember(dest => dest.Function, opt => opt.MapFrom(src => src.VEHICLE_FUNCTION))
-                .ForMember(dest => dest.IsActive , opt => opt.MapFrom(src => src.IS_ACTIVE));
+                .ForMember(dest => dest.IsActive , opt => opt.MapFrom(src => src.IS_ACTIVE))
+                .ForMember(dest => dest.SalesCode, opt => opt.MapFrom(src => src.SALES_CODE));
 
             AutoMapper.Mapper.CreateMap<FleetDto ,MST_FLEET  >().IgnoreAllNonExisting()
                .ForMember(dest => dest.MST_FLEET_ID , opt => opt.MapFrom(src => src.MstFleetId))
@@ -118,7 +119,8 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.ASSETS, opt => opt.MapFrom(src => src.Assets))
                 .ForMember(dest => dest.TOTAL_MONTHLY_CHARGE, opt => opt.MapFrom(src => src.TotalMonthlyCharge))
                 .ForMember(dest => dest.VAT_DECIMAL, opt => opt.MapFrom(src => src.VatDecimal))
-                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive))
+                .ForMember(dest => dest.SALES_CODE, opt => opt.MapFrom(src => src.SalesCode));
         }
     }
 }

@@ -28,6 +28,7 @@ namespace FMS.BusinessObject.Dto
         public string REGIONAL { get; set; }
         public string VEHICLE_CATEGORY { get; set; }
         public string VEHICLE_USAGE { get; set; }
+        public string VEHICLE_USAGE_NAME { get; set; }
         public string LOCATION_CITY { get; set; }
         public string LOCATION_ADDRESS { get; set; }
         public string POLICE_NUMBER { get; set; }

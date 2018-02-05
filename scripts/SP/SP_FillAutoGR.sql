@@ -1,3 +1,10 @@
+USE [FMS_HMS]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_FillAutoGR]    Script Date: 1/29/2018 5:13:37 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 
 
 -- =============================================
@@ -40,7 +47,7 @@ BEGIN
 	declare cursorFillAutoGR cursor for
 	select PO_NUMBER,PO_LINE,PO_DATE,CREATED_DATE,QTY ,IS_POSTED,START_CONTRACT,END_CONTRACT 
 	from(
-		select PO_NUMBER,PO_LINE,dbo.fGetGRDate(START_CONTRACT,MONTH(getdate()),YEAR(getdate())) as PO_DATE,
+		select PO_NUMBER,PO_LINE,dbo.fGetGRDate(START_CONTRACT,END_CONTRACT,MONTH(getdate()),YEAR(getdate())) as PO_DATE,
 		CURRENT_TIMESTAMP as CREATED_DATE,dbo.fGetGRQTY(START_CONTRACT,END_CONTRACT,MONTH(getdate()),YEAR(getdate())) as QTY ,
 		0 as IS_POSTED,START_CONTRACT,END_CONTRACT
 		from MST_FLEET 
@@ -109,7 +116,4 @@ BEGIN
 	deallocate cursorFillAutoGR;
 
 END
-
-GO
-
 

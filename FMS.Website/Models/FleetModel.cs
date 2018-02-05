@@ -164,5 +164,10 @@ namespace FMS.Website.Models
         public SelectList RegionalList { get; set; }
         public SelectList FunctionList { get; set; }
         public SelectList ProjectList { get; set; }
+
+        //--------------Field CR1--------------//
+        public string SalesCode { get; set; }
+        public string DocumentNumber { get; set; }
+        //-------------------------------------//
     }
 }    

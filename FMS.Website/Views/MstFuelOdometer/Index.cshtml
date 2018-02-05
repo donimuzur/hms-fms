@@ -13,10 +13,19 @@
         <i class="fa fa-upload"></i> Export
     </a>
 </div>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div align="center">
+					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
-    @using (Html.BeginForm("ExportMasterFuelOdometer", "MstFuelOdometer", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-    }
     <div class="wpanel">
         <div class="row">
             <div class="col-md-3">
@@ -190,10 +199,6 @@
 </section>
 <!-- /.content -->
 
-<script type="text/javascript">
-
-</script>
-
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript" language="javascript" class="init">
     $(document).ready(function () {
@@ -207,7 +212,47 @@
     });
 
     function ExportXls() {
-        $('#ExportToXls').submit();
+    	console.log('Submitting');
+    	var url = '@Url.Action("ExportMasterFuelOdometer", "MstFuelOdometer")';
+    	var getFileUrl = '@Url.Action("GetExcelFile", "MstFuelOdometer")';
+    	console.log(url);
+    	var objToUpload =
+			{
+				SearchView: {
+					VehicleType: $('#SearchView_VehicleType').val(),
+					PoliceNumber: $('#SearchView_PoliceNumber').val(),
+					EmployeeId: $('#SearchView_EmployeeId').val(),
+					EmployeeName: $('#SearchView_EmployeeName').val(),
+					EcsRmbTransId: $('#SearchView_EcsRmbTransId').val(),
+					SeqNumber:  $('#SearchView_SeqNumber').val(),
+					ClaimType: $('#SearchView_ClaimType').val(),
+					DateOfCost: $("#SearchView_DateOfCost").val(),
+					CostCenter: $("#SearchView_CostCenter").val(),
+					LastKM: $("#SearchView_LastKM").val(),
+					ClaimComment: $("#SearchView_ClaimComment").val(),
+					PostedTime: $("#SearchView_PostedTime").val(),
+					Status: $("#SearchView_Status").val()
+				}				
+			};
+    	$.ajax({
+    		url: url,
+    		data: JSON.stringify(objToUpload),
+    		contentType:'application/json; charset=utf-8',
+    		beforeSend:function(){
+    			$('#LoadingModal').show();
+    		},
+    		success: function(response,status,jqxhr){
+    			console.log("DONE");
+    			window.location = getFileUrl + "?pathFile=" + response;
+    			$('#LoadingModal').hide();
+    		},
+    		error: function(jqhxr){
+    			console.log("ERROR");
+    			console.log(jqhxr.responseText);
+    			$('#LoadingModal').hide();
+    		},
+    		type:'POST'
+    	});
     }
 
     jQuery(function ($) {
@@ -239,16 +284,10 @@
 
         $(document).on('click', '#btn-reset', function () {
             $('input[type=text]').val('');
-            $("select").val('');
-            $("select").selectpicker("refresh");
+            $('select').val('').trigger('chosen:updated');
             setupDataTables();
         });
     });
-
-    function ExportXls() {
-        $('#ExportToXls').submit();
-    }
-
     function setupColumns() {
         var columns = [
             { "data": null, "orderable" : false },
@@ -328,6 +367,7 @@
                 $(actionRow).html(actionHtml);
             },
             "serverSide": true,
+            stateSave: true,
             //"processing": true,
             "paging": true,
             "deferRender": true,
@@ -355,11 +395,11 @@
         });
 
         table.on('preXhr', function(e, settings, data) {
-            $(".loading").show();
+        	$('#LoadingModal').show();
         });
 
         table.on('xhr', function(e, settings, data) {
-            $(".loading").hide();
+        	$('#LoadingModal').hide();
         });
     }
 </script>

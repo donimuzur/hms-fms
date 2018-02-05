@@ -1,11 +1,6 @@
 ﻿@model FMS.Website.Models.GsModel
-
-
 <div class="opt-content clearfloat">
-    <h5 class="title-page">
-        @Html.Raw("GS Report")
-
-    </h5>
+    <h5 class="title-page">GS Report</h5>
     @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
             <i class="fa fa-download"></i> Import
         </a>*@
@@ -15,11 +10,8 @@
             <i class="fa fa-upload"></i> Export
         </a>
     }
-
 </div>
 <section class="content">
-
-
     @using (Html.BeginForm("ReportGs", "MstGs", FormMethod.Post, new { @id = "ExportToXls" }))
     {
         <div class="wpanel">
@@ -37,7 +29,6 @@
                     <th>Police Number</th>
                     <th>Group Level</th>
                     <th>Location</th>
-
                     <th>GS Request Date</th>
                     <th>GS Fulfillment Date</th>
                     <th>Gs Manufacturer</th>
@@ -86,7 +77,6 @@
                         <td>@Html.Raw(data.PoliceNumber)</td>
                         <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.Location)</td>
-
                         <td>@Html.Raw(data.GsRequestDates)</td>
                         <td>@Html.Raw(data.GsFullfillmentDates)</td>
                         <td>@Html.Raw(data.GsManufacturer)</td>
@@ -100,57 +90,97 @@
                         <td>@Html.Raw(data.KpiFulfillment)</td>
                         <td>@Html.Raw(data.RentTime)</td>
                         <td>@Html.Raw(data.Remark)</td>
-
-
-
                     </tr>
                 }
-
             </tbody>
         </table>
     </div>
+</section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Gs.js"></script>
+<script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
 
-    <script type="text/javascript">
     function ExportXls() {
-        //$('#ExportToXls').submit();
-        $("#ExportToXls").attr("action", '@Url.Action("ExportReportGs", "MstGs")');
-            $("#btnSubmit").trigger('click');
-        }
+        console.log('Submitting');
+        var url = '@Url.Action("ExportGsReportGenerateReport", "MstGs")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstGs")';
+        console.log(url);
+        var objToUpload =
+			{
+			    FilterReport: {
+			        StartDateBegin: $('#FilterReport_StartDateBegin').val(),
+			        StartDateEnd: $('#FilterReport_StartDateEnd').val(),
+			        EndDateBegin: $('#FilterReport_EndDateBegin').val(),
+			        EndDateEnd: $('#FilterReport_EndDateEnd').val(),
+			        VehicleUsage: $('#FilterReport_VehicleUsage').val(),
+			        Location: $('#FilterReport_Location').val(),
+			    }
 
-
-        function filter() {
-            $("#ExportToXls").attr("action", '@Url.Action("ReportGs", "MstGs")');
-            $("#btnSubmit").trigger('click');
-        }
-        
-        function reset() {
-            $(".form-control").val("");
-        }
-
-        $(function () {
-            // DataTable
-            var table = $('#tbEpaf').DataTable({
-                "dom": 'lf<"table-overflow"t>pi',
-                orderCellsTop: true
-            });
-
-            // Apply the search
-            table.columns().eq(0).each(function (colIdx) {
-                $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                    table
-                        .column(colIdx)
-                        .search(this.value)
-                        .draw();
-                });
-            });
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
         });
 
-    </script>
+    }
 
+    function filter() {
+        LoadingShow();
+        $("#ExportToXls").attr("action", '@Url.Action("ReportGs", "MstGs")');
+        $("#btnSubmit").trigger('click');
+    }
 
+    function reset() {
+        $(".form-control").val("");
+    }
 
+    $(function () {
+        // DataTable
+        var table = $('#tbEpaf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
 
-
-
-</section>
+</script>

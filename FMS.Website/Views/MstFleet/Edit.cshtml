@@ -129,7 +129,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Employee Group Level></label>
+                        <label class="control-label">Employee Group Level</label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             @Html.TextBoxFor(model => model.GroupLevel, new { @class = "form-control", @readonly = "readonly" })
@@ -636,7 +636,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">City<span class="red">*</span></label>
+                        <label class="control-label">Basetown<span class="red">*</span></label>
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             if (Model.VehicleType.ToLower() == "benefit")
@@ -873,7 +873,7 @@
                         @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
                         {
                             <div class="form-control" disabled>
-                                @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                @Html.CheckBox("VehicleStatus",Model.IsActive, new { @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.IsActive)
                                 @Html.Label("Active", new { @id = "lblStatus" })
                             </div>
@@ -884,7 +884,8 @@
                             if (Model.VehicleType.ToLower() == "benefit")
                             {
                                 <div class="form-control" disabled>
-                                    @Html.CheckBoxFor(model => model.IsActive, new { @disabled = "disabled" })
+                                    @Html.CheckBox("VehicleStatus", Model.IsActive, new { @disabled = "disabled" })
+                                    @Html.HiddenFor(model => model.IsActive)
                                     @Html.Label("Active", new { @id = "lblStatus" })
                                 </div>
                             }
@@ -968,6 +969,25 @@
                             }
                             
                         }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Sales Code<span class="red"></span></label>
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        {
+                            @Html.TextBoxFor(model => model.SalesCode, new { @class = "form-control",@disabled = "disabled" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(model => model.SalesCode, new { @class = "form-control" })
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Document Number<span class="red"></span></label>
+                        @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control" , @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="col-md-12">

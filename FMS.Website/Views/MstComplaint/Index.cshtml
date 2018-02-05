@@ -14,11 +14,18 @@
     </a>
 </div>
 <section class="content" ng-controller="MSTCCtrl" ng-init="init()">
+	<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div align="center">
+						<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    @using (Html.BeginForm("ExportMasterComplaintCategory", "MstComplaint", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-
-    }
 
     <div class="wpanel">
         <table id="tbComplaintCategory" class="table table-bordered table-striped">
@@ -112,14 +119,35 @@
     });
 
     function ExportXls() {
-        $('#ExportToXls').submit();
+    	console.log('Submitting');
+    	var url = '@Url.Action("ExportMasterComplaintCategory", "MstComplaint")';
+    	var getFileUrl = '@Url.Action("GetExcelFile", "MstComplaint")';
+    	console.log(url);
+    	$.ajax({
+    		url: url,
+    		beforeSend: function () {
+    			$('#LoadingModal').show();
+    		},
+    		success: function (response, status, jqxhr) {
+    			console.log("DONE");
+    			window.location = getFileUrl + "?pathFile=" + response;
+    			$('#LoadingModal').hide();
+    		},
+    		error: function (jqhxr) {
+    			console.log("ERROR");
+    			console.log(jqhxr.responseText);
+    			$('#LoadingModal').hide();
+    		},
+    		type: 'POST'
+    	});
+
     }
 
     $(function () {
         // DataTable
         var table = $('#tbComplaintCategory').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+            orderCellsTop: true,
         });
 
         // Apply the search
