@@ -71,7 +71,7 @@
             </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
-                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
                     <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
                 </div>
             </div>
@@ -151,107 +151,114 @@
         $(".select").val('');
         $(".text").val('');
 
-        $("#btn-filter").trigger('click');
+        setupDataTables();
     });
+
+    function setupColumns() {
+        var columns = [
+            { "data": "PoliceNumber", "orderable": false },
+            { "data": "Liter", "orderable": false, "render": function (datum, type, record) {
+                return (datum) ? ThausandSeperator(datum, 2) : "";
+            } 
+            },
+            { "data": "Odometer", "orderable": false,"render": function (datum, type, record) {
+                return (datum) ? ThausandSeperator(datum, 2) : "";
+            } 
+            },
+            { "data": "Usage", "orderable": false ,"render": function (datum, type, record) {
+                return (datum) ? ThausandSeperator(datum, 2) : "";
+            } 
+            },
+            { "data": "kmlt", "orderable": false,"render": function (datum, type, record) {
+                return (datum) ? ThausandSeperator(datum, 2) : "";
+            } 
+            },
+            { "data": "Cost", "orderable": false ,"render": function (datum, type, record) {
+                return (datum) ? ThausandSeperator(datum, 2) : "";
+            } 
+            },
+            { "data": "FuelType", "orderable": false },
+            { "data": "CostCenter", "orderable": false },
+            { "data": "Function", "orderable": false },
+            { "data": "Manufacturer", "orderable": false },
+            { "data": "Models", "orderable": false },
+            { "data": "Series", "orderable": false },
+            { "data": "BodyType", "orderable": false },
+            { "data": "VehicleType", "orderable": false },
+            { "data": "VehicleUsage", "orderable": false },
+            { "data": "Location", "orderable": false },
+            { "data": "Regional", "orderable": false },
+            { "data": "Month", "orderable": false },
+            { "data": "ReportYear", "orderable": false }
+        ];
+        return columns;
+    }
+
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbRptFuel')) {
+            table = $('#tbRptFuel').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+        table = $('#tbRptFuel').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "serverSide": true,
+            stateSave: true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchFuelAjax", "RptFuel")",
+            "type": "POST",
+            "data": function(d) {
+                return $.extend({}, d, {
+                    "MonthFrom": $('#SearchView_MonthFrom').val(),
+                    "YearFrom": $('#SearchView_YearFrom').val(),
+                    "MonthTo": $('#SearchView_MonthTo').val(),
+                    "YearTo": $('#SearchView_YearTo').val(),
+                    "VehicleType": $('#SearchView_VehicleType').val(),
+                    "CostCenter": $('#SearchView_CostCenter').val(),
+                    "Function": $('#SearchView_Function').val(),
+                    "Regional": $('#SearchView_Regional').val(),
+                    "PoliceNumber": $('#SearchView_PoliceNumber').val()
+                });
+            }
+        }
+        });
+
+    table.on('preXhr', function(e, settings, data) {
+        $('#LoadingModal').show();
+    });
+
+    table.on('xhr', function(e, settings, data) {
+        $('#LoadingModal').hide();
+    });
+    }
 
     $(function () {
         setupDataTables();
 
+        
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbRptFuel').DataTable();
+
+            table.ajax.reload();
+        });
+
         $('.year').datetimepicker({
             format: 'YYYY'
         });
-
-        function setupColumns() {
-            var columns = [
-                { "data": "PoliceNumber", "orderable": false },
-                { "data": "Liter", "orderable": false, "render": function (datum, type, record) {
-                    return (datum) ? ThausandSeperator(datum, 2) : "";
-                    } 
-                },
-                { "data": "Odometer", "orderable": false,"render": function (datum, type, record) {
-                    return (datum) ? ThausandSeperator(datum, 2) : "";
-                    } 
-                },
-                { "data": "Usage", "orderable": false ,"render": function (datum, type, record) {
-                    return (datum) ? ThausandSeperator(datum, 2) : "";
-                    } 
-                },
-                { "data": "kmlt", "orderable": false,"render": function (datum, type, record) {
-                    return (datum) ? ThausandSeperator(datum, 2) : "";
-                    } 
-                },
-                { "data": "Cost", "orderable": false ,"render": function (datum, type, record) {
-                    return (datum) ? ThausandSeperator(datum, 2) : "";
-                    } 
-                },
-                { "data": "FuelType", "orderable": false },
-                { "data": "CostCenter", "orderable": false },
-                { "data": "Function", "orderable": false },
-                { "data": "Manufacturer", "orderable": false },
-                { "data": "Models", "orderable": false },
-                { "data": "Series", "orderable": false },
-                { "data": "BodyType", "orderable": false },
-                { "data": "VehicleType", "orderable": false },
-                { "data": "VehicleUsage", "orderable": false },
-                { "data": "Location", "orderable": false },
-                { "data": "Regional", "orderable": false },
-                { "data": "Month", "orderable": false },
-                { "data": "ReportYear", "orderable": false }
-            ];
-            return columns;
-        }
-
-        function setupDataTables() {
-            var actionHtml = '';
-            var table = null;
-
-            if ($.fn.dataTable.isDataTable('#tbRptFuel')) {
-                table = $('#tbRptFuel').DataTable();
-                table.destroy();
-            }
-
-            var WriteAccess = @Model.WriteAccess;
-            var ReadAccess = @Model.ReadAccess;
-
-            table = $('#tbRptFuel').DataTable({
-                "sDom": 'lf<"table-overflow"t>pi',
-                "sPaginationType": "full_numbers",
-                "language": {
-                    "zeroRecords": "No records found",
-                    "infoFiltered": "(filtered from _MAX_ total records)"
-                },
-                "serverSide": true,
-                stateSave: true,
-                //"processing": true,
-                "paging": true,
-                "deferRender": true,
-                "columns": setupColumns(),
-                "ajax": {
-                    "url": "@Url.Action("SearchRptFuelAjax", "RptFuel")",
-                "type": "POST",
-                "data": function(d) {
-                    return $.extend({}, d, {
-                        "MonthFrom": $('#SearchView_MonthFrom').val(),
-                        "YearFrom": $('#SearchView_YearFrom').val(),
-                        "MonthTo": $('#SearchView_MonthTo').val(),
-                        "YearTo": $('#SearchView_YearTo').val(),
-                        "VehicleType": $('#SearchView_VehicleType').val(),
-                        "CostCenter": $('#SearchView_CostCenter').val(),
-                        "Function": $('#SearchView_Function').val(),
-                        "Regional": $('#SearchView_Regional').val(),
-                        "PoliceNumber": $('#SearchView_PoliceNumber').val()
-                    });
-                }
-            }
-            });
-
-        table.on('preXhr', function(e, settings, data) {
-            $('#LoadingModal').show();
-        });
-
-        table.on('xhr', function(e, settings, data) {
-            $('#LoadingModal').hide();
-        });
-    }
     });
 </script>

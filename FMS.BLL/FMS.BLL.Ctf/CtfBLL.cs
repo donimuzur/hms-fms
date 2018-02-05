@@ -1278,6 +1278,7 @@ namespace FMS.BLL.Ctf
                         FleetDto.CreatedDate = DateTime.Now;
                         FleetDto.ModifiedBy = null;
                         FleetDto.ModifiedDate = null;
+                        FleetDto.IsActive = true;
                         
                         input.ActionType = Enums.ActionType.Completed;
                         CtfWorkflow(input);

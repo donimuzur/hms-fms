@@ -240,8 +240,45 @@ namespace FMS.Website.Controllers
             param.YearFrom = searchView.YearFrom;
             param.YearTo= searchView.YearTo;
 
-            var data = _fleetBLL.GetFleetByParam(param);
-            return Mapper.Map<List<RptFuelItem>>(data);
+            var get= _rptFuelBLL.GetRptFuel(param);
+            var data = Mapper.Map<List<RptFuelItem>>(get);
+            var dataFuel = _rptFuelBLL.GetRptFuelData();
+
+            foreach (var item in data)
+            {
+                if (param.MonthFrom == 1)
+                {
+                    param.MonthFrom = 12;
+                    param.YearFrom = param.YearFrom - 1;
+                }
+                else
+                {
+                    param.MonthFrom = param.MonthFrom - 1;
+                }
+
+                if (item.Odometer != 0)
+                {
+                    var data_temp = dataFuel.Where(x => x.PoliceNumber == item.PoliceNumber && x.ReportMonth == param.MonthFrom && x.ReportYear == param.YearFrom).Select(x => x.Odometer).FirstOrDefault();
+                    if (data_temp == 0)
+                    {
+                        item.Usage = item.Odometer;
+                        if (item.Liter != 0)
+                        {
+                            item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                        }
+                    }
+                    else
+                    {
+                        item.Usage = item.Odometer - data_temp;
+                        if (item.Liter != 0)
+                        {
+                            item.kmlt = Math.Round(item.Usage / item.Liter, 2);
+                        }
+                    }
+                }
+            }
+
+            return data;
         }
 
         private List<FleetItem> SearchDataFleetExport(FleetSearchView searchView = null)
@@ -274,7 +311,7 @@ namespace FMS.Website.Controllers
         public string ExportFuelReportGenerateReport(RptFuelModel model = null)
         {
             string pathFile = "";
-            var input = Mapper.Map<RptFuelByParamInput>(model.SearchViewExport);
+            var input = Mapper.Map<RptFuelByParamInput>(model.SearchView);
             pathFile = CreateXlsRptFuel(input);
             return pathFile;
         }
