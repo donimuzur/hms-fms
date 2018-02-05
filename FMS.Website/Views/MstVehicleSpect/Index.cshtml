@@ -41,6 +41,7 @@
                     <th>Colour</th>
                     <th>Car Group Level</th>
                     <th>Flex Point</th>
+                    <th>Image Name</th>
                     <th>Created By</th>
                     <th>Created Date</th>
                     <th>Modified By</th>
@@ -58,6 +59,7 @@
                     {
                         <th> &nbsp; </th>
                     }
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
@@ -101,6 +103,7 @@
                         <td>@Html.Raw(data.Colour)</td>
                         <td>@Html.Raw(data.GroupLevel)</td>
                         <td>@Html.Raw(data.FlexPoint)</td>
+                        <td>@Html.Raw(data.Image)</td>
                         <td>@Html.Raw(data.CreatedBy)</td>
                         <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
                         <td>@Html.Raw(data.ModifiedBy)</td>
