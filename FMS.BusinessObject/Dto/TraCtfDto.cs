@@ -50,12 +50,23 @@ namespace FMS.BusinessObject.Dto
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
 
-        public bool IsPenalty{get;set;}
+        public bool IsPenalty { get; set; }
         public string EmployeeIdCreator { get; set; }
         public string EmployeeIdFleetApproval { get; set; }
         public string ApprovedFleet { get; set; }
         public DateTime? ApprovedFleetDate { get; set; }
-        
+
+        public DateTime? DateSendVendor { get; set; }
+
+        #region --------- variable Batch Vendor -----------
+        public string Vendor { get; set; }
+        public string ChasisNumber { get; set; }
+        public string EngineNumber{get;set;}
+        public string Manufacture { get; set; }
+        public string Models { get; set; }
+        public string Series { get; set; }
+        public string Basetown { get; set; }
+        #endregion
 
         public MST_EPAF MstEpaf { get; set; }
         public MST_EMPLOYEE MstEmployee { get;set; }
