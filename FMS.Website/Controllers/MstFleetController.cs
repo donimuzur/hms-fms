@@ -835,8 +835,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 18, data.VehicleUsage);
                 slDocument.SetCellValue(iRow, 19, data.Project == true ?"Yes" : "No");
                 slDocument.SetCellValue(iRow, 20, data.ProjectName);
-                slDocument.SetCellValue(iRow, 21, data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 22, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
+                //slDocument.SetCellValue(iRow, 21, data.StartContract == null ? "" : data.StartContract.Value.ToString("dd-MMM-yyyy"));
+                //slDocument.SetCellValue(iRow, 22, data.EndContract == null ? "" : data.EndContract.Value.ToString("dd-MMM-yyyy"));
+                if(data.StartContract.HasValue)slDocument.SetCellValue(iRow, 21, data.StartContract.Value.ToOADate());
+                if (data.EndContract.HasValue) slDocument.SetCellValue(iRow, 22, data.EndContract.Value.ToOADate());
                 slDocument.SetCellValue(iRow, 23, data.VendorName);
                 slDocument.SetCellValue(iRow, 24, data.City);
                 slDocument.SetCellValue(iRow, 25, data.SupplyMethod);
@@ -849,8 +851,10 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 32, data.GroupLevel);
                 slDocument.SetCellValue(iRow, 33, data.AssignedTo);
                 slDocument.SetCellValue(iRow, 34, data.Address);
-                slDocument.SetCellValue(iRow, 35, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
-                slDocument.SetCellValue(iRow, 36, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
+                //slDocument.SetCellValue(iRow, 35, data.StartDate == null ? "" : data.StartDate.Value.ToString("dd-MMM-yyyy"));
+                //slDocument.SetCellValue(iRow, 36, data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"));
+                if (data.StartDate.HasValue) slDocument.SetCellValue(iRow, 35, data.StartDate.Value.ToOADate() );
+                if (data.EndDate.HasValue) slDocument.SetCellValue(iRow, 36, data.EndDate.Value.ToOADate());
                 slDocument.SetCellValue(iRow, 37, data.IsActive ? "Active" : "Not Active");
                 slDocument.SetCellValue(iRow, 38, data.CertificateOwnership);
                 slDocument.SetCellValue(iRow, 39, "'" + data.Comments);
@@ -864,7 +868,14 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 47, data.CreatedDate.ToString("dd-MMM-yyyy hh:mm:ss"));
                 slDocument.SetCellValue(iRow, 48, data.ModifiedBy);
                 slDocument.SetCellValue(iRow, 49, data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy hh:mm:ss"));
-          
+
+                SLStyle dateStyle = slDocument.CreateStyle();
+                dateStyle.FormatCode = "dd-MMM-yyyy";
+                
+                slDocument.SetCellStyle(iRow, 21, iRow, 21, dateStyle);
+                slDocument.SetCellStyle(iRow, 22, iRow, 22, dateStyle);
+                slDocument.SetCellStyle(iRow, 35, iRow, 35, dateStyle);
+                slDocument.SetCellStyle(iRow, 36, iRow, 36, dateStyle);
 
                 iRow++;
             }
@@ -875,6 +886,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            
 
             slDocument.AutoFitColumn(1, 49);
             slDocument.SetCellStyle(3, 1, iRow - 1, 49, valueStyle);

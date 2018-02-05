@@ -412,6 +412,7 @@ namespace FMS.BLL.Crf
                         IdleVehicle.CREATED_DATE = DateTime.Now;
                         IdleVehicle.MODIFIED_BY = null;
                         IdleVehicle.MODIFIED_DATE = null;
+                        IdleVehicle.DOCUMENT_NUMBER = data.DOCUMENT_NUMBER; 
 
                         _fleetService.save(IdleVehicle);
                     }
@@ -438,6 +439,7 @@ namespace FMS.BLL.Crf
             dataToSave.CostCenter = data.COST_CENTER_NEW;
             dataToSave.IsActive = true;
             dataToSave.MstFleetId = 0;
+            dataToSave.DocumentNumber = data.DOCUMENT_NUMBER;
             try
             {
                 var dataSaveFromDto = Mapper.Map<MST_FLEET>(dataToSave);

@@ -950,6 +950,20 @@ namespace FMS.BLL.Temporary
 
                 TempWorkflow(input);
 
+                //inactive cfm idle
+                var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
+                                                                          && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
+
+                if (cfmidleData != null)
+                {
+                    var endDateCfm = item.VENDOR_CONTRACT_START_DATE.Value.AddDays(-1);
+
+                    cfmidleData.DOCUMENT_NUMBER = item.DOCUMENT_NUMBER;
+                    cfmidleData.END_DATE = endDateCfm;
+                    cfmidleData.IS_ACTIVE = false;
+                    _fleetService.save(cfmidleData);
+                }
+
                 //add new master fleet
                 MST_FLEET dbFleet;
 
