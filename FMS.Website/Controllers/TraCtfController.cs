@@ -990,6 +990,16 @@ namespace FMS.Website.Controllers
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
 
+                var vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (model.PoliceNumber == null ? "" : model.PoliceNumber.ToUpper())
+                                                        && (x.EmployeeID == null ? "" : x.EmployeeID) == (model.EmployeeId == null ? "" : model.EmployeeId)).FirstOrDefault();
+
+                if(vehicle != null)
+                {
+                    model.WithdCity = vehicle.City;
+                    model.WithdAddress = vehicle.Address;
+                }
+                
+
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
                 model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
                 model.EmployeeContributionStr = model.EmployeeContribution == null ? "" : string.Format("{0:n0}", model.EmployeeContribution);
@@ -1087,6 +1097,15 @@ namespace FMS.Website.Controllers
                 model = initCreate(model);
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Termination Form";
+
+                var vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (model.PoliceNumber == null ? "" : model.PoliceNumber.ToUpper())
+                                                && (x.EmployeeID == null ? "" : x.EmployeeID) == (model.EmployeeId == null ? "" : model.EmployeeId)).FirstOrDefault();
+
+                if (vehicle != null)
+                {
+                    model.WithdCity = vehicle.City;
+                    model.WithdAddress = vehicle.Address;
+                }
 
                 model.BuyCostTotalStr = model.BuyCostTotal == null ? "" : string.Format("{0:n0}", model.BuyCostTotal);
                 model.BuyCostStr = model.BuyCost == null ? "" : string.Format("{0:n0}", model.BuyCost);
