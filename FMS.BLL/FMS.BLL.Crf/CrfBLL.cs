@@ -316,6 +316,8 @@ namespace FMS.BLL.Crf
                 
                 //AddWorkflowHistory(data, userLogin, Enums.ActionType.Submit, null);
                 _uow.SaveChanges();
+
+                data.DOCUMENT_NUMBER = datatosave.DOCUMENT_NUMBER;
     
                 SubmitCrf(data,userLogin);
             }
