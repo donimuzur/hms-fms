@@ -1680,7 +1680,7 @@ namespace FMS.BLL.Ctf
             var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
             var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
             bool isSend = false;
-            rc.Subject = "CTF "+ DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+            rc.Subject = "CTF "+ DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
 
             bodyMail.Append("Dear Vendor "+ Vendor +",<br /><br />");
             bodyMail.AppendLine();
