@@ -35,5 +35,6 @@ namespace FMS.Contract.BLL
         List<TemporaryDto> GetTempByCsf(string p);
 
         List<string> CompleteAllDocument();
+        bool BatchEmailCrf(List<TraCrfDto> ListCrf, string Vendor, string AttachmentWtc, string AttachmentBenefit);
     }
 }

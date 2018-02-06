@@ -3324,7 +3324,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 26, valueStyle);
+            slDocument.SetCellStyle(2, 2, 2, 20, valueStyle);
 
             //create header
             slDocument = CreateHeaderExcelForVendor(slDocument);
