@@ -406,12 +406,14 @@ namespace FMS.BLL.Ctf
             {
                 To = new List<string>();
                 CC = new List<string>();
+                Attachments = new List<string>();
                 IsCCExist = false;
             }
             public string Subject { get; set; }
             public string Body { get; set; }
             public List<string> To { get; set; }
             public List<string> CC { get; set; }
+            public List<string> Attachments { get; set; }
             public bool IsCCExist { get; set; }
         }
         private CtfMailNotification ProsesMailNotificationBody(TraCtfDto ctfData, CtfWorkflowDocumentInput input)
@@ -1261,7 +1263,7 @@ namespace FMS.BLL.Ctf
                         vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                         vehicle.MODIFIED_BY = "SYSTEM";
                         vehicle.MODIFIED_DATE = DateTime.Now;
-                        vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
+                        //vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
 
                         _fleetService.save(vehicle);
 
@@ -1296,7 +1298,7 @@ namespace FMS.BLL.Ctf
                             vehicle.IS_ACTIVE = false;
                             vehicle.MODIFIED_BY = "SYSTEM";
                             vehicle.MODIFIED_DATE = DateTime.Now;
-                            vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
+                            //vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
 
                             _fleetService.save(vehicle);
 
@@ -1326,7 +1328,7 @@ namespace FMS.BLL.Ctf
                             vehicle.IS_ACTIVE = false;
                             vehicle.MODIFIED_BY = "SYSTEM";
                             vehicle.MODIFIED_DATE = DateTime.Now;
-                            vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
+                            //vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
 
                             _fleetService.save(vehicle);
 
@@ -1358,7 +1360,7 @@ namespace FMS.BLL.Ctf
                 vehicle.END_DATE = CtfData.EFFECTIVE_DATE;
                 vehicle.MODIFIED_BY = "SYSTEM";
                 vehicle.MODIFIED_DATE = DateTime.Now;
-                vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
+                //vehicle.DOCUMENT_NUMBER = CtfData.DOCUMENT_NUMBER;
                 _fleetService.save(vehicle);
 
                 var FleetDto = Mapper.Map<FleetDto>(vehicle);
@@ -1378,7 +1380,7 @@ namespace FMS.BLL.Ctf
                 FleetDto.Price = extendDto.EXTEND_PRICE == null ? 0 : extendDto.EXTEND_PRICE.Value;
                 FleetDto.StartContract = vehicle.END_CONTRACT.Value.AddDays(1);
                 FleetDto.EndContract = extendDto.NEW_PROPOSED_DATE;
-                FleetDto.DocumentNumber = vehicle.DOCUMENT_NUMBER;
+                FleetDto.DocumentNumber = CtfData.DOCUMENT_NUMBER;
                 FleetDto.MstFleetId = 0;
 
                 input.ActionType = Enums.ActionType.Completed;
@@ -1667,6 +1669,70 @@ namespace FMS.BLL.Ctf
             //reader.Close();
             //con.Close();
         }
+
+        #region ----------- Batch Email -----------
+        public bool BatchEmailCtf(List<TraCtfDto> ListCtf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
+        {
+
+            var rc = new CtfMailNotification();
+            var bodyMail = new StringBuilder();
+            var CC = ConfigurationManager.AppSettings["CC_MAIL"];
+            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+            var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
+            bool isSend = false;
+            rc.Subject = "CTF "+ DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+
+            bodyMail.Append("Dear Vendor "+ Vendor +",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Bellow are list of CTF Requests<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Please find the detail in attached document<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("<table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<tr><td>Doc No</td><td>Effective Date</td><td>Police Number</td><td>Employee Name</td><td>Current Basetown</td><td>Vehicle Type</td></tr>");
+            bodyMail.AppendLine();
+            foreach(var CtfDoc in ListCtf)
+            {
+                bodyMail.Append("<tr><td>"+CtfDoc.DocumentNumber+"</td><td>"+ (CtfDoc.EffectiveDate == null ? "" : CtfDoc.EffectiveDate.Value.ToString("dd-MMM-yyyy"))+ "</td><td>"+ CtfDoc.PoliceNumber+ "</td><td>"+ CtfDoc.EmployeeName+ "</td><td>"+ CtfDoc.Basetown+ "</td><td>"+ CtfDoc.VehicleType+ "</td></tr>");
+                bodyMail.AppendLine();
+            }
+            bodyMail.Append("</table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<br /><br />Thank you <br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+            
+            rc.IsCCExist = false;
+            rc.Body = bodyMail.ToString();
+
+            rc.To.Add(EmailVendor);
+            rc.CC.Add(CC);
+
+            if(rc.CC.Count >0 )rc.IsCCExist = true;
+
+            if (AttachmentWtc != null)
+            {
+                rc.Attachments.Add(AttachmentWtc);
+            }
+
+            if (AttachmentBenefit != null)
+            {
+                rc.Attachments.Add(AttachmentBenefit);
+            }
+
+            if (rc.IsCCExist)
+                //Send email with CC
+                isSend=_messageService.SendEmailToListWithCC(rc.To, rc.CC, rc.Subject, rc.Body, true, rc.Attachments);
+            else
+                isSend=_messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+
+            return isSend;
+        }
+        #endregion  
     }
 }
 

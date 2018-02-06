@@ -59,7 +59,8 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.ApprovedFleet, opt => opt.MapFrom(src => src.APPROVED_FLEET))
              .ForMember(dest => dest.ApprovedFleetDate, opt => opt.MapFrom(src => src.APPROVED_FLEET_DATE))
              .ForMember(dest => dest.ReasonS, opt => opt.MapFrom(src => src.MST_REASON.REASON))
-             .ForMember(dest => dest.IsPenalty, opt => opt.MapFrom(src => src.MST_REASON.IS_PENALTY));
+             .ForMember(dest => dest.IsPenalty, opt => opt.MapFrom(src => src.MST_REASON.IS_PENALTY))
+             .ForMember(dest => dest.DateSendVendor, opt => opt.MapFrom(src => src.DATE_SEND_VENDOR));
 
             AutoMapper.Mapper.CreateMap<TraCtfDto, TRA_CTF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.TRA_CTF_ID, opt => opt.MapFrom(src => src.TraCtfId))
@@ -108,7 +109,8 @@ namespace FMS.BLL.Mapper
              .ForMember(dest => dest.EMPLOYEE_ID_CREATOR, opt => opt.MapFrom(src => src.EmployeeIdCreator))
              .ForMember(dest => dest.EMPLOYEE_ID_FLEET_APPROVAL, opt => opt.MapFrom(src => src.EmployeeIdFleetApproval))
              .ForMember(dest => dest.APPROVED_FLEET, opt => opt.MapFrom(src => src.ApprovedFleet))
-             .ForMember(dest => dest.APPROVED_FLEET_DATE, opt => opt.MapFrom(src => src.ApprovedFleetDate));
+             .ForMember(dest => dest.APPROVED_FLEET_DATE, opt => opt.MapFrom(src => src.ApprovedFleetDate))
+             .ForMember(dest => dest.DATE_SEND_VENDOR, opt => opt.MapFrom(src => src.DateSendVendor));
 
             AutoMapper.Mapper.CreateMap<WorkflowHistoryDto, CtfWorkflowDocumentInput>().IgnoreAllNonExisting()
              .ForMember(dest => dest.ActionType, opt => opt.MapFrom(src => src.ACTION))
