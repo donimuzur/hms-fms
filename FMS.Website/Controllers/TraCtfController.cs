@@ -3242,7 +3242,7 @@ namespace FMS.Website.Controllers
             var ListVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new VendorItem { VendorName = x.VendorName, MstVendorId = x.MstVendorId, ShortName = x.ShortName }).Distinct().ToList();
             var ListCtfDto = new List<TraCtfDto>();
             var Vendor = new List<String>();
-            
+            bool IsSend = false;
             foreach (var CtfData in ListCtf)
             {
                 var vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.PoliceNumber == CtfData.PoliceNumber && x.EmployeeID == CtfData.EmployeeId).FirstOrDefault();
@@ -3260,24 +3260,43 @@ namespace FMS.Website.Controllers
             }
 
             Vendor = ListCtfDto.Where(x => x.Vendor != null ).Select(x => x.Vendor ).Distinct().ToList();
-
+            
             foreach(var VendorItem in Vendor)
             {
+                
                 var reListCtfDto = ListCtfDto.Where(x => (x.Vendor == null ? "" : x.Vendor.ToUpper()) == VendorItem).ToList();
 
                 var WtcListCtf = ListCtfDto.Where(x => (x.Vendor == null ? "" : x.Vendor.ToUpper()) == VendorItem && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) ==  "WTC").ToList();
 
                 var BenefitListCtf = ListCtfDto.Where(x => (x.Vendor == null ? "" : x.Vendor.ToUpper()) == VendorItem && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").ToList();
+                
+                string AttacthmentWtc = null;
+                string AttacthmentBenefit = null;
 
-                if(WtcListCtf.Count > 0)
+                if (WtcListCtf.Count > 0)
                 {
-                    CreateExcelForVendor(WtcListCtf, "WTC");
+                    AttacthmentWtc = CreateExcelForVendor(WtcListCtf, "WTC");
                 }
 
                 if (BenefitListCtf.Count > 0)
                 {
-                    CreateExcelForVendor(BenefitListCtf, "BENEFIT");
+                    AttacthmentBenefit= CreateExcelForVendor(BenefitListCtf, "BENEFIT");
                 }
+                reListCtfDto = reListCtfDto.OrderBy(x => x.VehicleType).ToList();
+                IsSend = _ctfBLL.BatchEmailCtf(reListCtfDto, VendorItem, AttacthmentWtc, AttacthmentBenefit);
+                
+                if(IsSend)
+                {
+                    foreach(var Ctf in reListCtfDto)
+                    {
+                        Ctf.DateSendVendor = DateTime.Now;
+
+                        var login = new Login();
+                        login.USER_ID = "SYSTEM";
+                        _ctfBLL.Save(Ctf,login);
+                    }
+                }
+
             }
         }
         #endregion
@@ -3393,6 +3412,14 @@ namespace FMS.Website.Controllers
                 dateStyle = slDocument.CreateStyle();
                 dateStyle.FormatCode = "dd-MMM-yyyy HH:mm";
                 slDocument.SetCellStyle(iRow, 17, iRow, 17, dateStyle);
+                SLStyle valueStyle = slDocument.CreateStyle();
+                valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+                slDocument.AutoFitColumn(2, 20);
+                slDocument.SetCellStyle(iRow, 2, iRow, 20, valueStyle);
 
                 iRow++;
 
@@ -3400,16 +3427,6 @@ namespace FMS.Website.Controllers
           
 
             //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-            slDocument.AutoFitColumn(2, 20);
-            slDocument.SetCellStyle(iRow, 2, iRow, 20, valueStyle);
-            
-
             return slDocument;
         }
 
