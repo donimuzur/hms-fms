@@ -62,7 +62,7 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             _ctfBLL.CheckCtfInProgress();
-            GetListCtfInProgress();
+
             if (CurrentUser.UserRole == Enums.UserRole.User)
             {
                 return RedirectToAction("PersonalDashboard");
