@@ -387,6 +387,10 @@ namespace FMS.BLL.Crf
                 
                 PoliceNumber = data.POLICE_NUMBER
             }).FirstOrDefault();
+            if(data.MST_FLEET_ID.HasValue)
+            {
+                dataFleet = _fleetService.GetFleetById((int)data.MST_FLEET_ID);
+            }
 
             if (dataFleet == null)
             {
@@ -1227,11 +1231,11 @@ namespace FMS.BLL.Crf
             bodyMail.AppendLine();
             bodyMail.Append("<table>");
             bodyMail.AppendLine();
-            bodyMail.Append("<tr><td>Doc No</td><td>Effective Date</td><td>Police Number</td><td>Employee Name</td><td>Current Basetown</td><td>Vehicle Type</td></tr>");
+            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Doc No</td><td style = 'border: 1px solid black; padding : 5px' >Effective Date</td><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Current Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Vehicle Type</td></tr>");
             bodyMail.AppendLine();
             foreach (var CtfDoc in ListCrf)
             {
-                bodyMail.Append("<tr><td>" + CtfDoc.DOCUMENT_NUMBER + "</td><td>" + (CtfDoc.EFFECTIVE_DATE == null ? "" : CtfDoc.EFFECTIVE_DATE.Value.ToString("dd-MMM-yyyy")) + "</td><td>" + CtfDoc.POLICE_NUMBER + "</td><td>" + CtfDoc.EMPLOYEE_NAME + "</td><td>" + CtfDoc.LOCATION_OFFICE+ "</td><td>" + CtfDoc.VEHICLE_TYPE + "</td></tr>");
+                bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.DOCUMENT_NUMBER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + (CtfDoc.EFFECTIVE_DATE == null ? "" : CtfDoc.EFFECTIVE_DATE.Value.ToString("dd-MMM-yyyy")) + "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.POLICE_NUMBER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.EMPLOYEE_NAME + "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.LOCATION_OFFICE+ "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.VEHICLE_TYPE + "</td></tr>");
                 bodyMail.AppendLine();
             }
             bodyMail.Append("</table>");

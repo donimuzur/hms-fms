@@ -91,10 +91,10 @@
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="FIELD_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="DATE_BEFORE" Type="nvarchar" MaxLength="255" />
-          <Property Name="DATE_AFTER" Type="nvarchar" MaxLength="255" />
           <Property Name="CHANGE_DATE" Type="datetime" />
           <Property Name="DATE_SEND" Type="datetime" />
+          <Property Name="DATA_BEFORE" Type="nvarchar" MaxLength="255" />
+          <Property Name="DATA_AFTER" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FUEL_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -3987,10 +3987,10 @@
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="FIELD_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DATE_BEFORE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DATE_AFTER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CHANGE_DATE" Type="DateTime" Precision="3" />
           <Property Name="DATE_SEND" Type="DateTime" Precision="3" />
+          <Property Name="DATA_BEFORE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_AFTER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="FUNCTION_CHANGE">
           <Key>
@@ -5289,10 +5289,10 @@
           <EntitySetMapping Name="FLEET_CHANGE">
             <EntityTypeMapping TypeName="FMSModel.FLEET_CHANGE">
               <MappingFragment StoreEntitySet="FLEET_CHANGE">
+                <ScalarProperty Name="DATA_AFTER" ColumnName="DATA_AFTER" />
+                <ScalarProperty Name="DATA_BEFORE" ColumnName="DATA_BEFORE" />
                 <ScalarProperty Name="DATE_SEND" ColumnName="DATE_SEND" />
                 <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
-                <ScalarProperty Name="DATE_AFTER" ColumnName="DATE_AFTER" />
-                <ScalarProperty Name="DATE_BEFORE" ColumnName="DATE_BEFORE" />
                 <ScalarProperty Name="FIELD_NAME" ColumnName="FIELD_NAME" />
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />

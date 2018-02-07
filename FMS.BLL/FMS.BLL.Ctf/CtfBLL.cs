@@ -1690,11 +1690,11 @@ namespace FMS.BLL.Ctf
             bodyMail.AppendLine();
             bodyMail.Append("<table>");
             bodyMail.AppendLine();
-            bodyMail.Append("<tr><td>Doc No</td><td>Effective Date</td><td>Police Number</td><td>Employee Name</td><td>Current Basetown</td><td>Vehicle Type</td></tr>");
+            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Doc No</td><td style = 'border: 1px solid black; padding : 5px' >Effective Date</td><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Current Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Vehicle Type</td></tr>");
             bodyMail.AppendLine();
             foreach(var CtfDoc in ListCtf)
             {
-                bodyMail.Append("<tr><td>"+CtfDoc.DocumentNumber+"</td><td>"+ (CtfDoc.EffectiveDate == null ? "" : CtfDoc.EffectiveDate.Value.ToString("dd-MMM-yyyy"))+ "</td><td>"+ CtfDoc.PoliceNumber+ "</td><td>"+ CtfDoc.EmployeeName+ "</td><td>"+ CtfDoc.Basetown+ "</td><td>"+ CtfDoc.VehicleType+ "</td></tr>");
+                bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+CtfDoc.DocumentNumber+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (CtfDoc.EffectiveDate == null ? "" : CtfDoc.EffectiveDate.Value.ToString("dd-MMM-yyyy"))+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.PoliceNumber+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.EmployeeName+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.Basetown+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.VehicleType+ "</td></tr>");
                 bodyMail.AppendLine();
             }
             bodyMail.Append("</table>");

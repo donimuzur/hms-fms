@@ -1013,9 +1013,9 @@ namespace FMS.Website.Controllers
 
                 var reListCrfDto = ListCrf.Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == VendorItem).ToList();
 
-                var WtcListCrf = ListCrf.Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == VendorItem && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
+                var WtcListCrf = reListCrfDto.Where(x =>  (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
 
-                var BenefitListCrf = ListCrf.Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == VendorItem && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
+                var BenefitListCrf = reListCrfDto.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
 
                 string AttacthmentWtc = null;
                 string AttacthmentBenefit = null;

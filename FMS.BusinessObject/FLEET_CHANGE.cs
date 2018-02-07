@@ -21,9 +21,9 @@ namespace FMS.BusinessObject
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }
         public string FIELD_NAME { get; set; }
-        public string DATE_BEFORE { get; set; }
-        public string DATE_AFTER { get; set; }
         public Nullable<System.DateTime> CHANGE_DATE { get; set; }
         public Nullable<System.DateTime> DATE_SEND { get; set; }
+        public string DATA_BEFORE { get; set; }
+        public string DATA_AFTER { get; set; }
     }
 }

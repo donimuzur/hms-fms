@@ -3239,7 +3239,6 @@ namespace FMS.Website.Controllers
         public void  GetListCtfInProgress ()
         {
             var ListCtf = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == Enums.DocumentStatus.InProgress && x.DateSendVendor == null).ToList();
-            var ListVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new VendorItem { VendorName = x.VendorName, MstVendorId = x.MstVendorId, ShortName = x.ShortName }).Distinct().ToList();
             var ListCtfDto = new List<TraCtfDto>();
             var Vendor = new List<String>();
             bool IsSend = false;
@@ -3266,9 +3265,9 @@ namespace FMS.Website.Controllers
                 
                 var reListCtfDto = ListCtfDto.Where(x => (x.Vendor == null ? "" : x.Vendor.ToUpper()) == VendorItem).ToList();
 
-                var WtcListCtf = ListCtfDto.Where(x => (x.Vendor == null ? "" : x.Vendor.ToUpper()) == VendorItem && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) ==  "WTC").ToList();
+                var WtcListCtf = reListCtfDto.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) ==  "WTC").ToList();
 
-                var BenefitListCtf = ListCtfDto.Where(x => (x.Vendor == null ? "" : x.Vendor.ToUpper()) == VendorItem && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").ToList();
+                var BenefitListCtf = reListCtfDto.Where(x =>(x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").ToList();
                 
                 string AttacthmentWtc = null;
                 string AttacthmentBenefit = null;
