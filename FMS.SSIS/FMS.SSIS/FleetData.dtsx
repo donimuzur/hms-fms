@@ -11,8 +11,8 @@
   DTS:LocaleID="1057"
   DTS:ObjectName="FleetData"
   DTS:PackageType="5"
-  DTS:VersionBuild="33"
-  DTS:VersionGUID="{0D45DDE6-E368-4281-8499-76DBD9943676}">
+  DTS:VersionBuild="36"
+  DTS:VersionGUID="{C99AB8CD-B2D6-4B92-B282-8B1714D8BBAB}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -67,7 +67,7 @@
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="exec usp_UpdateMasterFleet"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -97,7 +97,7 @@
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="exec usp_UpdateMasterLocationMapping"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -130,7 +130,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Get CRF"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -147,7 +147,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Get CSF"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -164,7 +164,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Get CTF"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -181,7 +181,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Get Employee"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -198,7 +198,7 @@
       DTS:LocaleID="-1"
       DTS:ObjectName="Get Fuel"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -831,8 +831,8 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
    View_Employee.CC AS COST_CENTER,
    MST_EMPLOYEE.DIRECTORATE AS FUNCTION_OLD,
    View_Employee.DIRECTORATE AS FUNCTION_NEW, 
-   CURRENT_TIMESTAMP as CHANGE_DATE,
-   0 as PROCESSED
+   CURRENT_TIMESTAMP AS CHANGE_DATE,
+   NULL AS DATE_SEND
 FROM
    View_Employee INNER JOIN MST_EMPLOYEE ON View_Employee.EMPLID = MST_EMPLOYEE.EMPLOYEE_ID
 WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
@@ -1256,11 +1256,11 @@ View_Employee.ALAMAT AS  ADDRESS_NEW,
 MST_EMPLOYEE.CITY AS CITY_OLD,
 View_Employee.CITY AS CITY_NEW,
 CURRENT_TIMESTAMP as CHANGE_DATE, 
-0 as PROCESSED
+NULL AS DATE_SEND
 FROM            
 View_Employee INNER JOIN
                          MST_EMPLOYEE ON View_Employee.EMPLID = MST_EMPLOYEE.EMPLOYEE_ID
-WHERE (MST_EMPLOYEE.BASETOWN != View_Employee.BASETOWN) || (MST_EMPLOYEE.CITY != View_Employee.CITY) || (MST_EMPLOYEE.ADDRESS != View_Employee.ALAMAT)</property>
+WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.CITY &lt;&gt; View_Employee.CITY) OR (MST_EMPLOYEE.ADDRESS &lt;&gt; View_Employee.ALAMAT)</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1534,11 +1534,11 @@ WHERE (MST_EMPLOYEE.BASETOWN != View_Employee.BASETOWN) || (MST_EMPLOYEE.CITY !=
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 8]"
       DTS:CreationName=""
-      DTS:DTSID="{C8B31B05-ECE5-4C33-A4D7-9A24FAB38C6E}"
-      DTS:From="Package\exec usp_UpdateMasterLocationMapping"
+      DTS:DTSID="{DC6FF572-D415-4859-9D84-7F5F89D512AC}"
+      DTS:From="Package\Move to LOCATION_CHANGE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 8"
-      DTS:To="Package\Move to LOCATION_CHANGE" />
+      DTS:To="Package\exec usp_UpdateMasterLocationMapping" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 9]"
       DTS:CreationName=""
@@ -1583,7 +1583,7 @@ WHERE (MST_EMPLOYEE.BASETOWN != View_Employee.BASETOWN) || (MST_EMPLOYEE.CITY !=
         <NodeLayout
           Size="144,42"
           Id="Package\Get Employee"
-          TopLeft="76,363" />
+          TopLeft="34,365" />
         <NodeLayout
           Size="118,42"
           Id="Package\Get Fuel"
@@ -1678,18 +1678,18 @@ WHERE (MST_EMPLOYEE.BASETOWN != View_Employee.BASETOWN) || (MST_EMPLOYEE.CITY !=
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 5]"
-          TopLeft="220,385">
+          TopLeft="178,386">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="35,0"
+              EndConnector="77,0"
               Start="0,0"
-              End="27.5,0">
+              End="69.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="27.5,0" />
+                    End="69.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1753,33 +1753,21 @@ WHERE (MST_EMPLOYEE.BASETOWN != View_Employee.BASETOWN) || (MST_EMPLOYEE.CITY !=
         <NodeLayout
           Size="217,42"
           Id="Package\Move to LOCATION_CHANGE"
-          TopLeft="569,168" />
+          TopLeft="572,215" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 7]"
-          TopLeft="687.852764423077,134.5">
+          TopLeft="684.176382211538,134.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-10.3527644230769,33.5"
+              EndConnector="0,80.5"
               Start="0,0"
-              End="-10.3527644230769,26">
+              End="0,73">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,12.75" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,12.75"
-                    Point2="0,16.75"
-                    Point3="-4,16.75" />
-                  <mssgle:LineSegment
-                    End="-6.35276442307691,16.75" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-6.35276442307691,16.75"
-                    Point2="-10.3527644230769,16.75"
-                    Point3="-10.3527644230769,20.75" />
-                  <mssgle:LineSegment
-                    End="-10.3527644230769,26" />
+                    End="0,73" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1791,47 +1779,25 @@ WHERE (MST_EMPLOYEE.BASETOWN != View_Employee.BASETOWN) || (MST_EMPLOYEE.CITY !=
         <NodeLayout
           Size="271,42"
           Id="Package\exec usp_UpdateMasterLocationMapping"
-          TopLeft="245.906850961538,170.5" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 8]"
-          TopLeft="516.906850961538,190.25">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="52.0931490384615,0"
-              Start="0,0"
-              End="44.5931490384615,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="44.5931490384615,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          TopLeft="261.906850961538,220.5" />
         <NodeLayout
           Size="214,42"
           Id="Package\exec usp_UpdateMasterFleet"
-          TopLeft="27.5,227.5" />
+          TopLeft="24.5,222.5" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 9]"
-          TopLeft="134.25,269.5">
+          TopLeft="105.75,264.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,93.5"
+              EndConnector="0,100.5"
               Start="0,0"
-              End="0,86">
+              End="0,93">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,86" />
+                    End="0,93" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1842,24 +1808,40 @@ WHERE (MST_EMPLOYEE.BASETOWN != View_Employee.BASETOWN) || (MST_EMPLOYEE.CITY !=
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 10]"
-          TopLeft="245.906850961538,191.5">
+          TopLeft="261.906850961538,242.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-111.406850961538,36"
+              EndConnector="-23.4068509615385,0"
               Start="0,0"
-              End="-111.406850961538,28.5">
+              End="-15.9068509615385,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-107.406850961538,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-107.406850961538,0"
-                    Point2="-111.406850961538,0"
-                    Point3="-111.406850961538,4" />
+                    End="-15.9068509615385,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 8]"
+          TopLeft="572,238.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-39.0931490384615,0"
+              Start="0,0"
+              End="-31.5931490384615,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
                   <mssgle:LineSegment
-                    End="-111.406850961538,28.5" />
+                    End="-31.5931490384615,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
