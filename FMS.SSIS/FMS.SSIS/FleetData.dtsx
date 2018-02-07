@@ -11,8 +11,8 @@
   DTS:LocaleID="1057"
   DTS:ObjectName="FleetData"
   DTS:PackageType="5"
-  DTS:VersionBuild="36"
-  DTS:VersionGUID="{C99AB8CD-B2D6-4B92-B282-8B1714D8BBAB}">
+  DTS:VersionBuild="37"
+  DTS:VersionGUID="{0812E30E-6209-4515-A2A5-70DC17F0C171}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
