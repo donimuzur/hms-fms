@@ -1125,12 +1125,18 @@ namespace FMS.BLL.Temporary
             bodyMail.AppendLine();
             foreach (var TempDoc in ListTemp)
             {
+                var vehType = "WTC";
+                if (TempDoc.VEHICLE_TYPE == benefitType)
+                {
+                    vehType = "BENEFIT";
+                }
+
                 bodyMail.Append("<tr><td style='border: 1px solid black; padding : 5px'>" + TempDoc.DOCUMENT_NUMBER_TEMP + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.START_DATE.Value.ToString("dd-MMM-yyyy") + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.VENDOR_POLICE_NUMBER + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.EMPLOYEE_NAME + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.LOCATION_CITY + "</td>" +
-                                    "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.VEHICLE_TYPE == benefitType ? "BENEFIT" : "WTC" + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + vehType + "</td>" +
                                 "</tr>");
                 bodyMail.AppendLine();
             }

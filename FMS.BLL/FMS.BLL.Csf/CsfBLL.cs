@@ -1873,12 +1873,18 @@ namespace FMS.BLL.Csf
             bodyMail.AppendLine();
             foreach (var CsfDoc in ListCsf)
             {
+                var vehType = "WTC";
+                if (CsfDoc.VEHICLE_TYPE == benefitType)
+                {
+                    vehType = "BENEFIT";
+                }
+
                 bodyMail.Append("<tr><td style='border: 1px solid black; padding : 5px'>" + CsfDoc.DOCUMENT_NUMBER + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EFFECTIVE_DATE.ToString("dd-MMM-yyyy") + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VENDOR_POLICE_NUMBER + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EMPLOYEE_NAME + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.LOCATION_CITY + "</td>" +
-                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VEHICLE_TYPE == benefitType ? "BENEFIT" : "WTC" + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + vehType + "</td>" +
                                 "</tr>");
                 bodyMail.AppendLine();
             }
