@@ -1096,18 +1096,20 @@ namespace FMS.BLL.Temporary
 
         public bool BatchEmailTemp(List<TemporaryDto> ListTemp, string Vendor, string AttachmentWtc, string AttachmentBenefit)
         {
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var rc = new TempMailNotification();
             var bodyMail = new StringBuilder();
             var CC = ConfigurationManager.AppSettings["CC_MAIL"];
-            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+            var GetVendor = _vendorService.GetVendor().Where(x => (x.SHORT_NAME == null ? "" : x.SHORT_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
             var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
             bool isSend = false;
             rc.Subject = "TEMPORARY " + DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
 
             bodyMail.Append("Dear Vendor " + Vendor + ",<br /><br />");
             bodyMail.AppendLine();
-            bodyMail.Append("Bellow are list of CSF Requests<br />");
+            bodyMail.Append("Bellow are list of TEMPORARY Requests<br />");
             bodyMail.AppendLine();
             bodyMail.Append("Please find the detail in attached document<br />");
             bodyMail.AppendLine();
@@ -1128,7 +1130,7 @@ namespace FMS.BLL.Temporary
                                     "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.VENDOR_POLICE_NUMBER + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.EMPLOYEE_NAME + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.LOCATION_CITY + "</td>" +
-                                    "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.VEHICLE_TYPE_NAME + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + TempDoc.VEHICLE_TYPE == benefitType ? "BENEFIT" : "WTC" + "</td>" +
                                 "</tr>");
                 bodyMail.AppendLine();
             }
