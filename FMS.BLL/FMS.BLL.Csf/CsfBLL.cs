@@ -1844,11 +1844,13 @@ namespace FMS.BLL.Csf
 
         public bool BatchEmailCsf(List<TraCsfDto> ListCsf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
         {
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var rc = new CsfMailNotification();
             var bodyMail = new StringBuilder();
             var CC = ConfigurationManager.AppSettings["CC_MAIL"];
-            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+            var GetVendor = _vendorService.GetVendor().Where(x => (x.SHORT_NAME == null ? "" : x.SHORT_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
             var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
             bool isSend = false;
             rc.Subject = "CSF " + DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
@@ -1876,7 +1878,7 @@ namespace FMS.BLL.Csf
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VENDOR_POLICE_NUMBER + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EMPLOYEE_NAME + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.LOCATION_CITY + "</td>" +
-                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VEHICLE_TYPE_NAME + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VEHICLE_TYPE == benefitType ? "BENEFIT" : "WTC" + "</td>" +
                                 "</tr>");
                 bodyMail.AppendLine();
             }
