@@ -958,7 +958,6 @@ namespace FMS.BLL.Temporary
                 {
                     var endDateCfm = item.VENDOR_CONTRACT_START_DATE.Value.AddDays(-1);
 
-                    cfmidleData.DOCUMENT_NUMBER = item.DOCUMENT_NUMBER;
                     cfmidleData.END_DATE = endDateCfm;
                     cfmidleData.IS_ACTIVE = false;
                     _fleetService.save(cfmidleData);

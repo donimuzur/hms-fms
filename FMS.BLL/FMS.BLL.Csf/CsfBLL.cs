@@ -1594,7 +1594,6 @@ namespace FMS.BLL.Csf
                 if (cfmidleData != null) {
                     var endDateCfm = item.VENDOR_CONTRACT_START_DATE.Value.AddDays(-1);
 
-                    cfmidleData.DOCUMENT_NUMBER = item.DOCUMENT_NUMBER;
                     cfmidleData.END_DATE = endDateCfm;
                     cfmidleData.IS_ACTIVE = false;
                     _fleetService.save(cfmidleData);
@@ -1841,6 +1840,103 @@ namespace FMS.BLL.Csf
 
                 SendEmailWorkflow(input);
             }
+        }
+
+        public bool BatchEmailCsf(List<TraCsfDto> ListCsf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
+        {
+
+            var rc = new CsfMailNotification();
+            var bodyMail = new StringBuilder();
+            var CC = ConfigurationManager.AppSettings["CC_MAIL"];
+            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+            var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
+            bool isSend = false;
+            rc.Subject = "CTF " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+
+            bodyMail.Append("Dear Vendor " + Vendor + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Bellow are list of CSF Requests<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Please find the detail in attached document<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("<table style='border-collapse: collapse; border: 1px solid black;'>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<tr><td style='border: 1px solid black; padding : 5px'>Doc No</td>" +
+                                "<td style='border: 1px solid black; padding : 5px'>Effective Date</td>" +
+                                "<td style='border: 1px solid black; padding : 5px'>Police Number</td>" +
+                                "<td style='border: 1px solid black; padding : 5px'>Employee Name</td>" +
+                                "<td style='border: 1px solid black; padding : 5px'>Current Basetown</td>" +
+                                "<td style='border: 1px solid black; padding : 5px'>Vehicle Type</td>" +
+                            "</tr>");
+            bodyMail.AppendLine();
+            foreach (var CsfDoc in ListCsf)
+            {
+                bodyMail.Append("<tr><td style='border: 1px solid black; padding : 5px'>" + CsfDoc.DOCUMENT_NUMBER + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EFFECTIVE_DATE.ToString("dd-MMM-yyyy") + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VENDOR_POLICE_NUMBER + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EMPLOYEE_NAME + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.LOCATION_CITY + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VEHICLE_TYPE_NAME + "</td>" +
+                                "</tr>");
+                bodyMail.AppendLine();
+            }
+            bodyMail.Append("</table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<br /><br />Thank you <br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.IsCCExist = false;
+            rc.Body = bodyMail.ToString();
+
+            rc.To.Add(EmailVendor);
+            rc.CC.Add(CC);
+
+            if (rc.CC.Count > 0) rc.IsCCExist = true;
+
+            if (AttachmentWtc != null)
+            {
+                rc.Attachments.Add(AttachmentWtc);
+            }
+
+            if (AttachmentBenefit != null)
+            {
+                rc.Attachments.Add(AttachmentBenefit);
+            }
+
+            if (rc.IsCCExist)
+                //Send email with CC
+                isSend = _messageService.SendEmailToListWithCC(rc.To, rc.CC, rc.Subject, rc.Body, true, rc.Attachments);
+            else
+                isSend = _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+
+            return isSend;
+        }
+
+        public void SendEmailForErrorBatch(string messageError)
+        {
+            var rc = new CsfMailNotification();
+            var bodyMail = new StringBuilder();
+            var emailTo = ConfigurationManager.AppSettings["CC_MAIL"];
+
+            rc.Subject = "CSF Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+
+            bodyMail.Append("Dear Team,<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Error : " + messageError + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.Body = bodyMail.ToString();
+            rc.To.Add(emailTo);
+
+            _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
         }
     }
 }
