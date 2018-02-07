@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AC_VS_OB_REPORT_DATA">
           <Key>
             <PropertyRef Name="ID" />
@@ -35,7 +35,7 @@
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
           </Key>
-          <Property Name="AUTO_GR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
           <Property Name="PO_NUMBER" Type="varchar" MaxLength="20" />
           <Property Name="PO_DATE" Type="datetime" />
           <Property Name="CREATED_DATE" Type="datetime" />
@@ -48,7 +48,7 @@
           <Key>
             <PropertyRef Name="AUTO_GR_DETAIL_ID" />
           </Key>
-          <Property Name="AUTO_GR_DETAIL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AUTO_GR_DETAIL_ID" Type="int" Nullable="false" />
           <Property Name="AUTO_GR_ID" Type="int" Nullable="false" />
           <Property Name="LINE_ITEM" Type="int" />
           <Property Name="QTY_ITEM" Type="decimal" Precision="18" Scale="2" />
@@ -91,10 +91,13 @@
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="FIELD_NAME" Type="nvarchar" MaxLength="50" />
-          <Property Name="DATE_BEFORE" Type="nvarchar" MaxLength="255" />
-          <Property Name="DATE_AFTER" Type="nvarchar" MaxLength="255" />
           <Property Name="CHANGE_DATE" Type="datetime" />
           <Property Name="DATE_SEND" Type="datetime" />
+          <Property Name="DATA_BEFORE" Type="nvarchar" MaxLength="255" />
+          <Property Name="DATA_AFTER" Type="nvarchar" MaxLength="255" />
+          <Property Name="DATE_UPDATE" Type="datetime" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="FUEL_COST_BY_FUNC_REPORT_DATA">
           <Key>
@@ -1030,8 +1033,8 @@
           <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
           <Property Name="CAR_GROUP_LEVEL" Type="int" />
           <Property Name="CFM_IDLE_ID" Type="bigint" />
-          <Property Name="FLEXBEN" Type="int" />
           <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="FLEXBEN" Type="int" />
           <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
           <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
@@ -1064,7 +1067,7 @@
           <Property Name="WITHD_PHONE" Type="nvarchar" MaxLength="50" />
           <Property Name="WITHD_DATE" Type="datetime" />
           <Property Name="WITHD_CITY" Type="nvarchar" MaxLength="50" />
-          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="1000" />
+          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PENALTY" Type="decimal" Precision="18" Scale="2" />
           <Property Name="REFUND_COST" Type="decimal" Precision="18" Scale="2" />
@@ -1255,19 +1258,7 @@
           <Property Name="CERTIFICATE_OF_OWNERSHIP" Type="nvarchar" MaxLength="50" />
           <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <Association Name="FK__PO_REPORT__EMPLO__1B9317B3">
-          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="PO_REPORT_DATA">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PO_REPORT__EMPLO__589C25F3">
+        <Association Name="FK__PO_REPORT__EMPLO__0E6E26BF">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="PO_REPORT_DATA" Type="Self.PO_REPORT_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1508,18 +1499,6 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TRA_CCF_MST_EMPLOYEE_FOR">
-          <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
-          <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MST_EMPLOYEE">
-              <PropertyRef Name="EMPLOYEE_ID" />
-            </Principal>
-            <Dependent Role="TRA_CCF">
-              <PropertyRef Name="EMPLOYEE_ID_COMPLAINT_FOR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TRA_CCF_MST_EMPLOYEE1">
           <End Role="MST_EMPLOYEE" Type="Self.MST_EMPLOYEE" Multiplicity="0..1" />
           <End Role="TRA_CCF" Type="Self.TRA_CCF" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1817,11 +1796,7 @@
           <EntitySet Name="TRA_WORKFLOW_HISTORY" EntityType="Self.TRA_WORKFLOW_HISTORY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_HISTORY_REPORT_DATA" EntityType="Self.VEHICLE_HISTORY_REPORT_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VEHICLE_REPORT_DATA" EntityType="Self.VEHICLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__1B9317B3" Association="Self.FK__PO_REPORT__EMPLO__1B9317B3">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PO_REPORT__EMPLO__589C25F3" Association="Self.FK__PO_REPORT__EMPLO__589C25F3">
+          <AssociationSet Name="FK__PO_REPORT__EMPLO__0E6E26BF" Association="Self.FK__PO_REPORT__EMPLO__0E6E26BF">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="PO_REPORT_DATA" EntitySet="PO_REPORT_DATA" />
           </AssociationSet>
@@ -1902,10 +1877,6 @@
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
           <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE_FOR" Association="Self.FK_TRA_CCF_MST_EMPLOYEE_FOR">
-            <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
-            <End Role="TRA_CCF" EntitySet="TRA_CCF" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TRA_CCF_MST_EMPLOYEE1" Association="Self.FK_TRA_CCF_MST_EMPLOYEE1">
             <End Role="MST_EMPLOYEE" EntitySet="MST_EMPLOYEE" />
             <End Role="TRA_CCF" EntitySet="TRA_CCF" />
           </AssociationSet>
@@ -3294,7 +3265,7 @@
           <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_DATE" Type="DateTime" Precision="3" />
           <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PENALTY" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="REFUND_COST" Type="Decimal" Precision="18" Scale="2" />
@@ -3987,10 +3958,13 @@
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="FIELD_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DATE_BEFORE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DATE_AFTER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CHANGE_DATE" Type="DateTime" Precision="3" />
           <Property Name="DATE_SEND" Type="DateTime" Precision="3" />
+          <Property Name="DATA_BEFORE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DATA_AFTER" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DATE_UPDATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="FUNCTION_CHANGE">
           <Key>
@@ -5289,10 +5263,13 @@
           <EntitySetMapping Name="FLEET_CHANGE">
             <EntityTypeMapping TypeName="FMSModel.FLEET_CHANGE">
               <MappingFragment StoreEntitySet="FLEET_CHANGE">
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="DATE_UPDATE" ColumnName="DATE_UPDATE" />
+                <ScalarProperty Name="DATA_AFTER" ColumnName="DATA_AFTER" />
+                <ScalarProperty Name="DATA_BEFORE" ColumnName="DATA_BEFORE" />
                 <ScalarProperty Name="DATE_SEND" ColumnName="DATE_SEND" />
                 <ScalarProperty Name="CHANGE_DATE" ColumnName="CHANGE_DATE" />
-                <ScalarProperty Name="DATE_AFTER" ColumnName="DATE_AFTER" />
-                <ScalarProperty Name="DATE_BEFORE" ColumnName="DATE_BEFORE" />
                 <ScalarProperty Name="FIELD_NAME" ColumnName="FIELD_NAME" />
                 <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
                 <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />

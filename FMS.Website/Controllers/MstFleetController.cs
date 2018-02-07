@@ -516,7 +516,7 @@ namespace FMS.Website.Controllers
                                 }
                             }
                         }
-
+                        dto.IsActive = true;
                         _fleetBLL.Save(dto);
                         AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                     }

@@ -1,0 +1,75 @@
+CREATE PROC usp_UpdateMasterLocationMapping
+AS 
+BEGIN
+
+	DECLARE @City AS NVARCHAR(255);
+	DECLARE @Address AS NVARCHAR(1000);
+	DECLARE @BaseTown AS NVARCHAR(255);
+	DECLARE @LocationCursor AS CURSOR;
+
+	SET @LocationCursor  = CURSOR
+	FOR 
+	SELECT CITY_NEW, ADDRESS_NEW, BASETOWN_NEW
+	FROM dbo.LOCATION_CHANGE;
+
+	OPEN @LocationCursor;
+	FETCH NEXT FROM @LocationCursor INTO 
+	@City, @Address, @BaseTown;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+
+	IF NOT EXISTS(SELECT [LOCATION] FROM MST_LOCATION_MAPPING WHERE [LOCATION] = @City)
+	BEGIN
+		DECLARE @NewCity AS NVARCHAR(255);
+		DECLARE @NewAddress AS NVARCHAR(1000) = NULL;
+		DECLARE @NewBaseTown AS NVARCHAR(255) = NULL;
+	
+		SET @NewCity = @City;
+
+		IF NOT EXISTS(SELECT [ADDRESS] FROM MST_LOCATION_MAPPING WHERE [ADDRESS] = @Address)
+		BEGIN
+			SET @NewAddress = @Address;
+		
+			IF NOT EXISTS(SELECT [BASETOWN] FROM MST_LOCATION_MAPPING WHERE [BASETOWN] = @BaseTown)
+			BEGIN
+				SET @NewBaseTown = @BaseTown;
+			END
+		END
+
+		INSERT INTO MST_LOCATION_MAPPING(
+				LOCATION,
+				ADDRESS,
+				REGION,
+				ZONE_SALES,
+				ZONE_PRICE_LIST,
+				VALIDITY_FROM,
+				CREATED_BY,
+				CREATED_DATE,
+				MODIFIED_BY,
+				MODIFIED_DATE,
+				IS_ACTIVE,
+				BASETOWN)
+		VALUES (@NewCity, 
+				@NewAddress, 
+				NULL,
+				NULL,
+				NULL,
+				GETDATE(),
+				'SYSTEM',
+				GETDATE(),
+				'SYSTEM',
+				NULL,
+				1,
+				@NewBaseTown);
+	
+	END
+
+
+	FETCH NEXT FROM @LocationCursor INTO 
+	@City, @Address, @BaseTown;
+	END
+
+	CLOSE @LocationCursor;
+	DEALLOCATE @LocationCursor;
+END

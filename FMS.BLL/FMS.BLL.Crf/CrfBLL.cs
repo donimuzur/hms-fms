@@ -316,6 +316,8 @@ namespace FMS.BLL.Crf
                 
                 //AddWorkflowHistory(data, userLogin, Enums.ActionType.Submit, null);
                 _uow.SaveChanges();
+
+                data.DOCUMENT_NUMBER = datatosave.DOCUMENT_NUMBER;
     
                 SubmitCrf(data,userLogin);
             }
@@ -385,6 +387,10 @@ namespace FMS.BLL.Crf
                 
                 PoliceNumber = data.POLICE_NUMBER
             }).FirstOrDefault();
+            if(data.MST_FLEET_ID.HasValue)
+            {
+                dataFleet = _fleetService.GetFleetById((int)data.MST_FLEET_ID);
+            }
 
             if (dataFleet == null)
             {
@@ -1202,5 +1208,71 @@ namespace FMS.BLL.Crf
 
             return Mapper.Map<List<TemporaryDto>>(tempData);
         }
+
+        #region ----------- Batch Email -----------
+        public bool BatchEmailCrf(List<TraCrfDto> ListCrf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
+        {
+
+            var rc = new FMSMailNotification();
+            var bodyMail = new StringBuilder();
+            var CC = ConfigurationManager.AppSettings["CC_MAIL"];
+            var AttchmentList = new List<string>();
+
+            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+            var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
+            bool isSend = false;
+            rc.Subject = "CRF " + DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
+
+            bodyMail.Append("Dear Vendor " + Vendor + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Bellow are list of CRF Requests<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Please find the detail in attached document<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("<table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Doc No</td><td style = 'border: 1px solid black; padding : 5px' >Effective Date</td><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Current Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Vehicle Type</td></tr>");
+            bodyMail.AppendLine();
+            foreach (var CtfDoc in ListCrf)
+            {
+                bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.DOCUMENT_NUMBER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + (CtfDoc.EFFECTIVE_DATE == null ? "" : CtfDoc.EFFECTIVE_DATE.Value.ToString("dd-MMM-yyyy")) + "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.POLICE_NUMBER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.EMPLOYEE_NAME + "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.LOCATION_OFFICE+ "</td><td style = 'border: 1px solid black; padding : 5px' >" + CtfDoc.VEHICLE_TYPE + "</td></tr>");
+                bodyMail.AppendLine();
+            }
+            bodyMail.Append("</table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<br /><br />Thank you <br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.IsCCExist = false;
+            rc.Body = bodyMail.ToString();
+
+            rc.To.Add(EmailVendor);
+            rc.CC.Add(CC);
+
+            if (rc.CC.Count > 0) rc.IsCCExist = true;
+
+            if (AttachmentWtc != null)
+            {
+                AttchmentList.Add(AttachmentWtc);
+            }
+
+            if (AttachmentBenefit != null)
+            {
+                AttchmentList.Add(AttachmentBenefit);
+            }
+
+            if (rc.IsCCExist)
+                //Send email with CC
+                isSend = _messageService.SendEmailToListWithCC(rc.To, rc.CC, rc.Subject, rc.Body, true, AttchmentList);
+            else
+                isSend = _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+
+            return isSend;
+        }
+        #endregion  
     }
 }

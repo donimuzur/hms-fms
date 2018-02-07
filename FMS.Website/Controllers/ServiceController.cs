@@ -41,5 +41,10 @@ namespace FMS.Website.Controllers
             return View();
         }
 
+        public ActionResult EmailBatchToVendor()
+        {
+            //new TraCsfController().GetListCsfInProgress();
+            return View();  
+        }
     }
 }

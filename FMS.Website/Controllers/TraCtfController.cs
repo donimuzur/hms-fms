@@ -36,8 +36,10 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private ILocationMappingBLL _locationMappingBLL;
         private ICtfExtendBLL _ctfExtendBLL;
+        private IVendorBLL _vendorBLL;
+
         public TraCtfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCtfBLL ctfBll, ITraCsfBLL CsfBll, IRemarkBLL RemarkBLL, ISettingBLL SettingBLL, ICtfExtendBLL CtfExtendBLL,
-                                IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, ILocationMappingBLL LocationMappingBLL) : base(pageBll, Core.Enums.MenuList.TraCtf)
+                                IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL, IFleetBLL FleetBLL, ILocationMappingBLL LocationMappingBLL, IVendorBLL VendorBLL) : base(pageBll, Core.Enums.MenuList.TraCtf)
         {
 
             _epafBLL = epafBll;
@@ -45,6 +47,7 @@ namespace FMS.Website.Controllers
             _csfBLL = CsfBll;
             _employeeBLL = EmployeeBLL;
             _pageBLL = pageBll;
+            _vendorBLL = VendorBLL;
             _remarkBLL = RemarkBLL;
             _reasonBLL = ReasonBLL;
             _fleetBLL = FleetBLL;
@@ -80,7 +83,6 @@ namespace FMS.Website.Controllers
                 {
                     item.Region = region.Region;
                 }
-
             }
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
@@ -107,14 +109,14 @@ namespace FMS.Website.Controllers
             var GetSetting = _settingBLL.GetSetting();
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                IsSendCsf = false;
-                IsTerminate = false;
                 if (fleetBenefit != null)
                 {
                     foreach (var item in fleetBenefit)
                     {
                         try
                         {
+                            IsSendCsf = false;
+                            IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
@@ -148,15 +150,15 @@ namespace FMS.Website.Controllers
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
                 fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(7).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == CfmUsage.ToUpper() && x.IsActive == true).ToList();
-
-                IsSendCsf = false;
-                IsTerminate = false;
+                
                 if (fleetBenefit != null)
                 {
                     foreach (var item in fleetBenefit)
                     {
                         try
                         {
+                            IsSendCsf = false;
+                            IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
@@ -190,12 +192,12 @@ namespace FMS.Website.Controllers
                 }
                 if (fleetWTC != null)
                 {
-                    IsSendCsf = false;
-                    IsTerminate = false;
                     foreach (var item in fleetWTC)
                     {
                         try
                         {
+                            IsSendCsf = false;
+                            IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
                             var days7 = DateTime.Now.AddDays(7);
@@ -3231,5 +3233,202 @@ namespace FMS.Website.Controllers
         }
         //-----------------------------------------------------------------------------//
         #endregion
+
+        #region  ------- Batch Email Vendor --------
+        public void  GetListCtfInProgress ()
+        {
+            var ListCtf = _ctfBLL.GetCtf().Where(x => x.DocumentStatus == Enums.DocumentStatus.InProgress && x.DateSendVendor == null).ToList();
+            var ListCtfDto = new List<TraCtfDto>();
+            var Vendor = new List<String>();
+            bool IsSend = false;
+            foreach (var CtfData in ListCtf)
+            {
+                var vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.PoliceNumber == CtfData.PoliceNumber && x.EmployeeID == CtfData.EmployeeId).FirstOrDefault();
+                if(vehicle != null)
+                {
+                    CtfData.Vendor = (vehicle.VendorName == null ? "" : vehicle.VendorName.ToUpper()) ;
+                    CtfData.ChasisNumber = vehicle.ChasisNumber;
+                    CtfData.EngineNumber = vehicle.EngineNumber;
+                    CtfData.Manufacture = vehicle.Manufacturer;
+                    CtfData.Models = vehicle.Models;
+                    CtfData.Series = vehicle.Series;
+                    CtfData.Basetown = vehicle.City;
+                }
+                ListCtfDto.Add(CtfData);
+            }
+
+            Vendor = ListCtfDto.Where(x => x.Vendor != null ).Select(x => x.Vendor ).Distinct().ToList();
+            
+            foreach(var VendorItem in Vendor)
+            {
+                
+                var reListCtfDto = ListCtfDto.Where(x => (x.Vendor == null ? "" : x.Vendor.ToUpper()) == VendorItem).ToList();
+
+                var WtcListCtf = reListCtfDto.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) ==  "WTC").ToList();
+
+                var BenefitListCtf = reListCtfDto.Where(x =>(x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").ToList();
+                
+                string AttacthmentWtc = null;
+                string AttacthmentBenefit = null;
+
+                if (WtcListCtf.Count > 0)
+                {
+                    AttacthmentWtc = CreateExcelForVendor(WtcListCtf, "WTC");
+                }
+
+                if (BenefitListCtf.Count > 0)
+                {
+                    AttacthmentBenefit= CreateExcelForVendor(BenefitListCtf, "BENEFIT");
+                }
+                reListCtfDto = reListCtfDto.OrderBy(x => x.VehicleType).ToList();
+                IsSend = _ctfBLL.BatchEmailCtf(reListCtfDto, VendorItem, AttacthmentWtc, AttacthmentBenefit);
+                
+                if(IsSend)
+                {
+                    foreach(var Ctf in reListCtfDto)
+                    {
+                        Ctf.DateSendVendor = DateTime.Now;
+
+                        var login = new Login();
+                        login.USER_ID = "SYSTEM";
+                        _ctfBLL.Save(Ctf,login);
+                    }
+                }
+
+            }
+        }
+        #endregion
+
+        #region --------- Add Attachment File For Vendor --------------
+        private string CreateExcelForVendor(List<TraCtfDto> CtfDto, string VehicleType)
+        {
+         
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(2, 2, "Detail Vehicle");
+            slDocument.MergeWorksheetCells(2, 2, 2, 15);
+
+            slDocument.SetCellValue(2, 16, "Detail Withdrawal");
+            slDocument.MergeWorksheetCells(2, 16, 2, 20);
+
+          
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Font.FontSize = 11;
+            slDocument.SetCellStyle(2, 2, 2, 20, valueStyle);
+
+            //create header
+            slDocument = CreateHeaderExcelForVendor(slDocument);
+
+            //create data
+            slDocument = CreateDataExcelForVendor(slDocument, CtfDto);
+
+            var fileName = "Attachment_CTF_" + VehicleType + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateHeaderExcelForVendor(SLDocument slDocument)
+        {
+            int iRow = 3;
+
+            slDocument.SetCellValue(iRow, 2, "Request Number");
+            slDocument.SetCellValue(iRow, 3, "Employee Name");
+            slDocument.SetCellValue(iRow, 4, "Vendor");
+            slDocument.SetCellValue(iRow, 5, "Police Number");
+            slDocument.SetCellValue(iRow, 6, "Chasis Number");
+            slDocument.SetCellValue(iRow, 7, "Engine Number");
+            slDocument.SetCellValue(iRow, 8, "Manufacture");
+            slDocument.SetCellValue(iRow, 9, "Model");
+            slDocument.SetCellValue(iRow, 10, "Series");
+            slDocument.SetCellValue(iRow, 11, "VehicleUsage");
+            slDocument.SetCellValue(iRow, 12, "Basetown");
+            slDocument.SetCellValue(iRow, 13, "Transfer to CFM Idle");
+            slDocument.SetCellValue(iRow, 14, "Contract End Date");
+            slDocument.SetCellValue(iRow, 15, "Termination Date");
+            slDocument.SetCellValue(iRow, 16, "PIC");
+            slDocument.SetCellValue(iRow, 17, "Date & Time");
+            slDocument.SetCellValue(iRow, 18, "Phone Number");
+            slDocument.SetCellValue(iRow, 19, "City");
+            slDocument.SetCellValue(iRow, 20, "Address");
+
+            SLStyle headerStyle = slDocument.CreateStyle();
+            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+            slDocument.SetCellStyle(iRow, 2, iRow, 20, headerStyle);
+
+            return slDocument;
+
+        }
+
+        private SLDocument CreateDataExcelForVendor(SLDocument slDocument, List<TraCtfDto> ctfData)
+        {
+            int iRow = 4; //starting row data
+            foreach(var data in ctfData)
+            {
+                slDocument.SetCellValue(iRow, 2, data.DocumentNumber);
+                slDocument.SetCellValue(iRow, 3, data.EmployeeName);
+                slDocument.SetCellValue(iRow, 4, data.Vendor);
+                slDocument.SetCellValue(iRow, 5, data.PoliceNumber);
+                slDocument.SetCellValue(iRow, 6, data.ChasisNumber);
+                slDocument.SetCellValue(iRow, 7, data.EngineNumber);
+                slDocument.SetCellValue(iRow, 8, data.Manufacture);
+                slDocument.SetCellValue(iRow, 9, data.Models);
+                slDocument.SetCellValue(iRow, 10, data.Series);
+                slDocument.SetCellValue(iRow, 11, data.VehicleUsage);
+                slDocument.SetCellValue(iRow, 12, data.Basetown);
+                slDocument.SetCellValue(iRow, 13, data.IsTransferToIdle == true ? "Yes": "No" );
+                if(data.EndRendDate.HasValue)slDocument.SetCellValue(iRow, 14, data.EndRendDate.Value.ToOADate());
+                if(data.EffectiveDate.HasValue)slDocument.SetCellValue(iRow, 15, data.EffectiveDate.Value.ToOADate());
+                slDocument.SetCellValue(iRow, 16, data.WithdPic);
+                if (data.WithdDate.HasValue) slDocument.SetCellValue(iRow, 17, data.WithdDate.Value.ToOADate());
+                slDocument.SetCellValue(iRow, 18, data.WithdPhone);
+                slDocument.SetCellValue(iRow, 19, data.WithdCity);
+                slDocument.SetCellValue(iRow, 20, data.WithdAddress);
+
+                SLStyle dateStyle = slDocument.CreateStyle();
+                dateStyle.FormatCode = "dd-MMM-yyyy";
+
+                slDocument.SetCellStyle(iRow, 14, iRow, 14, dateStyle);
+                slDocument.SetCellStyle(iRow, 15, iRow, 15, dateStyle);
+
+                dateStyle = slDocument.CreateStyle();
+                dateStyle.FormatCode = "dd-MMM-yyyy HH:mm";
+                slDocument.SetCellStyle(iRow, 17, iRow, 17, dateStyle);
+                SLStyle valueStyle = slDocument.CreateStyle();
+                valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+                valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+                valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+                valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+
+                slDocument.AutoFitColumn(2, 20);
+                slDocument.SetCellStyle(iRow, 2, iRow, 20, valueStyle);
+
+                iRow++;
+
+            }
+          
+
+            //create style
+            return slDocument;
+        }
+
+        #endregion
+
     }
 }

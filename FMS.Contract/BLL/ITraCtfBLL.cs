@@ -24,5 +24,6 @@ namespace FMS.Contract.BLL
         decimal? EmployeeContribution(TraCtfDto CtfDto);
         void CheckCtfInProgress();
         TraCtfDto SaveUpload(TraCtfDto Dto, Login userLogin);
+        bool BatchEmailCtf(List<TraCtfDto> ListCtf, string Vendor, string AttachmentWtc, string AttachmentBenefit);
     }
 }

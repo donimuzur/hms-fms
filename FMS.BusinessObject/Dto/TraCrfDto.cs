@@ -65,7 +65,12 @@ namespace FMS.BusinessObject.Dto
         public bool IsSend { get; set; }
 
 
-        
+        #region -------------- variable Batch Vendor -------------
+        public DateTime? DATE_SEND_VENDOR { get; set; }
+        public string CHASIS_NUMBER { get; set; }
+        public string ENGINE_NUMBER { get; set; }
+        #endregion
+
     }
 
     public class TraCrfEpafParamInput

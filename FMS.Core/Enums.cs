@@ -217,6 +217,8 @@ namespace FMS.Core
             FuelType = 11,
             [Description("TRANSMISSION")]
             Transmission = 12,
+            [Description("RELOCATION_TYPE")]
+            RelocationType = 13,
         }
 
 		
