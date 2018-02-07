@@ -83,7 +83,6 @@ namespace FMS.Website.Controllers
                 {
                     item.Region = region.Region;
                 }
-
             }
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
@@ -110,14 +109,14 @@ namespace FMS.Website.Controllers
             var GetSetting = _settingBLL.GetSetting();
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                IsSendCsf = false;
-                IsTerminate = false;
                 if (fleetBenefit != null)
                 {
                     foreach (var item in fleetBenefit)
                     {
                         try
                         {
+                            IsSendCsf = false;
+                            IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
@@ -151,15 +150,15 @@ namespace FMS.Website.Controllers
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
                 fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(7).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == CfmUsage.ToUpper() && x.IsActive == true).ToList();
-
-                IsSendCsf = false;
-                IsTerminate = false;
+                
                 if (fleetBenefit != null)
                 {
                     foreach (var item in fleetBenefit)
                     {
                         try
                         {
+                            IsSendCsf = false;
+                            IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
@@ -193,12 +192,12 @@ namespace FMS.Website.Controllers
                 }
                 if (fleetWTC != null)
                 {
-                    IsSendCsf = false;
-                    IsTerminate = false;
                     foreach (var item in fleetWTC)
                     {
                         try
                         {
+                            IsSendCsf = false;
+                            IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
                             var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
                             var days7 = DateTime.Now.AddDays(7);
