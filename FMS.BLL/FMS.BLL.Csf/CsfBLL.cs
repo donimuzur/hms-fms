@@ -1930,7 +1930,7 @@ namespace FMS.BLL.Csf
             var bodyMail = new StringBuilder();
             var emailTo = ConfigurationManager.AppSettings["CC_MAIL"];
 
-            rc.Subject = "CSF Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+            rc.Subject = "Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
 
             bodyMail.Append("Dear Team,<br /><br />");
             bodyMail.AppendLine();
@@ -1943,6 +1943,34 @@ namespace FMS.BLL.Csf
 
             rc.Body = bodyMail.ToString();
             rc.To.Add(emailTo);
+
+            _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+        }
+
+        public void SendEmailNotificationCfmIdle(long traCsfId, TraCtfDto ctfData)
+        {
+            var rc = new CsfMailNotification();
+            var bodyMail = new StringBuilder();
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+
+            var csfData = _CsfService.GetCsfById(traCsfId);
+            var creatorData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_CREATOR);
+            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
+
+            rc.Subject = "CTF Termination CFM Temporary";
+
+            bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("You need to submit Car Termination Form <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.Body = bodyMail.ToString();
+            rc.To.Add(creatorDataEmail);
 
             _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
         }
