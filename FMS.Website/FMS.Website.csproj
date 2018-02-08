@@ -603,6 +603,7 @@
     <Content Include="Content\img\accidents.png" />
     <Content Include="Content\img\body.png" />
     <Content Include="Content\img\car-insurance.png" />
+    <Content Include="Content\img\car2.png" />
     <Content Include="Content\img\cars.png" />
     <Content Include="Content\img\car_accident.png" />
     <Content Include="Content\img\cloud.png" />

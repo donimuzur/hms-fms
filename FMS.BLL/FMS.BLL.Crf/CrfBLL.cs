@@ -826,17 +826,21 @@ namespace FMS.BLL.Crf
 
                         bodyMail.Append("Dear " + crfData.EMPLOYEE_NAME + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Kindly be advised due to your relocation, you are entitled to move your " + crfData.VEHICLE_USAGE + ".<br /><br />");
+                        bodyMail.Append("In light with your relocation as of " + crfData.EFFECTIVE_DATE.Value.ToString("dd-MMM-yyyy") + ", we would like to offer your " + crfData.VEHICLE_USAGE + " to be moved from previous location to the new one.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please confirm the relocation details, and fill in the information for the withdrawal and delivery <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE.</a><br />");
+                        bodyMail.Append("Here are some important information for the relocation process:<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + creatorName + "<br />");
+                        bodyMail.Append("1.	You have to ensure that the pick-up date of your " + crfData.VEHICLE_USAGE + " is done in the same date with your temporary car in the new location. Otherwise, you will be considered to receive double benefits which do not comply with Company’s regulation.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.Append("2.	Do not leave your precious belongings and other personal items during the car relocation. No insurance is covered for any loss items in the car.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
+                        bodyMail.Append("To complete the process, kindly fill in the information of the relocation <a href='" + webRootUrl + "/TraCrf/Edit/" + crfData.TRA_CRF_ID + "?isPersonalDashboard=True'>HERE.</a> in 14 days after you receive this email.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("HR Team");
+                        bodyMail.Append("Looking forward for your response.<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("For any assistance please contact " + creatorName + ".<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thank you.");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeData.EMAIL_ADDRESS);
