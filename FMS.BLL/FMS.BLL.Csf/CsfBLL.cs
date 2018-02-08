@@ -1844,11 +1844,13 @@ namespace FMS.BLL.Csf
 
         public bool BatchEmailCsf(List<TraCsfDto> ListCsf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
         {
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var rc = new CsfMailNotification();
             var bodyMail = new StringBuilder();
             var CC = ConfigurationManager.AppSettings["CC_MAIL"];
-            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+            var GetVendor = _vendorService.GetVendor().Where(x => (x.SHORT_NAME == null ? "" : x.SHORT_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
             var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
             bool isSend = false;
             rc.Subject = "CSF " + DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
@@ -1871,12 +1873,18 @@ namespace FMS.BLL.Csf
             bodyMail.AppendLine();
             foreach (var CsfDoc in ListCsf)
             {
+                var vehType = "WTC";
+                if (CsfDoc.VEHICLE_TYPE == benefitType)
+                {
+                    vehType = "BENEFIT";
+                }
+
                 bodyMail.Append("<tr><td style='border: 1px solid black; padding : 5px'>" + CsfDoc.DOCUMENT_NUMBER + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EFFECTIVE_DATE.ToString("dd-MMM-yyyy") + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VENDOR_POLICE_NUMBER + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EMPLOYEE_NAME + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.LOCATION_CITY + "</td>" +
-                                    "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.VEHICLE_TYPE_NAME + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + vehType + "</td>" +
                                 "</tr>");
                 bodyMail.AppendLine();
             }
@@ -1922,7 +1930,7 @@ namespace FMS.BLL.Csf
             var bodyMail = new StringBuilder();
             var emailTo = ConfigurationManager.AppSettings["CC_MAIL"];
 
-            rc.Subject = "CSF Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+            rc.Subject = "Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
 
             bodyMail.Append("Dear Team,<br /><br />");
             bodyMail.AppendLine();
@@ -1935,6 +1943,34 @@ namespace FMS.BLL.Csf
 
             rc.Body = bodyMail.ToString();
             rc.To.Add(emailTo);
+
+            _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+        }
+
+        public void SendEmailNotificationCfmIdle(long traCsfId, TraCtfDto ctfData)
+        {
+            var rc = new CsfMailNotification();
+            var bodyMail = new StringBuilder();
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+
+            var csfData = _CsfService.GetCsfById(traCsfId);
+            var creatorData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_CREATOR);
+            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
+            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
+
+            rc.Subject = "CTF Termination CFM Temporary";
+
+            bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("You need to submit Car Termination Form <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.Body = bodyMail.ToString();
+            rc.To.Add(creatorDataEmail);
 
             _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
         }

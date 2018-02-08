@@ -40,7 +40,9 @@ namespace FMS.BLL.Ctf
         private IEmployeeService _employeeService;
         private IVendorService _vendorService;
         private ICtfExtendService _ctfExtendService;
-
+        private IFleetChangeService _fleetChangeService;
+        private IFunctionChangeService _functionChangeService;
+        private ILocationChangeService _locationChangeService;
         public CtfBLL(IUnitOfWork uow)
         {
             _uow = uow;
@@ -58,6 +60,9 @@ namespace FMS.BLL.Ctf
             _vendorService = new VendorService(_uow);
             _penaltyService = new PenaltyService(_uow);
             _ctfExtendService = new CtfExtendService(_uow);
+            _fleetChangeService = new FleetChangeService(_uow);
+            _functionChangeService = new FunctionChangeService(_uow);
+            _locationChangeService = new LocationChangeService(_uow);
         }
         public List<TraCtfDto> GetCtf()
         {
@@ -536,26 +541,68 @@ namespace FMS.BLL.Ctf
             {
                 case Enums.ActionType.Submit:
 
-                    //if submit from HR to EMPLOYEE
+                    //if submit BENEFIT to EMPLOYEE
                     if (ctfData.EmployeeIdCreator == input.EmployeeId && isBenefit)
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Benefit Car Termination";
 
                         bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Here is vehicle data which terminated for the below reason<br /><br />");
+                        bodyMail.Append("In light with your car termination as of "+(ctfData.EffectiveDate == null ? "" : ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy"))+ ", kindly fill in the car termination information <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a> in 14 days after you receive this email.<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("'" + _reasonService.GetReasonById(ctfData.Reason.Value).REASON + "'<br /><br />");
+                        bodyMail.Append("Also, kindly follow these steps to complete the termination process:<br /><br />");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Please confirm for the vehicle, and fill the information for Withdrawal <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=True" + "'>HERE</a><br /><br />");
+                        bodyMail.Append("<ol>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + creatorDataName + " <br /><br />");
+                        bodyMail.Append("<li>Fill and Complete Berita Acara Kejadian (BAK) form which vendor will send to you during the withdrawal (if needed)</li>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
+                        bodyMail.Append("<li>Prepare a copy of your driving license (SIM A) for the vendor</li>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
+                        bodyMail.Append("<li>Fill and complete SIRS via Web Link SIRS (Application Access > Environment, Health, Safety & Security > Sampoerna Incident Reporting System (SIRS))</li>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("HR Team <br /><br />");
+                        bodyMail.Append("<li>ill and compelte CIRF (if there is any incident)</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("</ol> ");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<br /><br />");
+                        bodyMail.AppendLine(); 
+                        bodyMail.Append("Also, kindly send these following documents to complete the termination to " + creatorDataName +" :");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<ul>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<li>Copy of KTP</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<li>Copy of NPWP</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<li>Copy of Bank Account (for COP Scheme)</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<li>Your Transfer Receipt (for COP Scheme)</li>");
+                        bodyMail.AppendLine(); 
+                        bodyMail.Append("<li>Supporting Letter (for COP Scheme, will be send in separate email)</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("</ul>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Should your car is on the COP Scheme, below are some important information for the termination process:");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<ul>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<li>Legal documents such as BPKB will be handled directly by our vendor and be completed within approximately 2 months after termination effective date.</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<li>Transfer of Motor Vehicle Title Fee (Biaya Balik Nama) is subjected to your personal account and will be handled directly by our vendor</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<li>No insurance and service are covered by Company after the termination.</li>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("</ul>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("We look forward for your response.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("For any assistance please contact "+creatorDataName+".<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thank you<br /><br />");
                         bodyMail.AppendLine();
 
                         rc.To.Add(employeeDataEmail);
@@ -565,7 +612,7 @@ namespace FMS.BLL.Ctf
                             rc.CC.Add(item);
                         }
                     }
-                    //if submit from FLEET to EMPLOYEE
+                    //if submit WTC to EMPLOYEE
                     else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && !input.EndRent.Value)
                     {
 
@@ -1229,6 +1276,9 @@ namespace FMS.BLL.Ctf
             }
 
             EmailNotifChangeCC();
+            EmailNotifChangeFleet();
+            EmailNotifChangeFunction();
+            EmailNotifChangeLocation();
         }
         private void UpdateFleet(long id)
         {
@@ -1418,6 +1468,71 @@ namespace FMS.BLL.Ctf
             _fleetService.save(CopVehicle);
         }
 
+        #region ----------- Batch Email -----------
+        public bool BatchEmailCtf(List<TraCtfDto> ListCtf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
+        {
+
+            var rc = new CtfMailNotification();
+            var bodyMail = new StringBuilder();
+            var CC = ConfigurationManager.AppSettings["CC_MAIL"];
+            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+            var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
+            bool isSend = false;
+            rc.Subject = "CTF "+ DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
+
+            bodyMail.Append("Dear Vendor "+ Vendor +",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Bellow are list of CTF Requests<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Please find the detail in attached document<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("<table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Doc No</td><td style = 'border: 1px solid black; padding : 5px' >Effective Date</td><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Current Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Vehicle Type</td></tr>");
+            bodyMail.AppendLine();
+            foreach(var CtfDoc in ListCtf)
+            {
+                bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+CtfDoc.DocumentNumber+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (CtfDoc.EffectiveDate == null ? "" : CtfDoc.EffectiveDate.Value.ToString("dd-MMM-yyyy"))+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.PoliceNumber+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.EmployeeName+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.Basetown+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.VehicleType+ "</td></tr>");
+                bodyMail.AppendLine();
+            }
+            bodyMail.Append("</table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<br /><br />Thank you <br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+            
+            rc.IsCCExist = false;
+            rc.Body = bodyMail.ToString();
+
+            rc.To.Add(EmailVendor);
+            rc.CC.Add(CC);
+
+            if(rc.CC.Count >0 )rc.IsCCExist = true;
+
+            if (AttachmentWtc != null)
+            {
+                rc.Attachments.Add(AttachmentWtc);
+            }
+
+            if (AttachmentBenefit != null)
+            {
+                rc.Attachments.Add(AttachmentBenefit);
+            }
+
+            if (rc.IsCCExist)
+                //Send email with CC
+                isSend=_messageService.SendEmailToListWithCC(rc.To, rc.CC, rc.Subject, rc.Body, true, rc.Attachments);
+            else
+                isSend=_messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+
+            return isSend;
+        }
+        #endregion
+
+        #region --------- Notification Email Data Change ---------
         public void EmailNotifChangeCC()
         {
             try
@@ -1445,7 +1560,7 @@ namespace FMS.BLL.Ctf
                 SqlCommand query = null;
                 SqlDataReader reader = null;
                 string fleetQueryEmail = string.Empty;
-                using(SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
                     using (query = new SqlCommand(fleetQuery, con))
@@ -1482,7 +1597,7 @@ namespace FMS.BLL.Ctf
                     var ChangeDate = new List<string>();
                     var Processed = new List<int>();
                     var EmpChangeQuery = "SELECT EMPLOYEE_ID, FORMAL_NAME, COST_CENTER, CC, CHANGE_DATE, PROCESSED FROM EMP_CHANGE WHERE PROCESSED = 0";
-                    using(query = new SqlCommand(EmpChangeQuery, con))
+                    using (query = new SqlCommand(EmpChangeQuery, con))
                     {
                         reader = query.ExecuteReader();
 
@@ -1537,7 +1652,7 @@ namespace FMS.BLL.Ctf
 
                             var UpdateProcessed = "UPDATE EMP_CHANGE SET PROCESSED = 1" +
                                 " WHERE EMPLOYEE_ID = @employeeID AND COST_CENTER = @costCenter AND CC = @cc";
-                            using(query = new SqlCommand(UpdateProcessed, con))
+                            using (query = new SqlCommand(UpdateProcessed, con))
                             {
                                 query.Parameters.AddWithValue("@employeeID", EmployeeId[i]);
                                 query.Parameters.AddWithValue("@costCenter", CostCenterOld[i]);
@@ -1546,12 +1661,12 @@ namespace FMS.BLL.Ctf
                             }
                         }
                     }
-                   
-                  
+
+
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Trace.WriteLine(ex);
             }
@@ -1669,68 +1784,579 @@ namespace FMS.BLL.Ctf
             //reader.Close();
             //con.Close();
         }
-
-        #region ----------- Batch Email -----------
-        public bool BatchEmailCtf(List<TraCtfDto> ListCtf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
+        public void EmailNotifChangeFleet()
         {
-
-            var rc = new CtfMailNotification();
-            var bodyMail = new StringBuilder();
-            var CC = ConfigurationManager.AppSettings["CC_MAIL"];
-            var GetVendor = _vendorService.GetVendor().Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == (Vendor == null ? "" : Vendor.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
-            var EmailVendor = (GetVendor == null ? "" : GetVendor.EMAIL_ADDRESS);
-            bool isSend = false;
-            rc.Subject = "CTF "+ DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
-
-            bodyMail.Append("Dear Vendor "+ Vendor +",<br /><br />");
-            bodyMail.AppendLine();
-            bodyMail.Append("Bellow are list of CTF Requests<br />");
-            bodyMail.AppendLine();
-            bodyMail.Append("Please find the detail in attached document<br />");
-            bodyMail.AppendLine();
-            bodyMail.Append("<table>");
-            bodyMail.AppendLine();
-            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Doc No</td><td style = 'border: 1px solid black; padding : 5px' >Effective Date</td><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Current Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Vehicle Type</td></tr>");
-            bodyMail.AppendLine();
-            foreach(var CtfDoc in ListCtf)
+            try
             {
-                bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+CtfDoc.DocumentNumber+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (CtfDoc.EffectiveDate == null ? "" : CtfDoc.EffectiveDate.Value.ToString("dd-MMM-yyyy"))+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.PoliceNumber+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.EmployeeName+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.Basetown+ "</td><td style = 'border: 1px solid black; padding : 5px' >"+ CtfDoc.VehicleType+ "</td></tr>");
-                bodyMail.AppendLine();
+                var bodyMail = new StringBuilder();
+                var rc = new CtfMailNotification();
+
+                var fleetList = string.Empty;
+                var fleetEmailList = new List<string>();
+                var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+                var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+                var HRList = string.Empty;
+                var HrEmailList = new List<string>();
+                var HrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+                var HrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + HrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+                var AdminList = string.Empty;
+                var AdminEmailList = new List<string>();
+                var AdminRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("ADMINISTRATOR")).FirstOrDefault().SETTING_VALUE;
+                var AdminQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + AdminRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+                
+                var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                var typeEnv = ConfigurationManager.AppSettings["Environment"];
+                var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+                if (typeEnv == "VTI")
+                {
+                    fleetQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+                    HrQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + HrRole + "'";
+                    AdminQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + AdminRole + "'";
+
+                }
+
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlCommand query = null;
+                SqlDataReader reader = null;
+
+                string fleetQueryEmail = string.Empty;
+                string HrQueryEmail = string.Empty;
+                string AdminQueryEmail = string.Empty;
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (query = new SqlCommand(fleetQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var fleetLogin = "'" + reader[0].ToString() + "',";
+                            fleetList += fleetLogin;
+                        }
+                    }
+                    fleetList = fleetList.TrimEnd(',');
+
+                    fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + (string.IsNullOrEmpty(fleetList) ? "''" : fleetList) + ")";
+                    
+                    if (typeEnv == "VTI")
+                    {
+                        fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+(string.IsNullOrEmpty(fleetList) ? "''" : fleetList)+")";
+                    }
+                    using (query = new SqlCommand(fleetQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            fleetEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    using (query = new SqlCommand(HrQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var Hrlogin = "'" + reader[0].ToString() + "',";
+                            HRList += Hrlogin;
+                        }
+                    }
+                    HRList = HRList.TrimEnd(',');
+
+                    HrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + (string.IsNullOrEmpty(HRList) ? "''" : HRList) + ")";
+
+                    if (typeEnv == "VTI")
+                    {
+                       HrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+(string.IsNullOrEmpty(HRList) ? "''" : HRList)+")";
+                    }
+                    using (query = new SqlCommand(HrQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            HrEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    using (query = new SqlCommand(AdminQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var AdminLogin = "'" + reader[0].ToString() + "',";
+                            AdminList += AdminLogin;
+                        }
+                    }
+                    AdminList =AdminList.TrimEnd(',');
+
+                    AdminQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + (string.IsNullOrEmpty(AdminList) ? "''" : AdminList) + ")";
+
+                    if (typeEnv == "VTI")
+                    {
+                        AdminQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+(string.IsNullOrEmpty(AdminList) ? "''" : AdminList)+")";
+                    }
+                    using (query = new SqlCommand(AdminQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            AdminEmailList.Add(reader[0].ToString());
+                        }
+                    }
+                    var FleetChangeList = _fleetChangeService.GetListFleetChange();
+                    
+                    rc.Subject = "Fleet Changes ";
+
+                    bodyMail.Append("Dear Administrator,<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("There are Change data in Master Fleet, Here is the List : <br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<table>");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Chasis Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Id</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Field Name</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td><td style = 'border: 1px solid black; padding : 5px' >Data Before</td><td style = 'border: 1px solid black; padding : 5px' >Data After</td></tr>");
+                    bodyMail.AppendLine();
+                    foreach (var item in FleetChangeList)
+                    {
+                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+item.POLICE_NUMBER+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CHASIS_NUMBER+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_ID+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.FIELD_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy"))+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.DATA_BEFORE+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.DATA_AFTER+"</td></tr>");
+                        bodyMail.AppendLine();
+                    }
+                    bodyMail.Append("</table>");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<br />Thanks <br /><br />");
+                    bodyMail.AppendLine();
+
+                    foreach (var item in AdminEmailList)
+                    {
+                        rc.To.Add(item);
+                    }
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+                    foreach (var item in HrEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    rc.Body = bodyMail.ToString();
+
+                    //distinct double To email
+                    List<string> ListTo = rc.To.Distinct().ToList();
+                    List<string> ListCC = rc.CC.Distinct().ToList();
+                    bool IsSend;
+                    if (rc.IsCCExist)
+                        //Send email with CC
+                       IsSend= _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
+                    else
+                       IsSend =  _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+                 
+                    if(IsSend)
+                    {
+                        var Datesend = DateTime.Now;
+                        foreach(var FleetChange in FleetChangeList)
+                        {
+                            FleetChange.DATE_SEND = Datesend;
+                            _fleetChangeService.Save(FleetChange);
+                        }
+                    }
+                }
             }
-            bodyMail.Append("</table>");
-            bodyMail.AppendLine();
-            bodyMail.Append("<br /><br />Thank you <br />");
-            bodyMail.AppendLine();
-            bodyMail.Append("Best Regards,<br />");
-            bodyMail.AppendLine();
-            bodyMail.Append("Fleet Team");
-            bodyMail.AppendLine();
-            
-            rc.IsCCExist = false;
-            rc.Body = bodyMail.ToString();
-
-            rc.To.Add(EmailVendor);
-            rc.CC.Add(CC);
-
-            if(rc.CC.Count >0 )rc.IsCCExist = true;
-
-            if (AttachmentWtc != null)
+            catch (Exception ex)
             {
-                rc.Attachments.Add(AttachmentWtc);
+                Trace.WriteLine(ex);
             }
-
-            if (AttachmentBenefit != null)
+        }
+        public void EmailNotifChangeFunction()
+        {
+            try
             {
-                rc.Attachments.Add(AttachmentBenefit);
+                var bodyMail = new StringBuilder();
+                var rc = new CtfMailNotification();
+
+                var fleetList = string.Empty;
+                var fleetEmailList = new List<string>();
+                var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+                var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+                var HRList = string.Empty;
+                var HrEmailList = new List<string>();
+                var HrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+                var HrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + HrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+                var AdminList = string.Empty;
+                var AdminEmailList = new List<string>();
+                var AdminRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("ADMINISTRATOR")).FirstOrDefault().SETTING_VALUE;
+                var AdminQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + AdminRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+                var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                var typeEnv = ConfigurationManager.AppSettings["Environment"];
+                var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+                if (typeEnv == "VTI")
+                {
+                    fleetQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+                    HrQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + HrRole + "'";
+                    AdminQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + AdminRole + "'";
+                }
+
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlCommand query = null;
+                SqlDataReader reader = null;
+
+                string fleetQueryEmail = string.Empty;
+                string HrQueryEmail = string.Empty;
+                string AdminQueryEmail = string.Empty;
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (query = new SqlCommand(fleetQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var fleetLogin = "'" + reader[0].ToString() + "',";
+                            fleetList += fleetLogin;
+                        }
+                    }
+                    fleetList = fleetList.TrimEnd(',');
+
+                    fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + (string.IsNullOrEmpty(fleetList ) ? "''" : fleetList) + ")";
+
+                    if (typeEnv == "VTI")
+                    {
+                        fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+ (string.IsNullOrEmpty(fleetList) ? "''" : fleetList) + ")";
+                    }
+                    using (query = new SqlCommand(fleetQueryEmail, con))
+                    {
+                        query.Parameters.AddWithValue("@fleetList", fleetList);
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            fleetEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    using (query = new SqlCommand(HrQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var Hrlogin = "'" + reader[0].ToString() + "',";
+                            HRList += Hrlogin;
+                        }
+                    }
+                    HRList = HRList.TrimEnd(',');
+
+                    HrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN ("+ (string.IsNullOrEmpty(HRList) ? "''": HRList)+")";
+
+                    if (typeEnv == "VTI")
+                    {
+                        HrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+ (string.IsNullOrEmpty(HRList) ? "''" : HRList) + ")";
+                    }
+                    using (query = new SqlCommand(HrQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            HrEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    using (query = new SqlCommand(AdminQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var AdminLogin = "'" + reader[0].ToString() + "',";
+                            AdminList += AdminLogin;
+                        }
+                    }
+                    AdminList = AdminList.TrimEnd(',');
+
+                    AdminQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + (string.IsNullOrEmpty(AdminList) ? "''": AdminList) + ")";
+
+                    if (typeEnv == "VTI")
+                    {
+                        AdminQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+ (string.IsNullOrEmpty(AdminList) ? "''" : AdminList) + ")";
+                    }
+                    using (query = new SqlCommand(AdminQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            AdminEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    var FunctionChangeList = _functionChangeService.GetListFunctionChange();
+
+                    rc.Subject = "Function Changes ";
+
+                    bodyMail.Append("Dear Administrator,<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("There are Change data in Master Group Cost Center, Here is the List : <br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<table>");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Employee ID</td><td style = 'border: 1px solid black; padding : 5px' >Formal Name</td><td style = 'border: 1px solid black; padding : 5px' >Cost Center</td><td style = 'border: 1px solid black; padding : 5px' >Function Old</td><td style = 'border: 1px solid black; padding : 5px' >Function New</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td></tr>");
+                    bodyMail.AppendLine();
+                    foreach (var item in FunctionChangeList)
+                    {
+                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >" + item.EMPLOYEE_ID + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FORMAL_NAME + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.COST_CENTER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FUNCTION_OLD + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FUNCTION_NEW + "</td><td style = 'border: 1px solid black; padding : 5px' >" + (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy")) + "</td></tr>");
+                        bodyMail.AppendLine();
+                    }
+                    bodyMail.Append("</table>");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<br />Thanks <br /><br />");
+                    bodyMail.AppendLine();
+
+                    foreach (var item in AdminEmailList)
+                    {
+                        rc.To.Add(item);
+                    }
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+                    foreach (var item in HrEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    rc.Body = bodyMail.ToString();
+
+                    //distinct double To email
+                    List<string> ListTo = rc.To.Distinct().ToList();
+                    List<string> ListCC = rc.CC.Distinct().ToList();
+                    bool IsSend;
+                    if (rc.IsCCExist)
+                        //Send email with CC
+                        IsSend = _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
+                    else
+                        IsSend = _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+
+                    if (IsSend)
+                    {
+                        var Datesend = DateTime.Now;
+                        foreach (var FunctionChange in FunctionChangeList)
+                        {
+                            FunctionChange.DATE_SEND = Datesend;
+                            _functionChangeService.Save(FunctionChange);
+                        }
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex);
+            }
+        }
+        public void EmailNotifChangeLocation()
+        {
+            try
+            {
+                var bodyMail = new StringBuilder();
+                var rc = new CtfMailNotification();
 
-            if (rc.IsCCExist)
-                //Send email with CC
-                isSend=_messageService.SendEmailToListWithCC(rc.To, rc.CC, rc.Subject, rc.Body, true, rc.Attachments);
-            else
-                isSend=_messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+                var fleetList = string.Empty;
+                var fleetEmailList = new List<string>();
+                var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+                var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
 
-            return isSend;
+                var HRList = string.Empty;
+                var HrEmailList = new List<string>();
+                var HrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+                var HrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + HrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+                var AdminList = string.Empty;
+                var AdminEmailList = new List<string>();
+                var AdminRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                    && x.SETTING_VALUE.Contains("ADMINISTRATOR")).FirstOrDefault().SETTING_VALUE;
+                var AdminQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + AdminRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+                var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                var typeEnv = ConfigurationManager.AppSettings["Environment"];
+                var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+                if (typeEnv == "VTI")
+                {
+                    fleetQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+                    HrQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + HrRole + "'";
+                    AdminQuery = "SELECT LOGIN FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + AdminRole + "'";
+                }
+
+                EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+                string connectionString = e.ProviderConnectionString;
+                SqlCommand query = null;
+                SqlDataReader reader = null;
+
+                string fleetQueryEmail = string.Empty;
+                string HrQueryEmail = string.Empty;
+                string AdminQueryEmail = string.Empty;
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+                    using (query = new SqlCommand(fleetQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var fleetLogin = "'" + reader[0].ToString() + "',";
+                            fleetList += fleetLogin;
+                        }
+                    }
+                    fleetList = fleetList.TrimEnd(',');
+
+                    fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + (string.IsNullOrEmpty(fleetList) ? "''" : fleetList ) + ")";
+
+                    if (typeEnv == "VTI")
+                    {
+                        fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+ (string.IsNullOrEmpty(fleetList) ? "''" : fleetList) + ")";
+                    }
+                    using (query = new SqlCommand(fleetQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            fleetEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    using (query = new SqlCommand(HrQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var Hrlogin = "'" + reader[0].ToString() + "',";
+                            HRList += Hrlogin;
+                        }
+                    }
+                    HRList = HRList.TrimEnd(',');
+
+                    HrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + (string.IsNullOrEmpty(HRList) ? "''" : HRList )+ ")";
+
+                    if (typeEnv == "VTI")
+                    {
+                        HrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+ (string.IsNullOrEmpty(HRList) ? "''" : HRList) + ")";
+                    }
+                    using (query = new SqlCommand(HrQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            HrEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    using (query = new SqlCommand(AdminQuery, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var AdminLogin = "'" + reader[0].ToString() + "',";
+                            AdminList += AdminLogin;
+                        }
+                    }
+                    AdminList = AdminList.TrimEnd(',');
+
+                    AdminQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN ("+(string.IsNullOrEmpty(AdminList) ? "''" : AdminList)+")";
+
+                    if (typeEnv == "VTI")
+                    {
+                        AdminQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN ("+ (string.IsNullOrEmpty(AdminList) ? "''" : AdminList) + ")";
+                    }
+                    using (query = new SqlCommand(AdminQueryEmail, con))
+                    {
+                        reader = query.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            AdminEmailList.Add(reader[0].ToString());
+                        }
+                    }
+
+                    var LocationChangeList = _locationChangeService.GetListLocationChange();
+
+                    rc.Subject = "Location Changes ";
+
+                    bodyMail.Append("Dear Administrator,<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("There are Change data in Master Location Mapping, Here is the List : <br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<table>");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Employee ID</td><td style = 'border: 1px solid black; padding : 5px' >Formal Name</td><td style = 'border: 1px solid black; padding : 5px' >Old Basetown</td><td style = 'border: 1px solid black; padding : 5px' >New Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Old Address</td><td style = 'border: 1px solid black; padding : 5px' >New Address</td><td style = 'border: 1px solid black; padding : 5px' >Old City</td><td style = 'border: 1px solid black; padding : 5px' >New City</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td></tr>");
+                    bodyMail.AppendLine();
+                    foreach (var item in LocationChangeList)
+                    {
+                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_ID+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.FORMAL_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.BASETOWN_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.BASETOWN_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.ADDRESS_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.ADDRESS_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CITY_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CITY_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy"))+"</td></tr>");
+                        bodyMail.AppendLine();
+                    }
+                    bodyMail.Append("</table>");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("<br />Thanks <br /><br />");
+                    bodyMail.AppendLine();
+
+                    foreach (var item in AdminEmailList)
+                    {
+                        rc.To.Add(item);
+                    }
+
+                    foreach (var item in fleetEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+                    foreach (var item in HrEmailList)
+                    {
+                        rc.CC.Add(item);
+                    }
+
+                    rc.IsCCExist = true;
+                    rc.Body = bodyMail.ToString();
+
+                    //distinct double To email
+                    List<string> ListTo = rc.To.Distinct().ToList();
+                    List<string> ListCC = rc.CC.Distinct().ToList();
+                    bool IsSend;
+                    if (rc.IsCCExist)
+                        //Send email with CC
+                        IsSend = _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
+                    else
+                        IsSend = _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+
+                    if (IsSend)
+                    {
+                        var Datesend = DateTime.Now;
+                        foreach (var LocationChange in LocationChangeList)
+                        {
+                            LocationChange.DATE_SEND = Datesend;
+                            _locationChangeService.Save(LocationChange);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex);
+            }
         }
         #endregion  
     }

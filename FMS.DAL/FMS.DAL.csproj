@@ -88,13 +88,16 @@
     <Compile Include="Services\DocumentTypeService.cs" />
     <Compile Include="Services\EpafService.cs" />
     <Compile Include="Services\ExecutiveSummaryService.cs" />
+    <Compile Include="Services\FleetChangeService.cs" />
     <Compile Include="Services\FleetService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\FuelOdometerService.cs" />
+    <Compile Include="Services\FunctionChangeService.cs" />
     <Compile Include="Services\GroupCostCenterService.cs" />
     <Compile Include="Services\GsService.cs" />
     <Compile Include="Services\HolidayCalenderService.cs" />
     <Compile Include="Services\KpiMonitoringService.cs" />
+    <Compile Include="Services\LocationChangeService.cs" />
     <Compile Include="Services\LocationMappingService.cs" />
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\ModulService.cs" />
