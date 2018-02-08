@@ -669,18 +669,43 @@ namespace FMS.BLL.Temporary
                 case Enums.ActionType.InProgress:
                     rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Document In Progress";
 
-                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Your temporary car request " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Thanks<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Regards,<br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("Fleet Team");
-                    bodyMail.AppendLine();
+                    //if not using CFM IDLE
+                    if (tempData.CFM_IDLE_ID == null || tempData.CFM_IDLE_ID == 0) { 
+                        bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your temporary car with request no. " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("If you need to propose another delivery schedule, kindly inform us through this email.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thank you.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team");
+                        bodyMail.AppendLine();
+                    }
+                    //if using CFM IDLE
+                    else
+                    {
+                        bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Your temporary car with request no. " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> for your temporary car details.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Kindly note that the temporary car is Company pool car which makes it possible to be exchanged with another unit should someone choose it as their permanent CFM. You will be informed earlier should this exchange occurs.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("If you need to propose another delivery schedule, kindly inform us through this email.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Thank you.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Regards,<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Fleet Team on behalf HR Team");
+                        bodyMail.AppendLine();
+                    }
 
                     rc.To.Add(employeeDataEmail);
                     rc.CC.Add(creatorDataEmail);
@@ -1024,7 +1049,7 @@ namespace FMS.BLL.Temporary
                 dbFleet.IS_ACTIVE = true;
                 dbFleet.CREATED_DATE = DateTime.Now;
                 dbFleet.VEHICLE_TYPE = vehType;
-                dbFleet.VEHICLE_USAGE = vehUsage;
+                dbFleet.VEHICLE_USAGE = cfmidleData != null ? "CFM IDLE" : vehUsage;
                 dbFleet.SUPPLY_METHOD = "TEMPORARY";
                 dbFleet.PROJECT = isProject;
                 dbFleet.PROJECT_NAME = projectName;

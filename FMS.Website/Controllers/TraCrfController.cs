@@ -586,8 +586,8 @@ namespace FMS.Website.Controllers
 
                 
                 
-                var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
-                                                                            && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
+                //var cfmIdleListSelected = _tempBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                //                                                            && x.CFM_IDLE_ID != null && x.CFM_IDLE_ID.Value > 0).Select(x => x.CFM_IDLE_ID.Value).ToList();
 
                 //get selectedCfmIdle csf
                 var cfmIdleListSelectedCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
@@ -598,7 +598,7 @@ namespace FMS.Website.Controllers
 
                 var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE"
                                                                 && x.IsActive
-                                                                && !cfmIdleListSelected.Contains(x.MstFleetId)
+                                                                //&& !cfmIdleListSelected.Contains(x.MstFleetId)
                                                                 && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
                                                                 && !cfmIdleListSelectedCrf.Contains(x.MstFleetId)).ToList();
 
