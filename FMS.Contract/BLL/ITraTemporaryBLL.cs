@@ -23,7 +23,5 @@ namespace FMS.Contract.BLL
         bool CheckTempOpenExists(TemporaryDto item);
         List<TemporaryDto> GetList();
         void CancelTemp(long id, int Remark, string user);
-        bool BatchEmailTemp(List<TemporaryDto> ListTemp, string Vendor, string AttachmentWtc, string AttachmentBenefit);
-        void SendEmailForErrorBatch(string messageError);
     }
 }

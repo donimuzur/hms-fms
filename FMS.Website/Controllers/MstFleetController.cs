@@ -29,8 +29,8 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private Enums.MenuList _mainMenu;
 
-        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL
-            , ILocationMappingBLL LocationMappingBLL, ISettingBLL SettingBLL, IEmployeeBLL EmployeeBLL)
+        public MstFleetController(IPageBLL PageBll, IFleetBLL  FleetBLL, IVendorBLL VendorBLL, 
+            IGroupCostCenterBLL GroupCostCenterBLL, ILocationMappingBLL LocationMappingBLL, ISettingBLL SettingBLL, IEmployeeBLL EmployeeBLL)
             : base(PageBll, Enums.MenuList.MasterFleet)
         {
             _fleetBLL = FleetBLL;
@@ -196,8 +196,7 @@ namespace FMS.Website.Controllers
             columnDict.Add(18, "VehicleUsage");
             columnDict.Add(24, "SupplyMethod");
             columnDict.Add(9, "BodyType");
-
-
+            
             return columnDict[index];
         }
         #endregion

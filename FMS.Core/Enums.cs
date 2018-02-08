@@ -50,7 +50,9 @@ namespace FMS.Core
             RptAutoGr = 38,
             RptGs = 39,
             RptExecutiveSummary = 40,
-            RptCcf = 41
+            RptCcf = 41,
+
+            FleetChange = 42
 		}
 
         public enum DocumentType

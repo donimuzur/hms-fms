@@ -326,6 +326,7 @@
     <Compile Include="Models\LiterByFunctionProps.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\MstFleetChangeModel.cs" />
     <Compile Include="Models\OdometerProps.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\RptAutoGrModel.cs" />
