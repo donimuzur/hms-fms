@@ -1911,61 +1911,63 @@ namespace FMS.BLL.Ctf
                         }
                     }
                     var FleetChangeList = _fleetChangeService.GetListFleetChange();
-                    
-                    rc.Subject = "Fleet Changes ";
-
-                    bodyMail.Append("Dear Administrator,<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("There are Change data in Master Fleet, Here is the List : <br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<table>");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Chasis Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Id</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Field Name</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td><td style = 'border: 1px solid black; padding : 5px' >Data Before</td><td style = 'border: 1px solid black; padding : 5px' >Data After</td></tr>");
-                    bodyMail.AppendLine();
-                    foreach (var item in FleetChangeList)
+                    if(FleetChangeList.Count> 0)
                     {
-                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+item.POLICE_NUMBER+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CHASIS_NUMBER+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_ID+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.FIELD_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy"))+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.DATA_BEFORE+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.DATA_AFTER+"</td></tr>");
+                        rc.Subject = "Fleet Changes ";
+
+                        bodyMail.Append("Dear Administrator,<br /><br />");
                         bodyMail.AppendLine();
-                    }
-                    bodyMail.Append("</table>");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<br />Thanks <br /><br />");
-                    bodyMail.AppendLine();
-
-                    foreach (var item in AdminEmailList)
-                    {
-                        rc.To.Add(item);
-                    }
-
-                    foreach (var item in fleetEmailList)
-                    {
-                        rc.CC.Add(item);
-                    }
-                    foreach (var item in HrEmailList)
-                    {
-                        rc.CC.Add(item);
-                    }
-
-                    rc.IsCCExist = true;
-                    rc.Body = bodyMail.ToString();
-
-                    //distinct double To email
-                    List<string> ListTo = rc.To.Distinct().ToList();
-                    List<string> ListCC = rc.CC.Distinct().ToList();
-                    bool IsSend;
-                    if (rc.IsCCExist)
-                        //Send email with CC
-                       IsSend= _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
-                    else
-                       IsSend =  _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
-                 
-                    if(IsSend)
-                    {
-                        var Datesend = DateTime.Now;
-                        foreach(var FleetChange in FleetChangeList)
+                        bodyMail.Append("There are Change data in Master Fleet, Here is the List : <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<table>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Police Number</td><td style = 'border: 1px solid black; padding : 5px' >Chasis Number</td><td style = 'border: 1px solid black; padding : 5px' >Employee Id</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Field Name</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td><td style = 'border: 1px solid black; padding : 5px' >Data Before</td><td style = 'border: 1px solid black; padding : 5px' >Data After</td></tr>");
+                        bodyMail.AppendLine();
+                        foreach (var item in FleetChangeList)
                         {
-                            FleetChange.DATE_SEND = Datesend;
-                            _fleetChangeService.Save(FleetChange);
+                            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >" + item.POLICE_NUMBER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.CHASIS_NUMBER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.EMPLOYEE_ID + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.EMPLOYEE_NAME + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FIELD_NAME + "</td><td style = 'border: 1px solid black; padding : 5px' >" + (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy")) + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.DATA_BEFORE + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.DATA_AFTER + "</td></tr>");
+                            bodyMail.AppendLine();
+                        }
+                        bodyMail.Append("</table>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<br />Thanks <br /><br />");
+                        bodyMail.AppendLine();
+
+                        foreach (var item in AdminEmailList)
+                        {
+                            rc.To.Add(item);
+                        }
+
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        foreach (var item in HrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+
+                        rc.IsCCExist = true;
+                        rc.Body = bodyMail.ToString();
+
+                        //distinct double To email
+                        List<string> ListTo = rc.To.Distinct().ToList();
+                        List<string> ListCC = rc.CC.Distinct().ToList();
+                        bool IsSend;
+                        if (rc.IsCCExist)
+                            //Send email with CC
+                            IsSend = _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
+                        else
+                            IsSend = _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+
+                        if (IsSend)
+                        {
+                            var Datesend = DateTime.Now;
+                            foreach (var FleetChange in FleetChangeList)
+                            {
+                                FleetChange.DATE_SEND = Datesend;
+                                _fleetChangeService.Save(FleetChange);
+                            }
                         }
                     }
                 }
@@ -2103,61 +2105,63 @@ namespace FMS.BLL.Ctf
                     }
 
                     var FunctionChangeList = _functionChangeService.GetListFunctionChange();
-
-                    rc.Subject = "Function Changes ";
-
-                    bodyMail.Append("Dear Administrator,<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("There are Change data in Master Group Cost Center, Here is the List : <br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<table>");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Employee ID</td><td style = 'border: 1px solid black; padding : 5px' >Formal Name</td><td style = 'border: 1px solid black; padding : 5px' >Cost Center</td><td style = 'border: 1px solid black; padding : 5px' >Function Old</td><td style = 'border: 1px solid black; padding : 5px' >Function New</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td></tr>");
-                    bodyMail.AppendLine();
-                    foreach (var item in FunctionChangeList)
+                    if(FunctionChangeList.Count> 0)
                     {
-                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >" + item.EMPLOYEE_ID + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FORMAL_NAME + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.COST_CENTER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FUNCTION_OLD + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FUNCTION_NEW + "</td><td style = 'border: 1px solid black; padding : 5px' >" + (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy")) + "</td></tr>");
+                        rc.Subject = "Function Changes ";
+
+                        bodyMail.Append("Dear Administrator,<br /><br />");
                         bodyMail.AppendLine();
-                    }
-                    bodyMail.Append("</table>");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<br />Thanks <br /><br />");
-                    bodyMail.AppendLine();
-
-                    foreach (var item in AdminEmailList)
-                    {
-                        rc.To.Add(item);
-                    }
-
-                    foreach (var item in fleetEmailList)
-                    {
-                        rc.CC.Add(item);
-                    }
-                    foreach (var item in HrEmailList)
-                    {
-                        rc.CC.Add(item);
-                    }
-
-                    rc.IsCCExist = true;
-                    rc.Body = bodyMail.ToString();
-
-                    //distinct double To email
-                    List<string> ListTo = rc.To.Distinct().ToList();
-                    List<string> ListCC = rc.CC.Distinct().ToList();
-                    bool IsSend;
-                    if (rc.IsCCExist)
-                        //Send email with CC
-                        IsSend = _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
-                    else
-                        IsSend = _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
-
-                    if (IsSend)
-                    {
-                        var Datesend = DateTime.Now;
-                        foreach (var FunctionChange in FunctionChangeList)
+                        bodyMail.Append("There are Change data in Master Group Cost Center, Here is the List : <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<table>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Employee ID</td><td style = 'border: 1px solid black; padding : 5px' >Formal Name</td><td style = 'border: 1px solid black; padding : 5px' >Cost Center</td><td style = 'border: 1px solid black; padding : 5px' >Function Old</td><td style = 'border: 1px solid black; padding : 5px' >Function New</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td></tr>");
+                        bodyMail.AppendLine();
+                        foreach (var item in FunctionChangeList)
                         {
-                            FunctionChange.DATE_SEND = Datesend;
-                            _functionChangeService.Save(FunctionChange);
+                            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >" + item.EMPLOYEE_ID + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FORMAL_NAME + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.COST_CENTER + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FUNCTION_OLD + "</td><td style = 'border: 1px solid black; padding : 5px' >" + item.FUNCTION_NEW + "</td><td style = 'border: 1px solid black; padding : 5px' >" + (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy")) + "</td></tr>");
+                            bodyMail.AppendLine();
+                        }
+                        bodyMail.Append("</table>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<br />Thanks <br /><br />");
+                        bodyMail.AppendLine();
+
+                        foreach (var item in AdminEmailList)
+                        {
+                            rc.To.Add(item);
+                        }
+
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        foreach (var item in HrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+
+                        rc.IsCCExist = true;
+                        rc.Body = bodyMail.ToString();
+
+                        //distinct double To email
+                        List<string> ListTo = rc.To.Distinct().ToList();
+                        List<string> ListCC = rc.CC.Distinct().ToList();
+                        bool IsSend;
+                        if (rc.IsCCExist)
+                            //Send email with CC
+                            IsSend = _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
+                        else
+                            IsSend = _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+
+                        if (IsSend)
+                        {
+                            var Datesend = DateTime.Now;
+                            foreach (var FunctionChange in FunctionChangeList)
+                            {
+                                FunctionChange.DATE_SEND = Datesend;
+                                _functionChangeService.Save(FunctionChange);
+                            }
                         }
                     }
                 }
@@ -2294,61 +2298,63 @@ namespace FMS.BLL.Ctf
                     }
 
                     var LocationChangeList = _locationChangeService.GetListLocationChange();
+                    if(LocationChangeList.Count > 0)
+                    {                    
+                        rc.Subject = "Location Changes ";
 
-                    rc.Subject = "Location Changes ";
-
-                    bodyMail.Append("Dear Administrator,<br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("There are Change data in Master Location Mapping, Here is the List : <br /><br />");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<table>");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Employee ID</td><td style = 'border: 1px solid black; padding : 5px' >Formal Name</td><td style = 'border: 1px solid black; padding : 5px' >Old Basetown</td><td style = 'border: 1px solid black; padding : 5px' >New Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Old Address</td><td style = 'border: 1px solid black; padding : 5px' >New Address</td><td style = 'border: 1px solid black; padding : 5px' >Old City</td><td style = 'border: 1px solid black; padding : 5px' >New City</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td></tr>");
-                    bodyMail.AppendLine();
-                    foreach (var item in LocationChangeList)
-                    {
-                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_ID+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.FORMAL_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.BASETOWN_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.BASETOWN_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.ADDRESS_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.ADDRESS_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CITY_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CITY_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy"))+"</td></tr>");
+                        bodyMail.Append("Dear Administrator,<br /><br />");
                         bodyMail.AppendLine();
-                    }
-                    bodyMail.Append("</table>");
-                    bodyMail.AppendLine();
-                    bodyMail.Append("<br />Thanks <br /><br />");
-                    bodyMail.AppendLine();
-
-                    foreach (var item in AdminEmailList)
-                    {
-                        rc.To.Add(item);
-                    }
-
-                    foreach (var item in fleetEmailList)
-                    {
-                        rc.CC.Add(item);
-                    }
-                    foreach (var item in HrEmailList)
-                    {
-                        rc.CC.Add(item);
-                    }
-
-                    rc.IsCCExist = true;
-                    rc.Body = bodyMail.ToString();
-
-                    //distinct double To email
-                    List<string> ListTo = rc.To.Distinct().ToList();
-                    List<string> ListCC = rc.CC.Distinct().ToList();
-                    bool IsSend;
-                    if (rc.IsCCExist)
-                        //Send email with CC
-                        IsSend = _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
-                    else
-                        IsSend = _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
-
-                    if (IsSend)
-                    {
-                        var Datesend = DateTime.Now;
-                        foreach (var LocationChange in LocationChangeList)
+                        bodyMail.Append("There are Change data in Master Location Mapping, Here is the List : <br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<table>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Employee ID</td><td style = 'border: 1px solid black; padding : 5px' >Formal Name</td><td style = 'border: 1px solid black; padding : 5px' >Old Basetown</td><td style = 'border: 1px solid black; padding : 5px' >New Basetown</td><td style = 'border: 1px solid black; padding : 5px' >Old Address</td><td style = 'border: 1px solid black; padding : 5px' >New Address</td><td style = 'border: 1px solid black; padding : 5px' >Old City</td><td style = 'border: 1px solid black; padding : 5px' >New City</td><td style = 'border: 1px solid black; padding : 5px' >Change Date</td></tr>");
+                        bodyMail.AppendLine();
+                        foreach (var item in LocationChangeList)
                         {
-                            LocationChange.DATE_SEND = Datesend;
-                            _locationChangeService.Save(LocationChange);
+                            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_ID+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.FORMAL_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.BASETOWN_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.BASETOWN_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.ADDRESS_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.ADDRESS_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CITY_OLD+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.CITY_NEW+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (item.CHANGE_DATE == null ? "" : item.CHANGE_DATE.Value.ToString("dd-MMM-yyyy"))+"</td></tr>");
+                            bodyMail.AppendLine();
+                        }
+                        bodyMail.Append("</table>");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("<br />Thanks <br /><br />");
+                        bodyMail.AppendLine();
+
+                        foreach (var item in AdminEmailList)
+                        {
+                            rc.To.Add(item);
+                        }
+
+                        foreach (var item in fleetEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+                        foreach (var item in HrEmailList)
+                        {
+                            rc.CC.Add(item);
+                        }
+
+                        rc.IsCCExist = true;
+                        rc.Body = bodyMail.ToString();
+
+                        //distinct double To email
+                        List<string> ListTo = rc.To.Distinct().ToList();
+                        List<string> ListCC = rc.CC.Distinct().ToList();
+                        bool IsSend;
+                        if (rc.IsCCExist)
+                            //Send email with CC
+                            IsSend = _messageService.SendEmailToListWithCC(ListTo, ListCC, rc.Subject, rc.Body, true);
+                        else
+                            IsSend = _messageService.SendEmailToList(ListTo, rc.Subject, rc.Body, true);
+
+                        if (IsSend)
+                        {
+                            var Datesend = DateTime.Now;
+                            foreach (var LocationChange in LocationChangeList)
+                            {
+                                LocationChange.DATE_SEND = Datesend;
+                                _locationChangeService.Save(LocationChange);
+                            }
                         }
                     }
                 }
