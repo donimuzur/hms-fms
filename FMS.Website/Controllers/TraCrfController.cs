@@ -1041,7 +1041,7 @@ namespace FMS.Website.Controllers
                         
                         var login = new BusinessObject.Business.Login();
                         login.USER_ID = "SYSTEM";
-                        _CRFBLL.SaveCrf(Crf, login);
+                        _CRFBLL.SaveCrf(Crf);
                     }
                 }
             }

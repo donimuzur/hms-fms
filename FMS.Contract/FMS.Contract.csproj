@@ -55,6 +55,7 @@
     <Compile Include="BLL\IEpafBLL.cs" />
     <Compile Include="BLL\IExecutiveSummaryBLL.cs" />
     <Compile Include="BLL\IFleetBLL.cs" />
+    <Compile Include="BLL\IFleetChangeBLL.cs" />
     <Compile Include="BLL\IFuelOdometerBLL.cs" />
     <Compile Include="BLL\IGroupCostCenterBLL.cs" />
     <Compile Include="BLL\IGsBLL.cs" />
@@ -102,12 +103,15 @@
     <Compile Include="Service\IEmployeeService.cs" />
     <Compile Include="Service\IEpafService.cs" />
     <Compile Include="Service\IExecutiveSummaryService.cs" />
+    <Compile Include="Service\IFleetChangeService.cs" />
     <Compile Include="Service\IFleetService.cs" />
     <Compile Include="Service\IFuelOdometerService.cs" />
+    <Compile Include="Service\IFunctionChangeService.cs" />
     <Compile Include="Service\IGroupCostCenterService.cs" />
     <Compile Include="Service\IGsService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
     <Compile Include="Service\IKpiMonitoringService.cs" />
+    <Compile Include="Service\ILocationChangeService.cs" />
     <Compile Include="Service\ILocationMappingService.cs" />
     <Compile Include="Service\IMessageService.cs" />
     <Compile Include="Service\IPenaltyLogicService.cs" />
