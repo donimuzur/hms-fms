@@ -52,9 +52,9 @@ BEGIN
 				BASETOWN)
 		VALUES (@NewCity, 
 				@NewAddress, 
-				NULL,
-				NULL,
-				NULL,
+				'',
+				'',
+				'',
 				GETDATE(),
 				'SYSTEM',
 				GETDATE(),
