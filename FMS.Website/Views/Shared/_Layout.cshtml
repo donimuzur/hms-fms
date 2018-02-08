@@ -101,9 +101,21 @@
 				case Enums.MenuList.MasterSysAccess:
 				case Enums.MenuList.MasterPenaltyLogic:
 					<h5 class="sb-title">Main Menu - Master Data</h5>
-					<ul>
-						<li><a href="@Url.Action("Index","MstCostOb")" id="MstCostObMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Cost OB</h5></a></li>
-						<li><a href="@Url.Action("Index","MstFleet")" id="MstFleetMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Fleet</h5></a></li>
+					<ul id="mainParentX">
+						<li>
+							<a href="@Url.Action("Index","MstCostOb")" id="MstCostObMenu">
+								<span class="icon-col">
+									<img src="~/Content/images/clock-mini.png" alt="">
+								</span><h5>Cost OB</h5>
+							</a>
+						</li>
+						<li>
+							<a href="@Url.Action("Index","MstFleet")" id="MstFleetMenu">
+								<span class="icon-col">
+									<img src="~/Content/images/clock-mini.png" alt="">
+								</span><h5>Fleet</h5>
+							</a>
+						</li>
 						<li><a href="@Url.Action("Index","MstGs")" id="MstGsMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>GS</h5></a></li>
 						<li><a href="@Url.Action("Index","MstPenalty")" id="MstPenaltyMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Penalty</h5></a></li>
 						<li><a href="@Url.Action("Index","MstPriceList")" id="MstPriceListMenu"><span class="icon-col"><img src="~/Content/images/clock-mini.png" alt=""></span><h5>Price List</h5></a></li>
@@ -313,7 +325,9 @@
 						</li>
 						<li>
 							<a id="ExecutiveSummaryParent" href="#ExecSummMenu" data-toggle="collapse">
-								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+								<span class="icon-col">
+								<img src="~/Content/images/key-mini.png" alt="">
+								</span>
 								<h5>Executive Summary</h5>
 							</a>
 							<ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">

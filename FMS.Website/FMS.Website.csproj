@@ -263,6 +263,7 @@
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstFleetDashboardController.cs" />
     <Compile Include="Controllers\MstFuelOdometerController.cs" />
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
     <Compile Include="Controllers\MstGsController.cs" />
@@ -325,6 +326,7 @@
     <Compile Include="Models\LiterByFunctionProps.cs" />
     <Compile Include="Models\LocationMappingModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\MstFleetChangeModel.cs" />
     <Compile Include="Models\OdometerProps.cs" />
     <Compile Include="Models\PenaltyLogicModel.cs" />
     <Compile Include="Models\RptAutoGrModel.cs" />
@@ -4393,6 +4395,7 @@
     <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SummaryAll.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleWtc.cshtml" />
+    <Content Include="Views\MstFleetDashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

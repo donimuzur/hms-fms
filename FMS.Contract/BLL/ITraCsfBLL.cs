@@ -27,8 +27,6 @@ namespace FMS.Contract.BLL
         bool CheckCsfExists(TraCsfDto item);
         bool CheckCsfOpenExists(TraCsfDto item);
         List<TraCsfDto> GetList();
-        bool BatchEmailCsf(List<TraCsfDto> ListCsf, string Vendor, string AttachmentWtc, string AttachmentBenefit);
-        void SendEmailForErrorBatch(string messageError);
         void SendEmailNotificationCfmIdle(long traCsfId, TraCtfDto ctfData);
     }
 }

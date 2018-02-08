@@ -25,8 +25,5 @@ namespace FMS.BusinessObject
         public Nullable<System.DateTime> DATE_SEND { get; set; }
         public string DATA_BEFORE { get; set; }
         public string DATA_AFTER { get; set; }
-        public Nullable<System.DateTime> DATE_UPDATE { get; set; }
-        public Nullable<System.DateTime> MODIFIED_DATE { get; set; }
-        public string MODIFIED_BY { get; set; }
     }
 }

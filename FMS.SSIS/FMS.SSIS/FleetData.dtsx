@@ -11,8 +11,8 @@
   DTS:LocaleID="1057"
   DTS:ObjectName="FleetData"
   DTS:PackageType="5"
-  DTS:VersionBuild="37"
-  DTS:VersionGUID="{0812E30E-6209-4515-A2A5-70DC17F0C171}">
+  DTS:VersionBuild="39"
+  DTS:VersionGUID="{542A42DF-3276-4ADD-ACAE-1A52BBACAF7E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -221,6 +221,83 @@
           version="1">
           <components>
             <component
+              refId="Package\Move to EMP_CHANGE\Data Conversion"
+              componentClassID="DTSTransform.DataConvert.3"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input].Columns[CC]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CC"
+                      lineageId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of CC]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of CC]"
+                      name="Copy of CC"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\Move to EMP_CHANGE\OLE DB Destination"
               componentClassID="DTSAdapter.OLEDBDestination.3"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
@@ -418,7 +495,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        MST_EMPLOYEE.EMPLOYEE_ID, MST_EMPLOYEE.FORMAL_NAME, MST_EMPLOYEE.COST_CENTER, View_Employee.CC, CURRENT_TIMESTAMP as CHANGE_DATE, 0 as PROCESSED
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        MST_EMPLOYEE.EMPLOYEE_ID, MST_EMPLOYEE.FORMAL_NAME, MST_EMPLOYEE.COST_CENTER, CONVERT(NVARCHAR(25),View_Employee.CC) AS CC, CURRENT_TIMESTAMP as CHANGE_DATE, 0 as PROCESSED
 FROM            View_Employee INNER JOIN
                          MST_EMPLOYEE ON View_Employee.EMPLID = MST_EMPLOYEE.EMPLOYEE_ID
 WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
@@ -610,8 +687,13 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
           </components>
           <paths>
             <path
-              refId="Package\Move to EMP_CHANGE.Paths[OLE DB Source Output]"
+              refId="Package\Move to EMP_CHANGE.Paths[Data Conversion Output]"
               endId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Move to EMP_CHANGE.Paths[OLE DB Source Output]"
+              endId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
               name="OLE DB Source Output"
               startId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output]" />
           </paths>
@@ -632,6 +714,83 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
         <pipeline
           version="1">
           <components>
+            <component
+              refId="Package\Move to FUNCTION_CHANGE\Data Conversion"
+              componentClassID="DTSTransform.DataConvert.3"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input].Columns[CC]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CC"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of CC]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of CC]"
+                      name="Copy of CC"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
             <component
               refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination"
               componentClassID="DTSAdapter.OLEDBDestination.3"
@@ -828,7 +987,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        
    MST_EMPLOYEE.EMPLOYEE_ID, 
    MST_EMPLOYEE.FORMAL_NAME, 
-   View_Employee.CC AS COST_CENTER,
+   CONVERT(NVARCHAR(25),View_Employee.CC) AS COST_CENTER,
    MST_EMPLOYEE.DIRECTORATE AS FUNCTION_OLD,
    View_Employee.DIRECTORATE AS FUNCTION_NEW, 
    CURRENT_TIMESTAMP AS CHANGE_DATE,
@@ -1024,8 +1183,13 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
           </components>
           <paths>
             <path
-              refId="Package\Move to FUNCTION_CHANGE.Paths[OLE DB Source Output]"
+              refId="Package\Move to FUNCTION_CHANGE.Paths[Data Conversion Output]"
               endId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Move to FUNCTION_CHANGE.Paths[OLE DB Source Output]"
+              endId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
               name="OLE DB Source Output"
               startId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output]" />
           </paths>
@@ -1561,9 +1725,17 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="186,42"
-          Id="Package\Move to EMP_CHANGE"
-          TopLeft="336,16" />
+          Size="214,42"
+          Id="Package\exec usp_UpdateMasterFleet"
+          TopLeft="24.5,222.5" />
+        <NodeLayout
+          Size="260,42"
+          Id="Package\exec usp_UpdateMasterFunctionGroup"
+          TopLeft="557.852764423077,92.5" />
+        <NodeLayout
+          Size="271,42"
+          Id="Package\exec usp_UpdateMasterLocationMapping"
+          TopLeft="261.906850961538,220.5" />
         <NodeLayout
           Size="111,42"
           Id="Package\Get CC"
@@ -1588,6 +1760,40 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
           Size="118,42"
           Id="Package\Get Fuel"
           TopLeft="255,365" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\Move to EMP_CHANGE"
+          TopLeft="336,16" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Move to FUNCTION_CHANGE"
+          TopLeft="574,16" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Move to LOCATION_CHANGE"
+          TopLeft="572,215" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="522,37">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="52,0"
+              Start="0,0"
+              End="44.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="44.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="373,382.5">
@@ -1602,6 +1808,28 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
                   Capacity="5">
                   <mssgle:LineSegment
                     End="46.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 10]"
+          TopLeft="261.906850961538,242.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-23.406850961538,0"
+              Start="0,0"
+              End="-15.906850961538,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-15.906850961538,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1698,36 +1926,6 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="217,42"
-          Id="Package\Move to FUNCTION_CHANGE"
-          TopLeft="574,16" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="522,37">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="52,0"
-              Start="0,0"
-              End="44.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="44.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="260,42"
-          Id="Package\exec usp_UpdateMasterFunctionGroup"
-          TopLeft="557.852764423077,92.5" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 6]"
           TopLeft="685.176382211538,58">
@@ -1750,13 +1948,9 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="217,42"
-          Id="Package\Move to LOCATION_CHANGE"
-          TopLeft="572,215" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 7]"
-          TopLeft="684.176382211538,134.5">
+          TopLeft="684.176382211539,134.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1776,72 +1970,54 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="271,42"
-          Id="Package\exec usp_UpdateMasterLocationMapping"
-          TopLeft="261.906850961538,220.5" />
-        <NodeLayout
-          Size="214,42"
-          Id="Package\exec usp_UpdateMasterFleet"
-          TopLeft="24.5,222.5" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 9]"
-          TopLeft="105.75,264.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,100.5"
-              Start="0,0"
-              End="0,93">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,93" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 10]"
-          TopLeft="261.906850961538,242.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-23.4068509615385,0"
-              Start="0,0"
-              End="-15.9068509615385,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-15.9068509615385,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 8]"
           TopLeft="572,238.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-39.0931490384615,0"
+              EndConnector="-39.093149038462,0"
               Start="0,0"
-              End="-31.5931490384615,0">
+              End="-31.593149038462,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-31.5931490384615,0" />
+                    End="-31.593149038462,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 9]"
+          TopLeft="131.5,264.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-25.5,100.5"
+              Start="0,0"
+              End="-25.5,93">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,46.25"
+                    Point2="0,50.25"
+                    Point3="-4,50.25" />
+                  <mssgle:LineSegment
+                    End="-21.5,50.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-21.5,50.25"
+                    Point2="-25.5,50.25"
+                    Point3="-25.5,54.25" />
+                  <mssgle:LineSegment
+                    End="-25.5,93" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1857,7 +2033,7 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
     design-time-name="Package\Move to EMP_CHANGE">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="150,42"
           Id="Package\Move to EMP_CHANGE\OLE DB Source"
@@ -1866,32 +2042,70 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
           Size="171,42"
           Id="Package\Move to EMP_CHANGE\OLE DB Destination"
           TopLeft="136,105" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Move to EMP_CHANGE\Data Conversion"
+          TopLeft="257,25" />
         <EdgeLayout
           Id="Package\Move to EMP_CHANGE.Paths[OLE DB Source Output]"
-          TopLeft="80.5,47.5">
+          TopLeft="155.5,26.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="141,57.5"
+              EndConnector="101.5,19.5"
               Start="0,0"
-              End="141,50">
+              End="94,19.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.75" />
+                    End="46.75,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,24.75"
-                    Point2="0,28.75"
-                    Point3="4,28.75" />
+                    Point1="46.75,0"
+                    Point2="50.75,0"
+                    Point3="50.75,4" />
                   <mssgle:LineSegment
-                    End="137,28.75" />
+                    End="50.75,15.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="137,28.75"
-                    Point2="141,28.75"
-                    Point3="141,32.75" />
+                    Point1="50.75,15.5"
+                    Point2="50.75,19.5"
+                    Point3="54.75,19.5" />
                   <mssgle:LineSegment
-                    End="141,50" />
+                    End="94,19.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Move to EMP_CHANGE.Paths[Data Conversion Output]"
+          TopLeft="335,67">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-113.5,38"
+              Start="0,0"
+              End="-113.5,30.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15"
+                    Point2="0,19"
+                    Point3="-4,19" />
+                  <mssgle:LineSegment
+                    End="-109.5,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-109.5,19"
+                    Point2="-113.5,19"
+                    Point3="-113.5,23" />
+                  <mssgle:LineSegment
+                    End="-113.5,30.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1928,41 +2142,79 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
     design-time-name="Package\Move to FUNCTION_CHANGE">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Move to FUNCTION_CHANGE\OLE DB Source"
+          TopLeft="5.5,5.5" />
         <NodeLayout
           Size="171,42"
           Id="Package\Move to FUNCTION_CHANGE\OLE DB Destination"
           TopLeft="136,105" />
         <NodeLayout
-          Size="150,42"
-          Id="Package\Move to FUNCTION_CHANGE\OLE DB Source"
-          TopLeft="5.5,5.5" />
+          Size="156,42"
+          Id="Package\Move to FUNCTION_CHANGE\Data Conversion"
+          TopLeft="271.5,23.5" />
         <EdgeLayout
           Id="Package\Move to FUNCTION_CHANGE.Paths[OLE DB Source Output]"
-          TopLeft="80.5,47.5">
+          TopLeft="155.5,26.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="141,57.5"
+              EndConnector="116,18"
               Start="0,0"
-              End="141,50">
+              End="108.5,18">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.75" />
+                    End="54,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,24.75"
-                    Point2="0,28.75"
-                    Point3="4,28.75" />
+                    Point1="54,0"
+                    Point2="58,0"
+                    Point3="58,4" />
                   <mssgle:LineSegment
-                    End="137,28.75" />
+                    End="58,14" />
                   <mssgle:CubicBezierSegment
-                    Point1="137,28.75"
-                    Point2="141,28.75"
-                    Point3="141,32.75" />
+                    Point1="58,14"
+                    Point2="58,18"
+                    Point3="62,18" />
                   <mssgle:LineSegment
-                    End="141,50" />
+                    End="108.5,18" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Move to FUNCTION_CHANGE.Paths[Data Conversion Output]"
+          TopLeft="349.5,65.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-128,39.5"
+              Start="0,0"
+              End="-128,32">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.75"
+                    Point2="0,19.75"
+                    Point3="-4,19.75" />
+                  <mssgle:LineSegment
+                    End="-124,19.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-124,19.75"
+                    Point2="-128,19.75"
+                    Point3="-128,23.75" />
+                  <mssgle:LineSegment
+                    End="-128,32" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2001,13 +2253,13 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="171,42"
-          Id="Package\Move to LOCATION_CHANGE\OLE DB Destination"
-          TopLeft="136,105" />
-        <NodeLayout
           Size="150,42"
           Id="Package\Move to LOCATION_CHANGE\OLE DB Source"
           TopLeft="5.5,5.5" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Move to LOCATION_CHANGE\OLE DB Destination"
+          TopLeft="136,105" />
         <EdgeLayout
           Id="Package\Move to LOCATION_CHANGE.Paths[OLE DB Source Output]"
           TopLeft="80.5,47.5">
