@@ -77,14 +77,17 @@
     <Compile Include="Dto\EmployeeLocationDto.cs" />
     <Compile Include="Dto\EpafDto.cs" />
     <Compile Include="Dto\ExecutiveSummaryDto.cs" />
+    <Compile Include="Dto\FleetChangeDto.cs" />
     <Compile Include="Dto\FleetDto.cs" />
     <Compile Include="Dto\EmployeeDto.cs" />
     <Compile Include="Dto\FuelOdometerDto.cs" />
+    <Compile Include="Dto\FunctionChangeDto.cs" />
     <Compile Include="Dto\GroupCostCenterDto.cs" />
     <Compile Include="Dto\GsDto.cs" />
     <Compile Include="Dto\HolidayCalenderDto.cs" />
     <Compile Include="Dto\KpiMonitoringDto.cs" />
     <Compile Include="Dto\LdapDto.cs" />
+    <Compile Include="Dto\LocationChangeDto.cs" />
     <Compile Include="Dto\LocationMappingDto.cs" />
     <Compile Include="Dto\PenaltyLogicDto.cs" />
     <Compile Include="Dto\RptAutoGrDto.cs" />

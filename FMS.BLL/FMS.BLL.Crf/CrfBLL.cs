@@ -293,7 +293,7 @@ namespace FMS.BLL.Crf
                 if (data.PRICE != null)
                 {
                     data.DOCUMENT_STATUS = (int)Enums.DocumentStatus.Completed;
-                    isCompleted = CompleteDocument(data.TRA_CRF_ID,userLogin);
+                    isCompleted = CompleteDocument(data,userLogin);
                     if (isCompleted)
                     {
                         datatosave.DOCUMENT_STATUS = data.DOCUMENT_STATUS;
@@ -330,7 +330,14 @@ namespace FMS.BLL.Crf
             
             
         }
-
+        public TraCrfDto SaveCrf(TraCrfDto data)
+        {
+            var datatosave = Mapper.Map<TRA_CRF>(data);
+            Login login = new Login();
+            login.USER_ID = "SYSTEM";
+            data.TRA_CRF_ID = _CrfService.SaveCrf(datatosave, login);
+            return data;
+        }
         private bool CompleteDocument(long traCrfId,Login fleetUser)
         {
             bool success = true;
@@ -339,7 +346,13 @@ namespace FMS.BLL.Crf
             SendEmailWorkflow(data,Enums.ActionType.Completed);
             return success;
         }
-
+        private bool CompleteDocument(TraCrfDto data, Login fleetUser)
+        {
+            bool success = true;
+            success = UpdateFleet(data, fleetUser);
+            SendEmailWorkflow(data, Enums.ActionType.Completed);
+            return success;
+        }
         public List<string> CompleteAllDocument()
         {
             List<string> message = new List<string>();
@@ -404,29 +417,30 @@ namespace FMS.BLL.Crf
                 {
                     if ((data.VEHICLE_USAGE == null ? "" : data.VEHICLE_USAGE.ToUpper()) == "CFM" && (data.RelocationType == null ? "" : data.RelocationType.ToUpper()) == "CHANGE_UNIT")
                     {
-                        var IdleVehicle = dataFleet;
-                        IdleVehicle.MST_FLEET_ID = 0;
-                        IdleVehicle.IS_ACTIVE = true;
-                        IdleVehicle.EMPLOYEE_ID = null;
-                        IdleVehicle.EMPLOYEE_NAME = null;
-                        IdleVehicle.ASSIGNED_TO = null;
-                        IdleVehicle.START_DATE = DateTime.Now;
-                        IdleVehicle.END_DATE = null;
-                        IdleVehicle.VEHICLE_STATUS = "LIVE";
-                        IdleVehicle.VEHICLE_USAGE = "CFM IDLE";
-                        IdleVehicle.CREATED_BY = "SYSTEM";
-                        IdleVehicle.CREATED_DATE = DateTime.Now;
-                        IdleVehicle.MODIFIED_BY = null;
-                        IdleVehicle.MODIFIED_DATE = null;
-                        IdleVehicle.DOCUMENT_NUMBER = data.DOCUMENT_NUMBER; 
+                        var IdleVehicle = Mapper.Map<FleetDto>(dataFleet);
+                        IdleVehicle.MstFleetId = 0;
+                        IdleVehicle.IsActive = true;
+                        IdleVehicle.EmployeeID = null;
+                        IdleVehicle.EmployeeName = null;
+                        IdleVehicle.AssignedTo = null;
+                        IdleVehicle.StartDate = DateTime.Now;
+                        IdleVehicle.EndDate = null;
+                        IdleVehicle.VehicleStatus = "LIVE";
+                        IdleVehicle.VehicleUsage = "CFM IDLE";
+                        IdleVehicle.CreatedBy = "SYSTEM";
+                        IdleVehicle.CreatedDate = DateTime.Now;
+                        IdleVehicle.ModifiedBy = null;
+                        IdleVehicle.ModifiedDate = null;
+                        IdleVehicle.DocumentNumber = data.DOCUMENT_NUMBER;
 
-                        _fleetService.save(IdleVehicle);
+                        var dbFleet = Mapper.Map<MST_FLEET>(IdleVehicle);
+                        _fleetService.save(dbFleet);
                     }
 
                     _fleetService.save(dataFleet);
                  
                 }
-                catch (Exception)
+                catch (Exception exp)
                 {
                     return false;
                 }
