@@ -587,6 +587,9 @@
     <Content Include="Content\css\Custom.css" />
     <Content Include="Content\css\easy-autocomplete.min.css" />
     <Content Include="Content\css\easy-autocomplete.themes.min.css" />
+    <Content Include="Content\DatePicker\Bootstrap Date Picker\bootstrap-datepicker.min.css" />
+    <Content Include="Content\DatePicker\Bootstrap Date Picker\bootstrap-datepicker.min.js" />
+    <Content Include="Content\DatePicker\Bootstrap Date Picker\jquery-3.3.1.min.js" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
