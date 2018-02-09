@@ -14,6 +14,7 @@ using FMS.BusinessObject.Dto;
 using iTextSharp.text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
+using FMS.BusinessObject.Business;
 
 namespace FMS.Website.Controllers
 {
@@ -31,6 +32,7 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
         private ITraCsfBLL _csfBLL;
+        private ITraCtfBLL _ctfBLL;
         private ITraTemporaryBLL _tempBLL;
         private ILocationMappingBLL _locationMappingBLL;
         //private IVendorBLL _vendorBLL;
@@ -39,7 +41,7 @@ namespace FMS.Website.Controllers
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVendorBLL vendorBLL, ITraCsfBLL csfBLL, ITraTemporaryBLL tempBLL, ILocationMappingBLL LocationMappingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVendorBLL vendorBLL, ITraCsfBLL csfBLL,ITraCtfBLL CtfBLL, ITraTemporaryBLL tempBLL, ILocationMappingBLL LocationMappingBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -53,6 +55,7 @@ namespace FMS.Website.Controllers
             //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
             _csfBLL = csfBLL;
+            _ctfBLL = CtfBLL;
             _tempBLL = tempBLL;
             _locationMappingBLL = LocationMappingBLL;
 
@@ -447,6 +450,22 @@ namespace FMS.Website.Controllers
                 var dataSubmit = Mapper.Map<TraCrfDto>(model.Detail);
                 dataSubmit.IS_ACTIVE = true;
                 _CRFBLL.SubmitCrf(dataSubmit, CurrentUser);
+
+                if((dataSubmit.RelocationType == null ? "" : dataSubmit.RelocationType.ToUpper()) == "CHANGE_UNIT" 
+                    && dataSubmit.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
+                {
+
+                    var GetVehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == dataSubmit.POLICE_NUMBER
+                    && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (dataSubmit.MANUFACTURER == null ? "" : dataSubmit.MANUFACTURER.ToUpper())
+                    && (x.Models == null ? "" : x.Models.ToUpper()) == (dataSubmit.MODEL == null ? "" : dataSubmit.MODEL.ToUpper())
+                    && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == "CFM IDLE" && x.IsActive).FirstOrDefault();
+
+                    if(GetVehicle != null)
+                    {
+                        DisableCfmIdleInTemporary(dataSubmit, GetVehicle.MstFleetId);
+                    }
+                    
+                }
 
                 return RedirectToAction("Index");
             }
@@ -1190,5 +1209,63 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region ------- Delete CFM Idle in Temporary --------
+        private void DisableCfmIdleInTemporary(TraCrfDto crfData, long CfmIdleId)
+        {
+            //find cfm idle in temporary active
+            var tempData = _tempBLL.GetList().Where(x => (x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled)
+                                                                && x.CFM_IDLE_ID == CfmIdleId).FirstOrDefault();
+
+            if (tempData != null)
+            {
+                tempData.MODIFIED_DATE = DateTime.Now;
+                tempData.CFM_IDLE_ID = null;
+
+                var login = new Login();
+                login.USER_ID = "SYSTEM";
+                _tempBLL.Save(tempData, login);
+            }
+
+            //find cfm idle temporary in master fleet
+            var fleetData = _fleetBLL.GetFleetById((int)CfmIdleId);
+
+            if (fleetData != null)
+            {
+                if (fleetData != null)
+                {
+                    if (fleetData.IsActive && fleetData.VehicleUsage == "CFM IDLE" && fleetData.SupplyMethod == "TEMPORARY")
+                    {
+                        //create CTF Draft
+                        var login = new Login();
+                        login.USER_ID = "SYSTEM";
+
+                        TraCtfDto item = new TraCtfDto();
+
+                        item.CreatedDate = DateTime.Today;
+                        item.CreatedBy = crfData.CREATED_BY;
+                        item.EmployeeId = fleetData.EmployeeID;
+                        item.EmployeeName = fleetData.EmployeeName;
+                        item.CostCenter = fleetData.CostCenter;
+                        item.DocumentStatus = Enums.DocumentStatus.Draft;
+                        item.VehicleType = fleetData.VehicleType;
+                        item.PoliceNumber = fleetData.PoliceNumber;
+                        item.VehicleUsage = "CFM";
+                        item.GroupLevel = fleetData.GroupLevel;
+                        item.VehicleYear = fleetData.VehicleYear;
+                        item.SupplyMethod = fleetData.SupplyMethod;
+                        item.EndRendDate = fleetData.EndContract;
+                        item.IsActive = true;
+
+                        var CtfData = _ctfBLL.Save(item, login);
+
+                        //send notification
+                        _CRFBLL.SendEmailNotificationCfmIdle(crfData, CtfData);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }
