@@ -32,6 +32,9 @@ namespace FMS.Website.Controllers
 
         public ActionResult Index()
         {
+            new FMS.DAL.Services.MessageService(null).SendEmailToList(null, null, null);
+            new FMS.DAL.Services.MessageService(null).SendEmailToListWithCC(null, null, null,null);
+
             var model = new EmployeeModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
