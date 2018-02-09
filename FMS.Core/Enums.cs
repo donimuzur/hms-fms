@@ -52,7 +52,7 @@ namespace FMS.Core
             RptExecutiveSummary = 40,
             RptCcf = 41,
 
-            FleetChange = 42
+            DashboardFleet = 42
 		}
 
         public enum DocumentType
