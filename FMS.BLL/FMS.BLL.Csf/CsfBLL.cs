@@ -1930,7 +1930,7 @@ namespace FMS.BLL.Csf
             var bodyMail = new StringBuilder();
             var emailTo = ConfigurationManager.AppSettings["CC_MAIL"];
 
-            rc.Subject = "Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+            rc.Subject = "CSF Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
 
             bodyMail.Append("Dear Team,<br /><br />");
             bodyMail.AppendLine();

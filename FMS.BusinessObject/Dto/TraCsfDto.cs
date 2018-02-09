@@ -82,5 +82,6 @@ namespace FMS.BusinessObject.Dto
         public string COMMENTS { get; set; }
         public decimal PRICE { get; set; }
         public decimal VAT_DECIMAL { get; set; }
+        public DateTime? DATE_SEND_VENDOR { get; set; }
     }
 }
