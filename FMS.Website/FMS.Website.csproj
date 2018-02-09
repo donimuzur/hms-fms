@@ -1047,6 +1047,7 @@
     <Content Include="Scripts\AutoGr.js" />
     <Content Include="Scripts\CCF.js" />
     <Content Include="Scripts\Gs.js" />
+    <Content Include="Scripts\InitializeAutoCompletMstEmployeeIndex.js" />
     <Content Include="Scripts\PO.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
