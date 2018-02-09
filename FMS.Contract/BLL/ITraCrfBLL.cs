@@ -37,5 +37,6 @@ namespace FMS.Contract.BLL
         List<string> CompleteAllDocument();
         bool BatchEmailCrf(List<TraCrfDto> ListCrf, string Vendor, string AttachmentWtc, string AttachmentBenefit);
         TraCrfDto SaveCrf(TraCrfDto data);
+        void SendEmailNotificationCfmIdle(TraCrfDto crfData, TraCtfDto ctfData);
     }
 }

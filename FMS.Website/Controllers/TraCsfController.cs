@@ -518,14 +518,6 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    if (model.Detail.CfmIdleId != null)
-                    {
-                        if (model.Detail.CfmIdleId.Value > 0)
-                        {
-                            DisableCfmIdleInTemporary(model.Detail.TraCsfId, model.Detail.CfmIdleId.Value);
-                        }
-                    }
-
                     var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
 
                     dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
@@ -567,6 +559,15 @@ namespace FMS.Website.Controllers
                         }
 
                         CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
+
+                        if (model.Detail.CfmIdleId != null)
+                        {
+                            if (model.Detail.CfmIdleId.Value > 0)
+                            {
+                                DisableCfmIdleInTemporary(saveResult);
+                            }
+                        }
+
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                         return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
                     }
@@ -2018,12 +2019,12 @@ namespace FMS.Website.Controllers
 
         #region ------- Delete CFM Idle in Temporary --------
 
-        private void DisableCfmIdleInTemporary(long traCsfId, long cfmIdleId)
+        private void DisableCfmIdleInTemporary(TraCsfDto csfData)
         {
             //find cfm idle in temporary active
             var tempData = _tempBLL.GetList().Where(x => (x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
                                                                 && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled)
-                                                                && x.CFM_IDLE_ID == cfmIdleId).FirstOrDefault();
+                                                                && x.CFM_IDLE_ID == csfData.CFM_IDLE_ID.Value).FirstOrDefault();
 
             if (tempData != null)
             {
@@ -2036,7 +2037,7 @@ namespace FMS.Website.Controllers
             }
 
             //find cfm idle temporary in master fleet
-            var fleetData = _fleetBLL.GetFleetById((int)cfmIdleId);
+            var fleetData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
 
             if (fleetData != null)
             {
@@ -2049,18 +2050,24 @@ namespace FMS.Website.Controllers
                     TraCtfDto item = new TraCtfDto();
 
                     item.CreatedDate = DateTime.Today;
-                    item.CreatedBy = "SYSTEM";
+                    item.CreatedBy = csfData.CREATED_BY;
                     item.EmployeeId = fleetData.EmployeeID;
                     item.EmployeeName = fleetData.EmployeeName;
                     item.CostCenter = fleetData.CostCenter;
                     item.DocumentStatus = Enums.DocumentStatus.Draft;
                     item.VehicleType = fleetData.VehicleType;
+                    item.PoliceNumber = fleetData.PoliceNumber;
+                    item.VehicleUsage = "CFM";
+                    item.GroupLevel = fleetData.GroupLevel;
+                    item.VehicleYear = fleetData.VehicleYear;
+                    item.SupplyMethod = fleetData.SupplyMethod;
+                    item.EndRendDate = fleetData.EndContract;
                     item.IsActive = true;
 
                     var CtfData = _ctfBLL.Save(item, login);
 
                     //send notification
-                    _csfBLL.SendEmailNotificationCfmIdle(traCsfId, CtfData);
+                    _csfBLL.SendEmailNotificationCfmIdle(csfData, CtfData);
                 }
             }
         } 
