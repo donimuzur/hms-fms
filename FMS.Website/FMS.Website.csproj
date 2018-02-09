@@ -4393,7 +4393,6 @@
     <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SummaryAll.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleWtc.cshtml" />
-    <Content Include="Views\MstFleetDashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
