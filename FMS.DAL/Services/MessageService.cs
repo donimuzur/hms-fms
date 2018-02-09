@@ -24,8 +24,6 @@ namespace FMS.DAL.Services
 
             try
             {
-                if (to == null)
-                    throw new Exception("Test Exception Bro!!");
                 var actualTo = new List<string>();
 
                 actualTo.AddRange(to.Distinct());
@@ -97,8 +95,7 @@ namespace FMS.DAL.Services
         {
             try
             {
-                if (to == null)
-                    throw new Exception("Test Exception Bro!!");
+
                 var actualTo = new List<string>();
 
                 actualTo.AddRange(to.Distinct());
