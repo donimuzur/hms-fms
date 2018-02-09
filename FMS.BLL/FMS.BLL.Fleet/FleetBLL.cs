@@ -89,5 +89,18 @@ namespace FMS.BLL.Fleet
             var redata = Mapper.Map<List<FleetDto>>(data);
             return redata;
         }
+
+        public List<FleetChangeDto> GetFleetChange()
+        {
+            var data = _FleetService.GetFleetChange();
+            var redata = Mapper.Map<List<FleetChangeDto>>(data);
+            return redata;
+        }
+
+        public List<FleetChangeDto> GetFleetChangeByParam(FleetChangeParamInput param)
+        {
+            var data = _FleetService.GetFleetChangeByParam(param);
+            return Mapper.Map<List<FleetChangeDto>>(data);
+        }
     }
 }

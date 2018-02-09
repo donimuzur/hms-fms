@@ -1,0 +1,242 @@
+﻿@model FMS.Website.Models.FleetDashboardModel
+@using FMS.Core;
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Dashboard Fleet</h5>
+    @if (Model.CurrentPageAccess.UploadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnUpdate" title="Update Master Fleet" onclick="UpdateFleet()">
+            <i class="fa fa-upload"></i> Update
+        </a>
+    }
+    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+        <i class="fa fa-download"></i> Export
+    </a>
+</div>
+
+<section class="content">
+    <div class="wpanel">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Police Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.PoliceNumber, Model.SearchView.PoliceNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Employee Name</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeName, Model.SearchView.EmployeeNameList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Employee ID</label>
+                    @Html.DropDownListFor(model => model.SearchView.EmployeeId, Model.SearchView.EmployeeIDList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_CityList">Chasis Number</label>
+                    @Html.DropDownListFor(model => model.SearchView.ChasisNumber, Model.SearchView.ChasisNumberList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class="wpanel">
+        @Html.Partial("_FleetDashboardList")
+    </div>
+</section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="updatemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Master Fleet ?</h4>
+            </div>
+            @using (Html.BeginForm("", "TraCsf")) { 
+                <div class="modal-footer">
+                    <input type="hidden" name="TraCsfId" id="TraCsfId">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript" language="javascript" class="init">
+    jQuery(function ($) {
+        if ($('.title-page').html() == 'Dashboard Fleet') {
+            $('#MstFleetDashboardMenu').addClass('active');
+        }
+
+        $(".chosen").chosen();
+
+        setupDataTables();
+
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbFleet').DataTable();
+
+            table.ajax.reload();
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $('input[type=text]').val('');
+            setupDataTables();
+        });
+
+        $('#select_all').click(function (event) {
+            if (this.checked) {
+                // Iterate each checkbox
+                $(':checkbox').each(function () {
+                    this.checked = true;
+                });
+            }
+            else {
+                $(':checkbox').each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+    });
+    
+    function ExportXls() {
+        console.log('Submitting');
+    	var url = '@Url.Action("ExportMasterFleetGenerateReport", "MstFleet")';
+    	var getFileUrl = '@Url.Action("GetExcelFile","MstFleet")';
+        console.log(url);
+        var objToUpload =
+			{
+				SearchView: {
+					PoliceNumber: $("#SearchView_PoliceNumber").val(),
+					ChasisNumber: $("#SearchView_ChasisNumber").val(),
+					EmployeeId: $("#SearchView_EmployeeId").val(),
+					EmployeeName: $("#SearchView_EmployeeName").val()
+				}
+
+			};
+        $.ajax({
+        	url: url,
+        	data: JSON.stringify(objToUpload),
+        	contentType:'application/json; charset=utf-8',
+        	beforeSend:function(){
+        		$('#LoadingModal').show();
+        	},
+        	success: function(response,status,jqxhr){
+        		console.log("DONE");
+        		window.location = getFileUrl + "?pathFile=" + response;
+        		$('#LoadingModal').hide();
+        	},
+        	error: function(jqhxr){
+        		console.log("ERROR");
+        		console.log(jqhxr.responseText);
+        		$('#LoadingModal').hide();
+        	},
+        	type:'POST'
+        });
+
+    }
+    function setupColumns() {
+        var columns = [
+            { "data": null, "orderable" : false },
+            { "data": "PoliceNumber", "orderable": false },
+            { "data": "ChasisNumber", "orderable": false },
+            { "data": "EmployeeId", "orderable": false },
+            { "data": "EmployeeName", "orderable": false },
+            { "data": "FieldName", "orderable": false },
+            { "data": "DataBefore", "orderable": false },
+            { "data": "DataAfter", "orderable": false },
+            { "data": "ModifiedBy", "orderable": false },
+            {
+                "data": "ModifiedDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            }
+        ];
+
+        return columns;
+    }
+    function getFunctionStr(arr){
+    	var dataStr = "";
+    	if(arr.length>0){
+    		dataStr = arr.toString();
+    	}
+    	return dataStr;
+    }
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+
+        if ($.fn.dataTable.isDataTable('#tbFleetChange')) {
+            table = $('#tbFleetChange').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+
+        table = $('#tbFleetChange').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "rowCallback": function(row, data, index) {
+                actionHtml = '';
+
+                if (WriteAccess == true) {
+                    actionHtml = actionHtml + "<input type='checkbox' name='fleetChange' value='" + data.FleetChangeId + "'/>";
+                }
+
+                var actionRow = $(row).find("td")[0];
+
+                $(actionRow).addClass('action');
+                $(actionRow).html(actionHtml);
+            },
+            "serverSide": true,
+            "stateSave": true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchFleetChangeAjax", "MstFleetDashboard")",
+                "type": "POST",
+                "data": function(d) {
+                    return $.extend({}, d, {
+                        "PoliceNumber": $('#SearchView_PoliceNumber').val(),
+                        "FormalName": $('#SearchView_EmployeeName').val(),
+                        "EmployeeId": $('#SearchView_EmployeeID').val(),
+                        "ChasisNumber": $('#SearchView_ChasisNumber').val()
+                    });
+                }
+            }
+        });
+
+        table.on('preXhr', function(e, settings, data) {
+            $('#LoadingModal').show();
+        });
+
+        table.on('xhr', function(e, settings, data) {
+            $('#LoadingModal').hide();
+        });
+    }
+    function UpdateFleet() {
+        $('#updatemodal').modal('show');
+    }
+</script>

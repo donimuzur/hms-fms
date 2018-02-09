@@ -412,7 +412,7 @@ namespace FMS.BLL.Crf
             else
             {
                 dataFleet.IS_ACTIVE = false;
-                                
+                _fleetService.save(dataFleet);
                 try
                 {
                     if ((data.VEHICLE_USAGE == null ? "" : data.VEHICLE_USAGE.ToUpper()) == "CFM" && (data.RelocationType == null ? "" : data.RelocationType.ToUpper()) == "CHANGE_UNIT")
@@ -435,10 +435,40 @@ namespace FMS.BLL.Crf
 
                         var dbFleet = Mapper.Map<MST_FLEET>(IdleVehicle);
                         _fleetService.save(dbFleet);
-                    }
 
-                    _fleetService.save(dataFleet);
-                 
+                        var GetChosenCfmIdle = _fleetService.GetFleetByParam(new FleetParamInput()
+                        {
+                            VehicleType = data.VEHICLE_TYPE,
+                            VehicleUsage = data.VEHICLE_USAGE,
+                            PoliceNumber = data.POLICE_NUMBER
+                        }).FirstOrDefault();
+
+                        if(GetChosenCfmIdle != null)
+                        {
+                            var ChosenCfmIdleVehicleDto = Mapper.Map<FleetDto>(GetChosenCfmIdle);
+                            ChosenCfmIdleVehicleDto.IsActive = false;
+                            ChosenCfmIdleVehicleDto.EndDate = DateTime.Now;
+                            ChosenCfmIdleVehicleDto.ModifiedBy = "SYSTEM";
+                            ChosenCfmIdleVehicleDto.ModifiedDate = DateTime.Now;
+                            ChosenCfmIdleVehicleDto.DocumentNumber = data.DOCUMENT_NUMBER;
+
+                            var dbChosenCfmIdleVehicle = Mapper.Map<MST_FLEET>(ChosenCfmIdleVehicleDto);
+                            _fleetService.save(dbChosenCfmIdleVehicle);
+
+                            ChosenCfmIdleVehicleDto.IsActive = true;
+                            ChosenCfmIdleVehicleDto.StartDate = DateTime.Now;
+                            ChosenCfmIdleVehicleDto.EndDate = null;
+                            ChosenCfmIdleVehicleDto.CreatedBy = "SYSTEM";
+                            ChosenCfmIdleVehicleDto.CreatedDate = DateTime.Now;
+                            ChosenCfmIdleVehicleDto.MstFleetId = 0;
+                            ChosenCfmIdleVehicleDto.EmployeeID = data.EMPLOYEE_ID;
+                            ChosenCfmIdleVehicleDto.EmployeeName = data.EMPLOYEE_NAME;
+                            ChosenCfmIdleVehicleDto.DocumentNumber = data.DOCUMENT_NUMBER;
+
+                            dbChosenCfmIdleVehicle = Mapper.Map<MST_FLEET>(ChosenCfmIdleVehicleDto);
+                            _fleetService.save(dbChosenCfmIdleVehicle);
+                        }
+                    }
                 }
                 catch (Exception exp)
                 {
@@ -1227,6 +1257,59 @@ namespace FMS.BLL.Crf
             return Mapper.Map<List<TemporaryDto>>(tempData);
         }
 
+        public void SendEmailNotificationCfmIdle(TraCrfDto crfData, TraCtfDto ctfData)
+        {
+            var rc = new FMSMailNotification();
+            var bodyMail = new StringBuilder();
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            string creatorEmail = "";
+            var creatorName = string.Empty;
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+          
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+           
+            var creatorQuery = "SELECT EMAIL, INTERNAL_EMAIL from " + serverIntranet + ".[dbo].[tbl_ADSI_User] where FULL_NAME like 'PMI\\" +
+                crfData.CREATED_BY + "'";
+            if (typeEnv == "VTI")
+            {
+                creatorQuery = "SELECT EMAIL, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE LOGIN like '" + crfData.CREATED_BY + "'";
+            }
+
+            SqlCommand query = new SqlCommand(creatorQuery, con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorEmail = reader[0].ToString();
+                creatorName = reader[1].ToString();
+            }
+
+            reader.Close();
+            con.Close();
+            
+            var creatorDataEmail = creatorEmail == null ? string.Empty : creatorEmail;
+            var creatorDataName = creatorName == null ? string.Empty : creatorName;
+
+            rc.Subject = "CTF Termination CFM Temporary";
+
+            bodyMail.Append("Dear " + creatorDataName + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("You need to submit Car Termination Form <a href='" + webRootUrl + "/TraCtf/Edit?TraCtfId=" + ctfData.TraCtfId + "&isPersonalDashboard=False" + "'>" + ctfData.DocumentNumber + "</a><br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.Body = bodyMail.ToString();
+            rc.To.Add(creatorDataEmail);
+
+            _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+        }
+
         #region ----------- Batch Email -----------
         public bool BatchEmailCrf(List<TraCrfDto> ListCrf, string Vendor, string AttachmentWtc, string AttachmentBenefit)
         {
@@ -1290,6 +1373,28 @@ namespace FMS.BLL.Crf
                 isSend = _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
 
             return isSend;
+        }
+        public void SendEmailForErrorBatch(string messageError)
+        {
+            var rc = new FMSMailNotification();
+            var bodyMail = new StringBuilder();
+            var emailTo = ConfigurationManager.AppSettings["CC_MAIL"];
+
+            rc.Subject = "CRF Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+
+            bodyMail.Append("Dear Team,<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Error : " + messageError + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.Body = bodyMail.ToString();
+            rc.To.Add(emailTo);
+
+            _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
         }
         #endregion  
     }

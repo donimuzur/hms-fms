@@ -1,6 +1,10 @@
 ﻿using FMS.BusinessObject;
 using FMS.Contract;
 using FMS.Contract.Service;
+﻿using System.Linq.Expressions;
+using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
+using FMS.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +34,7 @@ namespace FMS.DAL.Services
         {
             _fleetChangeRepo.InsertOrUpdate(dbFleetChange);
             _uow.SaveChanges();
+
         }
     }
 }

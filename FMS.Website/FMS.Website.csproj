@@ -263,6 +263,7 @@
     <Compile Include="Controllers\MstEpafController.cs" />
     <Compile Include="Controllers\MstFleetController.cs" />
     <Compile Include="Controllers\MstEmployeeController.cs" />
+    <Compile Include="Controllers\MstFleetDashboardController.cs" />
     <Compile Include="Controllers\MstFuelOdometerController.cs" />
     <Compile Include="Controllers\MstGroupCostCenterController.cs" />
     <Compile Include="Controllers\MstGsController.cs" />
@@ -316,6 +317,7 @@
     <Compile Include="Models\DelegationModel.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\ExecutiveSummaryModel.cs" />
+    <Compile Include="Models\FleetDashboardModel.cs" />
     <Compile Include="Models\FleetModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\FuelOdometerModel.cs" />
@@ -584,6 +586,7 @@
     <Content Include="Content\css\bootstrap-select.min.css" />
     <Content Include="Content\css\Custom.css" />
     <Content Include="Content\css\easy-autocomplete.min.css" />
+    <Content Include="Content\css\easy-autocomplete.themes.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\Karla-Bold.svg" />
     <Content Include="Content\fonts\Karla-Regular.svg" />
@@ -1048,6 +1051,7 @@
     <Content Include="Scripts\AutoGr.js" />
     <Content Include="Scripts\CCF.js" />
     <Content Include="Scripts\Gs.js" />
+    <Content Include="Scripts\InitializeAutoCompletMstEmployeeIndex.js" />
     <Content Include="Scripts\PO.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
@@ -4394,6 +4398,9 @@
     <Content Include="Views\MstCostOb\_ListCostOb.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SummaryAll.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleWtc.cshtml" />
+    <Content Include="Views\Service\BatchEmail.cshtml" />
+    <Content Include="Views\MstFleetDashboard\Index.cshtml" />
+    <Content Include="Views\MstFleetDashboard\_FleetDashboardList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4624,7 +4631,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8918</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

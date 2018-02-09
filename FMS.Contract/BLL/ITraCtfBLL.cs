@@ -25,5 +25,6 @@ namespace FMS.Contract.BLL
         void CheckCtfInProgress();
         TraCtfDto SaveUpload(TraCtfDto Dto, Login userLogin);
         bool BatchEmailCtf(List<TraCtfDto> ListCtf, string Vendor, string AttachmentWtc, string AttachmentBenefit);
+        void SendEmailForErrorBatch(string messageError);
     }
 }

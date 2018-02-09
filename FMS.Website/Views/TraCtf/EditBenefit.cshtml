@@ -655,7 +655,7 @@
     }
     function checkVehicleusage() {
         var data = $('#VehicleUsage').val().toLowerCase();
-        if (data == 'cfm') {
+        if (data == 'cfm' || data == 'cfm idle') {
             $('#idcfmonly').show();
             $('#idCostDetails').hide();
             $('#idExtend').show();

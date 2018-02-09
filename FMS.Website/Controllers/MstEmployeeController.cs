@@ -168,6 +168,7 @@ namespace FMS.Website.Controllers
 
         public EmployeeItem listdata(EmployeeItem model, string id)
         {
+            
             var list_position_title = _employeeBLL.GetEmployee().Select(x => new { x.POSITION_TITLE }).ToList().Distinct().OrderBy(x => x.POSITION_TITLE);
             model.PositionTitleList = new SelectList(list_position_title, "POSITION_TITLE", "POSITION_TITLE");
             var list_divison_title = _employeeBLL.GetEmployee().Select(x => new { x.DIVISON }).ToList().Distinct().OrderBy(x => x.DIVISON);
@@ -187,6 +188,99 @@ namespace FMS.Website.Controllers
             var list_address = _employeeBLL.GetEmployee().Select(x => new { x.ADDRESS, x.BASETOWN }).ToList().Distinct().Where(x => x.BASETOWN == id).OrderBy(x => x.ADDRESS);
             model.AddressList = new SelectList(list_address, "ADDRESS", "ADDRESS");
             return model;
+        }
+
+        /// <summary>
+        /// This method is used to retrieve autocomplete list in MstEmployee/Index
+        /// </summary>
+        /// <param name="columnName">Column to choose</param>
+        /// <returns>Json data</returns>
+        public JsonResult GetDataJsonAutoComplete(string columnName)
+        {
+            /*
+             * Column to use:
+             *  1. Employee Id = employeeid
+             *  2. Formal Name = formalname
+             *  3. Position Title = positiontitle
+             *  4. Division = division
+             *  5. Directorate = directorate
+             *  6. Address = address
+             *  7. City = city
+             *  8. Base Town = basetown
+             *  9. Company = company
+             *  10. Cost Center = costcenter
+             *  11. Group Level = grouplevel
+             *  12. Email Address = emailaddress
+             *  13. Flex Point = flexpoint
+             * */
+             switch(columnName.ToLower())
+            {
+                case "employeeid":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.EMPLOYEE_ID).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "formalname":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.FORMAL_NAME).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "positiontitle":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.POSITION_TITLE).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "division":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.DIVISON).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "directorate":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.DIRECTORATE).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "address":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.ADDRESS).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "city":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.CITY).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "basetown":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x=> x.BASETOWN).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "company":
+                    return Json(_employeeBLL.GetEmployee().Select(x => x.COMPANY).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "costcenter":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x=>x.COST_CENTER).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "grouplevel":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x=>x.GROUP_LEVEL).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "emailaddress":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x=>x.EMAIL_ADDRESS).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+                case "flexpoint":
+                    return Json(
+                            _employeeBLL.GetEmployee().Select(x => x.FLEX_POINT).ToArray(),
+                            JsonRequestBehavior.AllowGet
+                        );
+            }
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetDataJson(string id)
@@ -412,7 +506,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsMasterEmployee(EmployeeModel model = null)
         {
             //get data
-            List<EmployeeDto> employee = _employeeBLL.GetEmployee();
+            //List<EmployeeDto> employee = _employeeBLL.GetEmployee();
             //var listData = Mapper.Map<List<EmployeeItem>>(employee);
             var listData = SearchDataEmployeeExport(model.SearchView);
 

@@ -1930,7 +1930,7 @@ namespace FMS.BLL.Csf
             var bodyMail = new StringBuilder();
             var emailTo = ConfigurationManager.AppSettings["CC_MAIL"];
 
-            rc.Subject = "Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+            rc.Subject = "CSF Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
 
             bodyMail.Append("Dear Team,<br /><br />");
             bodyMail.AppendLine();
@@ -1947,13 +1947,12 @@ namespace FMS.BLL.Csf
             _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
         }
 
-        public void SendEmailNotificationCfmIdle(long traCsfId, TraCtfDto ctfData)
+        public void SendEmailNotificationCfmIdle(TraCsfDto csfData, TraCtfDto ctfData)
         {
             var rc = new CsfMailNotification();
             var bodyMail = new StringBuilder();
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
 
-            var csfData = _CsfService.GetCsfById(traCsfId);
             var creatorData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_CREATOR);
             var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;

@@ -86,8 +86,8 @@
           </Key>
           <Property Name="FLEET_CHANGE_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FLEET_ID" Type="bigint" />
-          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="9" />
-          <Property Name="CHASIS_NUMBER" Type="nvarchar" MaxLength="9" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="FIELD_NAME" Type="nvarchar" MaxLength="50" />
@@ -1067,7 +1067,7 @@
           <Property Name="WITHD_PHONE" Type="nvarchar" MaxLength="50" />
           <Property Name="WITHD_DATE" Type="datetime" />
           <Property Name="WITHD_CITY" Type="nvarchar" MaxLength="50" />
-          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="50" />
+          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="1000" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PENALTY" Type="decimal" Precision="18" Scale="2" />
           <Property Name="REFUND_COST" Type="decimal" Precision="18" Scale="2" />
@@ -3265,7 +3265,7 @@
           <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WITHD_DATE" Type="DateTime" Precision="3" />
           <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_CONTRIBUTION" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PENALTY" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="REFUND_COST" Type="Decimal" Precision="18" Scale="2" />
@@ -3953,8 +3953,8 @@
           </Key>
           <Property Name="FLEET_CHANGE_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FLEET_ID" Type="Int64" />
-          <Property Name="POLICE_NUMBER" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
-          <Property Name="CHASIS_NUMBER" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="FIELD_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

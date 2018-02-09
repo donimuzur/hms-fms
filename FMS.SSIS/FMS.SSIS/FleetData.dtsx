@@ -7,35 +7,15 @@
   DTS:CreatorName="DESKTOP-EFTUD3J\pc"
   DTS:DTSID="{4B26CB3C-1319-4EE3-ADDC-5999044685F1}"
   DTS:ExecutableType="SSIS.Package.3"
-  DTS:LastModifiedProductVersion="14.0.3008.28"
+  DTS:LastModifiedProductVersion="11.0.6020.0"
   DTS:LocaleID="1057"
   DTS:ObjectName="FleetData"
   DTS:PackageType="5"
-  DTS:VersionBuild="37"
-  DTS:VersionGUID="{0812E30E-6209-4515-A2A5-70DC17F0C171}">
+  DTS:VersionBuild="50"
+  DTS:VersionGUID="{D412E4F3-DF3B-4145-A173-42E6E82F6E4D}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[CYBERCODER\MIRZASQLSERVER.FMS]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{685A5B22-6486-4F84-B51B-169114E06077}"
-      DTS:ObjectName="CYBERCODER\MIRZASQLSERVER.FMS">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=CYBERCODER\MIRZASQLSERVER;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[CYBERCODER\MIRZASQLSERVER.FMS_CR1]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{D4B37D54-1539-47A2-8AC6-4AB3E91A3D68}"
-      DTS:ObjectName="CYBERCODER\MIRZASQLSERVER.FMS_CR1">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=CYBERCODER\MIRZASQLSERVER;Initial Catalog=FMS_CR1;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
       DTS:CreationName="OLEDB"
@@ -43,7 +23,7 @@
       DTS:ObjectName="hmssqlemsprd.id.pmi\PRD.FMS">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=hmssqlfmsprd.id.pmi\PRD;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=PMIIDSUBDEV28\DEV02;Initial Catalog=FMS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -71,6 +51,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="exec usp_UpdateMasterFleet" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -86,6 +67,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="exec usp_UpdateMasterFunctionGroup" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -101,6 +83,7 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
+          SQLTask:Connection="{F1F772F5-93BA-47BD-969A-9EFCF5064D54}"
           SQLTask:SqlStatementSource="exec usp_UpdateMasterLocationMapping" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -221,8 +204,85 @@
           version="1">
           <components>
             <component
+              refId="Package\Move to EMP_CHANGE\Data Conversion"
+              componentClassID="{62B1106C-7DB8-4EC8-ADD6-4C664DFFC54A}"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input].Columns[CC]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CC"
+                      lineageId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[CC]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[CC]"
+                      name="CC"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\Move to EMP_CHANGE\OLE DB Destination"
-              componentClassID="DTSAdapter.OLEDBDestination.3"
+              componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
               name="OLE DB Destination"
@@ -236,7 +296,7 @@
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[EMP_CHANGE]</property>
+                  name="OpenRowset">[dbo].[EMP_CHANGE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -315,13 +375,6 @@
                       externalMetadataColumnId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[COST_CENTER]"
                       lineageId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[COST_CENTER]" />
                     <inputColumn
-                      refId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CC]"
-                      cachedDataType="wstr"
-                      cachedLength="255"
-                      cachedName="CC"
-                      externalMetadataColumnId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CC]"
-                      lineageId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]" />
-                    <inputColumn
                       refId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CHANGE_DATE]"
                       cachedDataType="dbTimeStamp"
                       cachedName="CHANGE_DATE"
@@ -333,6 +386,13 @@
                       cachedName="PROCESSED"
                       externalMetadataColumnId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PROCESSED]"
                       lineageId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[PROCESSED]" />
+                    <inputColumn
+                      refId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CC]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CC"
+                      externalMetadataColumnId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CC]"
+                      lineageId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[CC]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -395,7 +455,7 @@
             </component>
             <component
               refId="Package\Move to EMP_CHANGE\OLE DB Source"
-              componentClassID="DTSAdapter.OLEDBSource.3"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
               name="OLE DB Source"
@@ -418,7 +478,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        MST_EMPLOYEE.EMPLOYEE_ID, MST_EMPLOYEE.FORMAL_NAME, MST_EMPLOYEE.COST_CENTER, View_Employee.CC, CURRENT_TIMESTAMP as CHANGE_DATE, 0 as PROCESSED
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        MST_EMPLOYEE.EMPLOYEE_ID, MST_EMPLOYEE.FORMAL_NAME, MST_EMPLOYEE.COST_CENTER, CONVERT(NVARCHAR(25),View_Employee.CC) AS CC, CURRENT_TIMESTAMP as CHANGE_DATE, 0 as PROCESSED
 FROM            View_Employee INNER JOIN
                          MST_EMPLOYEE ON View_Employee.EMPLID = MST_EMPLOYEE.EMPLOYEE_ID
 WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
@@ -538,7 +598,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
                     <externalMetadataColumn
                       refId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CC]"
                       dataType="wstr"
-                      length="255"
+                      length="25"
                       name="CC" />
                     <externalMetadataColumn
                       refId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CHANGE_DATE]"
@@ -577,7 +637,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
                     <outputColumn
                       refId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CC]"
                       dataType="wstr"
-                      length="255"
+                      length="25"
                       lineageId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CC]"
                       name="CC" />
                     <outputColumn
@@ -610,8 +670,13 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
           </components>
           <paths>
             <path
-              refId="Package\Move to EMP_CHANGE.Paths[OLE DB Source Output]"
+              refId="Package\Move to EMP_CHANGE.Paths[Data Conversion Output]"
               endId="Package\Move to EMP_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Move to EMP_CHANGE\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Move to EMP_CHANGE.Paths[OLE DB Source Output]"
+              endId="Package\Move to EMP_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
               name="OLE DB Source Output"
               startId="Package\Move to EMP_CHANGE\OLE DB Source.Outputs[OLE DB Source Output]" />
           </paths>
@@ -633,8 +698,86 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
           version="1">
           <components>
             <component
+              refId="Package\Move to FUNCTION_CHANGE\Data Conversion"
+              componentClassID="{62B1106C-7DB8-4EC8-ADD6-4C664DFFC54A}"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input].Columns[COST_CENTER]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="COST_CENTER"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[COST_CENTER]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[COST_CENTER]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="255"
+                      lineageId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[COST_CENTER]"
+                      name="COST_CENTER"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[COST_CENTER]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination"
-              componentClassID="DTSAdapter.OLEDBDestination.3"
+              componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
               name="OLE DB Destination"
@@ -691,8 +834,8 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
               <connections>
                 <connection
                   refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[CYBERCODER\MIRZASQLSERVER.FMS_CR1]"
-                  connectionManagerRefId="Package.ConnectionManagers[CYBERCODER\MIRZASQLSERVER.FMS_CR1]"
+                  connectionManagerID="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
+                  connectionManagerRefId="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -719,19 +862,38 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
                       externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FORMAL_NAME]"
                       lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[FORMAL_NAME]" />
                     <inputColumn
-                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[COST_CENTER]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="10"
-                      cachedName="COST_CENTER"
-                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[COST_CENTER]"
-                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[COST_CENTER]" />
-                    <inputColumn
                       refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CHANGE_DATE]"
                       cachedDataType="dbTimeStamp"
                       cachedName="CHANGE_DATE"
                       externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CHANGE_DATE]"
                       lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CHANGE_DATE]" />
+                    <inputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[COST_CENTER]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="COST_CENTER"
+                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[COST_CENTER]"
+                      lineageId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[COST_CENTER]" />
+                    <inputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FUNCTION_OLD]"
+                      cachedDataType="wstr"
+                      cachedLength="100"
+                      cachedName="FUNCTION_OLD"
+                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FUNCTION_OLD]"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[FUNCTION_OLD]" />
+                    <inputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FUNCTION_NEW]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="FUNCTION_NEW"
+                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FUNCTION_NEW]"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[FUNCTION_NEW]" />
+                    <inputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DATE_SEND]"
+                      cachedDataType="i4"
+                      cachedName="DATE_SEND"
+                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DATE_SEND]"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[DATE_SEND]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -802,7 +964,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
             </component>
             <component
               refId="Package\Move to FUNCTION_CHANGE\OLE DB Source"
-              componentClassID="DTSAdapter.OLEDBSource.3"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
               name="OLE DB Source"
@@ -828,7 +990,7 @@ WHERE MST_EMPLOYEE.COST_CENTER &lt;&gt; View_Employee.CC</property>
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        
    MST_EMPLOYEE.EMPLOYEE_ID, 
    MST_EMPLOYEE.FORMAL_NAME, 
-   View_Employee.CC AS COST_CENTER,
+   CONVERT(VARCHAR(255),View_Employee.CC) AS COST_CENTER,
    MST_EMPLOYEE.DIRECTORATE AS FUNCTION_OLD,
    View_Employee.DIRECTORATE AS FUNCTION_NEW, 
    CURRENT_TIMESTAMP AS CHANGE_DATE,
@@ -903,16 +1065,6 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
                       name="COST_CENTER"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CC]"
-                      length="255"
-                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]"
-                      name="CC"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CHANGE_DATE]"
                       dataType="dbTimeStamp"
                       errorOrTruncationOperation="Conversion"
@@ -922,13 +1074,33 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
                       name="CHANGE_DATE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[PROCESSED]"
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[FUNCTION_OLD]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FUNCTION_OLD]"
+                      length="100"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[FUNCTION_OLD]"
+                      name="FUNCTION_OLD"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[FUNCTION_NEW]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FUNCTION_NEW]"
+                      length="50"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[FUNCTION_NEW]"
+                      name="FUNCTION_NEW"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[DATE_SEND]"
                       dataType="i4"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PROCESSED]"
-                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[PROCESSED]"
-                      name="PROCESSED"
+                      externalMetadataColumnId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DATE_SEND]"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[DATE_SEND]"
+                      name="DATE_SEND"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
@@ -947,21 +1119,26 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
                       refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[COST_CENTER]"
                       codePage="1252"
                       dataType="str"
-                      length="10"
-                      name="COST_CENTER" />
-                    <externalMetadataColumn
-                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CC]"
-                      dataType="wstr"
                       length="255"
-                      name="CC" />
+                      name="COST_CENTER" />
                     <externalMetadataColumn
                       refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CHANGE_DATE]"
                       dataType="dbTimeStamp"
                       name="CHANGE_DATE" />
                     <externalMetadataColumn
-                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PROCESSED]"
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FUNCTION_OLD]"
+                      dataType="wstr"
+                      length="100"
+                      name="FUNCTION_OLD" />
+                    <externalMetadataColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FUNCTION_NEW]"
+                      dataType="wstr"
+                      length="50"
+                      name="FUNCTION_NEW" />
+                    <externalMetadataColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DATE_SEND]"
                       dataType="i4"
-                      name="PROCESSED" />
+                      name="DATE_SEND" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -985,25 +1162,31 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
                       refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[COST_CENTER]"
                       codePage="1252"
                       dataType="str"
-                      length="10"
+                      length="255"
                       lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[COST_CENTER]"
                       name="COST_CENTER" />
                     <outputColumn
-                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CC]"
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FUNCTION_OLD]"
                       dataType="wstr"
-                      length="255"
-                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CC]"
-                      name="CC" />
+                      length="100"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FUNCTION_OLD]"
+                      name="FUNCTION_OLD" />
+                    <outputColumn
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FUNCTION_NEW]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FUNCTION_NEW]"
+                      name="FUNCTION_NEW" />
                     <outputColumn
                       refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CHANGE_DATE]"
                       dataType="dbTimeStamp"
                       lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CHANGE_DATE]"
                       name="CHANGE_DATE" />
                     <outputColumn
-                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PROCESSED]"
+                      refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DATE_SEND]"
                       dataType="i4"
-                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PROCESSED]"
-                      name="PROCESSED" />
+                      lineageId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DATE_SEND]"
+                      name="DATE_SEND" />
                     <outputColumn
                       refId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -1024,8 +1207,13 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
           </components>
           <paths>
             <path
-              refId="Package\Move to FUNCTION_CHANGE.Paths[OLE DB Source Output]"
+              refId="Package\Move to FUNCTION_CHANGE.Paths[Data Conversion Output]"
               endId="Package\Move to FUNCTION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Move to FUNCTION_CHANGE\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Move to FUNCTION_CHANGE.Paths[OLE DB Source Output]"
+              endId="Package\Move to FUNCTION_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
               name="OLE DB Source Output"
               startId="Package\Move to FUNCTION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output]" />
           </paths>
@@ -1047,8 +1235,85 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
           version="1">
           <components>
             <component
+              refId="Package\Move to LOCATION_CHANGE\Data Conversion"
+              componentClassID="{62B1106C-7DB8-4EC8-ADD6-4C664DFFC54A}"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Move to LOCATION_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\Data Conversion.Inputs[Data Conversion Input].Columns[ADDRESS_OLD]"
+                      cachedDataType="wstr"
+                      cachedLength="110"
+                      cachedName="ADDRESS_OLD"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[ADDRESS_OLD]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Move to LOCATION_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[ADDRESS_OLD]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="110"
+                      lineageId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[ADDRESS_OLD]"
+                      name="ADDRESS_OLD"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[ADDRESS_OLD]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Move to LOCATION_CHANGE\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\Move to LOCATION_CHANGE\OLE DB Destination"
-              componentClassID="DTSAdapter.OLEDBDestination.3"
+              componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
               name="OLE DB Destination"
@@ -1105,8 +1370,8 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
               <connections>
                 <connection
                   refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[CYBERCODER\MIRZASQLSERVER.FMS_CR1]"
-                  connectionManagerRefId="Package.ConnectionManagers[CYBERCODER\MIRZASQLSERVER.FMS_CR1]"
+                  connectionManagerID="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
+                  connectionManagerRefId="Package.ConnectionManagers[hmssqlemsprd.id.pmi\PRD.FMS]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -1138,6 +1403,54 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
                       cachedName="CHANGE_DATE"
                       externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CHANGE_DATE]"
                       lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CHANGE_DATE]" />
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BASETOWN_OLD]"
+                      cachedDataType="wstr"
+                      cachedLength="100"
+                      cachedName="BASETOWN_OLD"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BASETOWN_OLD]"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[BASETOWN_OLD]" />
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BASETOWN_NEW]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="BASETOWN_NEW"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BASETOWN_NEW]"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[BASETOWN_NEW]" />
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ADDRESS_OLD]"
+                      cachedDataType="wstr"
+                      cachedLength="110"
+                      cachedName="ADDRESS_OLD"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ADDRESS_OLD]"
+                      lineageId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Output].Columns[ADDRESS_OLD]" />
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ADDRESS_NEW]"
+                      cachedDataType="wstr"
+                      cachedLength="110"
+                      cachedName="ADDRESS_NEW"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ADDRESS_NEW]"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[ADDRESS_NEW]" />
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CITY_OLD]"
+                      cachedDataType="wstr"
+                      cachedLength="100"
+                      cachedName="CITY_OLD"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CITY_OLD]"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CITY_OLD]" />
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CITY_NEW]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="CITY_NEW"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CITY_NEW]"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CITY_NEW]" />
+                    <inputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DATE_SEND]"
+                      cachedDataType="i4"
+                      cachedName="DATE_SEND"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DATE_SEND]"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[DATE_SEND]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1223,7 +1536,7 @@ WHERE MST_EMPLOYEE.DIRECTORATE &lt;&gt; View_Employee.DIRECTORATE</property>
             </component>
             <component
               refId="Package\Move to LOCATION_CHANGE\OLE DB Source"
-              componentClassID="DTSAdapter.OLEDBSource.3"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
               name="OLE DB Source"
@@ -1251,7 +1564,7 @@ MST_EMPLOYEE.EMPLOYEE_ID,
 MST_EMPLOYEE.FORMAL_NAME, 
 MST_EMPLOYEE.BASETOWN AS BASETOWN_OLD, 
 View_Employee.BASETOWN AS BASETOWN_NEW,
-MST_EMPLOYEE.ADDRESS AS ADDRESS_OLD,
+CONVERT(NVARCHAR(110),MST_EMPLOYEE.ADDRESS) AS ADDRESS_OLD,
 View_Employee.ALAMAT AS  ADDRESS_NEW,
 MST_EMPLOYEE.CITY AS CITY_OLD,
 View_Employee.CITY AS CITY_NEW,
@@ -1260,7 +1573,7 @@ NULL AS DATE_SEND
 FROM            
 View_Employee INNER JOIN
                          MST_EMPLOYEE ON View_Employee.EMPLID = MST_EMPLOYEE.EMPLOYEE_ID
-WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.CITY &lt;&gt; View_Employee.CITY) OR (MST_EMPLOYEE.ADDRESS &lt;&gt; View_Employee.ALAMAT)</property>
+WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.CITY &lt;&gt; View_Employee.CITY) OR (CONVERT(NVARCHAR(110),MST_EMPLOYEE.ADDRESS) &lt;&gt; View_Employee.ALAMAT)</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1317,27 +1630,6 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
                       name="FORMAL_NAME"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[COST_CENTER]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[COST_CENTER]"
-                      length="10"
-                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[COST_CENTER]"
-                      name="COST_CENTER"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CC]"
-                      length="255"
-                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CC]"
-                      name="CC"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CHANGE_DATE]"
                       dataType="dbTimeStamp"
                       errorOrTruncationOperation="Conversion"
@@ -1347,13 +1639,73 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
                       name="CHANGE_DATE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[PROCESSED]"
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[BASETOWN_OLD]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BASETOWN_OLD]"
+                      length="100"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[BASETOWN_OLD]"
+                      name="BASETOWN_OLD"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[BASETOWN_NEW]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BASETOWN_NEW]"
+                      length="30"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[BASETOWN_NEW]"
+                      name="BASETOWN_NEW"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[ADDRESS_OLD]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ADDRESS_OLD]"
+                      length="110"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[ADDRESS_OLD]"
+                      name="ADDRESS_OLD"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[ADDRESS_NEW]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ADDRESS_NEW]"
+                      length="110"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[ADDRESS_NEW]"
+                      name="ADDRESS_NEW"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CITY_OLD]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CITY_OLD]"
+                      length="100"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CITY_OLD]"
+                      name="CITY_OLD"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CITY_NEW]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CITY_NEW]"
+                      length="30"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[CITY_NEW]"
+                      name="CITY_NEW"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[DATE_SEND]"
                       dataType="i4"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PROCESSED]"
-                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[PROCESSED]"
-                      name="PROCESSED"
+                      externalMetadataColumnId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DATE_SEND]"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].Columns[DATE_SEND]"
+                      name="DATE_SEND"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
@@ -1369,24 +1721,43 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
                       length="100"
                       name="FORMAL_NAME" />
                     <externalMetadataColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[COST_CENTER]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      name="COST_CENTER" />
-                    <externalMetadataColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CC]"
-                      dataType="wstr"
-                      length="255"
-                      name="CC" />
-                    <externalMetadataColumn
                       refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CHANGE_DATE]"
                       dataType="dbTimeStamp"
                       name="CHANGE_DATE" />
                     <externalMetadataColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PROCESSED]"
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BASETOWN_OLD]"
+                      dataType="wstr"
+                      length="100"
+                      name="BASETOWN_OLD" />
+                    <externalMetadataColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[BASETOWN_NEW]"
+                      dataType="wstr"
+                      length="30"
+                      name="BASETOWN_NEW" />
+                    <externalMetadataColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ADDRESS_OLD]"
+                      dataType="wstr"
+                      length="110"
+                      name="ADDRESS_OLD" />
+                    <externalMetadataColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ADDRESS_NEW]"
+                      dataType="wstr"
+                      length="110"
+                      name="ADDRESS_NEW" />
+                    <externalMetadataColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CITY_OLD]"
+                      dataType="wstr"
+                      length="100"
+                      name="CITY_OLD" />
+                    <externalMetadataColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CITY_NEW]"
+                      dataType="wstr"
+                      length="30"
+                      name="CITY_NEW" />
+                    <externalMetadataColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DATE_SEND]"
                       dataType="i4"
-                      name="PROCESSED" />
+                      name="DATE_SEND" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1407,28 +1778,51 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
                       lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FORMAL_NAME]"
                       name="FORMAL_NAME" />
                     <outputColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[COST_CENTER]"
-                      codePage="1252"
-                      dataType="str"
-                      length="10"
-                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[COST_CENTER]"
-                      name="COST_CENTER" />
-                    <outputColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CC]"
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BASETOWN_OLD]"
                       dataType="wstr"
-                      length="255"
-                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CC]"
-                      name="CC" />
+                      length="100"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BASETOWN_OLD]"
+                      name="BASETOWN_OLD" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BASETOWN_NEW]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[BASETOWN_NEW]"
+                      name="BASETOWN_NEW" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ADDRESS_OLD]"
+                      dataType="wstr"
+                      length="110"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ADDRESS_OLD]"
+                      name="ADDRESS_OLD" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ADDRESS_NEW]"
+                      dataType="wstr"
+                      length="110"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ADDRESS_NEW]"
+                      name="ADDRESS_NEW" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CITY_OLD]"
+                      dataType="wstr"
+                      length="100"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CITY_OLD]"
+                      name="CITY_OLD" />
+                    <outputColumn
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CITY_NEW]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CITY_NEW]"
+                      name="CITY_NEW" />
                     <outputColumn
                       refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CHANGE_DATE]"
                       dataType="dbTimeStamp"
                       lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CHANGE_DATE]"
                       name="CHANGE_DATE" />
                     <outputColumn
-                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PROCESSED]"
+                      refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DATE_SEND]"
                       dataType="i4"
-                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PROCESSED]"
-                      name="PROCESSED" />
+                      lineageId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DATE_SEND]"
+                      name="DATE_SEND" />
                     <outputColumn
                       refId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -1449,8 +1843,13 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
           </components>
           <paths>
             <path
-              refId="Package\Move to LOCATION_CHANGE.Paths[OLE DB Source Output]"
+              refId="Package\Move to LOCATION_CHANGE.Paths[Data Conversion Output]"
               endId="Package\Move to LOCATION_CHANGE\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\Move to LOCATION_CHANGE\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Move to LOCATION_CHANGE.Paths[OLE DB Source Output]"
+              endId="Package\Move to LOCATION_CHANGE\Data Conversion.Inputs[Data Conversion Input]"
               name="OLE DB Source Output"
               startId="Package\Move to LOCATION_CHANGE\OLE DB Source.Outputs[OLE DB Source Output]" />
           </paths>
@@ -1561,23 +1960,31 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="186,42"
-          Id="Package\Move to EMP_CHANGE"
-          TopLeft="336,16" />
+          Size="214,42"
+          Id="Package\exec usp_UpdateMasterFleet"
+          TopLeft="24.5,222.5" />
         <NodeLayout
-          Size="111,42"
+          Size="260,42"
+          Id="Package\exec usp_UpdateMasterFunctionGroup"
+          TopLeft="557.852764423077,92.5" />
+        <NodeLayout
+          Size="270.666666666667,42"
+          Id="Package\exec usp_UpdateMasterLocationMapping"
+          TopLeft="261.906850961538,220.5" />
+        <NodeLayout
+          Size="110.666666666667,42"
           Id="Package\Get CC"
           TopLeft="173,9" />
         <NodeLayout
-          Size="117,42"
+          Size="117.333333333334,42"
           Id="Package\Get CRF"
           TopLeft="427,358" />
         <NodeLayout
-          Size="163,42"
+          Size="162.666666666667,42"
           Id="Package\Get CSF"
           TopLeft="585,355" />
         <NodeLayout
-          Size="117,42"
+          Size="117.333333333334,42"
           Id="Package\Get CTF"
           TopLeft="791,352" />
         <NodeLayout
@@ -1588,6 +1995,40 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
           Size="118,42"
           Id="Package\Get Fuel"
           TopLeft="255,365" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\Move to EMP_CHANGE"
+          TopLeft="336,16" />
+        <NodeLayout
+          Size="217.333333333334,42"
+          Id="Package\Move to FUNCTION_CHANGE"
+          TopLeft="574,16" />
+        <NodeLayout
+          Size="217.333333333334,42"
+          Id="Package\Move to LOCATION_CHANGE"
+          TopLeft="572,215" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="522,37">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="52,0"
+              Start="0,0"
+              End="44.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="44.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
           TopLeft="373,382.5">
@@ -1602,6 +2043,28 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
                   Capacity="5">
                   <mssgle:LineSegment
                     End="46.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 10]"
+          TopLeft="261.906850961538,242.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-23.406850961538,0"
+              Start="0,0"
+              End="-15.906850961538,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-15.906850961538,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1656,18 +2119,18 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="284,33.5">
+          TopLeft="283.666666666667,33.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="52,0"
+              EndConnector="52.3333333333333,0"
               Start="0,0"
-              End="44.5,0">
+              End="44.8333333333333,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="44.5,0" />
+                    End="44.8333333333333,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1698,36 +2161,6 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="217,42"
-          Id="Package\Move to FUNCTION_CHANGE"
-          TopLeft="574,16" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="522,37">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="52,0"
-              Start="0,0"
-              End="44.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="44.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="260,42"
-          Id="Package\exec usp_UpdateMasterFunctionGroup"
-          TopLeft="557.852764423077,92.5" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 6]"
           TopLeft="685.176382211538,58">
@@ -1750,13 +2183,9 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="217,42"
-          Id="Package\Move to LOCATION_CHANGE"
-          TopLeft="572,215" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 7]"
-          TopLeft="684.176382211538,134.5">
+          TopLeft="684.176382211539,134.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1776,72 +2205,54 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="271,42"
-          Id="Package\exec usp_UpdateMasterLocationMapping"
-          TopLeft="261.906850961538,220.5" />
-        <NodeLayout
-          Size="214,42"
-          Id="Package\exec usp_UpdateMasterFleet"
-          TopLeft="24.5,222.5" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 9]"
-          TopLeft="105.75,264.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,100.5"
-              Start="0,0"
-              End="0,93">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,93" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 10]"
-          TopLeft="261.906850961538,242.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-23.4068509615385,0"
-              Start="0,0"
-              End="-15.9068509615385,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-15.9068509615385,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 8]"
           TopLeft="572,238.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-39.0931490384615,0"
+              EndConnector="-39.093149038462,0"
               Start="0,0"
-              End="-31.5931490384615,0">
+              End="-31.593149038462,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-31.5931490384615,0" />
+                    End="-31.593149038462,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 9]"
+          TopLeft="131.5,264.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-25.5,100.5"
+              Start="0,0"
+              End="-25.5,93">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,46.25"
+                    Point2="0,50.25"
+                    Point3="-4,50.25" />
+                  <mssgle:LineSegment
+                    End="-21.5,50.25" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-21.5,50.25"
+                    Point2="-25.5,50.25"
+                    Point3="-25.5,54.25" />
+                  <mssgle:LineSegment
+                    End="-25.5,93" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1857,41 +2268,79 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
     design-time-name="Package\Move to EMP_CHANGE">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="150,42"
           Id="Package\Move to EMP_CHANGE\OLE DB Source"
           TopLeft="5.5,5.5" />
         <NodeLayout
-          Size="171,42"
+          Size="170.666666666667,42"
           Id="Package\Move to EMP_CHANGE\OLE DB Destination"
           TopLeft="136,105" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Move to EMP_CHANGE\Data Conversion"
+          TopLeft="257,25" />
         <EdgeLayout
           Id="Package\Move to EMP_CHANGE.Paths[OLE DB Source Output]"
-          TopLeft="80.5,47.5">
+          TopLeft="155.5,26.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="141,57.5"
+              EndConnector="101.5,19.5"
               Start="0,0"
-              End="141,50">
+              End="94,19.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.75" />
+                    End="46.75,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,24.75"
-                    Point2="0,28.75"
-                    Point3="4,28.75" />
+                    Point1="46.75,0"
+                    Point2="50.75,0"
+                    Point3="50.75,4" />
                   <mssgle:LineSegment
-                    End="137,28.75" />
+                    End="50.75,15.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="137,28.75"
-                    Point2="141,28.75"
-                    Point3="141,32.75" />
+                    Point1="50.75,15.5"
+                    Point2="50.75,19.5"
+                    Point3="54.75,19.5" />
                   <mssgle:LineSegment
-                    End="141,50" />
+                    End="94,19.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Move to EMP_CHANGE.Paths[Data Conversion Output]"
+          TopLeft="335,67">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-113.5,38"
+              Start="0,0"
+              End="-113.5,30.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15"
+                    Point2="0,19"
+                    Point3="-4,19" />
+                  <mssgle:LineSegment
+                    End="-109.5,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-109.5,19"
+                    Point2="-113.5,19"
+                    Point3="-113.5,23" />
+                  <mssgle:LineSegment
+                    End="-113.5,30.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1903,6 +2352,14 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Move to EMP_CHANGE\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Move to EMP_CHANGE\OLE DB Destination">
     <Properties>
@@ -1916,53 +2373,83 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
       </Property>
     </Properties>
   </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Move to EMP_CHANGE\OLE DB Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Move to FUNCTION_CHANGE">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="171,42"
-          Id="Package\Move to FUNCTION_CHANGE\OLE DB Destination"
-          TopLeft="136,105" />
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="150,42"
           Id="Package\Move to FUNCTION_CHANGE\OLE DB Source"
           TopLeft="5.5,5.5" />
+        <NodeLayout
+          Size="171.333333333334,42"
+          Id="Package\Move to FUNCTION_CHANGE\OLE DB Destination"
+          TopLeft="136,105" />
+        <NodeLayout
+          Size="156.666666666667,42"
+          Id="Package\Move to FUNCTION_CHANGE\Data Conversion"
+          TopLeft="508.666666666667,61.3333333333333" />
         <EdgeLayout
           Id="Package\Move to FUNCTION_CHANGE.Paths[OLE DB Source Output]"
-          TopLeft="80.5,47.5">
+          TopLeft="155.5,26.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="141,57.5"
+              EndConnector="353.166666666667,55.8333333333333"
               Start="0,0"
-              End="141,50">
+              End="345.666666666667,55.8333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.75" />
+                    End="172.583333333333,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,24.75"
-                    Point2="0,28.75"
-                    Point3="4,28.75" />
+                    Point1="172.583333333333,0"
+                    Point2="176.583333333333,0"
+                    Point3="176.583333333333,4" />
                   <mssgle:LineSegment
-                    End="137,28.75" />
+                    End="176.583333333333,51.8333333333333" />
                   <mssgle:CubicBezierSegment
-                    Point1="137,28.75"
-                    Point2="141,28.75"
-                    Point3="141,32.75" />
+                    Point1="176.583333333333,51.8333333333333"
+                    Point2="176.583333333333,55.8333333333333"
+                    Point3="180.583333333333,55.8333333333333" />
                   <mssgle:LineSegment
-                    End="141,50" />
+                    End="345.666666666667,55.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Move to FUNCTION_CHANGE.Paths[Data Conversion Output]"
+          TopLeft="508.666666666667,88">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-201.333333333333,38"
+              Start="0,0"
+              End="-193.833333333333,38">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-80.9663608562691,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-80.9663608562691,0"
+                    Point2="-84.9663608562691,0"
+                    Point3="-84.9663608562691,4" />
+                  <mssgle:LineSegment
+                    End="-84.9663608562691,34" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-84.9663608562691,34"
+                    Point2="-84.9663608562691,38"
+                    Point3="-88.9663608562691,38" />
+                  <mssgle:LineSegment
+                    End="-193.833333333333,38" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1974,6 +2461,14 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Move to FUNCTION_CHANGE\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Move to FUNCTION_CHANGE\OLE DB Destination">
     <Properties>
@@ -1987,53 +2482,83 @@ WHERE (MST_EMPLOYEE.BASETOWN &lt;&gt; View_Employee.BASETOWN) OR (MST_EMPLOYEE.C
       </Property>
     </Properties>
   </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Move to FUNCTION_CHANGE\OLE DB Source">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Move to LOCATION_CHANGE">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="171,42"
-          Id="Package\Move to LOCATION_CHANGE\OLE DB Destination"
-          TopLeft="136,105" />
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="150,42"
           Id="Package\Move to LOCATION_CHANGE\OLE DB Source"
-          TopLeft="5.5,5.5" />
+          TopLeft="5.5,7.5" />
+        <NodeLayout
+          Size="170.666666666667,42"
+          Id="Package\Move to LOCATION_CHANGE\OLE DB Destination"
+          TopLeft="136,107" />
+        <NodeLayout
+          Size="156.666666666667,42"
+          Id="Package\Move to LOCATION_CHANGE\Data Conversion"
+          TopLeft="260.166666666667,20.1666666666667" />
         <EdgeLayout
           Id="Package\Move to LOCATION_CHANGE.Paths[OLE DB Source Output]"
-          TopLeft="80.5,47.5">
+          TopLeft="155.5,28.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="141,57.5"
+              EndConnector="104.666666666667,12.6666666666667"
               Start="0,0"
-              End="141,50">
+              End="97.1666666666666,12.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.75" />
+                    End="48.3333333333333,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,24.75"
-                    Point2="0,28.75"
-                    Point3="4,28.75" />
+                    Point1="48.3333333333333,0"
+                    Point2="52.3333333333333,0"
+                    Point3="52.3333333333333,4" />
                   <mssgle:LineSegment
-                    End="137,28.75" />
+                    End="52.3333333333333,8.66666666666666" />
                   <mssgle:CubicBezierSegment
-                    Point1="137,28.75"
-                    Point2="141,28.75"
-                    Point3="141,32.75" />
+                    Point1="52.3333333333333,8.66666666666666"
+                    Point2="52.3333333333333,12.6666666666667"
+                    Point3="56.3333333333333,12.6666666666667" />
                   <mssgle:LineSegment
-                    End="141,50" />
+                    End="97.1666666666666,12.6666666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Move to LOCATION_CHANGE.Paths[Data Conversion Output]"
+          TopLeft="338.5,62.1666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-117.166666666667,44.8333333333333"
+              Start="0,0"
+              End="-117.166666666667,37.3333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.4166666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.4166666666667"
+                    Point2="0,22.4166666666667"
+                    Point3="-4,22.4166666666667" />
+                  <mssgle:LineSegment
+                    End="-113.166666666667,22.4166666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-113.166666666667,22.4166666666667"
+                    Point2="-117.166666666667,22.4166666666667"
+                    Point3="-117.166666666667,26.4166666666667" />
+                  <mssgle:LineSegment
+                    End="-117.166666666667,37.3333333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>

@@ -34,4 +34,12 @@ namespace FMS.BusinessObject.Inputs
         public string Regional { get; set; }
         public string City { get; set; }
     }
+
+    public class FleetChangeParamInput
+    {
+        public string EmployeeId { get; set; }
+        public string FormalName { get; set; }
+        public string PoliceNumber { get; set; }
+        public string ChasisNumber { get; set; }
+    }
 }
