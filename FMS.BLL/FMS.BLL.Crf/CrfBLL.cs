@@ -1374,6 +1374,28 @@ namespace FMS.BLL.Crf
 
             return isSend;
         }
+        public void SendEmailForErrorBatch(string messageError)
+        {
+            var rc = new FMSMailNotification();
+            var bodyMail = new StringBuilder();
+            var emailTo = ConfigurationManager.AppSettings["CC_MAIL"];
+
+            rc.Subject = "CRF Error Batch " + DateTime.Today.ToString("dd-MMM-yyyy HH:mm");
+
+            bodyMail.Append("Dear Team,<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Error : " + messageError + ",<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Fleet Team");
+            bodyMail.AppendLine();
+
+            rc.Body = bodyMail.ToString();
+            rc.To.Add(emailTo);
+
+            _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+        }
         #endregion  
     }
 }
