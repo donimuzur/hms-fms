@@ -106,11 +106,17 @@ namespace FMS.Website.Controllers
 
             bool IsSendCsf = false;
             bool IsTerminate = false;
+
             var GetSetting = _settingBLL.GetSetting();
+            var ReasonList = _reasonBLL.GetReason();
+            var CsfList = _csfBLL.GetList();
+            var CtfList = _ctfBLL.GetCtf();
+
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 if (fleetBenefit != null)
                 {
+                    
                     foreach (var item in fleetBenefit)
                     {
                         try
@@ -118,10 +124,10 @@ namespace FMS.Website.Controllers
                             IsSendCsf = false;
                             IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
-                            var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+                            var ReasonID = ReasonList.Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
                             var VehType = GetSetting.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (item.VehicleType == null ? "" : item.VehicleType.ToUpper()) && x.IsActive).FirstOrDefault();
-                            var csfdata = _csfBLL.GetList().Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MstSettingId.ToString()) && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+                            var csfdata = CsfList.Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MstSettingId.ToString()) && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
 
                             var days7 = DateTime.Now.AddDays(7);
                             ctfitem.Reason = ReasonID;
@@ -160,9 +166,9 @@ namespace FMS.Website.Controllers
                             IsSendCsf = false;
                             IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
-                            var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+                            var ReasonID = ReasonList.Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
-                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
+                            var ctfdata = CtfList.Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
 
                             var days7 = DateTime.Now.AddDays(7);
 
@@ -199,10 +205,10 @@ namespace FMS.Website.Controllers
                             IsSendCsf = false;
                             IsTerminate = false;
                             var ctfitem = Mapper.Map<CtfItem>(item);
-                            var ReasonID = _reasonBLL.GetReason().Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
+                            var ReasonID = ReasonList.Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
                             var days7 = DateTime.Now.AddDays(7);
 
-                            var ctfdata = _ctfBLL.GetCtf().Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
+                            var ctfdata = CtfList.Where(x => x.EmployeeId == ctfitem.EmployeeId && x.PoliceNumber == ctfitem.PoliceNumber && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (ctfitem.VehicleType == null ? "" : ctfitem.VehicleType.ToUpper()) && x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled).ToList();
 
                             var VehType = GetSetting.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (item.VehicleType == null ? "" : item.VehicleType.ToUpper()) && x.IsActive).FirstOrDefault();
 
@@ -2101,22 +2107,28 @@ namespace FMS.Website.Controllers
                     {
                         item.EmployeeId = dataRow[0];
                         item.EmployeeName = dataRow[1];
-                        double dEffectiveDate = double.Parse(dataRow[3]);
-                        DateTime dtEffectiveDate = DateTime.FromOADate(dEffectiveDate);
-                        item.EffectiveDate = dtEffectiveDate;
                         item.PoliceNumber = dataRow[4];
                         item.CostCenter = dataRow[5];
                         item.VehicleType = dataRow[6];
-
-                        var Reason = ReasonList.Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == dataRow[2].ToUpper()
-                                    && x.DocumentType == (int)Enums.DocumentType.CTF
-                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
-
-                        item.Reason = Reason.MstReasonId;
+                        
                         item.VehicleYear = Convert.ToInt32(dataRow[7]);
                         item.SupplyMethod = dataRow[8];
                         if (dataRow[9].ToUpper() == "YES") item.ExtendVehicle = true;
                         else if (dataRow[9].ToUpper() == "NO") item.ExtendVehicle = false;
+                        item.ReasonS = dataRow[2];
+                        if (!item.ExtendVehicle)
+                        {
+                            double dEffectiveDate = double.Parse(dataRow[3]);
+                            DateTime dtEffectiveDate = DateTime.FromOADate(dEffectiveDate);
+                            item.EffectiveDate = dtEffectiveDate;
+
+                            var Reason = ReasonList.Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == dataRow[2].ToUpper()
+                                    && x.DocumentType == (int)Enums.DocumentType.CTF
+                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
+
+                            item.Reason = Reason.MstReasonId;
+                            
+                        }
 
                         var Vehicle = VehicleList.Where(x => (x.PoliceNumber == null ? "" : x.PoliceNumber.ToUpper()) == (item.PoliceNumber == null ? "" : item.PoliceNumber.ToUpper())
                                                                    && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())
@@ -2134,7 +2146,7 @@ namespace FMS.Website.Controllers
                             item.VehicleUsage = Vehicle.VehicleUsage;
                             item.GroupLevel = Employee.GROUP_LEVEL;
                         }
-
+                        
                         if (item.ExtendVehicle == true)
                         {
                             item.CtfExtend = new CtfExtendDto();
@@ -2142,7 +2154,7 @@ namespace FMS.Website.Controllers
                             double dNewDate = double.Parse(dataRow[10]);
                             DateTime dtNewDate = DateTime.FromOADate(dNewDate);
                             item.CtfExtend.NewProposedDate = dtNewDate;
-
+                            item.EffectiveDate = item.EndRendDate;
                             item.CtfExtend.ExtendPoliceNumber = dataRow[11];
                             item.CtfExtend.ExtendPoNumber = dataRow[12];
                             item.CtfExtend.ExtedPoLine = dataRow[13];
@@ -2436,23 +2448,7 @@ namespace FMS.Website.Controllers
                             item.ErrorMessage = "Employee Name can't be empty";
                         }
 
-                        if (dataRow[3] == "")
-                        {
-                            item.ErrorMessage = "Effective Date Can't be empty";
-                        }
-                        else
-                        {
-                            try
-                            {
-                                double dEffectiveDate = double.Parse(dataRow[3]);
-                                DateTime dtEffectiveDate = DateTime.FromOADate(dEffectiveDate);
-                                item.EffectiveDate = dtEffectiveDate;
-                            }
-                            catch (Exception)
-                            {
-                                item.ErrorMessage = "Effective date format is not valid";
-                            }
-                        }
+                       
 
                         item.PoliceNumber = dataRow[4];
                         if (item.PoliceNumber == "")
@@ -2472,24 +2468,56 @@ namespace FMS.Website.Controllers
                             item.ErrorMessage = "Vehicle Type Can't be empty";
                         }
 
-                        item.ReasonS = dataRow[2];
-                        if (item.ReasonS == "")
+                        if (dataRow[9] == "")
                         {
-                            item.ErrorMessage = "Reason Can't be empty";
+                            item.ErrorMessage = "Extend Vehicle can't be empty";
                         }
                         else
                         {
-                            var Reason = ReasonList.Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == item.ReasonS.ToUpper()
-                                        && x.DocumentType == (int)Enums.DocumentType.CTF
-                                        && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
+                            if (dataRow[9].ToUpper() == "YES") item.ExtendVehicle = true;
+                            else if (dataRow[9].ToUpper() == "NO") item.ExtendVehicle = false;
+                            else { item.ErrorMessage = "Extend Vehicle is unknown"; }
+                        }
+                        item.ReasonS = dataRow[2];
 
-                            if (Reason == null)
+                        if (!item.ExtendVehicle)
+                        {
+                            if (dataRow[3] == "")
                             {
-                                item.ErrorMessage = item.ReasonS + " is not found in master Reason";
+                                item.ErrorMessage = "Effective Date Can't be empty";
                             }
                             else
                             {
-                                item.Reason = Reason.MstReasonId;
+                                try
+                                {
+                                    double dEffectiveDate = double.Parse(dataRow[3]);
+                                    DateTime dtEffectiveDate = DateTime.FromOADate(dEffectiveDate);
+                                    item.EffectiveDate = dtEffectiveDate;
+                                }
+                                catch (Exception)
+                                {
+                                    item.ErrorMessage = "Effective date format is not valid";
+                                }
+                            }
+
+                            if (item.ReasonS == "")
+                            {
+                                item.ErrorMessage = "Reason Can't be empty";
+                            }
+                            else
+                            {
+                                var Reason = ReasonList.Where(x => (x.Reason == null ? "" : x.Reason.ToUpper()) == item.ReasonS.ToUpper()
+                                            && x.DocumentType == (int)Enums.DocumentType.CTF
+                                            && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (item.VehicleType == null ? "" : item.VehicleType.ToUpper())).FirstOrDefault();
+
+                                if (Reason == null)
+                                {
+                                    item.ErrorMessage = item.ReasonS + " is not found in master Reason";
+                                }
+                                else
+                                {
+                                    item.Reason = Reason.MstReasonId;
+                                }
                             }
                         }
 
@@ -2515,16 +2543,7 @@ namespace FMS.Website.Controllers
                             item.ErrorMessage = "Supply Method can't be empty";
                         }
 
-                        if (dataRow[9] == "")
-                        {
-                            item.ErrorMessage = "Extend Vehicle can't be empty";
-                        }
-                        else
-                        {
-                            if (dataRow[9].ToUpper() == "YES") item.ExtendVehicle = true;
-                            else if (dataRow[9].ToUpper() == "NO") item.ExtendVehicle = false;
-                            else { item.ErrorMessage = "Extend Vehicle is unknown"; }
-                        }
+                      
 
                         #region -- Vehicle & Employee Validation ----
 
@@ -2541,7 +2560,6 @@ namespace FMS.Website.Controllers
                         {
                             item.ErrorMessage = "Vehicle is not found in Master Fleet";
                         }
-
                         #endregion
 
                         if (item.ExtendVehicle == true)
