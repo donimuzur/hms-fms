@@ -4,7 +4,8 @@
         list: {
             match: {
                 enabled: true
-            }
+            },
+            maxNumberOfElements: 8
         },
         theme: "round"
     };

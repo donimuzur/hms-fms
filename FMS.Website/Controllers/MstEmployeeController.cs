@@ -505,7 +505,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsMasterEmployee(EmployeeModel model = null)
         {
             //get data
-            List<EmployeeDto> employee = _employeeBLL.GetEmployee();
+            //List<EmployeeDto> employee = _employeeBLL.GetEmployee();
             //var listData = Mapper.Map<List<EmployeeItem>>(employee);
             var listData = SearchDataEmployeeExport(model.SearchView);
 
