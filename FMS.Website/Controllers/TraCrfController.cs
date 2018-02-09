@@ -14,6 +14,7 @@ using FMS.BusinessObject.Dto;
 using iTextSharp.text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
+using FMS.BusinessObject.Business;
 
 namespace FMS.Website.Controllers
 {
@@ -31,6 +32,7 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private IFleetBLL _fleetBLL;
         private ITraCsfBLL _csfBLL;
+        private ITraCtfBLL _ctfBLL;
         private ITraTemporaryBLL _tempBLL;
         private ILocationMappingBLL _locationMappingBLL;
         //private IVendorBLL _vendorBLL;
@@ -39,7 +41,7 @@ namespace FMS.Website.Controllers
         private List<SettingDto> _settingList;
 
         public TraCrfController(IPageBLL pageBll, IEpafBLL epafBll, ITraCrfBLL crfBLL, IRemarkBLL RemarkBLL, IEmployeeBLL EmployeeBLL, IReasonBLL ReasonBLL,
-            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVendorBLL vendorBLL, ITraCsfBLL csfBLL, ITraTemporaryBLL tempBLL, ILocationMappingBLL LocationMappingBLL)
+            ISettingBLL SettingBLL, IFleetBLL FleetBLL, IVendorBLL vendorBLL, ITraCsfBLL csfBLL,ITraCtfBLL CtfBLL, ITraTemporaryBLL tempBLL, ILocationMappingBLL LocationMappingBLL)
             : base(pageBll, Core.Enums.MenuList.TraCrf)
         {
             _epafBLL = epafBll;
@@ -53,6 +55,7 @@ namespace FMS.Website.Controllers
             //_vendorBLL = vendorBLL;
             _settingList = _settingBLL.GetSetting();
             _csfBLL = csfBLL;
+            _ctfBLL = CtfBLL;
             _tempBLL = tempBLL;
             _locationMappingBLL = LocationMappingBLL;
 
@@ -447,6 +450,22 @@ namespace FMS.Website.Controllers
                 var dataSubmit = Mapper.Map<TraCrfDto>(model.Detail);
                 dataSubmit.IS_ACTIVE = true;
                 _CRFBLL.SubmitCrf(dataSubmit, CurrentUser);
+
+                if((dataSubmit.RelocationType == null ? "" : dataSubmit.RelocationType.ToUpper()) == "CHANGE_UNIT" 
+                    && dataSubmit.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser)
+                {
+
+                    var GetVehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == dataSubmit.POLICE_NUMBER
+                    && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (dataSubmit.MANUFACTURER == null ? "" : dataSubmit.MANUFACTURER.ToUpper())
+                    && (x.Models == null ? "" : x.Models.ToUpper()) == (dataSubmit.MODEL == null ? "" : dataSubmit.MODEL.ToUpper())
+                    && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == "CFM IDLE" && x.IsActive).FirstOrDefault();
+
+                    if(GetVehicle != null)
+                    {
+                        DisableCfmIdleInTemporary(dataSubmit, GetVehicle.MstFleetId);
+                    }
+                    
+                }
 
                 return RedirectToAction("Index");
             }
@@ -988,207 +1007,63 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Edit", "TraCrf", new { id = model.Detail.TraCrfId, isPersonalDashboard = model.IsPersonalDashboard });
         }
 
-
-        #region  ------- Batch Email Vendor --------
-        public void GetListCrfInProgress()
+        #region ------- Delete CFM Idle in Temporary --------
+        private void DisableCfmIdleInTemporary(TraCrfDto crfData, long CfmIdleId)
         {
-            var ListCrf = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress && x.DATE_SEND_VENDOR == null).ToList();
-            var ListCrfDto = new List<TraCrfDto>();
-            var Vendor = new List<String>();
-            bool IsSend = false;
-            foreach (var CrfData in ListCrf)
+            //find cfm idle in temporary active
+            var tempData = _tempBLL.GetList().Where(x => (x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
+                                                                && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled)
+                                                                && x.CFM_IDLE_ID == CfmIdleId).FirstOrDefault();
+
+            if (tempData != null)
             {
-                var vehicle = _fleetBLL.GetFleet().Where(x => x.IsActive && x.PoliceNumber == CrfData.POLICE_NUMBER && x.EmployeeID == CrfData.EMPLOYEE_ID).FirstOrDefault();
-                if (vehicle != null)
-                {
-                    CrfData.CHASIS_NUMBER = vehicle.ChasisNumber;
-                    CrfData.ENGINE_NUMBER = vehicle.EngineNumber;
-                }
+                tempData.MODIFIED_DATE = DateTime.Now;
+                tempData.CFM_IDLE_ID = null;
+
+                var login = new Login();
+                login.USER_ID = "SYSTEM";
+                _tempBLL.Save(tempData, login);
             }
 
-            Vendor = ListCrf.Where(x => x.VENDOR_NAME != null).Select(x => x.VENDOR_NAME).Distinct().ToList();
+            //find cfm idle temporary in master fleet
+            var fleetData = _fleetBLL.GetFleetById((int)CfmIdleId);
 
-            foreach (var VendorItem in Vendor)
+            if (fleetData != null)
             {
-
-                var reListCrfDto = ListCrf.Where(x => (x.VENDOR_NAME == null ? "" : x.VENDOR_NAME.ToUpper()) == VendorItem).ToList();
-
-                var WtcListCrf = reListCrfDto.Where(x =>  (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
-
-                var BenefitListCrf = reListCrfDto.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
-
-                string AttacthmentWtc = null;
-                string AttacthmentBenefit = null;
-
-                if (WtcListCrf.Count > 0)
+                if (fleetData != null)
                 {
-                    AttacthmentWtc = CreateExcelForVendor(WtcListCrf, "WTC");
-                }
-
-                if (BenefitListCrf.Count > 0)
-                {
-                    AttacthmentBenefit = CreateExcelForVendor(BenefitListCrf, "BENEFIT");
-                }
-
-                reListCrfDto = reListCrfDto.OrderBy(x => x.VEHICLE_TYPE).ToList();
-                IsSend = _CRFBLL.BatchEmailCrf(reListCrfDto, VendorItem, AttacthmentWtc, AttacthmentBenefit);
-
-                if (IsSend)
-                {
-                    foreach (var Crf in reListCrfDto)
+                    if (fleetData.IsActive && fleetData.VehicleUsage == "CFM IDLE" && fleetData.SupplyMethod == "TEMPORARY")
                     {
-                        Crf.DATE_SEND_VENDOR = DateTime.Now;
-                        
-                        var login = new BusinessObject.Business.Login();
+                        //create CTF Draft
+                        var login = new Login();
                         login.USER_ID = "SYSTEM";
-                        _CRFBLL.SaveCrf(Crf);
+
+                        TraCtfDto item = new TraCtfDto();
+
+                        item.CreatedDate = DateTime.Today;
+                        item.CreatedBy = crfData.CREATED_BY;
+                        item.EmployeeId = fleetData.EmployeeID;
+                        item.EmployeeName = fleetData.EmployeeName;
+                        item.CostCenter = fleetData.CostCenter;
+                        item.DocumentStatus = Enums.DocumentStatus.Draft;
+                        item.VehicleType = fleetData.VehicleType;
+                        item.PoliceNumber = fleetData.PoliceNumber;
+                        item.VehicleUsage = "CFM";
+                        item.GroupLevel = fleetData.GroupLevel;
+                        item.VehicleYear = fleetData.VehicleYear;
+                        item.SupplyMethod = fleetData.SupplyMethod;
+                        item.EndRendDate = fleetData.EndContract;
+                        item.IsActive = true;
+
+                        var CtfData = _ctfBLL.Save(item, login);
+
+                        //send notification
+                        _CRFBLL.SendEmailNotificationCfmIdle(crfData, CtfData);
                     }
                 }
             }
         }
-        #endregion
-
-        #region --------- Add Attachment File For Vendor --------------
-        private string CreateExcelForVendor(List<TraCrfDto> CrfDto, string VehicleType)
-        {
-
-            var slDocument = new SLDocument();
-
-            //title
-            slDocument.SetCellValue(2, 2, "Detail Vehicle");
-            slDocument.MergeWorksheetCells(2, 2, 2, 16);
-
-            slDocument.SetCellValue(2, 17, "Detail Withdrawal");
-            slDocument.MergeWorksheetCells(2, 17, 2, 21);
-
-            slDocument.SetCellValue(2, 22, "Detail Deliverable");
-            slDocument.MergeWorksheetCells(2, 22, 2, 25);
-
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 25, valueStyle);
-
-            //create header
-            slDocument = CreateHeaderExcelForVendor(slDocument);
-
-            //create data
-            slDocument = CreateDataExcelForVendor(slDocument, CrfDto);
-
-            var fileName = "Attachment_CRF_" + VehicleType + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
-            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
-
-            slDocument.SaveAs(path);
-
-            return path;
-
-        }
-
-        private SLDocument CreateHeaderExcelForVendor(SLDocument slDocument)
-        {
-            int iRow = 3;
-
-            slDocument.SetCellValue(iRow, 2, "Request Number");
-            slDocument.SetCellValue(iRow, 3, "Employee Name");
-            slDocument.SetCellValue(iRow, 4, "Vendor");
-            slDocument.SetCellValue(iRow, 5, "Police Number");
-            slDocument.SetCellValue(iRow, 6, "Chasis Number");
-            slDocument.SetCellValue(iRow, 7, "Engine Number");
-            slDocument.SetCellValue(iRow, 8, "Manufacture");
-            slDocument.SetCellValue(iRow, 9, "Model");
-            slDocument.SetCellValue(iRow, 10, "Series");
-            slDocument.SetCellValue(iRow, 11, "VehicleUsage");
-            slDocument.SetCellValue(iRow, 12, "Current Basetown");
-            slDocument.SetCellValue(iRow, 13, "New Basetown");
-            slDocument.SetCellValue(iRow, 14, "Expected Delivery Date");
-            slDocument.SetCellValue(iRow, 15, "Change Unit");
-            slDocument.SetCellValue(iRow, 16, "Change Police Number");
-            slDocument.SetCellValue(iRow, 17, "PIC Name");
-            slDocument.SetCellValue(iRow, 18, "Date & Time");
-            slDocument.SetCellValue(iRow, 19, "Phone Number");
-            slDocument.SetCellValue(iRow, 20, "City");
-            slDocument.SetCellValue(iRow, 21, "Address");
-            slDocument.SetCellValue(iRow, 22, "PIC Name");
-            slDocument.SetCellValue(iRow, 23, "Phone Number");
-            slDocument.SetCellValue(iRow, 24, "City");
-            slDocument.SetCellValue(iRow, 25, "Address");
-
-            SLStyle headerStyle = slDocument.CreateStyle();
-            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
-            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-            slDocument.SetCellStyle(iRow, 2, iRow, 25, headerStyle);
-
-            return slDocument;
-
-        }
-
-        private SLDocument CreateDataExcelForVendor(SLDocument slDocument, List<TraCrfDto> CrfDto)
-        {
-            int iRow = 4; //starting row data
-            foreach (var data in CrfDto)
-            {
-                slDocument.SetCellValue(iRow, 2, data.DOCUMENT_NUMBER);
-                slDocument.SetCellValue(iRow, 3, data.EMPLOYEE_NAME);
-                slDocument.SetCellValue(iRow, 4, data.VENDOR_NAME);
-                slDocument.SetCellValue(iRow, 5, data.POLICE_NUMBER);
-                slDocument.SetCellValue(iRow, 6, data.CHASIS_NUMBER);
-                slDocument.SetCellValue(iRow, 7, data.ENGINE_NUMBER);
-                slDocument.SetCellValue(iRow, 8, data.MANUFACTURER);
-                slDocument.SetCellValue(iRow, 9, data.MODEL);
-                slDocument.SetCellValue(iRow, 10, data.SERIES);
-                slDocument.SetCellValue(iRow, 11, data.VEHICLE_USAGE);
-                slDocument.SetCellValue(iRow, 12, data.LOCATION_OFFICE);
-                slDocument.SetCellValue(iRow, 13, data.LOCATION_OFFICE_NEW);
-                if(data.EXPECTED_DATE.HasValue)slDocument.SetCellValue(iRow, 14, data.EXPECTED_DATE.Value.ToOADate());
-                slDocument.SetCellValue(iRow, 15, ((data.RelocationType == null ? "" : data.RelocationType.ToUpper()) == "CHANGE UNIT" ? "Yes" : "No" ));
-                slDocument.SetCellValue(iRow, 16, data.CHANGE_POLICE_NUMBER == true ? "Yes" : "No");
-                slDocument.SetCellValue(iRow, 17, data.WITHD_PIC);
-                if(data.WITHD_DATETIME.HasValue)slDocument.SetCellValue(iRow, 18, data.WITHD_DATETIME.Value.ToOADate());
-                slDocument.SetCellValue(iRow, 19, data.WITHD_PHONE);
-                slDocument.SetCellValue(iRow, 20, data.WITHD_CITY);
-                slDocument.SetCellValue(iRow, 21, data.WITHD_ADDRESS);
-                slDocument.SetCellValue(iRow, 22, data.DELIV_PIC);
-                slDocument.SetCellValue(iRow, 23, data.DELIV_PHONE);
-                slDocument.SetCellValue(iRow, 24, data.DELIV_CITY);
-                slDocument.SetCellValue(iRow, 25, data.DELIV_ADDRESS);
-
-                SLStyle dateStyle = slDocument.CreateStyle();
-                dateStyle.FormatCode = "dd-MMM-yyyy";
-                slDocument.SetCellStyle(iRow, 14, iRow, 14, dateStyle);
-
-                dateStyle = slDocument.CreateStyle();
-                dateStyle.FormatCode = "dd-MMM-yyyy HH:mm";
-                slDocument.SetCellStyle(iRow, 18, iRow, 18, dateStyle);
-
-                SLStyle valueStyle = slDocument.CreateStyle();
-                valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-                valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-                valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-                valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-                slDocument.AutoFitColumn(2, 25);
-                slDocument.SetCellStyle(iRow, 2, iRow, 25, valueStyle);
-
-                iRow++;
-
-            }
-
-
-            //create style
-            return slDocument;
-        }
 
         #endregion
-
     }
 }

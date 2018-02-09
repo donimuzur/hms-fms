@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject.Inputs;
 using FMS.Contract.BLL;
@@ -17,6 +16,7 @@ using AutoMapper;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Packaging;
+using FMS.BusinessObject.Business;
 
 namespace FMS.Website.Controllers
 {
@@ -519,14 +519,6 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    if (model.Detail.CfmIdleId != null)
-                    {
-                        if (model.Detail.CfmIdleId.Value > 0)
-                        {
-                            DisableCfmIdleInTemporary(model.Detail.TraCsfId, model.Detail.CfmIdleId.Value);
-                        }
-                    }
-
                     var dataToSave = Mapper.Map<TraCsfDto>(model.Detail);
 
                     dataToSave.DOCUMENT_STATUS = Enums.DocumentStatus.AssignedForUser;
@@ -568,6 +560,15 @@ namespace FMS.Website.Controllers
                         }
 
                         CsfWorkflow(model.Detail.TraCsfId, Enums.ActionType.Submit, null);
+
+                        if (model.Detail.CfmIdleId != null)
+                        {
+                            if (model.Detail.CfmIdleId.Value > 0)
+                            {
+                                DisableCfmIdleInTemporary(saveResult);
+                            }
+                        }
+
                         AddMessageInfo("Success Submit Document", Enums.MessageInfoType.Success);
                         return RedirectToAction("Detail", "TraCsf", new { id = model.Detail.TraCsfId, isPersonalDashboard = model.IsPersonalDashboard });
                     }
@@ -2017,244 +2018,14 @@ namespace FMS.Website.Controllers
 
         #endregion
 
-        #region ------- Batch Email Vendor --------
-
-        public void GetListCsfInProgress()
-        {
-            try
-            {
-                var ListCsf = _csfBLL.GetList().Where(x => x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress &&
-                                                        !x.DATE_SEND_VENDOR.HasValue && x.VENDOR_NAME != null).ToList();
-
-                var wtcType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "WTC").FirstOrDefault().MstSettingId.ToString();
-                var benefitType = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_TYPE" && x.SettingName == "BENEFIT").FirstOrDefault().MstSettingId.ToString();
-
-                var Vendor = new List<String>();
-                bool IsSend = false;
-
-                Vendor = ListCsf.Select(x => x.VENDOR_NAME).Distinct().ToList();
-
-                foreach (var VendorItem in Vendor)
-                {
-                    var reListCsfDto = ListCsf.Where(x => x.VENDOR_NAME.ToUpper() == VendorItem.ToUpper()).ToList();
-
-                    var WtcListCsf = reListCsfDto.Where(x => x.VEHICLE_TYPE == wtcType).ToList();
-
-                    var BenefitListCsf = reListCsfDto.Where(x => x.VEHICLE_TYPE == benefitType).ToList();
-
-                    string AttacthmentWtc = null;
-                    string AttacthmentBenefit = null;
-
-                    if (WtcListCsf.Count > 0)
-                    {
-                        AttacthmentWtc = CreateAttachmentForVendor(WtcListCsf, "WTC");
-                    }
-
-                    if (BenefitListCsf.Count > 0)
-                    {
-                        AttacthmentBenefit = CreateAttachmentForVendor(BenefitListCsf, "BENEFIT");
-                    }
-
-                    reListCsfDto = reListCsfDto.OrderBy(x => x.VEHICLE_TYPE).ToList();
-                    IsSend = _csfBLL.BatchEmailCsf(reListCsfDto, VendorItem, AttacthmentWtc, AttacthmentBenefit);
-
-                    if (IsSend)
-                    {
-                        foreach (var Csf in reListCsfDto)
-                        {
-                            Csf.DATE_SEND_VENDOR = DateTime.Now;
-
-                            var login = new Login();
-                            login.USER_ID = "SYSTEM";
-                            _csfBLL.Save(Csf, login);
-                        }
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                _csfBLL.SendEmailForErrorBatch(exception.Message);
-            }
-        }
-
-        private string CreateAttachmentForVendor(List<TraCsfDto> listData, string vehicleType)
-        {
-            var slDocument = new SLDocument();
-
-            //title
-            slDocument.SetCellValue(2, 2, "System");
-            slDocument.MergeWorksheetCells(2, 2, 2, 4);
-
-            slDocument.SetCellValue(2, 5, "Vendor");
-            slDocument.MergeWorksheetCells(2, 5, 2, 10);
-
-            slDocument.SetCellValue(2, 11, "User");
-            slDocument.MergeWorksheetCells(2, 11, 2, 17);
-
-            slDocument.SetCellValue(2, 18, "Fleet");
-            slDocument.MergeWorksheetCells(2, 18, 2, 26);
-
-            //create style
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 26, valueStyle);
-
-            //create header
-            slDocument = CreateHeaderAttachmentForVendor(slDocument);
-
-            //create data
-            slDocument = CreateDataAttachmentForVendor(slDocument, listData);
-
-            var fileName = "Attachment_CSF_" + vehicleType + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
-            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
-
-            slDocument.SaveAs(path);
-
-            return path;
-
-        }
-
-        private SLDocument CreateHeaderAttachmentForVendor(SLDocument slDocument)
-        {
-            int iRow = 3;
-
-            slDocument.SetCellValue(iRow, 2, "Request Number");
-            slDocument.SetCellValue(iRow, 3, "Employee Name");
-            slDocument.SetCellValue(iRow, 4, "Vendor");
-            slDocument.SetCellValue(iRow, 5, "Police Number");
-            slDocument.SetCellValue(iRow, 6, "Chasis Number");
-            slDocument.SetCellValue(iRow, 7, "Engine Number");
-            slDocument.SetCellValue(iRow, 8, "Contract Start Date");
-            slDocument.SetCellValue(iRow, 9, "Contract End Date");
-            slDocument.SetCellValue(iRow, 10, "AirBag");
-            slDocument.SetCellValue(iRow, 11, "Make");
-            slDocument.SetCellValue(iRow, 12, "Model");
-            slDocument.SetCellValue(iRow, 13, "Series");
-            slDocument.SetCellValue(iRow, 14, "Transmission");
-            slDocument.SetCellValue(iRow, 15, "Color");
-            slDocument.SetCellValue(iRow, 16, "Body type");
-            slDocument.SetCellValue(iRow, 17, "Location");
-            slDocument.SetCellValue(iRow, 18, "Branding");
-            slDocument.SetCellValue(iRow, 19, "Purpose");
-            slDocument.SetCellValue(iRow, 20, "Request Year");
-            slDocument.SetCellValue(iRow, 21, "PO");
-            slDocument.SetCellValue(iRow, 22, "PO Line");
-            slDocument.SetCellValue(iRow, 23, "Vat");
-            slDocument.SetCellValue(iRow, 24, "Restitution");
-            slDocument.SetCellValue(iRow, 25, "Price");
-            slDocument.SetCellValue(iRow, 26, "Comments");
-
-            SLStyle headerStyle = slDocument.CreateStyle();
-            headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
-            headerStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-            slDocument.SetCellStyle(iRow, 2, iRow, 26, headerStyle);
-
-            return slDocument;
-
-        }
-
-        private SLDocument CreateDataAttachmentForVendor(SLDocument slDocument, List<TraCsfDto> listData)
-        {
-            int iRow = 4; //starting row data
-
-            var vSpecListData = _vehicleSpectBLL.GetVehicleSpect().Where(x => x.Manufacturer != null
-                                                                        && x.Models != null
-                                                                        && x.Series != null
-                                                                        && x.BodyType != null
-                                                                        && x.IsActive).ToList();
-
-            foreach (var csfData in listData)
-            {
-                var vSpecList = vSpecListData.Where(x => x.Year == csfData.CREATED_DATE.Year
-                                                        && x.Manufacturer.ToUpper() == csfData.MANUFACTURER.ToUpper()
-                                                        && x.Models.ToUpper() == csfData.MODEL.ToUpper()
-                                                        && x.Series.ToUpper() == csfData.SERIES.ToUpper()
-                                                        && x.BodyType.ToUpper() == csfData.BODY_TYPE.ToUpper()).FirstOrDefault();
-
-                var transmissionData = vSpecList == null ? string.Empty : vSpecList.Transmission;
-
-                var policeNumberCfmIdle = string.Empty;
-                var chasCfmIdle = string.Empty;
-                var engCfmIdle = string.Empty;
-                if (csfData.CFM_IDLE_ID != null)
-                {
-                    var cfmData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID);
-                    if (cfmData != null)
-                    {
-                        policeNumberCfmIdle = cfmData.PoliceNumber == null ? string.Empty : cfmData.PoliceNumber;
-                        chasCfmIdle = cfmData.ChasisNumber == null ? string.Empty : cfmData.ChasisNumber;
-                        engCfmIdle = cfmData.EngineNumber == null ? string.Empty : cfmData.EngineNumber;
-                        transmissionData = cfmData.Transmission == null ? string.Empty : cfmData.Transmission;
-                    }
-                }
-
-                slDocument.SetCellValue(iRow, 2, csfData.DOCUMENT_NUMBER);
-                slDocument.SetCellValue(iRow, 3, csfData.EMPLOYEE_NAME);
-                slDocument.SetCellValue(iRow, 4, csfData.VENDOR_NAME);
-                slDocument.SetCellValue(iRow, 5, policeNumberCfmIdle);
-                slDocument.SetCellValue(iRow, 6, chasCfmIdle);
-                slDocument.SetCellValue(iRow, 7, engCfmIdle);
-                slDocument.SetCellValue(iRow, 8, csfData.EFFECTIVE_DATE.ToOADate());
-                slDocument.SetCellValue(iRow, 9, string.Empty);
-                slDocument.SetCellValue(iRow, 10, "YES");
-                slDocument.SetCellValue(iRow, 11, csfData.MANUFACTURER);
-                slDocument.SetCellValue(iRow, 12, csfData.MODEL);
-                slDocument.SetCellValue(iRow, 13, csfData.SERIES);
-                slDocument.SetCellValue(iRow, 14, transmissionData);
-                slDocument.SetCellValue(iRow, 15, csfData.COLOUR);
-                slDocument.SetCellValue(iRow, 16, csfData.BODY_TYPE);
-                slDocument.SetCellValue(iRow, 17, csfData.LOCATION_CITY);
-                slDocument.SetCellValue(iRow, 18, string.Empty);
-                slDocument.SetCellValue(iRow, 19, string.Empty);
-                slDocument.SetCellValue(iRow, 20, csfData.CREATED_DATE.Year.ToString());
-                slDocument.SetCellValue(iRow, 21, string.Empty);
-                slDocument.SetCellValue(iRow, 22, string.Empty);
-                slDocument.SetCellValue(iRow, 23, 0);
-                slDocument.SetCellValue(iRow, 24, "NO");
-                slDocument.SetCellValue(iRow, 25, 0);
-                slDocument.SetCellValue(iRow, 26, string.Empty);
-
-                //create style
-                SLStyle valueStyle = slDocument.CreateStyle();
-                valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-                valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-                valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-                valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-
-                slDocument.AutoFitColumn(2, 26);
-                slDocument.SetCellStyle(iRow, 2, iRow, 26, valueStyle);
-
-                SLStyle dateStyle = slDocument.CreateStyle();
-                dateStyle.FormatCode = "dd/MM/yyyy";
-
-                slDocument.SetCellStyle(iRow, 8, iRow, 8, dateStyle);
-
-                iRow++;
-            }            
-
-            return slDocument;
-        }
-
-        #endregion
-
         #region ------- Delete CFM Idle in Temporary --------
 
-        private void DisableCfmIdleInTemporary(long traCsfId, long cfmIdleId)
+        private void DisableCfmIdleInTemporary(TraCsfDto csfData)
         {
             //find cfm idle in temporary active
             var tempData = _tempBLL.GetList().Where(x => (x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed
                                                                 && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled)
-                                                                && x.CFM_IDLE_ID == cfmIdleId).FirstOrDefault();
+                                                                && x.CFM_IDLE_ID == csfData.CFM_IDLE_ID.Value).FirstOrDefault();
 
             if (tempData != null)
             {
@@ -2267,7 +2038,7 @@ namespace FMS.Website.Controllers
             }
 
             //find cfm idle temporary in master fleet
-            var fleetData = _fleetBLL.GetFleetById((int)cfmIdleId);
+            var fleetData = _fleetBLL.GetFleetById((int)csfData.CFM_IDLE_ID.Value);
 
             if (fleetData != null)
             {
@@ -2280,18 +2051,24 @@ namespace FMS.Website.Controllers
                     TraCtfDto item = new TraCtfDto();
 
                     item.CreatedDate = DateTime.Today;
-                    item.CreatedBy = "SYSTEM";
+                    item.CreatedBy = csfData.CREATED_BY;
                     item.EmployeeId = fleetData.EmployeeID;
                     item.EmployeeName = fleetData.EmployeeName;
                     item.CostCenter = fleetData.CostCenter;
                     item.DocumentStatus = Enums.DocumentStatus.Draft;
                     item.VehicleType = fleetData.VehicleType;
+                    item.PoliceNumber = fleetData.PoliceNumber;
+                    item.VehicleUsage = "CFM";
+                    item.GroupLevel = fleetData.GroupLevel;
+                    item.VehicleYear = fleetData.VehicleYear;
+                    item.SupplyMethod = fleetData.SupplyMethod;
+                    item.EndRendDate = fleetData.EndContract;
                     item.IsActive = true;
 
                     var CtfData = _ctfBLL.Save(item, login);
 
                     //send notification
-                    _csfBLL.SendEmailNotificationCfmIdle(traCsfId, CtfData);
+                    _csfBLL.SendEmailNotificationCfmIdle(csfData, CtfData);
                 }
             }
         } 
