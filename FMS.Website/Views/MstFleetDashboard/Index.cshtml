@@ -68,9 +68,10 @@
             <div class="modal-header">
                 <h4 class="modal-title">Update Master Fleet ?</h4>
             </div>
-            @using (Html.BeginForm("", "TraCsf")) { 
+            @using (Html.BeginForm("UpdateMasterFleet", "MstFleetDashboard"))
+            { 
                 <div class="modal-footer">
-                    <input type="hidden" name="TraCsfId" id="TraCsfId">
+                    <input type="hidden" name="FleetChangeId" id="FleetChangeId">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
                 </div>
@@ -117,8 +118,8 @@
     
     function ExportXls() {
         console.log('Submitting');
-    	var url = '@Url.Action("ExportMasterFleetGenerateReport", "MstFleet")';
-    	var getFileUrl = '@Url.Action("GetExcelFile","MstFleet")';
+    	var url = '@Url.Action("ExportFleetChangeGenerateReport", "MstFleetDashboard")';
+    	var getFileUrl = '@Url.Action("GetExcelFile", "MstFleetDashboard")';
         console.log(url);
         var objToUpload =
 			{
@@ -161,6 +162,16 @@
             { "data": "FieldName", "orderable": false },
             { "data": "DataBefore", "orderable": false },
             { "data": "DataAfter", "orderable": false },
+            {
+                "data": "ChangeDate", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "DateSend", "orderable": false, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
             { "data": "ModifiedBy", "orderable": false },
             {
                 "data": "ModifiedDate", "orderable": false, "render": function (datum, type, record) {
@@ -199,7 +210,9 @@
             "rowCallback": function(row, data, index) {
                 actionHtml = '';
 
-                if (WriteAccess == true) {
+                var modifiedDate = data.ModifiedDate;
+
+                if (WriteAccess == true && modifiedDate == null) {
                     actionHtml = actionHtml + "<input type='checkbox' name='fleetChange' value='" + data.FleetChangeId + "'/>";
                 }
 
@@ -237,6 +250,12 @@
         });
     }
     function UpdateFleet() {
-        $('#updatemodal').modal('show');
+        var searchIDs = $('[name="fleetChange"]:checked').map(function(){
+            return $(this).val();
+        });
+        $('#FleetChangeId').val(searchIDs.get());
+        if(searchIDs.get() != ''){
+            $('#updatemodal').modal('show');
+        }
     }
 </script>
