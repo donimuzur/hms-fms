@@ -150,8 +150,8 @@ namespace FMS.Website.Controllers
                             employeeId = Convert.ToInt32(employeeId).ToString("00000000");
                         }
                         loginResult.EMPLOYEE_ID = employeeId;
+                        loginResult.USERNAME = reader[2].ToString();
                     }
-                    loginResult.USERNAME = userId;
                     loginResult.USER_ID = userId;
                     loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == Enums.UserRole.User.ToString()).ToList();
                     loginResult.UserRole = Enums.UserRole.User;
