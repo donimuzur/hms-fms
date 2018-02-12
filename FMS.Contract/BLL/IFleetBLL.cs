@@ -21,5 +21,6 @@ namespace FMS.Contract.BLL
         FleetDto GetVehicleByEmployeeId(string employeeId);
         List<FleetChangeDto> GetFleetChange();
         List<FleetChangeDto> GetFleetChangeByParam(FleetChangeParamInput param);
+        bool UpdateFleetChange(string fleetChangeList, Login userLogin);
     }
 }

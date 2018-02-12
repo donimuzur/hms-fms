@@ -708,7 +708,7 @@ namespace FMS.Website.Controllers
         private string CreateXlsMasterFleet(FleetModel model = null)
         {
             //get data
-            List<FleetDto> fleet = _fleetBLL.GetFleet();
+            //List<FleetDto> fleet = _fleetBLL.GetFleet();
             var listData = SearchDataFleetExport(model.SearchView);
             //var listData = Mapper.Map<List<FleetItem>>(fleet);
 

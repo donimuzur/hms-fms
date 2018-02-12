@@ -20,5 +20,6 @@ namespace FMS.Contract.Service
         List<MST_FLEET> GetFleetByParam(FleetParamInput fleetParamInput);
         List<FLEET_CHANGE> GetFleetChange();
         List<FLEET_CHANGE> GetFleetChangeByParam(FleetChangeParamInput fleetChangeParamInput);
+        void saveFleetChange(FLEET_CHANGE dbFleetChange, Login userLogin);
     }
 }

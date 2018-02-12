@@ -7,6 +7,7 @@ using FMS.Contract.Service;
 using FMS.Core;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -209,13 +210,17 @@ namespace FMS.DAL.Services
 
         public List<FLEET_CHANGE> GetFleetChange()
         {
-            return _fleetChangeRepository.Get().ToList();
+            return GetFleetChangeByParam(null);
         }
 
         public List<FLEET_CHANGE> GetFleetChangeByParam(FleetChangeParamInput input)
         {
             Expression<Func<FLEET_CHANGE, bool>> queryFilterFleet = null;
-            queryFilterFleet = c => c.FLEET_CHANGE_ID > 0;
+
+            var fleetDashboard = Convert.ToInt32(ConfigurationManager.AppSettings["FleetDashboard"]);
+            var dateFilter = DateTime.Now.AddDays(-fleetDashboard);
+
+            queryFilterFleet = c => c.FLEET_CHANGE_ID > 0 && c.CHANGE_DATE >= dateFilter;
             if (input != null)
             {
 
@@ -245,6 +250,12 @@ namespace FMS.DAL.Services
                 }
             }
             return _fleetChangeRepository.Get(queryFilterFleet, null, "").ToList();
+        }
+
+        public void saveFleetChange(FLEET_CHANGE dbFleetChange, Login userLogin)
+        {
+            _uow.GetGenericRepository<FLEET_CHANGE>().InsertOrUpdate(dbFleetChange, userLogin, Enums.MenuList.DashboardFleet);
+            _uow.SaveChanges();
         }
     }
 }
