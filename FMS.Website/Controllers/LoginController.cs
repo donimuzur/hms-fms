@@ -72,7 +72,7 @@ namespace FMS.Website.Controllers
 
                 CurrentUser.LoginFor = new List<LoginFor>();
 
-                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.LoginTo == item.Login 
+                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.EmployeeTo == item.EmployeeId 
                     && x.DateFrom <= DateTime.Now
                     && x.DateTo >= DateTime.Now).ToList();
                 foreach (var delegationDto in delegationsList)
@@ -101,32 +101,42 @@ namespace FMS.Website.Controllers
 
         }
 
-        private LdapDto DoLogin(string loginId)
+        private LdapDto DoLogin(string EmployeeId)
         {
             var item = new LdapDto();
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand("SELECT AD_GROUP, EMPLOYEE_ID, LOGIN, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE LOGIN = '" + loginId + "'", con);
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+            SqlCommand query = new SqlCommand("SELECT ID, FULL_NAME, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE ID = 'ID" + EmployeeId+ "'", con);
+
+            if (typeEnv == "VTI")
+            {
+                query =new SqlCommand("SELECT EMPLOYEE_ID, LOGIN, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE EMPLOYEE_ID = '" + EmployeeId + "'", con);
+            }
+          
             SqlDataReader reader = query.ExecuteReader();
             while (reader.Read())
             {
-                item.ADGroup = reader[0].ToString();
-                item.EmployeeId = reader[1].ToString();
-                item.Login = reader[2].ToString();
-                item.DisplayName = reader[3].ToString();
-                item.RoleName = "USER";
-                var arsplit = new List<string>();
-                if (!string.IsNullOrEmpty(item.ADGroup))
+                var employeeId = reader[0].ToString();
+                if (employeeId != "")
                 {
-                    arsplit = item.ADGroup.Split(' ').ToList();
-                    arsplit.RemoveAt(arsplit.Count - 1);
-                    arsplit.RemoveAt(arsplit.Count - 1);
-                    item.RoleName = string.Join(" ", arsplit.ToArray());
-                    item.RoleName = item.RoleName.Substring(23);
+                    employeeId = employeeId.Replace("ID", "");
+                    employeeId = Convert.ToInt32(employeeId).ToString("00000000");
                 }
-
+                item.EmployeeId = employeeId;
+                var login= reader[1].ToString();
+                if (login != "")
+                {
+                    login = login.Replace("PMI\\", "");
+                }
+                item.Login = login;
+                item.DisplayName = reader[2].ToString();
+                item.RoleName = CurrentUser.UserRole.ToString();
+                
             }
             reader.Close();
             con.Close();
