@@ -22,6 +22,7 @@ namespace FMS.Website.Controllers
         private IPageBLL _pageBLL;
         public MstGroupCostCenterController(IPageBLL pageBll, IGroupCostCenterBLL GroupCostCenter) : base(pageBll, Enums.MenuList.MasterGroupCostCenter)
         {
+            
             _GroupCostCenterBLL = GroupCostCenter;
             _pageBLL = pageBll;
             _mainMenu = Enums.MenuList.MasterData;
