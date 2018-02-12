@@ -59,7 +59,7 @@ namespace FMS.Website.Controllers
         public ActionResult Index()
         {
             //check temp in progress
-            _tempBLL.CheckTempInProgress();
+            //_tempBLL.CheckTempInProgress();
 
             var data = _tempBLL.GetTemporary(CurrentUser, false);
             var model = new TemporaryIndexModel();
@@ -159,7 +159,7 @@ namespace FMS.Website.Controllers
             var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listVendor = _vendorBLL.GetVendor().Where(x => x.IsActive).ToList();
             var listProject = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.Project) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
-            var listVehUsage = settingData.Where(x => x.SettingGroup == paramVehUsage && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var listVehUsage = settingData.Where(x => x.SettingGroup == paramVehUsage && x.IsActive && x.SettingValue != "COP").Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
             var listCity = allEmployee.Select(x => new { x.BASETOWN }).Distinct().ToList();
 
             model.Detail.EmployeeList = new SelectList(list, "EMPLOYEE_ID", "employee");

@@ -1,1 +1,21 @@
-﻿
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfExceptionModel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExceptionModel>
+    <MethodName>SendEmailToListWithCC</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>Test Exception Bro!!</ErrorMessage>
+    <StackTrace>   at FMS.DAL.Services.MessageService.SendEmailToListWithCC(List`1 to, List`1 cc, String subject, String body, Boolean throwError, List`1 attachments) in d:\vox\task\fms021020170830\hms-fms\FMS.DAL\Services\MessageService.cs:line 136</StackTrace>
+    <ExceptionType>Exception</ExceptionType>
+    <DateTime>2018-02-12T15:28:00.7103728+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToListWithCC</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>Test Exception Bro!!</ErrorMessage>
+    <StackTrace>   at FMS.DAL.Services.MessageService.SendEmailToListWithCC(List`1 to, List`1 cc, String subject, String body, Boolean throwError, List`1 attachments) in d:\vox\task\fms021020170830\hms-fms\FMS.DAL\Services\MessageService.cs:line 136</StackTrace>
+    <ExceptionType>Exception</ExceptionType>
+    <DateTime>2018-02-12T15:28:27.7801066+07:00</DateTime>
+  </ExceptionModel>
+</ArrayOfExceptionModel>
