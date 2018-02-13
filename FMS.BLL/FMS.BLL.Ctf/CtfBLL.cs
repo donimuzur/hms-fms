@@ -88,7 +88,7 @@ namespace FMS.BLL.Ctf
         }
         public List<TraCtfDto> GetCtfPersonal(Login userLogin)
         {
-            var data = _ctfService.GetCtf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_CREATOR == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID)).ToList();
+            var data = _ctfService.GetCtf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_CREATOR == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID || (userLogin.LoginFor == null ? false : (userLogin.LoginFor.Where( login => login.EMPLOYEE_ID == x.EMPLOYEE_ID_FLEET_APPROVAL || login.EMPLOYEE_ID == x.EMPLOYEE_ID_CREATOR ).Count() > 0 ? true : false)))).ToList();
             var retData = Mapper.Map<List<TraCtfDto>>(data);
             return retData;
         }

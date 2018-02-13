@@ -77,7 +77,7 @@ namespace FMS.Website.Controllers
                     && x.DateTo >= DateTime.Now).ToList();
                 foreach (var delegationDto in delegationsList)
                 {
-                    var loginForDto = DoLogin(delegationDto.LoginFrom);
+                    var loginForDto = DoLoginByEmployeeId(delegationDto.EmployeeFrom);
                     if (loginForDto.Login != null)
                     {
                         CurrentUser.LoginFor.Add(new LoginFor()
@@ -85,6 +85,7 @@ namespace FMS.Website.Controllers
                             UserRole = _roleBll.GetUserRole(loginForDto.RoleName),
                             AuthorizePages = roles.Where(x=> x.RoleName == loginForDto.RoleName).ToList(),
                             EMPLOYEE_ID = loginForDto.EmployeeId,
+                            USERNAME = loginForDto.DisplayName,
                             EMPLOYEE_NAME = loginForDto.DisplayName,
                             USER_ID = loginForDto.Login
                             
@@ -92,8 +93,6 @@ namespace FMS.Website.Controllers
                     }
                     
                 }
-
-                
                 return RedirectToAction("Index", "Home");
             }
             
@@ -101,7 +100,7 @@ namespace FMS.Website.Controllers
 
         }
 
-        private LdapDto DoLogin(string EmployeeId)
+        private LdapDto DoLoginByEmployeeId(string EmployeeId)
         {
             var item = new LdapDto();
             EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
@@ -143,7 +142,38 @@ namespace FMS.Website.Controllers
 
             return item;
         }
+        private LdapDto DoLogin(string loginId)
+        {
+            var item = new LdapDto();
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            SqlCommand query = new SqlCommand("SELECT AD_GROUP, EMPLOYEE_ID, LOGIN, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE LOGIN = '" + loginId + "'", con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                item.ADGroup = reader[0].ToString();
+                item.EmployeeId = reader[1].ToString();
+                item.Login = reader[2].ToString();
+                item.DisplayName = reader[3].ToString();
+                item.RoleName = "USER";
+                var arsplit = new List<string>();
+                if (!string.IsNullOrEmpty(item.ADGroup))
+                {
+                    arsplit = item.ADGroup.Split(' ').ToList();
+                    arsplit.RemoveAt(arsplit.Count - 1);
+                    arsplit.RemoveAt(arsplit.Count - 1);
+                    item.RoleName = string.Join(" ", arsplit.ToArray());
+                    item.RoleName = item.RoleName.Substring(23);
+                }
 
+            }
+            reader.Close();
+            con.Close();
+
+            return item;
+        }
         public ActionResult MessageInfo()
         {
             var model = GetListMessageInfo();
