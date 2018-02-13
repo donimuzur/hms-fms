@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FMS.Logger;
 using FMS.Logger.Models;
-
+using System.Diagnostics;
 namespace FMS.Website.Filters
 {
     public class UniversalErrorHandlerAttribute:Attribute,IExceptionFilter
@@ -38,7 +38,11 @@ namespace FMS.Website.Filters
                         ViewData = new ViewDataDictionary(exceptionInfo)
                     };
                 }
-                catch { }
+                catch(Exception ex)
+                {
+                    Trace.WriteLine(string.Format("An error occured while logging error(s) inside WebLogger. Log Time: {0}", DateTime.Now));
+                    Trace.WriteLine(ex);
+                }
                 filterContext.ExceptionHandled = true;
             }
         }

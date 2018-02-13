@@ -121,8 +121,10 @@
                     '<input type="hidden" name="TemporaryList[' + i + '].Branding" id="TemporaryList[' + i + ']_Branding" value="' + uploaditems[i].Branding + '"></input>' +
                     '<input type="hidden" name="TemporaryList[' + i + '].Purpose" id="TemporaryList[' + i + ']_Purpose" value="' + uploaditems[i].Purpose + '"></input>' +
                     '<input type="hidden" name="TemporaryList[' + i + '].PoLine" id="TemporaryList[' + i + ']_PoLine" value="' + uploaditems[i].PoLine + '"></input>' +
-                    '<input type="hidden" name="TemporaryList[' + i + '].IsVat" id="TemporaryList[' + i + ']_IsVat" value="' + uploaditems[i].IsVat + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].VatDecimal" id="TemporaryList[' + i + ']_IsVat" value="' + uploaditems[i].VatDecimal + '"></input>' +
                     '<input type="hidden" name="TemporaryList[' + i + '].IsRestitution" id="TemporaryList[' + i + ']_IsRestitution" value="' + uploaditems[i].IsRestitution + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].Price" id="TemporaryList[' + i + ']_Price" value="' + uploaditems[i].Price + '"></input>' +
+                    '<input type="hidden" name="TemporaryList[' + i + '].Comments" id="TemporaryList[' + i + ']_Comments" value="' + uploaditems[i].Comments + '"></input>' +
                     '</tr>';
                     $('#tb-upload-excel').append(tr);
                     error += uploaditems[i].MessageErrorStopper;
