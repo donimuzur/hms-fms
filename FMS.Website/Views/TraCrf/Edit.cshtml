@@ -398,7 +398,16 @@
         //});
 		
 		
-		
+        var table = $('#tbCsfVehicle').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": false
+        });
+
     });
 
     function submit() {
