@@ -213,7 +213,7 @@ namespace FMS.Website.Controllers
             foreach (var wf in data)
             {
                 var dataLdap = rolesAll.FirstOrDefault(x => x.Login.ToUpper() == wf.ACTION_BY.ToUpper());
-                wf.ROLE_NAME = dataLdap != null ? (dataLdap.RoleName == "VIEWER" || dataLdap.RoleName == "ADMINASTRATOR" ? "END USER" : dataLdap.RoleName) : "END USER";
+                wf.ROLE_NAME = dataLdap != null ? (dataLdap.RoleName == "VIEWER" || dataLdap.RoleName == "ADMINISTRATOR" ? "END USER" : dataLdap.RoleName) : "END USER";
                 if (wf.REMARK_ID != null)
                 {
                     var remark = dataRemark.FirstOrDefault(x => x.MstRemarkId == wf.REMARK_ID);
