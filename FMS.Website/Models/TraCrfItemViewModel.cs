@@ -187,6 +187,11 @@ namespace FMS.Website.Models
                 switch (this.DocumentStatus)
                 {
                     case (int)Enums.DocumentStatus.WaitingHRApproval:
+                        if((this.CurrentLogin.USER_ID == this.CreatedBy|| (this.CurrentLogin.LoginFor == null ? false : this.CurrentLogin.LoginFor.Where(login => login.USER_ID == this.CreatedBy).Count() > 0 ? true : false)))
+                        {
+                            isAllowed = true;
+                        }
+                        break;
                     case (int) Enums.DocumentStatus.AssignedForHR:
                         if (this.CurrentLogin.UserRole == Enums.UserRole.HR)
                         {
@@ -201,13 +206,13 @@ namespace FMS.Website.Models
                         }
                         break;
                     case (int)Enums.DocumentStatus.InProgress:
-                        if (this.CurrentLogin.UserRole == Enums.UserRole.Fleet)
+                        if (this.CurrentLogin.USER_ID == this.ModifiedBy|| (this.CurrentLogin.LoginFor == null ? false : this.CurrentLogin.LoginFor.Where(login => login.USER_ID == this.ModifiedBy).Count() > 0 ? true : false))
                         {
-                            if (this.VehicleType.ToUpper() == "BENEFIT" && this.ModifiedBy == this.CurrentLogin.USER_ID)
+                            if (this.VehicleType.ToUpper() == "BENEFIT" && (this.ModifiedBy == this.CurrentLogin.USER_ID || (this.CurrentLogin.LoginFor == null ? false : (this.CurrentLogin.LoginFor.Where(login => login.USER_ID == this.ModifiedBy).Count() > 0 ? true : false))))
                             {
                                 isAllowed = true;
                             }
-                            else if (this.VehicleType.ToUpper() == "WTC" && this.CreatedBy == this.CurrentLogin.USER_ID)
+                            else if (this.VehicleType.ToUpper() == "WTC" && (this.CreatedBy == this.CurrentLogin.USER_ID || (this.CurrentLogin.LoginFor == null ? false : (this.CurrentLogin.LoginFor.Where(login => login.USER_ID == this.CreatedBy).Count() > 0 ? true : false))))
                             {
                                 isAllowed = true;
                             }
@@ -215,7 +220,7 @@ namespace FMS.Website.Models
                         break;
                     case (int)Enums.DocumentStatus.Draft:
                     case (int)Enums.DocumentStatus.AssignedForUser:
-                        if (this.CurrentLogin.USER_ID == this.CreatedBy)
+                        if (this.CurrentLogin.USER_ID == this.CreatedBy || (this.CurrentLogin.LoginFor == null ? false : (this.CurrentLogin.LoginFor.Where(login => login.USER_ID == this.CreatedBy).Count()>0 ? true : false)))
                         {
                             isAllowed = true;
                         }

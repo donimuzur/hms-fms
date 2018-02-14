@@ -429,7 +429,7 @@
                 <a href="#" class="btn btn-primary" onclick="SendCtf(@Model.TraCtfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" />
                 <a href="@Url.Action(Model.IsPersonalDashboard ? "PersonalDashboard" : "Index", "TraCtf")" class="btn btn-default">Back</a>
-                @if (Model.EmployeeIdCreator == Model.CurrentLogin.EMPLOYEE_ID)
+                @if (Model.EmployeeIdCreator == Model.CurrentLogin.EMPLOYEE_ID || (Model.CurrentLogin.LoginFor== null ? false : Model.CurrentLogin.LoginFor.Where(x => x.EMPLOYEE_ID == Model.EmployeeIdCreator).Count() > 0 ? true :  false))
                 {
                     <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCtf(@Model.TraCtfId)" />
                 }
@@ -502,6 +502,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <input type="hidden" name="TraCtfId" id="TraCtfIdCancel">
+                                <input type="hidden" name="type" id="idType">
+                                @Html.Hidden("IsPersonalDashboard", Model.IsPersonalDashboard)
                                 <label class="control-label">Select Remark</label>
                                 @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control", required = "required" })
                             </div>
@@ -932,6 +934,7 @@
     }
     function CancelCtf(value) {
         $('#TraCtfIdCancel').val(value);
+        $('#idType').val("benefit");
         $('#cancelmodal').modal('show');
     }
 

@@ -144,7 +144,7 @@ namespace FMS.Website.Controllers
                     foreach (var delegationDto in delegationsList)
                     {
                         var loginForDto = getrole.Where(x => x.EmployeeId == delegationDto.EmployeeFrom).FirstOrDefault();
-                        if (loginForDto.Login != null)
+                        if (loginForDto != null)
                         {
                             CurrentUser.LoginFor.Add(new LoginFor()
                             {
@@ -192,7 +192,7 @@ namespace FMS.Website.Controllers
                     foreach (var delegationDto in delegationsList)
                     {
                         var loginForDto = getrole.Where(x => x.EmployeeId == delegationDto.EmployeeFrom).FirstOrDefault();
-                        if (loginForDto.Login != null)
+                        if (loginForDto != null)
                         {
                             CurrentUser.LoginFor.Add(new LoginFor()
                             {

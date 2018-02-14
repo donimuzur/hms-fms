@@ -467,6 +467,8 @@ namespace FMS.BLL.Crf
 
                             dbChosenCfmIdleVehicle = Mapper.Map<MST_FLEET>(ChosenCfmIdleVehicleDto);
                             _fleetService.save(dbChosenCfmIdleVehicle);
+
+                            return true;
                         }
                     }
                 }
@@ -513,7 +515,7 @@ namespace FMS.BLL.Crf
             if (currentUser.UserRole == Enums.UserRole.HR
                 && (data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Draft || data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.AssignedForUser))
                 return true;
-            if (currentUser.UserRole == Enums.UserRole.Fleet 
+            if ((currentUser.USER_ID == data.MODIFIED_BY || (currentUser.LoginFor == null ? false : currentUser.LoginFor.Where(login => login.USER_ID == data.MODIFIED_BY).Count() > 0 ? true : false))
                 && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.InProgress)
                 return true;
             if (currentUser.UserRole == Enums.UserRole.Fleet
@@ -527,7 +529,7 @@ namespace FMS.BLL.Crf
         {
             bool isAllowed = false;
 
-            if (currentUser.UserRole == Enums.UserRole.HR
+            if ((currentUser.USER_ID == data.CREATED_BY || (currentUser.LoginFor == null ? false : currentUser.LoginFor.Where(login => login.USER_ID == data.CREATED_BY).Count()>0 ?true : false ))
                 && data.DOCUMENT_STATUS == (int)Enums.DocumentStatus.WaitingHRApproval)
                 return true;
             if (currentUser.UserRole == Enums.UserRole.Fleet
@@ -1189,7 +1191,7 @@ namespace FMS.BLL.Crf
             var allData = this.GetList();
             var data = allData.Where(x=> x.IS_ACTIVE 
                 && (x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID 
-                || x.CREATED_BY == CurrentUser.USER_ID)).ToList();
+                || x.CREATED_BY == CurrentUser.USER_ID || (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where( login => login.USER_ID == x.CREATED_BY).Count() > 0 ? true : false )) )).ToList();
             
             var dataIds = data.Select(x => x.TRA_CRF_ID).ToList();
             var dataWorkflow = _workflowService.GetWorkflowHistoryByUser((int) Enums.DocumentType.CRF, CurrentUser.USER_ID);
