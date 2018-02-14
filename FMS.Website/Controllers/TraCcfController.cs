@@ -279,7 +279,7 @@ namespace FMS.Website.Controllers
 
         public CcfItem listdata(CcfItem model, string IdEmployee)
         {
-            var listemployeefromdelegation = _delegationBLL.GetDelegation().Where(x => x.IsComplaintFrom).Select(x => new { dataemployeefrom = x.EmployeeFrom + x.NameEmployeeFrom, x.EmployeeFrom, x.NameEmployeeFrom, x.EmployeeTo, x.NameEmployeeTo, x.DateTo }).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
+            var listemployeefromdelegation = _delegationBLL.GetDelegation().Where(x => x.IsComplaintFrom && x.IsActive).Select(x => new { dataemployeefrom = x.EmployeeFrom + x.NameEmployeeFrom, x.EmployeeFrom, x.NameEmployeeFrom, x.EmployeeTo, x.NameEmployeeTo, x.DateTo }).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
             model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "dataemployeefrom");
             //var listemployeefromdelegation = CurrentUser.LoginFor;
             //model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EMPLOYEE_ID", "EMPLOYEE_NAME");
