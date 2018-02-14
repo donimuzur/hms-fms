@@ -1,6 +1,6 @@
-USE [FMS_HMS]
+USE [FMS]
 GO
-/****** Object:  UserDefinedFunction [dbo].[fGetGRQTY]    Script Date: 1/29/2018 5:12:25 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[fGetGRQTY]    Script Date: 2/14/2018 3:18:50 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -38,7 +38,7 @@ BEGIN
 			end 
 			else
 			begin
-				set @result = 2 - convert(decimal(18,2),DATEDIFF(day,@start_contract,DATEADD(day,3,EOMONTH(@start_contract)))) / 30;
+				set @result = 1  - ( convert(decimal(18,2),DATEDIFF(day,@start_contract,DATEADD(day,3,EOMONTH(@start_contract)))) / 30) ;
 			end
 			
 		end
@@ -53,8 +53,11 @@ BEGIN
 
 		
 		if DAY(@start_contract) > 20 and DAY(@start_contract) <= DAY(EOMONTH(@start_contract))
-			set @result = convert(decimal(18,2),DATEDIFF(day,@start_contract,DATEADD(day,3,EOMONTH(@start_contract)))) / 30;
-		
+		begin
+			set @result =( convert(decimal(18,2),DATEDIFF(day,@start_contract,DATEADD(day,3,EOMONTH(@start_contract)))) / 30) + 1;
+		end
+
+				
 
 		return @result;
 	end

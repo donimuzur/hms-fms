@@ -1,6 +1,6 @@
-USE [FMS_HMS]
+USE [FMS]
 GO
-/****** Object:  UserDefinedFunction [dbo].[fGetGRDate]    Script Date: 1/29/2018 5:10:52 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[fGetGRDate]    Script Date: 2/14/2018 3:18:59 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -21,23 +21,29 @@ ALTER FUNCTION [dbo].[fGetGRDate]
 RETURNS datetime
 AS
 BEGIN
+
+	
 	-- Declare the return variable here
 	DECLARE @result datetime;
+	declare @gr_exist as int =0;
 	declare @curr_month as int = 1,
 	@curr_year as int;
 
-	
-	
 	set @curr_month = @current_month;
 	set @curr_year = @current_year;
-	
+
 	if MONTH(@end_contract) = @current_month and YEAR(@end_contract) = @current_year
 	begin
-		if DAY(@end_contract) >= 3 and DAY(@end_contract) <= 20 set @result = DATEFROMPARTS(@curr_year,@curr_month,3);
+		set @result = DATEFROMPARTS(@curr_year,@curr_month,3);
+	end
+	else if MONTH(@start_contract) = @current_month and YEAR(@start_contract) = @current_year
+	begin
+		if DAY(@start_contract) < 3 set @result = DATEFROMPARTS(@curr_year,@curr_month,3);
+		else if DAY(@start_contract) >= 3 and DAY(@start_contract) <= 20 set @result = DATEFROMPARTS(@curr_year,@curr_month,20);
 	end
 	else 
 	begin 
-		if DAY(@start_contract) >= 3 and DAY(@start_contract) <= 20 set @result = DATEFROMPARTS(@curr_year,@curr_month,20);
+		set @result = DATEFROMPARTS(@curr_year,@curr_month,3);
 	end
 	--if DAY(@start_contract) > 20 and DAY(@start_contract) <= DAY(EOMONTH(@start_contract)) 
 	--begin
@@ -47,9 +53,6 @@ BEGIN
 	--		set @curr_year = @current_year + 1;
 	--	end
 	--	set @result = DATEFROMPARTS(@curr_year,@curr_month,3);
-	--end
-	if DAY(@start_contract) < 3 or (DAY(@start_contract) > 20 and DAY(@start_contract) <= DAY(EOMONTH(@start_contract)))set @result = DATEFROMPARTS(@curr_year,@curr_month,3);
-
 	return @result;
 END
 

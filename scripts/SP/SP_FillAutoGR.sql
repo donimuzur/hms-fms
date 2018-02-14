@@ -1,6 +1,6 @@
-USE [FMS_HMS]
+USE [FMS]
 GO
-/****** Object:  StoredProcedure [dbo].[SP_FillAutoGR]    Script Date: 1/29/2018 5:13:37 PM ******/
+/****** Object:  StoredProcedure [dbo].[SP_FillAutoGR]    Script Date: 2/14/2018 3:19:22 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -53,7 +53,7 @@ BEGIN
 		from MST_FLEET 
 		where IS_ACTIVE = 1 and START_CONTRACT <= GETDATE() and END_CONTRACT >= GETDATE() 
 		and isnull(PO_NUMBER,'') <> '' and isnull(PO_LINE,'') <> ''
-
+		order by PO_DATE asc
 	) as tbl where  day(po_date) = @day_gr;
 
  
