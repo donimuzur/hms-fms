@@ -47,7 +47,16 @@
         {
             <tr>
                 <td style="text-align: center;">
-                    @if (data.DocumentStatus == Enums.DocumentStatus.Draft)
+                    @if (data.DocumentStatus == Enums.DocumentStatus.Draft && data.CreatedBy == Model.CurrentLogin.USER_ID)
+                    {
+                        <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    else if ((Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR) && (data.DocumentStatus != Enums.DocumentStatus.Cancelled && data.DocumentStatus != Enums.DocumentStatus.Draft && data.DocumentStatus != Enums.DocumentStatus.Completed)   && Model.CurrentLogin.USER_ID != data.CreatedBy)
+                    {
+                        <a href="@Url.Action("ResponseCoordinator", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    <a href="@Url.Action("DetailsCcf", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    @*@if (data.DocumentStatus == Enums.DocumentStatus.Draft)
                     {
                         <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
@@ -58,7 +67,7 @@
                             <a href="@Url.Action("ResponseCoordinator", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         }
                     }
-                    <a href="@Url.Action("DetailsCcf", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    <a href="@Url.Action("DetailsCcf", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>*@
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
                 <td>@Html.Raw(data.DocumentStatus.ToString())</td>
