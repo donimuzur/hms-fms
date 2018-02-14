@@ -17,6 +17,7 @@ using FMS.Core;
 using FMS.Website.Code;
 using FMS.Website.Models;
 using FMS.Website.Helpers;
+using FMS.BLL.Delegation;
 
 namespace FMS.Website.Controllers
 {
@@ -88,6 +89,8 @@ namespace FMS.Website.Controllers
             {
                 var userId = User.Identity.Name.Split('\\')[User.Identity.Name.Split('\\').Length - 1]; //User.Identity.Name.Remove(0, 4);
                 IRoleBLL _userBll = MvcApplication.GetInstance<RoleBLL>();
+                IDelegationBLL _delegationBll = MvcApplication.GetInstance<DelegationBLL>();
+
                 EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
                 string connectionString = e.ProviderConnectionString;
                 SqlConnection con = new SqlConnection(connectionString);
@@ -132,7 +135,32 @@ namespace FMS.Website.Controllers
                     loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == userrole.RoleName).ToList();
                     loginResult.USER_ID = userrole.Login;
                     loginResult.EMPLOYEE_ID = userrole.EmployeeId;
+
+                    loginResult.LoginFor = new List<LoginFor>();
+
+                    var delegationsList = _delegationBll.GetDelegation().Where(x => x.EmployeeTo == loginResult.EMPLOYEE_ID 
+                    && x.DateFrom <= DateTime.Now
+                                            && x.DateTo >= DateTime.Now).ToList();
+                    foreach (var delegationDto in delegationsList)
+                    {
+                        var loginForDto = getrole.Where(x => x.EmployeeId == delegationDto.EmployeeFrom).FirstOrDefault();
+                        if (loginForDto.Login != null)
+                        {
+                            CurrentUser.LoginFor.Add(new LoginFor()
+                            {
+                                UserRole = _userBll.GetUserRole(loginForDto.RoleName),
+                                AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == loginForDto.RoleName).ToList(),
+                                EMPLOYEE_ID = loginForDto.EmployeeId,
+                                USERNAME = loginForDto.DisplayName,
+                                EMPLOYEE_NAME = loginForDto.DisplayName,
+                                USER_ID = loginForDto.Login
+                            });
+                        }
+                    }
+
+
                     Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
+
                 }
                 else
                 {
@@ -155,6 +183,29 @@ namespace FMS.Website.Controllers
                     loginResult.USER_ID = userId;
                     loginResult.AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == Enums.UserRole.User.ToString()).ToList();
                     loginResult.UserRole = Enums.UserRole.User;
+
+                    loginResult.LoginFor = new List<LoginFor>();
+
+                    var delegationsList = _delegationBll.GetDelegation().Where(x => x.EmployeeTo == loginResult.EMPLOYEE_ID
+                    && x.DateFrom <= DateTime.Now
+                                            && x.DateTo >= DateTime.Now).ToList();
+                    foreach (var delegationDto in delegationsList)
+                    {
+                        var loginForDto = getrole.Where(x => x.EmployeeId == delegationDto.EmployeeFrom).FirstOrDefault();
+                        if (loginForDto.Login != null)
+                        {
+                            CurrentUser.LoginFor.Add(new LoginFor()
+                            {
+                                UserRole = _userBll.GetUserRole(loginForDto.RoleName),
+                                AuthorizePages = _userBll.GetRoles().Where(x => x.RoleName == loginForDto.RoleName).ToList(),
+                                EMPLOYEE_ID = loginForDto.EmployeeId,
+                                USERNAME = loginForDto.DisplayName,
+                                EMPLOYEE_NAME = loginForDto.DisplayName,
+                                USER_ID = loginForDto.Login
+                            });
+                        }
+                    }
+
                     Session[Core.Constans.SessionKey.CurrentUser] = loginResult;
                 }
                 con.Close();
