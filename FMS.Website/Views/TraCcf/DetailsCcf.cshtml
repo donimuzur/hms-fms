@@ -269,13 +269,13 @@
                                                 @foreach (var data_d1 in Model.Details_d1)
                                                 {
                                                     <tr>
-                                                        @if (data_d1.ComplaintDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.ComplaintDate == null ? true : data_d1.ComplaintDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
                                                         else
                                                         {
-                                                            <td>@Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))</td>
+                                                            <td>@Html.Raw(data_d1.ComplaintDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
                                                         @if (data_d1.ComplaintAtt == null)
@@ -286,7 +286,7 @@
                                                         {
                                                             <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorResponseDate == null ? true : data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
@@ -295,7 +295,7 @@
                                                             <td>@Html.Raw(data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.CoodinatorNote)</td>
-                                                        @if (data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorPromiseDate == null ? true : data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
@@ -311,7 +311,7 @@
                                                         {
                                                             <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.VendorResponseDate == null ? true : data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }
@@ -320,7 +320,7 @@
                                                             <td>@Html.Raw(data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy"))</td>
                                                         }
                                                         <td>@Html.Raw(data_d1.VendorNote)</td>
-                                                        @if (data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.VendorPromiseDate == null ? true : data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td>&nbsp;</td>
                                                         }

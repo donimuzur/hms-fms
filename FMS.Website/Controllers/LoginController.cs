@@ -72,7 +72,7 @@ namespace FMS.Website.Controllers
 
                 CurrentUser.LoginFor = new List<LoginFor>();
 
-                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.EmployeeTo == item.EmployeeId 
+                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.EmployeeTo == item.EmployeeId && !x.IsComplaintFrom
                     && x.DateFrom <= DateTime.Now
                     && x.DateTo >= DateTime.Now).ToList();
                 foreach (var delegationDto in delegationsList)
