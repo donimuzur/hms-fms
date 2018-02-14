@@ -687,13 +687,14 @@ namespace FMS.Website.Controllers
             {
                 return HttpNotFound();
             }
+            
 
             //if user want to edit doc
             if (ctfData.DocumentStatus == Enums.DocumentStatus.Completed || ctfData.DocumentStatus == Enums.DocumentStatus.Extended)
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
+            if ((CurrentUser.EMPLOYEE_ID == ctfData.EmployeeId || ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID || (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() > 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("EditForEmployeeBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -701,7 +702,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("DetailsBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (ctfData.EmployeeIdFleetApproval == CurrentUser.EMPLOYEE_ID && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
+            if ((ctfData.EmployeeIdFleetApproval == CurrentUser.EMPLOYEE_ID || ( CurrentUser.LoginFor == null ? false : ( CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdFleetApproval).Count() > 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)
             {
                 return RedirectToAction("InProgressBenefit", "TraCTf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -709,11 +710,11 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if (CurrentUser.UserRole == Enums.UserRole.HR && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
+            if ((ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID || (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() > 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
             {
                 return RedirectToAction("ApprovalHR", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.Draft || (CurrentUser.USER_ID != ctfData.CreatedBy && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval) || (CurrentUser.EMPLOYEE_ID != ctfData.EmployeeIdCreator && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval) || (CurrentUser.EMPLOYEE_ID != ctfData.EmployeeIdCreator && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress)))
+            if (((CurrentUser.USER_ID != ctfData.CreatedBy || (CurrentUser.LoginFor == null ? true : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() == 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.AssignedForUser) || ((CurrentUser.USER_ID != ctfData.CreatedBy || (CurrentUser.LoginFor == null ? true : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() == 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.Draft) || ((CurrentUser.USER_ID != ctfData.CreatedBy || (CurrentUser.LoginFor == null ? true : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() == 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval) || ((CurrentUser.EMPLOYEE_ID != ctfData.EmployeeIdCreator || (CurrentUser.LoginFor == null ? true : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() == 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval) || ((CurrentUser.EMPLOYEE_ID != ctfData.EmployeeIdCreator || (CurrentUser.LoginFor == null ? true : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() == 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.InProgress))
             {
                 return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
@@ -1884,7 +1885,8 @@ namespace FMS.Website.Controllers
             {
                 try
                 {
-                    CtfWorkflow(TraCtfId, Enums.ActionType.Cancel, RemarkId, false, true, "");
+                    var isBenefit = ((type == null ? "" : type.ToUpper()) == "BENEFIT" ? true : false);
+                    CtfWorkflow(TraCtfId, Enums.ActionType.Cancel, RemarkId, false, isBenefit, "");
                     _ctfBLL.CancelCtf(TraCtfId, RemarkId, CurrentUser);
                     AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
                 }

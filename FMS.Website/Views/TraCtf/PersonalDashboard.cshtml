@@ -79,7 +79,7 @@
                             @if (data.DocumentStatus != Enums.DocumentStatus.Completed && data.DocumentStatus != Enums.DocumentStatus.Cancelled)
                             {
                                 if (((data.DocumentStatus == Enums.DocumentStatus.Draft || data.DocumentStatus == Enums.DocumentStatus.AssignedForUser)
-                                && data.EmployeeIdCreator == Model.CurrentLogin.EMPLOYEE_ID) || (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser && data.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID) ||
+                                && (data.EmployeeIdCreator == Model.CurrentLogin.EMPLOYEE_ID  || (Model.CurrentLogin.LoginFor == null ? false : (Model.CurrentLogin.LoginFor.Where(x => x.EMPLOYEE_ID == data.EmployeeIdCreator).Count() > 0 ? true : false)))) || (data.DocumentStatus == Enums.DocumentStatus.AssignedForUser && data.EmployeeId == Model.CurrentLogin.EMPLOYEE_ID) ||
                                 (data.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval && Model.CurrentLogin.UserRole == Enums.UserRole.HR) ||
                                 ((data.DocumentStatus == Enums.DocumentStatus.WaitingFleetApproval || data.DocumentStatus == Enums.DocumentStatus.InProgress || data.DocumentStatus == Enums.DocumentStatus.Extended)
                                 && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))

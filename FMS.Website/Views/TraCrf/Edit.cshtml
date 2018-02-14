@@ -397,7 +397,15 @@
         //    $('#selectvehmodal').modal('hide');
         //});
 		
-		
+        var table = $('#tbCsfVehicle').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "info": true,
+            "bInfo": true,
+            "ordering": false
+        });
 		
     });
 
