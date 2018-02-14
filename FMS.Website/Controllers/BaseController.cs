@@ -138,7 +138,7 @@ namespace FMS.Website.Controllers
 
                     loginResult.LoginFor = new List<LoginFor>();
 
-                    var delegationsList = _delegationBll.GetDelegation().Where(x => x.EmployeeTo == loginResult.EMPLOYEE_ID 
+                    var delegationsList = _delegationBll.GetDelegation().Where(x => x.EmployeeTo == loginResult.EMPLOYEE_ID && !x.IsComplaintFrom
                     && x.DateFrom <= DateTime.Now
                                             && x.DateTo >= DateTime.Now).ToList();
                     foreach (var delegationDto in delegationsList)
@@ -186,7 +186,7 @@ namespace FMS.Website.Controllers
 
                     loginResult.LoginFor = new List<LoginFor>();
 
-                    var delegationsList = _delegationBll.GetDelegation().Where(x => x.EmployeeTo == loginResult.EMPLOYEE_ID
+                    var delegationsList = _delegationBll.GetDelegation().Where(x => x.EmployeeTo == loginResult.EMPLOYEE_ID && !x.IsComplaintFrom
                     && x.DateFrom <= DateTime.Now
                                             && x.DateTo >= DateTime.Now).ToList();
                     foreach (var delegationDto in delegationsList)
