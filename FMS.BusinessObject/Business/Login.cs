@@ -25,6 +25,7 @@ namespace FMS.BusinessObject.Business
         public string USER_ID { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }
+        public string USERNAME { get; set; }
         public Enums.UserRole UserRole { get; set; }
         public List<RoleDto> AuthorizePages { get; set; }
     }
