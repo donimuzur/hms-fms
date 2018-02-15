@@ -60,8 +60,8 @@
 				<div class="col-md-3">
 					<div class="form-group" id="xz">
 						<label for="">Year From</label>
-						<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
-
+						@*<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />*@
+                        @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year", @data_provide = "datepicker" })
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -73,7 +73,8 @@
 				<div class="col-md-3">
 					<div class="form-group" id="xy">
 						<label for="">Year To</label>
-						<input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />
+						@*<input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />*@
+                        @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year", @data_provide = "datepicker" })
 					</div>
 				</div>
 				<div class="clearfix"></div>
@@ -91,9 +92,32 @@
 			}
 		</div>
 	</div>
-	<div id="contenttable" class="wpanel">
-		@Html.Partial("_ListSalesByRegion")
-	</div>
+    <div class="wpanel">
+        <ul class="nav nav-pills">
+            <li class="active"><a href="#visual1" data-toggle="tab">Visual</a></li>
+            <li><a href="#contenttable" data-toggle="tab">Data</a></li>
+        </ul>
+        <br />
+        <div class="tab-content">
+            <div id="contenttable" class="tab-pane">
+                @Html.Partial("_ListSalesByRegion")
+            </div>
+            <div id="visual1" class="tab-pane fade in active">
+                <div class="content chart-summary">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <canvas id="mylineChart"></canvas>
+                                </div>
+                                <div class="card-footer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 	<div class="modal-dialog">
@@ -106,6 +130,7 @@
 		</div>
 	</div>
 </div>
+<script src="~/Scripts/js/Chart.bundle.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
 <script type="text/javascript">
@@ -191,5 +216,92 @@
 
     $(function () {
         setupDataTables();
+    });
+
+    $(document).ready(function () {
+        init_charts();
+    });
+
+    function init_charts() {
+        $('#LoadingModal').show();
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("VisualSales", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+                var third_chart = [];
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].TOTAL_KM);
+                    second_chart.push(response[i].TOTAL_COST);
+                    third_chart.push(response[i].STICK);
+                }
+
+                if ($('#mylineChart').length) {
+                    var ctx = document.getElementById("mylineChart");
+                    var mylineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: '# of Total KM',
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }, {
+                                label: '# of Total Cost',
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: second_chart
+                            }, {
+                                label: '# of Stick',
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
+                                data: third_chart
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            }
+        });
+
+        $('#LoadingModal').hide();
+    }
+
+    $(document).on('click', '#btn-filter', function () {
+        init_charts();
     });
 </script>
