@@ -254,12 +254,12 @@
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: false },
             success: function (response) {
                 var labels_chart = [];
-                var ben_chart = [];
-                var wtc_chart = [];
+                var first_chart = [];
+                var second_chart = [];
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
-                    ben_chart.push(response[i].NO_OF_VEHICLE_BENEFIT);
-                    wtc_chart.push(response[i].NO_OF_VEHICLE_WTC);
+                    first_chart.push(response[i].NO_OF_VEHICLE_BENEFIT);
+                    second_chart.push(response[i].NO_OF_VEHICLE_WTC);
                 }
                 
                 if ($('#mylineChart').length) {
@@ -277,7 +277,7 @@
                                 pointHoverBackgroundColor: "#fff",
                                 pointHoverBorderColor: "rgba(130,130,130,1)",
                                 pointBorderWidth: 1,
-                                data: ben_chart
+                                data: first_chart
                             }, {
                                 label: '# of WTC',
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
@@ -287,7 +287,7 @@
                                 pointHoverBackgroundColor: "#fff",
                                 pointHoverBorderColor: "rgba(33, 164, 255,1)",
                                 pointBorderWidth: 1,
-                                data: wtc_chart
+                                data: second_chart
                             }]
                         },
                         options: {

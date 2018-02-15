@@ -543,8 +543,33 @@ namespace FMS.Website.Controllers
                 .Select(p => new NoVehicleDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
-                    NO_OF_VEHICLE_BENEFIT = p.Where(x => x.VEHICLE_TYPE == "BENEFIT").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_WTC = p.Where(x => x.VEHICLE_TYPE == "WTC").Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.NO_OF_VEHICLE)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult VisualNoVehicleWtc(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            var input = new VehicleWtcGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
+
+            var groupData = data.GroupBy(x => new { x.REGIONAL })
+                .Select(p => new NoVehicleWtcDto()
+                {
+                    REGIONAL = p.FirstOrDefault().REGIONAL,
+                    NO_OF_VEHICLE_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.NO_OF_VEHICLE)
                 }).ToList();
 
             return Json(groupData);
