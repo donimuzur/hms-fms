@@ -575,6 +575,28 @@ namespace FMS.Website.Controllers
             return Json(groupData);
         }
 
+        [HttpPost]
+        public JsonResult VisualNoVehicleMake(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            var input = new VehicleMakeGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+
+            List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
+
+            var groupData = data.GroupBy(x => new { x.MANUFACTURER })
+                .Select(p => new NoVehicleMakeDto()
+                {
+                    MANUFACTURER = p.FirstOrDefault().MANUFACTURER,
+                    NO_OF_VEHICLE_FIRST = p.Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == "SUV").Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_ELSE = p.Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) != "SUV").Sum(c => c.NO_OF_VEHICLE)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
         #endregion
 
         #region --------- Summary All --------------
