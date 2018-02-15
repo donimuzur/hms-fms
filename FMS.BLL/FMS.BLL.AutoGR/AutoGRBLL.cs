@@ -78,6 +78,8 @@ namespace FMS.BLL.AutoGR
                 {
                     var contractQty = ((dto.EndContract.Value.Year - dto.StartContract.Value.Year) * 12) +
                                        dto.EndContract.Value.Month - dto.StartContract.Value.Month;
+                    if (dto.EndContract.Value.Year == dto.StartContract.Value.Year && dto.EndContract.Value.Month == dto.StartContract.Value.Month) contractQty = 1;
+
                     dto.QtyRemaining = contractQty - dto.QtyCalculated - dto.QtyAutoGr;
                 }
 
