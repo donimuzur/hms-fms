@@ -95,6 +95,8 @@ namespace FMS.BusinessObject.Dto
         public string REGION { get; set; }
         public string FUNCTION { get; set; }
         public decimal? TOTAL_LEASE_COST { get; set; }
+        public decimal? TOTAL_LEASE_COST_JAVA { get; set; }
+        public decimal? TOTAL_LEASE_COST_ELSE { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }

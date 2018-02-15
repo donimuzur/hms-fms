@@ -672,6 +672,31 @@ namespace FMS.Website.Controllers
             return Json(groupData);
         }
 
+        [HttpPost]
+        public JsonResult VisualLease(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            var input = new LeaseCostFuncGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new LeaseCostByFunctionDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    TOTAL_LEASE_COST_JAVA = p.Where(x => (x.REGION == null ? "" : x.REGION.ToUpper()).Contains("JAVA")).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_ELSE = p.Where(x => !(x.REGION == null ? "" : x.REGION.ToUpper()).Contains("JAVA")).Sum(c => c.TOTAL_LEASE_COST)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
         #endregion
 
         #region --------- Summary All --------------
