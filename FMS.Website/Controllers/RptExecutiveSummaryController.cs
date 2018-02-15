@@ -622,6 +622,31 @@ namespace FMS.Website.Controllers
             return Json(groupData);
         }
 
+        [HttpPost]
+        public JsonResult VisualLiter(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            var input = new LiterFuncGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new LiterByFunctionDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    TOTAL_LITER_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_LITER)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
         #endregion
 
         #region --------- Summary All --------------

@@ -68,6 +68,8 @@ namespace FMS.BusinessObject.Dto
         public string FUNCTION { get; set; }
         public string VEHICLE_TYPE { get; set; }
         public decimal? TOTAL_LITER { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT { get; set; }
+        public decimal? TOTAL_LITER_WTC { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
