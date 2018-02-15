@@ -697,6 +697,29 @@ namespace FMS.Website.Controllers
             return Json(groupData);
         }
 
+        [HttpPost]
+        public JsonResult VisualSales(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            var input = new SalesRegionGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            
+            List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
+
+            var groupData = data.GroupBy(x => new { x.REGION })
+                .Select(p => new SalesByRegionDto()
+                {
+                    REGION = p.FirstOrDefault().REGION,
+                    TOTAL_KM = p.Sum(c => c.TOTAL_KM),
+                    TOTAL_COST = p.Sum(c => c.TOTAL_COST),
+                    STICK = p.Sum(c => c.STICK)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
         #endregion
 
         #region --------- Summary All --------------
