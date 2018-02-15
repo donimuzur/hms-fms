@@ -19,7 +19,7 @@
     
 });
 
-function selectVehicle(urlFunction) {
+function selectVehicle(urlFunction, urlRoot) {
     var vehUsage = $('#Detail_VehicleUsage').find("option:selected").text();
     var vehType = $('#Detail_VehicleType').val();
     var vehCat = $('#Detail_VehicleCat').find("option:selected").text();
@@ -39,9 +39,14 @@ function selectVehicle(urlFunction) {
             success: function (data) {
                 if (data.length > 0) {
                     $('#tb-body-select-veh').html("");
+                    var url = window.location.hostname;
+
+                    console.log(url);
                     for (var i = 0; i < data.length; i++) {
+                        console.log(data[i].Image);
                         var tableData = '<tr>' +
-                            '<td><input name="selectvehicleradio" id="selectvehicleradio_' + i + '" type="radio" value="'+ i +'"></td>' +
+                            '<td><input name="selectvehicleradio" id="selectvehicleradio_' + i + '" type="radio" value="' + i + '"></td>' +
+                            "<td>" + (!data[i].Image || data[i].Image == null ? "" : "<a target='_blank' href='" + urlRoot + "/files_upload/" + data[i].Image + "' class='action'>View Image</a>") + "</td>" +
                             '<td><input type="hidden" name="manufacturer" id="Detail_Manufacturer_' + i + '" value="' + data[i].Manufacturer + '"></input>' + data[i].Manufacturer + '</td>' +
                             '<td><input type="hidden" name="model" id="Detail_Models_' + i + '" value="' + data[i].Models + '"></input>' + data[i].Models + '</td>' +
                             '<td><input type="hidden" name="series" id="Detail_Series_' + i + '" value="' + data[i].Series + '"></input>' + data[i].Series + '</td>' +
