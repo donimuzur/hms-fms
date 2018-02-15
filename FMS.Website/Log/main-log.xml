@@ -457,4 +457,27 @@
     <ErrorMessage>Nullable object must have a value.</ErrorMessage>
     <DateTime>2018-02-14T14:16:32.8270333+07:00</DateTime>
   </ExceptionInfo>
+  <ExceptionInfo>
+    <ControllerName>TraCsf</ControllerName>
+    <ActionName>EditForEmployee</ActionName>
+    <Message>Please see more information at: D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.Website\Log\main-log.xml</Message>
+    <Title>Internal Server Error (500)</Title>
+    <ExceptionType>ArgumentException</ExceptionType>
+    <StackTrace>   at System.Web.Mvc.ActionDescriptor.ExtractParameterFromDictionary(ParameterInfo parameterInfo, IDictionary`2 parameters, MethodInfo methodInfo)
+   at System.Linq.Enumerable.WhereSelectArrayIterator`2.MoveNext()
+   at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   at System.Web.Mvc.ReflectedActionDescriptor.Execute(ControllerContext controllerContext, IDictionary`2 parameters)
+   at System.Web.Mvc.ControllerActionInvoker.InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary`2 parameters)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass42.&lt;BeginInvokeSynchronousActionMethod&gt;b__41()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethod(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass37.&lt;&gt;c__DisplayClass39.&lt;BeginInvokeActionMethodWithFilters&gt;b__33()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass4f.&lt;InvokeActionMethodFilterAsynchronously&gt;b__49()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass25.&lt;&gt;c__DisplayClass2a.&lt;BeginInvokeAction&gt;b__20()
+   at System.Web.Mvc.Async.AsyncControllerActionInvoker.&lt;&gt;c__DisplayClass25.&lt;BeginInvokeAction&gt;b__22(IAsyncResult asyncResult)</StackTrace>
+    <ErrorMessage>The parameters dictionary contains a null entry for parameter 'isPersonalDashboard' of non-nullable type 'System.Boolean' for method 'System.Web.Mvc.ActionResult EditForEmployee(System.Nullable`1[System.Int32], Boolean)' in 'FMS.Website.Controllers.TraCsfController'. An optional parameter must be a reference type, a nullable type, or be declared as an optional parameter.
+Parameter name: parameters</ErrorMessage>
+    <DateTime>2018-02-15T11:13:31.2615081+07:00</DateTime>
+  </ExceptionInfo>
 </ArrayOfExceptionInfo>

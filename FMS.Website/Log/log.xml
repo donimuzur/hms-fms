@@ -193,4 +193,99 @@
     <ExceptionType>Exception</ExceptionType>
     <DateTime>2018-02-14T14:19:58.7802821+07:00</DateTime>
   </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToList</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>A recipient must be specified.</ErrorMessage>
+    <StackTrace>   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at FMS.DAL.Services.MessageService.SendEmailToList(List`1 to, String subject, String body, Boolean throwError) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 51</StackTrace>
+    <ExceptionType>InvalidOperationException</ExceptionType>
+    <DateTime>2018-02-15T13:40:53.0855845+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToListWithCC</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>Test Exception Bro!!</ErrorMessage>
+    <StackTrace>   at FMS.DAL.Services.MessageService.SendEmailToListWithCC(List`1 to, List`1 cc, String subject, String body, Boolean throwError, List`1 attachments) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 136</StackTrace>
+    <ExceptionType>Exception</ExceptionType>
+    <DateTime>2018-02-15T13:40:54.9446483+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToList</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>A recipient must be specified.</ErrorMessage>
+    <StackTrace>   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at FMS.DAL.Services.MessageService.SendEmailToList(List`1 to, String subject, String body, Boolean throwError) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 51</StackTrace>
+    <ExceptionType>InvalidOperationException</ExceptionType>
+    <DateTime>2018-02-15T13:46:04.9696581+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToListWithCC</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>Test Exception Bro!!</ErrorMessage>
+    <StackTrace>   at FMS.DAL.Services.MessageService.SendEmailToListWithCC(List`1 to, List`1 cc, String subject, String body, Boolean throwError, List`1 attachments) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 136</StackTrace>
+    <ExceptionType>Exception</ExceptionType>
+    <DateTime>2018-02-15T13:46:07.2072126+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToList</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>A recipient must be specified.</ErrorMessage>
+    <StackTrace>   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at FMS.DAL.Services.MessageService.SendEmailToList(List`1 to, String subject, String body, Boolean throwError) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 51</StackTrace>
+    <ExceptionType>InvalidOperationException</ExceptionType>
+    <DateTime>2018-02-15T13:53:13.1347312+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToListWithCC</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>Test Exception Bro!!</ErrorMessage>
+    <StackTrace>   at FMS.DAL.Services.MessageService.SendEmailToListWithCC(List`1 to, List`1 cc, String subject, String body, Boolean throwError, List`1 attachments) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 136</StackTrace>
+    <ExceptionType>Exception</ExceptionType>
+    <DateTime>2018-02-15T13:53:14.8459471+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToList</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>A recipient must be specified.</ErrorMessage>
+    <StackTrace>   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at FMS.DAL.Services.MessageService.SendEmailToList(List`1 to, String subject, String body, Boolean throwError) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 51</StackTrace>
+    <ExceptionType>InvalidOperationException</ExceptionType>
+    <DateTime>2018-02-15T13:53:37.9924141+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToListWithCC</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>Test Exception Bro!!</ErrorMessage>
+    <StackTrace>   at FMS.DAL.Services.MessageService.SendEmailToListWithCC(List`1 to, List`1 cc, String subject, String body, Boolean throwError, List`1 attachments) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 136</StackTrace>
+    <ExceptionType>Exception</ExceptionType>
+    <DateTime>2018-02-15T13:53:39.311123+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToList</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>A recipient must be specified.</ErrorMessage>
+    <StackTrace>   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at FMS.DAL.Services.MessageService.SendEmailToList(List`1 to, String subject, String body, Boolean throwError) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 51</StackTrace>
+    <ExceptionType>InvalidOperationException</ExceptionType>
+    <DateTime>2018-02-15T14:00:14.122575+07:00</DateTime>
+  </ExceptionModel>
+  <ExceptionModel>
+    <MethodName>SendEmailToListWithCC</MethodName>
+    <ClassName>MessageService</ClassName>
+    <NameSpace>FMS.DAL</NameSpace>
+    <ErrorMessage>Test Exception Bro!!</ErrorMessage>
+    <StackTrace>   at FMS.DAL.Services.MessageService.SendEmailToListWithCC(List`1 to, List`1 cc, String subject, String body, Boolean throwError, List`1 attachments) in D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\Services\MessageService.cs:line 136</StackTrace>
+    <ExceptionType>Exception</ExceptionType>
+    <DateTime>2018-02-15T14:00:15.0979779+07:00</DateTime>
+  </ExceptionModel>
 </ArrayOfExceptionModel>
