@@ -121,3 +121,5 @@ FMS.Website/Web.config
 /.vs/hms-fms/v15/Server/sqlite3/storage.ide-shm
 /.vs/hms-fms/v15/Server/sqlite3/storage.ide-wal
 /.vs/hms-fms/v15/Server/sqlite3/storage.ide
+/FMS.Website/Log/*.xml
+/FMS.Website/Log/*.xml

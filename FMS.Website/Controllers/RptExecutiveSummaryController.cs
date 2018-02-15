@@ -523,6 +523,35 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Get Data Json Graphic New Request -----------------------
+
+        [HttpPost]
+        public JsonResult VisualNoVehicle(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            var input = new VehicleGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new NoVehicleDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    NO_OF_VEHICLE_BENEFIT = p.Where(x => x.VEHICLE_TYPE == "BENEFIT").Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC = p.Where(x => x.VEHICLE_TYPE == "WTC").Sum(c => c.NO_OF_VEHICLE)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        #endregion
+
         #region --------- Summary All --------------
 
         public ActionResult SummaryAll()
