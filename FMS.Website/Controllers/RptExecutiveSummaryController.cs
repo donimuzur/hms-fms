@@ -720,6 +720,31 @@ namespace FMS.Website.Controllers
             return Json(groupData);
         }
 
+        [HttpPost]
+        public JsonResult VisualAccident(int monthFrom, int? yearFrom, bool isByRegion)
+        {
+            var input = new AccidentGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (isByRegion)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new AccidentDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    ACCIDENT_COUNT_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACCIDENT_COUNT)
+                }).ToList();
+
+            return Json(groupData);
+        }
+
         #endregion
 
         #region --------- Summary All --------------
