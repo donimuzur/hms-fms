@@ -236,7 +236,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualNoVehicleWtc", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: true },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: true },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];

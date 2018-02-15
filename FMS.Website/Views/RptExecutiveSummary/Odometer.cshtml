@@ -243,7 +243,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualOdometer", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isByRegion: false },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
