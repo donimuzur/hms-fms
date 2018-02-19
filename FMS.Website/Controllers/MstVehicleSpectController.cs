@@ -222,7 +222,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(VehicleSpectItem model, HttpPostedFileBase image)
+        public ActionResult Edit(VehicleSpectItem model, HttpPostedFileBase ImageFile)
         {
             if (ModelState.IsValid)
             {
@@ -239,36 +239,21 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    data.Image = model.Image;
+                    data.Image = model.ImageS;
                 }
-                string message = "";
-                _VehicleSpectBLL.ValidateSpect(data, out message,true);
-
-                if (!string.IsNullOrEmpty(message))
-                {
-                    AddMessageInfo(message, Enums.MessageInfoType.Error);
-                    
-                    model = Mapper.Map<VehicleSpectItem>(data);
-                    model.MainMenu = _mainMenu;
-                    model = initEdit(model);
-                    
-                    var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
-                    model.Image = webRootUrl + pathUpload + model.Image;
-                    model.CurrentLogin = CurrentUser;
-                    model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.MasterVehicleSpect, data.MstVehicleSpectId);
-                    return View(model);
-                    
-                }
-
                 try
                 {
-                    
                     _VehicleSpectBLL.Save(data, CurrentUser);
                     AddMessageInfo(Constans.SubmitMessage.Saved, Enums.MessageInfoType.Success);
                 }
                 catch (Exception exception)
                 {
                     AddMessageInfo(exception.Message, Enums.MessageInfoType.Error);
+                    model.MainMenu = _mainMenu;
+                    model = initEdit(model);
+                    var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+                    model.Image = webRootUrl + pathUpload + model.Image;
+                    model.CurrentLogin = CurrentUser;
                     return View(model);
                 }
             }

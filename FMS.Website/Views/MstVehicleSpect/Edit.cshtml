@@ -99,10 +99,11 @@
                         }
                         else
                         {
+                            @Html.HiddenFor(x => x.ImageS )
                             <img id="preview" src="@Model.Image" alt="image" border="5" height="250" />
                         }
                         @*@Html.TextBoxFor(model => model.Image, new { @type = "file" })*@
-                        <input type="file" name="ImageFile"/>
+                        <input type="file" name="ImageFile" id="ImageFile"/>
                         
                     </div>
                 </div>
