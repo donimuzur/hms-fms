@@ -1,6 +1,6 @@
 USE [FMS]
 GO
-/****** Object:  UserDefinedFunction [dbo].[fGetGRDate]    Script Date: 2/14/2018 3:18:59 PM ******/
+/****** Object:  UserDefinedFunction [dbo].[fGetGRDate]    Script Date: 2/19/2018 4:00:38 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

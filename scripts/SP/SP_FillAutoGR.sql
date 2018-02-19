@@ -1,6 +1,6 @@
 USE [FMS]
 GO
-/****** Object:  StoredProcedure [dbo].[SP_FillAutoGR]    Script Date: 2/14/2018 3:19:22 PM ******/
+/****** Object:  StoredProcedure [dbo].[SP_FillAutoGR]    Script Date: 2/19/2018 4:00:00 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -51,9 +51,8 @@ BEGIN
 		CURRENT_TIMESTAMP as CREATED_DATE,dbo.fGetGRQTY(START_CONTRACT,END_CONTRACT,MONTH(getdate()),YEAR(getdate())) as QTY ,
 		0 as IS_POSTED,START_CONTRACT,END_CONTRACT
 		from MST_FLEET 
-		where IS_ACTIVE = 1 and START_CONTRACT <= GETDATE() and END_CONTRACT >= GETDATE() 
+		where IS_ACTIVE = 1 and START_CONTRACT <= getdate() and END_CONTRACT >= getdate() 
 		and isnull(PO_NUMBER,'') <> '' and isnull(PO_LINE,'') <> ''
-		order by PO_DATE asc
 	) as tbl where  day(po_date) = @day_gr;
 
  
