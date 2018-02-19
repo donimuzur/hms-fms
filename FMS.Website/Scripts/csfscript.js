@@ -19,7 +19,7 @@
     
 });
 
-function selectVehicle(urlFunction) {
+function selectVehicle(urlFunction, urlRoot) {
     var vehUsage = $('#Detail_VehicleUsage').find("option:selected").text();
     var vehType = $('#Detail_VehicleType').val();
     var vehCat = $('#Detail_VehicleCat').find("option:selected").text();
@@ -37,11 +37,14 @@ function selectVehicle(urlFunction) {
             url: urlFunction,
             data: { vehUsage: vehUsage, vehType: vehType, vehCat: vehCat, groupLevel: groupLevel, createdDate: createdDate, location: location },
             success: function (data) {
+                console.log('panjang:'+data.length);
                 if (data.length > 0) {
                     $('#tb-body-select-veh').html("");
                     for (var i = 0; i < data.length; i++) {
+                        console.log('aa');
                         var tableData = '<tr>' +
-                            '<td><input name="selectvehicleradio" id="selectvehicleradio_' + i + '" type="radio" value="'+ i +'"></td>' +
+                            '<td><input name="selectvehicleradio" id="selectvehicleradio_' + i + '" type="radio" value="' + i + '"></td>' +
+                            "<td>" + (!data[i].Image || data[i].Image == null ? "" : "<a target='_blank' href='" + urlRoot + "/files_upload/" + data[i].Image + "' class='action'>View Image</a>") + "</td>" +
                             '<td><input type="hidden" name="manufacturer" id="Detail_Manufacturer_' + i + '" value="' + data[i].Manufacturer + '"></input>' + data[i].Manufacturer + '</td>' +
                             '<td><input type="hidden" name="model" id="Detail_Models_' + i + '" value="' + data[i].Models + '"></input>' + data[i].Models + '</td>' +
                             '<td><input type="hidden" name="series" id="Detail_Series_' + i + '" value="' + data[i].Series + '"></input>' + data[i].Series + '</td>' +
@@ -52,11 +55,12 @@ function selectVehicle(urlFunction) {
                             '<input type="hidden" name="cargrouplevelcfm" id="Detail_CarGroupLevel_' + i + '" value="' + data[i].CarGroupLevel + '"></input>' +
                             '<input type="hidden" name="cargrouplevel" id="Detail_CarGroupLevel2_' + i + '" value="' + data[i].GroupLevel + '"></input>' +
                             '</tr>';
+                        console.log(tableData);
                         $('#tb-body-select-veh').append(tableData);
                     }
                 } else {
                     $('#tb-body-select-veh').html("");
-                    $('#tb-body-select-veh').append('<tr><td style="text-align:center" colspan="5">no data<td></tr>');
+                    //$('#tb-body-select-veh').append('<tr><td style="text-align:center" colspan="5">no data<td></tr>');
                 }
 
                 var table = $('#tbCsfVehiclePopup').DataTable({

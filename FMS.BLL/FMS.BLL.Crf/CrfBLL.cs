@@ -472,7 +472,7 @@ namespace FMS.BLL.Crf
                         }
                     }
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     return false;
                 }

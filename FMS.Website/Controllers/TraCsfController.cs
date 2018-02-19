@@ -1084,7 +1084,7 @@ namespace FMS.Website.Controllers
                                                                     //&& !cfmIdleListSelected.Contains(x.MstFleetId)
                                                                     && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
                                                                     && !cfmIdleListSelectedCrf.Contains(x.MstFleetId)).ToList();
-
+                    
                     var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
 
                     if (vehCat.ToLower() == flexBen)
