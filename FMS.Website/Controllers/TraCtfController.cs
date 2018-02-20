@@ -257,12 +257,15 @@ namespace FMS.Website.Controllers
 
             var VehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (FleetData.VehicleType == null ? "" : FleetData.VehicleType.ToUpper())).FirstOrDefault();
 
+            var EmployeeId = _employeeBLL.GetByID(FleetData.EmployeeID);
+
             item.CREATED_DATE = DateTime.Today;
             item.CREATED_BY = CurrentUser.USER_ID;
             item.REASON_ID = ReasonId;
             item.EFFECTIVE_DATE = DateTime.Today;
             item.EMPLOYEE_ID = FleetData.EmployeeID;
-            item.EMPLOYEE_NAME = FleetData.EmployeeName;
+            item.EMPLOYEE_NAME = EmployeeId == null ? "" : EmployeeId.FORMAL_NAME;
+            item.GROUP_LEVEL = EmployeeId == null ?0 : EmployeeId.GROUP_LEVEL;
             item.COST_CENTER = FleetData.CostCenter;
             item.DOCUMENT_STATUS = Enums.DocumentStatus.Draft;
             item.VEHICLE_TYPE = VehType.MstSettingId.ToString();
