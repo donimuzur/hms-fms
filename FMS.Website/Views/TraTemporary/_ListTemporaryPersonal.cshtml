@@ -43,7 +43,7 @@
                 <td style="text-align: center;">
                     @if (data.TempStatus != Enums.DocumentStatus.Completed && data.TempStatus != Enums.DocumentStatus.Cancelled)
                     {
-                        if ((data.TempStatus == Enums.DocumentStatus.Draft && Model.CurrentLogin.USER_ID == data.CreateBy) ||
+                        if ((data.TempStatus == Enums.DocumentStatus.Draft && (Model.CurrentLogin.USER_ID == data.CreateBy || (Model.CurrentLogin.LoginFor == null ? false : (Model.CurrentLogin.LoginFor.Where(x => x.EMPLOYEE_ID == data.EmployeeIdCreator).Count() > 0 ? true : false)))) ||
                             ((data.TempStatus == Enums.DocumentStatus.WaitingFleetApproval || data.TempStatus == Enums.DocumentStatus.InProgress) 
                                 && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))
                         { 
