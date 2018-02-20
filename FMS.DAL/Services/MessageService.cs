@@ -133,8 +133,7 @@ namespace FMS.DAL.Services
                     smtpClient.Send(mailMessage);
                     //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
                 }
-                throw new Exception("Test Exception Bro!!");
-                //return true;
+                return true;
             }
             catch(SmtpException ex)
             {
@@ -162,10 +161,8 @@ namespace FMS.DAL.Services
                     StackTrace = ex.StackTrace,
                     DateTime = DateTime.Now
                 }, System.Web.HttpContext.Current.Request.MapPath("~/Log"));
-
-                //var message = ex.Message;
+                
                 return false;
-                //throw new BLLException(ExceptionCodes.BLLExceptions.ServerIsBusy);
             }
         }
     }
