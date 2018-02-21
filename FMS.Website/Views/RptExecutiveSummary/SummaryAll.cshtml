@@ -1150,6 +1150,7 @@
 
     function ExportXls() {
         console.log('Submitting');
+        var titleExport = '@Model.TitleExport';
         var url = '@Url.Action("ExportSummaryAllReportGenerateReport", "RptExecutiveSummary")';
         var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
         console.log(url);
@@ -1160,7 +1161,8 @@
 			        MonthTo: $('#SearchView_MonthFrom').val(),
 			        YearFrom: $('#SearchView_YearFrom').val(),
 			        YearTo: $('#SearchView_YearFrom').val(),
-			    }
+			    },
+			    TitleExport: titleExport
 
 			};
         $.ajax({
