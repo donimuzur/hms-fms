@@ -53,7 +53,7 @@
                     {
                         if ((Model.CurrentLogin.UserRole != Enums.UserRole.Viewer || Model.CurrentLogin.UserRole != Enums.UserRole.Administrator) && !Model.IsPersonalDashboard)
                         {
-                            if ((data.TempStatus == Enums.DocumentStatus.Draft && Model.CurrentLogin.USER_ID == data.CreateBy) ||
+                            if ((data.TempStatus == Enums.DocumentStatus.Draft && (Model.CurrentLogin.USER_ID == data.CreateBy || (Model.CurrentLogin.LoginFor == null ? false : (Model.CurrentLogin.LoginFor.Where(x => x.EMPLOYEE_ID == data.EmployeeIdCreator).Count() > 0 ? true : false)))) ||
                             ((data.TempStatus == Enums.DocumentStatus.WaitingFleetApproval || data.TempStatus == Enums.DocumentStatus.InProgress)
                                 && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))
                             { 

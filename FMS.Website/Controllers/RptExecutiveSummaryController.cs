@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -790,7 +791,15 @@ namespace FMS.Website.Controllers
         public string ExportSummaryAllReportGenerateReport(SummaryAllModel model = null)
         {
             string pathFile = "";
-            pathFile = CreateXlsSummaryAll(model.SearchViewExport);
+            if (model.TitleExport == "ExportSummaryAll")
+            {
+                pathFile = CreateXlsSummaryAll(model.SearchViewExport);
+            }
+            else
+            {
+                pathFile = CreateXlsSummaryRegion(model.SearchViewExport);
+            }
+            
             return pathFile;
         }
         public void GetExcelFile(string pathFile)
@@ -853,7 +862,7 @@ namespace FMS.Website.Controllers
 
             //title no of vehicle
             slDocument.SetCellValue(1, 1, "Number Of Vehicle");
-            slDocument.MergeWorksheetCells(1, 1, 1, 7);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.RenameWorksheet("Sheet1", "Number Of Vehicle");
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -862,109 +871,109 @@ namespace FMS.Website.Controllers
             valueStyle.Font.FontSize = 18;
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboard(slDocument);
+            //slDocument = CreateHeaderExcelDashboard(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboard(slDocument, listData);
+            slDocument = CreateDataExcelDashboardNew(slDocument, listData);
 
 
             //title no of vehicle wtc
             slDocument.AddWorksheet("Number Of Vehicle WTC");
             slDocument.SetCellValue(1, 1, "Number Of Vehicle WTC");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardWtc(slDocument);
+            //slDocument = CreateHeaderExcelDashboardWtc(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardWtc(slDocument, listDataWtc);
+            slDocument = CreateDataExcelDashboardWtcNew(slDocument, listDataWtc);
             
 
             //title no of vehicle Make
             slDocument.AddWorksheet("Number Of Vehicle Make-Type");
             slDocument.SetCellValue(1, 1, "Number Of Vehicle Make-Type");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardMake(slDocument);
+            //slDocument = CreateHeaderExcelDashboardMake(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardMake(slDocument, listDataMake);
+            slDocument = CreateDataExcelDashboardMakeNew(slDocument, listDataMake);
 
 
             //title Odometer
             slDocument.AddWorksheet("Odometer");
             slDocument.SetCellValue(1, 1, "Odometer");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             //create style
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardOdometer(slDocument);
+            //slDocument = CreateHeaderExcelDashboardOdometer(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardOdometer(slDocument, listDataOdo);
+            slDocument = CreateDataExcelDashboardOdometerNew(slDocument, listDataOdo);
 
 
             //title Liter By Function
             slDocument.AddWorksheet("Liter By Function");
             slDocument.SetCellValue(1, 1, "Liter By Function");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
+            //slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardLiterByFunction(slDocument, listDataLiter);
+            slDocument = CreateDataExcelDashboardLiterByFunctionNew(slDocument, listDataLiter);
 
             
             //title Fuel Cost By Function
             slDocument.AddWorksheet("Fuel Cost By Function");
             slDocument.SetCellValue(1, 1, "Fuel Cost By Function");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
+            //slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardFuelCostByFunction(slDocument, listDataFuel);
+            slDocument = CreateDataExcelDashboardFuelCostByFunctionNew(slDocument, listDataFuel);
 
 
             //title Lease Cost By Function
             slDocument.AddWorksheet("Lease Cost By Function");
             slDocument.SetCellValue(1, 1, "Lease Cost By Function");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
+            //slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardLeaseCostByFunction(slDocument, listDataLease);
+            slDocument = CreateDataExcelDashboardLeaseCostByFunctionNew(slDocument, listDataLease);
 
 
             //title Sales By Region
             slDocument.AddWorksheet("Sales By Region");
             slDocument.SetCellValue(1, 1, "Sales By Region");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
+            //slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardSalesByRegion(slDocument, listDataSales);
+            slDocument = CreateDataExcelDashboardSalesByRegionNew(slDocument, listDataSales);
 
 
             //title Accident
             slDocument.AddWorksheet("Accident");
             slDocument.SetCellValue(1, 1, "Accident");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardAccident(slDocument);
+            //slDocument = CreateHeaderExcelDashboardAccident(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardAccident(slDocument, listDataAccident);
+            slDocument = CreateDataExcelDashboardAccidentNew(slDocument, listDataAccident);
 
 
             //title AC Vs OB
             slDocument.AddWorksheet("AC Vs OB");
             slDocument.SetCellValue(1, 1, "AC Vs OB");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
+            //slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardAcVsOb(slDocument, listDataAcOb);
+            slDocument = CreateDataExcelDashboardAcVsObNew(slDocument, listDataAcOb);
 
 
             var fileName = "ExecSum_SummaryAll" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
@@ -1075,7 +1084,7 @@ namespace FMS.Website.Controllers
 
             //title no of vehicle
             slDocument.SetCellValue(1, 1, "Number Of Vehicle");
-            slDocument.MergeWorksheetCells(1, 1, 1, 7);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.RenameWorksheet("Sheet1", "Number Of Vehicle");
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -1084,109 +1093,109 @@ namespace FMS.Website.Controllers
             valueStyle.Font.FontSize = 18;
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboard(slDocument);
+            //slDocument = CreateHeaderExcelDashboard(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboard(slDocument, listData);
+            slDocument = CreateDataExcelDashboardNew(slDocument, listData);
 
 
             //title no of vehicle wtc
             slDocument.AddWorksheet("Number Of Vehicle WTC");
             slDocument.SetCellValue(1, 1, "Number Of Vehicle WTC");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardWtc(slDocument);
+            //slDocument = CreateHeaderExcelDashboardWtc(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardWtc(slDocument, listDataWtc);
+            slDocument = CreateDataExcelDashboardWtcNew(slDocument, listDataWtc);
 
 
             //title no of vehicle Make
             slDocument.AddWorksheet("Number Of Vehicle Make-Type");
             slDocument.SetCellValue(1, 1, "Number Of Vehicle Make-Type");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardMake(slDocument);
+            //slDocument = CreateHeaderExcelDashboardMake(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardMake(slDocument, listDataMake);
+            slDocument = CreateDataExcelDashboardMakeNew(slDocument, listDataMake);
 
 
             //title Odometer
             slDocument.AddWorksheet("Odometer");
             slDocument.SetCellValue(1, 1, "Odometer");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             //create style
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardOdometer(slDocument);
+            //slDocument = CreateHeaderExcelDashboardOdometer(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardOdometer(slDocument, listDataOdo);
+            slDocument = CreateDataExcelDashboardOdometerNew(slDocument, listDataOdo);
 
 
             //title Liter By Function
             slDocument.AddWorksheet("Liter By Function");
             slDocument.SetCellValue(1, 1, "Liter By Function");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
+            //slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardLiterByFunction(slDocument, listDataLiter);
+            slDocument = CreateDataExcelDashboardLiterByFunctionNew(slDocument, listDataLiter);
 
 
             //title Fuel Cost By Function
             slDocument.AddWorksheet("Fuel Cost By Function");
             slDocument.SetCellValue(1, 1, "Fuel Cost By Function");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
+            //slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardFuelCostByFunction(slDocument, listDataFuel);
+            slDocument = CreateDataExcelDashboardFuelCostByFunctionNew(slDocument, listDataFuel);
 
 
             //title Lease Cost By Function
             slDocument.AddWorksheet("Lease Cost By Function");
             slDocument.SetCellValue(1, 1, "Lease Cost By Function");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
+            //slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardLeaseCostByFunction(slDocument, listDataLease);
+            slDocument = CreateDataExcelDashboardLeaseCostByFunctionNew(slDocument, listDataLease);
 
 
             //title Sales By Region
             slDocument.AddWorksheet("Sales By Region");
             slDocument.SetCellValue(1, 1, "Sales By Region");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
+            //slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardSalesByRegion(slDocument, listDataSales);
+            slDocument = CreateDataExcelDashboardSalesByRegionNew(slDocument, listDataSales);
 
 
             //title Accident
             slDocument.AddWorksheet("Accident");
             slDocument.SetCellValue(1, 1, "Accident");
-            slDocument.MergeWorksheetCells(1, 1, 1, 6);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardAccident(slDocument);
+            //slDocument = CreateHeaderExcelDashboardAccident(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardAccident(slDocument, listDataAccident);
+            slDocument = CreateDataExcelDashboardAccidentNew(slDocument, listDataAccident);
 
 
             //title AC Vs OB
             slDocument.AddWorksheet("AC Vs OB");
             slDocument.SetCellValue(1, 1, "AC Vs OB");
-            slDocument.MergeWorksheetCells(1, 1, 1, 5);
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
             slDocument.SetCellStyle(1, 1, valueStyle);
             //create header
-            slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
+            //slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
             //create data
-            slDocument = CreateDataExcelDashboardAcVsOb(slDocument, listDataAcOb);
+            slDocument = CreateDataExcelDashboardAcVsObNew(slDocument, listDataAcOb);
 
 
             var fileName = "ExecSum_SummaryBySalesAndMarketing" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
@@ -1218,7 +1227,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
 
             model.TitleForm = "Number Of Vehicle";
-            model.TitleExport = "ExportNoVehicle";
+            model.TitleExport = "ExportNoVehicleNew";
             model.NoVehicleList = Mapper.Map<List<NoVehicleData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
@@ -1446,6 +1455,132 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportNoVehicleNew(ExecutiveSummaryModel model = null)
+        {
+            string pathFile = "";
+            var input = Mapper.Map<VehicleGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsNoVehicleNew(input);
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsNoVehicleNew(VehicleGetByParamInput input)
+        {
+            //get data
+            List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
+            var listData = Mapper.Map<List<NoVehicleData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardNew(slDocument, listData);
+
+            var fileName = "ExecSum_NumbVehicle" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardNew(SLDocument slDocument, List<NoVehicleData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Function" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+                
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.NoOfVehicle);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Number Of Vehicle WTC --------------
@@ -1460,7 +1595,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
 
             model.TitleForm = "Number Of Vehicle WTC";
-            model.TitleExport = "ExportNoVehicleWtc";
+            model.TitleExport = "ExportNoVehicleWtcNew";
             model.NoVehicleWtcList = Mapper.Map<List<NoVehicleWtcData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
@@ -1681,6 +1816,132 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportNoVehicleWtcNew(NumberVehicleWtcModel model = null)
+        {
+            string pathFile = "";
+            var input = Mapper.Map<VehicleWtcGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsNoVehicleWtcNew(input);
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsNoVehicleWtcNew(VehicleWtcGetByParamInput input)
+        {
+            //get data
+            List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
+            var listData = Mapper.Map<List<NoVehicleWtcData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle WTC");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardWtcNew(slDocument, listData);
+
+            var fileName = "ExecSum_NumbVehicleWtc" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardWtcNew(SLDocument slDocument, List<NoVehicleWtcData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Function" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.NoOfVehicle);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Number Of Vehicle Make --------------
@@ -1695,7 +1956,7 @@ namespace FMS.Website.Controllers
             var data = _execSummBLL.GetNoOfVehicleMakeData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
             model.TitleForm = "Number Of Vehicle Make";
-            model.TitleExport = "ExportNoVehicleMake";
+            model.TitleExport = "ExportNoVehicleMakeNew";
             model.NoVehicleMakeList = Mapper.Map<List<NoVehicleMakeData>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -1916,6 +2177,133 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportNoVehicleMakeNew(NumberVehicleMakeModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<VehicleMakeGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsNoVehicleMakeNew(input);
+
+            //pathFile = createChart();
+            return pathFile;
+        }
+
+        private string CreateXlsNoVehicleMakeNew(VehicleMakeGetByParamInput input)
+        {
+            //get data
+            List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
+            var listData = Mapper.Map<List<NoVehicleMakeData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Number Of Vehicle Make-Type");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardMakeNew(slDocument, listData);
+
+            var fileName = "ExecSum_NumbVehicleMake" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardMakeNew(SLDocument slDocument, List<NoVehicleMakeData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct Manufacturer
+            var functionList = listData.OrderBy(x => x.Manufacturer).Select(x => x.Manufacturer).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Manufacturer" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Manufacturer == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.NoOfVehicle);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Odometer --------------
@@ -1932,7 +2320,7 @@ namespace FMS.Website.Controllers
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
 
             model.TitleForm = "Odometer";
-            model.TitleExport = "ExportOdometer";
+            model.TitleExport = "ExportOdometerNew";
             model.OdometerDataList = Mapper.Map<List<OdometerData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
@@ -2159,6 +2547,134 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportOdometerNew(OdometerModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<OdometerGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsOdometerNew(input);
+
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsOdometerNew(OdometerGetByParamInput input)
+        {
+            //get data
+            List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
+            var listData = Mapper.Map<List<OdometerData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Odometer");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardOdometerNew(slDocument, listData);
+
+            var fileName = "ExecSum_Odometer" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardOdometerNew(SLDocument slDocument, List<OdometerData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Function" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalKm);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalKm);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Liter By Function --------------
@@ -2175,7 +2691,7 @@ namespace FMS.Website.Controllers
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
 
             model.TitleForm = "Liter By Function";
-            model.TitleExport = "ExportLiterByFunction";
+            model.TitleExport = "ExportLiterByFunctionNew";
             model.LiterByFuncDataList = Mapper.Map<List<LiterByFunctionData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
@@ -2402,6 +2918,134 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportLiterByFunctionNew(LiterByFunctionModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsLiterByFunctionNew(input);
+
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsLiterByFunctionNew(LiterFuncGetByParamInput input)
+        {
+            //get data
+            List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
+            var listData = Mapper.Map<List<LiterByFunctionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Liter By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardLiterByFunctionNew(slDocument, listData);
+
+            var fileName = "ExecSum_LiterByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardLiterByFunctionNew(SLDocument slDocument, List<LiterByFunctionData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Function" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalLiter);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalLiter);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Fuel Cost By Function --------------
@@ -2418,7 +3062,7 @@ namespace FMS.Website.Controllers
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
 
             model.TitleForm = "Fuel Cost By Function";
-            model.TitleExport = "ExportFuelCostByFunction";
+            model.TitleExport = "ExportFuelCostByFunctionNew";
             model.FuelCostByFuncDataList = Mapper.Map<List<FuelCostByFunctionData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
@@ -2645,6 +3289,134 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportFuelCostByFunctionNew(FuelCostByFunctionModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsFuelCostByFunctionNew(input);
+
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsFuelCostByFunctionNew(FuelCostFuncGetByParamInput input)
+        {
+            //get data
+            List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
+            var listData = Mapper.Map<List<FuelCostByFunctionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Fuel Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardFuelCostByFunctionNew(slDocument, listData);
+
+            var fileName = "ExecSum_FuelCostByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardFuelCostByFunctionNew(SLDocument slDocument, List<FuelCostByFunctionData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Function" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalFuelCost);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalFuelCost);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Lease Cost By Function --------------
@@ -2660,7 +3432,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             
             model.TitleForm = "Lease Cost By Function";
-            model.TitleExport = "ExportLeaseCostByFunction";
+            model.TitleExport = "ExportLeaseCostByFunctionNew";
             model.LeaseCostByFuncDataList = Mapper.Map<List<LeaseCostByFunctionData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
@@ -2884,6 +3656,134 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportLeaseCostByFunctionNew(LeaseCostByFunctionModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsLeaseCostByFunctionNew(input);
+
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsLeaseCostByFunctionNew(LeaseCostFuncGetByParamInput input)
+        {
+            //get data
+            List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
+            var listData = Mapper.Map<List<LeaseCostByFunctionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Lease Cost By Function");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardLeaseCostByFunctionNew(slDocument, listData);
+
+            var fileName = "ExecSum_LeaseCostByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardLeaseCostByFunctionNew(SLDocument slDocument, List<LeaseCostByFunctionData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Function" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalLeaseCost);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.TotalLeaseCost);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Sales By Region --------------
@@ -2899,7 +3799,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
 
             model.TitleForm = "Sales By Region";
-            model.TitleExport = "ExportSalesByRegion";
+            model.TitleExport = "ExportSalesByRegionNew";
             model.SalesByRegionDataList = Mapper.Map<List<SalesByRegionData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.MainMenu = _mainMenu;
@@ -3127,6 +4027,135 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportSalesByRegionNew(SalesByRegionModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsSalesByRegionNew(input);
+
+
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsSalesByRegionNew(SalesRegionGetByParamInput input)
+        {
+            //get data
+            List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
+            var listData = Mapper.Map<List<SalesByRegionData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Sales By Region");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardSalesByRegionNew(slDocument, listData);
+
+            var fileName = "ExecSum_SalesByRegion" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardSalesByRegionNew(SLDocument slDocument, List<SalesByRegionData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct Region
+            var functionList = listData.OrderBy(x => x.Region).Select(x => x.Region).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Region" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Region == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.Stick);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.Stick);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- Accident --------------
@@ -3143,7 +4172,7 @@ namespace FMS.Website.Controllers
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
 
             model.TitleForm = "Accident";
-            model.TitleExport = "ExportAccident";
+            model.TitleExport = "ExportAccidentNew";
             model.AccidentDataList = Mapper.Map<List<AccidentData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
@@ -3370,6 +4399,134 @@ namespace FMS.Website.Controllers
 
         #endregion
 
+        #region --------- Export New --------------
+        public string ExportAccidentNew(AccidentModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<AccidentGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsAccidentNew(input);
+
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsAccidentNew(AccidentGetByParamInput input)
+        {
+            //get data
+            List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
+            var listData = Mapper.Map<List<AccidentData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "Accident");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardAccidentNew(slDocument, listData);
+
+            var fileName = "ExecSum_Accident" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardAccidentNew(SLDocument slDocument, List<AccidentData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, string.IsNullOrEmpty(item) ? "No Function" : item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.Function == function && x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.AccidentCount);
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCount = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.AccidentCount);
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
         #endregion
 
         #region --------- AC Vs OB --------------
@@ -3384,7 +4541,7 @@ namespace FMS.Website.Controllers
             var data = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
             model.TitleForm = "AC Vs OB";
-            model.TitleExport = "ExportAcVsOb";
+            model.TitleExport = "ExportAcVsObNew";
             model.AcVsObDataList = Mapper.Map<List<AcVsObData>>(data);
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
@@ -3595,6 +4752,143 @@ namespace FMS.Website.Controllers
             chart.SetChartStyle(SLChartStyle.Style46);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
             chart.SetChartPosition(endRowYear + 2, 7, endRowYear + 24, 16);
+            chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
+            chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
+            chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        #endregion
+
+        #region --------- Export New --------------
+        public string ExportAcVsObNew(AcVsObModel model = null)
+        {
+            string pathFile = "";
+
+            var input = Mapper.Map<AcVsObGetByParamInput>(model.SearchViewExport);
+            pathFile = CreateXlsAcVsObNew(input);
+
+            //pathFile = createChart();
+            return pathFile;
+
+        }
+
+        private string CreateXlsAcVsObNew(AcVsObGetByParamInput input)
+        {
+            //get data
+            List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
+            var listData = Mapper.Map<List<AcVsObData>>(data);
+
+            var slDocument = new SLDocument();
+
+            //title
+            slDocument.SetCellValue(1, 1, "AC Vs OB");
+            slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            //create style
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 18;
+            slDocument.SetCellStyle(1, 1, valueStyle);
+
+            //create data
+            slDocument = CreateDataExcelDashboardAcVsObNew(slDocument, listData);
+
+            var fileName = "ExecSum_AcVsOb" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
+
+            slDocument.SaveAs(path);
+
+            return path;
+
+        }
+
+        private SLDocument CreateDataExcelDashboardAcVsObNew(SLDocument slDocument, List<AcVsObData> listData)
+        {
+            #region --------- Chart --------------
+
+            //select distinct function
+            var functionList = new List<string>() {"Actual Cost", "Operational Budget"};
+            var startColumYear = 2;
+            var startRowYear = 27;
+            var endRowYear = 27;
+
+            foreach (var item in functionList)
+            {
+                slDocument.SetCellValue(endRowYear, startColumYear, item);
+                endRowYear++;
+            }
+
+            slDocument.SetCellValue(endRowYear, startColumYear, "Total");
+
+            //select distinct month
+            var monthList = listData.OrderBy(x => x.ReportMonth).OrderBy(x => x.ReportYear).Select(x => x.ReportMonth + "-" + x.ReportYear).Distinct();
+            var startColum = 3;
+            var endColum = 3;
+            var startRow = 26;
+            var startRowCount = 27;
+
+            foreach (var month in monthList)
+            {
+                var monthInd = Convert.ToInt32(month.Split('-')[0]);
+                var yearInd = Convert.ToInt32(month.Split('-')[1]);
+
+                slDocument.SetCellValue(startRow, endColum, CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthInd) + "-" + yearInd);
+                startRowCount = 27;
+
+                foreach (var function in functionList)
+                {
+                    var vehicleCountYear = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.ActualCost);
+
+                    if (function == "Operational Budget")
+                    {
+                        vehicleCountYear = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.CostOb);
+                    }
+
+                    slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCountYear.ToString());
+                    startRowCount++;
+                }
+
+                var vehicleCountAc = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.ActualCost);
+                var vehicleCountOb = listData.Where(x => x.ReportMonth == monthInd && x.ReportYear == yearInd).Sum(x => x.CostOb);
+
+                var vehicleCount = vehicleCountAc + vehicleCountOb;
+
+                slDocument.SetCellValueNumeric(startRowCount, endColum, vehicleCount.ToString());
+
+                endColum++;
+            }
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.SetCellStyle(startRowYear, startColumYear, endRowYear, startColumYear, headerStyleChart);
+            slDocument.SetCellStyle(startRow, startColum, startRow, endColum - 1, headerStyleChart);
+            slDocument.SetCellStyle(startRowCount, startColum, startRowCount, endColum - 1, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(startRowYear - 1, startColumYear, endRowYear, endColum - 1);
+            chart.SetChartStyle(SLChartStyle.Style46);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 24, 9);
             chart.PlotDataSeriesAsPrimaryLineChart(3, SLChartDataDisplayType.Normal, true);
             chart.PlotDataSeriesAsSecondaryLineChart(4, SLChartDataDisplayType.Normal, false);
             chart.PlotDataSeriesAsSecondaryLineChart(2, SLChartDataDisplayType.Normal, true);

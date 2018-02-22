@@ -316,7 +316,7 @@ namespace FMS.Website.Controllers
             }
 
             //if status in progress
-            if (tempData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
+            if ( (tempData.EMPLOYEE_ID_FLEET_APPROVAL == CurrentUser.EMPLOYEE_ID || (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == tempData.EMPLOYEE_ID_FLEET_APPROVAL).Count() > 0 ? true : false))) &&  tempData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
             {
                 return RedirectToAction("InProgress", "TraTemporary", new { id = tempData.TRA_TEMPORARY_ID, isPersonalDashboard = isPersonalDashboard });
             }

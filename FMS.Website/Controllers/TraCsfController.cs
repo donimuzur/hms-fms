@@ -350,13 +350,13 @@ namespace FMS.Website.Controllers
             }
 
             //if not created by want to edit
-            if (CurrentUser.USER_ID != csfData.CREATED_BY && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
+            if (CurrentUser.USER_ID != csfData.CREATED_BY  && (CurrentUser.LoginFor == null ? true : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == csfData.EMPLOYEE_ID_FLEET_APPROVAL).Count() == 0 ? true : false)) && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.AssignedForUser)
             {
                 return RedirectToAction("Detail", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
 
             //if hr want to approve / reject
-            if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
+            if ((CurrentUser.EMPLOYEE_ID == csfData.EMPLOYEE_ID_CREATOR || (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == csfData.EMPLOYEE_ID_CREATOR).Count() > 0 ? true : false)))  && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingHRApproval)
             {
                 return RedirectToAction("ApproveHr", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
@@ -368,11 +368,10 @@ namespace FMS.Website.Controllers
             }
 
             //if fleet want to upload
-            if (csfData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
+            if ((CurrentUser.EMPLOYEE_ID == csfData.EMPLOYEE_ID_FLEET_APPROVAL ||(CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == csfData.EMPLOYEE_ID_CREATOR).Count() > 0 ? true : false)))  && csfData.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress)
             {
                 return RedirectToAction("InProgress", "TraCsf", new { id = csfData.TRA_CSF_ID, isPersonalDashboard = isPersonalDashboard });
             }
-
             try
             {
                 var model = new CsfItemModel();
