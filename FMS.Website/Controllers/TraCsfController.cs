@@ -1913,7 +1913,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 1, isCompleted ? "Completed Document CSF" : "Open Document CSF");
-            slDocument.MergeWorksheetCells(1, 1, 1, 18);
+            slDocument.MergeWorksheetCells(1, 1, 1, 23);
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -1955,9 +1955,14 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 13, "Body Type");
             slDocument.SetCellValue(iRow, 14, "Vendor");
             slDocument.SetCellValue(iRow, 15, "Colour");
-            slDocument.SetCellValue(iRow, 16, "Coordinator");
-            slDocument.SetCellValue(iRow, 17, "Updated By");
-            slDocument.SetCellValue(iRow, 18, "Updated Date");
+            slDocument.SetCellValue(iRow, 16, "Location");
+            slDocument.SetCellValue(iRow, 17, "Cost Center");
+            slDocument.SetCellValue(iRow, 18, "Group Level");
+            slDocument.SetCellValue(iRow, 19, "PO Number");
+            slDocument.SetCellValue(iRow, 20, "PO Line");
+            slDocument.SetCellValue(iRow, 21, "Coordinator");
+            slDocument.SetCellValue(iRow, 22, "Updated By");
+            slDocument.SetCellValue(iRow, 23, "Updated Date");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -1968,7 +1973,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.SetCellStyle(iRow, 1, iRow, 18, headerStyle);
+            slDocument.SetCellStyle(iRow, 1, iRow, 23, headerStyle);
 
             return slDocument;
 
@@ -1995,9 +2000,14 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 13, data.BodyType);
                 slDocument.SetCellValue(iRow, 14, data.VendorName);
                 slDocument.SetCellValue(iRow, 15, data.Color);
-                slDocument.SetCellValue(iRow, 16, data.CreateBy);
-                slDocument.SetCellValue(iRow, 17, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
-                slDocument.SetCellValue(iRow, 18, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
+                slDocument.SetCellValue(iRow, 16, data.LocationCity);
+                slDocument.SetCellValue(iRow, 17, data.CostCenter);
+                slDocument.SetCellValue(iRow, 18, data.GroupLevel == null ? 0 : data.GroupLevel.Value);
+                slDocument.SetCellValue(iRow, 19, data.PoNumberVendor);
+                slDocument.SetCellValue(iRow, 20, data.PoLineVendor);
+                slDocument.SetCellValue(iRow, 21, data.CreateBy);
+                slDocument.SetCellValue(iRow, 22, data.ModifiedBy == null ? data.CreateBy : data.ModifiedBy);
+                slDocument.SetCellValue(iRow, 23, data.ModifiedDate == null ? data.CreateDate.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"));
 
                 iRow++;
             }
@@ -2009,8 +2019,8 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.AutoFitColumn(1, 18);
-            slDocument.SetCellStyle(3, 1, iRow - 1, 18, valueStyle);
+            slDocument.AutoFitColumn(1, 23);
+            slDocument.SetCellStyle(3, 1, iRow - 1, 23, valueStyle);
 
             return slDocument;
         }

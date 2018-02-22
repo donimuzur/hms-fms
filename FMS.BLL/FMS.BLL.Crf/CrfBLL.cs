@@ -964,7 +964,7 @@ namespace FMS.BLL.Crf
                             crfData.DOCUMENT_STATUS == (int) Enums.DocumentStatus.WaitingHRApproval)
                         {
                             rc.To.Add(creatorDataEmail);
-                            rc.CC.Add(employeeData.EMAIL_ADDRESS);
+                            //rc.CC.Add(employeeData.EMAIL_ADDRESS);
                         }
                         else
                         {

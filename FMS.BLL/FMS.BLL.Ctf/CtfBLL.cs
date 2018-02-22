@@ -751,7 +751,7 @@ namespace FMS.BLL.Ctf
                         {
                             rc.CC.Add(item);
                         }
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
                     }
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
@@ -813,7 +813,7 @@ namespace FMS.BLL.Ctf
                         }
                         if (!string.IsNullOrEmpty(employeeDataEmail))
                         {
-                            rc.CC.Add(employeeDataEmail);
+                            //rc.CC.Add(employeeDataEmail);
                         }
                         foreach (var item in hrEmailList)
                         {
@@ -1099,7 +1099,7 @@ namespace FMS.BLL.Ctf
                         rc.To.Add(vendorDataEmail);
                     }
 
-                    rc.CC.Add(employeeDataEmail);
+                    //rc.CC.Add(employeeDataEmail);
                    
                     foreach (var item in fleetEmailList)
                     {
