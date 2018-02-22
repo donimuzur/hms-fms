@@ -551,7 +551,7 @@ namespace FMS.BLL.Csf
                                 rc.CC.Add(item);
                             }
 
-                            rc.CC.Add(employeeDataEmail);
+                            //rc.CC.Add(employeeDataEmail);
                         }
                     }
                     //if submit from EMPLOYEE to Fleet
@@ -606,7 +606,7 @@ namespace FMS.BLL.Csf
                             rc.To.Add(item);
                         }
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
                         rc.CC.Add(creatorDataEmail);
                     }
                     //if Fleet Approve for benefit
@@ -638,7 +638,7 @@ namespace FMS.BLL.Csf
 
                         rc.CC.Add(creatorDataEmail);
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
 
                         foreach (var item in fleetEmailList)
                         {

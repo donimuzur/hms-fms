@@ -585,7 +585,7 @@ namespace FMS.BLL.Temporary
                             rc.CC.Add(item);
                         }
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
@@ -615,7 +615,7 @@ namespace FMS.BLL.Temporary
                             rc.CC.Add(item);
                         }
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
