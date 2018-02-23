@@ -1780,8 +1780,8 @@ namespace FMS.Website.Controllers
             if (TraCtfId == 0)
             {
 
-                var employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID == Model.EmployeeId).FirstOrDefault();
-                var vehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == Model.PoliceNumber && x.EmployeeID == Model.EmployeeId && x.IsActive).FirstOrDefault();
+                var employee = _employeeBLL.GetEmployee().Where(x => x.EMPLOYEE_ID == Model.EmployeeId.Split('-')[0].Trim()).FirstOrDefault();
+                var vehicle = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == Model.PoliceNumber && x.EmployeeID == Model.EmployeeId.Split('-')[0].Trim() && x.IsActive).FirstOrDefault();
 
                 Model.CreatedBy = CurrentUser.USER_ID;
                 Model.EmployeeIdCreator = CurrentUser.EMPLOYEE_ID;

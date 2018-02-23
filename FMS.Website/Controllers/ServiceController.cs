@@ -21,6 +21,7 @@ using FMS.BLL.Setting;
 using FMS.BLL.VehicleSpect;
 using System.Configuration;
 using FMS.BLL.CtfExtend;
+using FMS.BLL.Ccf;
 
 namespace FMS.Website.Controllers
 {
@@ -35,6 +36,7 @@ namespace FMS.Website.Controllers
         private IFleetBLL fleetBLL;
         private ISettingBLL settingBLL;
         private IVehicleSpectBLL vehicleSpectBLL;
+        private ITraCcfBLL ccfBLL;
         // GET: /Service/
         public ServiceController()
         {
@@ -47,6 +49,7 @@ namespace FMS.Website.Controllers
             settingBLL = new SettingBLL(uow);
             vehicleSpectBLL = new VehicleSpectBLL(uow);
             ctfExtendBLL = new CtfExtendBLL(uow);
+            ccfBLL = new CcfBLL(uow);
         }
 
         public ActionResult CompleteTransaction()
@@ -64,6 +67,8 @@ namespace FMS.Website.Controllers
 
             //Temporary Complete
             tempBll.CheckTempInProgress();
+
+            ccfBLL.NotifEmail();
 
             return View();
         }
@@ -109,7 +114,7 @@ namespace FMS.Website.Controllers
                     ListCtfDto.Add(CtfData);
                 }
 
-                Vendor = ListCtfDto.Where(x => x.Vendor != null).Select(x => x.Vendor).Distinct().ToList();
+                Vendor = ListCtfDto.Where(x => !string.IsNullOrEmpty(x.Vendor)).Select(x => x.Vendor).Distinct().ToList();
 
                 foreach (var VendorItem in Vendor)
                 {
