@@ -23,5 +23,6 @@ namespace FMS.Contract.BLL
         void SaveDetails(TraCcfDetailDto details, Login userLogin);
         string GetNumber();
         string GetCcfDetil(long traCcfId);
+        void NotifEmail();
     }
 }

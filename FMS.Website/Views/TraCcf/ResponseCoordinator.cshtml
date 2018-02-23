@@ -592,7 +592,7 @@
     function edit(ccfdetailId) {
         var tr = $("#editrow_" + ccfdetailId);
         
-        var coordinatorResponseDate = moment().format("DD-MMM-YYYY");
+        var coordinatorResponseDate =tr.find(".coordinatorResponseDate").html();
         var coordinatorNote = tr.find(".coordinatorNote").html();
         var coordinatorPromiseDate = tr.find(".coordinatorPromiseDate").html();
         var coordinatorAtt = tr.find(".coodinatorAtt").html();

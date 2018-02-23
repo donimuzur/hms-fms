@@ -807,5 +807,192 @@ namespace FMS.BLL.Ccf
         {
             throw new NotImplementedException();
         }
+
+        public void NotifEmail()
+        {
+            var GetCCFDetail = _ccfService.GetCcfDetil().Where(x => x.COORDINATOR_RESPONSE_DATE == null && (x.COMPLAINT_DATE == null  ? false : x.COMPLAINT_DATE.Value.AddDays(2) <= DateTime.Today)).ToList();
+            var SendNotifCCFScheduler = ConfigurationManager.AppSettings["CCF_Notif_scheduler"];
+            var ComplaintCategory = _complaintCategory.GetComplaintCategories().Where(x => x.IS_ACTIVE).ToList();
+            var ComplaintFleet = ComplaintCategory.Where(x => (x.ROLE_TYPE == null ? "" : x.ROLE_TYPE.ToUpper()) == "FLEET").Select(x => new{ x.MST_COMPLAINT_CATEGORY_ID}).ToList();
+            var ComplaintHR = ComplaintCategory.Where(x => (x.ROLE_TYPE == null ? "" : x.ROLE_TYPE.ToUpper()) == "HR").Select(x => new { x.MST_COMPLAINT_CATEGORY_ID }).ToList();
+
+            var CCFListForFleet = new List<long>();
+            var CCFListForHR = new List<long>();
+
+            foreach (var item in GetCCFDetail)
+            {
+                var diffDays = (DateTime.Today.Year - item.COMPLAINT_DATE.Value.Year)*12 + (DateTime.Today.Month - item.COMPLAINT_DATE.Value.Month)*30 + (DateTime.Today.Day - item.COMPLAINT_DATE.Value.Day);
+
+                if (diffDays % Convert.ToInt32(SendNotifCCFScheduler) == 0)
+                {
+                    var GetCCF = _ccfService.GetCcfById(item.TRA_CCF_ID);
+                    if(ComplaintFleet.Where(x => x.MST_COMPLAINT_CATEGORY_ID == (GetCCF == null ? 0 : GetCCF.COMPLAINT_CATEGORY)).Count() > 0)
+                    {
+                        CCFListForFleet.Add(item.TRA_CCF_ID);
+                    }
+                    if (ComplaintHR.Where(x => x.MST_COMPLAINT_CATEGORY_ID == (GetCCF == null ? 0 : GetCCF.COMPLAINT_CATEGORY)).Count() > 0)
+                    {
+                        CCFListForHR.Add(item.TRA_CCF_ID);
+                    }
+                }
+            }
+
+            bool isSend;
+            if (CCFListForHR.Count > 0)
+            {
+                isSend = DoEmailCCFNotif("HR", CCFListForHR);
+            }
+
+            if (CCFListForFleet.Count > 0)
+            {
+                isSend = DoEmailCCFNotif("FLEET", CCFListForFleet);
+            }
+
+        }
+        public bool DoEmailCCFNotif(string CCFFor, List<long> CCFList)
+        {
+            var rc = new CcfMailNotification();
+            var bodyMail = new StringBuilder();
+            var CC = ConfigurationManager.AppSettings["CC_MAIL"];
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+            bool isSend = false;
+
+            var hrList = string.Empty;
+            var fleetList = string.Empty;
+
+            var hrEmailList = new List<string>();
+            var fleetEmailList = new List<string>();
+
+            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+            var fleetRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("FLEET")).FirstOrDefault().SETTING_VALUE;
+
+            var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+            var fleetQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + fleetRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+            if (typeEnv == "VTI")
+            {
+                hrQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+                fleetQuery = "SELECT EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + fleetRole + "'";
+            }
+
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            SqlCommand query = new SqlCommand(hrQuery, con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var hrLogin = "'" + reader[0].ToString() + "',";
+                hrList += hrLogin;
+            }
+
+            hrList = hrList.TrimEnd(',');
+
+            query = new SqlCommand(fleetQuery, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var fleetLogin = "'" + reader[0].ToString() + "',";
+                fleetList += fleetLogin;
+            }
+
+            fleetList = fleetList.TrimEnd(',');
+
+            var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+            var fleetQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + fleetList + ")";
+
+            if (typeEnv == "VTI")
+            {
+                hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + hrList + ")";
+                fleetQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE FULL_NAME IN (" + fleetList + ")";
+            }
+
+            query = new SqlCommand(hrQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                hrEmailList.Add(reader[0].ToString());
+            }
+
+            query = new SqlCommand(fleetQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                fleetEmailList.Add(reader[0].ToString());
+            }
+
+            reader.Close();
+            con.Close();
+
+            rc.Subject = "CCF - Waiting For Response";
+            if(CCFFor == "FLEET")
+            {
+                bodyMail.Append("Dear FLEET, <br /><br />");
+            }
+            else if (CCFFor == "HR")
+            {
+                bodyMail.Append("Dear HR, <br /><br />");
+            }
+            bodyMail.AppendLine();
+            bodyMail.Append("Bellow are the list of CCF That waiting for Response :<br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("<table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Doc No</td><td style = 'border: 1px solid black; padding : 5px' >URL</td></tr>");
+            bodyMail.AppendLine();
+
+            foreach (var CcfDoc in CCFList)
+            {
+                var GetCCFDoc = _ccfService.GetCcfById(CcfDoc);
+
+                bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >" + (GetCCFDoc == null ? "" : GetCCFDoc.DOCUMENT_NUMBER )+ "</td><td style = 'border: 1px solid black; padding : 5px' ><a href='" + webRootUrl + "/TraCcf/ResponseCoordinator?TraCcfId=" + CcfDoc + "&isPersonalDashboard=False" + "'> HERE </a></td></tr>");
+                bodyMail.AppendLine();
+            }
+
+            bodyMail.Append("</table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<br /><br />Thank you <br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+
+            rc.IsCCExist = false;
+            rc.Body = bodyMail.ToString();
+
+            
+            if (rc.CC.Count > 0) rc.IsCCExist = true;
+
+            if (CCFFor == "FLEET")
+            {
+                foreach (var item in fleetEmailList)
+                {
+                    rc.To.Add(item);
+                }
+            }
+
+            if (CCFFor == "HR")
+            {
+                foreach (var item in hrEmailList)
+                {
+                    rc.To.Add(item);
+                }
+            }
+            rc.IsCCExist = false;
+
+            if (rc.IsCCExist)
+                //Send email with CC
+                isSend = _messageService.SendEmailToListWithCC(rc.To, rc.CC, rc.Subject, rc.Body, true);
+            else
+                isSend = _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+
+            return isSend;
+
+        }
+
     }
 }
