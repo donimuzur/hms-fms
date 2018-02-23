@@ -69,6 +69,7 @@ namespace FMS.Website.Controllers
             tempBll.CheckTempInProgress();
 
             ccfBLL.NotifEmail();
+            csfBll.EpafCSFNotif();
 
             return View();
         }
