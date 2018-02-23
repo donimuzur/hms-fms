@@ -427,7 +427,7 @@ namespace FMS.BLL.Ctf
             var rc = new CtfMailNotification();
 
             var fleetdata = _fleetService.GetFleet().Where(x => (x.POLICE_NUMBER == null ? "" : x.POLICE_NUMBER.ToUpper())== (ctfData.PoliceNumber == null ? "" : ctfData.PoliceNumber.ToUpper()) 
-                                                            && x.IS_ACTIVE && ctfData.EmployeeId== x.EMPLOYEE_ID 
+                                                            && ctfData.EmployeeId== x.EMPLOYEE_ID 
                                                             && (x.SUPPLY_METHOD == null ? "" : x.SUPPLY_METHOD.ToUpper()) == (ctfData.SupplyMethod == null ? "" : ctfData.SupplyMethod.ToUpper())
                                                             && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (ctfData.VehicleType == null ? "" : ctfData.VehicleType.ToUpper())).FirstOrDefault();
             if(fleetdata == null)

@@ -973,7 +973,9 @@ namespace FMS.BLL.Crf
                                 rc.To.Add(item);
                             }
                             rc.CC.Add(creatorDataEmail);
-                            rc.CC.Add(employeeData.EMAIL_ADDRESS);
+                            if (crfData.VEHICLE_TYPE == "WTC") {
+                                rc.CC.Add(employeeData.EMAIL_ADDRESS);
+                            }
                         }
                     }
                     else
