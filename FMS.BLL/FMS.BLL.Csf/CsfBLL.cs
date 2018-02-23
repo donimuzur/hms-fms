@@ -1974,5 +1974,104 @@ namespace FMS.BLL.Csf
 
             _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
         }
+
+        public void EpafCSFNotif ()
+        {
+            var CsfList = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+            var EpafCSFList = _epafService.GetEpafByDocumentType(Enums.DocumentType.CSF).Where(x => x.REMARK == null && (CsfList == null ? true : CsfList.Where(csf => csf.EPAF_ID == x.MST_EPAF_ID).Count() == 0)).ToList();
+            var Scheduler = ConfigurationManager.AppSettings["EpafCSFScheduler"];
+            var arrScheduler = Scheduler.Split(',').ToList();
+
+            if (EpafCSFList.Count() > 0 && arrScheduler.Where(x => x == DateTime.Today.Day.ToString()).Count() > 0)
+            {
+                var IsSend = DoEpafCSFNotif(EpafCSFList);
+            }
+        }
+
+        public bool DoEpafCSFNotif(List<MST_EPAF> EpafList)
+        {
+            var rc = new CsfMailNotification();
+            var bodyMail = new StringBuilder();
+            var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+            bool isSend = false;
+
+            var hrList = string.Empty;
+
+            var hrEmailList = new List<string>();
+
+            var hrRole = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.UserRole)
+                                                                && x.SETTING_VALUE.Contains("HR")).FirstOrDefault().SETTING_VALUE;
+            
+            var hrQuery = "SELECT 'PMI\\' + sAMAccountName AS sAMAccountName FROM OPENQUERY(ADSI, 'SELECT employeeID, sAMAccountName, displayName, name, givenName, whenCreated, whenChanged, SN, manager, distinguishedName, info FROM ''LDAP://DC=PMINTL,DC=NET'' WHERE memberOf = ''CN = " + hrRole + ", OU = ID, OU = Security, OU = IMDL Managed Groups, OU = Global, OU = Users & Workstations, DC = PMINTL, DC = NET''') ";
+
+            if (typeEnv == "VTI")
+            {
+                hrQuery = "SELECT 'ID'+ EMPLOYEE_ID AS EMPLOYEE_ID FROM LOGIN_FOR_VTI WHERE AD_GROUP = '" + hrRole + "'";
+            }
+
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            SqlCommand query = new SqlCommand(hrQuery, con);
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var hrLogin = "'" + reader[0].ToString() + "',";
+                hrList += hrLogin;
+            }
+
+            hrList = hrList.TrimEnd(',');
+
+            
+            var hrQueryEmail = "SELECT EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME IN (" + hrList + ")";
+
+            if (typeEnv == "VTI")
+            {
+                hrQueryEmail = "SELECT EMAIL FROM EMAIL_FOR_VTI WHERE ID IN (" + hrList + ")";
+            }
+
+            query = new SqlCommand(hrQueryEmail, con);
+            reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                hrEmailList.Add(reader[0].ToString());
+            }
+
+            reader.Close();
+            con.Close();
+
+            rc.Subject = "EPAF - Need to Assign";
+
+            bodyMail.Append("Dear HR,<br /><br />");
+            bodyMail.AppendLine();
+            bodyMail.Append("You need to assign Epaf Below, you can click <a href='" + webRootUrl + "//TraCsf/Dashboard?IsPersonalDashboard=False'>HERE</a>  <br /><br />"); 
+            bodyMail.AppendLine();
+            bodyMail.Append("<table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >Employee ID</td><td style = 'border: 1px solid black; padding : 5px' >Employee Name</td><td style = 'border: 1px solid black; padding : 5px' >Effective Date</td><td style = 'border: 1px solid black; padding : 5px' >Epaf Action</td></tr>");
+            bodyMail.AppendLine();
+            foreach (var item in EpafList)
+            {
+                bodyMail.Append("<tr><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_ID+"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.EMPLOYEE_NAME+"</td><td style = 'border: 1px solid black; padding : 5px' >"+ (item.EFFECTIVE_DATE == null ? "" : item.EFFECTIVE_DATE.Value.ToString("dd-MMM-yyyy")) +"</td><td style = 'border: 1px solid black; padding : 5px' >"+item.EPAF_ACTION+"</td></tr>");
+                bodyMail.AppendLine();
+            }
+            bodyMail.Append("</table>");
+            bodyMail.AppendLine();
+            bodyMail.Append("Best Regards,<br />");
+            bodyMail.AppendLine();
+
+            rc.Body = bodyMail.ToString();
+            foreach(var item in hrEmailList)
+            {
+                rc.To.Add(item);
+            }
+
+           isSend = _messageService.SendEmailToList(rc.To, rc.Subject, rc.Body, true);
+
+            return isSend;
+        }
     }
 }
