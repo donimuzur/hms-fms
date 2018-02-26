@@ -279,7 +279,7 @@ namespace FMS.Website.Controllers
 
         public CcfItem listdata(CcfItem model, string IdEmployee)
         {
-            var listemployeefromdelegation = _delegationBLL.GetDelegation().Select(x => new { dataemployeefrom = x.EmployeeFrom + x.NameEmployeeFrom, x.EmployeeFrom, x.NameEmployeeFrom, x.EmployeeTo, x.NameEmployeeTo, x.DateTo }).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
+            var listemployeefromdelegation = _delegationBLL.GetDelegation().Where(x => x.IsComplaintFrom).Select(x => new { dataemployeefrom = x.EmployeeFrom + x.NameEmployeeFrom, x.EmployeeFrom, x.NameEmployeeFrom, x.EmployeeTo, x.NameEmployeeTo, x.DateTo }).ToList().Where(x => x.EmployeeTo == CurrentUser.EMPLOYEE_ID && x.DateTo >= DateTime.Today).OrderBy(x => x.EmployeeFrom);
             model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EmployeeFrom", "dataemployeefrom");
             //var listemployeefromdelegation = CurrentUser.LoginFor;
             //model.EmployeeFromDelegationList = new SelectList(listemployeefromdelegation, "EMPLOYEE_ID", "EMPLOYEE_NAME");
@@ -332,16 +332,19 @@ namespace FMS.Website.Controllers
             var model = new CcfItem();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
-
-            var DataFletByEmployee = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == id).FirstOrDefault();
-            model.VehicleType = DataFletByEmployee.VehicleType;
-            model.VehicleUsage = DataFletByEmployee.VehicleUsage;
-            model.Manufacturer = DataFletByEmployee.Manufacturer;
-            model.Models = DataFletByEmployee.Models;
-            model.Series = DataFletByEmployee.Series;
-            model.Vendor = DataFletByEmployee.VendorName;
-            model.VStartPeriod = DataFletByEmployee.StartContract.Value.ToString("dd-MMM-yyyy");
-            model.VEndPeriod = DataFletByEmployee.EndContract.Value.ToString("dd-MMM-yyyy");
+            
+            var DataFletByEmployee = _fleetBLL.GetFleet().Where(x => x.PoliceNumber == id && x.IsActive).FirstOrDefault();
+            if(DataFletByEmployee != null)
+            {
+                model.VehicleType = DataFletByEmployee.VehicleType;
+                model.VehicleUsage = DataFletByEmployee.VehicleUsage;
+                model.Manufacturer = DataFletByEmployee.Manufacturer;
+                model.Models = DataFletByEmployee.Models;
+                model.Series = DataFletByEmployee.Series;
+                model.Vendor = DataFletByEmployee.VendorName;
+                model.VStartPeriod = DataFletByEmployee.StartContract.Value.ToString("dd-MMM-yyyy");
+                model.VEndPeriod = DataFletByEmployee.EndContract.Value.ToString("dd-MMM-yyyy");
+            }
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
@@ -1058,8 +1061,8 @@ namespace FMS.Website.Controllers
                     slDocument.SetCellValue(iRow, 15, data.Models);
                     slDocument.SetCellValue(iRow, 16, data.Series);
                     slDocument.SetCellValue(iRow, 17, data.Vendor);
-                    slDocument.SetCellValue(iRow, 18, data.StartPeriod.ToString("dd-MM-yyyy"));
-                    slDocument.SetCellValue(iRow, 19, data.EndPeriod.ToString("dd-MMM-yyyy"));
+                    slDocument.SetCellValue(iRow, 18, data.StartPeriod == null ? "" : data.StartPeriod.Value.ToString("dd-MM-yyyy"));
+                    slDocument.SetCellValue(iRow, 19, data.EndPeriod == null ? "": data.EndPeriod.Value.ToString("dd-MMM-yyyy"));
                     slDocument.SetCellValue(iRow, 20, data.CoordinatorKPI);
                     slDocument.SetCellValue(iRow, 21, data.VendorKPI);
                     slDocument.SetCellValue(iRow, 22, data.CoordinatorName);

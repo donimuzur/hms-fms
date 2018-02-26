@@ -89,5 +89,76 @@ namespace FMS.BLL.Fleet
             var redata = Mapper.Map<List<FleetDto>>(data);
             return redata;
         }
+
+        public List<FleetChangeDto> GetFleetChange()
+        {
+            var data = _FleetService.GetFleetChange();
+            var redata = Mapper.Map<List<FleetChangeDto>>(data);
+            return redata;
+        }
+
+        public List<FleetChangeDto> GetFleetChangeByParam(FleetChangeParamInput param)
+        {
+            var data = _FleetService.GetFleetChangeByParam(param);
+            return Mapper.Map<List<FleetChangeDto>>(data);
+        }
+
+        public bool UpdateFleetChange(string fleetChangeList, Login userLogin)
+        {
+            var isSuccess = false;
+
+            try
+            {
+                var listFleetChange = fleetChangeList.Split(',').ToList();
+                var data = GetFleetChange();
+
+                foreach (var item in listFleetChange)
+                {
+                    var id = Convert.ToInt64(item);
+
+                    var fleetChange = data.Where(x => x.FleetChangeId == id).FirstOrDefault();
+
+                    if (fleetChange != null)
+                    {
+                        var idFleet = Convert.ToInt32(fleetChange.FleetId);
+
+                        var fleetData = GetFleetById(idFleet);
+
+                        switch (fleetChange.FieldName)
+                        {
+                            case "COST CENTER":
+                                fleetData.CostCenter = fleetChange.DataAfter;
+                                break;
+                            case "BASE TOWN":
+                                fleetData.City = fleetChange.DataAfter;
+                                break;
+                            case "EMPLOYEE NAME":
+                                fleetData.EmployeeName = fleetChange.DataAfter;
+                                break;
+                        }
+
+                        fleetChange.ModifiedBy = userLogin.USER_ID;
+                        fleetChange.ModifiedDate = DateTime.Now;
+
+                        fleetData.ModifiedBy = userLogin.USER_ID;
+                        fleetData.ModifiedDate = DateTime.Now;
+
+                        Save(fleetData, userLogin);
+                        SaveFleetChange(fleetChange, userLogin);
+                    }
+                }
+            }
+            catch(Exception message)
+            {
+                var error = message.Message;
+            }
+            return isSuccess;
+        }
+
+        public void SaveFleetChange(FleetChangeDto FleetChangeDto, Login userLogin)
+        {
+            var dbFleetChange = Mapper.Map<FLEET_CHANGE>(FleetChangeDto);
+            _FleetService.saveFleetChange(dbFleetChange, userLogin);
+        }
     }
 }

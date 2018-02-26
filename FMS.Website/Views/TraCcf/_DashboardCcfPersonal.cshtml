@@ -52,11 +52,11 @@
                     {
                         <a href="@Url.Action("EditCcfUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
-                    @if (data.StsTraCcfId != "01/01/0001 00.00.00" && data.DocumentStatus == Enums.DocumentStatus.InProgress && data.StsVndrDate < DateTime.Today)
+                    else if (data.StsTraCcfId != "01/01/0001 00.00.00" && data.DocumentStatus == Enums.DocumentStatus.InProgress && (((data.ComplaintCategoryRole == null ? "" : data.ComplaintCategoryRole.ToUpper()) =="FLEET" &&  data.StsVndrDate < DateTime.Today ) || (data.ComplaintCategoryRole == null ? "" : data.ComplaintCategoryRole.ToUpper()) == "HR") && Model.CurrentLogin.USER_ID == data.CreatedBy)
                     {
                         <a href="@Url.Action("ResponseUser", "TraCcf", new { @TraCcfId = data.TraCcfId, IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
-                    @if ((Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR) && Model.CurrentLogin.USER_ID != data.CreatedBy)
+                    else if ((Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR) && Model.CurrentLogin.USER_ID != data.CreatedBy)
                     {
                     <a href="@Url.Action("ResponseCoordinator", "TraCcf", new { @TraCcfId = data.TraCcfId , IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }

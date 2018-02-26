@@ -15,9 +15,12 @@ namespace FMS.BusinessObject.Dto
         public string EmployeeId{get;set;}
         public string EmployeeName { get; set; }
         public string FieldName { get; set; }
-        public DateTime? ChangeDate { get; set; }
-        public DateTime? DateSend { get; set; }
         public string DataBefore { get; set; }
         public string DataAfter { get; set;}
+        public string ModifiedBy { get; set; }
+        public DateTime? ChangeDate { get; set; }
+        public DateTime? DateSend { get; set; }
+        public DateTime? DateUpdate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

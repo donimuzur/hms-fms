@@ -19,5 +19,8 @@ namespace FMS.Contract.BLL
         List<FleetDto> GetFleetForEndContractLessThan(int days);
         FleetDto GetVehicleByEmployeeId(string employeeId, string vehicleType);
         FleetDto GetVehicleByEmployeeId(string employeeId);
+        List<FleetChangeDto> GetFleetChange();
+        List<FleetChangeDto> GetFleetChangeByParam(FleetChangeParamInput param);
+        bool UpdateFleetChange(string fleetChangeList, Login userLogin);
     }
 }

@@ -585,7 +585,7 @@ namespace FMS.BLL.Temporary
                             rc.CC.Add(item);
                         }
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
@@ -615,7 +615,7 @@ namespace FMS.BLL.Temporary
                             rc.CC.Add(item);
                         }
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
                     break;
@@ -976,8 +976,9 @@ namespace FMS.BLL.Temporary
                 TempWorkflow(input);
 
                 //inactive cfm idle
-                var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && x.POLICE_NUMBER == item.VENDOR_POLICE_NUMBER
-                                                                          && x.VEHICLE_USAGE == "CFM IDLE").FirstOrDefault();
+                var cfmidleData = _fleetService.GetFleet().Where(x => x.IS_ACTIVE && (x.POLICE_NUMBER == null ? "" : x.POLICE_NUMBER.ToUpper()) == 
+                                                                                      (item.VENDOR_POLICE_NUMBER == null ? "" : item.VENDOR_POLICE_NUMBER.ToUpper())
+                                                                          && (x.VEHICLE_USAGE == null ? "" : x.VEHICLE_USAGE.ToUpper()) == "CFM IDLE").FirstOrDefault();
 
                 if (cfmidleData != null)
                 {

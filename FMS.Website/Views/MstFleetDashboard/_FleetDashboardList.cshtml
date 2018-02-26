@@ -1,0 +1,31 @@
+﻿@model FMS.Website.Models.FleetDashboardModel
+
+<input type="hidden" id="returnTotalData" value="@Model.TotalData" />
+<input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
+<input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
+<table id="tbFleetChange" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            @if (Model.WriteAccess == 1) {
+            <th style="min-width: 120px">
+                <input type="checkbox" name="select_all" id="select_all"/>Select All
+            </th>
+            }
+            else
+            {
+                <th></th>
+            }
+            <th>Police Number</th>
+            <th>Chasis Number</th>
+            <th>Employee Id</th>
+            <th style="min-width: 200px">Employee Name</th>
+            <th>Field Name</th>
+            <th>Data Before</th>
+            <th>Data After</th>
+            <th>Created Date</th>
+            <th>Notification Date</th>
+            <th>Modified By</th>
+            <th>Modified Date</th>
+        </tr>
+    </thead>
+</table>

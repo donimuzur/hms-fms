@@ -72,12 +72,12 @@ namespace FMS.Website.Controllers
 
                 CurrentUser.LoginFor = new List<LoginFor>();
 
-                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.LoginTo == item.Login 
-                    && x.DateFrom <= DateTime.Now
-                    && x.DateTo >= DateTime.Now).ToList();
+                var delegationsList = _delegationBLL.GetDelegation().Where(x => x.EmployeeTo == item.EmployeeId && !x.IsComplaintFrom
+                    && x.DateFrom <= DateTime.Today
+                    && x.DateTo >= DateTime.Today).ToList();
                 foreach (var delegationDto in delegationsList)
                 {
-                    var loginForDto = DoLogin(delegationDto.LoginFrom);
+                    var loginForDto = DoLoginByEmployeeId(delegationDto.EmployeeFrom);
                     if (loginForDto.Login != null)
                     {
                         CurrentUser.LoginFor.Add(new LoginFor()
@@ -85,6 +85,7 @@ namespace FMS.Website.Controllers
                             UserRole = _roleBll.GetUserRole(loginForDto.RoleName),
                             AuthorizePages = roles.Where(x=> x.RoleName == loginForDto.RoleName).ToList(),
                             EMPLOYEE_ID = loginForDto.EmployeeId,
+                            USERNAME = loginForDto.DisplayName,
                             EMPLOYEE_NAME = loginForDto.DisplayName,
                             USER_ID = loginForDto.Login
                             
@@ -92,8 +93,6 @@ namespace FMS.Website.Controllers
                     }
                     
                 }
-
-                
                 return RedirectToAction("Index", "Home");
             }
             
@@ -101,6 +100,48 @@ namespace FMS.Website.Controllers
 
         }
 
+        private LdapDto DoLoginByEmployeeId(string EmployeeId)
+        {
+            var item = new LdapDto();
+            EntityConnectionStringBuilder e = new EntityConnectionStringBuilder(ConfigurationManager.ConnectionStrings["FMSEntities"].ConnectionString);
+            string connectionString = e.ProviderConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
+            var typeEnv = ConfigurationManager.AppSettings["Environment"];
+            var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
+
+            SqlCommand query = new SqlCommand("SELECT ID, FULL_NAME, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE ID = 'ID" + EmployeeId+ "'", con);
+
+            if (typeEnv == "VTI")
+            {
+                query =new SqlCommand("SELECT EMPLOYEE_ID, LOGIN, DISPLAY_NAME FROM LOGIN_FOR_VTI WHERE EMPLOYEE_ID = '" + EmployeeId + "'", con);
+            }
+          
+            SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                var employeeId = reader[0].ToString();
+                if (employeeId != "")
+                {
+                    employeeId = employeeId.Replace("ID", "");
+                    employeeId = Convert.ToInt32(employeeId).ToString("00000000");
+                }
+                item.EmployeeId = employeeId;
+                var login= reader[1].ToString();
+                if (login != "")
+                {
+                    login = login.Replace("PMI\\", "");
+                }
+                item.Login = login;
+                item.DisplayName = reader[2].ToString();
+                item.RoleName = CurrentUser.UserRole.ToString();
+                
+            }
+            reader.Close();
+            con.Close();
+
+            return item;
+        }
         private LdapDto DoLogin(string loginId)
         {
             var item = new LdapDto();
@@ -133,7 +174,6 @@ namespace FMS.Website.Controllers
 
             return item;
         }
-
         public ActionResult MessageInfo()
         {
             var model = GetListMessageInfo();

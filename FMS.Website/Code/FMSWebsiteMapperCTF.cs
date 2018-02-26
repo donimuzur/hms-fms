@@ -27,7 +27,8 @@ namespace FMS.Website.Code
              .ForMember(dest => dest.VehicleYear, opt => opt.MapFrom(src => src.VehicleYear))
              .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VehicleType))
              .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VehicleUsage))
-             .ForMember(dest => dest.EndRendDate, opt => opt.MapFrom(src => src.EndContract));
+             .ForMember(dest => dest.EndRendDate, opt => opt.MapFrom(src => src.EndContract))
+             .ForMember(dest => dest.DocumentNumber, opt => opt.MapFrom(src => ""));
 
             Mapper.CreateMap<CtfItem, FleetDto >().IgnoreAllNonExisting()
              .ForMember(dest => dest.MstFleetId, opt => opt.MapFrom(src => src.MstFleetId))
@@ -40,7 +41,8 @@ namespace FMS.Website.Code
              .ForMember(dest => dest.VehicleYear, opt => opt.MapFrom(src => src.VehicleYear))
              .ForMember(dest => dest.VehicleType, opt => opt.MapFrom(src => src.VehicleType))
              .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VehicleUsage))
-             .ForMember(dest => dest.EndContract, opt => opt.MapFrom(src => src.EndRendDate));
+             .ForMember(dest => dest.EndContract, opt => opt.MapFrom(src => src.EndRendDate))
+             .ForMember(dest => dest.DocumentNumber, opt => opt.MapFrom(src => ""));
         }
     }
 }

@@ -20,6 +20,8 @@ using FMS.BLL.Fleet;
 using FMS.BLL.Setting;
 using FMS.BLL.VehicleSpect;
 using System.Configuration;
+using FMS.BLL.CtfExtend;
+using FMS.BLL.Ccf;
 
 namespace FMS.Website.Controllers
 {
@@ -28,11 +30,13 @@ namespace FMS.Website.Controllers
         private IUnitOfWork uow;
         private ITraCrfBLL crfBll;
         private ITraCtfBLL ctfBLL;
+        private ICtfExtendBLL ctfExtendBLL;
         private ITraCsfBLL csfBll;
         private ITraTemporaryBLL tempBll;
         private IFleetBLL fleetBLL;
         private ISettingBLL settingBLL;
         private IVehicleSpectBLL vehicleSpectBLL;
+        private ITraCcfBLL ccfBLL;
         // GET: /Service/
         public ServiceController()
         {
@@ -44,6 +48,8 @@ namespace FMS.Website.Controllers
             fleetBLL = new FleetBLL(uow);
             settingBLL = new SettingBLL(uow);
             vehicleSpectBLL = new VehicleSpectBLL(uow);
+            ctfExtendBLL = new CtfExtendBLL(uow);
+            ccfBLL = new CcfBLL(uow);
         }
 
         public ActionResult CompleteTransaction()
@@ -61,6 +67,9 @@ namespace FMS.Website.Controllers
 
             //Temporary Complete
             tempBll.CheckTempInProgress();
+
+            ccfBLL.NotifEmail();
+            csfBll.EpafCSFNotif();
 
             return View();
         }
@@ -86,7 +95,7 @@ namespace FMS.Website.Controllers
         {
             try
             {
-                var ListCtf = ctfBLL.GetCtf().Where(x => x.DocumentStatus == Enums.DocumentStatus.InProgress && x.DateSendVendor == null).ToList();
+                var ListCtf = ctfBLL.GetCtf().Where(x => (x.DocumentStatus == Enums.DocumentStatus.InProgress || x.DocumentStatus == Enums.DocumentStatus.Extended) && x.DateSendVendor == null).ToList();
                 var ListCtfDto = new List<TraCtfDto>();
                 var Vendor = new List<String>();
                 bool IsSend = false;
@@ -106,7 +115,7 @@ namespace FMS.Website.Controllers
                     ListCtfDto.Add(CtfData);
                 }
 
-                Vendor = ListCtfDto.Where(x => x.Vendor != null).Select(x => x.Vendor).Distinct().ToList();
+                Vendor = ListCtfDto.Where(x => !string.IsNullOrEmpty(x.Vendor)).Select(x => x.Vendor).Distinct().ToList();
 
                 foreach (var VendorItem in Vendor)
                 {
@@ -164,6 +173,9 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(2, 16, "Detail Withdrawal");
             slDocument.MergeWorksheetCells(2, 16, 2, 20);
 
+            slDocument.SetCellValue(2, 21, "Detail Extend");
+            slDocument.MergeWorksheetCells(2, 21, 2, 24);
+
 
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
@@ -174,7 +186,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Font.FontSize = 11;
-            slDocument.SetCellStyle(2, 2, 2, 20, valueStyle);
+            slDocument.SetCellStyle(2, 2, 2, 24, valueStyle);
 
             //create header
             slDocument = CreateHeaderExcelForVendorCTF(slDocument);
@@ -214,6 +226,10 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 18, "Phone Number");
             slDocument.SetCellValue(iRow, 19, "City");
             slDocument.SetCellValue(iRow, 20, "Address");
+            slDocument.SetCellValue(iRow, 21, "New PO Number");
+            slDocument.SetCellValue(iRow, 22, "New PO Line");
+            slDocument.SetCellValue(iRow, 23, "New Contract End Date");
+            slDocument.SetCellValue(iRow, 24, "New Police Number");
 
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -222,7 +238,7 @@ namespace FMS.Website.Controllers
             headerStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-            slDocument.SetCellStyle(iRow, 2, iRow, 20, headerStyle);
+            slDocument.SetCellStyle(iRow, 2, iRow, 24, headerStyle);
 
             return slDocument;
 
@@ -231,8 +247,11 @@ namespace FMS.Website.Controllers
         private SLDocument CreateDataExcelForVendorCTF(SLDocument slDocument, List<TraCtfDto> ctfData)
         {
             int iRow = 4; //starting row data
+            var extendList = ctfExtendBLL.GetCtfExtend();
             foreach (var data in ctfData)
             {
+                var GetExtendCtf = extendList.Where(x => x.TraCtfId == data.TraCtfId).FirstOrDefault();
+
                 slDocument.SetCellValue(iRow, 2, data.DocumentNumber);
                 slDocument.SetCellValue(iRow, 3, data.EmployeeName);
                 slDocument.SetCellValue(iRow, 4, data.Vendor);
@@ -252,12 +271,18 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 18, data.WithdPhone);
                 slDocument.SetCellValue(iRow, 19, data.WithdCity);
                 slDocument.SetCellValue(iRow, 20, data.WithdAddress);
+                
+                slDocument.SetCellValue(iRow, 21, GetExtendCtf == null ? "" : GetExtendCtf.ExtendPoNumber);
+                slDocument.SetCellValue(iRow, 22, GetExtendCtf == null ? "" : GetExtendCtf.ExtedPoLine);
+                if ((GetExtendCtf == null ? false : GetExtendCtf.NewProposedDate.HasValue) == true) slDocument.SetCellValue(iRow, 23, GetExtendCtf.NewProposedDate.Value.ToOADate());
+                slDocument.SetCellValue(iRow, 24, GetExtendCtf == null ? "" : GetExtendCtf.ExtendPoliceNumber);
 
                 SLStyle dateStyle = slDocument.CreateStyle();
                 dateStyle.FormatCode = "dd-MMM-yyyy";
 
                 slDocument.SetCellStyle(iRow, 14, iRow, 14, dateStyle);
                 slDocument.SetCellStyle(iRow, 15, iRow, 15, dateStyle);
+                slDocument.SetCellStyle(iRow, 23, iRow, 23, dateStyle);
 
                 dateStyle = slDocument.CreateStyle();
                 dateStyle.FormatCode = "dd-MMM-yyyy HH:mm";
@@ -268,8 +293,8 @@ namespace FMS.Website.Controllers
                 valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
                 valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
 
-                slDocument.AutoFitColumn(2, 20);
-                slDocument.SetCellStyle(iRow, 2, iRow, 20, valueStyle);
+                slDocument.AutoFitColumn(2, 24);
+                slDocument.SetCellStyle(iRow, 2, iRow, 24, valueStyle);
 
                 iRow++;
 

@@ -64,19 +64,19 @@
                                                                 <br />
                                                                 @if (Model.PoliceNumberGS != null)
                                                                 {
-                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" checked disabled> Ganti Sementara (GS) </label>
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display()" checked disabled> Ganti Sementara (GS) </label>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display();" disabled> Ganti Sementara (GS) </label>
+                                                                    <label><input id="GS" type="radio" name="optradio" onclick="Display()" disabled> Ganti Sementara (GS) </label>
                                                                 }
                                                                 @if (Model.PoliceNumber != null)
                                                                 {
-                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" checked disabled> Permanent </label>
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display()" checked disabled> Permanent </label>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display();" disabled> Permanent </label>
+                                                                    <label><input id="NONGS" type="radio" name="optradio" onclick="Display()" disabled> Permanent </label>
                                                                 }
                                                             </div>
                                                         </div>
@@ -286,17 +286,17 @@
                                                             @Html.HiddenFor(model => data_d1.ComplaintDate, new { @class = "form-control", @readonly = "readonly" })
                                                             @Html.HiddenFor(model => data_d1.ComplaintNote, new { @class = "form-control", @readonly = "readonly" })
                                                             @Html.HiddenFor(model => data_d1.ComplaintAtt, new { @class = "form-control", @readonly = "readonly" })
-                                                            <input type="text" id="TraCcfDetilId" name="TraCcfDetilId" class="form-control" value="" hidden>
+                                                            @*<input type="text" id="TraCcfDetilId" name="TraCcfDetilId" class="form-control" value="" hidden>
                                                             <input type="text" id="ComplaintDate" name="ComplaintDate" class="form-control" value="" hidden>
                                                             <input type="text" id="ComplaintNote" name="ComplaintNote" class="form-control" value="" hidden>
-                                                            <input type="text" id="ComplaintAtt" name="ComplaintAtt" class="form-control" value="" hidden>
-                                                            @if (data_d1.ComplaintDate.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                            <input type="text" id="ComplaintAtt" name="ComplaintAtt" class="form-control" value="" hidden>*@
+                                                            @if (data_d1.ComplaintDate == null ? true : data_d1.ComplaintDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                             {
 
                                                             }
                                                             else
                                                             {
-                                                                @Html.Raw(data_d1.ComplaintDate.ToString("dd-MMM-yyyy"))
+                                                                @Html.Raw(data_d1.ComplaintDate.Value.ToString("dd-MMM-yyyy"))
                                                             }
                                                         </td>
                                                         <td>@Html.Raw(data_d1.ComplaintNote)</td>
@@ -308,7 +308,7 @@
                                                         {
                                                             <td><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.ComplaintUrl + '/' + data_d1.ComplaintAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorResponseDate== null ? true : data_d1.CoodinatorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001" )
                                                         {
                                                             <td class="coordinatorResponseDate"></td>
                                                         }
@@ -324,7 +324,7 @@
                                                         {
                                                             <td class="coordinatorNote">@Html.Raw(data_d1.CoodinatorNote)</td>
                                                         }
-                                                        @if (data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.CoodinatorPromiseDate == null ? true :  data_d1.CoodinatorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td class="coordinatorPromiseDate"></td>
                                                         }
@@ -340,7 +340,7 @@
                                                         {
                                                             <td class="coodinatorAtt"><a target="_blank" href="@Html.Raw(Model.ConfigUrl + data_d1.CoordinatorUrl + '/' + data_d1.CoodinatorAtt)"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                                                         }
-                                                        @if (data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.VendorResponseDate ==null ? true : data_d1.VendorResponseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td class="vendorResponseDate"></td>
                                                         }
@@ -356,7 +356,7 @@
                                                         {
                                                             <td class="vendorNote">@Html.Raw(data_d1.VendorNote)</td>
                                                         }
-                                                        @if (data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
+                                                        @if (data_d1.VendorPromiseDate == null ? true : data_d1.VendorPromiseDate.Value.ToString("dd-MMM-yyyy") == "01-Jan-0001")
                                                         {
                                                             <td class="vendorPromiseDate"></td>
                                                         }
@@ -592,7 +592,7 @@
     function edit(ccfdetailId) {
         var tr = $("#editrow_" + ccfdetailId);
         
-        var coordinatorResponseDate = moment().format("DD-MMM-YYYY");
+        var coordinatorResponseDate =tr.find(".coordinatorResponseDate").html();
         var coordinatorNote = tr.find(".coordinatorNote").html();
         var coordinatorPromiseDate = tr.find(".coordinatorPromiseDate").html();
         var coordinatorAtt = tr.find(".coodinatorAtt").html();

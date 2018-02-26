@@ -6,7 +6,8 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.Contract;
-
+using FMS.Logger;
+using FMS.Logger.Models;
 namespace FMS.DAL.Services
 {
     public class MessageService : IMessageService
@@ -20,6 +21,7 @@ namespace FMS.DAL.Services
 
         public bool SendEmailToList(List<string> to, string subject, string body, bool throwError = false)
         {
+
             try
             {
                 var actualTo = new List<string>();
@@ -51,8 +53,33 @@ namespace FMS.DAL.Services
                 }
                 return true;
             }
-            catch (Exception)
+            catch(SmtpException ex)
             {
+                CoreLogger.CreateLog(new ExceptionModel
+                {
+                    NameSpace = "FMS.DAL",
+                    ClassName = "MessageService",
+                    MethodName = "SendEmailToList",
+                    ErrorMessage = ex.Message,
+                    ExceptionType = ex.GetType().Name,
+                    StackTrace = ex.StackTrace,
+                    DateTime = DateTime.Now
+                }, System.Web.HttpContext.Current.Request.MapPath("~/Log"));
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+                CoreLogger.CreateLog(new ExceptionModel
+                {
+                    NameSpace = "FMS.DAL",
+                    ClassName = "MessageService",
+                    MethodName = "SendEmailToList",
+                    ErrorMessage = ex.Message,
+                    ExceptionType = ex.GetType().Name,
+                    StackTrace = ex.StackTrace,
+                    DateTime = DateTime.Now
+                }, System.Web.HttpContext.Current.Request.MapPath("~/Log"));
                 return false;
                 //throw new BLLException(ExceptionCodes.BLLExceptions.ServerIsBusy);
             }
@@ -68,6 +95,7 @@ namespace FMS.DAL.Services
         {
             try
             {
+
                 var actualTo = new List<string>();
 
                 actualTo.AddRange(to.Distinct());
@@ -105,13 +133,36 @@ namespace FMS.DAL.Services
                     smtpClient.Send(mailMessage);
                     //smtpClient.SendAsync(mailMessage, null); //Sendasynch doesn't have the time to send in some case, no way to make sure it waits 'till the mail is sent for now.
                 }
-                    return true;
+                return true;
+            }
+            catch(SmtpException ex)
+            {
+                CoreLogger.CreateLog(new ExceptionModel
+                {
+                    NameSpace = "FMS.DAL",
+                    ClassName = "MessageService",
+                    MethodName = "SendEmailToListWithCC",
+                    ErrorMessage = ex.Message,
+                    ExceptionType = ex.GetType().Name,
+                    StackTrace = ex.StackTrace,
+                    DateTime = DateTime.Now
+                }, System.Web.HttpContext.Current.Request.MapPath("~/Log"));
+                return false;
             }
             catch (Exception ex)
             {
-                var message = ex.Message;
+                CoreLogger.CreateLog(new ExceptionModel
+                {
+                    NameSpace = "FMS.DAL",
+                    ClassName = "MessageService",
+                    MethodName = "SendEmailToListWithCC",
+                    ErrorMessage = ex.Message,
+                    ExceptionType = ex.GetType().Name,
+                    StackTrace = ex.StackTrace,
+                    DateTime = DateTime.Now
+                }, System.Web.HttpContext.Current.Request.MapPath("~/Log"));
+                
                 return false;
-                //throw new BLLException(ExceptionCodes.BLLExceptions.ServerIsBusy);
             }
         }
     }

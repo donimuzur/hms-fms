@@ -615,7 +615,7 @@ namespace FMS.Website.Controllers
                 var cfmIdleListSelectedCrf = _CRFBLL.GetList().Where(x => x.DOCUMENT_STATUS != (int) Enums.DocumentStatus.Cancelled && x.MST_FLEET_ID != null && x.MST_FLEET_ID.Value > 0)
                     .Select(x => x.MST_FLEET_ID.Value).ToList();
 
-                var fleetData = _fleetBLL.GetFleet().Where(x => x.VehicleUsage.ToUpper() == "CFM IDLE"
+                var fleetData = _fleetBLL.GetFleet().Where(x => (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper())== "CFM IDLE"
                                                                 && x.IsActive
                                                                 //&& !cfmIdleListSelected.Contains(x.MstFleetId)
                                                                 && !cfmIdleListSelectedCsf.Contains(x.MstFleetId)
@@ -623,7 +623,7 @@ namespace FMS.Website.Controllers
 
                 //var modelCFMIdle = fleetData.Where(x => x.CarGroupLevel == Convert.ToInt32(groupLevel)).ToList();
                 var modelCFMIdle = fleetData;
-                
+                                 
 
                 var fleetDto = modelCFMIdle;
 

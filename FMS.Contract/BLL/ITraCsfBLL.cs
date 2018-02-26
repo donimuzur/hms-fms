@@ -30,5 +30,6 @@ namespace FMS.Contract.BLL
         bool BatchEmailCsf(List<TraCsfDto> ListCsf, string Vendor, string AttachmentWtc, string AttachmentBenefit);
         void SendEmailForErrorBatch(string messageError);
         void SendEmailNotificationCfmIdle(TraCsfDto csfData, TraCtfDto ctfData);
+        void EpafCSFNotif();
     }
 }

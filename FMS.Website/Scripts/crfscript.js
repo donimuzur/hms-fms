@@ -65,6 +65,7 @@ function selectVehicle(urlFunction) {
             }
         });
     }
+
 }
 
 

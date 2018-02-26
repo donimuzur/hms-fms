@@ -39,6 +39,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
+                                                            @Html.Hidden("urlRoot", System.Configuration.ConfigurationManager.AppSettings["WebRootUrl"], new {id="urlRoot" })
                                                             @Html.HiddenFor(model => model.Detail.TraCsfId)
                                                             @Html.HiddenFor(model => model.Detail.CreateBy)
                                                             @Html.HiddenFor(model => model.Detail.CreateDate)
@@ -221,6 +222,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="control-label">Assigned To</label>
+                                                                
                                                                 @Html.TextBoxFor(model => model.Detail.AssignedTo, new { @class = "form-control" })
                                                             </div>
                                                         </div>
@@ -413,6 +415,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
+                                        <th>Image</th>
                                         <th>Manufacturer</th>
                                         <th>Model</th>
                                         <th>Series</th>
@@ -422,6 +425,8 @@
                                 </thead>
                                 <thead class="filters">
                                     <tr>
+                                        <th>
+                                        </th>
                                         <th>
                                         </th>
                                         <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -593,7 +598,9 @@
 
     function SelectVeh(value) {
         $('#TraCsfIdVeh').val(value);
-        selectVehicle('@Url.Action("GetVehicleData", "TraCsf")');
+        var urlRoot = $('#urlRoot').val();
+        console.log(urlRoot);
+        selectVehicle('@Url.Action("GetVehicleData", "TraCsf")', urlRoot);
         $('#selectvehmodal').modal('show');
     }
 

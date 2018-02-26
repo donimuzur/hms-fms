@@ -88,7 +88,7 @@ namespace FMS.BLL.Ctf
         }
         public List<TraCtfDto> GetCtfPersonal(Login userLogin)
         {
-            var data = _ctfService.GetCtf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_CREATOR == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID)).ToList();
+            var data = _ctfService.GetCtf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_CREATOR == userLogin.EMPLOYEE_ID || x.EMPLOYEE_ID_FLEET_APPROVAL == userLogin.EMPLOYEE_ID || (userLogin.LoginFor == null ? false : (userLogin.LoginFor.Where( login => login.EMPLOYEE_ID == x.EMPLOYEE_ID_FLEET_APPROVAL || login.EMPLOYEE_ID == x.EMPLOYEE_ID_CREATOR ).Count() > 0 ? true : false)))).ToList();
             var retData = Mapper.Map<List<TraCtfDto>>(data);
             return retData;
         }
@@ -427,7 +427,7 @@ namespace FMS.BLL.Ctf
             var rc = new CtfMailNotification();
 
             var fleetdata = _fleetService.GetFleet().Where(x => (x.POLICE_NUMBER == null ? "" : x.POLICE_NUMBER.ToUpper())== (ctfData.PoliceNumber == null ? "" : ctfData.PoliceNumber.ToUpper()) 
-                                                            && x.IS_ACTIVE && ctfData.EmployeeId== x.EMPLOYEE_ID 
+                                                            && ctfData.EmployeeId== x.EMPLOYEE_ID 
                                                             && (x.SUPPLY_METHOD == null ? "" : x.SUPPLY_METHOD.ToUpper()) == (ctfData.SupplyMethod == null ? "" : ctfData.SupplyMethod.ToUpper())
                                                             && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (ctfData.VehicleType == null ? "" : ctfData.VehicleType.ToUpper())).FirstOrDefault();
             if(fleetdata == null)
@@ -751,7 +751,7 @@ namespace FMS.BLL.Ctf
                         {
                             rc.CC.Add(item);
                         }
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
                     }
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
@@ -813,7 +813,7 @@ namespace FMS.BLL.Ctf
                         }
                         if (!string.IsNullOrEmpty(employeeDataEmail))
                         {
-                            rc.CC.Add(employeeDataEmail);
+                            //rc.CC.Add(employeeDataEmail);
                         }
                         foreach (var item in hrEmailList)
                         {
@@ -1099,7 +1099,7 @@ namespace FMS.BLL.Ctf
                         rc.To.Add(vendorDataEmail);
                     }
 
-                    rc.CC.Add(employeeDataEmail);
+                    //rc.CC.Add(employeeDataEmail);
                    
                     foreach (var item in fleetEmailList)
                     {
@@ -1400,6 +1400,17 @@ namespace FMS.BLL.Ctf
                             var TerminateCar = Mapper.Map<MST_FLEET>(FleetDto);
                             _fleetService.save(TerminateCar);
                             
+                        }
+                    }
+                    var reason = _reasonService.GetReasonById(CtfData.REASON.HasValue ? CtfData.REASON.Value : 0);
+                    var GetConfigReason = ConfigurationManager.AppSettings["Reason"].Split(',').ToList();
+                    if ((reason == null ? false : GetConfigReason.Where(x => (x == null ? "" : x.ToUpper() )  == reason.REASON.ToUpper()).Count() > 0 ))
+                    {
+                        var Employee = _employeeService.GetEmployeeById(CtfData.EMPLOYEE_ID);
+                        if (Employee != null)
+                        {
+                            Employee.IS_ACTIVE = false;
+                            _employeeService.save(Employee);
                         }
                     }
                 }

@@ -69,7 +69,7 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.SalesCode, opt => opt.MapFrom(src => src.SALES_CODE))
                 .ForMember(dest => dest.DocumentNumber, opt => opt.MapFrom(src => src.DOCUMENT_NUMBER));
 
-            AutoMapper.Mapper.CreateMap<FleetDto ,MST_FLEET  >().IgnoreAllNonExisting()
+            AutoMapper.Mapper.CreateMap<FleetDto ,MST_FLEET>().IgnoreAllNonExisting()
                .ForMember(dest => dest.MST_FLEET_ID , opt => opt.MapFrom(src => src.MstFleetId))
                 .ForMember(dest => dest.POLICE_NUMBER , opt => opt.MapFrom(src => src.PoliceNumber))
                 .ForMember(dest => dest.CHASIS_NUMBER , opt => opt.MapFrom(src => src.ChasisNumber))
@@ -123,6 +123,39 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive))
                 .ForMember(dest => dest.SALES_CODE, opt => opt.MapFrom(src => src.SalesCode))
                 .ForMember(dest => dest.DOCUMENT_NUMBER, opt => opt.MapFrom(src => src.DocumentNumber));
+
+
+            AutoMapper.Mapper.CreateMap<FLEET_CHANGE, FleetChangeDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.FleetChangeId, opt => opt.MapFrom(src => src.FLEET_CHANGE_ID))
+                .ForMember(dest => dest.FleetId, opt => opt.MapFrom(src => src.FLEET_ID))
+                .ForMember(dest => dest.PoliceNumber, opt => opt.MapFrom(src => src.POLICE_NUMBER))
+                .ForMember(dest => dest.ChasisNumber, opt => opt.MapFrom(src => src.CHASIS_NUMBER))
+                .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
+                .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
+                .ForMember(dest => dest.FieldName, opt => opt.MapFrom(src => src.FIELD_NAME))
+                .ForMember(dest => dest.DataBefore, opt => opt.MapFrom(src => src.DATA_BEFORE))
+                .ForMember(dest => dest.DataAfter, opt => opt.MapFrom(src => src.DATA_AFTER))
+                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.ChangeDate, opt => opt.MapFrom(src => src.CHANGE_DATE))
+                .ForMember(dest => dest.DateSend, opt => opt.MapFrom(src => src.DATE_SEND))
+                .ForMember(dest => dest.DateUpdate, opt => opt.MapFrom(src => src.DATE_UPDATE));
+
+            AutoMapper.Mapper.CreateMap<FleetChangeDto, FLEET_CHANGE>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.FLEET_CHANGE_ID, opt => opt.MapFrom(src => src.FleetChangeId))
+                .ForMember(dest => dest.FLEET_ID, opt => opt.MapFrom(src => src.FleetId))
+                .ForMember(dest => dest.POLICE_NUMBER, opt => opt.MapFrom(src => src.PoliceNumber))
+                .ForMember(dest => dest.CHASIS_NUMBER, opt => opt.MapFrom(src => src.ChasisNumber))
+                .ForMember(dest => dest.EMPLOYEE_ID, opt => opt.MapFrom(src => src.EmployeeId))
+                .ForMember(dest => dest.EMPLOYEE_NAME, opt => opt.MapFrom(src => src.EmployeeName))
+                .ForMember(dest => dest.FIELD_NAME, opt => opt.MapFrom(src => src.FieldName))
+                .ForMember(dest => dest.DATA_BEFORE, opt => opt.MapFrom(src => src.DataBefore))
+                .ForMember(dest => dest.DATA_AFTER, opt => opt.MapFrom(src => src.DataAfter))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
+                .ForMember(dest => dest.CHANGE_DATE, opt => opt.MapFrom(src => src.ChangeDate))
+                .ForMember(dest => dest.DATE_SEND, opt => opt.MapFrom(src => src.DateSend))
+                .ForMember(dest => dest.DATE_UPDATE, opt => opt.MapFrom(src => src.DateUpdate));
         }
     }
 }
