@@ -29,8 +29,9 @@ BEGIN
 	if MONTH(@end_contract) = @current_month and YEAR(@end_contract) = @current_year
 	begin
 		set @result = 1;
-		if DAY(@start_contract) > 3 and DAY(@start_contract) <= 20 set @result =1 - convert(decimal(18,2), (31 - DAY(@start_contract)) )/ 30;
-		if DAY(@start_contract) > 20 and DAY(@start_contract) <= DAY(EOMONTH(@start_contract))
+		if DAY(@start_contract) == 15  set @result = 0.5;
+		else if DAY(@start_contract) > 3 and DAY(@start_contract) <= 20 set @result =1 - convert(decimal(18,2), (31 - DAY(@start_contract)) )/ 30;
+		else if DAY(@start_contract) > 20 and DAY(@start_contract) <= DAY(EOMONTH(@start_contract))
 		begin
 			if DATEDIFF(month, @start_contract, DATEFROMPARTS(@current_year,@current_month,1)) = 1
 			begin 
@@ -65,9 +66,9 @@ BEGIN
 	if MONTH(@start_contract) = @current_month and YEAR(@start_contract) = @current_year
 	begin
 		set @result = 0;
-
-		if DAY(@start_contract) >= 3 and DAY(@start_contract) <= 20 set @result = convert(decimal(18,2), (31 - DAY(@start_contract)) )/ 30;
-		if DAY(@start_contract) < 3 set @result = 1;
+		if DAY(@start_contract) == 15  set @result = 0.5;
+		else if DAY(@start_contract) >= 3 and DAY(@start_contract) <= 20 set @result = convert(decimal(18,2), (31 - DAY(@start_contract)) )/ 30;
+		else if DAY(@start_contract) < 3 set @result = 1;
 
 		return @result;
 	end
