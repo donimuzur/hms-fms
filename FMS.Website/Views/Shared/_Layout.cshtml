@@ -139,7 +139,7 @@
 								<h5>Car Selection</h5>
 							</a>
 							<ul class="childmenu collapse" id="CsfMenu" data-parent="#sidemenu">
-								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
 								{
 									<li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf", new { IsPersonalDashboard = false })">Dashboard</a></li>
 								}
@@ -153,7 +153,7 @@
 								<h5>Car Relocation</h5>
 							</a>
 							<ul class="childmenu collapse" id="CrfMenu" data-parent="#sidemenu">
-								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
 								{
 									<li><a id="CrfDashboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
 								}
@@ -198,7 +198,7 @@
 								<h5>Car Termination</h5>
 							</a>
 							<ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
-								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
 								{
 									<li><a id="CtfDashboard" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
 								}

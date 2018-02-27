@@ -1910,7 +1910,7 @@ namespace FMS.Website.Controllers
         #region --------- Dashboar Epaf --------------
         public ActionResult DashboardEpaf()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Viewer && CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Administrator )
             {
                 return RedirectToAction("Index", "TraCtf");
             }

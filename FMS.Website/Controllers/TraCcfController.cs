@@ -70,41 +70,34 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.TitleForm = "CCF Open Document";
-
-            if (CurrentUser.EMPLOYEE_ID == "")
+            
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                return RedirectToAction("Unauthorized", "Error");
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
+                (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "HR")
+                //||(x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)
+                ))).OrderBy(x=>x.DocumentNumber));
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
+                (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "FLEET")
+                //||(x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)
+                ))).OrderBy(x => x.DocumentNumber));
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
+                //model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
+                //x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
+                //x.DocumentStatus == Enums.DocumentStatus.InProgress)
+                //));
             }
             else
             {
-                if (CurrentUser.UserRole == Enums.UserRole.HR)
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "HR")
-                    //||(x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)
-                    ))).OrderBy(x=>x.DocumentNumber));
-                }
-                else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
-                    (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "FLEET")
-                    //||(x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)
-                    ))).OrderBy(x => x.DocumentNumber));
-                }
-                else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
-                    //model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
-                    //x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
-                    //x.DocumentStatus == Enums.DocumentStatus.InProgress)
-                    //));
-                }
-                else
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
-                }
-                return View("Index", model);
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
             }
+            return View("Index", model);
         }
 
         public ActionResult Completed()
@@ -115,34 +108,28 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.DocumentStatus = "Completed";
             model.TitleForm = "CCF Completed Document";
-            if (CurrentUser.EMPLOYEE_ID == "")
+   
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
-                return RedirectToAction("Unauthorized", "Error");
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(
+                    x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "HR") ||
+                    (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(
+                    x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "FLEET") ||
+                    (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed) || (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
             }
             else
             {
-                if (CurrentUser.UserRole == Enums.UserRole.HR)
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(
-                        x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "HR") ||
-                        (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
-                }
-                else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(
-                        x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "FLEET") ||
-                        (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
-                }
-                else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed) || (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
-                }
-                else
-                {
-                    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
-                }
-                return View("Index", model);
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
             }
+            return View("Index", model);
         }
         #endregion
 
