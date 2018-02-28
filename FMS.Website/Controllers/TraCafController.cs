@@ -87,7 +87,7 @@ namespace FMS.Website.Controllers
             var data = _cafBLL.GetCaf();
             if (CurrentUser.UserRole == Enums.UserRole.Fleet ||
                 CurrentUser.UserRole == Enums.UserRole.Viewer ||
-                CurrentUser.UserRole == Enums.UserRole.Administrator)
+                CurrentUser.UserRole == Enums.UserRole.Administrator || CurrentUser.UserRole == Enums.UserRole.FleetManager)
             {
                 data = data
                     .Where(x => x.DocumentStatus != (int) Enums.DocumentStatus.Completed
