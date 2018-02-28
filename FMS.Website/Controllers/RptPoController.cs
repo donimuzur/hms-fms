@@ -56,6 +56,7 @@ namespace FMS.Website.Controllers
             model.TitleForm = "PO Report";
             model.TitleExport = "ExportPO";
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             var settingData = _settingBLL.GetSetting();
 
             model.RptPOItem = Mapper.Map<List<RptPOItem>>(data);
