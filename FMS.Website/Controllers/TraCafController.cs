@@ -140,14 +140,10 @@ namespace FMS.Website.Controllers
             List<TraCafDto> data = _cafBLL.GetCafPersonal(CurrentUser);
             var model = new TraCafIndexViewModel
             {
-                Details =  AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data),
+                Details = AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data),
                 MainMenu = Enums.MenuList.PersonalDashboard,
                 CurrentLogin = CurrentUser,
-                CurrentPageAccess = new RoleDto()
-                {
-                    ReadAccess = true,
-
-                },
+                CurrentPageAccess = CurrentPageAccess,
                 IsPersonalDashboard = true
             };
 

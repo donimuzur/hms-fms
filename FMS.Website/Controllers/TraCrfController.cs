@@ -121,11 +121,7 @@ namespace FMS.Website.Controllers
                 Details = Mapper.Map<List<TraCrfItemDetails>>(data),
                 MainMenu = Enums.MenuList.PersonalDashboard,
                 CurrentLogin = CurrentUser,
-                CurrentPageAccess = new RoleDto()
-                {
-                    ReadAccess = true,
-                    
-                },
+                CurrentPageAccess = CurrentPageAccess,
                 IsPersonalDashboard = true
             };
             foreach (var traCrfDto in model.Details)
