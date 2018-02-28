@@ -18,9 +18,9 @@ namespace FMS.Website.Code
             Mapper.CreateMap<KpiMonitoringDto, KpiMonitoringItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<KpiMonitoringGetByParamInput, KpiReportSearchView>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.FormDate, opt => opt.MapFrom(src => src.FromDate));
+                .ForMember(dest => dest.FromDate, opt => opt.MapFrom(src => src.FromDate));
             Mapper.CreateMap<KpiReportSearchView, KpiMonitoringGetByParamInput>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.FromDate, opt => opt.MapFrom(src => src.FormDate));
+                .ForMember(dest => dest.FromDate, opt => opt.MapFrom(src => src.FromDate));
 
         }
     }
