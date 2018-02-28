@@ -69,6 +69,7 @@ namespace FMS.Website.Controllers
             var model = new CcfModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.TitleForm = "CCF Open Document";
             
             if (CurrentUser.UserRole == Enums.UserRole.HR)
@@ -105,6 +106,7 @@ namespace FMS.Website.Controllers
             var data = _ccfBLL.GetCcf();
             var model = new CcfModel();
             model.MainMenu = _mainMenu;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             model.DocumentStatus = "Completed";
             model.TitleForm = "CCF Completed Document";
@@ -138,32 +140,25 @@ namespace FMS.Website.Controllers
         public ActionResult PersonalDashboard()
         {
             var data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID);
-
-            if (CurrentUser.EMPLOYEE_ID == "")
-            {
-                return RedirectToAction("Unauthorized", "Error");
-            }
-            else
-            {
-                if (CurrentUser.UserRole == Enums.UserRole.HR)
-                {
-                    data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "HR")).OrderBy(x => x.DocumentNumber);
-                }
-                else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
-                {
-                    data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "FLEET")).OrderBy(x => x.DocumentNumber);
-                }
-                else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.User)
-                {
-                    data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.EmployeeIdComplaintFor == CurrentUser.EMPLOYEE_ID).OrderBy(x => x.DocumentNumber);
-                }
-            }
             
+            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "HR")).OrderBy(x => x.DocumentNumber);
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "FLEET")).OrderBy(x => x.DocumentNumber);
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Viewer || CurrentUser.UserRole == Enums.UserRole.User)
+            {
+                data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.EmployeeIdComplaintFor == CurrentUser.EMPLOYEE_ID).OrderBy(x => x.DocumentNumber);
+            }
             var model = new CcfModel();
             model.TitleForm = "CCF Personal Dashboard";
             model.Details = Mapper.Map<List<CcfItem>>(data);
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.IsPersonalDashboard = true;
             var locationMapping = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).OrderByDescending(x => x.ValidFrom).ToList();
 

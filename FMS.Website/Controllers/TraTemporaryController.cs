@@ -67,6 +67,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportOpen";
             model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = _mainMenu;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
@@ -83,6 +84,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportCompleted";
             model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.MODIFIED_DATE));
             model.MainMenu = _mainMenu;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
             return View("Index", model);
@@ -101,6 +103,7 @@ namespace FMS.Website.Controllers
             model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.IsPersonalDashboard = true;
             return View("Index", model);
         }
