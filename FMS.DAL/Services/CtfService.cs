@@ -48,9 +48,14 @@ namespace FMS.DAL.Services
             {
                 queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == benefitType);
             }
-            if (userLogin.UserRole == Enums.UserRole.Fleet)
+            if (userLogin.UserRole == Enums.UserRole.Fleet || userLogin.UserRole == Enums.UserRole.FleetManager)
             {
                 queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == wtcType || c.VEHICLE_TYPE == benefitType);
+
+                if (userLogin.UserRole == Enums.UserRole.FleetManager)
+                {
+                    queryFilter = queryFilter.And(c => c.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && c.CREATED_BY != userLogin.USER_ID && c.EMPLOYEE_ID_CREATOR != userLogin.EMPLOYEE_ID);
+                }
             }
 
             return _traCtfRepository.Get(queryFilter,null,"").ToList();
