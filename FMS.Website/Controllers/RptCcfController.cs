@@ -94,7 +94,7 @@ namespace FMS.Website.Controllers
         public string ExportCcfReportGenerateReport(RptCCFModel model = null)
         {
             string pathFile = "";
-            var input = Mapper.Map<RptCCFInput>(model.SearchViewExport);
+            var input = Mapper.Map<RptCCFInput>(model.SearchView);
             pathFile = CreateXlsRptCCF(input);
             return pathFile;
 
