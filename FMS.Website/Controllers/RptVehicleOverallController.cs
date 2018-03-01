@@ -30,7 +30,7 @@ namespace FMS.Website.Controllers
 
         public RptVehicleOverallController(IPageBLL PageBll, IFleetBLL FleetBLL, IVendorBLL VendorBLL, IGroupCostCenterBLL GroupCostCenterBLL
             , ILocationMappingBLL LocationMappingBLL, ISettingBLL SettingBLL, IEmployeeBLL EmployeeBLL)
-            : base(PageBll, Enums.MenuList.MasterFleet)
+            : base(PageBll, Enums.MenuList.RptVehicle)
         {
             _fleetBLL = FleetBLL;
             _vendorBLL = VendorBLL;
@@ -80,6 +80,7 @@ namespace FMS.Website.Controllers
 
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
 
             return View("Index", model);
         }

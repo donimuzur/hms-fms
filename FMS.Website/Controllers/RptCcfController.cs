@@ -50,6 +50,7 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CCF Report";
             model.TitleExport = "ExportCCF";
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             var settingData = _settingBLL.GetSetting();
 
             model.RptCCFItem = Mapper.Map<List<RptCCFItem>>(data);

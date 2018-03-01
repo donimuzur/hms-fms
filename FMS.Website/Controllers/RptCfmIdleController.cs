@@ -38,6 +38,7 @@ namespace FMS.Website.Controllers
             var model = new CfmIdleReportModel();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.SearchView.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.ToDate = DateTime.Today;
             var filter = new CfmIdleGetByParamInput();

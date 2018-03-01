@@ -1984,7 +1984,7 @@ namespace FMS.BLL.Csf
 
             if (EpafCSFList.Count() > 0 && arrScheduler.Where(x => x == DateTime.Today.Day.ToString()).Count() > 0)
             {
-                var IsSend = DoEpafCSFNotif(EpafCSFList);
+                var IsSend = DoEpafCSFNotif(EpafCSFList.OrderBy(x=> x.EFFECTIVE_DATE).ToList());
             }
         }
 

@@ -50,7 +50,10 @@
                             <a href="@Url.Action("Edit", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                         }
                     }
-                    <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    @if (Model.CurrentPageAccess.ReadAccess.Value)
+                    {
+                        <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    }
                 </td>
                 <td>@Html.Raw(data.TempNumber)</td>
                 <td>@Html.Raw(data.TempStatusName)</td>

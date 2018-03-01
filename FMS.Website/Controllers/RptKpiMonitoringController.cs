@@ -61,6 +61,7 @@ namespace FMS.Website.Controllers
             
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
 
             var FormTypeList = new Dictionary<string, string> { { "CSF", "CSF" }, { "CTF", "CTF" }, { "CRF", "CRF" } };
             var VehicleUsageList =_settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").ToList();
