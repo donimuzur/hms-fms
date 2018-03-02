@@ -284,6 +284,7 @@
     <Compile Include="Controllers\RptCfmIdleController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
+    <Compile Include="Controllers\RptGSController.cs" />
     <Compile Include="Controllers\RptKpiMonitoringController.cs" />
     <Compile Include="Controllers\RptPoController.cs" />
     <Compile Include="Controllers\RptVehicleOverallController.cs" />
@@ -4405,6 +4406,8 @@
     <Content Include="Views\MstFleetDashboard\Index.cshtml" />
     <Content Include="Views\MstFleetDashboard\_FleetDashboardList.cshtml" />
     <Content Include="Views\Shared\ErrorHandler.cshtml" />
+    <Content Include="Views\RptGS\Index.cshtml" />
+    <Content Include="Views\RptGS\_RptGsFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
