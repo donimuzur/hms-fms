@@ -7,9 +7,12 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">@ViewBag.Title</h5>
-    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-download"></i> Export
-    </a>
+    @if (Model.CurrentPageAccess.ReadAccess.Value)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-download"></i> Export
+        </a>
+    }
     @if (Model.CurrentLogin.UserRole == Enums.UserRole.Fleet)
     {
         <a href="@Url.Action("UploadCtf", "TraCtf")" class="btn btn-primary line" title="Upload CTF">

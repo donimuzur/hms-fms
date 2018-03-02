@@ -105,7 +105,7 @@ namespace FMS.Website.Controllers
         public string ExportPoReportGenerateReport(RptPOModel model = null)
         {
             string pathFile = "";
-            var input = Mapper.Map<RptPoByParamInput>(model.SearchViewExport);
+            var input = Mapper.Map<RptPoByParamInput>(model.SearchView);
             pathFile = CreateXlsRptPO(input);
             return pathFile;
 

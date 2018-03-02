@@ -74,7 +74,10 @@
                             }
                         }
                     }
-                    <a href="@Url.Action("Detail", "TraCsf", new { id = data.TraCsfId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    @if (Model.CurrentPageAccess.ReadAccess.Value)
+                    {
+                        <a href="@Url.Action("Detail", "TraCsf", new { id = data.TraCsfId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    }
                 </td>
                 <td>@Html.Raw(data.CsfNumber)</td>
                 <td>@Html.Raw(data.CsfStatusName)</td>
