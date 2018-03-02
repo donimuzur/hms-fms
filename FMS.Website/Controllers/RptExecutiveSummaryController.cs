@@ -784,6 +784,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportSummaryAll";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -1061,6 +1062,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportSummaryRegion";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View("SummaryAll", model);
         }
 
@@ -1295,6 +1297,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -1744,6 +1747,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -2189,6 +2193,7 @@ namespace FMS.Website.Controllers
             model.NoVehicleMakeList = Mapper.Map<List<NoVehicleMakeData>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -2639,6 +2644,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -3013,6 +3019,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -3387,6 +3394,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -3759,6 +3767,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -4128,6 +4137,7 @@ namespace FMS.Website.Controllers
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -4584,6 +4594,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
@@ -5116,6 +5127,7 @@ namespace FMS.Website.Controllers
             model.SearchView.Functions = GetFunctionsMultiSelectList();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
 
