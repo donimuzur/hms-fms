@@ -34,6 +34,7 @@ namespace FMS.BLL.CAF
         private IRemarkService _remarkService;
         private ITemporaryService _temporaryService;
         private IVendorService _vendorService;
+        private IFleetService _fleetService;
 
         public CafBLL(IUnitOfWork uow)
         {
@@ -49,6 +50,7 @@ namespace FMS.BLL.CAF
             _remarkService = new RemarkService(_uow);
             _temporaryService = new TemporaryService(_uow);
             _vendorService = new VendorService(_uow);
+            _fleetService = new FleetService(_uow);
         }
 
         public void Save(BusinessObject.Dto.TraCafDto data, BusinessObject.Business.Login user)
@@ -159,6 +161,16 @@ namespace FMS.BLL.CAF
             {
                 validation.Add(string.Format("CAF For police number : {0} and Incident Date : {1} already registered in FMS.",dataTovalidate.PoliceNumber,dataTovalidate.IncidentDate.ToString("dd-MMM-yyyy")));
                 
+            }
+
+            if(!_fleetService.GetFleetByParam(new FleetParamInput() { PoliceNumber = dataTovalidate.PoliceNumber }).Any())
+            {
+                validation.Add(string.Format("The Police Number : {0} is not found in the system. Please check again", dataTovalidate.PoliceNumber));
+            }
+
+            if(!_employeeService.GetEmployeeByParam(new EmployeeParamInput() { FormalName = dataTovalidate.EmployeeName }).Any())
+            {
+                validation.Add(string.Format("The Employee Name : {0} is not found in the system. Please check again", dataTovalidate.EmployeeName));
             }
 
             if (validation.Count > 0)
