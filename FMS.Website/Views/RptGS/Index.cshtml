@@ -12,7 +12,7 @@
     }
 </div>
 <section class="content">
-    @using (Html.BeginForm("ReportGs", "MstGs", FormMethod.Post, new { @id = "ExportToXls" }))
+    @using (Html.BeginForm("Index", "RptGs", FormMethod.Post, new { @id = "ExportToXls" }))
     {
         <div class="wpanel">
             @Html.Partial("_RptGsFilter")
