@@ -85,7 +85,7 @@ namespace FMS.BLL.Crf
                     }
                 }
 
-                if (currentUser.UserRole == Enums.UserRole.HR )
+                if (currentUser.UserRole == Enums.UserRole.HR || currentUser.UserRole == Enums.UserRole.HRManager)
                 {
                     crfList.AddRange(data.Where(x => x.VEHICLE_TYPE == "BENEFIT"));
                 }

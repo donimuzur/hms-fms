@@ -44,7 +44,7 @@ namespace FMS.DAL.Services
             {
                 queryFilter = queryFilter.And(c => c.EMPLOYEE_ID == userLogin.EMPLOYEE_ID);
             }
-            if (userLogin.UserRole == Enums.UserRole.HR)
+            if (userLogin.UserRole == Enums.UserRole.HR || userLogin.UserRole == Enums.UserRole.HRManager)
             {
                 queryFilter = queryFilter.And(c => c.VEHICLE_TYPE == benefitType);
             }
