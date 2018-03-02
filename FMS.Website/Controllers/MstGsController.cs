@@ -200,47 +200,6 @@ namespace FMS.Website.Controllers
         }
         #endregion
 
-        public ActionResult ReportGs()
-        {
-            var model = new GsModel();
-            var data = _gsBLL.GetGsReport(new RptGsInput());
-            model.Details = Mapper.Map<List<GsItem>>(data);
-            model.MainMenu = Enums.MenuList.RptGs;
-            model.CurrentLogin = CurrentUser;
-            model.CurrentPageAccess = CurrentPageAccess;
-
-
-            var settingList = _settingBLL.GetSetting().Where(x => x.SettingGroup.StartsWith("VEHICLE_USAGE")).Select(x => new { x.SettingName,  x.SettingValue }).ToList();
-            model.VehicleUsageList = new SelectList(settingList, "SettingName", "SettingValue");
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult ReportGs(GsModel model)
-        {
-            
-            //var data = _gsBLL.GetGs();
-            //model.Details = Mapper.Map<List<GsItem>>(data);
-            model.MainMenu = Enums.MenuList.RptGs;
-            model.CurrentLogin = CurrentUser;
-            model.CurrentPageAccess = CurrentPageAccess;
-
-            List<GsDto> data = _gsBLL.GetGsReport(new RptGsInput()
-            {
-                StartDateBegin = model.FilterReport.StartDateBegin,
-                EndDateBegin = model.FilterReport.EndDateBegin,
-                StartDateEnd = model.FilterReport.StartDateEnd,
-                EndDateEnd = model.FilterReport.EndDateEnd,
-                Location = model.FilterReport.Location,
-                VehicleUsage = model.FilterReport.VehicleUsage
-            });
-
-            model.Details = Mapper.Map<List<GsItem>>(data);
-            var settingList = _settingBLL.GetSetting().Where(x => x.SettingGroup.StartsWith("VEHICLE_USAGE")).Select(x => new { x.SettingName, x.SettingValue }).ToList();
-            model.VehicleUsageList = new SelectList(settingList, "SettingName", "SettingValue");
-            return View(model);
-        }
-
         #region --------upload----------
         public ActionResult Upload()
         {
