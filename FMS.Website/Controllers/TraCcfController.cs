@@ -79,7 +79,7 @@ namespace FMS.Website.Controllers
                 //||(x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)
                 ))).OrderBy(x=>x.DocumentNumber));
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet || CurrentUser.UserRole == Enums.UserRole.FleetManager)
             {
                 model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
                 (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "FLEET")
