@@ -175,6 +175,10 @@
                     </div>
                 </div>
             }
+            else
+            {
+                @Html.HiddenFor(model => model.SearchView.Zone)
+            }
             <div class="clearfix"></div>
             <div class="col-md-12">
                 <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
