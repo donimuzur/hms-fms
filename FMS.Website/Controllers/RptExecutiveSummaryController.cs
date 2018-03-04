@@ -1013,180 +1013,96 @@ namespace FMS.Website.Controllers
             var slDocument = new SLDocument();
 
             //title no of vehicle
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 8, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 14, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.RenameWorksheet("Sheet1", "Number Of Vehicle");
             //create style
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
             valueStyle.Font.Bold = true;
             valueStyle.Font.FontSize = 14;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Double;
-            slDocument.SetCellStyle(1, 2, 1, 14, valueStyle);
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "Number Of Vehicle");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboard(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardNew(slDocument, listData);
+            slDocument = CreateDataExcelSheet1(slDocument, listData);
 
 
             //title no of vehicle wtc
-            slDocument.AddWorksheet("Number Of Vehicle WTC");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 8, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 14, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 14, valueStyle);
-            slDocument.AutoFitColumn(8);
+            slDocument.AddWorksheet("Vehicle By Regional");
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "Number Of Vehicle WTC");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardWtc(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardWtcNew(slDocument, listDataWtc);
+            slDocument = CreateDataExcelSheet2(slDocument, listDataWtc);
             
 
             //title no of vehicle Make
-            slDocument.AddWorksheet("Number Of Vehicle Make-Type");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 8, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 14, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 14, valueStyle);
-            slDocument.AutoFitColumn(8);
+            slDocument.AddWorksheet("Make Type");
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 16);
+            slDocument.SetCellStyle(1, 2, 1, 16, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "Number Of Vehicle Make-Type");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardMake(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardMakeNew(slDocument, listDataMake);
+            slDocument = CreateDataExcelSheet3(slDocument, listDataMake);
 
 
             //title Odometer
             slDocument.AddWorksheet("Odometer");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 4, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 7, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
             //create style
-            slDocument.SetCellStyle(1, 2, 1, 7, valueStyle);
-            slDocument.AutoFitColumn(4);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "Odometer");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardOdometer(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardOdometerNew(slDocument, listDataOdo);
+            slDocument = CreateDataExcelSheet4(slDocument, listDataOdo);
 
 
             //title Liter By Function
-            slDocument.AddWorksheet("Liter By Function");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 4, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 7, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 7, valueStyle);
-            slDocument.AutoFitColumn(4);
+            slDocument.AddWorksheet("Liters");
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "Liter By Function");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardLiterByFunction(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardLiterByFunctionNew(slDocument, listDataLiter);
-
-            
-            //title Fuel Cost By Function
-            slDocument.AddWorksheet("Fuel Cost By Function");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 4, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 7, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 7, valueStyle);
-            slDocument.AutoFitColumn(4);
-
-            slDocument.SetCellValue(3, 2, "Fuel Cost By Function");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardFuelCostByFunction(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardFuelCostByFunctionNew(slDocument, listDataFuel);
+            slDocument = CreateDataExcelSheet5(slDocument, listDataLiter);
 
 
-            //title Lease Cost By Function
-            slDocument.AddWorksheet("Lease Cost By Function");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 4, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 7, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 7, valueStyle);
-            slDocument.AutoFitColumn(4);
+            //title Fuel & Lease Cost By Function
+            slDocument.AddWorksheet("Fuel & Lease Cost");
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "Lease Cost By Function");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardLeaseCostByFunction(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardLeaseCostByFunctionNew(slDocument, listDataLease);
+            slDocument = CreateDataExcelSheet6(slDocument, listDataFuel);
 
 
             //title Sales By Region
             slDocument.AddWorksheet("Sales By Region");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 8, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 14, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 14, valueStyle);
-            slDocument.AutoFitColumn(8);
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "Sales By Region");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardSalesByRegion(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardSalesByRegionNew(slDocument, listDataSales);
-
-
-            //title Accident
-            slDocument.AddWorksheet("Accident");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 11, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 21, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 21, valueStyle);
-            slDocument.AutoFitColumn(11);
-
-            slDocument.SetCellValue(3, 2, "Accident");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardAccident(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardAccidentNew(slDocument, listDataAccident);
+            slDocument = CreateDataExcelSheet7(slDocument, listDataSales);
 
 
             //title AC Vs OB
             slDocument.AddWorksheet("AC Vs OB");
-            slDocument.SetCellValue(1, 2, "Sampoerna");
-            slDocument.SetCellValue(1, 4, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.SetCellValue(1, 7, "Fleet");
-            //slDocument.MergeWorksheetCells(1, 1, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 7, valueStyle);
-            slDocument.AutoFitColumn(4);
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument.SetCellValue(3, 2, "AC Vs OB");
-            slDocument.SetCellStyle(3, 2, valueStyle);
-            //create header
-            //slDocument = CreateHeaderExcelDashboardAcVsOb(slDocument);
-            //create data
-            slDocument = CreateDataExcelDashboardAcVsObNew(slDocument, listDataAcOb);
+            slDocument = CreateDataExcelSheet8(slDocument, listDataAcOb);
 
+
+            //title Accident
+            slDocument.AddWorksheet("Accident");
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+
+            slDocument = CreateDataExcelSheet9(slDocument, listDataAccident);
+            
 
             var fileName = "ExecSum_SummaryAll" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -1195,6 +1111,605 @@ namespace FMS.Website.Controllers
 
             return path;
 
+        }
+
+        #endregion
+
+        #region ------------ New Export Summary All ----------
+
+        private SLDocument CreateDataExcelSheet1(SLDocument slDocument, List<NoVehicleData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY FUNCTION");
+            slDocument.SetCellValue(15, 2, "Sales");
+            slDocument.SetCellValue(16, 2, "Marketing");
+            slDocument.SetCellValue(17, 2, "Operations");
+            slDocument.SetCellValue(18, 2, "HR");
+            slDocument.SetCellValue(19, 2, "GS");
+            slDocument.SetCellValue(20, 2, "Logistics");
+            slDocument.SetCellValue(21, 2, "Others");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "BENEFIT");
+            slDocument.SetCellValue(15, 3, 31);
+            slDocument.SetCellValue(16, 3, 74);
+            slDocument.SetCellValue(17, 3, 6);
+            slDocument.SetCellValue(18, 3, 39);
+            slDocument.SetCellValue(19, 3, 20);
+            slDocument.SetCellValue(20, 3, 85);
+            slDocument.SetCellValue(21, 3, 7);
+            slDocument.SetCellValue(22, 3, 111);
+
+            slDocument.SetCellValue(14, 4, "WTC");
+            slDocument.SetCellValue(15, 4, 82);
+            slDocument.SetCellValue(16, 4, 23);
+            slDocument.SetCellValue(17, 4, 66);
+            slDocument.SetCellValue(18, 4, 9);
+            slDocument.SetCellValue(19, 4, 99);
+            slDocument.SetCellValue(20, 4, 4);
+            slDocument.SetCellValue(21, 4, 2);
+            slDocument.SetCellValue(22, 4, 132);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 4);
+            chart.SetChartStyle(SLChartStyle.Style32);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("Number Of Vehicle");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet2(SLDocument slDocument, List<NoVehicleWtcData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY REGIONAL");
+            slDocument.SetCellValue(15, 2, "Sumatra 1");
+            slDocument.SetCellValue(16, 2, "Sumatra 2");
+            slDocument.SetCellValue(17, 2, "Jakarta");
+            slDocument.SetCellValue(18, 2, "Java 1");
+            slDocument.SetCellValue(19, 2, "Java 2");
+            slDocument.SetCellValue(20, 2, "Bali Nusra");
+            slDocument.SetCellValue(21, 2, "Kalimantan");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "SALES");
+            slDocument.SetCellValue(15, 3, 51);
+            slDocument.SetCellValue(16, 3, 30);
+            slDocument.SetCellValue(17, 3, 40);
+            slDocument.SetCellValue(18, 3, 28);
+            slDocument.SetCellValue(19, 3, 92);
+            slDocument.SetCellValue(20, 3, 50);
+            slDocument.SetCellValue(21, 3, 45);
+            slDocument.SetCellValue(22, 3, 111);
+
+            slDocument.SetCellValue(14, 4, "MARKETING");
+            slDocument.SetCellValue(15, 4, 41);
+            slDocument.SetCellValue(16, 4, 56);
+            slDocument.SetCellValue(17, 4, 25);
+            slDocument.SetCellValue(18, 4, 48);
+            slDocument.SetCellValue(19, 4, 72);
+            slDocument.SetCellValue(20, 4, 34);
+            slDocument.SetCellValue(21, 4, 12);
+            slDocument.SetCellValue(22, 4, 132);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2);
+            slDocument.AutoFitColumn(4);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 4);
+            chart.SetChartStyle(SLChartStyle.Style31);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("Vehicle By Regional");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet3(SLDocument slDocument, List<NoVehicleMakeData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY MANUFACTURER");
+            slDocument.SetCellValue(15, 2, "Audi");
+            slDocument.SetCellValue(16, 2, "BMW");
+            slDocument.SetCellValue(17, 2, "Daihatsu");
+            slDocument.SetCellValue(18, 2, "Ford");
+            slDocument.SetCellValue(19, 2, "Other");
+            slDocument.SetCellValue(20, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "TOTAL");
+            slDocument.SetCellValue(15, 3, 120);
+            slDocument.SetCellValue(16, 3, 50);
+            slDocument.SetCellValue(17, 3, 140);
+            slDocument.SetCellValue(18, 3, 180);
+            slDocument.SetCellValue(19, 3, 100);
+            slDocument.SetCellValue(20, 3, 200);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2);
+            slDocument.SetCellStyle(14, 2, 14, 8, headerStyleChart);
+            slDocument.SetCellStyle(20, 2, 20, 8, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 20, 3);
+            chart.SetChartStyle(SLChartStyle.Style30);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 8);
+            chart.Title.SetTitle("Vehicle By Make");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            #region --------- Chart 2--------------
+
+            slDocument.SetCellValue(14, 10, "BY TYPE");
+            slDocument.SetCellValue(15, 10, "MPV");
+            slDocument.SetCellValue(16, 10, "Truck");
+            slDocument.SetCellValue(17, 10, "Box");
+            slDocument.SetCellValue(18, 10, "Motorcycle");
+            slDocument.SetCellValue(19, 10, "Other");
+            slDocument.SetCellValue(20, 10, "Total");
+
+            slDocument.SetCellValue(14, 11, "TOTAL");
+            slDocument.SetCellValue(15, 11, 120);
+            slDocument.SetCellValue(16, 11, 50);
+            slDocument.SetCellValue(17, 11, 140);
+            slDocument.SetCellValue(18, 11, 180);
+            slDocument.SetCellValue(19, 11, 100);
+            slDocument.SetCellValue(20, 11, 200);
+
+            slDocument.AutoFitColumn(10);
+            slDocument.SetCellStyle(14, 10, 14, 16, headerStyleChart);
+            slDocument.SetCellStyle(20, 10, 20, 16, headerStyleNumbChart);
+
+            chart = slDocument.CreateChart(14, 10, 20, 11);
+            chart.SetChartStyle(SLChartStyle.Style32);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 9, 12, 16);
+            chart.Title.SetTitle("Vehicle By Type");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet4(SLDocument slDocument, List<OdometerData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY FUNCTION");
+            slDocument.SetCellValue(15, 2, "Sales");
+            slDocument.SetCellValue(16, 2, "Marketing");
+            slDocument.SetCellValue(17, 2, "Operations");
+            slDocument.SetCellValue(18, 2, "HR");
+            slDocument.SetCellValue(19, 2, "GS");
+            slDocument.SetCellValue(20, 2, "Logistics");
+            slDocument.SetCellValue(21, 2, "Others");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "TOTAL");
+            slDocument.SetCellValue(15, 3, 31);
+            slDocument.SetCellValue(16, 3, 74);
+            slDocument.SetCellValue(17, 3, 6);
+            slDocument.SetCellValue(18, 3, 39);
+            slDocument.SetCellValue(19, 3, 20);
+            slDocument.SetCellValue(20, 3, 85);
+            slDocument.SetCellValue(21, 3, 7);
+            slDocument.SetCellValue(22, 3, 111);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 3);
+            chart.SetChartStyle(SLChartStyle.Style31);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("Monthly KM's driven By Function");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet5(SLDocument slDocument, List<LiterByFunctionData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY FUNCTION");
+            slDocument.SetCellValue(15, 2, "Sales");
+            slDocument.SetCellValue(16, 2, "Marketing");
+            slDocument.SetCellValue(17, 2, "Operations");
+            slDocument.SetCellValue(18, 2, "HR");
+            slDocument.SetCellValue(19, 2, "GS");
+            slDocument.SetCellValue(20, 2, "Logistics");
+            slDocument.SetCellValue(21, 2, "Others");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "TOTAL");
+            slDocument.SetCellValue(15, 3, 31);
+            slDocument.SetCellValue(16, 3, 74);
+            slDocument.SetCellValue(17, 3, 6);
+            slDocument.SetCellValue(18, 3, 39);
+            slDocument.SetCellValue(19, 3, 20);
+            slDocument.SetCellValue(20, 3, 85);
+            slDocument.SetCellValue(21, 3, 7);
+            slDocument.SetCellValue(22, 3, 111);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 3);
+            chart.SetChartStyle(SLChartStyle.Style32);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("Monthly Fuel Purchased (in liters) By Function");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet6(SLDocument slDocument, List<FuelCostByFunctionData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY FUNCTION");
+            slDocument.SetCellValue(15, 2, "Sales");
+            slDocument.SetCellValue(16, 2, "Marketing");
+            slDocument.SetCellValue(17, 2, "Operations");
+            slDocument.SetCellValue(18, 2, "HR");
+            slDocument.SetCellValue(19, 2, "GS");
+            slDocument.SetCellValue(20, 2, "Logistics");
+            slDocument.SetCellValue(21, 2, "Others");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "Fuel Cost");
+            slDocument.SetCellValue(15, 3, 31);
+            slDocument.SetCellValue(16, 3, 74);
+            slDocument.SetCellValue(17, 3, 6);
+            slDocument.SetCellValue(18, 3, 39);
+            slDocument.SetCellValue(19, 3, 20);
+            slDocument.SetCellValue(20, 3, 85);
+            slDocument.SetCellValue(21, 3, 7);
+            slDocument.SetCellValue(22, 3, 111);
+
+            slDocument.SetCellValue(14, 4, "Lease Cost");
+            slDocument.SetCellValue(15, 4, 82);
+            slDocument.SetCellValue(16, 4, 23);
+            slDocument.SetCellValue(17, 4, 66);
+            slDocument.SetCellValue(18, 4, 9);
+            slDocument.SetCellValue(19, 4, 99);
+            slDocument.SetCellValue(20, 4, 4);
+            slDocument.SetCellValue(21, 4, 2);
+            slDocument.SetCellValue(22, 4, 132);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 4);
+            chart.SetChartStyle(SLChartStyle.Style30);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("Fuel & Lease Cost");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet7(SLDocument slDocument, List<SalesByRegionData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY FUNCTION");
+            slDocument.SetCellValue(15, 2, "Sales");
+            slDocument.SetCellValue(16, 2, "Marketing");
+            slDocument.SetCellValue(17, 2, "Operations");
+            slDocument.SetCellValue(18, 2, "HR");
+            slDocument.SetCellValue(19, 2, "GS");
+            slDocument.SetCellValue(20, 2, "Logistics");
+            slDocument.SetCellValue(21, 2, "Others");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "Operational Cost Per Stick");
+            slDocument.SetCellValue(15, 3, 31);
+            slDocument.SetCellValue(16, 3, 74);
+            slDocument.SetCellValue(17, 3, 6);
+            slDocument.SetCellValue(18, 3, 39);
+            slDocument.SetCellValue(19, 3, 20);
+            slDocument.SetCellValue(20, 3, 85);
+            slDocument.SetCellValue(21, 3, 7);
+            slDocument.SetCellValue(22, 3, 111);
+
+            slDocument.SetCellValue(14, 4, "Operational Cost Per KM");
+            slDocument.SetCellValue(15, 4, 82);
+            slDocument.SetCellValue(16, 4, 23);
+            slDocument.SetCellValue(17, 4, 66);
+            slDocument.SetCellValue(18, 4, 9);
+            slDocument.SetCellValue(19, 4, 99);
+            slDocument.SetCellValue(20, 4, 4);
+            slDocument.SetCellValue(21, 4, 2);
+            slDocument.SetCellValue(22, 4, 132);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2,4);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 4);
+            chart.SetChartStyle(SLChartStyle.Style32);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("Sales By Region");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet8(SLDocument slDocument, List<AcVsObData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY FUNCTION");
+            slDocument.SetCellValue(15, 2, "Sales");
+            slDocument.SetCellValue(16, 2, "Marketing");
+            slDocument.SetCellValue(17, 2, "Operations");
+            slDocument.SetCellValue(18, 2, "HR");
+            slDocument.SetCellValue(19, 2, "GS");
+            slDocument.SetCellValue(20, 2, "Logistics");
+            slDocument.SetCellValue(21, 2, "Others");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "Actual Cost");
+            slDocument.SetCellValue(15, 3, 31);
+            slDocument.SetCellValue(16, 3, 74);
+            slDocument.SetCellValue(17, 3, 6);
+            slDocument.SetCellValue(18, 3, 39);
+            slDocument.SetCellValue(19, 3, 20);
+            slDocument.SetCellValue(20, 3, 85);
+            slDocument.SetCellValue(21, 3, 7);
+            slDocument.SetCellValue(22, 3, 111);
+
+            slDocument.SetCellValue(14, 4, "Operational Budget");
+            slDocument.SetCellValue(15, 4, 82);
+            slDocument.SetCellValue(16, 4, 23);
+            slDocument.SetCellValue(17, 4, 66);
+            slDocument.SetCellValue(18, 4, 9);
+            slDocument.SetCellValue(19, 4, 99);
+            slDocument.SetCellValue(20, 4, 4);
+            slDocument.SetCellValue(21, 4, 2);
+            slDocument.SetCellValue(22, 4, 132);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2, 4);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 4);
+            chart.SetChartStyle(SLChartStyle.Style31);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("AC Vs OB");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
+
+        private SLDocument CreateDataExcelSheet9(SLDocument slDocument, List<AccidentData> listData)
+        {
+            #region --------- Chart --------------
+
+            slDocument.SetCellValue(14, 2, "BY FUNCTION");
+            slDocument.SetCellValue(15, 2, "Sales");
+            slDocument.SetCellValue(16, 2, "Marketing");
+            slDocument.SetCellValue(17, 2, "Operations");
+            slDocument.SetCellValue(18, 2, "HR");
+            slDocument.SetCellValue(19, 2, "GS");
+            slDocument.SetCellValue(20, 2, "Logistics");
+            slDocument.SetCellValue(21, 2, "Others");
+            slDocument.SetCellValue(22, 2, "Total");
+
+            slDocument.SetCellValue(14, 3, "ALL");
+            slDocument.SetCellValue(15, 3, 131);
+            slDocument.SetCellValue(16, 3, 174);
+            slDocument.SetCellValue(17, 3, 16);
+            slDocument.SetCellValue(18, 3, 139);
+            slDocument.SetCellValue(19, 3, 120);
+            slDocument.SetCellValue(20, 3, 185);
+            slDocument.SetCellValue(21, 3, 17);
+            slDocument.SetCellValue(22, 3, 311);
+
+            slDocument.SetCellValue(14, 4, "BENEFIT");
+            slDocument.SetCellValue(15, 4, 31);
+            slDocument.SetCellValue(16, 4, 74);
+            slDocument.SetCellValue(17, 4, 6);
+            slDocument.SetCellValue(18, 4, 49);
+            slDocument.SetCellValue(19, 4, 20);
+            slDocument.SetCellValue(20, 4, 85);
+            slDocument.SetCellValue(21, 4, 7);
+            slDocument.SetCellValue(22, 4, 111);
+
+            slDocument.SetCellValue(14, 5, "WTC");
+            slDocument.SetCellValue(15, 5, 82);
+            slDocument.SetCellValue(16, 5, 23);
+            slDocument.SetCellValue(17, 5, 66);
+            slDocument.SetCellValue(18, 5, 9);
+            slDocument.SetCellValue(19, 5, 99);
+            slDocument.SetCellValue(20, 5, 4);
+            slDocument.SetCellValue(21, 5, 2);
+            slDocument.SetCellValue(22, 5, 132);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(2);
+            slDocument.SetCellStyle(14, 2, 14, 10, headerStyleChart);
+            slDocument.SetCellStyle(22, 2, 22, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(14, 2, 22, 5);
+            chart.SetChartStyle(SLChartStyle.Style30);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, 12, 10);
+            chart.Title.SetTitle("Accident");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
         }
 
         #endregion
