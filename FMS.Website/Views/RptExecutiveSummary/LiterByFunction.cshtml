@@ -83,7 +83,22 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Vehicle Type</label>
-						@Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+						@if (Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.EHS
+                                                || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator
+                                                || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager)
+                        {
+                            @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic || Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.LDManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control", @readonly = "readonly", @Value = "WTC" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.HRManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control", @readonly = "readonly", @Value = "BENEFIT" })
+                        }
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -95,10 +110,42 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Function</label>
-						@Html.HiddenFor(model => model.SearchView.FunctionId)
-						@Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
+						@if (Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.EHS
+                                        || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR
+                                        || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport
+                                        || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager || Model.CurrentLogin.UserRole == Enums.UserRole.HRManager)
+                        {
+                            @Html.HiddenFor(model => model.SearchView.FunctionId)
+                            @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.FunctionId, new { @class = "form-control", @readonly = "readonly", @Value = "Sales,Marketing" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.FunctionId, new { @class = "form-control", @readonly = "readonly", @Value = "Operations" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.Logistic || Model.CurrentLogin.UserRole == Enums.UserRole.LDManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.FunctionId, new { @class = "form-control", @readonly = "readonly", @Value = "Logistic" })
+                        }
 					</div>
 				</div>
+                if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic)
+                {
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_Zone">Zone</label>
+                            @Html.HiddenFor(model => model.SearchView.ZoneId)
+                            @Html.DropDownListFor(model => model.SearchView.Zone, Model.SearchView.ZoneList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.SearchView.Zone)
+                }
 				<div class="clearfix"></div>
 				<div class="col-md-12">
 					<button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>

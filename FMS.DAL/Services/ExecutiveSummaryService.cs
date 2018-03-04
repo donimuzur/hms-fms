@@ -27,6 +27,7 @@ namespace FMS.DAL.Services
         private IGenericRepository<ACCIDENT_REPORT_DATA> _accidentRepository;
         private IGenericRepository<AC_VS_OB_REPORT_DATA> _acVsObRepository;
         private IGenericRepository<SUM_REPORT_DATA> _sumPtdByFuncRepository;
+        private IGenericRepository<MST_LOCATION_MAPPING> _locMappingRepository;
 
         public ExecutiveSummaryService(IUnitOfWork uow)
         {
@@ -42,6 +43,7 @@ namespace FMS.DAL.Services
             _accidentRepository = _uow.GetGenericRepository<ACCIDENT_REPORT_DATA>();
             _acVsObRepository = _uow.GetGenericRepository<AC_VS_OB_REPORT_DATA>();
             _sumPtdByFuncRepository = _uow.GetGenericRepository<SUM_REPORT_DATA>();
+            _locMappingRepository = _uow.GetGenericRepository<MST_LOCATION_MAPPING>();
         }
 
         public List<NO_OF_VEHICLE_REPORT_DATA> GetAllNoVehicle(VehicleGetByParamInput filter)
@@ -77,6 +79,14 @@ namespace FMS.DAL.Services
                 if (!string.IsNullOrEmpty(filter.Regional))
                 {
                     queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Regional.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGION.ToUpper()));
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
@@ -122,6 +132,14 @@ namespace FMS.DAL.Services
                 if (!string.IsNullOrEmpty(filter.Regional))
                 {
                     queryFilter = queryFilter.And(c => c.REGIONAL.ToUpper() == filter.Regional.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGIONAL.ToUpper()));
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
@@ -203,6 +221,14 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
                 }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGION.ToUpper()));
+                }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
                     var listFunction = filter.Function.ToUpper().Split(',').ToList();
@@ -251,6 +277,14 @@ namespace FMS.DAL.Services
                 if (!string.IsNullOrEmpty(filter.Region))
                 {
                     queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGION.ToUpper()));
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
@@ -301,6 +335,14 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
                 }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGION.ToUpper()));
+                }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
                     var listFunction = filter.Function.ToUpper().Split(',').ToList();
@@ -350,6 +392,14 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
                 }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGION.ToUpper()));
+                }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
                     var listFunction = filter.Function.ToUpper().Split(',').ToList();
@@ -395,6 +445,14 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
                 }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGION.ToUpper()));
+                }
             }
 
             return _salesRegionRepository.Get(queryFilter, null, "").ToList();
@@ -425,6 +483,14 @@ namespace FMS.DAL.Services
                 if (!string.IsNullOrEmpty(filter.Region))
                 {
                     queryFilter = queryFilter.And(c => c.REGION.ToUpper() == filter.Region.ToUpper());
+                }
+                if (!string.IsNullOrEmpty(filter.ZoneId))
+                {
+                    var listZone = filter.ZoneId.ToUpper().Split(',').ToList();
+
+                    var listRegional = _locMappingRepository.Get(x => listZone.Contains(x.ZONE_SALES)).Select(x => x.REGION == null ? "" : x.REGION.ToUpper()).Distinct();
+
+                    queryFilter = queryFilter.And(c => listRegional.Contains(c.REGION.ToUpper()));
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {

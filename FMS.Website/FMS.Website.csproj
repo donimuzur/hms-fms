@@ -4408,6 +4408,7 @@
     <Content Include="Views\Shared\ErrorHandler.cshtml" />
     <Content Include="Views\RptGS\Index.cshtml" />
     <Content Include="Views\RptGS\_RptGsFilter.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SummaryAllNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

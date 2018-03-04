@@ -785,7 +785,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
-            return View(model);
+            return View("SummaryAllNew", model);
         }
 
         #region --------- Export --------------
@@ -820,10 +820,45 @@ namespace FMS.Website.Controllers
         {
             //get data
             var input = Mapper.Map<VehicleGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
             var listData = Mapper.Map<List<NoVehicleData>>(data);
 
             var inputWtc = Mapper.Map<VehicleWtcGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                inputWtc.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                inputWtc.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputWtc.Function = "Logistic";
+            }
             List<NoVehicleWtcDto> dataWtc = _execSummBLL.GetNoOfVehicleWtcData(inputWtc);
             var listDataWtc = Mapper.Map<List<NoVehicleWtcData>>(dataWtc);
 
@@ -832,18 +867,99 @@ namespace FMS.Website.Controllers
             var listDataMake = Mapper.Map<List<NoVehicleMakeData>>(dataMake);
 
             var inputOdo = Mapper.Map<OdometerGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputOdo.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                inputOdo.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                inputOdo.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                inputOdo.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputOdo.Function = "Logistic";
+            }
             List<OdometerDto> dataOdo = _execSummBLL.GetOdometerData(inputOdo);
             var listDataOdo = Mapper.Map<List<OdometerData>>(dataOdo);
 
             var inputLiter = Mapper.Map<LiterFuncGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputLiter.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                inputLiter.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                inputLiter.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                inputLiter.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputLiter.Function = "Logistic";
+            }
             List<LiterByFunctionDto> dataLiter = _execSummBLL.GetLiterByFunctionData(inputLiter);
             var listDataLiter = Mapper.Map<List<LiterByFunctionData>>(dataLiter);
 
             var inputFuel = Mapper.Map<FuelCostFuncGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputFuel.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                inputFuel.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                inputFuel.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                inputFuel.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputFuel.Function = "Logistic";
+            }
             List<FuelCostByFunctionDto> dataFuel = _execSummBLL.GetFuelCostByFunctionData(inputFuel);
             var listDataFuel = Mapper.Map<List<FuelCostByFunctionData>>(dataFuel);
 
             var inputLease = Mapper.Map<LeaseCostFuncGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                inputLease.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                inputLease.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputLease.Function = "Logistic";
+            }
             List<LeaseCostByFunctionDto> dataLease = _execSummBLL.GetLeaseCostByFunctionData(inputLease);
             var listDataLease = Mapper.Map<List<LeaseCostByFunctionData>>(dataLease);
 
@@ -852,10 +968,45 @@ namespace FMS.Website.Controllers
             var listDataSales = Mapper.Map<List<SalesByRegionData>>(dataSales);
 
             var inputAccident = Mapper.Map<AccidentGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputAccident.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                inputAccident.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                inputAccident.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                inputAccident.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputAccident.Function = "Logistic";
+            }
             List<AccidentDto> dataAccident = _execSummBLL.GetAccidentData(inputAccident);
             var listDataAccident = Mapper.Map<List<AccidentData>>(dataAccident);
 
             var inputAcOb = Mapper.Map<AcVsObGetByParamInput>(inputExport);
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                inputAcOb.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                inputAcOb.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                inputAcOb.Function = "Logistic";
+            }
             List<AcVsObDto> dataAcOb = _execSummBLL.GetAcVsObData(inputAcOb);
             var listDataAcOb = Mapper.Map<List<AcVsObData>>(dataAcOb);
 
@@ -1287,6 +1438,7 @@ namespace FMS.Website.Controllers
             var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
             var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
             model.TitleForm = "Number Of Vehicle";
             model.TitleExport = "ExportNoVehicleNew";
@@ -1295,6 +1447,7 @@ namespace FMS.Website.Controllers
             model.SearchView.SupplyMethodList = new SelectList(listSupMethod, "SettingValue", "SettingValue");
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -1739,12 +1892,14 @@ namespace FMS.Website.Controllers
             var input = Mapper.Map<VehicleWtcGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
             model.TitleForm = "Number Of Vehicle WTC";
             model.TitleExport = "ExportNoVehicleWtcNew";
             model.NoVehicleWtcList = Mapper.Map<List<NoVehicleWtcData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -2635,6 +2790,7 @@ namespace FMS.Website.Controllers
             var data = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
             model.TitleForm = "Odometer";
             model.TitleExport = "ExportOdometerNew";
@@ -2642,6 +2798,7 @@ namespace FMS.Website.Controllers
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -3010,6 +3167,7 @@ namespace FMS.Website.Controllers
             var data = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
             model.TitleForm = "Liter By Function";
             model.TitleExport = "ExportLiterByFunctionNew";
@@ -3017,6 +3175,7 @@ namespace FMS.Website.Controllers
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -3385,6 +3544,7 @@ namespace FMS.Website.Controllers
             var data = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
             model.TitleForm = "Fuel Cost By Function";
             model.TitleExport = "ExportFuelCostByFunctionNew";
@@ -3392,6 +3552,7 @@ namespace FMS.Website.Controllers
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -3759,12 +3920,14 @@ namespace FMS.Website.Controllers
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
             
             model.TitleForm = "Lease Cost By Function";
             model.TitleExport = "ExportLeaseCostByFunctionNew";
             model.LeaseCostByFuncDataList = Mapper.Map<List<LeaseCostByFunctionData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -4130,11 +4293,13 @@ namespace FMS.Website.Controllers
             var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetSalesByRegionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
             model.TitleForm = "Sales By Region";
             model.TitleExport = "ExportSalesByRegionNew";
             model.SalesByRegionDataList = Mapper.Map<List<SalesByRegionData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -4585,6 +4750,7 @@ namespace FMS.Website.Controllers
             var data = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
+            var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
             model.TitleForm = "Accident";
             model.TitleExport = "ExportAccidentNew";
@@ -4592,6 +4758,7 @@ namespace FMS.Website.Controllers
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
             model.SearchView.Functions = GetFunctionsMultiSelectList();
+            model.SearchView.ZoneList = new SelectList(listZone, "ZoneSales", "ZoneSales");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
