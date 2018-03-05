@@ -81,27 +81,38 @@
         $('#LoadingModal').hide();
     }
     function ExportXls() {
-    	var url = '@Url.Action("ExportReportGs", "MstGs")';
-    	var getFileUrl = '@Url.Action("GetExcelFile", "MstGs")';
-    	console.log(url);
-   
-    	$.ajax({
-    		url: url,
-    		beforeSend: function () {
-    			$('#LoadingModal').show();
-    		},
-    		success: function (response, status, jqxhr) {
-    			console.log("DONE");
-    			window.location = getFileUrl + "?pathFile=" + response;
-    			$('#LoadingModal').hide();
-    		},
-    		error: function (jqhxr) {
-    			console.log("ERROR");
-    			console.log(jqhxr.responseText);
-    			$('#LoadingModal').hide();
-    		},
-    		type: 'POST'
-    	});
+        console.log('Submitting');
+        var url = '@Url.Action("ExportMasterGs", "MstGs")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstGs")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        VehicleUsage: getFunctionStr($('#Search_VehicleUsage').val()),
+			        EmployeeName: getFunctionStr($('#Search_EmployeeName').val()),
+			        PoliceNumber: getFunctionStr($('#Search_PoliceNumber').val())
+			    }
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
     }
     function setupDataTables()
     {

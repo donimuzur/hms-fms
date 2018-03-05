@@ -497,26 +497,7 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
 
-        }
-        public void ExportMasterGs(GsModel model)
-        {
-            string pathFile = "";
-
-            pathFile = CreateXlsReportGs(model.FilterReport);
-
-            var newFile = new FileInfo(pathFile);
-
-            var fileName = Path.GetFileName(pathFile);
-
-            string attachment = string.Format("attachment; filename={0}", fileName);
-            Response.Clear();
-            Response.AddHeader("content-disposition", attachment);
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.WriteFile(newFile.FullName);
-            Response.Flush();
-            newFile.Delete();
-            Response.End();
-        }
+        } 
         private string CreateXlsReportGs(ReportFilter filter)
         {
             //get data
@@ -636,12 +617,19 @@ namespace FMS.Website.Controllers
 
             return slDocument;
         }
+        public string ExportMasterGs(GsModel model = null)
+        {
+            string pathFile = "";
+            pathFile = CreateXlsMasterGs(model.SearchView);
+            return pathFile;
 
-        private string CreateXlsMasterGs()
+        }
+        private string CreateXlsMasterGs(GSSearchView filter)
         {
             //get data
-            List<GsDto> Gs = _gsBLL.GetGs();
-            var listData = Mapper.Map<List<GsItem>>(Gs);
+            var input = Mapper.Map<GSParamInput>(filter);
+            var dbData = _gsBLL.GetGs(input);
+            var listData = Mapper.Map<List<GsItem>>(dbData);
 
             var slDocument = new SLDocument();
 
