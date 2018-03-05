@@ -241,6 +241,7 @@
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
+    <Compile Include="Code\FMSWebsiteMapperGs.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperKpiMonitoring.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
@@ -4408,6 +4409,7 @@
     <Content Include="Views\Shared\ErrorHandler.cshtml" />
     <Content Include="Views\RptGS\Index.cshtml" />
     <Content Include="Views\RptGS\_RptGsFilter.cshtml" />
+    <Content Include="Views\MstGs\_ListGS.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

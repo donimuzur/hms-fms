@@ -41,16 +41,52 @@ namespace FMS.Website.Controllers
         #endregion
         // GET: /MstGs/
         #region -------- list VIew-------------------
+        public GSSearchView Initial(GsModel model)
+        {
+            model.SearchView.VehicleUsageList = new SelectList(model.Details.Select(x => new { x.VehicleUsage }).Distinct().ToList(), "VehicleUsage", "VehicleUsage");
+            model.SearchView.PoliceNumberList = new SelectList(model.Details.Select(x => new { x.PoliceNumber }).Distinct().ToList(), "PoliceNumber", "PoliceNumber");
+            model.SearchView.EmployeeNameList = new SelectList(model.Details.Select(x => new { x.EmployeeName }).Distinct().ToList(), "EmployeeName", "EmployeeName");
+            return model.SearchView;
+        }
         public ActionResult Index()
         {
             var model = new GsModel();
-            var data = _gsBLL.GetGs();
+            var filter = new GSParamInput();
+            var data = _gsBLL.GetGs(filter);
             model.Details = Mapper.Map<List<GsItem>>(data);
+            model.SearchView = Initial(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
+
+        [HttpPost]
+        public PartialViewResult ListGs(GsModel model)
+        {
+            model.Details = new List<GsItem>();
+            model.Details = GetGs(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListGs", model);
+        }
+        private List<GsItem> GetGs(GSSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _gsBLL.GetGs(new GSParamInput());
+                return Mapper.Map<List<GsItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<GSParamInput>(filter);
+
+            var dbData = _gsBLL.GetGs(input);
+            return Mapper.Map<List<GsItem>>(dbData);
+        }
+
         #endregion
 
         #region ------------- create ---------------

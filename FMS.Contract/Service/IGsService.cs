@@ -16,5 +16,6 @@ namespace FMS.Contract.Service
         void Save(MST_GS dbGs);
         void Save(MST_GS dbGs, Login userLogin);
         List<MST_GS> GetGsByParam(RptGsInput input);
+        List<MST_GS> GetGsByParam(GSParamInput input);
     }
 }
