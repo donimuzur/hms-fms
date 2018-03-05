@@ -2,9 +2,12 @@
 @using FMS.Core;
 <div class="opt-content clearfloat">
     <h5 class="title-page">Vehicles Report</h5>
-    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-upload"></i> Export
-    </a>
+    @if (Model.CurrentPageAccess.ReadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-upload"></i> Export
+        </a>
+    }
 </div>
 
 <section class="content">
@@ -61,7 +64,22 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_VehicleTypeList">Vehicle Type</label>
-                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.EHS 
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator 
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager)
+                    {
+                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "select", new { @class = "form-control chosen", @data_live_search = true })
+                    }
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic|| Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.LDManager)
+                    {
+                        @Html.TextBox("SearchView_VehicleType","WTC", new { @class = "form-control", @readonly="readonly"})
+                    }
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.HRManager)
+                    {
+                        @Html.TextBox("SearchView_VehicleType", "BENEFIT", new { @class = "form-control", @readonly = "readonly" })
+                    }
                 </div>
             </div>
             <div class="col-md-3">
@@ -79,7 +97,25 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="SearchView_FunctionList">Function</label>
-                    @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                    @if (Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.EHS
+                || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR
+                || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport
+                || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager || Model.CurrentLogin.UserRole == Enums.UserRole.HRManager)
+                    {
+                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                    }
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager)
+                    {
+                        @Html.TextBox("SearchView_Function", "Sales,Marketing", new { @class = "form-control", @readonly = "readonly" })
+                    }
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager)
+                    {
+                        @Html.TextBox("SearchView_Function", "Operations", new { @class = "form-control", @readonly = "readonly" })
+                    }
+                    else if (Model.CurrentLogin.UserRole == Enums.UserRole.Logistic || Model.CurrentLogin.UserRole == Enums.UserRole.LDManager)
+                    {
+                        @Html.TextBox("SearchView_Function", "Logistic", new { @class = "form-control", @readonly = "readonly" })
+                    }
                 </div>
             </div>
             <div class="col-md-3">
@@ -130,6 +166,19 @@
                     @Html.TextBoxFor(model => model.SearchView.EndDateTo, new { @class = "form-control date-end" })
                 </div>
             </div>
+            @if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic)
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_Zone">Zone</label>
+                        @Html.DropDownListFor(model => model.SearchView.Zone, Model.SearchView.ZoneList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.SearchView.Zone)
+            }
             <div class="clearfix"></div>
             <div class="col-md-12">
                 <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
@@ -226,7 +275,8 @@
 					EmployeeID: $("#SearchView_EmployeeID").val(),
 					EmployeeName: $("#SearchView_EmployeeName").val(),
 					EndDate: $("#SearchView_EndData").val(),
-					EndDateTo: $("#SearchView_EndDateTo").val()
+					EndDateTo: $("#SearchView_EndDateTo").val(),
+				    Zone: $('#SearchView_Zone').val()
 				}
 
 			};
@@ -373,7 +423,7 @@
             "deferRender": true,
             "columns": setupColumns(),
             "ajax": {
-                "url": "@Url.Action("SearchFleetAjax", "MstFleet")",
+                "url": "@Url.Action("SearchFleetAjax", "RptVehicleOverall")",
                 "type": "POST",
                 "data": function(d) {
                     return $.extend({}, d, {
@@ -396,7 +446,8 @@
                         "EndDate": $('#SearchView_EndDate').val(),
                         "EndDateTo": $('#SearchView_EndDateTo').val(),
                         "Regional": getFunctionStr($('#SearchView_Regional').val()),
-                        "City": getFunctionStr($('#SearchView_City').val())
+                        "City": getFunctionStr($('#SearchView_City').val()),
+                        "Zone": getFunctionStr($('#SearchView_Zone').val())
                     });
                 }
             }

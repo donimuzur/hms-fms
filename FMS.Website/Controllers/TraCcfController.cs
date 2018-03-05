@@ -837,7 +837,7 @@ namespace FMS.Website.Controllers
             List<TraCcfDto> ccf = _ccfBLL.GetCcf();
             var listData = Mapper.Map<List<CcfItem>>(ccf);
 
-            if (CurrentUser.UserRole == Enums.UserRole.HR && IsPersonalDashboard == false)
+            if ((CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager) && IsPersonalDashboard == false)
             {
                 if (IsCompleted == true)
                 {
@@ -854,7 +854,7 @@ namespace FMS.Website.Controllers
                     )));
                 }
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Fleet && IsPersonalDashboard == false)
+            else if ((CurrentUser.UserRole == Enums.UserRole.Fleet || CurrentUser.UserRole == Enums.UserRole.FleetManager) && IsPersonalDashboard == false)
             {
                 if (IsCompleted == true)
                 {

@@ -2881,7 +2881,7 @@ namespace FMS.Website.Controllers
         //------------------------------------------------------------------------------//
         public void ExportCompleted()
         {
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 ExportHR(true);
             }
@@ -2892,7 +2892,7 @@ namespace FMS.Website.Controllers
         }
         public void ExportOpen()
         {
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 ExportHR(false);
             }

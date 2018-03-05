@@ -32,9 +32,11 @@
 
 <div class="opt-content clearfloat">
 	<h5 class="title-page">@ViewBag.Title</h5>
+    @if (Model.CurrentPageAccess.ReadAccess == true) { 
 	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
 		<i class="fa fa-download"></i> Export
 	</a>
+    }
 </div>
 <section class="content">
 	<div class="wpanel">
@@ -84,6 +86,20 @@
 						@Html.DropDownListFor(model => model.SearchView.Region, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
 					</div>
 				</div>
+                if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic)
+                {
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_Zone">Zone</label>
+                            @Html.HiddenFor(model => model.SearchView.ZoneId)
+                            @Html.DropDownListFor(model => model.SearchView.Zone, Model.SearchView.ZoneList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.SearchView.Zone)
+                }
 				<div class="clearfix"></div>
 				<div class="col-md-12">
 					<button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
