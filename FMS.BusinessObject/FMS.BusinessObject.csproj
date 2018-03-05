@@ -138,6 +138,7 @@
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\FuelOdometerParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
+    <Compile Include="Inputs\GSParamInput.cs" />
     <Compile Include="Inputs\MasterParamInput.cs" />
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\RptCCFInput.cs" />
