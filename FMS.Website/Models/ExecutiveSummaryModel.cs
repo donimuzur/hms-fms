@@ -55,7 +55,6 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "ALL", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -130,8 +129,11 @@ namespace FMS.Website.Models
         public string SupplyMethod { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
         public MultiSelectList Functions { get; set; }
+        public MultiSelectList ZoneList { get; set; }
 
         public SelectList MonthList
         {
@@ -218,7 +220,10 @@ namespace FMS.Website.Models
         public string Regional { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
+        public MultiSelectList ZoneList { get; set; }
         public MultiSelectList Functions { get; set; }
 
         public SelectList MonthList
@@ -383,8 +388,11 @@ namespace FMS.Website.Models
         public string Region { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
         public MultiSelectList Functions { get; set; }
+        public MultiSelectList ZoneList { get; set; }
 
         public SelectList MonthList
         {
@@ -471,8 +479,11 @@ namespace FMS.Website.Models
         public string Region { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
         public MultiSelectList Functions { get; set; }
+        public MultiSelectList ZoneList { get; set; }
 
         public SelectList MonthList
         {
@@ -559,8 +570,11 @@ namespace FMS.Website.Models
         public string Region { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
         public MultiSelectList Functions { get; set; }
+        public MultiSelectList ZoneList { get; set; }
 
         public SelectList MonthList
         {
@@ -645,8 +659,11 @@ namespace FMS.Website.Models
         public string Region { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
         public MultiSelectList Functions { get; set; }
+        public MultiSelectList ZoneList { get; set; }
 
         public SelectList MonthList
         {
@@ -728,7 +745,10 @@ namespace FMS.Website.Models
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Region { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
+        public MultiSelectList ZoneList { get; set; }
         public SelectList MonthList
         {
             get
@@ -811,8 +831,11 @@ namespace FMS.Website.Models
         public string Region { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
+        public string Zone { get; set; }
+        public string ZoneId { get; set; }
 
         public MultiSelectList Functions { get; set; }
+        public MultiSelectList ZoneList { get; set; }
 
         public SelectList MonthList
         {

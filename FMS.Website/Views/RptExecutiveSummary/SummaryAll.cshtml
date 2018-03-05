@@ -7,9 +7,11 @@
 
 <div class="opt-content clearfloat">
 	<h5 class="title-page">@ViewBag.Title</h5>
+    @if (Model.CurrentPageAccess.ReadAccess == true) { 
 	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
 		<i class="fa fa-download"></i> Export
 	</a>
+    }
 </div>
 <script type="text/javascript">
 		$(document).ready(function () {
