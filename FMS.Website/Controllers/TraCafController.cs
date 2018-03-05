@@ -87,7 +87,7 @@ namespace FMS.Website.Controllers
             var data = _cafBLL.GetCaf();
             if (CurrentUser.UserRole == Enums.UserRole.Fleet ||
                 CurrentUser.UserRole == Enums.UserRole.Viewer ||
-                CurrentUser.UserRole == Enums.UserRole.Administrator)
+                CurrentUser.UserRole == Enums.UserRole.Administrator || CurrentUser.UserRole == Enums.UserRole.FleetManager)
             {
                 data = data
                     .Where(x => x.DocumentStatus != (int) Enums.DocumentStatus.Completed
@@ -140,14 +140,10 @@ namespace FMS.Website.Controllers
             List<TraCafDto> data = _cafBLL.GetCafPersonal(CurrentUser);
             var model = new TraCafIndexViewModel
             {
-                Details =  AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data),
+                Details = AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data),
                 MainMenu = Enums.MenuList.PersonalDashboard,
                 CurrentLogin = CurrentUser,
-                CurrentPageAccess = new RoleDto()
-                {
-                    ReadAccess = true,
-
-                },
+                CurrentPageAccess = CurrentPageAccess,
                 IsPersonalDashboard = true
             };
 

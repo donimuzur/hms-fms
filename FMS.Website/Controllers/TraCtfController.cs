@@ -86,6 +86,7 @@ namespace FMS.Website.Controllers
             }
             model.TitleForm = "CTF Open Document";
             model.MainMenu = _mainMenu;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = false;
             model = TerminationBoard(model);
@@ -344,6 +345,7 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CTF Personal Dashboard";
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = Enums.MenuList.PersonalDashboard;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
             return View(model);
@@ -1910,7 +1912,7 @@ namespace FMS.Website.Controllers
         #region --------- Dashboar Epaf --------------
         public ActionResult DashboardEpaf()
         {
-            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Viewer && CurrentUser.UserRole != Enums.UserRole.HR)
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.Administrator )
             {
                 return RedirectToAction("Index", "TraCtf");
             }
@@ -2060,6 +2062,7 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<CtfItem>>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
 
             foreach (var item in model.Details)
             {
@@ -2878,7 +2881,7 @@ namespace FMS.Website.Controllers
         //------------------------------------------------------------------------------//
         public void ExportCompleted()
         {
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 ExportHR(true);
             }
@@ -2889,7 +2892,7 @@ namespace FMS.Website.Controllers
         }
         public void ExportOpen()
         {
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 ExportHR(false);
             }

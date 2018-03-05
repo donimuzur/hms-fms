@@ -162,6 +162,14 @@ namespace FMS.Core
             Fleet = 3,
             IsSupport = 4,
             User = 5,
+            ComFinanceManager=6,
+            OpsFinanceManager = 7,
+            Logistic = 8,
+            LDManager = 9,
+            FleetManager = 10,
+            HRManager = 11,
+            FinanceZone = 12,
+            EHS = 13,
             Administrator = 15
         }
         public enum FormViewType

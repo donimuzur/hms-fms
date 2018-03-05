@@ -61,12 +61,13 @@ namespace FMS.Website.Controllers
             
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
 
             var FormTypeList = new Dictionary<string, string> { { "CSF", "CSF" }, { "CTF", "CTF" }, { "CRF", "CRF" } };
             var VehicleUsageList =_settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").ToList();
             var BasetownList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { BASETOWN = x.BASETOWN }).Distinct().OrderBy(x => x.BASETOWN).ToList();
 
-            model.SearchView.FormDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            model.SearchView.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.ToDate = DateTime.Today;
 
             model.SearchView.FormTypeList = new SelectList(FormTypeList, "Key", "Value");

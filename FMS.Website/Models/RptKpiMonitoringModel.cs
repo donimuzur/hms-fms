@@ -62,7 +62,7 @@ namespace FMS.Website.Models
     {
         public string FormType { get; set; }
         public string VehicleUsage { get; set; }
-        public DateTime? FormDate { get; set; }
+        public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public string Location { get; set; }
 

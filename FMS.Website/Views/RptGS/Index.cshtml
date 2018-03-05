@@ -1,0 +1,186 @@
+﻿@model FMS.Website.Models.GsModel
+<div class="opt-content clearfloat">
+    <h5 class="title-page">GS Report</h5>
+    @*<a href="@Url.Action("Upload", "MstEpaf")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
+            <i class="fa fa-download"></i> Import
+        </a>*@
+    @if (Model.CurrentPageAccess.ReadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-upload"></i> Export
+        </a>
+    }
+</div>
+<section class="content">
+    @using (Html.BeginForm("Index", "RptGs", FormMethod.Post, new { @id = "ExportToXls" }))
+    {
+        <div class="wpanel">
+            @Html.Partial("_RptGsFilter")
+        </div>
+    }
+
+    <div class="wpanel">
+        <table id="tbEpaf" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Employee Id</th>
+                    <th>Employee Name</th>
+                    <th>Vehicle Usage</th>
+                    <th>Police Number</th>
+                    <th>Group Level</th>
+                    <th>Location</th>
+                    <th>GS Request Date</th>
+                    <th>GS Fulfillment Date</th>
+                    <th>Gs Manufacturer</th>
+                    <th>Gs Model</th>
+                    <th>Gs Series</th>
+                    <th>Gs Transmission</th>
+                    <th>GS Police Number</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Lead Time</th>
+                    <th>KPI Fulfillment</th>
+                    <th>Rent Time</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+            <thead class="filters">
+                <tr>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.VehicleUsage)</td>
+                        <td>@Html.Raw(data.PoliceNumber)</td>
+                        <td>@Html.Raw(data.GroupLevel)</td>
+                        <td>@Html.Raw(data.Location)</td>
+                        <td>@Html.Raw(data.GsRequestDates)</td>
+                        <td>@Html.Raw(data.GsFullfillmentDates)</td>
+                        <td>@Html.Raw(data.GsManufacturer)</td>
+                        <td>@Html.Raw(data.GsModel)</td>
+                        <td>@Html.Raw(data.GsSeries)</td>
+                        <td>@Html.Raw(data.GsTransmission)</td>
+                        <td>@Html.Raw(data.GsPoliceNumber)</td>
+                        <td>@Html.Raw(data.StartDates)</td>
+                        <td>@Html.Raw(data.EndDates)</td>
+                        <td>@Html.Raw(data.LeadTimeS)</td>
+                        <td>@Html.Raw(data.KpiFulfillment)</td>
+                        <td>@Html.Raw(data.RentTime)</td>
+                        <td>@Html.Raw(data.Remark)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Gs.js"></script>
+<script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
+
+    function ExportXls() {
+        console.log('Submitting');
+        var url = '@Url.Action("ExportGsReportGenerateReport", "RptGS")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptGS")';
+        console.log(url);
+        var objToUpload =
+			{
+			    FilterReport: {
+			        StartDateBegin: $('#FilterReport_StartDateBegin').val(),
+			        StartDateEnd: $('#FilterReport_StartDateEnd').val(),
+			        EndDateBegin: $('#FilterReport_EndDateBegin').val(),
+			        EndDateEnd: $('#FilterReport_EndDateEnd').val(),
+			        VehicleUsage: $('#FilterReport_VehicleUsage').val(),
+			        Location: $('#FilterReport_Location').val(),
+			    }
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
+    }
+
+    function filter() {
+        LoadingShow();
+        $("#ExportToXls").attr("action", '@Url.Action("Index", "RptGS")');
+        $("#btnSubmit").trigger('click');
+    }
+
+    function reset() {
+        $(".form-control").val("");
+    }
+
+    $(function () {
+        // DataTable
+        var table = $('#tbEpaf').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    });
+
+</script>

@@ -45,6 +45,9 @@ namespace FMS.Website.Models
         public string EmployeeName { get; set; }
         public string EndDate { get; set; }
         public string EndDateTo { get; set; }
+        public string Zone { get; set; }
+
+        public SelectList ZoneList { get; set; }
 
         public SelectList PoliceNumberList { get; set; }
 
@@ -135,6 +138,7 @@ namespace FMS.Website.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public string Zone { get; set; }
 
         public Decimal? VatDecimal { get; set; }
         public string VatDecimalStr { get; set; }

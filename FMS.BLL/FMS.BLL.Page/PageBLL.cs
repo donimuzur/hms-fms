@@ -67,7 +67,7 @@ namespace FMS.BLL.Page
 
         public List<RoleDto> GetAuthPages(Login user)
         {
-            var data = _roleService.GetRoles().Where(x => x.ROLE_NAME_ALIAS == user.UserRole.ToString()).ToList();
+            var data = _roleService.GetRoles().Where(x => x.ROLE_NAME_ALIAS == user.UserRole.ToString() && x.IS_ACTIVE).ToList();
             var redata = Mapper.Map< List<RoleDto>>(data);
             var pages = redata.ToList();
             return pages;
