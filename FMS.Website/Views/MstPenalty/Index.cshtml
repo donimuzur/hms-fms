@@ -6,11 +6,11 @@
     @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstPenalty")" class="btn btn-primary line" title="Upload & View" ng-click="uploadCom()">
-            <i class="fa fa-download"></i> Import
+            <i class="fa fa-upload"></i> Import
         </a>
     }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-upload"></i> Export
+        <i class="fa fa-download"></i> Export
     </a>
 </div>
 <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
