@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.BLL
 {
     public interface IPriceListBLL
     {
         List<PriceListDto> GetPriceList();
+        List<PriceListDto> GetPriceList(PricelistParamInput filter);
         PriceListDto GetExist(string Model);
         PriceListDto GetByID(int Id);
         void Save(PriceListDto PriceListDto);
