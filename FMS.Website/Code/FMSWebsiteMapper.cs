@@ -418,7 +418,8 @@ namespace FMS.Website.Code
             Mapper.CreateMap<CostObSearchView, CostObParamInput>().IgnoreAllNonExisting();
             Mapper.CreateMap<CostObParamInput, CostObSearchView>().IgnoreAllNonExisting();
             // End --- Master Data -> CostOb
-
+            Mapper.CreateMap<PricelistParamInput, PricelistSearchView>().IgnoreAllNonExisting();
+            Mapper.CreateMap<PricelistSearchView, PricelistParamInput>().IgnoreAllNonExisting();
             #region AutoGR
             Mapper.CreateMap<RptAutoGrDto, RptAutoGrItem>().IgnoreAllNonExisting();
             #endregion
