@@ -140,6 +140,14 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             var data = _CRFBLL.GetCompleted().OrderByDescending(x => x.MODIFIED_DATE).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FleetManager)
+            {
+                data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
+            }
+            else if(CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
+            }
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
