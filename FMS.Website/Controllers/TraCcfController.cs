@@ -72,7 +72,7 @@ namespace FMS.Website.Controllers
             model.CurrentPageAccess = CurrentPageAccess;
             model.TitleForm = "CCF Open Document";
             
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
                 (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "HR")
@@ -111,13 +111,13 @@ namespace FMS.Website.Controllers
             model.DocumentStatus = "Completed";
             model.TitleForm = "CCF Completed Document";
    
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 model.Details = Mapper.Map<List<CcfItem>>(data.Where(
                     x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "HR") ||
                     (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet || CurrentUser.UserRole == Enums.UserRole.FleetManager)
             {
                 model.Details = Mapper.Map<List<CcfItem>>(data.Where(
                     x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "FLEET") ||
@@ -141,11 +141,11 @@ namespace FMS.Website.Controllers
         {
             var data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID);
             
-            if (CurrentUser.UserRole == Enums.UserRole.HR)
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "HR")).OrderBy(x => x.DocumentNumber);
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
+            else if (CurrentUser.UserRole == Enums.UserRole.Fleet || CurrentUser.UserRole == Enums.UserRole.FleetManager) 
             {
                 data = _ccfBLL.GetCcf().Where(x => x.CreatedBy == CurrentUser.USER_ID || x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || (x.DocumentStatus == Enums.DocumentStatus.InProgress && x.ComplaintCategoryRole.ToUpper() == "FLEET")).OrderBy(x => x.DocumentNumber);
             }
@@ -837,7 +837,7 @@ namespace FMS.Website.Controllers
             List<TraCcfDto> ccf = _ccfBLL.GetCcf();
             var listData = Mapper.Map<List<CcfItem>>(ccf);
 
-            if (CurrentUser.UserRole == Enums.UserRole.HR && IsPersonalDashboard == false)
+            if ((CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager) && IsPersonalDashboard == false)
             {
                 if (IsCompleted == true)
                 {
@@ -847,14 +847,14 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (x.ComplaintCategoryRole == null ? "" : x.ComplaintCategoryRole.ToUpper()) == "HR" &&(
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
                     x.DocumentStatus == Enums.DocumentStatus.InProgress ||
                     x.CreatedBy == CurrentUser.USER_ID)
                     )));
                 }
             }
-            else if (CurrentUser.UserRole == Enums.UserRole.Fleet && IsPersonalDashboard == false)
+            else if ((CurrentUser.UserRole == Enums.UserRole.Fleet || CurrentUser.UserRole == Enums.UserRole.FleetManager) && IsPersonalDashboard == false)
             {
                 if (IsCompleted == true)
                 {
@@ -864,7 +864,7 @@ namespace FMS.Website.Controllers
                 }
                 else
                 {
-                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (
+                    listData = Mapper.Map<List<CcfItem>>(ccf.Where(x => (x.ComplaintCategoryRole == null ? "" : x.ComplaintCategoryRole.ToUpper()) == "FLEET" && (
                     (x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet ||
                     x.DocumentStatus == Enums.DocumentStatus.InProgress ||
                     x.CreatedBy == CurrentUser.USER_ID)

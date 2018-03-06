@@ -118,8 +118,8 @@
 
     function ExportXls() {
         console.log('Submitting');
-        var url = '@Url.Action("ExportGsReportGenerateReport", "MstGs")';
-        var getFileUrl = '@Url.Action("GetExcelFile", "MstGs")';
+        var url = '@Url.Action("ExportGsReportGenerateReport", "RptGS")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptGS")';
         console.log(url);
         var objToUpload =
 			{
@@ -157,7 +157,7 @@
 
     function filter() {
         LoadingShow();
-        $("#ExportToXls").attr("action", '@Url.Action("ReportGs", "MstGs")');
+        $("#ExportToXls").attr("action", '@Url.Action("Index", "RptGS")');
         $("#btnSubmit").trigger('click');
     }
 

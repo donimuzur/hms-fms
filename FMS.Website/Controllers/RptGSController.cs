@@ -26,7 +26,7 @@ namespace FMS.Website.Controllers
         private IEmployeeBLL _employeeBLL;
         private ILocationMappingBLL _locationMappingBLL;
         private ISettingBLL _settingBLL;
-        public RptGSController(IPageBLL pageBll, IGsBLL gsBLL, ISettingBLL settingBLL, IRemarkBLL RemarkBLL, IFleetBLL FleetBLL, IEmployeeBLL EmployeeBLL, ILocationMappingBLL LocationMapping) : base(pageBll, Enums.MenuList.MasterGS)
+        public RptGSController(IPageBLL pageBll, IGsBLL gsBLL, ISettingBLL settingBLL, IRemarkBLL RemarkBLL, IFleetBLL FleetBLL, IEmployeeBLL EmployeeBLL, ILocationMappingBLL LocationMapping) : base(pageBll, Enums.MenuList.RptGs)
         {
             _gsBLL = gsBLL;
             _pageBLL = pageBll;
