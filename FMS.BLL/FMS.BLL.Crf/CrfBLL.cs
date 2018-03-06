@@ -70,7 +70,7 @@ namespace FMS.BLL.Crf
                 
             }
 
-            if (currentUser.UserRole == Enums.UserRole.Fleet || currentUser.UserRole == Enums.UserRole.HR)
+            if (currentUser.UserRole == Enums.UserRole.Fleet || currentUser.UserRole == Enums.UserRole.HR || currentUser.UserRole == Enums.UserRole.HRManager || currentUser.UserRole == Enums.UserRole.FleetManager)
             {
                 data = data.Where(x => x.EMPLOYEE_ID != currentUser.EMPLOYEE_ID).ToList();
                 if (currentUser.UserRole == Enums.UserRole.Fleet || currentUser.UserRole == Enums.UserRole.FleetManager)
@@ -85,7 +85,7 @@ namespace FMS.BLL.Crf
                     }
                 }
 
-                if (currentUser.UserRole == Enums.UserRole.HR )
+                if (currentUser.UserRole == Enums.UserRole.HR || currentUser.UserRole == Enums.UserRole.HRManager)
                 {
                     crfList.AddRange(data.Where(x => x.VEHICLE_TYPE == "BENEFIT"));
                 }
