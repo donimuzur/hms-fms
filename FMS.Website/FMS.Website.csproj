@@ -4412,6 +4412,7 @@
     <Content Include="Views\RptExecutiveSummary\SummaryAllNew.cshtml" />
     <Content Include="Views\MstGs\_ListGS.cshtml" />
     <Content Include="Views\MstPriceList\_listPriceList.cshtml" />
+    <Content Include="Views\MstEpaf\_ListEpaf.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -52,7 +52,7 @@ namespace FMS.DAL.Services
         }
         public List<MST_PRICELIST> GetPriceList(PricelistParamInput input)
         {
-            Expression<Func<MST_PRICELIST, bool>> queryFilter = c => c.IS_ACTIVE;
+            Expression<Func<MST_PRICELIST, bool>> queryFilter = PredicateHelper.True<MST_PRICELIST>(); 
 
             if (input != null)
             {
