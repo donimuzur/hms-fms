@@ -45,6 +45,7 @@ function selectVehicle(urlFunction, urlRoot) {
                         var tableData = '<tr>' +
                             '<td><input name="selectvehicleradio" id="selectvehicleradio_' + i + '" type="radio" value="' + i + '"></td>' +
                             "<td>" + (!data[i].Image || data[i].Image == null ? "" : "<a target='_blank' href='" + urlRoot + "/files_upload/" + data[i].Image + "' class='action'>View Image</a>") + "</td>" +
+                            '<td>' + (!data[i].PoliceNumber || data[i].PoliceNumber == null ? "" : '<input type="hidden" name="PoliceNumber" id="Detail_PoliceNumber_' + i + '" value="' + data[i].PoliceNumber + '"></input>' + data[i].PoliceNumber) + '</td>' +
                             '<td><input type="hidden" name="manufacturer" id="Detail_Manufacturer_' + i + '" value="' + data[i].Manufacturer + '"></input>' + data[i].Manufacturer + '</td>' +
                             '<td><input type="hidden" name="model" id="Detail_Models_' + i + '" value="' + data[i].Models + '"></input>' + data[i].Models + '</td>' +
                             '<td><input type="hidden" name="series" id="Detail_Series_' + i + '" value="' + data[i].Series + '"></input>' + data[i].Series + '</td>' +
