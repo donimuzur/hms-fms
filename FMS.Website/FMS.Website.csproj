@@ -4413,6 +4413,8 @@
     <Content Include="Views\MstGs\_ListGS.cshtml" />
     <Content Include="Views\MstPriceList\_listPriceList.cshtml" />
     <Content Include="Views\MstEpaf\_ListEpaf.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleFromVendorDetails.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
