@@ -42,7 +42,7 @@ namespace FMS.DAL.Services
                 }
                 if (input.DateTo.HasValue)
                 {
-                    queryFilter = queryFilter.And(c => c.EFFECTIVE_DATE <= input.DateFrom);
+                    queryFilter = queryFilter.And(c => c.EFFECTIVE_DATE <= input.DateTo);
                 }
                 if (!string.IsNullOrEmpty(input.DocumentType))
                 {
