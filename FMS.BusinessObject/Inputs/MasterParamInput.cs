@@ -24,4 +24,13 @@ namespace FMS.BusinessObject.Inputs
         public string Regional { get; set; }
         public int? Year { get; set; }
     }
+    public class EpafParamInput
+    {
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+        public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+        public string EpafAction { get; set; }
+        public string DocumentType { get; set; }
+    }
 }
