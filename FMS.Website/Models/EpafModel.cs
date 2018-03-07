@@ -11,8 +11,9 @@ namespace FMS.Website.Models
         public EpafModel()
         {
             Details = new List<EpafItem>();
+            SearchView = new EpafSearchView();
         }
-
+        public EpafSearchView SearchView { get; set; }
         public List<EpafItem> Details { get; set; }
     }
 
@@ -37,5 +38,19 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public bool IsActive { get; set; }
         
+    }
+    public class EpafSearchView
+    {
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+        public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+        public string EpafAction { get; set; }
+        public string DocumentType { get; set; }
+
+        public SelectList EmployeeIdList { get; set; }
+        public SelectList EmployeeNameList { get; set; }
+        public SelectList EpafActionList { get;set;}
+        public SelectList DocumentTypeList { get; set; }
     }
 }

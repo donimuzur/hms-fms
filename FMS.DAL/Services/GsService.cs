@@ -44,7 +44,7 @@ namespace FMS.DAL.Services
         }
         public List<MST_GS> GetGsByParam(GSParamInput input)
         {
-            Expression<Func<MST_GS, bool>> queryFilter = c => c.IS_ACTIVE;
+            Expression<Func<MST_GS, bool>> queryFilter = PredicateHelper.True<MST_GS>();
 
             if (input != null)
             {
