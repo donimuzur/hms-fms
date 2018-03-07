@@ -13,6 +13,7 @@ using System.IO;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.Website.Utility;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -48,6 +49,7 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
+            model.SearchView = Initial(model);
             if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
                 model.IsShowNewButton = false;
@@ -61,6 +63,53 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public PartialViewResult ListPenalty(PenaltyModel model)
+        {
+            model.Details = new List<PenaltyItem>();
+            model.Details = GetPenalty(model.SearchView);
+            foreach (var item in model.Details)
+            {
+                var Vendor = _vendorBLL.GetByID(item.Vendor);
+                if (Vendor != null)
+                {
+                    item.VendorName = Vendor.VendorName;
+                }
+            }
+            model.SearchView = Initial(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListPenalty", model);
+        }
+
+        public PenaltySearchView Initial(PenaltyModel model)
+        {
+            model.SearchView.BodyTypeList = new SelectList(model.Details.Select(x => new { x.BodyType }).Distinct().ToList(), "BodyType", "BodyType");
+            model.SearchView.ManufacturerList = new SelectList(model.Details.Select(x => new { x.Manufacturer }).Distinct().ToList(), "Manufacturer", "Manufacturer");
+            model.SearchView.ModelList = new SelectList(model.Details.Select(x => new { x.Models }).Distinct().ToList(), "Models", "Models");
+            model.SearchView.SeriesList = new SelectList(model.Details.Select(x => new { x.Series }).Distinct().ToList(), "Series", "Series");
+            model.SearchView.VehicleTypeList = new SelectList(model.Details.Select(x => new { x.VehicleType }).Distinct().ToList(), "VehicleType", "VehicleType");
+            model.SearchView.VendorList = new SelectList(model.Details.Select(x => new { x.Vendor }).Distinct().ToList(), "Vendor", "Vendor");
+            return model.SearchView;
+        }
+
+        private List<PenaltyItem> GetPenalty(PenaltySearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _penaltyBLL.GetPenalty(new PenaltyParamInput());
+                return Mapper.Map<List<PenaltyItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<PenaltyParamInput>(filter);
+
+            var dbData = _penaltyBLL.GetPenalty(input);
+            return Mapper.Map<List<PenaltyItem>>(dbData);
+        }
+
         public PenaltyItem listdata(PenaltyItem model)
         {
             var Vehiclelist = new List<SelectListItem>
@@ -69,13 +118,13 @@ namespace FMS.Website.Controllers
                 new SelectListItem { Text = "WTC", Value = "WTC"}
             };
             model.VehicleList = new SelectList(Vehiclelist, "Value", "Text");
-            
-            var PenaltyLogicDataList = _penaltyLogicBLL.GetPenaltyLogic().Where(x => x.IsActive).Select(x => new { x.MstPenaltyLogicId}).Distinct().ToList();
-        
+
+            var PenaltyLogicDataList = _penaltyLogicBLL.GetPenaltyLogic().Where(x => x.IsActive).Select(x => new { x.MstPenaltyLogicId }).Distinct().ToList();
+
             model.PenaltyList = new SelectList(PenaltyLogicDataList, "MstPenaltyLogicId", "MstPenaltyLogicId");
-            
-            var  VendorDataList = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new { x.VendorName, x.MstVendorId}).Distinct().ToList();
-            
+
+            var VendorDataList = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new { x.VendorName, x.MstVendorId }).Distinct().ToList();
+
             model.VendorList = new SelectList(VendorDataList, "MstVendorId", "VendorName");
             return model;
         }
@@ -102,12 +151,12 @@ namespace FMS.Website.Controllers
                 try
                 {
                     var Exist = _penaltyBLL.GetPenalty().Where(x => (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (model.BodyType == null ? "" : model.BodyType.ToUpper())
-                                && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (model.Manufacturer == null? "" : model.Manufacturer.ToUpper())
+                                && (x.Manufacturer == null ? "" : x.Manufacturer.ToUpper()) == (model.Manufacturer == null ? "" : model.Manufacturer.ToUpper())
                                 && (x.Model == null ? "" : x.Model.ToUpper()) == (model.Models == null ? "" : model.Models.ToUpper())
-                                && (x.VehicleType == null ? "" :x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper())
-                                && (x.BodyType == null ? "" :x.BodyType.ToUpper()) == (model.BodyType == null ? "" : model.BodyType.ToUpper())
+                                && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == (model.VehicleType == null ? "" : model.VehicleType.ToUpper())
+                                && (x.BodyType == null ? "" : x.BodyType.ToUpper()) == (model.BodyType == null ? "" : model.BodyType.ToUpper())
                                 && (x.Series == null ? "" : x.Series.ToUpper()) == (model.Series == null ? "" : model.Series.ToUpper())
-                                && x.Year == model.Year && x.Vendor == model.Vendor && x.Penalty == model.Penalty && x.MonthEnd == model.MonthEnd && x.MonthStart == model.MonthStart && x.IsActive ).FirstOrDefault();
+                                && x.Year == model.Year && x.Vendor == model.Vendor && x.Penalty == model.Penalty && x.MonthEnd == model.MonthEnd && x.MonthStart == model.MonthStart && x.IsActive).FirstOrDefault();
 
                     if (Exist != null)
                     {
@@ -136,7 +185,7 @@ namespace FMS.Website.Controllers
                     model = listdata(model);
                     return View(model);
                 }
-                
+
             }
             return RedirectToAction("Index", "MstPenalty");
         }
@@ -337,8 +386,8 @@ namespace FMS.Website.Controllers
                             item.Vendor = vendor.MstVendorId;
                         }
                     }
-                   
-                    if(dataRow[1] == "")
+
+                    if (dataRow[1] == "")
                     {
                         item.ErrorMessage = "Request Year Can't be Empty";
                     }
@@ -385,19 +434,19 @@ namespace FMS.Website.Controllers
                             item.ErrorMessage = "Maximum lease must be number";
                         }
                     }
-                    
+
                     item.Manufacturer = dataRow[4].ToString();
                     item.Models = dataRow[5].ToString();
                     item.Series = dataRow[6].ToString();
                     item.BodyType = dataRow[7].ToString();
 
-                    item.VehicleType = (dataRow[8] == null ?"" :dataRow[8].ToUpper());
+                    item.VehicleType = (dataRow[8] == null ? "" : dataRow[8].ToUpper());
                     if (item.VehicleType == "")
                     {
                         item.ErrorMessage = "Vehicle Type can't be empty";
                     }
 
-                    if(dataRow[9] == "")
+                    if (dataRow[9] == "")
                     {
                         item.ErrorMessage = "Penalty Id Can't be empty";
                     }
@@ -407,7 +456,7 @@ namespace FMS.Website.Controllers
                         {
                             item.Penalty = Convert.ToInt32(dataRow[9].ToString());
                             var PenaltyLogic = _penaltyLogicBLL.GetPenaltyLogicById(item.Penalty);
-                            if(PenaltyLogic == null)
+                            if (PenaltyLogic == null)
                             {
                                 item.ErrorMessage = "This Penalty Id is not in master penalty Logic";
                             }
@@ -425,10 +474,10 @@ namespace FMS.Website.Controllers
         }
 
         #region export xls
-        public string ExportMasterPenalty()
+        public string ExportMasterPenalty(PenaltyModel model = null)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterPenalty();
+            pathFile = CreateXlsMasterPenalty(model.SearchView);
             return pathFile;
         }
         public void GetExcelFile(string pathFile)
@@ -445,10 +494,12 @@ namespace FMS.Website.Controllers
             Response.End();
 
         }
-        private string CreateXlsMasterPenalty()
+        private string CreateXlsMasterPenalty(PenaltySearchView filter)
         {
             //get data
-            List<PenaltyDto> penalty = _penaltyBLL.GetPenalty();
+
+            var input = Mapper.Map<PenaltyParamInput>(filter);
+            List<PenaltyDto> penalty = _penaltyBLL.GetPenalty(input);
             var listData = Mapper.Map<List<PenaltyItem>>(penalty);
 
             var slDocument = new SLDocument();
@@ -498,7 +549,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellValue(iRow, 14, "Modified By");
             slDocument.SetCellValue(iRow, 15, "Modified Date");
             slDocument.SetCellValue(iRow, 16, "Status");
-        
+
             SLStyle headerStyle = slDocument.CreateStyle();
             headerStyle.Alignment.Horizontal = HorizontalAlignmentValues.Center;
             headerStyle.Font.Bold = true;
