@@ -857,6 +857,14 @@ namespace FMS.Website.Controllers
             if (isCompleted)
             {
                 CRF = _CRFBLL.GetCompleted();
+                if (CurrentUser.UserRole == Enums.UserRole.FleetManager)
+                {
+                    CRF = CRF.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
+                }
+                else if (CurrentUser.UserRole == Enums.UserRole.HRManager)
+                {
+                    CRF = CRF.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
+                }
 
             }
             else
