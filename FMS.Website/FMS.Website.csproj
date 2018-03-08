@@ -4416,6 +4416,7 @@
     <Content Include="Views\MstEpaf\_ListEpaf.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleFromVendorDetails.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleDetails.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SummaryRegion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
