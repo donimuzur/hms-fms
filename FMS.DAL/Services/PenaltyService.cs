@@ -9,6 +9,9 @@ using FMS.Contract.Service;
 using NLog;
 using FMS.BusinessObject.Business;
 using FMS.Core;
+using FMS.BusinessObject.Inputs;
+using System.Linq.Expressions;
+using FMS.Utils;
 
 namespace FMS.DAL.Services
 {
@@ -42,6 +45,43 @@ namespace FMS.DAL.Services
         public void save(MST_PENALTY dbPenalty, Login userLogin)
         {
             _uow.GetGenericRepository<MST_PENALTY>().InsertOrUpdate(dbPenalty, userLogin, Enums.MenuList.MasterRemark);
+        }
+
+        public List<MST_PENALTY> GetPenalty(PenaltyParamInput filter)
+        {
+            Expression<Func<MST_PENALTY, bool>> queryFilter = c => c.IS_ACTIVE;
+
+            if (filter != null)
+            {
+
+                if (!string.IsNullOrEmpty(filter.BodyType))
+                {
+                    var listFunction = filter.BodyType.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.BODY_TYPE == null ? "" : c.BODY_TYPE.ToUpper())));
+                }
+                if (!string.IsNullOrEmpty(filter.Manufacturer))
+                {
+                    var listFunction = filter.Manufacturer.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.MANUFACTURER == null ? "" : c.MANUFACTURER.ToUpper())));
+                }
+                if (!string.IsNullOrEmpty(filter.Model))
+                {
+                    var listFunction = filter. Model.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.MODEL == null ? "" : c.MODEL.ToUpper())));
+                }
+                if (!string.IsNullOrEmpty(filter.RequestYear))
+                {
+                    var listFunction = filter.RequestYear.Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.YEAR == null ? "" : c.YEAR.ToString())));
+                }
+                if (!string.IsNullOrEmpty(filter.Series))
+                {
+                    var listFunction = filter.Series.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.SERIES == null ? "" : c.SERIES.ToUpper())));
+                }
+            }
+            
+            return _penaltyRepository.Get(queryFilter, null, "").ToList();
         }
     }
 }

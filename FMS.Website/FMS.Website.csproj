@@ -242,6 +242,7 @@
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
     <Compile Include="Code\FMSWebsiteMapperGs.cs" />
+    <Compile Include="Code\FMSWebsiteMapperPenalty.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperKpiMonitoring.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
@@ -4412,6 +4413,10 @@
     <Content Include="Views\RptExecutiveSummary\SummaryAllNew.cshtml" />
     <Content Include="Views\MstGs\_ListGS.cshtml" />
     <Content Include="Views\MstPriceList\_listPriceList.cshtml" />
+    <Content Include="Views\MstEpaf\_ListEpaf.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleFromVendorDetails.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleDetails.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SummaryRegion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
