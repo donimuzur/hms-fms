@@ -27,131 +27,111 @@
 
 <section class="content">
     <div class="wpanel">
-        <table id="tbPriceList" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th style="min-width: 50px">Action</th>
-                    <th>Vendor</th>
-                    <th>Vehice Type</th>
-                    <th>Vehice Usage</th>
-                    <th>Zone Price List</th>
-                    <th>Manufacture</th>
-                    <th>Model</th>
-                    <th>Series</th>
-                    <th>Request Year</th>
-                    <th>Monthly Installment HMS</th>
-                    <th>Monthly Installment EMP</th>
-                    @*<th>Price</th>*@
-                    <th>Created By</th>
-                    <th>Created Date</th>
-                    <th>Modified By</th>
-                    <th>Modified Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    @if (Model.CurrentPageAccess.WriteAccess == true)
-                    {
-                        <th><a href="@Url.Action("Create","MstPriceList")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
-                    }
-                    else
-                    {
-                        <th> &nbsp; </th>
-                    }
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    @*<th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>*@
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListPricelist", "MstPricelist",
+                new AjaxOptions
                 {
-                    <tr>
-                        <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "MstPriceList", new { @MstPriceListId = data.MstPriceListId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
-                            {
-                                <a href="@Url.Action("View", "MstPriceList", new { @MstPriceListId = data.MstPriceListId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            }
-                        </td>
-                        <td>@Html.Raw(data.VendorName)</td>
-                        <td>@Html.Raw(data.VehicleType)</td>
-                        <td>@Html.Raw(data.VehicleUsage)</td>
-                        <td>@Html.Raw(data.ZonePriceList)</td>
-                        <td>@Html.Raw(data.Manufacture)</td>
-                        <td>@Html.Raw(data.Models)</td>
-                        <td>@Html.Raw(data.Series)</td>
-                        <td>@Html.Raw(data.Year)</td>
-                        <td>@Html.Raw(data.InstallmenHMS == 0 ? "0" : string.Format("{0:N0}", data.InstallmenHMS))</td>
-                        <td>@Html.Raw(data.InstallmenEMP == 0 ? "0" : string.Format("{0:N0}", data.InstallmenEMP))</td>
-                        @*<td>@Html.Raw(data.Price == 0 ? "0" : string.Format("{0:N0}", data.Price))</td>*@
-                        <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate.HasValue ? data.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "")</td>
-                        @if (data.IsActive == true)
-                        {
-                            <td>@Html.Raw("Active")</td>
-                        }
-                        else
-                        {
-                            <td>@Html.Raw("InActive")</td>
-                        }
-                    </tr>
-                }
-
-            </tbody>
-        </table>
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                    OnBegin = "LoadingShow",
+                    OnSuccess = "LoadingHide",
+                    OnFailure = "LoadingHide",
+                }))
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_Vendor">Vendor</label>
+                        @Html.DropDownList("Search_Vendor", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.vendor)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_ZonePricelist">Zone Pricelist</label>
+                        @Html.DropDownList("Search_ZonePricelist", Model.SearchView.ZonePricelistList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.ZonePricelist)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_VehicleType">Vehicle Type </label>
+                        @Html.DropDownList("Search_VehicleType", Model.SearchView.VehicleTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.VehicleType)
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_VehicleUsage">Vehicle Usage </label>
+                        @Html.DropDownList("Search_VehicleUsage", Model.SearchView.VehicleUsageList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.VehicleUsage)
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_listPriceList")
     </div>
 </section>
 
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
+    function getFunctionStr(arr) {
+        var dataStr = "";
+        if (arr.length > 0) {
+            dataStr = arr.toString();
+        }
+        return dataStr;
+    }
     function ExportXls() {
-    	console.log('Submitting');
-    	var url = '@Url.Action("ExportMasterPriceList", "MstPriceList")';
-    	var getFileUrl = '@Url.Action("GetExcelFile", "MstPriceList")';
-    	console.log(url);
-    	$.ajax({
-    		url: url,
-    		beforeSend: function () {
-    			$('#LoadingModal').show();
-    		},
-    		success: function (response, status, jqxhr) {
-    			console.log("DONE");
-    			window.location = getFileUrl + "?pathFile=" + response;
-    			$('#LoadingModal').hide();
-    		},
-    		error: function (jqhxr) {
-    			console.log("ERROR");
-    			console.log(jqhxr.responseText);
-    			$('#LoadingModal').hide();
-    		},
-    		type: 'POST'
-    	});
+        console.log('Submitting');
+        var url = '@Url.Action("ExportMasterPriceList", "MstPriceList")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstPriceList")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        VehicleType: getFunctionStr($('#Search_VehicleType').val()),
+			        Vendor: getFunctionStr($('#Search_Vendor').val()),
+			        VehicleUsage: getFunctionStr($('#Search_VehicleUsage').val()),
+			        ZonePricelist: getFunctionStr($('#Search_ZonePricelist').val())
+			    }
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
 
     }
-
-    $(function () {
-        if ($('.title-page').html() == 'Master Data Price List') {
-            $('#MstPriceListMenu').addClass('active');
-        }
+    function setupDataTables() {
         // DataTable
         var table = $('#tbPriceList').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
@@ -167,5 +147,35 @@
                     .draw();
             });
         });
+    }
+
+    $(function () {
+        $(".chosen").chosen();
+        $(document).on('click', '#btn-filter', function () {
+            console.log('a');
+            $("#SearchView_VehicleUsage").val(getFunctionStr($('#Search_VehicleUsage').val()));
+            $("#SearchView_Vendor").val(getFunctionStr($('#Search_Vendor').val()));
+            $("#SearchView_VehicleType").val(getFunctionStr($('#Search_VehicleType').val()));
+            $("#SearchView_ZonePricelist").val(getFunctionStr($('#Search_ZonePricelist').val()));
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $('#SearchView_VehicleUsage').val('');
+            $("#SearchView_Vendor").val('');
+            $("#SearchView_VehicleType").val('');
+            $("#SearchView_ZonePricelist").val('');
+
+            $("#Search_VehicleUsage").val('').trigger('chosen:updated');
+            $("#Search_Vendor").val('').trigger('chosen:updated');
+            $("#Search_VehicleType").val('').trigger('chosen:updated');
+            $("#Search_ZonePricelist").val('').trigger('chosen:updated');
+
+            $("#btn-filter").trigger('click');
+        });
+        if ($('.title-page').html() == 'Master Data Price List') {
+            $('#MstPriceListMenu').addClass('active');
+        }
+
+        setupDataTables();
     });
 </script>

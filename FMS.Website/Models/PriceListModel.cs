@@ -12,8 +12,9 @@ namespace FMS.Website.Models
         public PriceListModel ()
         {
             Details =new  List<PriceListItem>();
+            SearchView = new PricelistSearchView();
         }
-
+        public PricelistSearchView SearchView { get; set; }
         public List<PriceListItem> Details { get; set; }
     }
 
@@ -57,4 +58,18 @@ namespace FMS.Website.Models
 
     }
 
+
+    public class PricelistSearchView
+    {
+        public string vendor { get; set; }
+        public string VehicleType { get; set; }
+        public string VehicleUsage { get; set; }
+        public string ZonePricelist { get; set; }
+
+
+        public SelectList VendorList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList ZonePricelistList { get; set; }
+    }
 }

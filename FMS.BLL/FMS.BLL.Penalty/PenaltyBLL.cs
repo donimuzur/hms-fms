@@ -12,6 +12,7 @@ using FMS.DAL.Services;
 using AutoMapper;
 using FMS.BusinessObject.Business;
 using FMS.Core;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.Penalty
 {
@@ -57,6 +58,13 @@ namespace FMS.BLL.Penalty
         public void SaveChanges()
         {
             _uow.SaveChanges();
+        }
+
+        public List<PenaltyDto> GetPenalty(PenaltyParamInput filter)
+        {
+            var data = _penaltyService.GetPenalty(filter);
+            var retData = Mapper.Map<List<PenaltyDto>>(data);
+            return retData;
         }
     }
 }

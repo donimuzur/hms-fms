@@ -140,6 +140,8 @@
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="Inputs\GSParamInput.cs" />
     <Compile Include="Inputs\MasterParamInput.cs" />
+    <Compile Include="Inputs\PricelistParamInput.cs" />
+    <Compile Include="Inputs\PenaltyParamInput.cs" />
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\RptCCFInput.cs" />
     <Compile Include="Inputs\RptGsInput.cs" />
