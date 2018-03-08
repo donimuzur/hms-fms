@@ -87,7 +87,7 @@
                                                 || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator
                                                 || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager)
                         {
-                            @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                            @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "", new { @class = "form-control select" })
                         }
                         else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager
                         || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic || Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager
@@ -104,7 +104,7 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Regional</label>
-						@Html.DropDownListFor(model => model.SearchView.Region, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+						@Html.DropDownListFor(model => model.SearchView.Region, Model.SearchView.RegionalList, "", new { @class = "form-control select" })
 					</div>
 				</div>
 				<div class="col-md-3">
