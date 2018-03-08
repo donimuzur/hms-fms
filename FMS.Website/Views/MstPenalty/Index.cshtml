@@ -49,8 +49,9 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="SearchView_RequestYear">Request Year</label>
-                        @Html.DropDownList("Search_RequestYear", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.RequestYear)
+                        @Html.TextBox("Search_RequestYear", Model.SearchView.RequestYear, new { @class = "form-control"})
+                        @*@Html.DropDownList("Search_RequestYear", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.RequestYear)*@
                     </div>
                 </div>
                 <div class="col-md-4">
