@@ -25,145 +25,97 @@
 	</div>
 </div>
 <section class="content">
-
     <div class="wpanel">
-        <table id="tbGs" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th>Employee Name</th>
-                    <th>Vehicle Usage</th>
-                    <th>Police Number</th>
-                    <th>Car Group Level</th>
-                    <th>Manufacturer</th>
-                    <th>Model</th>
-                    <th>Series</th>
-                    <th>Transmission</th>
-                    <th>Location</th>
-                    <th>GS Request Date</th>
-                    <th>GS Fullfillment Date</th>
-                    <th>Gs Manufacturer</th>
-                    <th>Gs Model</th>
-                    <th>Gs Series</th>
-                    <th>Gs Transmission</th>
-                    <th>Gs Police Number</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Lead Time</th>
-                    <th>Remark</th>
-                    <th>Created By</th>
-                    <th>Created Date</th>
-                    <th>Modified By</th>
-                    <th>Modified Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th>
-                        @if (Model.CurrentPageAccess.WriteAccess == true)
-                        {
-                            <a href="@Url.Action("Create","MstGs")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
-                        }
-                    </th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListGS", "MstGs",
+                new AjaxOptions
                 {
-                    <tr>
-                        <td style="text-align: center;">
-                        @if (Model.CurrentPageAccess.WriteAccess == true)
-                        {
-                            <a href="@Url.Action("Edit", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                        }
-                        @if (Model.CurrentPageAccess.ReadAccess == true)
-                        {
-                            <a href="@Url.Action("Detail", "MstGs", new { @MstGsId = data.MstGsId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                        }
-                        </td>
-                        <td>@Html.Raw(data.EmployeeName)</td>
-                        <td>@Html.Raw(data.VehicleUsage)</td>
-                        <td>@Html.Raw(data.PoliceNumber)</td>
-                        <td>@Html.Raw(data.GroupLevel)</td>
-                        <td>@Html.Raw(data.Manufacturer)</td>
-                        <td>@Html.Raw(data.Models)</td>
-                        <td>@Html.Raw(data.Series)</td>
-                        <td>@Html.Raw(data.Transmission)</td>
-                        <td>@Html.Raw(data.Location)</td>
-                        <td>@Html.Raw(data.GsRequestDate==null ? "" : data.GsRequestDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.GsFullfillmentDate == null ? "" : data.GsFullfillmentDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.GsManufacturer)</td>
-                        <td>@Html.Raw(data.GsModel)</td>
-                        <td>@Html.Raw(data.GsSeries)</td>
-                        <td>@Html.Raw(data.GsTransmission)</td>
-                        <td>@Html.Raw(data.GsPoliceNumber)</td>
-                        <td>@Html.Raw(data.StartDate == null ?  "" : data.StartDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.EndDate == null ? "" : data.EndDate.Value.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.LeadTimeS)</td>
-                        <td>@Html.Raw(data.Remark)</td>
-                        <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        <td>@Html.Raw(data.IsActive == true ? "Active" : "InActive")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                    OnBegin = "LoadingShow",
+                    OnSuccess = "LoadingHide",
+                    OnFailure = "LoadingHide",
+                }))
+            {
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="SearchView_VehicleUsage">Vehicle Usage</label>
+                        @Html.DropDownList("Search_VehicleUsage", Model.SearchView.VehicleUsageList,new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.VehicleUsage)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="SearchView_PoliceNumber">Police Number</label>
+                        @Html.DropDownList("Search_PoliceNumber", Model.SearchView.PoliceNumberList,new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.PoliceNumber)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="SearchView_EmployeeName">Employee Name</label>
+                        @Html.DropDownList("Search_EmployeeName", Model.SearchView.EmployeeNameList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.EmployeeName)
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+       @Html.Partial("_ListGS")
     </div>
 </section>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
-    function ExportXls() {
-    	var url = '@Url.Action("ExportReportGs", "MstGs")';
-    	var getFileUrl = '@Url.Action("GetExcelFile", "MstGs")';
-    	console.log(url);
-   
-    	$.ajax({
-    		url: url,
-    		beforeSend: function () {
-    			$('#LoadingModal').show();
-    		},
-    		success: function (response, status, jqxhr) {
-    			console.log("DONE");
-    			window.location = getFileUrl + "?pathFile=" + response;
-    			$('#LoadingModal').hide();
-    		},
-    		error: function (jqhxr) {
-    			console.log("ERROR");
-    			console.log(jqhxr.responseText);
-    			$('#LoadingModal').hide();
-    		},
-    		type: 'POST'
-    	});
+    function LoadingShow() {
+        $('#LoadingModal').show();
     }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
+    function ExportXls() {
+        console.log('Submitting');
+        var url = '@Url.Action("ExportMasterGs", "MstGs")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstGs")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        VehicleUsage: getFunctionStr($('#Search_VehicleUsage').val()),
+			        EmployeeName: getFunctionStr($('#Search_EmployeeName').val()),
+			        PoliceNumber: getFunctionStr($('#Search_PoliceNumber').val())
+			    }
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
 
-    $(function () {
+    }
+    function setupDataTables()
+    {
         // DataTable
         var table = $('#tbGs').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
@@ -179,10 +131,39 @@
                     .draw();
             });
         });
+    }
 
+    function getFunctionStr(arr) {
+        var dataStr = "";
+        if (arr.length > 0) {
+            dataStr = arr.toString();
+        }
+        return dataStr;
+    }
 
+    $(function () {
+        $(".chosen").chosen();
+        setupDataTables();
         if ($('.title-page').html() == 'Master Data GS') {
             $('#MstGsMenu').addClass('active');
         }
+
+        $(document).on('click', '#btn-filter', function () {
+            console.log('a');
+            $("#SearchView_VehicleUsage").val(getFunctionStr($('#Search_VehicleUsage').val()));
+            $("#SearchView_PoliceNumber").val(getFunctionStr($('#Search_PoliceNumber').val()));
+            $("#SearchView_EmployeeName").val(getFunctionStr($('#Search_EmployeeName').val()));
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $('#SearchView_VehicleUsage').val('');
+            $("#SearchView_PoliceNumber").val('');
+            $("#SearchView_EmployeeName").val('');
+            $("#Search_EmployeeName").val('').trigger('chosen:updated');
+            $("#Search_PoliceNumber").val('').trigger('chosen:updated');
+            $("#Search_VehicleUsage").val('').trigger('chosen:updated');
+
+            $("#btn-filter").trigger('click');
+        });
     });
 </script>

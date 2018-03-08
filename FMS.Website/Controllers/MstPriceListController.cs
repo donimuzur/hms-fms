@@ -20,6 +20,7 @@ using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.DAL;
 using FMS.BusinessObject;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -74,12 +75,26 @@ namespace FMS.Website.Controllers
 
             return model;
         }
-        
+
+        public PricelistSearchView Initial(PriceListModel model)
+        {
+            var VendorList = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new VendorDto { MstVendorId = x.MstVendorId, VendorName = x.VendorName }).Distinct().OrderBy(x => x.VendorName).ToList();
+            var SettingList = _settingBLL.GetSetting().Where(x => x.IsActive ).ToList();
+            var ZonePriceList = _locationMapping.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZonePriceList}).Distinct().OrderBy(x => x.ZonePriceList).ToList();
+
+            model.SearchView.VehicleUsageList = new SelectList(model.Details.Select(x => new { x.VehicleUsage }).Distinct().ToList(), "VehicleUsage", "VehicleUsage");
+            model.SearchView.VehicleTypeList = new SelectList(SettingList.Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new SettingDto { SettingName = x.SettingName }).Distinct().OrderBy(x => x.SettingName).ToList(), "SettingName", "SettingName");
+            model.SearchView.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
+            model.SearchView.ZonePricelistList = new SelectList(ZonePriceList, "ZonePriceList", "ZonePriceList");
+            return model.SearchView;
+        }
         public ActionResult Index()
         {
-            var data = _priceListBLL.GetPriceList();
+            var filter = new PricelistParamInput();
+            var data = _priceListBLL.GetPriceList(filter);
             var model = new PriceListModel();
             model.Details = Mapper.Map<List<PriceListItem>>(data);
+            model.SearchView = Initial(model);
             foreach(PriceListItem detail in model.Details)
             {
                 detail.VendorName = _vendorBLL.GetByID(detail.Vendor) == null ? string.Empty : _vendorBLL.GetByID(detail.Vendor).VendorName;
@@ -100,7 +115,46 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-       
+        [HttpPost]
+        public PartialViewResult ListPricelist(PriceListModel model)
+        {
+            model.Details = new List<PriceListItem>();
+            model.Details = GetPricelist(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            foreach (PriceListItem detail in model.Details)
+            {
+                detail.VendorName = _vendorBLL.GetByID(detail.Vendor) == null ? string.Empty : _vendorBLL.GetByID(detail.Vendor).VendorName;
+            }
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
+            return PartialView("_listPriceList", model);
+        }
+        private List<PriceListItem> GetPricelist(PricelistSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _priceListBLL.GetPriceList(new PricelistParamInput());
+                return Mapper.Map<List<PriceListItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<PricelistParamInput>(filter);
+
+            var dbData = _priceListBLL.GetPriceList(input);
+            return Mapper.Map<List<PriceListItem>>(dbData);
+        }
+
         public ActionResult Create()
         {
             if (CurrentUser.UserRole == Enums.UserRole.Viewer)
@@ -487,10 +541,10 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region export xls
-        public string ExportMasterPriceList()
+        public string ExportMasterPriceList(PriceListModel model)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterPriceList();
+            pathFile = CreateXlsMasterPriceList(model.SearchView);
             return pathFile;
         }
         public void GetExcelFile(string pathFile)
@@ -506,11 +560,10 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-        private string CreateXlsMasterPriceList()
+        private string CreateXlsMasterPriceList(PricelistSearchView Input)
         {
             //get data
-            List<PriceListDto> priceList = _priceListBLL.GetPriceList();
-            var listData = Mapper.Map<List<PriceListItem>>(priceList);
+            var listData = GetPricelist(Input);
 
             var slDocument = new SLDocument();
 

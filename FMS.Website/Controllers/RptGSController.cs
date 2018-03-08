@@ -19,7 +19,7 @@ namespace FMS.Website.Controllers
     {
         #region -------------- field and Cunstructor ------------------
         private IGsBLL _gsBLL;
-        private Enums.MenuList _mainMenu;
+        //private Enums.MenuList _mainMenu;
         private IPageBLL _pageBLL;
         private IRemarkBLL _remarkBLL;
         private IFleetBLL _fleetBLL;
@@ -35,7 +35,7 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _locationMappingBLL = LocationMapping;
             _settingBLL = settingBLL;
-            _mainMenu = Enums.MenuList.RptExecutiveSummary;
+            //_mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
         #endregion
         //

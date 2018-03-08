@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.Service
 {
@@ -14,5 +15,6 @@ namespace FMS.Contract.Service
         MST_PENALTY GetPenaltyById(int MstPenaltyId);
         void save(MST_PENALTY dbPenalty);
         void save(MST_PENALTY dbPenalty, Login userLogin);
+        List<MST_PENALTY> GetPenalty(PenaltyParamInput filter);
     }
 }

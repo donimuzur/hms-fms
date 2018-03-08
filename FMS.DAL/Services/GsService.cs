@@ -42,7 +42,32 @@ namespace FMS.DAL.Services
         {
             _gsRepository.InsertOrUpdate(dbGs, userLogin, Enums.MenuList.MasterGS);
         }
+        public List<MST_GS> GetGsByParam(GSParamInput input)
+        {
+            Expression<Func<MST_GS, bool>> queryFilter = PredicateHelper.True<MST_GS>();
 
+            if (input != null)
+            {
+               
+                if (!string.IsNullOrEmpty(input.VehicleUsage))
+                {
+                    var listFunction = input.VehicleUsage.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.VEHICLE_USAGE == null ? "" : c.VEHICLE_USAGE.ToUpper())));
+                }
+                if (!string.IsNullOrEmpty(input.PoliceNumber))
+                {
+                    var listFunction = input.PoliceNumber.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.POLICE_NUMBER == null ? "" : c.POLICE_NUMBER.ToUpper())));
+                }
+                if (!string.IsNullOrEmpty(input.EmployeeName))
+                {
+                    var listFunction = input.EmployeeName.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.EMPLOYEE_NAME == null ? "" : c.EMPLOYEE_NAME.ToUpper())));
+                }
+            }
+
+            return _gsRepository.Get(queryFilter, null, "").ToList();
+        }
         public List<MST_GS> GetGsByParam(RptGsInput input)
         {
             Expression<Func<MST_GS, bool>> queryFilter = c => c.IS_ACTIVE;

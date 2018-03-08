@@ -416,6 +416,7 @@
                                     <tr>
                                         <th></th>
                                         <th>Image</th>
+                                        <th>Police Number</th>
                                         <th>Manufacturer</th>
                                         <th>Model</th>
                                         <th>Series</th>
@@ -429,6 +430,7 @@
                                         </th>
                                         <th>
                                         </th>
+                                        <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                                         <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                                         <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
                                         <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -621,6 +623,7 @@
     $("#btnSelectVehicle").click(function () {
         var vehType = '@Model.Detail.IsBenefit';
         var tr = $("[name='selectvehicleradio']:checked").parents("tr");
+        var PoliceNumber = $(tr).find("[name='PoliceNumber']").val();
         var manufacturer = $(tr).find("[name='manufacturer']").val();
         var model = $(tr).find("[name='model']").val();
         var series = $(tr).find("[name='series']").val();
@@ -648,6 +651,7 @@
         }
 
         var tableData = '<tr>' +
+                            '<td>' + (!PoliceNumber || PoliceNumber == null ? "" : '<input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber " value="' + PoliceNumber + '"></input>' + PoliceNumber) + '</td>' +
                             '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
                             '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
                             '<td><input type="hidden" name="Detail.Series" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
