@@ -257,6 +257,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangesLogController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
@@ -4416,6 +4417,7 @@
     <Content Include="Views\MstEpaf\_ListEpaf.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleFromVendorDetails.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleDetails.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

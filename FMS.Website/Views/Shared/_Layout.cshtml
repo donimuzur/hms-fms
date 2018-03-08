@@ -341,11 +341,54 @@
 								@*<li><a id="SumPtdByFunction" href="@Url.Action("SumPtdByFunction", "RptExecutiveSummary")">Sum PTD By Function</a></li>*@
 							</ul>
 						</li>
-					</ul>
-					break;
-
-			}
-		}
+					</ul>  break;
+                case Enums.MenuList.Help:
+                    <h5 class="sb-title">Main Menu - Help</h5>
+                    <ul id="sidemenu" role="tablist">
+                        <li>
+                            <a id="UserGuideParent" href="#UserGuideMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>User Guideline</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="UserGuideMenu" data-parent="#sidemenu">
+                                <li><a id="BENEFIT" href="@Url.Action("Index", "Help", new { Type = "BENEFIT" })">BENEFIT</a></li>
+                                <li><a id="WTC" href="@Url.Action("Index", "Help", new { Type = "WTC" })">WTC</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="VendorSLAParent" href="#VendorSLAMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Vendor SLA</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="VendorSLAMenu" data-parent="#sidemenu">
+                                <li><a id="TRAC" href="@Url.Action("VendorSLA", "Help", new { Type = "TRAC" })">TRAC</a></li>
+                                <li><a id="ASSA" href="@Url.Action("VendorSLA", "Help", new { Type = "ASSA" })">ASSA</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="VendorInformationParent" href="#VendorInformationMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Vendor Information</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="VendorInformationMenu" data-parent="#sidemenu">
+                                <li><a id="TRAC" href="@Url.Action("VendorInformation", "Help", new { Type = "TRAC" })">TRAC</a></li>
+                                <li><a id="ASSA" href="@Url.Action("VendorInformation", "Help", new { Type = "ASSA" })">ASSA</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="VehicleInformationParent" href="#VehicleInformationMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Vehicle Information</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="VehicleInformationMenu" data-parent="#sidemenu">
+                                <li><a id="BENEFIT" href="@Url.Action("VehicleInformation", "Help", new { Type = "BENEFIT" })">BENEFIT</a></li>
+                                <li><a id="WTC" href="@Url.Action("VehicleInformation", "Help", new { Type = "WTC" })">WTC</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    break;
+            }
+        }
 	</aside>
 	<main>
 		@*<div class="content">*@
