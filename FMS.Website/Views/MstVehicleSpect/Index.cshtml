@@ -26,118 +26,85 @@
 </div>
 <section class="content">
       <div class="wpanel">
-        <table id="tbVehicleSpect" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th style="min-width: 50px">Action</th>
-                    @*<th>Vehicle Spect ID</th>*@
-                    <th>Manufacturer</th>
-                    <th>Model</th>
-                    <th>Series</th>
-                    <th>Transmission</th>
-                    <th>Fuel Type</th>
-                    <th>Body Type</th>
-                    <th>Request Year</th>
-                    <th>Colour</th>
-                    <th>Car Group Level</th>
-                    <th>Flex Point</th>
-                    <th>Image Name</th>
-                    <th>Created By</th>
-                    <th>Created Date</th>
-                    <th>Modified By</th>
-                    <th>Modified Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    @if (Model.CurrentPageAccess.WriteAccess == true)
-                    {
-                        <th><a href="@Url.Action("Create","MstVehicleSpect")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
-                    }
-                    else
-                    {
-                        <th> &nbsp; </th>
-                    }
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
-                {
-                    <tr>
-
-                        <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "MstVehicleSpect", new { MstVehicleSpectid = data.MstVehicleSpectId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
-                            {
-                                <a href="@Url.Action("View", "MstVehicleSpect", new { MstVehicleSpectid = data.MstVehicleSpectId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            }
-                        </td>
-                        @*<td>@Html.Raw(data.MstVehicleSpectId)</td>*@
-                        <td>@Html.Raw(data.Manufacturer)</td>
-                        <td>@Html.Raw(data.Models)</td>
-                        <td>@Html.Raw(data.Series)</td>
-                        <td>@Html.Raw(data.Transmission)</td>
-                        <td>@Html.Raw(data.FuelTypeSpect)</td>
-                        <td>@Html.Raw(data.BodyType)</td>
-                        <td>@Html.Raw(data.Year)</td>
-                        <td>@Html.Raw(data.Colour)</td>
-                        <td>@Html.Raw(data.GroupLevel)</td>
-                        <td>@Html.Raw(data.FlexPoint)</td>
-                        <td>@Html.Raw(data.Image)</td>
-                        <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        @if (data.ModifiedDate.HasValue)
-                        {
-                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        }
-                        else
-                        {
-                            <td> &nbsp;</td>
-                        }
-                        @if (data.IsActive == true)
-                        {
-                            <td>@Html.Raw("Active")</td>
-                        }
-                        else
-                        {
-                            <td>@Html.Raw("InActive")</td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
+          <div class="row col-md-12">
+              @using (Ajax.BeginForm("ListVehicleSpect", "MstVehicleSpect",
+              new AjaxOptions
+              {
+                  HttpMethod = "POST",
+                  InsertionMode = InsertionMode.Replace,
+                  UpdateTargetId = "contenttable",
+                  OnComplete = "setupDataTables",
+                  OnBegin = "LoadingShow",
+                  OnSuccess = "LoadingHide",
+                  OnFailure = "LoadingHide",
+              }))
+              {
+                  <div class="col-md-4">
+                      <div class="form-group">
+                          <label for="SearchView_Manufacturer">Manufacturer</label>
+                          @Html.DropDownList("Search_Manufacturer", Model.SearchView.ManufacturerList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                          @Html.HiddenFor(model => model.SearchView.Manufacturer)
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="form-group">
+                          <label for="SearchView_Model">Model</label>
+                          @Html.DropDownList("Search_Model", Model.SearchView.ModelList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                          @Html.HiddenFor(model => model.SearchView.Model)
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="form-group">
+                          <label for="SearchView_Series">Series</label>
+                          @Html.DropDownList("Search_Series", Model.SearchView.SeriesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                          @Html.HiddenFor(model => model.SearchView.Series)
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="form-group">
+                          <label for="SearchView_BodyType">Body Type</label>
+                          @Html.DropDownList("Search_BodyType", Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                          @Html.HiddenFor(model => model.SearchView.BodyType)
+                      </div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="col-md-12">
+                      <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                      <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                  </div>
+              }
+          </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListVehicleSpect")
     </div>
 </section>
-
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
 	function ExportXls() {
 		console.log('Submitting');
 		var url = '@Url.Action("ExportMasterVehicleSpect", "MstVehicleSpect")';
 		var getFileUrl = '@Url.Action("GetExcelFile", "MstVehicleSpect")';
-		console.log(url);
+	    console.log(url);
+	    var objToUpload =
+			{
+			    SearchView: {
+			        Manufacturer: getFunctionStr($('#Search_Manufacturer').val()),
+			        Model: getFunctionStr($('#Search_Model').val()),
+			        Series: getFunctionStr($('#Search_Series').val()),
+			        BodyType: getFunctionStr($('#Search_BodyType').val())
+			    }
+			};
 		$.ajax({
 			url: url,
+    	    data: JSON.stringify(objToUpload),
+    	    contentType: 'application/json; charset=utf-8',
 			beforeSend: function () {
 				$('#LoadingModal').show();
 			},
@@ -154,9 +121,36 @@
 			type: 'POST'
 		});
 
+	}
+
+    function setupDataTables() {
+        // DataTable
+        var table = $('#tbVehicleSpect').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    }
+
+    function getFunctionStr(arr) {
+        var dataStr = "";
+        if (arr.length > 0) {
+            dataStr = arr.toString();
+        }
+        return dataStr;
     }
 
     $(function () {
+        $(".chosen").chosen();
         if ($('.title-page').html() == 'Master Data Vehicle Spec') {
             $('#MstVehicleSpectMenu').addClass('active');
         }
@@ -175,6 +169,27 @@
                     .search(this.value)
                     .draw();
             });
+        });
+        $(document).on('click', '#btn-filter', function () {
+            console.log('a');
+            $("#SearchView_BodyType").val(getFunctionStr($('#Search_BodyType').val()));
+            $("#SearchView_Manufacturer").val(getFunctionStr($('#Search_Manufacturer').val()));
+            $("#SearchView_Model").val(getFunctionStr($('#Search_Model').val()));
+            $("#SearchView_Series").val(getFunctionStr($('#Search_Series').val()));
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            $("#SearchView_BodyType").val('');
+            $("#SearchView_Manufacturer").val('');
+            $("#SearchView_Model").val('');
+            $("#SearchView_Series").val('');
+
+            $("#Search_BodyType").val('').trigger('chosen:updated');
+            $("#Search_Manufacturer").val('').trigger('chosen:updated');
+            $("#Search_Model").val('').trigger('chosen:updated');
+            $("#Search_Series").val('').trigger('chosen:updated');
+
+            $("#btn-filter").trigger('click');
         });
     });
 </script>

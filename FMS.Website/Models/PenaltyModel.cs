@@ -29,6 +29,7 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
 
         public SelectList VendorList { get; set; }
+        public SelectList RequestYearList { get; set; }
         public SelectList ManufacturerList { get; set; }
         public SelectList ModelList { get; set; }
         public SelectList SeriesList { get; set; }

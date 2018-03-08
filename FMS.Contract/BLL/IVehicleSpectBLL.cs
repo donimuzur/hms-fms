@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FMS.BusinessObject.Dto;
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.BLL
 {
@@ -17,7 +18,6 @@ namespace FMS.Contract.BLL
         void Save(VehicleSpectDto data, Login currentUser);
 
         void ValidateSpect(VehicleSpectDto dto, out string message, bool isEdit = false);
-
-        
+        List<VehicleSpectDto> GetVehicleSpect(VehicleSpectParamInput vehicleSpectParamInput);
     }
 }

@@ -249,6 +249,7 @@
     <Compile Include="Code\FMSWebsiteMapperRptPo.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FMSWebsiteMapperVehicleOverallReport.cs" />
+    <Compile Include="Code\FMSWebsiteMapperVehicleSpect.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -4417,6 +4418,8 @@
     <Content Include="Views\TraCsf\_ListVehicleFromVendorDetails.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleDetails.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SummaryRegion.cshtml" />
+    <Content Include="Views\MstPenalty\_ListPenalty.cshtml" />
+    <Content Include="Views\MstVehicleSpect\_ListVehicleSpect.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
