@@ -42,7 +42,7 @@
             {
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="SearchView_Vendor">Vendor</label>
+                        <label for="SearchView_vendor">Vendor</label>
                         @Html.DropDownList("Search_Vendor", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
                         @Html.HiddenFor(model => model.SearchView.vendor)
                     </div>
@@ -105,7 +105,7 @@
 			{
 			    SearchView: {
 			        VehicleType: getFunctionStr($('#Search_VehicleType').val()),
-			        Vendor: getFunctionStr($('#Search_Vendor').val()),
+			        vendor: getFunctionStr($('#Search_Vendor').val()),
 			        VehicleUsage: getFunctionStr($('#Search_VehicleUsage').val()),
 			        ZonePricelist: getFunctionStr($('#Search_ZonePricelist').val())
 			    }
@@ -154,14 +154,14 @@
         $(document).on('click', '#btn-filter', function () {
             console.log('a');
             $("#SearchView_VehicleUsage").val(getFunctionStr($('#Search_VehicleUsage').val()));
-            $("#SearchView_Vendor").val(getFunctionStr($('#Search_Vendor').val()));
+            $("#SearchView_vendor").val(getFunctionStr($('#Search_Vendor').val()));
             $("#SearchView_VehicleType").val(getFunctionStr($('#Search_VehicleType').val()));
             $("#SearchView_ZonePricelist").val(getFunctionStr($('#Search_ZonePricelist').val()));
         });
 
         $(document).on('click', '#btn-reset', function () {
             $('#SearchView_VehicleUsage').val('');
-            $("#SearchView_Vendor").val('');
+            $("#SearchView_vendor").val('');
             $("#SearchView_VehicleType").val('');
             $("#SearchView_ZonePricelist").val('');
 
