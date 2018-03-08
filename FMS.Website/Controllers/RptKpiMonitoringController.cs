@@ -67,7 +67,7 @@ namespace FMS.Website.Controllers
             var VehicleUsageList =_settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT").ToList();
             var BasetownList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).Select(x => new { BASETOWN = x.BASETOWN }).Distinct().OrderBy(x => x.BASETOWN).ToList();
 
-            model.SearchView.FormDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            model.SearchView.FromDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.ToDate = DateTime.Today;
 
             model.SearchView.FormTypeList = new SelectList(FormTypeList, "Key", "Value");
@@ -86,7 +86,10 @@ namespace FMS.Website.Controllers
                 foreach (var item in ListTransaction)
                 {
                     var data = GetDateworkflow(item, UserLogin);
-                    model.ListTransaction.Add(data);
+                    if(data.Id != 0)
+                    {
+                        model.ListTransaction.Add(data);
+                    }
                 }
 
             }
@@ -121,7 +124,9 @@ namespace FMS.Website.Controllers
             {
                 var ListWorkflow=  GetWorkflowHistory((int)Enums.MenuList.TraCtf, item.TraId);
                 var traCtf = _ctfBLL.GetCtfById(item.TraId);
-                
+
+                if (traCtf == null) return new KpiMonitoringItem();
+
                 var Employee = UserLogin.Where(x=> x.EMPLOYEE_ID ==  (traCtf == null ? "" : traCtf.EmployeeId )).FirstOrDefault();
                 var Creator = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeIdCreator)).FirstOrDefault();
                 var Fleet  = UserLogin.Where(x => x.EMPLOYEE_ID == (traCtf == null ? "" : traCtf.EmployeeIdFleetApproval)).FirstOrDefault();
@@ -152,7 +157,7 @@ namespace FMS.Website.Controllers
             {
                 var ListWorkflow = GetWorkflowHistory((int)Enums.MenuList.TraCsf, item.TraId);
                 var traCsf = _csfBLL.GetCsfById(item.TraId);
-
+                if (traCsf == null) return new KpiMonitoringItem();
                 var Employee = UserLogin.Where(x => x.EMPLOYEE_ID == (traCsf == null ? "" : traCsf.EMPLOYEE_ID)).FirstOrDefault();
                 var Creator = UserLogin.Where(x => x.EMPLOYEE_ID == (traCsf == null ? "" : traCsf.EMPLOYEE_ID_CREATOR)).FirstOrDefault();
                 var Fleet = UserLogin.Where(x => x.EMPLOYEE_ID == (traCsf == null ? "" : traCsf.EMPLOYEE_ID_FLEET_APPROVAL)).FirstOrDefault();
@@ -179,7 +184,7 @@ namespace FMS.Website.Controllers
             {
                 var ListWorkflow = GetWorkflowHistory((int)Enums.MenuList.TraCtf, item.TraId);
                 var TraCrf = _crfBLL.GetDataById(item.TraId);
-
+                if (TraCrf == null) return new KpiMonitoringItem();
                 var Employee = UserLogin.Where(x => x.EMPLOYEE_ID == (TraCrf == null ? "" : TraCrf.EMPLOYEE_ID)).FirstOrDefault();
                 //var Fleet = UserLogin.Where(x => x.EMPLOYEE_ID == (TraCrf == null ? "" : TraCrf.EmployeeIdFleetApproval)).FirstOrDefault();
 
@@ -212,7 +217,10 @@ namespace FMS.Website.Controllers
                 foreach (var item in ListTransaction)
                 {
                     var data = GetDateworkflow(item, UserLogin);
-                    model.ListTransaction.Add(data);
+                    if(data.Id != 0)
+                    {
+                        model.ListTransaction.Add(data);
+                    }
                 }
             }
             catch (Exception exp)
@@ -297,7 +305,6 @@ namespace FMS.Website.Controllers
             Response.Flush();
             newFile.Delete();
             Response.End();
-
         }
       
         private string CreateXlsKpiMonitoring(RptKpiMonitoringModel model)
@@ -308,7 +315,10 @@ namespace FMS.Website.Controllers
             foreach (var item in ListTransaction)
             {
                 var data = GetDateworkflow(item, UserLogin);
-                model.ListTransaction.Add(data);
+                if(data.Id != 0)
+                {
+                    model.ListTransaction.Add(data);
+                }
             }
 
             var slDocument = new SLDocument();

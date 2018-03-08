@@ -1,0 +1,87 @@
+﻿@model FMS.Website.Models.GsModel
+
+<div role="form" class="form-excise">
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Start Date</label>
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.FilterReport.StartDateBegin, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"></label>
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.FilterReport.StartDateEnd, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">End Date</label>
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.FilterReport.EndDateBegin, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"></label>
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.FilterReport.EndDateEnd, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Vehicle Usage</label>
+                            <div class="input-group">
+                                @Html.DropDownListFor(model => model.FilterReport.VehicleUsage,  Model.VehicleUsageList,"ALL", new { @class = "form-control " })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Location</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(model => model.FilterReport.Location,new { @class = "form-control " })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <input type="submit" value="Filter" style="display: none" class="btn btn-primary" id="btnSubmit" />
+            <a href="#" onclick="filter()" class="btn btn-primary">Filter</a>
+            <a href="@Url.Action("Index","RptGS")"  class="btn btn-default">Reset</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+

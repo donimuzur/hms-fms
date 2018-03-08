@@ -11,6 +11,7 @@ using FMS.Contract;
 using FMS.Core;
 using FMS.DAL.Services;
 using AutoMapper;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.EPAF
 {
@@ -31,7 +32,12 @@ namespace FMS.BLL.EPAF
             return retData;
         }
 
-
+        public List<EpafDto> GetEpaf(EpafParamInput filter)
+        {
+            var data = _epafService.GetEpaf(filter);
+            var redata = Mapper.Map<List<EpafDto>>(data);
+            return redata;
+        }
         public List<EpafDto> GetEpafByDocType(Enums.DocumentType docType)
         {
             var data = _epafService.GetEpafByDocumentType(docType);

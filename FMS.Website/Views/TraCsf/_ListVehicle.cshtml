@@ -3,6 +3,7 @@
 <table id="tbCsfVehicle" class="table table-bordered table-striped">
     <thead>
         <tr>
+            <th>PoliceNumber</th>
             <th>Manufacturer</th>
             <th>Model</th>
             <th>Series</th>
@@ -18,6 +19,7 @@
         @if (Model.Detail.Models != null)
         {
             <tr>
+                @Html.HiddenFor(model => model.Detail.PoliceNumber)
                 @Html.HiddenFor(model => model.Detail.Manufacturer)
                 @Html.HiddenFor(model => model.Detail.Models)
                 @Html.HiddenFor(model => model.Detail.Series)
@@ -29,6 +31,7 @@
                 @Html.HiddenFor(model => model.Detail.CfmIdleId)
                 @Html.HiddenFor(model => model.Detail.CarGroupLevel)
                 @Html.HiddenFor(model => model.Detail.VendorName)
+                <td>@Html.Raw(Model.Detail.PoliceNumber)</td>
                 <td>@Html.Raw(Model.Detail.Manufacturer)</td>
                 <td>@Html.Raw(Model.Detail.Models)</td>
                 <td>@Html.Raw(Model.Detail.Series)</td>

@@ -162,6 +162,7 @@ namespace FMS.Website.Models
         public int MonthTo { get; set; }
         public bool IsActive { get; set; }
         public int Year { get; set; }
+        public string Zone { get; set; }
     }
 
     /// <summary>

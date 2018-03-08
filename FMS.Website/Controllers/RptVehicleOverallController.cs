@@ -75,7 +75,8 @@ namespace FMS.Website.Controllers
             model.SearchView.FunctionList = new SelectList(groupCostData.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName");
             model.SearchView.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region");
             model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().ToList(), "Basetown", "Basetown");
-
+            model.SearchView.ZoneList = new SelectList(locationMappingData.Select(x => new { x.ZoneSales}).Distinct().ToList(), "ZoneSales", "ZoneSales");
+            
             model.SearchView.StatusSource = "True";
 
             model.MainMenu = _mainMenu;
@@ -141,6 +142,7 @@ namespace FMS.Website.Controllers
             param.EmployeeId = searchView.EmployeeId;
             param.FormalName = searchView.FormalName;
             param.PoliceNumber = searchView.PoliceNumber;
+            param.Zone = searchView.Zone;
 
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);

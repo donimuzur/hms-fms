@@ -17,8 +17,9 @@ namespace FMS.Website.Models
         {
             Details = new List<GsItem>();
             FilterReport = new ReportFilter();
+            SearchView = new GSSearchView();
         }
-
+        public GSSearchView SearchView { get; set; }
         public SelectList VehicleUsageList { get; set; }
     }
     public class GsItem : BaseModel
@@ -133,7 +134,16 @@ namespace FMS.Website.Models
         public SelectList RemarkList { get; set; }
         public SelectList LocationList { get; set; }
     }
+    public class GSSearchView
+    {
+        public string VehicleUsage { get; set; }
+        public string EmployeeName { get; set; }
+        public string PoliceNumber { get; set; }
 
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList EmployeeNameList { get; set; }
+        public SelectList PoliceNumberList { get; set; }
+    }
 
     public class ReportFilter
     {
@@ -148,5 +158,12 @@ namespace FMS.Website.Models
         public string VehicleUsage { get; set; }
 
         public string Location { get; set; }
+
+        public string EmployeeName { get; set; }
+        public string PoliceNumber { get; set; }
+
+        public SelectList VehicleUsageList { get; set; }
+        public SelectList EmployeeNameList { get; set; }
+        public SelectList PoliceNumberList { get; set; }
     }
 }

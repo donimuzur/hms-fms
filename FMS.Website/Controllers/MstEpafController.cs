@@ -13,29 +13,82 @@ using System.IO;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.Website.Utility;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
     public class MstEpafController : BaseController
     {
         private IEpafBLL _epafBLL;
+        private IDocumentTypeBLL _documentTypeBLL;
         private Enums.MenuList _mainMenu;
-        public MstEpafController(IPageBLL PageBll, IEpafBLL EpafBLL) : base(PageBll, Enums.MenuList.MasterEpaf)
+
+
+        public MstEpafController(IPageBLL PageBll, IEpafBLL EpafBLL, IDocumentTypeBLL DocumentTypeBLL) : base(PageBll, Enums.MenuList.MasterEpaf)
         {
             _epafBLL = EpafBLL;
+            _documentTypeBLL = DocumentTypeBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
         //
+        public EpafSearchView InitialFilter(EpafModel model)
+        {
+            var DocumentTypeList = _documentTypeBLL.GetDocumentType().Where(x => (x.DocumentType == null ? "" : x.DocumentType.ToUpper()) == "CTF" || (x.DocumentType == null ? "" : x.DocumentType.ToUpper()) == "CRF" || (x.DocumentType == null ? "" : x.DocumentType.ToUpper()) == "CSF").Select(x => new {x.DocumentType,x.MstDocumentTypeId }).Distinct().ToList();
+            var EpafActionList = _epafBLL.GetEpaf().Select(x =>new { x.EpafAction }).Distinct().OrderBy(x=>x.EpafAction).ToList();
+            var EmployeeIdList = _epafBLL.GetEpaf().Select(x =>new { x.EmployeeId }).Distinct().OrderBy(x=>x.EmployeeId).ToList();
+            var EmployeeNameList = _epafBLL.GetEpaf().Select(x => new { x.EmployeeName }).Distinct().OrderBy(x=>x.EmployeeName).ToList();
+
+            model.SearchView.DocumentTypeList = new SelectList(DocumentTypeList, "MstDocumentTypeId", "DocumentType");
+            model.SearchView.EmployeeIdList = new SelectList(EmployeeIdList, "EmployeeId", "EmployeeId");
+            model.SearchView.EmployeeNameList = new SelectList(EmployeeNameList, "EmployeeName", "EmployeeName");
+            model.SearchView.EpafActionList = new SelectList(EpafActionList, "EpafAction", "EpafAction");
+
+          
+            model.SearchView.DateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            model.SearchView.DateTo = DateTime.Today;
+            return model.SearchView;
+        }
         // GET: /MstEpaf/
         public ActionResult Index()
         {
-            var data = _epafBLL.GetEpaf();
+            var filter = new EpafParamInput();
+            filter.DateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            filter.DateTo = DateTime.Today;
+
+            var data = _epafBLL.GetEpaf(filter);
             var model = new EpafModel();
             model.Details = Mapper.Map<List<EpafItem>>(data);
+            model.SearchView = InitialFilter(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult ListEpaf(EpafModel model)
+        {
+            model.Details = new List<EpafItem>();
+            model.Details = GetEpaf(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListEpaf", model);
+        }
+        private List<EpafItem> GetEpaf(EpafSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _epafBLL.GetEpaf(new EpafParamInput());
+                return Mapper.Map<List<EpafItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<EpafParamInput>(filter);
+
+            var dbData = _epafBLL.GetEpaf(input);
+            return Mapper.Map<List<EpafItem>>(dbData);
         }
 
         public ActionResult Detail(int MstEpafId)
@@ -49,10 +102,10 @@ namespace FMS.Website.Controllers
         }
 
         #region ExportExcel
-        public string ExportMasterEpaf()
+        public string ExportMasterEpaf(EpafModel model)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterEpaf();
+            pathFile = CreateXlsMasterEpaf(model.SearchView);
             return pathFile;
         }
         public void GetExcelFile(string pathFile)
@@ -69,11 +122,10 @@ namespace FMS.Website.Controllers
             Response.End();
 
         }
-        private string CreateXlsMasterEpaf()
+        private string CreateXlsMasterEpaf(EpafSearchView input)
         {
             //get data
-            List<EpafDto> vendor = _epafBLL.GetEpaf();
-            var listData = Mapper.Map<List<EpafItem>>(vendor);
+            var listData = GetEpaf(input); ;
 
             var slDocument = new SLDocument();
 
@@ -145,7 +197,7 @@ namespace FMS.Website.Controllers
 
             foreach (var data in listData)
             {
-                slDocument.SetCellValue(iRow, 1, data.DocumentType);
+                slDocument.SetCellValue(iRow, 1, data.DocumentType == 1 ? "CSF" : (data.DocumentType == 3 ? "CRF" :data.DocumentType == 6 ? "CTF" : "" ));
                 slDocument.SetCellValue(iRow, 2, data.EpafAction);
                 slDocument.SetCellValue(iRow, 3, data.EmployeeId);
                 slDocument.SetCellValue(iRow, 4, data.EmployeeName);

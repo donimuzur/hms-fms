@@ -204,6 +204,19 @@ namespace FMS.DAL.Services
                     queryFilterFleet = queryFilterFleet.And(c => listFunction.Contains(c.REGIONAL.ToUpper()));
                     //queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
                 }
+                if (!string.IsNullOrEmpty(input.Zone))
+                {
+                    var listZone = input.Zone.ToUpper().Split(',').ToList();
+                    var _repoLocationMapping= _uow.GetGenericRepository<MST_LOCATION_MAPPING>().Get().ToList();
+                    var ListLocationMapping = _repoLocationMapping.Where(x => x.IS_ACTIVE && listZone.Contains((x.ZONE_SALES == null ? "" : x.ZONE_SALES.ToUpper()))).ToList();
+                    
+                    if(ListLocationMapping.Count > 0)
+                    {
+                        var ListRegional = ListLocationMapping.Select(x =>  x.REGION ).Distinct();
+                        queryFilterFleet = queryFilterFleet.And(c => ListRegional.Contains(c.REGIONAL.ToUpper()));
+                    }
+                    //queryFilterFleet = queryFilterFleet.And(c => c.REGIONAL == input.Regional);
+                }
             }
             return _fleetRepository.Get(queryFilterFleet, null, "").ToList();
         }

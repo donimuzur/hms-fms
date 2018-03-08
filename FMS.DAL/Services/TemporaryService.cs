@@ -68,6 +68,11 @@ namespace FMS.DAL.Services
                                                                                     (c.DOCUMENT_STATUS == Enums.DocumentStatus.WaitingFleetApproval || c.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress
                                                                                     || c.DOCUMENT_STATUS == Enums.DocumentStatus.Completed
                                                                                     || c.DOCUMENT_STATUS == Enums.DocumentStatus.Cancelled)));
+
+                if (userLogin.UserRole == Enums.UserRole.FleetManager)
+                {
+                    queryFilter = queryFilter.And(c => c.DOCUMENT_STATUS != Enums.DocumentStatus.Draft && c.CREATED_BY  != userLogin.USER_ID && c.EMPLOYEE_ID_CREATOR != userLogin.EMPLOYEE_ID );
+                }
             }
 
             return _traTempRepository.Get(queryFilter, null, includeTables).ToList();

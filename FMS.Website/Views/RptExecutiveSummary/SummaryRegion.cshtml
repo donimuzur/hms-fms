@@ -1,0 +1,865 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.SummaryAllModel
+
+@{
+    ViewBag.Title = Model.TitleForm;
+}
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">@ViewBag.Title</h5>
+    @if (Model.CurrentPageAccess.ReadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-download"></i> Export
+        </a>
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#SearchView_YearFrom').datepicker({
+            minViewMode: 2,
+            format: 'yyyy',
+            autoclose: true,
+            position: 'right bottom',
+            container: '#xz'
+        });
+    });
+</script>
+
+<div class="well" style="margin:-1px;">
+    <div class="wpanel" style="margin-left:22px;margin-right:22px;">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="">Month</label>
+                    @Html.DropDownListFor(model => model.SearchView.MonthFrom, Model.SearchView.MonthList, new { @class = "form-control month" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group" id="xz">
+                    <label for="">Year</label>
+                    <input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class="content chart-summary">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Vehicle By Regional</b></div>
+                    <div class="card-body">
+                        @*<h5 class="card-title"><i class="fa fa-compress"></i> Vehicle By Regional</h5>*@
+                        <canvas id="mybarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Odometer</b></div>
+                    <div class="card-body">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Liters</b></div>
+                    <div class="card-body">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
+                        <canvas id="lineChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Fuel Cost</b></div>
+                    <div class="card-body">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
+                        <canvas id="mybarChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Lease Cost</b></div>
+                    <div class="card-body">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
+                        <canvas id="mybarChart3"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Accident</b></div>
+                    <div class="card-body">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
+                        <canvas id="lineChart3"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">AC Vs OB</b></div>
+                    <div class="card-body">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
+                        <canvas id="lineChart4"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/js/Chart.bundle.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/execsumscript.js"></script>
+<script type="text/javascript">
+    function init_charts() {
+        console.log('run_charts  typeof [' + typeof (Chart) + ']');
+
+        if (typeof (Chart) === 'undefined') { return; }
+
+        console.log('init_charts');
+
+
+        //Chart.defaults.global.legend = {
+        //    enabled: false
+        //};
+
+        // Line chart
+
+        if ($('#lineChart').length) {
+
+            var ctx = document.getElementById("lineChart");
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Sumatra 1", "Sumatra 2", "Jakarta", "Java 1", "Java 2", "Bali Nusra", "Kalimantan"],
+                    datasets: [{
+                        label: "Sales",
+                        backgroundColor: "rgba(130, 130, 130, 0.31)",
+                        borderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(130,130,130,1)",
+                        pointBorderWidth: 1,
+                        data: [31, 74, 6, 39, 20, 85, 7]
+                    }, {
+                        label: "Marketing",
+                        backgroundColor: "rgba(33, 164, 255, 0.3)",
+                        borderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                        pointBorderWidth: 1,
+                        data: [82, 23, 66, 9, 99, 4, 2]
+                    }]
+                },
+            });
+
+        }
+
+        // Line chart
+
+        if ($('#lineChart2').length) {
+
+            var ctx = document.getElementById("lineChart2");
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Sumatra 1", "Sumatra 2", "Jakarta", "Java 1", "Java 2", "Bali Nusra", "Kalimantan"],
+                    datasets: [{
+                        label: "Sales",
+                        backgroundColor: "rgba(130, 130, 130, 0.31)",
+                        borderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(130,130,130,1)",
+                        pointBorderWidth: 1,
+                        data: [31, 74, 6, 39, 20, 85, 7]
+                    }, {
+                        label: "Marketing",
+                        backgroundColor: "rgba(33, 164, 255, 0.3)",
+                        borderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                        pointBorderWidth: 1,
+                        data: [82, 23, 66, 9, 99, 4, 2]
+                    }]
+                },
+            });
+
+        }
+
+        // Line chart
+
+        if ($('#lineChart3').length) {
+
+            var ctx = document.getElementById("lineChart3");
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Sumatra 1", "Sumatra 2", "Jakarta", "Java 1", "Java 2", "Bali Nusra", "Kalimantan"],
+                    datasets: [{
+                        label: "Sales",
+                        backgroundColor: "rgba(130, 130, 130, 0.31)",
+                        borderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(130,130,130,1)",
+                        pointBorderWidth: 1,
+                        data: [31, 74, 6, 39, 20, 85, 7]
+                    }, {
+                        label: "Marketing",
+                        backgroundColor: "rgba(33, 164, 255, 0.3)",
+                        borderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                        pointBorderWidth: 1,
+                        data: [82, 23, 66, 9, 99, 4, 2]
+                    }]
+                },
+            });
+
+        }
+
+        // Line chart
+
+        if ($('#lineChart4').length) {
+
+            var ctx = document.getElementById("lineChart4");
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Sales", "Marketing"],
+                    datasets: [{
+                        label: "Actual Cost",
+                        backgroundColor: "rgba(130, 130, 130, 0.31)",
+                        borderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                        pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(130,130,130,1)",
+                        pointBorderWidth: 1,
+                        data: [31, 74]
+                    }, {
+                        label: "Operational Budget",
+                        backgroundColor: "rgba(33, 164, 255, 0.3)",
+                        borderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                        pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                        pointBorderWidth: 1,
+                        data: [82, 23]
+                    }]
+                },
+            });
+
+        }
+
+        // Bar chart
+
+        if ($('#mybarChart').length) {
+
+            var ctx = document.getElementById("mybarChart");
+            var mybarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["Sumatra 1", "Sumatra 2", "Jakarta", "Java 1", "Java 2", "Bali Nusra", "Kalimantan"],
+                    datasets: [{
+                        label: 'Sales',
+                        backgroundColor: "#B21B1B",
+                        data: [51, 30, 40, 28, 92, 50, 45]
+                    }, {
+                        label: 'Marketing',
+                        backgroundColor: "#1FB21B",
+                        data: [41, 56, 25, 48, 72, 34, 12]
+                    }]
+                },
+
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+        }
+
+        // Bar chart
+
+        if ($('#mybarChart2').length) {
+
+            var ctx = document.getElementById("mybarChart2");
+            var mybarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["Sumatra 1", "Sumatra 2", "Jakarta", "Java 1", "Java 2", "Bali Nusra", "Kalimantan"],
+                    datasets: [{
+                        label: 'Sales',
+                        backgroundColor: "#21A4FF",
+                        data: [51, 30, 40, 28, 92, 50, 45]
+                    }, {
+                        label: 'Marketing',
+                        backgroundColor: "#FF8000",
+                        data: [77, 15, 55, 44, 70, 30, 15]
+                    }]
+                },
+
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+        }
+
+        // Bar chart
+
+        if ($('#mybarChart3').length) {
+
+            var ctx = document.getElementById("mybarChart3");
+            var mybarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["Sumatra 1", "Sumatra 2", "Jakarta", "Java 1", "Java 2", "Bali Nusra", "Kalimantan"],
+                    datasets: [{
+                        label: 'Sales',
+                        backgroundColor: "#FFFF80",
+                        data: [77, 15, 55, 44, 70, 30, 15]
+                    }, {
+                        label: 'Marketing',
+                        backgroundColor: "#FF8000",
+                        data: [51, 30, 40, 28, 92, 50, 45]
+                    }]
+                },
+
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+        }
+    }
+
+    function init_charts_data() {
+        console.log('run_charts  typeof [' + typeof (Chart) + ']');
+
+        if (typeof (Chart) === 'undefined') { return; }
+
+        console.log('init_charts');
+
+
+        //Chart.defaults.global.legend = {
+        //    enabled: false
+        //};
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetOdometerDataVisualRegion", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].TOTAL_KM_SALES);
+                    second_chart.push(response[i].TOTAL_KM_MARKETING);
+                }
+
+                if (response.length == 0) {
+                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                    first_chart.push(5, 5, 5);
+                    second_chart.push(5, 5, 5);
+                }
+
+                // Line chart
+
+                if ($('#lineChart').length) {
+
+                    var ctx = document.getElementById("lineChart");
+                    var lineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: "Sales",
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }, {
+                                label: "Marketing",
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: second_chart
+                            }]
+                        },
+                    });
+
+                }
+            }
+        });
+                
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetLiterByFunctionDataVisualRegion", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].TOTAL_LITER_SALES);
+                    second_chart.push(response[i].TOTAL_LITER_MARKETING);
+                }
+
+                if (response.length == 0) {
+                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                    first_chart.push(5, 5, 5);
+                    second_chart.push(5, 5, 5);
+                }
+
+                // Line chart
+
+                if ($('#lineChart2').length) {
+
+                    var ctx = document.getElementById("lineChart2");
+                    var lineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: "Sales",
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }, {
+                                label: "Marketing",
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: second_chart
+                            }]
+                        },
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AccidentDataVisualRegion", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].ACCIDENT_COUNT_SALES);
+                    second_chart.push(response[i].ACCIDENT_COUNT_MARKETING);
+                }
+
+                if (response.length == 0) {
+                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                    first_chart.push(5, 5, 5);
+                    second_chart.push(5, 5, 5);
+                }
+
+                // Line chart
+
+                if ($('#lineChart3').length) {
+
+                    var ctx = document.getElementById("lineChart3");
+                    var lineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: "Sales",
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }, {
+                                label: "Marketing",
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: second_chart
+                            }]
+                        },
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetVehicleDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].FUNCTION);
+                    first_chart.push(response[i].NO_OF_VEHICLE_BENEFIT);
+                    second_chart.push(response[i].NO_OF_VEHICLE_WTC);
+                }
+
+                if (response.length == 0) {
+                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                    first_chart.push(5, 5, 5);
+                    second_chart.push(5, 5, 5);
+                }
+
+                // Line chart
+
+                if ($('#lineChart4').length) {
+
+                    var ctx = document.getElementById("lineChart4");
+                    var lineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: "Sales",
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }, {
+                                label: "Marketing",
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: second_chart
+                            }]
+                        },
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetVehicleWtcDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGIONAL);
+                    first_chart.push(response[i].NO_OF_VEHICLE_SALES);
+                    second_chart.push(response[i].NO_OF_VEHICLE_MARKETING);
+                }
+
+                if (response.length == 0) {
+                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                    first_chart.push(5, 5, 5);
+                    second_chart.push(5, 5, 5);
+                }
+
+                // Bar chart
+
+                if ($('#mybarChart').length) {
+
+                    var ctx = document.getElementById("mybarChart");
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: 'Sales',
+                                backgroundColor: getRandomColor(),
+                                data: first_chart
+                            }, {
+                                label: 'Marketing',
+                                backgroundColor: getRandomColor(),
+                                data: second_chart
+                            }]
+                        },
+
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetFuelCostByFunctionDataVisualRegion", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].TOTAL_FUEL_COST_SALES);
+                    second_chart.push(response[i].TOTAL_FUEL_COST_MARKETING);
+                }
+
+                if (response.length == 0) {
+                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                    first_chart.push(5, 5, 5);
+                    second_chart.push(5, 5, 5);
+                }
+
+                // Bar chart
+
+                if ($('#mybarChart2').length) {
+
+                    var ctx = document.getElementById("mybarChart2");
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: 'Sales',
+                                backgroundColor: getRandomColor(),
+                                data: first_chart
+                            }, {
+                                label: 'Marketing',
+                                backgroundColor: getRandomColor(),
+                                data: second_chart
+                            }]
+                        },
+
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetLeaseCostByFunctionDataVisualRegion", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].TOTAL_LEASE_COST_SALES);
+                    second_chart.push(response[i].TOTAL_LEASE_COST_MARKETING);
+                }
+
+                if (response.length == 0) {
+                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                    first_chart.push(5, 5, 5);
+                    second_chart.push(5, 5, 5);
+                }
+
+                // Bar chart
+
+                if ($('#mybarChart3').length) {
+
+                    var ctx = document.getElementById("mybarChart3");
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: 'Sales',
+                                backgroundColor: getRandomColor(),
+                                data: first_chart
+                            }, {
+                                label: 'Marketing',
+                                backgroundColor: getRandomColor(),
+                                data: second_chart
+                            }]
+                        },
+
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    $(document).ready(function () {
+        init_charts_data();
+    });
+
+    function ExportXls() {
+        console.log('Submitting');
+        var titleExport = '@Model.TitleExport';
+        var url = '@Url.Action("ExportSummaryAllReportGenerateReport", "RptExecutiveSummary")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchViewExport: {
+			        MonthFrom: $('#SearchView_MonthFrom').val(),
+			        MonthTo: $('#SearchView_MonthFrom').val(),
+			        YearFrom: $('#SearchView_YearFrom').val(),
+			        YearTo: $('#SearchView_YearFrom').val(),
+			    },
+			    TitleExport: titleExport
+
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
+    }
+
+    $(document).on('click', '#btn-filter', function () {
+        init_charts_data();
+    });
+
+</script>
+<link href="~/Content/DatePicker/Bootstrap Date Picker/bootstrap-datepicker.min.css" rel="stylesheet" />
+<style>
+    .datepicker {
+        margin-left: 15px;
+    }
+</style>
+<script src="~/Content/DatePicker/Bootstrap Date Picker/jquery-3.3.1.min.js"></script>
+<script src="~/Content/DatePicker/Bootstrap Date Picker/bootstrap-datepicker.min.js"></script>
