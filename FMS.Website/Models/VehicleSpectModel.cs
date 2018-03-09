@@ -18,10 +18,26 @@ namespace FMS.Website.Models
         public VehicleSpectModel()
         {
             Details = new List<VehicleSpectItem>();
+            SearchView = new VehicleSpectSearchView();
         }
 
+        public VehicleSpectSearchView SearchView { get; set; }
         public List<VehicleSpectItem> Details { get; set; }
     }
+
+    public class VehicleSpectSearchView
+    {
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public string Series { get; set; }
+        public string BodyType { get; set; }
+        
+        public SelectList ManufacturerList { get; set; }
+        public SelectList ModelList { get; set; }
+        public SelectList SeriesList { get; set; }
+        public SelectList BodyTypeList { get; set; }
+    }
+
     public class VehicleSpectItem : BaseModel
     {
         public int MstVehicleSpectId { get; set; }

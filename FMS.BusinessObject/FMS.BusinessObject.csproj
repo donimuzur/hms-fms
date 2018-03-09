@@ -150,6 +150,7 @@
     <Compile Include="Inputs\RptPo.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="Inputs\VehicleOverallReportInput.cs" />
+    <Compile Include="Inputs\VehicleSpectParamInput.cs" />
     <Compile Include="KPI_REPORT_DATA.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

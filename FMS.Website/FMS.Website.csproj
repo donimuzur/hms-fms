@@ -249,6 +249,7 @@
     <Compile Include="Code\FMSWebsiteMapperRptPo.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FMSWebsiteMapperVehicleOverallReport.cs" />
+    <Compile Include="Code\FMSWebsiteMapperVehicleSpect.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangesLogController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
@@ -1043,6 +1045,14 @@
     <Content Include="files_upload\masterFuelOdometer.xlsx" />
     <Content Include="files_upload\masterCostOB.xlsx" />
     <Content Include="files_upload\UploadCtf.xlsx" />
+    <Content Include="Help_Files\User Guideline\BENEFIT.pdf" />
+    <Content Include="Help_Files\User Guideline\WTC.pdf" />
+    <Content Include="Help_Files\Vehicle Information\BENEFIT.pdf" />
+    <Content Include="Help_Files\Vehicle Information\WTC.pdf" />
+    <Content Include="Help_Files\Vendor Information\ASSA.pdf" />
+    <Content Include="Help_Files\Vendor Information\TRAC.pdf" />
+    <Content Include="Help_Files\Vendor SLA\ASSA.pdf" />
+    <Content Include="Help_Files\Vendor SLA\TRAC.pdf" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Images\accident.png" />
@@ -1052,6 +1062,7 @@
     <Content Include="Images\odometers.png" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\HelpScript.js" />
     <Content Include="Scripts\ccfscript.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\AutoGr.js" />
@@ -4417,6 +4428,12 @@
     <Content Include="Views\TraCsf\_ListVehicleFromVendorDetails.cshtml" />
     <Content Include="Views\TraCsf\_ListVehicleDetails.cshtml" />
     <Content Include="Views\RptExecutiveSummary\SummaryRegion.cshtml" />
+    <Content Include="Views\MstPenalty\_ListPenalty.cshtml" />
+    <Content Include="Views\MstVehicleSpect\_ListVehicleSpect.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
+    <Content Include="Views\Help\VendorSLA.cshtml" />
+    <Content Include="Views\Help\VendorInformation.cshtml" />
+    <Content Include="Views\Help\VehicleInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
