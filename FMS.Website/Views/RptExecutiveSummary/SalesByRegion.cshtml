@@ -123,7 +123,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -249,22 +249,22 @@
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
-                var third_chart = [];
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
-                    first_chart.push(response[i].TOTAL_KM);
-                    second_chart.push(response[i].TOTAL_COST);
-                    third_chart.push(response[i].STICK);
+                    first_chart.push(response[i].TOTAL_COST);
+                    second_chart.push(response[i].TOTAL_KM);
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of Total KM',
+                                label: '# of Operational Cost Per Stick',
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -274,7 +274,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: '# of Total Cost',
+                                label: '# of Operational Cost Per KM',
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -283,16 +283,6 @@
                                 pointHoverBorderColor: "rgba(33, 164, 255,1)",
                                 pointBorderWidth: 1,
                                 data: second_chart
-                            }, {
-                                label: '# of Stick',
-                                backgroundColor: "rgba(130, 130, 130, 0.31)",
-                                borderColor: "rgba(130, 130, 130, 0.7)",
-                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
-                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
-                                pointHoverBackgroundColor: "#fff",
-                                pointHoverBorderColor: "rgba(130,130,130,1)",
-                                pointBorderWidth: 1,
-                                data: third_chart
                             }]
                         },
                         options: {

@@ -297,6 +297,13 @@ namespace FMS.BLL.Temporary
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
             }
+            else
+            {
+                if (input.UserRole == Enums.UserRole.Fleet)
+                {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+                }
+            }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 

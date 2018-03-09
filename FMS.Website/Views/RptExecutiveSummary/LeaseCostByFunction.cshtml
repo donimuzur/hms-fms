@@ -147,7 +147,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -276,19 +276,21 @@
                 var first_chart = [];
                 var second_chart = [];
                 for (var i = 0; i < response.length; i++) {
-                    labels_chart.push(response[i].FUNCTION);
-                    first_chart.push(response[i].TOTAL_LEASE_COST_JAVA);
-                    second_chart.push(response[i].TOTAL_LEASE_COST_ELSE);
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].TOTAL_LEASE_COST_SALES);
+                    second_chart.push(response[i].TOTAL_LEASE_COST_MARKETING);
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of JAVA',
+                                label: '# of SALES',
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -298,7 +300,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: '# of ELSE',
+                                label: '# of MARKETING',
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
