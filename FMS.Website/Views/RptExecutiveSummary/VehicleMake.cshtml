@@ -115,7 +115,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -240,6 +240,8 @@
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',
