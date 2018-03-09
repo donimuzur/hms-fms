@@ -17,6 +17,7 @@ using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using FMS.Website.Utility;
 using System.Configuration;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -47,6 +48,7 @@ namespace FMS.Website.Controllers
             var data = _VehicleSpectBLL.GetVehicleSpect();
             var model = new VehicleSpectModel();
             model.Details = Mapper.Map<List<VehicleSpectItem>>(data);
+            model.SearchView = Initial(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -61,6 +63,58 @@ namespace FMS.Website.Controllers
                 model.IsNotViewer = true;
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult ListVehicleSpect(VehicleSpectModel model)
+        {
+            if (!System.IO.Directory.Exists(Server.MapPath("~" + pathUpload)))
+            {
+                System.IO.Directory.CreateDirectory(Server.MapPath("~" + pathUpload));
+            }
+
+            model.Details = new List<VehicleSpectItem>();
+            model.Details = GetVehicleSpect(model.SearchView);
+            model.SearchView = Initial(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            {
+                model.IsShowNewButton = false;
+                model.IsNotViewer = false;
+            }
+            else
+            {
+                model.IsShowNewButton = true;
+                model.IsNotViewer = true;
+            }
+            return PartialView("_ListVehicleSpect", model);
+        }
+
+        public VehicleSpectSearchView Initial(VehicleSpectModel model)
+        {
+            model.SearchView.BodyTypeList = new SelectList(model.Details.Select(x => new { x.BodyType }).Distinct().ToList(), "BodyType", "BodyType");
+            model.SearchView.ManufacturerList = new SelectList(model.Details.Select(x => new { x.Manufacturer }).Distinct().ToList(), "Manufacturer", "Manufacturer");
+            model.SearchView.ModelList = new SelectList(model.Details.Select(x => new { x.Models }).Distinct().ToList(), "Models", "Models");
+            model.SearchView.SeriesList = new SelectList(model.Details.Select(x => new { x.Series }).Distinct().ToList(), "Series", "Series");
+            return model.SearchView;
+        }
+
+        private List<VehicleSpectItem> GetVehicleSpect(VehicleSpectSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _VehicleSpectBLL.GetVehicleSpect(new VehicleSpectParamInput());
+                return Mapper.Map<List<VehicleSpectItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<VehicleSpectParamInput>(filter);
+
+            var dbData = _VehicleSpectBLL.GetVehicleSpect(input);
+            return Mapper.Map<List<VehicleSpectItem>>(dbData);
         }
 
         public VehicleSpectItem initCreate()
@@ -422,10 +476,10 @@ namespace FMS.Website.Controllers
             return View("Upload", model);
         }
 
-        public string ExportMasterVehicleSpect()
+        public string ExportMasterVehicleSpect(VehicleSpectModel model)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterVehicleSpect();
+            pathFile = CreateXlsMasterVehicleSpect(model.SearchView);
             return pathFile;
         }
         public void GetExcelFile(string pathFile)
@@ -442,10 +496,11 @@ namespace FMS.Website.Controllers
             Response.End();
 
         }
-        private string CreateXlsMasterVehicleSpect()
+        private string CreateXlsMasterVehicleSpect(VehicleSpectSearchView filter)
         {
             //get data
-            List<VehicleSpectDto> vendor = _VehicleSpectBLL.GetVehicleSpect();
+            var input = Mapper.Map<VehicleSpectParamInput>(filter);
+            List<VehicleSpectDto> vendor = _VehicleSpectBLL.GetVehicleSpect(input);
             var listData = Mapper.Map<List<VehicleSpectItem>>(vendor);
 
             var slDocument = new SLDocument();

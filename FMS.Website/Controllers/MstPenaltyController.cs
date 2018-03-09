@@ -88,9 +88,10 @@ namespace FMS.Website.Controllers
             model.SearchView.BodyTypeList = new SelectList(model.Details.Select(x => new { x.BodyType }).Distinct().ToList(), "BodyType", "BodyType");
             model.SearchView.ManufacturerList = new SelectList(model.Details.Select(x => new { x.Manufacturer }).Distinct().ToList(), "Manufacturer", "Manufacturer");
             model.SearchView.ModelList = new SelectList(model.Details.Select(x => new { x.Models }).Distinct().ToList(), "Models", "Models");
+            model.SearchView.RequestYearList = new SelectList(model.Details.Select(x => new { x.Year }).Distinct().ToList(), "Year", "Year");
             model.SearchView.SeriesList = new SelectList(model.Details.Select(x => new { x.Series }).Distinct().ToList(), "Series", "Series");
             model.SearchView.VehicleTypeList = new SelectList(model.Details.Select(x => new { x.VehicleType }).Distinct().ToList(), "VehicleType", "VehicleType");
-            model.SearchView.VendorList = new SelectList(model.Details.Select(x => new { x.Vendor }).Distinct().ToList(), "Vendor", "Vendor");
+            model.SearchView.VendorList = new SelectList(model.Details.Select(x => new { x.Vendor, x.VendorName }).Distinct().ToList(), "Vendor", "VendorName");
             return model.SearchView;
         }
 

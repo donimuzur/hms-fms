@@ -53,7 +53,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart1">
                         @*<h5 class="card-title"><i class="fa fa-bullseye"></i> Number Of Vehicle</h5>*@
                         <canvas id="lineChart"></canvas>
                     </div>
@@ -62,7 +62,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Vehicle By Regional</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart2">
                         @*<h5 class="card-title"><i class="fa fa-compress"></i> Vehicle By Regional</h5>*@
                         <canvas id="mybarChart"></canvas>
                     </div>
@@ -71,7 +71,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Vehicle By Make</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart3">
                         @*<h5 class="card-title"><i class="fa fa-credit-card"></i> Vehicle By Make</h5>*@
                         <canvas id="canvasDoughnut"></canvas>
                     </div>
@@ -80,7 +80,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Vehicle By Type</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart4">
                         @*<h5 class="card-title"><i class="fa fa-balance-scale"></i> Vehicle By Type</h5>*@
                         <canvas id="polarArea"></canvas>
                     </div>
@@ -89,7 +89,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart5">
                         @*<h5 class="card-title"><i class="fa fa-credit-card"></i> Odometer</h5>*@
                         <canvas id="canvasDoughnut2"></canvas>
                     </div>
@@ -98,7 +98,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liters</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart6">
                         @*<h5 class="card-title"><i class="fa fa-credit-card"></i> Liters</h5>*@
                         <canvas id="pieChart"></canvas>
                     </div>
@@ -107,7 +107,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel</a> & <a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart7">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="mybarChart2"></canvas>
                     </div>
@@ -116,7 +116,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart8">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart2"></canvas>
                     </div>
@@ -125,7 +125,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC vs OB</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart9">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart3"></canvas>
                     </div>
@@ -134,7 +134,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></b></div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart10">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="mybarChart3"></canvas>
                     </div>
@@ -562,16 +562,17 @@
                     second_chart.push(response[i].NO_OF_VEHICLE_WTC);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Line chart
 
                 if ($('#lineChart').length) {
-
+                    $('#lineChart').remove();
+                    $('#chart1').append('<canvas id="lineChart"><canvas>');
                     var ctx = document.getElementById("lineChart");
                     var lineChart = new Chart(ctx, {
                         type: 'line',
@@ -621,16 +622,17 @@
                     second_chart.push(response[i].TOTAL_KM);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Line chart
 
                 if ($('#lineChart2').length) {
-
+                    $('#lineChart2').remove();
+                    $('#chart8').append('<canvas id="lineChart2"><canvas>');
                     var ctx = document.getElementById("lineChart2");
                     var lineChart = new Chart(ctx, {
                         type: 'line',
@@ -680,16 +682,17 @@
                     second_chart.push(response[i].COST_OB);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Line chart
 
                 if ($('#lineChart3').length) {
-
+                    $('#lineChart3').remove();
+                    $('#chart9').append('<canvas id="lineChart3"><canvas>');
                     var ctx = document.getElementById("lineChart3");
                     var lineChart = new Chart(ctx, {
                         type: 'line',
@@ -739,16 +742,17 @@
                     second_chart.push(response[i].NO_OF_VEHICLE_MARKETING);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Bar chart
 
                 if ($('#mybarChart').length) {
-
+                    $('#mybarChart').remove();
+                    $('#chart2').append('<canvas id="mybarChart"><canvas>');
                     var ctx = document.getElementById("mybarChart");
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
@@ -756,11 +760,11 @@
                             labels: labels_chart,
                             datasets: [{
                                 label: 'Sales',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#B21B1B",
                                 data: first_chart
                             }, {
                                 label: 'Marketing',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#1FB21B",
                                 data: second_chart
                             }]
                         },
@@ -796,16 +800,17 @@
                     second_chart.push(response[i].TOTAL_LEASE_COST);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Bar chart
 
                 if ($('#mybarChart2').length) {
-
+                    $('#mybarChart2').remove();
+                    $('#chart7').append('<canvas id="mybarChart2"><canvas>');
                     var ctx = document.getElementById("mybarChart2");
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
@@ -813,11 +818,11 @@
                             labels: labels_chart,
                             datasets: [{
                                 label: 'Fuel cost',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#21A4FF",
                                 data: first_chart
                             }, {
                                 label: 'Lease cost',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#FF8000",
                                 data: second_chart
                             }]
                         },
@@ -855,17 +860,18 @@
                     third_chart.push(response[i].ACCIDENT_COUNT_WTC);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                    third_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //    third_chart.push(5, 5, 5);
+                //}
 
                 // Bar chart
 
                 if ($('#mybarChart3').length) {
-
+                    $('#mybarChart3').remove();
+                    $('#chart10').append('<canvas id="mybarChart3"><canvas>');
                     var ctx = document.getElementById("mybarChart3");
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
@@ -873,15 +879,15 @@
                             labels: labels_chart,
                             datasets: [{
                                 label: 'All',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#00FF00",
                                 data: first_chart
                             }, {
                                 label: 'BENEFIT',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#FFFF80",
                                 data: second_chart
                             }, {
                                 label: 'WTC',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#FF8000",
                                 data: third_chart
                             }]
                         },
@@ -917,16 +923,17 @@
                     color_chart.push(getRandomColor());
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA");
-                    first_chart.push(1);
-                    color_chart.push(getRandomColor());
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA");
+                //    first_chart.push(1);
+                //    color_chart.push(getRandomColor());
+                //}
 
                 // Doughnut chart
 
                 if ($('#canvasDoughnut').length) {
-
+                    $('#canvasDoughnut').remove();
+                    $('#chart3').append('<canvas id="canvasDoughnut"><canvas>');
                     var ctx = document.getElementById("canvasDoughnut");
                     var data = {
                         labels: labels_chart,
@@ -939,7 +946,12 @@
                     var canvasDoughnut = new Chart(ctx, {
                         type: 'doughnut',
                         tooltipFillColor: "rgba(51, 51, 51, 0.55)",
-                        data: data
+                        data: data,
+                        options: {
+                            legend: {
+                                display: false
+                            }
+                        }
                     });
 
                 }
@@ -962,16 +974,17 @@
                     color_chart.push(getRandomColor());
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA");
-                    first_chart.push(1);
-                    color_chart.push(getRandomColor());
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA");
+                //    first_chart.push(1);
+                //    color_chart.push(getRandomColor());
+                //}
 
                 // Doughnut chart
 
                 if ($('#canvasDoughnut2').length) {
-
+                    $('#canvasDoughnut2').remove();
+                    $('#chart5').append('<canvas id="canvasDoughnut2"><canvas>');
                     var ctx = document.getElementById("canvasDoughnut2");
                     var data = {
                         labels: labels_chart,
@@ -984,7 +997,12 @@
                     var canvasDoughnut = new Chart(ctx, {
                         type: 'doughnut',
                         tooltipFillColor: "rgba(51, 51, 51, 0.55)",
-                        data: data
+                        data: data,
+                        options: {
+                            legend: {
+                                display: false
+                            }
+                        }
                     });
 
                 }
@@ -1007,15 +1025,16 @@
                     color_chart.push(getRandomColor());
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA");
-                    first_chart.push(1);
-                    color_chart.push(getRandomColor());
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA");
+                //    first_chart.push(1);
+                //    color_chart.push(getRandomColor());
+                //}
 
                 // Pie chart
                 if ($('#pieChart').length) {
-
+                    $('#pieChart').remove();
+                    $('#chart6').append('<canvas id="pieChart"><canvas>');
                     var ctx = document.getElementById("pieChart");
                     var data = {
                         labels: labels_chart,
@@ -1029,8 +1048,10 @@
                     var pieChart = new Chart(ctx, {
                         data: data,
                         type: 'pie',
-                        otpions: {
-                            legend: false
+                        options: {
+                            legend: {
+                                display: false
+                            }
                         }
                     });
 
@@ -1055,16 +1076,17 @@
                     color_chart.push(getRandomColor());
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA");
-                    first_chart.push(1);
-                    color_chart.push(getRandomColor());
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA");
+                //    first_chart.push(1);
+                //    color_chart.push(getRandomColor());
+                //}
 
                 // PolarArea chart
 
                 if ($('#polarArea').length) {
-
+                    $('#polarArea').remove();
+                    $('#chart4').append('<canvas id="polarArea"><canvas>');
                     var ctx = document.getElementById("polarArea");
                     var data = {
                         datasets: [{
@@ -1079,6 +1101,9 @@
                         data: data,
                         type: 'polarArea',
                         options: {
+                            legend: {
+                                display: false
+                            },
                             scale: {
                                 ticks: {
                                     beginAtZero: true
