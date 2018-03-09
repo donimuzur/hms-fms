@@ -14,15 +14,15 @@
     </a>
 </div>
 <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body">
-				<div align="center">
-					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <section class="content">
     <div class="wpanel">
@@ -50,9 +50,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="SearchView_RequestYear">Request Year</label>
-                            @Html.TextBox("Search_RequestYear", Model.SearchView.RequestYear, new { @class = "form-control" })
-                            @*@Html.DropDownList("Search_RequestYear", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                                @Html.HiddenFor(model => model.SearchView.RequestYear)*@
+                            @Html.DropDownList("Search_RequestYear", Model.SearchView.RequestYearList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.RequestYear)
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -116,9 +115,9 @@
         $('#LoadingModal').hide();
     }
     function ExportXls() {
-    	console.log('Submitting');
-    	var url = '@Url.Action("ExportMasterPenalty", "MstPenalty")';
-    	var getFileUrl = '@Url.Action("GetExcelFile", "MstPenalty")';
+        console.log('Submitting');
+        var url = '@Url.Action("ExportMasterPenalty", "MstPenalty")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstPenalty")';
         console.log(url);
         var objToUpload =
 			{
@@ -132,25 +131,25 @@
 			        VehicleType: getFunctionStr($('#Search_VehicleType').val())
 			    }
 			};
-    	$.ajax({
-    	    url: url,
-    	    data: JSON.stringify(objToUpload),
-    	    contentType: 'application/json; charset=utf-8',
-    		beforeSend: function () {
-    			$('#LoadingModal').show();
-    		},
-    		success: function (response, status, jqxhr) {
-    			console.log("DONE");
-    			window.location = getFileUrl + "?pathFile=" + response;
-    			$('#LoadingModal').hide();
-    		},
-    		error: function (jqhxr) {
-    			console.log("ERROR");
-    			console.log(jqhxr.responseText);
-    			$('#LoadingModal').hide();
-    		},
-    		type: 'POST'
-    	});
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
     }
 
     function setupDataTables() {
@@ -234,4 +233,3 @@
         });
     });
 </script>
-
