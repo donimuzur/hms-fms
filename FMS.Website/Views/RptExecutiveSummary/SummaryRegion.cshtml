@@ -52,7 +52,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Vehicle By Regional</b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Vehicle By Regional</a></b></div>
                     <div class="card-body">
                         @*<h5 class="card-title"><i class="fa fa-compress"></i> Vehicle By Regional</h5>*@
                         <canvas id="mybarChart"></canvas>
@@ -61,7 +61,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Odometer</b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></b></div>
                     <div class="card-body">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart"></canvas>
@@ -70,7 +70,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Liters</b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liters</a></b></div>
                     <div class="card-body">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart2"></canvas>
@@ -79,7 +79,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Fuel Cost</b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost</a></b></div>
                     <div class="card-body">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="mybarChart2"></canvas>
@@ -88,7 +88,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Lease Cost</b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost</a></b></div>
                     <div class="card-body">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="mybarChart3"></canvas>
@@ -97,7 +97,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">Accident</b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></b></div>
                     <div class="card-body">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart3"></canvas>
@@ -106,7 +106,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px">AC Vs OB</b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC vs OB</a></b></div>
                     <div class="card-body">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart4"></canvas>
@@ -411,11 +411,11 @@
                     second_chart.push(response[i].TOTAL_KM_MARKETING);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Line chart
 
@@ -470,11 +470,11 @@
                     second_chart.push(response[i].TOTAL_LITER_MARKETING);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Line chart
 
@@ -528,11 +528,11 @@
                     second_chart.push(response[i].ACCIDENT_COUNT_MARKETING);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Line chart
 
@@ -573,7 +573,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("GetVehicleDataVisual", "RptExecutiveSummary")',
+            url: '@Url.Action("AcObDataVisualRegion", "RptExecutiveSummary")',
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
             success: function (response) {
                 var labels_chart = [];
@@ -582,15 +582,15 @@
 
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
-                    first_chart.push(response[i].NO_OF_VEHICLE_BENEFIT);
-                    second_chart.push(response[i].NO_OF_VEHICLE_WTC);
+                    first_chart.push(response[i].ACTUAL_COST);
+                    second_chart.push(response[i].COST_OB);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Line chart
 
@@ -602,7 +602,7 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "Sales",
+                                label: "Actual Cost",
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -612,7 +612,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "Marketing",
+                                label: "Operational Budget",
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -644,11 +644,11 @@
                     second_chart.push(response[i].NO_OF_VEHICLE_MARKETING);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Bar chart
 
@@ -661,11 +661,11 @@
                             labels: labels_chart,
                             datasets: [{
                                 label: 'Sales',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#B21B1B",
                                 data: first_chart
                             }, {
                                 label: 'Marketing',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#1FB21B",
                                 data: second_chart
                             }]
                         },
@@ -700,11 +700,11 @@
                     second_chart.push(response[i].TOTAL_FUEL_COST_MARKETING);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Bar chart
 
@@ -717,11 +717,11 @@
                             labels: labels_chart,
                             datasets: [{
                                 label: 'Sales',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#21A4FF",
                                 data: first_chart
                             }, {
                                 label: 'Marketing',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#FF8000",
                                 data: second_chart
                             }]
                         },
@@ -756,11 +756,11 @@
                     second_chart.push(response[i].TOTAL_LEASE_COST_MARKETING);
                 }
 
-                if (response.length == 0) {
-                    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
-                    first_chart.push(5, 5, 5);
-                    second_chart.push(5, 5, 5);
-                }
+                //if (response.length == 0) {
+                //    labels_chart.push("NO DATA", "NO DATA", "NO DATA");
+                //    first_chart.push(5, 5, 5);
+                //    second_chart.push(5, 5, 5);
+                //}
 
                 // Bar chart
 
@@ -773,11 +773,11 @@
                             labels: labels_chart,
                             datasets: [{
                                 label: 'Sales',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#00FF00",
                                 data: first_chart
                             }, {
                                 label: 'Marketing',
-                                backgroundColor: getRandomColor(),
+                                backgroundColor: "#FFFF80",
                                 data: second_chart
                             }]
                         },
