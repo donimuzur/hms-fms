@@ -39,54 +39,60 @@
                     OnFailure = "LoadingHide",
                 }))
             {
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_Vendor">Vendor</label>
-                        @Html.DropDownList("Search_Vendor", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.Vendor)
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_Vendor">Vendor</label>
+                            @Html.DropDownList("Search_Vendor", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Vendor)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_RequestYear">Request Year</label>
+                            @Html.TextBox("Search_RequestYear", Model.SearchView.RequestYear, new { @class = "form-control" })
+                            @*@Html.DropDownList("Search_RequestYear", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                                @Html.HiddenFor(model => model.SearchView.RequestYear)*@
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_Manufacturer">Manufacturer</label>
+                            @Html.DropDownList("Search_Manufacturer", Model.SearchView.ManufacturerList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Manufacturer)
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_RequestYear">Request Year</label>
-                        @Html.TextBox("Search_RequestYear", Model.SearchView.RequestYear, new { @class = "form-control"})
-                        @*@Html.DropDownList("Search_RequestYear", Model.SearchView.VendorList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.RequestYear)*@
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_Model">Model</label>
+                            @Html.DropDownList("Search_Model", Model.SearchView.ModelList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Model)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_Series">Series</label>
+                            @Html.DropDownList("Search_Series", Model.SearchView.SeriesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Series)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_BodyType">Body Type</label>
+                            @Html.DropDownList("Search_BodyType", Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.BodyType)
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_Manufacturer">Manufacturer</label>
-                        @Html.DropDownList("Search_Manufacturer", Model.SearchView.ManufacturerList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.Manufacturer)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_Model">Model</label>
-                        @Html.DropDownList("Search_Model", Model.SearchView.ModelList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.Model)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_Series">Series</label>
-                        @Html.DropDownList("Search_Series", Model.SearchView.SeriesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.Series)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_BodyType">Body Type</label>
-                        @Html.DropDownList("Search_BodyType", Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.BodyType)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_VehicleType">Vehicle Type</label>
-                        @Html.DropDownList("Search_VehicleType", Model.SearchView.VehicleTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.VehicleType)
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_VehicleType">Vehicle Type</label>
+                            @Html.DropDownList("Search_VehicleType", Model.SearchView.VehicleTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.VehicleType)
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -203,7 +209,7 @@
             $("#SearchView_Model").val(getFunctionStr($('#Search_Model').val()));
             $("#SearchView_RequestYear").val(getFunctionStr($('#Search_RequestYear').val()));
             $("#SearchView_Series").val(getFunctionStr($('#Search_Series').val()));
-            $("#SearchView_VehicleType").val(getFunctionStr($('#Search_Vendor').val()));
+            $("#SearchView_VehicleType").val(getFunctionStr($('#Search_VehicleType').val()));
             $("#SearchView_Vendor").val(getFunctionStr($('#Search_Vendor').val()));
         });
 

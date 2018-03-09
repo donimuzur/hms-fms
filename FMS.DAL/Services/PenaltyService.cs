@@ -81,7 +81,7 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.Vendor))
                 {
-                    var listFunction = filter.Vendor.ToUpper().Split(',').ToList();
+                    var listFunction = filter.Vendor.Split(',').ToList();
                     queryFilter = queryFilter.And(c => listFunction.Contains((c.VENDOR == null ? "" : c.VENDOR.ToString())));
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
