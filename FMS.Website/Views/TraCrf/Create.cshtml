@@ -77,7 +77,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                <table id="tbCrfSelectVehicle" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -194,28 +194,10 @@
         }
     }
 
-    function SetupDataTables()
-    {
-        // DataTable
-        var table = $('#tbCsfVehicle').DataTable({
-            "dom": 'lf<"table-overflow"t>pi'
-        });
-
-        // Apply the search
-        table.columns().eq(0).each(function (colIdx) {
-            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                table
-                    .column(colIdx)
-                    .search(this.value)
-                    .draw();
-            });
-        });
-    }
-
+   
     $(function() {
         
         InitEmployee('@Url.Action("GetEmployeeList","TraCrf")', '@Url.Action("GetEmployee","TraCrf")');
-        SetupDataTables();
         $("#btnConfirmSend").click(function () {
             $("#isSend").val(true);
             $("#btnSubmit").trigger("click");
