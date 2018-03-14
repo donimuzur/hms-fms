@@ -767,7 +767,7 @@ namespace FMS.BLL.Crf
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
-            var employeeData = _employeeService.GetEmployeeById(crfData.EMPLOYEE_ID);
+            
 
             var hrList = string.Empty;
             var fleetList = string.Empty;
@@ -793,8 +793,29 @@ namespace FMS.BLL.Crf
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand(hrQuery, con);
+
+            //----------UPDATE CREATOR EMAIL FROM ADSI------------//
+            var employeeData = new MST_EMPLOYEE();
+
+            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + crfData.CREATED_BY + "'";
+            if (typeEnv == "VTI")
+            {
+                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE FULL_NAME = 'PMI\\" + crfData.CREATED_BY + "'";
+            }
+
+            SqlCommand query = new SqlCommand(CreatorQuery, con);
             SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+
+                employeeData.EMAIL_ADDRESS = reader[0].ToString();
+                employeeData.FORMAL_NAME = reader[1].ToString();
+            }
+            ///////////////////////////////////////////////////////
+
+
+            query = new SqlCommand(hrQuery, con);
+            reader = query.ExecuteReader();
             while (reader.Read())
             {
                 var hrLogin = "'" + reader[0].ToString() + "',";
