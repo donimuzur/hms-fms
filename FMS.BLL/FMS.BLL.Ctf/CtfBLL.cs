@@ -450,19 +450,16 @@ namespace FMS.BLL.Ctf
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
 
             var userData = _employeeService.GetEmployeeById(input.EmployeeId);
-            var employeeData = _employeeService.GetEmployeeById(ctfData.EmployeeId);
-            var creatorData = _employeeService.GetEmployeeById(ctfData.EmployeeIdCreator);
+            var employeeData = _employeeService.GetEmployeeById(ctfData.EmployeeId);            
             var fleetApprovalData = _employeeService.GetEmployeeById(ctfData.EmployeeIdFleetApproval);
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
-            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var vendorDataEmail = vendor == null ? string.Empty : vendor.EMAIL_ADDRESS;
             var userDataEmail = userData == null ? string.Empty : userData.EMAIL_ADDRESS;
 
             var extend = _ctfExtendService.GetCtfExtend().Where(x => x.TRA_CTF_ID == ctfData.TraCtfId).FirstOrDefault();
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
-            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
             var vendorDataName = vendor == null ? string.Empty : vendor.VENDOR_NAME;
             var userDataName = userData == null ? string.Empty : userData.FORMAL_NAME;
@@ -491,8 +488,28 @@ namespace FMS.BLL.Ctf
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand(hrQuery, con);
+
+            //----------UPDATE CREATOR EMAIL FROM ADSI------------//  
+            var creatorDataName = string.Empty;
+            var creatorDataEmail = string.Empty;
+
+            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + ctfData.CreatedBy + "'";
+            if (typeEnv == "VTI")
+            {
+                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE FULL_NAME = 'PMI\\" + ctfData.CreatedBy + "'";
+            }
+
+            SqlCommand query = new SqlCommand(CreatorQuery, con);
             SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmail =reader[0].ToString();
+                creatorDataName = reader[1].ToString();
+            }
+            ///////////////////////////////////////////////////////
+
+            query = new SqlCommand(hrQuery, con);
+            reader = query.ExecuteReader();
             while (reader.Read())
             {
                 var hrLogin = "'" + reader[0].ToString() + "',";
@@ -542,7 +559,7 @@ namespace FMS.BLL.Ctf
                 case Enums.ActionType.Submit:
 
                     //if submit BENEFIT to EMPLOYEE
-                    if (ctfData.EmployeeIdCreator == input.EmployeeId && isBenefit)
+                    if ((ctfData.EmployeeIdCreator == input.EmployeeId || ctfData.CreatedBy == input.UserId) && isBenefit)
                     {
                         rc.Subject = ctfData.DocumentNumber + " - Benefit Car Termination";
 
@@ -613,7 +630,7 @@ namespace FMS.BLL.Ctf
                         }
                     }
                     //if submit WTC to EMPLOYEE
-                    else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && !input.EndRent.Value)
+                    else if ((ctfData.EmployeeIdCreator == input.EmployeeId || ctfData.CreatedBy == input.UserId) && !isBenefit && !input.EndRent.Value)
                     {
 
                         rc.Subject = ctfData.DocumentNumber + " - WTC Car Termination";
@@ -643,7 +660,7 @@ namespace FMS.BLL.Ctf
                         }
                     }
                     //if submit from FLEET to EMPLOYEE WTC END RENT
-                    else if (ctfData.EmployeeIdCreator == input.EmployeeId && !isBenefit && input.EndRent.Value)
+                    else if ((ctfData.EmployeeIdCreator == input.EmployeeId || ctfData.CreatedBy == input.UserId) && !isBenefit && input.EndRent.Value)
                     {
                         rc.Subject = ctfData.DocumentNumber + " - WTC Car Termination";
 
