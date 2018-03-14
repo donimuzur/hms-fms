@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using FMS.Contract.BLL;
 using FMS.Core;
 using FMS.Website.Models;
+using System.IO;
 
 namespace FMS.Website.Controllers
 {
@@ -100,6 +101,36 @@ namespace FMS.Website.Controllers
             }
 
             return View(model);
+        }
+
+        public void PdfDownload(string FilePath)
+        {
+            //string TempFilePath = FilePath;
+
+            //if (System.IO.File.Exists(TempFilePath))
+            //{
+            //    var cd = new System.Net.Mime.ContentDisposition
+            //    {
+            //        FileName = "testPDF.pdf",
+            //        Inline = false,
+            //    };
+            //    Response.AppendHeader("Content-Disposition", cd.ToString());
+            //    return File(TempFilePath, "application/pdf");
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+            FilePath = AppDomain.CurrentDomain.BaseDirectory + FilePath;
+            var newFile = new FileInfo(FilePath);
+            var fileName = Path.GetFileName(FilePath);
+            string attachment = string.Format("attachment; filename={0}", fileName);
+            Response.Clear();
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/pdf";
+            Response.WriteFile(newFile.FullName);
+            Response.Flush();
+            Response.End();
         }
     }
 }
