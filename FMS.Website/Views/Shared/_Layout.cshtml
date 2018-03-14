@@ -321,11 +321,16 @@
 							</a>
 							<ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
 								<li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary All</a></li>
-                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.HR && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager) { 
+                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic
+                                    && Model.CurrentLogin.UserRole != Enums.UserRole.LDManager && Model.CurrentLogin.UserRole != Enums.UserRole.HR
+                                     && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager) { 
 								    <li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary By Sales & Marketing</a></li>
                                 }
 								<li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
-                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.HR && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager) {
+                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic
+                                    && Model.CurrentLogin.UserRole != Enums.UserRole.LDManager && Model.CurrentLogin.UserRole != Enums.UserRole.HR
+                                     && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager)
+                                {
 								    <li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></li>
                                 }
 								<li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
@@ -333,7 +338,8 @@
 								<li><a id="LiterByFunction" href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></li>
 								<li><a id="FuelCostByFunction" href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></li>
 								<li><a id="LeaseCostByFunction" href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></li>
-                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.HR && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager) {
+                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic 
+                                    && Model.CurrentLogin.UserRole != Enums.UserRole.LDManager) {
 								    <li><a id="SalesByRegion" href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></li>
                                 }
 								<li><a id="Accident" href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></li>
