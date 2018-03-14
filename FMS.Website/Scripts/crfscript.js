@@ -60,8 +60,22 @@ function selectVehicle(urlFunction) {
                 } else {
                     $('#btnSelectVehicle').prop("disabled", true);
                     $('#tb-body-select-veh').html("");
-                    $('#tb-body-select-veh').append('<tr><td style="text-align:center" colspan="8">no data<td></tr>');
+                    //$('#tb-body-select-veh').append('<tr><td style="text-align:center" colspan="8">no data<td></tr>');
                 }
+
+                var table = $('#tbCrfSelectVehicle').DataTable({
+                    "dom": 'lf<"table-overflow"t>pi'
+                });
+
+                // Apply the search
+                table.columns().eq(0).each(function (colIdx) {
+                    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                        table
+                            .column(colIdx)
+                            .search(this.value)
+                            .draw();
+                    });
+                });
             }
         });
     }
@@ -296,5 +310,7 @@ $(document).ready(function () {
         $("#SendDoc").css("display", "");
         $("#SaveDoc").css("display", "");
         $('#selectvehmodal').modal('hide');
+
+      
     });
 });

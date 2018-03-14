@@ -56,6 +56,8 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_KM { get; set; }
         public decimal? TOTAL_KM_BENEFIT { get; set; }
         public decimal? TOTAL_KM_WTC { get; set; }
+        public decimal? TOTAL_KM_SALES { get; set; }
+        public decimal? TOTAL_KM_MARKETING { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
@@ -70,6 +72,8 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_LITER { get; set; }
         public decimal? TOTAL_LITER_BENEFIT { get; set; }
         public decimal? TOTAL_LITER_WTC { get; set; }
+        public decimal? TOTAL_LITER_SALES { get; set; }
+        public decimal? TOTAL_LITER_MARKETING { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
@@ -84,6 +88,8 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_FUEL_COST { get; set; }
         public decimal? TOTAL_FUEL_COST_BENEFIT { get; set; }
         public decimal? TOTAL_FUEL_COST_WTC { get; set; }
+        public decimal? TOTAL_FUEL_COST_SALES { get; set; }
+        public decimal? TOTAL_FUEL_COST_MARKETING { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
@@ -97,9 +103,18 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_LEASE_COST { get; set; }
         public decimal? TOTAL_LEASE_COST_JAVA { get; set; }
         public decimal? TOTAL_LEASE_COST_ELSE { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+    }
+
+    public class FuelLeaseDto
+    {
+        public string FUNCTION { get; set; }
+        public decimal? TOTAL_FUEL_COST { get; set; }
+        public decimal? TOTAL_LEASE_COST { get; set; }
     }
 
     public class SalesByRegionDto
@@ -123,6 +138,8 @@ namespace FMS.BusinessObject.Dto
         public int? ACCIDENT_COUNT { get; set; }
         public int? ACCIDENT_COUNT_BENEFIT { get; set; }
         public int? ACCIDENT_COUNT_WTC { get; set; }
+        public int? ACCIDENT_COUNT_SALES { get; set; }
+        public int? ACCIDENT_COUNT_MARKETING { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }

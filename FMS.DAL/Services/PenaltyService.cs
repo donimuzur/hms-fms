@@ -79,6 +79,16 @@ namespace FMS.DAL.Services
                     var listFunction = filter.Series.ToUpper().Split(',').ToList();
                     queryFilter = queryFilter.And(c => listFunction.Contains((c.SERIES == null ? "" : c.SERIES.ToUpper())));
                 }
+                if (!string.IsNullOrEmpty(filter.Vendor))
+                {
+                    var listFunction = filter.Vendor.Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.VENDOR == null ? "" : c.VENDOR.ToString())));
+                }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    var listFunction = filter.VehicleType.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.VEHICLE_TYPE == null ? "" : c.VEHICLE_TYPE.ToUpper())));
+                }
             }
             
             return _penaltyRepository.Get(queryFilter, null, "").ToList();

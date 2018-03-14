@@ -128,7 +128,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -157,6 +157,16 @@
 <script type="text/javascript">
     function LoadingShow() {
         $('#LoadingModal').show();
+
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        if ($("#SearchView_Function").length > 0) {
+            $("#SearchView_FunctionId").val(theList.slice(0, -1));
+        }
     }
     function LoadingHide() {
         $('#LoadingModal').hide();
@@ -248,10 +258,18 @@
     function init_charts() {
         $('#LoadingModal').show();
 
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        theList = theList.slice(0, -1);
+
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualAcOb", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, functions: theList },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
@@ -263,6 +281,8 @@
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',

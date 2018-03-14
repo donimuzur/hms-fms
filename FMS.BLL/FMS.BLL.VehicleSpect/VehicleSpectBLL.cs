@@ -11,6 +11,7 @@ using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.VehicleSpect
 {
@@ -135,6 +136,17 @@ namespace FMS.BLL.VehicleSpect
             }
 
             
+        }
+
+        public List<VehicleSpectDto> GetVehicleSpect(VehicleSpectParamInput filter)
+        {
+            var data = _VehicleSpectService.GetVehicleSpect(filter);
+            var retData = Mapper.Map<List<VehicleSpectDto>>(data);
+            foreach (VehicleSpectDto item in retData)
+            {
+                item.FuelTypeSpect = data.Where(x => x.MST_VEHICLE_SPECT_ID == item.MstVehicleSpectId).First().FUEL_TYPE;
+            }
+            return retData;
         }
     }
 }

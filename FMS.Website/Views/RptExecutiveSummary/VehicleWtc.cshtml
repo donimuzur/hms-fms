@@ -83,7 +83,7 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Regional</label>
-						@Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+						@Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "", new { @class = "form-control select" })
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -148,7 +148,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -177,6 +177,18 @@
 <script type="text/javascript">
     function LoadingShow() {
         $('#LoadingModal').show();
+
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        if ($("#SearchView_ZoneId").length > 0) {
+            $("#SearchView_ZoneId").val(theList.slice(0, -1));
+        } else {
+            $("#SearchView_FunctionId").val(theList.slice(0, -1));
+        }
     }
     function LoadingHide() {
         $('#LoadingModal').hide();
@@ -191,6 +203,12 @@
 
         theList = theList.slice(0, -1);
 
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
         var url = '@Url.Action(Model.TitleExport , "RptExecutiveSummary")';
         var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
         console.log(url);
@@ -202,7 +220,8 @@
 			        YearFrom: $('#SearchView_YearFrom').val(),
 			        YearTo: $('#SearchView_YearTo').val(),
 			        Regional:$('#SearchView_Regional').val(),
-			        Function:theList,
+			        Function: theList,
+			        ZoneId: zoneId,
 			    }
 
 			};
@@ -267,10 +286,24 @@
     function init_charts() {
         $('#LoadingModal').show();
 
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        theList = theList.slice(0, -1);
+
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualNoVehicleWtc", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: true },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: true, regional: $('#SearchView_Regional').val(), functions: theList, zone: zoneId },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
@@ -282,6 +315,8 @@
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',

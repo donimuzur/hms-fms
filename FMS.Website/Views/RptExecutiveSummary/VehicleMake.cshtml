@@ -115,7 +115,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -228,7 +228,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualNoVehicleMake", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, make: $('#SearchView_Manufacturer').val(), bodType: $('#SearchView_BodyType').val() },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
@@ -240,6 +240,8 @@
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',
