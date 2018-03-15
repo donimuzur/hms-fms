@@ -662,7 +662,10 @@ namespace FMS.BLL.Temporary
 
                     rc.To.Add(creatorDataEmail);
                     rc.CC.Add(employeeDataEmail);
-                    rc.CC.Add(fleetApprovalDataEmail);
+                    if(fleetApprovalDataEmail != "" && fleetApprovalDataEmail != null)
+                    {
+                        rc.CC.Add(fleetApprovalDataEmail);
+                    }
                     rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Cancel:
