@@ -168,7 +168,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -197,6 +197,18 @@
 <script type="text/javascript">
     function LoadingShow() {
         $('#LoadingModal').show();
+
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        if ($("#SearchView_ZoneId").length > 0) {
+            $("#SearchView_ZoneId").val(theList.slice(0, -1));
+        } else {
+            $("#SearchView_FunctionId").val(theList.slice(0, -1));
+        }
     }
     function LoadingHide() {
         $('#LoadingModal').hide();
@@ -212,6 +224,12 @@
 
         theList = theList.slice(0, -1);
 
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
         var url = '@Url.Action(Model.TitleExport , "RptExecutiveSummary")';
         var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
         console.log(url);
@@ -225,6 +243,7 @@
 			        VehicleType: $('#SearchView_VehicleType').val(),
 			        Region: $('#SearchView_Region').val(),
 			        Function: theList,
+			        ZoneId: zoneId,
 			    }
 
 			};
@@ -289,10 +308,24 @@
     function init_charts() {
         $('#LoadingModal').show();
 
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        theList = theList.slice(0, -1);
+
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualAccident", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, vehType: $('#SearchView_VehicleType').val(), regional: $('#SearchView_Regional').val(), functions: theList, zone: zoneId },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
@@ -304,6 +337,8 @@
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',

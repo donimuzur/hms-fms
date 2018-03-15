@@ -70,6 +70,29 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
@@ -91,6 +114,13 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.Function = "Sales,Marketing";
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager
+                || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager || CurrentUser.UserRole == Enums.UserRole.LDManager
+                 || CurrentUser.UserRole == Enums.UserRole.Logistic)
+            {
+                input.Function = "---";
+            }
             List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
 
             var groupData = data.GroupBy(x => new { x.REGIONAL })
@@ -154,6 +184,29 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
@@ -173,7 +226,8 @@ namespace FMS.Website.Controllers
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
-            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.VehicleType = "WTC";
+            input.Function = "Sales,Marketing";
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
             var groupData = data.GroupBy(x => new { x.REGION })
@@ -188,82 +242,6 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetOdometerDataVisualDetail(int monthFrom, int? yearFrom, bool isByRegion)
-        {
-            Dictionary<string, OdometerProps> dictionaryResult = new Dictionary<string, OdometerProps>();
-
-            var input = new OdometerGetByParamInput();
-            input.MonthFrom = monthFrom;
-            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthFrom;
-            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
-            if (isByRegion)
-            {
-                input.Function = "Sales,Marketing";
-            }
-            List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
-
-            var groupData = data.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE })
-                .Select(p => new OdometerDto()
-                {
-                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
-                    FUNCTION = p.FirstOrDefault().FUNCTION,
-                    TOTAL_KM = p.Sum(c => c.TOTAL_KM)
-                }).ToList();
-
-            foreach (var item in groupData)
-            {
-                if (string.IsNullOrEmpty(item.FUNCTION))
-                {
-                    dictionaryResult["#Empty"] = new OdometerProps();
-                    dictionaryResult["#Empty"].Function = "#Empty";
-                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
-                    {
-                        dictionaryResult["#Empty"].Benefit = new VehicleTypeDetail
-                        {
-                            VehicleType = "Benefit",
-                            TotalKM = item.TOTAL_KM
-                        };
-                    }
-                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
-                    {
-                        dictionaryResult["#Empty"].WTC = new VehicleTypeDetail
-                        {
-                            VehicleType = "WTC",
-                            TotalKM = item.TOTAL_KM
-                        };
-                    }
-                }
-                else
-                {
-                    if (!dictionaryResult.ContainsKey(item.FUNCTION))
-                    {
-                        dictionaryResult[item.FUNCTION] = new OdometerProps();
-                        dictionaryResult[item.FUNCTION].Function = item.FUNCTION;
-                    }
-                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
-                    {
-                        dictionaryResult[item.FUNCTION].Benefit = new VehicleTypeDetail
-                        {
-                            VehicleType = "Benefit",
-                            TotalKM = item.TOTAL_KM
-                        };
-                    }
-                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
-                    {
-                        dictionaryResult[item.FUNCTION].WTC = new VehicleTypeDetail
-                        {
-                            VehicleType = "WTC",
-                            TotalKM = item.TOTAL_KM
-                        };
-                    }
-                }
-                
-            }
-            return Json(dictionaryResult);
-        }
-
-        [HttpPost]
         public JsonResult GetLiterByFunctionDataVisual(int monthFrom, int? yearFrom)
         {
             var input = new LiterFuncGetByParamInput();
@@ -271,6 +249,29 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
             List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
@@ -291,6 +292,8 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.VehicleType = "WTC";
+            input.Function = "Sales,Marketing";
             List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
 
             var groupData = data.GroupBy(x => new { x.REGION })
@@ -303,85 +306,7 @@ namespace FMS.Website.Controllers
 
             return Json(groupData);
         }
-
-        [HttpPost]
-        public JsonResult GetLiterByFunctionDataVisualDetail(int monthFrom, int? yearFrom, bool isByRegion)
-        {
-            Dictionary<string, LiterByFunctionProps> dictionaryResult = new Dictionary<string, LiterByFunctionProps>();
-
-            var input = new LiterFuncGetByParamInput();
-            input.MonthFrom = monthFrom;
-            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthFrom;
-            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
-            if (isByRegion)
-            {
-                input.Function = "Sales,Marketing";
-            }
-
-            List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
-
-            var groupData = data.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE })
-                .Select(p => new LiterByFunctionDto()
-                {
-                    FUNCTION = p.FirstOrDefault().FUNCTION,
-                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
-                    TOTAL_LITER = p.Sum(c => c.TOTAL_LITER)
-                }).ToList();
-
-            foreach (var item in groupData)
-            {
-                if (string.IsNullOrEmpty(item.FUNCTION))
-                {
-                    dictionaryResult["#Empty"] = new LiterByFunctionProps();
-                    dictionaryResult["#Empty"].Function = "#Empty";
-                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
-                    {
-                        dictionaryResult["#Empty"].Benefit = new VehicleTypeDetailLiterByFunction
-                        {
-                            VehicleType = "Benefit",
-                            TotalLiter = item.TOTAL_LITER
-                        };
-                    }
-                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
-                    {
-                        dictionaryResult["#Empty"].WTC = new VehicleTypeDetailLiterByFunction
-                        {
-                            VehicleType = "WTC",
-                            TotalLiter = item.TOTAL_LITER
-                        };
-                    }
-                }
-                else
-                {
-                    if (!dictionaryResult.ContainsKey(item.FUNCTION))
-                    {
-                        dictionaryResult[item.FUNCTION] = new LiterByFunctionProps();
-                        dictionaryResult[item.FUNCTION].Function = item.FUNCTION;
-                    }
-                    if (item.VEHICLE_TYPE.ToLower() == "benefit")
-                    {
-                        dictionaryResult[item.FUNCTION].Benefit = new VehicleTypeDetailLiterByFunction
-                        {
-                            VehicleType = "Benefit",
-                            TotalLiter = item.TOTAL_LITER
-                        };
-                    }
-                    else if (item.VEHICLE_TYPE.ToLower() == "wtc")
-                    {
-                        dictionaryResult[item.FUNCTION].WTC = new VehicleTypeDetailLiterByFunction
-                        {
-                            VehicleType = "WTC",
-                            TotalLiter = item.TOTAL_LITER
-                        };
-                    }
-                }
-            }
-            return Json(dictionaryResult);
-        }
-
-
-
+        
         [HttpPost]
         public JsonResult GetFuelCostByFunctionDataVisual(int monthFrom, int? yearFrom)
         {
@@ -390,6 +315,29 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
             List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
@@ -404,6 +352,18 @@ namespace FMS.Website.Controllers
             input2.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input2.MonthTo = monthFrom;
             input2.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input2.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input2.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input2.Function = "Logistic";
+            }
             List<LeaseCostByFunctionDto> data2 = _execSummBLL.GetLeaseCostByFunctionData(input2);
 
             var groupData2 = data2.GroupBy(x => new { x.FUNCTION })
@@ -434,6 +394,8 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.VehicleType = "WTC";
+            input.Function = "Sales,Marketing";
             List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
 
             var groupData = data.GroupBy(x => new { x.REGION })
@@ -448,31 +410,6 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetLeaseCostByFunctionDataVisual(int monthFrom, int? yearFrom, bool isByRegion)
-        {
-            var input = new LeaseCostFuncGetByParamInput();
-            input.MonthFrom = monthFrom;
-            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
-            input.MonthTo = monthFrom;
-            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
-            if (isByRegion)
-            {
-                input.Function = "Sales,Marketing";
-            }
-
-            List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
-
-            var groupData = data.GroupBy(x => new { x.FUNCTION })
-                .Select(p => new LeaseCostByFunctionDto()
-                {
-                    FUNCTION = p.FirstOrDefault().FUNCTION,
-                    TOTAL_LEASE_COST = p.Sum(c => c.TOTAL_LEASE_COST)
-                }).ToList();
-
-            return Json(groupData);
-        }
-
-        [HttpPost]
         public JsonResult GetLeaseCostByFunctionDataVisualRegion(int monthFrom, int? yearFrom)
         {
             var input = new LeaseCostFuncGetByParamInput();
@@ -480,6 +417,7 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.Function = "Sales,Marketing";
             List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
 
             var groupData = data.GroupBy(x => new { x.REGION })
@@ -523,6 +461,29 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager
+                        || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.VehicleType = "WTC";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+            }
+
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
             List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
@@ -545,6 +506,8 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.VehicleType = "WTC";
+            input.Function = "Sales,Marketing";
             List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
 
             var groupData = data.GroupBy(x => new { x.REGION })
@@ -566,6 +529,18 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
@@ -606,13 +581,18 @@ namespace FMS.Website.Controllers
         #region --------- Get Data Json Graphic New Request -----------------------
 
         [HttpPost]
-        public JsonResult VisualNoVehicle(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualNoVehicle(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string vehType, string regional, string suppMethod, string functions, string zone)
         {
             var input = new VehicleGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.VehicleType = vehType;
+            input.Regional = regional;
+            input.SupplyMethod = suppMethod;
+            input.Function = functions;
+            input.ZoneId = zone;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -631,13 +611,16 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult VisualNoVehicleWtc(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualNoVehicleWtc(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string regional, string functions, string zone)
         {
             var input = new VehicleWtcGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.Regional = regional;
+            input.Function = functions;
+            input.ZoneId = zone;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -656,13 +639,15 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult VisualNoVehicleMake(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualNoVehicleMake(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string make, string bodType)
         {
             var input = new VehicleMakeGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.Manufacturer = make;
+            input.BodyType = bodType;
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
@@ -678,13 +663,17 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult VisualOdometer(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualOdometer(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string vehType, string regional, string functions, string zone)
         {
             var input = new OdometerGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.VehicleType = vehType;
+            input.Region = regional;
+            input.Function = functions;
+            input.ZoneId = zone;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -703,13 +692,17 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult VisualLiter(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualLiter(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string vehType, string regional, string functions, string zone)
         {
             var input = new LiterFuncGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.VehicleType = vehType;
+            input.Region = regional;
+            input.Function = functions;
+            input.ZoneId = zone;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -728,13 +721,17 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult VisualFuel(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualFuel(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string vehType, string regional, string functions, string zone)
         {
             var input = new FuelCostFuncGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.VehicleType = vehType;
+            input.Region = regional;
+            input.Function = functions;
+            input.ZoneId = zone;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -753,38 +750,43 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult VisualLease(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualLease(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string regional, string functions, string zone)
         {
             var input = new LeaseCostFuncGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.Region = regional;
+            input.Function = functions;
+            input.ZoneId = zone;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
             }
             List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
 
-            var groupData = data.GroupBy(x => new { x.FUNCTION })
+            var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new LeaseCostByFunctionDto()
                 {
-                    FUNCTION = p.FirstOrDefault().FUNCTION,
-                    TOTAL_LEASE_COST_JAVA = p.Where(x => (x.REGION == null ? "" : x.REGION.ToUpper()).Contains("JAVA")).Sum(c => c.TOTAL_LEASE_COST),
-                    TOTAL_LEASE_COST_ELSE = p.Where(x => !(x.REGION == null ? "" : x.REGION.ToUpper()).Contains("JAVA")).Sum(c => c.TOTAL_LEASE_COST)
+                    REGION = p.FirstOrDefault().REGION,
+                    TOTAL_LEASE_COST_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST)
                 }).ToList();
 
             return Json(groupData);
         }
 
         [HttpPost]
-        public JsonResult VisualSales(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualSales(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string regional, string zone)
         {
             var input = new SalesRegionGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.Region = regional;
+            input.ZoneId = zone;
             
             List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
 
@@ -792,22 +794,25 @@ namespace FMS.Website.Controllers
                 .Select(p => new SalesByRegionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
-                    TOTAL_KM = p.Sum(c => c.TOTAL_KM),
-                    TOTAL_COST = p.Sum(c => c.TOTAL_COST),
-                    STICK = p.Sum(c => c.STICK)
+                    TOTAL_KM = p.Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST = p.Sum(c => c.TOTAL_COST / c.STICK)
                 }).ToList();
 
             return Json(groupData);
         }
 
         [HttpPost]
-        public JsonResult VisualAccident(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualAccident(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string vehType, string regional, string functions, string zone)
         {
             var input = new AccidentGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.VehicleType = vehType;
+            input.Region = regional;
+            input.Function = functions;
+            input.ZoneId = zone;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -826,13 +831,14 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult VisualAcOb(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion)
+        public JsonResult VisualAcOb(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string functions)
         {
             var input = new AcVsObGetByParamInput();
             input.MonthFrom = monthFrom;
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthTo;
             input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.Function = functions;
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
@@ -926,18 +932,7 @@ namespace FMS.Website.Controllers
             var listData = Mapper.Map<List<NoVehicleData>>(data);
 
             var inputWtc = Mapper.Map<VehicleWtcGetByParamInput>(inputExport);
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
-            {
-                inputWtc.Function = "Sales,Marketing";
-            }
-            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
-            {
-                inputWtc.Function = "Operations";
-            }
-            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
-            {
-                inputWtc.Function = "Logistic";
-            }
+            inputWtc.Function = "Sales,Marketing";
             List<NoVehicleWtcDto> dataWtc = _execSummBLL.GetNoOfVehicleWtcData(inputWtc);
             var listDataWtc = Mapper.Map<List<NoVehicleWtcData>>(dataWtc);
 
@@ -1110,14 +1105,18 @@ namespace FMS.Website.Controllers
             slDocument = CreateDataExcelSheet1(slDocument, listData);
 
 
-            //title no of vehicle wtc
-            slDocument.AddWorksheet("Vehicle By Regional");
-            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+            if (CurrentUser.UserRole != Enums.UserRole.HR && CurrentUser.UserRole != Enums.UserRole.HRManager
+                && CurrentUser.UserRole != Enums.UserRole.OpsFinanceManager && CurrentUser.UserRole != Enums.UserRole.LDManager
+                 && CurrentUser.UserRole != Enums.UserRole.Logistic)
+            { 
+                //title no of vehicle wtc
+                slDocument.AddWorksheet("Vehicle By Regional");
+                slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+                slDocument.MergeWorksheetCells(1, 2, 1, 10);
+                slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
-            slDocument = CreateDataExcelSheet2(slDocument, listDataWtc);
-            
+                slDocument = CreateDataExcelSheet2(slDocument, listDataWtc);
+            }
 
             //title no of vehicle Make
             slDocument.AddWorksheet("Make Type");
@@ -3485,7 +3484,7 @@ namespace FMS.Website.Controllers
 
             //title
             slDocument.SetCellValue(1, 2, "Number Of Vehicle Make-Type");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.MergeWorksheetCells(1, 2, 1, 16);
 
             SLStyle valueStyle = slDocument.CreateStyle();
             valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
@@ -3496,7 +3495,7 @@ namespace FMS.Website.Controllers
             valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+            slDocument.SetCellStyle(1, 2, 1, 16, valueStyle);
 
             //create data
             slDocument = CreateDataExcelDashboardMakeNew(slDocument, listData);
@@ -3918,27 +3917,36 @@ namespace FMS.Website.Controllers
             var contRow = 15;
             var firstColumn = 2;
             var total1 = Convert.ToDecimal(0);
+            var total2 = Convert.ToDecimal(0);
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
             slDocument.SetCellValue(firstRow, firstColumn + 1, "BENEFIT");
+            slDocument.SetCellValue(firstRow, firstColumn + 2, "WTC");
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => x.Function == item).Sum(x => x.TotalKm);
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT" && 
+                    x.Function == item).Sum(x => x.TotalKm);
                 slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
 
+                var countData2 = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC" &&
+                    x.Function == item).Sum(x => x.TotalKm);
+                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+
                 total1 += countData == null ? Convert.ToDecimal(0) : countData.Value;
+                total2 += countData2 == null ? Convert.ToDecimal(0) : countData2.Value;
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
             slDocument.SetCellValue(contRow, firstColumn + 1, total1);
+            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -3957,7 +3965,7 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 1);
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style31);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
             chart.SetChartPosition(2, 1, firstRow - 2, 10);
@@ -5733,7 +5741,6 @@ namespace FMS.Website.Controllers
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = Convert.ToDecimal(0);
             var total2 = Convert.ToDecimal(0);
             var total3 = Convert.ToDecimal(0);
 
@@ -5741,24 +5748,19 @@ namespace FMS.Website.Controllers
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "ALL");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 3, "WTC");
+            slDocument.SetCellValue(firstRow, firstColumn + 1, "BENEFIT");
+            slDocument.SetCellValue(firstRow, firstColumn + 2, "WTC");
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => x.Function == item).Sum(x => x.AccidentCount);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
-
                 var countData2 = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").Sum(x => x.AccidentCount);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData2.ToString());
 
                 var countData3 = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC").Sum(x => x.AccidentCount);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 3, countData3.ToString());
+                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData3.ToString());
 
-                total1 += countData == null ? Convert.ToDecimal(0) : countData.Value;
                 total2 += countData2 == null ? Convert.ToDecimal(0) : countData2.Value;
                 total3 += countData3 == null ? Convert.ToDecimal(0) : countData3.Value;
 
@@ -5766,9 +5768,8 @@ namespace FMS.Website.Controllers
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
-            slDocument.SetCellValue(contRow, firstColumn + 3, total3);
+            slDocument.SetCellValue(contRow, firstColumn + 1, total2);
+            slDocument.SetCellValue(contRow, firstColumn + 2, total3);
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -5783,11 +5784,11 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 3);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 3);
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style30);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
             chart.SetChartPosition(2, 1, firstRow - 2, 10);

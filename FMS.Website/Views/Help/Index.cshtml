@@ -5,6 +5,11 @@
 </div>
 <section class="content">
     <div class="wpanel">
+        <div class="row">
+            <div class="col-md-12">
+                Download File <a href="@Url.Action("PdfDownload", "Help",new { FilePath = Model.SuccesMessage })">Here</a>
+            </div>
+        </div>
         <iframe src="~/@Model.SuccesMessage" width="100%" height="800"></iframe>
     </div>
 </section>

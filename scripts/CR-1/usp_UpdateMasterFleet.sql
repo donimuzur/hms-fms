@@ -135,7 +135,7 @@ BEGIN
 				FROM MST_EMPLOYEE E
 				INNER JOIN View_Employee V
 				ON E.EMPLOYEE_ID = V.EMPLID
-				WHERE V.NAME_FORMAL = E.FORMAL_NAME;
+				WHERE V.NAME_FORMAL != E.FORMAL_NAME;
 		OPEN @XCursor3;
 		FETCH NEXT FROM @XCursor3 
 		INTO @EmployeeID3, @FormalName, @FormalNameMstFleet;

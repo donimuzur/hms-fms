@@ -366,14 +366,11 @@ namespace FMS.BLL.Ccf
             var webRootUrl = ConfigurationManager.AppSettings["WebRootUrl"];
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
-            var creatorData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
             var creatorDataComplaintFor = _employeeService.GetEmployeeById(ccfData.EmployeeIdComplaintFor);
            
             var fleetApprovalData = _employeeService.GetEmployeeById(ccfData.EmployeeID);
             var complaintCategory = _complaintCategory.GetComplaintById(ccfData.ComplaintCategory);
-            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var creatorDataEmailComplaintFor = creatorDataComplaintFor == null ? string.Empty : creatorDataComplaintFor.EMAIL_ADDRESS;
-            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             
             var hrList = string.Empty;
             var fleetList = string.Empty;
@@ -399,8 +396,27 @@ namespace FMS.BLL.Ccf
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand(hrQuery, con);
+            //----------UPDATE CREATOR EMAIL FROM ADSI------------//
+            var creatorDataEmail = string.Empty;
+            var creatorDataName = string.Empty;
+
+            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + ccfData.CreatedBy + "'";
+            if (typeEnv == "VTI")
+            {
+                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE FULL_NAME = 'PMI\\" + ccfData.CreatedBy + "'";
+            }
+
+            SqlCommand query = new SqlCommand(CreatorQuery, con);
             SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmail = reader[0].ToString();
+                creatorDataName = reader[1].ToString();
+            }
+            ///////////////////////////////////////////////////////
+
+            query = new SqlCommand(hrQuery, con);
+            reader = query.ExecuteReader();
             while (reader.Read())
             {
                 var hrLogin = "'" + reader[0].ToString() + "',";

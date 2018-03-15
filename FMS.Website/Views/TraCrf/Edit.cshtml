@@ -230,7 +230,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                <table id="tbCrfSelectVehicle" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -243,6 +243,20 @@
                                             <th>Color</th>
                                             <th>Start Contract</th>
                                             <th>End Contract</th>
+                                        </tr>
+                                    </thead>
+                                    <thead class="filters">
+                                        <tr>
+                                            <th></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tb-body-select-veh"></tbody>
@@ -348,6 +362,22 @@
 <script src="~/Scripts/crfscript.js"></script>
 <script type="text/javascript">
 
+    function SetupDataTables() {
+        // DataTable
+        var table = $('#tbCrfSelectVehicle').DataTable({
+            "dom": 'lf<"table-overflow"t>pi'
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    }
 
     $(document).ready(function () {
         @if (Model.CurrentLogin.EMPLOYEE_ID == Model.Detail.EmployeeId
@@ -360,52 +390,7 @@
             location.href = '@Url.Action("Index", "TraCrf")';
         });
 
-        //$("#btnSelectVehicle").click(function () {
-        //    var tr = $("[name='selectvehicleradio']:checked").parents("tr");
-        //    var manufacturer = $(tr).find("[name='manufacturer']").val();
-        //    var models = $(tr).find("[name='model']").val();
-        //    var series = $(tr).find("[name='series']").val();
-        //    var bodytype = $(tr).find("[name='bodytype']").val();
-        //    var vendorname = $(tr).find("[name='vendorname']").val();
-
-        //    var startdate = $(tr).find("[name='startdate']").val();
-        //    var enddate = $(tr).find("[name='enddate']").val();
-        //    var policenumber = $(tr).find("[name='policenumber']").val();
-
-
-        //    $("[name='Detail.PoliceNumber']").val(policenumber);
-        //    $("[name='Detail.Manufacturer']").val(manufacturer);
-        //    $("[name='Detail.Model']").val(models);
-        //    $("[name='Detail.SERIES']").val(series);
-        //    $("[name='Detail.BodyType']").val(bodytype);
-        //    $("[name='Detail.VendorName']").val(vendorname);
-        //    $("[name='Detail.StartPeriod']").val(startdate);
-        //    $("[name='Detail.EndPeriod']").val(enddate);
-        //    //var tableData = '<tr>' +
-        //    //                    '<td><input type="hidden" name="Detail.PoliceNumber" id="Detail_PoliceNumber" value="' + policenumber + '"></input>' + policenumber + '</td>' +
-        //    //                    '<td><input type="hidden" name="Detail.Manufacturer" id="Detail_Manufacturer" value="' + manufacturer + '"></input>' + manufacturer + '</td>' +
-        //    //                    '<td><input type="hidden" name="Detail.Models" id="Detail_Models" value="' + model + '"></input>' + model + '</td>' +
-        //    //                    '<td><input type="hidden" name="Detail.SERIES" id="Detail_Series" value="' + series + '"></input>' + series + '</td>' +
-        //    //                    '<td><input type="hidden" name="Detail.BODY_TYPE" id="Detail_BodyType" value="' + bodytype + '"></input>' + bodytype + '</td>' +
-        //    //                    '<td><input type="hidden" name="Detail.VendorName" id="Detail_VendorName" value="' + vendorname + '"></input>' + vendorname + '</td>' +
-
-        //    //                    '<td><input type="hidden" name="Detail.StartDate" id="Detail_StartDate" value="' + startdate + '"></input>' + startdate + '</td>' +
-        //    //                    '<td><input type="hidden" name="Detail.EndDate" id="Detail_EndDate" value="' + enddate + '"></input>' + enddate + '</td>' +
-        //    //                    '</tr>';
-        //    //$('#tb-body-select-vehicle').html(tableData);
-
-        //    $('#selectvehmodal').modal('hide');
-        //});
-		
-        var table = $('#tbCsfVehicle').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "info": true,
-            "bInfo": true,
-            "ordering": false
-        });
+        //SetupDataTables();
 		
     });
 

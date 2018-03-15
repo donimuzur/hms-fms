@@ -297,6 +297,13 @@ namespace FMS.BLL.Temporary
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
             }
+            else
+            {
+                if (input.UserRole == Enums.UserRole.Fleet)
+                {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+                }
+            }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
@@ -396,15 +403,13 @@ namespace FMS.BLL.Temporary
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var employeeData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID);
-            var creatorData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID_CREATOR);
+            //var creatorData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID_CREATOR);
             var fleetApprovalData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID_FLEET_APPROVAL);
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
-            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var fleetApprovalDataEmail = fleetApprovalData == null ? string.Empty : fleetApprovalData.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
-            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
 
             var hrList = string.Empty;
@@ -431,8 +436,28 @@ namespace FMS.BLL.Temporary
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand(hrQuery, con);
+            //----------UPDATE CREATOR EMAIL FROM ADSI------------//
+            var creatorDataEmail = string.Empty;
+            var creatorDataName = string.Empty;
+
+            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + tempData.CREATED_BY + "'";
+            if (typeEnv == "VTI")
+            {
+                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE FULL_NAME = 'PMI\\" + tempData.CREATED_BY + "'";
+            }
+
+            SqlCommand query = new SqlCommand(CreatorQuery, con);
             SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmail = reader[0].ToString();
+                creatorDataName = reader[1].ToString();
+            }
+            ///////////////////////////////////////////////////////
+
+
+            query = new SqlCommand(hrQuery, con);
+            reader = query.ExecuteReader();
             while (reader.Read())
             {
                 var hrLogin = "'" + reader[0].ToString() + "',";

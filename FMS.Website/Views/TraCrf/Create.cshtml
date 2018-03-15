@@ -77,7 +77,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <table id="tbCsfVehicle" class="table table-bordered table-striped">
+                                <table id="tbCrfSelectVehicle" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -90,6 +90,20 @@
                                             <th>Color</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <thead class="filters">
+                                        <tr>
+                                            <th></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
+                                            <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tb-body-select-veh"></tbody>
@@ -180,10 +194,10 @@
         }
     }
 
+   
     $(function() {
         
         InitEmployee('@Url.Action("GetEmployeeList","TraCrf")', '@Url.Action("GetEmployee","TraCrf")');
-
         $("#btnConfirmSend").click(function () {
             $("#isSend").val(true);
             $("#btnSubmit").trigger("click");
