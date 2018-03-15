@@ -795,7 +795,10 @@ namespace FMS.BLL.Csf
 
                     rc.To.Add(creatorDataEmail);
                     rc.CC.Add(employeeDataEmail);
-                    rc.CC.Add(fleetApprovalDataEmail);
+                    if(fleetApprovalDataEmail != "" && fleetApprovalDataEmail != null)
+                    {
+                        rc.CC.Add(fleetApprovalDataEmail);
+                    }
 
                     if (isBenefit) { 
                         var attDoc = UpdateDocAttachment(csfData.TRA_CSF_ID);
