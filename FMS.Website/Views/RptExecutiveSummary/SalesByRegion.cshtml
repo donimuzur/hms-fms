@@ -253,6 +253,10 @@
 
     $(document).ready(function () {
         init_charts();
+
+        $('aside').animate({
+            scrollTop: $("#SalesByRegion").offset().top
+        }, 1000);
     });
 
     function init_charts() {
@@ -280,10 +284,14 @@
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
+                var label_1 = "Operational Cost per Stick";
+                var label_2 = "Operational Cost per KM";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_COST);
                     second_chart.push(response[i].TOTAL_KM);
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 if ($('#mylineChart').length) {
@@ -295,7 +303,7 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of Operational Cost Per Stick',
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -305,7 +313,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: '# of Operational Cost Per KM',
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -316,11 +324,19 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
                         options: {
                             scales: {
                                 yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
                                     }
                                 }]
                             }

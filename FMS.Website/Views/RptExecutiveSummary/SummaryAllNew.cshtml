@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Vehicle By Make</a></b></div>
                     <div class="card-body" id="chart3">
@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Vehicle By Type</a></b></div>
                     <div class="card-body" id="chart4">
@@ -115,7 +115,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Operational Cost</a></b></div>
                     <div class="card-body" id="chart8">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart2"></canvas>
@@ -124,7 +124,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC vs OB</a></b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("AcVsOb", "RptExecutiveSummary")">Actual Cost Vs Budget</a></b></div>
                     <div class="card-body" id="chart9">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart3"></canvas>
@@ -556,10 +556,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "BENEFIT";
+                var label_2 = "WTC";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     first_chart.push(response[i].NO_OF_VEHICLE_BENEFIT);
                     second_chart.push(response[i].NO_OF_VEHICLE_WTC);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -579,7 +585,7 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "BENEFIT",
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -589,7 +595,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "WTC",
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -600,6 +606,23 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }
@@ -616,10 +639,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Operational Cost per Stick";
+                var label_2 = "Operational Cost per KM";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_COST);
                     second_chart.push(response[i].TOTAL_KM);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -639,7 +668,7 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "Operational Cost per Stick",
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -649,7 +678,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "Operational Cost per KM",
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -660,6 +689,23 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }
@@ -676,10 +722,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Actual Cost";
+                var label_2 = "Budget";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     first_chart.push(response[i].ACTUAL_COST);
                     second_chart.push(response[i].COST_OB);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -699,7 +751,7 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "Actual Cost",
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -709,7 +761,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "Operational Budget",
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -720,6 +772,23 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }
@@ -736,10 +805,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGIONAL);
                     first_chart.push(response[i].NO_OF_VEHICLE_SALES);
                     second_chart.push(response[i].NO_OF_VEHICLE_MARKETING);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -759,11 +834,11 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: 'Sales',
+                                label: label_1,
                                 backgroundColor: "#B21B1B",
                                 data: first_chart
                             }, {
-                                label: 'Marketing',
+                                label: label_2,
                                 backgroundColor: "#1FB21B",
                                 data: second_chart
                             }]
@@ -774,6 +849,19 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
                                     }
                                 }]
                             }
@@ -794,10 +882,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Fuel cost";
+                var label_2 = "Lease cost";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     first_chart.push(response[i].TOTAL_FUEL_COST);
                     second_chart.push(response[i].TOTAL_LEASE_COST);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -817,11 +911,11 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: 'Fuel cost',
+                                label: label_1,
                                 backgroundColor: "#21A4FF",
                                 data: first_chart
                             }, {
-                                label: 'Lease cost',
+                                label: label_2,
                                 backgroundColor: "#FF8000",
                                 data: second_chart
                             }]
@@ -832,6 +926,19 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
                                     }
                                 }]
                             }
@@ -849,15 +956,21 @@
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
             success: function (response) {
                 var labels_chart = [];
-                var first_chart = [];
+                //var first_chart = [];
                 var second_chart = [];
                 var third_chart = [];
 
+                var label_1 = "BENEFIT";
+                var label_2 = "WTC";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
-                    first_chart.push(response[i].ACCIDENT_COUNT);
+                    //first_chart.push(response[i].ACCIDENT_COUNT);
                     second_chart.push(response[i].ACCIDENT_COUNT_BENEFIT);
                     third_chart.push(response[i].ACCIDENT_COUNT_WTC);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -878,16 +991,12 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: 'All',
+                                label: label_1,
                                 backgroundColor: "#00FF00",
-                                data: first_chart
-                            }, {
-                                label: 'BENEFIT',
-                                backgroundColor: "#FFFF80",
                                 data: second_chart
                             }, {
-                                label: 'WTC',
-                                backgroundColor: "#FF8000",
+                                label: label_2,
+                                backgroundColor: "#FFFF80",
                                 data: third_chart
                             }]
                         },
@@ -897,6 +1006,19 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
                                     }
                                 }]
                             }
@@ -915,12 +1037,16 @@
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
-                var color_chart = [];
+                //var color_chart = [];
+
+                var label_1 = "Total";
 
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].MANUFACTURER);
                     first_chart.push(response[i].NO_OF_VEHICLE);
-                    color_chart.push(getRandomColor());
+                    //color_chart.push(getRandomColor());
+
+                    label_1 = response[i].LABEL1;
                 }
 
                 //if (response.length == 0) {
@@ -931,25 +1057,66 @@
 
                 // Doughnut chart
 
+                //if ($('#canvasDoughnut').length) {
+                //    $('#canvasDoughnut').remove();
+                //    $('#chart3').append('<canvas id="canvasDoughnut"><canvas>');
+                //    var ctx = document.getElementById("canvasDoughnut");
+                //    var data = {
+                //        labels: labels_chart,
+                //        datasets: [{
+                //            data: first_chart,
+                //            backgroundColor: color_chart
+                //        }]
+                //    };
+
+                //    var canvasDoughnut = new Chart(ctx, {
+                //        type: 'doughnut',
+                //        tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+                //        data: data,
+                //        options: {
+                //            legend: {
+                //                display: false
+                //            }
+                //        }
+                //    });
+
+                //}
+
                 if ($('#canvasDoughnut').length) {
                     $('#canvasDoughnut').remove();
                     $('#chart3').append('<canvas id="canvasDoughnut"><canvas>');
                     var ctx = document.getElementById("canvasDoughnut");
-                    var data = {
-                        labels: labels_chart,
-                        datasets: [{
-                            data: first_chart,
-                            backgroundColor: color_chart
-                        }]
-                    };
-
                     var canvasDoughnut = new Chart(ctx, {
-                        type: 'doughnut',
-                        tooltipFillColor: "rgba(51, 51, 51, 0.55)",
-                        data: data,
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
+                                backgroundColor: "#FD13ED",
+                                data: first_chart
+                            }]
+                        },
+
                         options: {
-                            legend: {
-                                display: false
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Manufacturers'
+                                    }
+                                }]
                             }
                         }
                     });
@@ -1068,12 +1235,16 @@
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
-                var color_chart = [];
+                //var color_chart = [];
+
+                var label_1 = "Total";
 
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].BODY_TYPE);
                     first_chart.push(response[i].NO_OF_VEHICLE);
-                    color_chart.push(getRandomColor());
+                    //color_chart.push(getRandomColor());
+
+                    label_1 = response[i].LABEL1;
                 }
 
                 //if (response.length == 0) {
@@ -1082,35 +1253,76 @@
                 //    color_chart.push(getRandomColor());
                 //}
 
-                // PolarArea chart
+                //// PolarArea chart
+
+                //if ($('#polarArea').length) {
+                //    $('#polarArea').remove();
+                //    $('#chart4').append('<canvas id="polarArea"><canvas>');
+                //    var ctx = document.getElementById("polarArea");
+                //    var data = {
+                //        datasets: [{
+                //            data: first_chart,
+                //            backgroundColor: color_chart,
+                //            label: 'My dataset'
+                //        }],
+                //        labels: labels_chart
+                //    };
+
+                //    var polarArea = new Chart(ctx, {
+                //        data: data,
+                //        type: 'polarArea',
+                //        options: {
+                //            legend: {
+                //                display: false
+                //            },
+                //            scale: {
+                //                ticks: {
+                //                    beginAtZero: true
+                //                }
+                //            }
+                //        }
+                //    });
+                //}
 
                 if ($('#polarArea').length) {
                     $('#polarArea').remove();
                     $('#chart4').append('<canvas id="polarArea"><canvas>');
                     var ctx = document.getElementById("polarArea");
-                    var data = {
-                        datasets: [{
-                            data: first_chart,
-                            backgroundColor: color_chart,
-                            label: 'My dataset'
-                        }],
-                        labels: labels_chart
-                    };
-
                     var polarArea = new Chart(ctx, {
-                        data: data,
-                        type: 'polarArea',
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }]
+                        },
+                        //HERE COMES THE AXIS LABEL
                         options: {
-                            legend: {
-                                display: false
-                            },
-                            scale: {
-                                ticks: {
-                                    beginAtZero: true
-                                }
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Body Type'
+                                    }
+                                }]
                             }
                         }
                     });
+
                 }
             }
         });
@@ -1128,6 +1340,10 @@
 
     $(document).ready(function () {
         init_charts_data();
+
+        $('aside').animate({
+            scrollTop: $("#SummAll").offset().top
+        }, 1000);
     });
 
     function ExportXls() {

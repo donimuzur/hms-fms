@@ -303,6 +303,10 @@
 
     $(document).ready(function () {
         init_charts();
+
+        $('aside').animate({
+            scrollTop: $("#Odometer").offset().top
+        }, 1000);
     });
 
     function init_charts() {
@@ -330,10 +334,14 @@
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
+                var label_1 = "BENEFIT";
+                var label_2 = "WTC";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     first_chart.push(response[i].TOTAL_KM_BENEFIT);
                     second_chart.push(response[i].TOTAL_KM_WTC);
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 if ($('#mylineChart').length) {
@@ -345,7 +353,7 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of BENEFIT',
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -355,7 +363,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: '# of WTC',
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -366,11 +374,19 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
                         options: {
                             scales: {
                                 yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'KM'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
                                     }
                                 }]
                             }

@@ -95,12 +95,17 @@ namespace FMS.Website.Controllers
             }
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
 
+            var label1 = "BENEFIT (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label2 = "WTC (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(x => x.NO_OF_VEHICLE) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new NoVehicleDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     NO_OF_VEHICLE_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -123,12 +128,17 @@ namespace FMS.Website.Controllers
             }
             List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
 
+            var label1 = "Sales (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label2 = "Marketing (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(x => x.NO_OF_VEHICLE) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGIONAL })
                 .Select(p => new NoVehicleWtcDto()
                 {
                     REGIONAL = p.FirstOrDefault().REGIONAL,
                     NO_OF_VEHICLE_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -145,11 +155,14 @@ namespace FMS.Website.Controllers
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
+            var label1 = "Total (" + data.Sum(x => x.NO_OF_VEHICLE) + ")";
+
             var groupData = data.GroupBy(x => new { x.MANUFACTURER })
                 .Select(p => new NoVehicleMakeDto()
                 {
                     MANUFACTURER = p.FirstOrDefault().MANUFACTURER,
-                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1
                 }).ToList();
 
             return Json(groupData);
@@ -166,11 +179,14 @@ namespace FMS.Website.Controllers
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
+            var label1 = "Total (" + data.Sum(x => x.NO_OF_VEHICLE) + ")";
+
             var groupData = data.GroupBy(x => new { x.BODY_TYPE })
                 .Select(p => new NoVehicleMakeDto()
                 {
                     BODY_TYPE = p.FirstOrDefault().BODY_TYPE,
-                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1
                 }).ToList();
 
             return Json(groupData);
@@ -230,12 +246,20 @@ namespace FMS.Website.Controllers
             input.Function = "Sales,Marketing";
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
+            var numb1 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_KM);
+            var numb2 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_KM);
+
+            var label1 = "Sales (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Marketing (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new OdometerDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     TOTAL_KM_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_KM),
-                    TOTAL_KM_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_KM)
+                    TOTAL_KM_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_KM),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -296,12 +320,20 @@ namespace FMS.Website.Controllers
             input.Function = "Sales,Marketing";
             List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
 
+            var numb1 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LITER);
+            var numb2 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LITER);
+
+            var label1 = "Sales (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Marketing (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new LiterByFunctionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     TOTAL_LITER_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LITER),
-                    TOTAL_LITER_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LITER)
+                    TOTAL_LITER_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LITER),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -375,12 +407,20 @@ namespace FMS.Website.Controllers
 
             groupData.AddRange(groupData2);
 
+            var numb1 = groupData.Sum(x => x.TOTAL_FUEL_COST);
+            var numb2 = groupData.Sum(x => x.TOTAL_LEASE_COST);
+
+            var label1 = "Fuel cost (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Lease cost (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData3 = groupData.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new FuelLeaseDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     TOTAL_FUEL_COST = p.Sum(c => c.TOTAL_FUEL_COST),
-                    TOTAL_LEASE_COST = p.Sum(c => c.TOTAL_LEASE_COST)
+                    TOTAL_LEASE_COST = p.Sum(c => c.TOTAL_LEASE_COST),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData3);
@@ -398,12 +438,20 @@ namespace FMS.Website.Controllers
             input.Function = "Sales,Marketing";
             List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
 
+            var numb1 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_FUEL_COST);
+            var numb2 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_FUEL_COST);
+
+            var label1 = "Sales (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Marketing (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new FuelCostByFunctionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     TOTAL_FUEL_COST_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_FUEL_COST),
-                    TOTAL_FUEL_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_FUEL_COST)
+                    TOTAL_FUEL_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_FUEL_COST),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -420,12 +468,20 @@ namespace FMS.Website.Controllers
             input.Function = "Sales,Marketing";
             List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
 
+            var numb1 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LEASE_COST);
+            var numb2 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST);
+
+            var label1 = "Sales (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Marketing (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new LeaseCostByFunctionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     TOTAL_LEASE_COST_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LEASE_COST),
-                    TOTAL_LEASE_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST)
+                    TOTAL_LEASE_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -442,12 +498,20 @@ namespace FMS.Website.Controllers
 
             List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
 
+            var numb1 = data.Sum(c => c.TOTAL_COST / c.STICK);
+            var numb2 = data.Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+
+            var label1 = "Operational Cost per Stick (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Operational Cost per KM (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new SalesByRegionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     TOTAL_COST = p.Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM = p.Sum(c => c.TOTAL_COST / c.TOTAL_KM)
+                    TOTAL_KM = p.Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -486,13 +550,18 @@ namespace FMS.Website.Controllers
             }
             List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
 
+            var label1 = "BENEFIT (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(x => x.ACCIDENT_COUNT) + ")";
+            var label2 = "WTC (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(x => x.ACCIDENT_COUNT) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AccidentDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     ACCIDENT_COUNT = p.Sum(c => c.ACCIDENT_COUNT),
                     ACCIDENT_COUNT_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.ACCIDENT_COUNT),
-                    ACCIDENT_COUNT_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACCIDENT_COUNT)
+                    ACCIDENT_COUNT_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACCIDENT_COUNT),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -510,12 +579,17 @@ namespace FMS.Website.Controllers
             input.Function = "Sales,Marketing";
             List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
 
+            var label1 = "Sales (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(x => x.ACCIDENT_COUNT) + ")";
+            var label2 = "Marketing (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(x => x.ACCIDENT_COUNT) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new AccidentDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     ACCIDENT_COUNT_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.ACCIDENT_COUNT),
-                    ACCIDENT_COUNT_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.ACCIDENT_COUNT)
+                    ACCIDENT_COUNT_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.ACCIDENT_COUNT),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -543,12 +617,20 @@ namespace FMS.Website.Controllers
             }
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
+            var numb1 = data.Sum(c => c.ACTUAL_COST);
+            var numb2 = data.Sum(c => c.COST_OB);
+
+            var label1 = "Actual Cost (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Budget (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AcVsObDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     ACTUAL_COST = p.Sum(c => c.ACTUAL_COST),
-                    COST_OB = p.Sum(c => c.COST_OB)
+                    COST_OB = p.Sum(c => c.COST_OB),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -565,12 +647,20 @@ namespace FMS.Website.Controllers
             input.Function = "Sales,Marketing";
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
+            var numb1 = data.Sum(c => c.ACTUAL_COST);
+            var numb2 = data.Sum(c => c.COST_OB);
+
+            var label1 = "Actual Cost (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Budget (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AcVsObDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     ACTUAL_COST = p.Sum(c => c.ACTUAL_COST),
-                    COST_OB = p.Sum(c => c.COST_OB)
+                    COST_OB = p.Sum(c => c.COST_OB),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -599,12 +689,17 @@ namespace FMS.Website.Controllers
             }
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
 
+            var label1 = "BENEFIT (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label2 = "WTC (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(x => x.NO_OF_VEHICLE) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new NoVehicleDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     NO_OF_VEHICLE_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -627,12 +722,17 @@ namespace FMS.Website.Controllers
             }
             List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
 
+            var label1 = "Sales (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label2 = "Marketing (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(x => x.NO_OF_VEHICLE) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGIONAL })
                 .Select(p => new NoVehicleWtcDto()
                 {
                     REGIONAL = p.FirstOrDefault().REGIONAL,
                     NO_OF_VEHICLE_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -651,12 +751,40 @@ namespace FMS.Website.Controllers
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
+            var label1 = "Total (" + data.Sum(x => x.NO_OF_VEHICLE) + ")";
+
             var groupData = data.GroupBy(x => new { x.MANUFACTURER })
                 .Select(p => new NoVehicleMakeDto()
                 {
                     MANUFACTURER = p.FirstOrDefault().MANUFACTURER,
-                    NO_OF_VEHICLE_FIRST = p.Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) == "SUV").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_ELSE = p.Where(x => (x.BODY_TYPE == null ? "" : x.BODY_TYPE.ToUpper()) != "SUV").Sum(c => c.NO_OF_VEHICLE)
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1
+                }).ToList();
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
+        public JsonResult VisualNoVehicleType(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string make, string bodType)
+        {
+            var input = new VehicleMakeGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthTo;
+            input.YearTo = yearTo == null ? 0 : yearTo.Value;
+            input.Manufacturer = make;
+            input.BodyType = bodType;
+
+            List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
+
+            var label1 = "Total (" + data.Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var groupData = data.GroupBy(x => new { x.BODY_TYPE })
+                .Select(p => new NoVehicleMakeDto()
+                {
+                    BODY_TYPE = p.FirstOrDefault().BODY_TYPE,
+                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1
                 }).ToList();
 
             return Json(groupData);
@@ -680,12 +808,20 @@ namespace FMS.Website.Controllers
             }
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
+            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_KM);
+            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_KM);
+
+            var label1 = "BENEFIT (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "WTC (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new OdometerDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     TOTAL_KM_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_KM),
-                    TOTAL_KM_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_KM)
+                    TOTAL_KM_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_KM),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -709,12 +845,20 @@ namespace FMS.Website.Controllers
             }
             List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
 
+            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_LITER);
+            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_LITER);
+
+            var label1 = "BENEFIT (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "WTC (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new LiterByFunctionDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     TOTAL_LITER_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_LITER),
-                    TOTAL_LITER_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_LITER)
+                    TOTAL_LITER_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_LITER),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -738,12 +882,20 @@ namespace FMS.Website.Controllers
             }
             List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
 
+            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_FUEL_COST);
+            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_FUEL_COST);
+
+            var label1 = "BENEFIT (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "WTC (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new FuelCostByFunctionDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     TOTAL_FUEL_COST_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_FUEL_COST),
-                    TOTAL_FUEL_COST_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_FUEL_COST)
+                    TOTAL_FUEL_COST_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_FUEL_COST),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -766,12 +918,20 @@ namespace FMS.Website.Controllers
             }
             List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
 
+            var numb1 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LEASE_COST);
+            var numb2 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST);
+
+            var label1 = "Sales (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Marketing (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new LeaseCostByFunctionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     TOTAL_LEASE_COST_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LEASE_COST),
-                    TOTAL_LEASE_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST)
+                    TOTAL_LEASE_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -790,12 +950,20 @@ namespace FMS.Website.Controllers
             
             List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
 
+            var numb1 = data.Sum(c => c.TOTAL_COST / c.STICK);
+            var numb2 = data.Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+
+            var label1 = "Operational Cost per Stick (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Operational Cost per KM (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new SalesByRegionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
                     TOTAL_KM = p.Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST = p.Sum(c => c.TOTAL_COST / c.STICK)
+                    TOTAL_COST = p.Sum(c => c.TOTAL_COST / c.STICK),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -819,12 +987,17 @@ namespace FMS.Website.Controllers
             }
             List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
 
+            var label1 = "BENEFIT (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(x => x.ACCIDENT_COUNT) + ")";
+            var label2 = "WTC (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(x => x.ACCIDENT_COUNT) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AccidentDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     ACCIDENT_COUNT_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.ACCIDENT_COUNT),
-                    ACCIDENT_COUNT_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACCIDENT_COUNT)
+                    ACCIDENT_COUNT_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACCIDENT_COUNT),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -845,12 +1018,20 @@ namespace FMS.Website.Controllers
             }
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
+            var numb1 = data.Sum(c => c.ACTUAL_COST);
+            var numb2 = data.Sum(c => c.COST_OB);
+
+            var label1 = "Actual Cost (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Budget (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AcVsObDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
                     ACTUAL_COST = p.Sum(c => c.ACTUAL_COST),
-                    COST_OB = p.Sum(c => c.COST_OB)
+                    COST_OB = p.Sum(c => c.COST_OB),
+                    LABEL1 = label1,
+                    LABEL2 = label2
                 }).ToList();
 
             return Json(groupData);
@@ -1856,7 +2037,7 @@ namespace FMS.Website.Controllers
             model.SearchView.YearFrom = DateTime.Now.Year;
 
             model.IsByRegion = true;
-            model.TitleForm = "Executive Summary By Sales & Marketing";
+            model.TitleForm = "Executive Summary Working Tool Car";
             model.TitleExport = "ExportSummaryRegion";
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -2521,7 +2702,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
-            model.TitleForm = "Number Of Vehicle";
+            model.TitleForm = "Number Of Vehicle - All";
             model.TitleExport = "ExportNoVehicleNew";
             model.NoVehicleList = Mapper.Map<List<NoVehicleData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
@@ -2884,7 +3065,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
-            model.TitleForm = "Number Of Vehicle WTC";
+            model.TitleForm = "Number Of Vehicle - Working Tool Car";
             model.TitleExport = "ExportNoVehicleWtcNew";
             model.NoVehicleWtcList = Mapper.Map<List<NoVehicleWtcData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
@@ -3239,7 +3420,7 @@ namespace FMS.Website.Controllers
             var input = Mapper.Map<VehicleMakeGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleMakeData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
-            model.TitleForm = "Number Of Vehicle Make";
+            model.TitleForm = "Number Of Vehicle Make - Type";
             model.TitleExport = "ExportNoVehicleMakeNew";
             model.NoVehicleMakeList = Mapper.Map<List<NoVehicleMakeData>>(data);
             model.MainMenu = _mainMenu;
@@ -3997,7 +4178,7 @@ namespace FMS.Website.Controllers
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
             var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
-            model.TitleForm = "Liter By Function";
+            model.TitleForm = "Fuel Purchased (liters)";
             model.TitleExport = "ExportLiterByFunctionNew";
             model.LiterByFuncDataList = Mapper.Map<List<LiterByFunctionData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
@@ -4363,7 +4544,7 @@ namespace FMS.Website.Controllers
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
             var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
-            model.TitleForm = "Fuel Cost By Function";
+            model.TitleForm = "Fuel Cost";
             model.TitleExport = "ExportFuelCostByFunctionNew";
             model.FuelCostByFuncDataList = Mapper.Map<List<FuelCostByFunctionData>>(data);
             model.SearchView.VehicleTypeList = new SelectList(listVehType, "SettingValue", "SettingValue");
@@ -4728,7 +4909,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
             
-            model.TitleForm = "Lease Cost By Function";
+            model.TitleForm = "Lease Cost";
             model.TitleExport = "ExportLeaseCostByFunctionNew";
             model.LeaseCostByFuncDataList = Mapper.Map<List<LeaseCostByFunctionData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
@@ -5090,7 +5271,7 @@ namespace FMS.Website.Controllers
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
             var listZone = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZoneSales }).Distinct().ToList();
 
-            model.TitleForm = "Sales By Region";
+            model.TitleForm = "Operational Cost";
             model.TitleExport = "ExportSalesByRegionNew";
             model.SalesByRegionDataList = Mapper.Map<List<SalesByRegionData>>(data);
             model.SearchView.RegionalList = new SelectList(listRegional, "Region", "Region");
@@ -5817,7 +5998,7 @@ namespace FMS.Website.Controllers
             var input = Mapper.Map<AcVsObGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetAcVsObData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
 
-            model.TitleForm = "AC Vs OB";
+            model.TitleForm = "Actual Cost Vs Budget";
             model.TitleExport = "ExportAcVsObNew";
             model.AcVsObDataList = Mapper.Map<List<AcVsObData>>(data);
             model.SearchView.Functions = GetFunctionsMultiSelectList();
