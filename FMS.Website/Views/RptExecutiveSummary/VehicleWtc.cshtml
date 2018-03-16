@@ -148,7 +148,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -177,6 +177,18 @@
 <script type="text/javascript">
     function LoadingShow() {
         $('#LoadingModal').show();
+
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        if ($("#SearchView_ZoneId").length > 0) {
+            $("#SearchView_ZoneId").val(theList.slice(0, -1));
+        } else {
+            $("#SearchView_FunctionId").val(theList.slice(0, -1));
+        }
     }
     function LoadingHide() {
         $('#LoadingModal').hide();
@@ -191,6 +203,12 @@
 
         theList = theList.slice(0, -1);
 
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
         var url = '@Url.Action(Model.TitleExport , "RptExecutiveSummary")';
         var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
         console.log(url);
@@ -202,7 +220,8 @@
 			        YearFrom: $('#SearchView_YearFrom').val(),
 			        YearTo: $('#SearchView_YearTo').val(),
 			        Regional:$('#SearchView_Regional').val(),
-			        Function:theList,
+			        Function: theList,
+			        ZoneId: zoneId,
 			    }
 
 			};
@@ -262,33 +281,57 @@
 
     $(document).ready(function () {
         init_charts();
+
+        $('aside').animate({
+            scrollTop: $("#NumbWtc").offset().top
+        }, 1000);
     });
 
     function init_charts() {
         $('#LoadingModal').show();
 
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        theList = theList.slice(0, -1);
+
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualNoVehicleWtc", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: true },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: true, regional: $('#SearchView_Regional').val(), functions: theList, zone: zoneId },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGIONAL);
                     first_chart.push(response[i].NO_OF_VEHICLE_SALES);
                     second_chart.push(response[i].NO_OF_VEHICLE_MARKETING);
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of SALES',
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -298,7 +341,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: '# of MARKETING',
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -309,11 +352,19 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
                         options: {
                             scales: {
                                 yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
                                     }
                                 }]
                             }

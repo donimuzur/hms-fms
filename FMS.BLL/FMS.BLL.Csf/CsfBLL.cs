@@ -319,15 +319,12 @@ namespace FMS.BLL.Csf
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var employeeData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID);
-            var creatorData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_CREATOR);
             var fleetApprovalData = _employeeService.GetEmployeeById(csfData.EMPLOYEE_ID_FLEET_APPROVAL);
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
-            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var fleetApprovalDataEmail = fleetApprovalData == null ? string.Empty : fleetApprovalData.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
-            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
 
             var hrList = string.Empty;
@@ -354,8 +351,28 @@ namespace FMS.BLL.Csf
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand(hrQuery, con);
+
+            //----------UPDATE CREATOR EMAIL FROM ADSI------------//
+            var creatorDataEmail = string.Empty;
+            var creatorDataName = string.Empty;
+
+            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + csfData.CREATED_BY + "'";
+            if (typeEnv == "VTI")
+            {
+                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE FULL_NAME = 'PMI\\" + csfData.CREATED_BY + "'";
+            }
+
+            SqlCommand query = new SqlCommand(CreatorQuery, con);
             SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmail = reader[0].ToString();
+                creatorDataName = reader[1].ToString();
+            }
+            ///////////////////////////////////////////////////////
+
+            query = new SqlCommand(hrQuery, con);
+            reader = query.ExecuteReader();
             while (reader.Read())
             {
                 var hrLogin = "'" + reader[0].ToString() + "',";
@@ -612,73 +629,74 @@ namespace FMS.BLL.Csf
                     //if Fleet Approve for benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
+                        //rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.To.Add(vendorEmail);
-                        }
+                        //    rc.To.Add(vendorEmail);
+                        //}
 
-                        rc.CC.Add(creatorDataEmail);
+                        //rc.CC.Add(creatorDataEmail);
 
-                        //rc.CC.Add(employeeDataEmail);
+                        ////rc.CC.Add(employeeDataEmail);
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }                        
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}                        
+                        return rc;
                     }
                     //if Fleet Approve for wtc
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
                     {
-                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
+                        //rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.CC.Add(vendorEmail);
-                        }
+                        //    rc.CC.Add(vendorEmail);
+                        //}
 
-                        rc.To.Add(employeeDataEmail);
+                        //rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                        
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
+                        return rc;
                     }
                     rc.IsCCExist = true;
                     break;
@@ -778,7 +796,10 @@ namespace FMS.BLL.Csf
 
                     rc.To.Add(creatorDataEmail);
                     rc.CC.Add(employeeDataEmail);
-                    rc.CC.Add(fleetApprovalDataEmail);
+                    if(fleetApprovalDataEmail != "" && fleetApprovalDataEmail != null)
+                    {
+                        rc.CC.Add(fleetApprovalDataEmail);
+                    }
 
                     if (isBenefit) { 
                         var attDoc = UpdateDocAttachment(csfData.TRA_CSF_ID);

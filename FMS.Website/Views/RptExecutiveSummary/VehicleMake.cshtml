@@ -113,10 +113,18 @@
             <div id="visual1" class="tab-pane fade in active">
                 <div class="content chart-summary">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
+                                </div>
+                                <div class="card-footer"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body" id="chartDiv2">
+                                    <canvas id="mylineChart2"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
                             </div>
@@ -220,6 +228,10 @@
 
     $(document).ready(function () {
         init_charts();
+
+        $('aside').animate({
+            scrollTop: $("#NumbMakeType").offset().top
+        }, 1000);
     });
 
     function init_charts() {
@@ -228,25 +240,27 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualNoVehicleMake", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, make: $('#SearchView_Manufacturer').val(), bodType: $('#SearchView_BodyType').val() },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
-                var second_chart = [];
+                var label_1 = "Total";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].MANUFACTURER);
-                    first_chart.push(response[i].NO_OF_VEHICLE_FIRST);
-                    second_chart.push(response[i].NO_OF_VEHICLE_ELSE);
+                    first_chart.push(response[i].NO_OF_VEHICLE);
+                    label_1 = response[i].LABEL1;
                 }
 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of SUV',
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -255,8 +269,59 @@
                                 pointHoverBorderColor: "rgba(130,130,130,1)",
                                 pointBorderWidth: 1,
                                 data: first_chart
-                            }, {
-                                label: '# of ELSE',
+                            }]
+                        },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Manufacturers'
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("VisualNoVehicleType", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, make: $('#SearchView_Manufacturer').val(), bodType: $('#SearchView_BodyType').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var label_1 = "Total";
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].BODY_TYPE);
+                    first_chart.push(response[i].NO_OF_VEHICLE);
+                    label_1 = response[i].LABEL1;
+                }
+
+                if ($('#mylineChart2').length) {
+                    $('#mylineChart2').remove();
+                    $('#chartDiv2').append('<canvas id="mylineChart2"><canvas>');
+                    var ctx = document.getElementById("mylineChart2");
+                    var mylineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -264,14 +329,22 @@
                                 pointHoverBackgroundColor: "#fff",
                                 pointHoverBorderColor: "rgba(33, 164, 255,1)",
                                 pointBorderWidth: 1,
-                                data: second_chart
+                                data: first_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
                         options: {
                             scales: {
                                 yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Body Type'
                                     }
                                 }]
                             }
