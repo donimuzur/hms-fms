@@ -22,5 +22,7 @@ namespace FMS.BusinessObject
         public Nullable<int> REPORT_MONTH { get; set; }
         public Nullable<int> REPORT_YEAR { get; set; }
         public System.DateTime CREATED_DATE { get; set; }
+        public string VEHICLE_TYPE { get; set; }
+        public Nullable<int> UNIT { get; set; }
     }
 }
