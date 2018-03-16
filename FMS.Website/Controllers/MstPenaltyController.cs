@@ -502,7 +502,14 @@ namespace FMS.Website.Controllers
             var input = Mapper.Map<PenaltyParamInput>(filter);
             List<PenaltyDto> penalty = _penaltyBLL.GetPenalty(input);
             var listData = Mapper.Map<List<PenaltyItem>>(penalty);
-
+            foreach (var item in listData)
+            {
+                var Vendor = _vendorBLL.GetByID(item.Vendor);
+                if (Vendor != null)
+                {
+                    item.VendorName = Vendor.VendorName;
+                }
+            }
             var slDocument = new SLDocument();
 
             //title
