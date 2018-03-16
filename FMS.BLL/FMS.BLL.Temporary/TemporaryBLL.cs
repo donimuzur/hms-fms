@@ -508,38 +508,38 @@ namespace FMS.BLL.Temporary
                     //if submit from FLEET for wtc
                     if (tempData.CREATED_BY == input.UserId && !isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
+                        //rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.To.Add(vendorEmail);
-                        }
+                        //    rc.To.Add(vendorEmail);
+                        //}
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
 
-                        
+                        return rc;
                     }
                     //if submit from HR for benefit
                     if (tempData.CREATED_BY == input.UserId && isBenefit)
@@ -579,37 +579,37 @@ namespace FMS.BLL.Temporary
                     //if Fleet Approve for benefit
                     if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
+                        //rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.To.Add(vendorEmail);
-                        }
+                        //    rc.To.Add(vendorEmail);
+                        //}
 
-                        rc.To.Add(creatorDataEmail);
+                        //rc.To.Add(creatorDataEmail);
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
-
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
+                        return rc;
                         //rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;

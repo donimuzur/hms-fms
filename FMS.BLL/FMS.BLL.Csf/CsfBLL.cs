@@ -629,73 +629,74 @@ namespace FMS.BLL.Csf
                     //if Fleet Approve for benefit
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
+                        //rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.To.Add(vendorEmail);
-                        }
+                        //    rc.To.Add(vendorEmail);
+                        //}
 
-                        rc.CC.Add(creatorDataEmail);
+                        //rc.CC.Add(creatorDataEmail);
 
-                        //rc.CC.Add(employeeDataEmail);
+                        ////rc.CC.Add(employeeDataEmail);
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }                        
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}                        
+                        return rc;
                     }
                     //if Fleet Approve for wtc
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
                     {
-                        rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
+                        //rc.Subject = csfData.DOCUMENT_NUMBER + " - Vendor Information";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.CC.Add(vendorEmail);
-                        }
+                        //    rc.CC.Add(vendorEmail);
+                        //}
 
-                        rc.To.Add(employeeDataEmail);
+                        //rc.To.Add(employeeDataEmail);
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                        
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
+                        return rc;
                     }
                     rc.IsCCExist = true;
                     break;

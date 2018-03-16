@@ -772,127 +772,129 @@ namespace FMS.BLL.Ctf
                     }
                     else if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Vendor Information";
+                        //rc.Subject = ctfData.DocumentNumber + " - Vendor Information";
 
-                        bodyMail.Append("Dear " + vendorDataName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Below are the details of vehicle That will be Terminate :<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Police Number : " + (fleetdata == null ? "" : fleetdata.POLICE_NUMBER.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Manufacture : " + (fleetdata == null ? "" : fleetdata.MANUFACTURER.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Model : " + (fleetdata == null ? "" : fleetdata.MODEL.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Series : " + (fleetdata == null ? "" : fleetdata.SERIES.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Employee Name : " + (ctfData == null ? "" : ctfData.EmployeeName) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Vehicle Usage : " + (ctfData == null ? "" : ctfData.VehicleUsage.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        if ((ctfData.VehicleUsage == null ? "" : ctfData.VehicleUsage.ToUpper()) == "CFM")
-                        {
-                            bodyMail.Append("Transfer To CFM Idle : " + (ctfData == null ? "" : ctfData.IsTransferToIdle.Value == true ? "Yes" : "No") + "<br />");
-                            bodyMail.AppendLine();
-                        }
-                        bodyMail.Append("Contract End Date : " + fleetdata.END_CONTRACT.Value.ToString("dd-MMM-yyyy") + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Withdrawal Detail : " + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("PIC : " + (ctfData.WithdPic == null ? "" : ctfData.WithdPic.ToUpper()) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Date : " + (ctfData.WithdDate == null ? "" : ctfData.WithdDate.Value.ToString("dd-MMM-yyyy HH:mm")) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Phone Number : " + (ctfData.WithdPhone == null ? "" : ctfData.WithdPhone) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Address : " + (ctfData.WithdAddress == null  ? "" : ctfData.WithdAddress.ToUpper()) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("City: " + (ctfData.WithdCity == null ? "" : ctfData.WithdCity.ToUpper()) + " <br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + fleetApprovalDataName + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks <br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear " + vendorDataName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Below are the details of vehicle That will be Terminate :<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Police Number : " + (fleetdata == null ? "" : fleetdata.POLICE_NUMBER.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Manufacture : " + (fleetdata == null ? "" : fleetdata.MANUFACTURER.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Model : " + (fleetdata == null ? "" : fleetdata.MODEL.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Series : " + (fleetdata == null ? "" : fleetdata.SERIES.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Employee Name : " + (ctfData == null ? "" : ctfData.EmployeeName) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Vehicle Usage : " + (ctfData == null ? "" : ctfData.VehicleUsage.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //if ((ctfData.VehicleUsage == null ? "" : ctfData.VehicleUsage.ToUpper()) == "CFM")
+                        //{
+                        //    bodyMail.Append("Transfer To CFM Idle : " + (ctfData == null ? "" : ctfData.IsTransferToIdle.Value == true ? "Yes" : "No") + "<br />");
+                        //    bodyMail.AppendLine();
+                        //}
+                        //bodyMail.Append("Contract End Date : " + fleetdata.END_CONTRACT.Value.ToString("dd-MMM-yyyy") + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Termination Date : " + ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Withdrawal Detail : " + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("PIC : " + (ctfData.WithdPic == null ? "" : ctfData.WithdPic.ToUpper()) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Date : " + (ctfData.WithdDate == null ? "" : ctfData.WithdDate.Value.ToString("dd-MMM-yyyy HH:mm")) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Phone Number : " + (ctfData.WithdPhone == null ? "" : ctfData.WithdPhone) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Address : " + (ctfData.WithdAddress == null  ? "" : ctfData.WithdAddress.ToUpper()) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("City: " + (ctfData.WithdCity == null ? "" : ctfData.WithdCity.ToUpper()) + " <br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("For any assistance please contact " + fleetApprovalDataName + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks <br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        if (!string.IsNullOrEmpty(vendorDataEmail))
-                        {
-                            rc.To.Add(vendorDataEmail);
-                        }
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                        if (!string.IsNullOrEmpty(employeeDataEmail))
-                        {
-                            //rc.CC.Add(employeeDataEmail);
-                        }
-                        foreach (var item in hrEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
+                        //if (!string.IsNullOrEmpty(vendorDataEmail))
+                        //{
+                        //    rc.To.Add(vendorDataEmail);
+                        //}
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
+                        //if (!string.IsNullOrEmpty(employeeDataEmail))
+                        //{
+                        //    //rc.CC.Add(employeeDataEmail);
+                        //}
+                        //foreach (var item in hrEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
+                        return rc;
                     }
                     //if Fleet Approve for wtc
                     else if (input.UserRole == Enums.UserRole.Fleet && !isBenefit)
                     {
-                        rc.Subject = ctfData.DocumentNumber + " - Vendor Information";
+                        //rc.Subject = ctfData.DocumentNumber + " - Vendor Information";
 
-                        bodyMail.Append("Dear " + vendorDataName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Below are the details of vehicle That will be Terminate :<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Police Number : " + (fleetdata == null ? "" : fleetdata.POLICE_NUMBER.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Manufacture : " + (fleetdata == null ? "" : fleetdata.MANUFACTURER.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Model : " + (fleetdata == null ? "" : fleetdata.MODEL.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Series : " + (fleetdata == null ? "" : fleetdata.SERIES.ToUpper()) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Employee Name : " + (ctfData == null ? "" : ctfData.EmployeeName) + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Contract End Date : " + fleetdata.END_CONTRACT.Value.ToString("dd-MMM-yyyy") + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Termination Date : " + ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Withdrawal Detail : " + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("PIC : " + (ctfData.WithdPic == null ? "" : ctfData.WithdPic.ToUpper()) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Date : " + (ctfData.WithdDate == null ? "" : ctfData.WithdDate.Value.ToString("dd-MMM-yyyy HH:mm")) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Phone Number : " + (ctfData.WithdPhone == null ? "" : ctfData.WithdPhone) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Address : " + (ctfData.WithdAddress == null ? "" : ctfData.WithdAddress.ToUpper()) + " <br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("City: " + (ctfData.WithdCity == null ? "" : ctfData.WithdCity.ToUpper()) + " <br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks <br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear " + vendorDataName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Below are the details of vehicle That will be Terminate :<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Police Number : " + (fleetdata == null ? "" : fleetdata.POLICE_NUMBER.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Manufacture : " + (fleetdata == null ? "" : fleetdata.MANUFACTURER.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Model : " + (fleetdata == null ? "" : fleetdata.MODEL.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Series : " + (fleetdata == null ? "" : fleetdata.SERIES.ToUpper()) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Employee Name : " + (ctfData == null ? "" : ctfData.EmployeeName) + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Contract End Date : " + fleetdata.END_CONTRACT.Value.ToString("dd-MMM-yyyy") + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Termination Date : " + ctfData.EffectiveDate.Value.ToString("dd-MMM-yyyy") + " <br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Withdrawal Detail : " + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("PIC : " + (ctfData.WithdPic == null ? "" : ctfData.WithdPic.ToUpper()) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Date : " + (ctfData.WithdDate == null ? "" : ctfData.WithdDate.Value.ToString("dd-MMM-yyyy HH:mm")) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Phone Number : " + (ctfData.WithdPhone == null ? "" : ctfData.WithdPhone) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Address : " + (ctfData.WithdAddress == null ? "" : ctfData.WithdAddress.ToUpper()) + " <br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("City: " + (ctfData.WithdCity == null ? "" : ctfData.WithdCity.ToUpper()) + " <br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("For any assistance please contact " + creatorDataName + "<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks <br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        if (!string.IsNullOrEmpty(vendorDataEmail))
-                        {
-                            rc.To.Add(vendorDataEmail);
-                        }
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
-                        if (!string.IsNullOrEmpty(employeeDataEmail))
-                        {
-                            rc.CC.Add(employeeDataEmail);
-                        }
+                        //if (!string.IsNullOrEmpty(vendorDataEmail))
+                        //{
+                        //    rc.To.Add(vendorDataEmail);
+                        //}
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
+                        //if (!string.IsNullOrEmpty(employeeDataEmail))
+                        //{
+                        //    rc.CC.Add(employeeDataEmail);
+                        //}
+                        return rc;
                     }
                     rc.IsCCExist = true;
                     break;
