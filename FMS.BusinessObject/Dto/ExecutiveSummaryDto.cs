@@ -19,6 +19,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class NoVehicleWtcDto
@@ -32,6 +35,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class NoVehicleMakeDto
@@ -45,6 +51,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class OdometerDto
@@ -61,6 +70,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class LiterByFunctionDto
@@ -77,6 +89,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class FuelCostByFunctionDto
@@ -93,6 +108,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class LeaseCostByFunctionDto
@@ -108,6 +126,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class FuelLeaseDto
@@ -115,6 +136,9 @@ namespace FMS.BusinessObject.Dto
         public string FUNCTION { get; set; }
         public decimal? TOTAL_FUEL_COST { get; set; }
         public decimal? TOTAL_LEASE_COST { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class SalesByRegionDto
@@ -127,6 +151,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class AccidentDto
@@ -143,6 +170,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class AcVsObDto
@@ -154,6 +184,9 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public string LABEL1 { get; set; }
+        public string LABEL2 { get; set; }
     }
 
     public class SumPtdByFunctionDto

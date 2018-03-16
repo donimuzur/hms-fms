@@ -14,31 +14,31 @@
     $('#SummAll').removeClass('active');
     $('#SummRegion').removeClass('active');
 
-    if ($('.title-page').html() == 'Number Of Vehicle') {
+    if ($('.title-page').html() == 'Number Of Vehicle - All') {
         $('#NumbVehicle').addClass('active');
-    } else if ($('.title-page').html() == 'Number Of Vehicle WTC') {
+    } else if ($('.title-page').html() == 'Number Of Vehicle - Working Tool Car') {
         $('#NumbWtc').addClass('active');
-    } else if ($('.title-page').html() == 'Number Of Vehicle Make') {
+    } else if ($('.title-page').html() == 'Number Of Vehicle Make - Type') {
         $('#NumbMakeType').addClass('active');
     } else if ($('.title-page').html() == 'Odometer') {
         $('#Odometer').addClass('active');
-    } else if ($('.title-page').html() == 'Liter By Function') {
+    } else if ($('.title-page').html() == 'Fuel Purchased (liters)') {
         $('#LiterByFunction').addClass('active');
-    } else if ($('.title-page').html() == 'Fuel Cost By Function') {
+    } else if ($('.title-page').html() == 'Fuel Cost') {
         $('#FuelCostByFunction').addClass('active');
-    } else if ($('.title-page').html() == 'Lease Cost By Function') {
+    } else if ($('.title-page').html() == 'Lease Cost') {
         $('#LeaseCostByFunction').addClass('active');
-    } else if ($('.title-page').html() == 'Sales By Region') {
+    } else if ($('.title-page').html() == 'Operational Cost') {
         $('#SalesByRegion').addClass('active');
     } else if ($('.title-page').html() == 'Accident') {
         $('#Accident').addClass('active');
-    } else if ($('.title-page').html() == 'AC Vs OB') {
+    } else if ($('.title-page').html() == 'Actual Cost Vs Budget') {
         $('#AcVsOb').addClass('active');
     } else if ($('.title-page').html() == 'Sum PTD By Function') {
         $('#SumPtdByFunction').addClass('active');
     } else if ($('.title-page').html() == 'Executive Summary All') {
         $('#SummAll').addClass('active');
-    } else if ($('.title-page').html() == 'Executive Summary By Sales &amp; Marketing') {
+    } else if ($('.title-page').html() == 'Executive Summary Working Tool Car') {
         $('#SummRegion').addClass('active');
     }
 
