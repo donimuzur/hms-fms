@@ -1,11 +1,14 @@
 ﻿using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.Service;
 using FMS.Core;
+using FMS.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +42,28 @@ namespace FMS.DAL.Services
         {
             _GroupCostCenterRepository.InsertOrUpdate(dbGroupCostCenter, userLogin, Enums.MenuList.MasterGroupCostCenter);
             _uow.SaveChanges();
+        }
+        
+        public List<MST_FUNCTION_GROUP> GetGroupCostCenter(GroupCostCenterParamInput filter)
+        {
+            Expression<Func<MST_FUNCTION_GROUP, bool>> queryFilter = c => c.IS_ACTIVE;
+
+            if (filter != null)
+            {
+
+                if (!string.IsNullOrEmpty(filter.Function))
+                {
+                    var listFunction = filter.Function.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.FUNCTION_NAME == null ? "" : c.FUNCTION_NAME.ToUpper())));
+                }
+                if (!string.IsNullOrEmpty(filter.CostCenter))
+                {
+                    var listFunction = filter.CostCenter.ToUpper().Split(',').ToList();
+                    queryFilter = queryFilter.And(c => listFunction.Contains((c.COST_CENTER == null ? "" : c.COST_CENTER.ToUpper())));
+                }
+            }
+
+            return _GroupCostCenterRepository.Get(queryFilter, null, "").ToList();
         }
     }
 }
