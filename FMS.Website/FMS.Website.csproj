@@ -4434,6 +4434,7 @@
     <Content Include="Views\Help\VendorSLA.cshtml" />
     <Content Include="Views\Help\VendorInformation.cshtml" />
     <Content Include="Views\Help\VehicleInformation.cshtml" />
+    <Content Include="Views\MstGroupCostCenter\_ListGroupCostCenter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

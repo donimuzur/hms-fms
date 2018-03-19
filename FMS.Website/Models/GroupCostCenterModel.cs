@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -11,8 +12,20 @@ namespace FMS.Website.Models
         public GroupCostCenterModel()
         {
             Details = new List<GroupCostCenterItem>();
+            SearchView = new GroupCostCenterSearchView();
         }
+        public GroupCostCenterSearchView SearchView { get; set; }
     }
+
+    public class GroupCostCenterSearchView
+    {
+        public string Function { get; set; }
+        public string CostCenter { get; set; }
+
+        public SelectList FunctionList { get; set; }
+        public SelectList CostCenterList { get; set; }
+    }
+
     public class GroupCostCenterItem : BaseModel
     {
         public int MstFunctionGroupId { get; set; }
