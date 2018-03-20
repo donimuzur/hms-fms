@@ -1,0 +1,67 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.HolidayCalenderModel
+
+<table id="tbHolidayCalender" class="table table-bordered table-striped">
+    <thead>
+
+        <tr>
+            <th style="min-width: 50px">Action</th>
+            <th>Holiday Date</th>
+            <th>Description</th>
+            <th>Created By</th>
+            <th>Created Date</th>
+            <th>Modified By</th>
+            <th>Modified Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <thead class="filters">
+        <tr>
+            <th>
+                @if (Model.CurrentPageAccess.WriteAccess == true)
+                {
+                    <a href="@Url.Action("Create", "MstHolidayCalender")" class="btn btn-primary line" ng-click="insHolidayCalender()"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
+                }
+            </th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+            <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.Details)
+        {
+            <tr ng-repeat="data in dataHolidayCalender">
+
+                <td style="text-align: center;">
+                    @if (Model.CurrentPageAccess.WriteAccess == true)
+                    {
+                        <a href="@Url.Action("Edit", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                    }
+                    @if (Model.CurrentPageAccess.ReadAccess == true)
+                    {
+                        <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    }
+                </td>
+                <td>@Html.Raw(data.MstHolidayDate.ToString("dd-MMM-yyyy"))</td>
+                <td>@Html.Raw(data.Description)</td>
+                <td>@Html.Raw(data.CreatedBy)</td>
+                <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                <td>@Html.Raw(data.ModifiedBy)</td>
+                <td>@Html.Raw(data.ModifiedDate == null ? "" : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
+                @if (data.IsActive == true)
+                {
+                    <td>@Html.Raw("Active")</td>
+                }
+                else
+                {
+                    <td>@Html.Raw("Inactive")</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

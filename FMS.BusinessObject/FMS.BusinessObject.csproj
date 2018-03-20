@@ -140,6 +140,7 @@
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
     <Compile Include="Inputs\GroupCostCenterParamInput.cs" />
     <Compile Include="Inputs\GSParamInput.cs" />
+    <Compile Include="Inputs\HolidayCalenderParamInput.cs" />
     <Compile Include="Inputs\MasterParamInput.cs" />
     <Compile Include="Inputs\PricelistParamInput.cs" />
     <Compile Include="Inputs\PenaltyParamInput.cs" />
