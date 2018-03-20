@@ -19,6 +19,7 @@ using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Globalization;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -47,6 +48,33 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult ListHolidayCalender(HolidayCalenderModel model)
+        {
+            model.Details = new List<HolidayCalenderItem>();
+            model.Details = GetHolidayCalender(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListHolidayCalender", model);
+        }
+
+        private List<HolidayCalenderItem> GetHolidayCalender(HolidayCalenderSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _HolidayCalenderBLL.GetHolidayCalender(new HolidayCalenderParamInput());
+                return Mapper.Map<List<HolidayCalenderItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<HolidayCalenderParamInput>(filter);
+
+            var dbData = _HolidayCalenderBLL.GetHolidayCalender(input);
+            return Mapper.Map<List<HolidayCalenderItem>>(dbData);
         }
 
         public ActionResult Create()

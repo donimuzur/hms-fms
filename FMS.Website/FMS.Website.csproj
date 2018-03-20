@@ -241,7 +241,9 @@
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
+    <Compile Include="Code\FMSWebsiteMapperGroupCostCenter.cs" />
     <Compile Include="Code\FMSWebsiteMapperGs.cs" />
+    <Compile Include="Code\FMSWebsiteMapperHolidayCalender.cs" />
     <Compile Include="Code\FMSWebsiteMapperPenalty.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperKpiMonitoring.cs" />
@@ -4435,6 +4437,7 @@
     <Content Include="Views\Help\VendorInformation.cshtml" />
     <Content Include="Views\Help\VehicleInformation.cshtml" />
     <Content Include="Views\MstGroupCostCenter\_ListGroupCostCenter.cshtml" />
+    <Content Include="Views\MstHolidayCalender\_ListHolidayCalender.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

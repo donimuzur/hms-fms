@@ -11,9 +11,18 @@ namespace FMS.Website.Models
         public HolidayCalenderModel()
         {
             Details = new List<HolidayCalenderItem>();
+            SearchView = new HolidayCalenderSearchView();
         }
 
         public List<HolidayCalenderItem> Details { get; set; }
+        public HolidayCalenderSearchView SearchView { get; set; }
+    }
+
+    public class HolidayCalenderSearchView
+    {
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public string Description { get; set; }
     }
 
     public class HolidayCalenderItem : BaseModel

@@ -95,6 +95,7 @@
 		$.ajax({
 		    url: url,
 		    data: JSON.stringify(objToUpload),
+		    contentType: 'application/json; charset=utf-8',
 			beforeSend: function () {
 				$('#LoadingModal').show();
 			},
