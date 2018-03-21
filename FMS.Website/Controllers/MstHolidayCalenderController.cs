@@ -72,6 +72,9 @@ namespace FMS.Website.Controllers
                 return Mapper.Map<List<HolidayCalenderItem>>(data);
             }
 
+            filter.DateFrom = filter.DateFrom.Date;
+            filter.DateTo = filter.DateTo.Date;
+
             //getbyparams
             var input = Mapper.Map<HolidayCalenderParamInput>(filter);
 
