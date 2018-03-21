@@ -44,6 +44,8 @@ namespace FMS.Website.Controllers
             var data = _HolidayCalenderBLL.GetHolidayCalender();
             var model = new HolidayCalenderModel();
             model.Details = Mapper.Map<List<HolidayCalenderItem>>(data);
+            model.SearchView.DateFrom = DateTime.Today;
+            model.SearchView.DateTo = DateTime.Today;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;

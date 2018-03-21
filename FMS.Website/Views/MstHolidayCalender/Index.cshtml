@@ -78,12 +78,13 @@
                 </div>
             }
         </div>
-        <div id="contenttable" class="wpanel">
-            @Html.Partial("_ListHolidayCalender")
-        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListHolidayCalender")
     </div>
 </section>
 <!-- /.content -->
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
     function LoadingShow() {
         $('#LoadingModal').show();
@@ -137,7 +138,7 @@
 
     function setupDataTables() {
         // DataTable
-        var table = $('#tbPenalty').DataTable({
+        var table = $('#tbHolidayCalender').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
         });
@@ -181,14 +182,14 @@
 
           $(document).on('click', '#btn-filter', function () {
               console.log('a');
-              $("#SearchView_DateFrom").val(getFunctionStr($('#Search_DateFrom').val()));
-              $("#SearchView_DateTo").val(getFunctionStr($('#Search_DateTo').val()));
+              $("#SearchView_DateFrom").val($('#Search_DateFrom').val());
+              $("#SearchView_DateTo").val($('#Search_DateTo').val());
               $("#SearchView_Description").val(getFunctionStr($('#Search_Description').val()));
           });
 
           $(document).on('click', '#btn-reset', function () {
-              $("#SearchView_DateFrom").val(getFunctionStr($('#Search_DateFrom').val()));
-              $("#SearchView_DateTo").val(getFunctionStr($('#Search_DateTo').val()));
+              $("#SearchView_DateFrom").val($('#Search_DateFrom').val());
+              $("#SearchView_DateTo").val($('#Search_DateTo').val());
               $("#SearchView_Description").val(getFunctionStr($('#Search_Description').val()));
 
               $("#Search_DateFrom").val('').trigger('chosen:updated');
