@@ -179,14 +179,22 @@ namespace FMS.BusinessObject.Dto
     {
         public int ID { get; set; }
         public string FUNCTION { get; set; }
+        public string VEHICLE_TYPE { get; set; }
         public decimal? ACTUAL_COST { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT { get; set; }
+        public decimal? ACTUAL_COST_WTC { get; set; }
         public decimal? COST_OB { get; set; }
+        public decimal? COST_OB_BENEFIT { get; set; }
+        public decimal? COST_OB_WTC { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
+        public int? UNIT { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
     }
 
     public class SumPtdByFunctionDto

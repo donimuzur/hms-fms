@@ -320,11 +320,11 @@
 								<h5>Executive Summary</h5>
 							</a>
 							<ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
-								<li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary All</a></li>
+								<li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary - All</a></li>
                                 @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic
                                     && Model.CurrentLogin.UserRole != Enums.UserRole.LDManager && Model.CurrentLogin.UserRole != Enums.UserRole.HR
                                      && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager) { 
-								    <li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary Working Tool Car</a></li>
+								    <li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary - Working Tool Car</a></li>
                                 }
 								<li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle - All</a></li>
                                 @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic

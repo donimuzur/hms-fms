@@ -208,12 +208,14 @@ namespace FMS.BLL.ExecutiveSummary
 
             var listData = Mapper.Map<List<AcVsObDto>>(data);
 
-            var groupData = listData.GroupBy(x => new { x.FUNCTION, x.REPORT_MONTH, x.REPORT_YEAR })
+            var groupData = listData.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE, x.REPORT_MONTH, x.REPORT_YEAR })
                 .Select(p => new AcVsObDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
                     REPORT_MONTH = p.FirstOrDefault().REPORT_MONTH,
                     REPORT_YEAR = p.FirstOrDefault().REPORT_YEAR,
+                    UNIT = p.Sum(c => c.UNIT),
                     ACTUAL_COST = p.Sum(c => c.ACTUAL_COST),
                     COST_OB = p.Sum(c => c.COST_OB)
                 }).ToList();
