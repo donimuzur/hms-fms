@@ -9,6 +9,23 @@
 	.datepicker {
 		margin-left: 15px;
 	}
+    .default {
+        display: block !important;
+        width: 100% !important;
+        height: 30px !important;
+        padding: 6px 12px !important;
+        font-size: 14px !important;
+        line-height: 1.42857143 !important;
+        background-color: #fff !important;
+        background-image: none !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s !important;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+    }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
@@ -284,8 +301,8 @@
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
-                var label_1 = "Operational Cost per Stick";
-                var label_2 = "Operational Cost per KM";
+                var label_1 = "per Stick";
+                var label_2 = "per KM";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_COST);

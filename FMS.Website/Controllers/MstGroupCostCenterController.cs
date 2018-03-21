@@ -12,6 +12,7 @@ using FMS.Website.Utility;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.IO;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -36,11 +37,48 @@ namespace FMS.Website.Controllers
             var data= _GroupCostCenterBLL.GetGroupCenter();
             var model = new GroupCostCenterModel();
             model.Details = Mapper.Map <List<GroupCostCenterItem>>(data);
+            model.SearchView = Initial(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
+
+        [HttpPost]
+        public PartialViewResult ListGroupCostCenter(GroupCostCenterModel model)
+        {
+            model.Details = new List<GroupCostCenterItem>();
+            model.Details = GetGroupCostCenter(model.SearchView);
+            model.SearchView = Initial(model);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListGroupCostCenter", model);
+        }
+
+        public GroupCostCenterSearchView Initial(GroupCostCenterModel model)
+        {
+            model.SearchView.FunctionList = new SelectList(model.Details.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName");
+            model.SearchView.CostCenterList = new SelectList(model.Details.Select(x => new { x.CostCenter }).Distinct().ToList(), "CostCenter", "CostCenter");
+            return model.SearchView;
+        }
+
+        private List<GroupCostCenterItem> GetGroupCostCenter(GroupCostCenterSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _GroupCostCenterBLL.GetGroupCenter(new GroupCostCenterParamInput());
+                return Mapper.Map<List<GroupCostCenterItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<GroupCostCenterParamInput>(filter);
+
+            var dbData = _GroupCostCenterBLL.GetGroupCenter(input);
+            return Mapper.Map<List<GroupCostCenterItem>>(dbData);
+        }
+
 
         public ActionResult Create()
         {
@@ -190,10 +228,10 @@ namespace FMS.Website.Controllers
 
 
         #region export xls
-        public string ExportMasterGroupCostCenter()
+        public string ExportMasterGroupCostCenter(GroupCostCenterModel model)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterGroupCostCenter();
+            pathFile = CreateXlsMasterGroupCostCenter(model.SearchView);
             return pathFile;
         }
         public void GetExcelFile(string pathFile)
@@ -210,10 +248,12 @@ namespace FMS.Website.Controllers
             Response.End();
 
         }
-        private string CreateXlsMasterGroupCostCenter()
+        private string CreateXlsMasterGroupCostCenter(GroupCostCenterSearchView filter)
         {
             //get data
-            List<GroupCostCenterDto> GroupCostCenter = _GroupCostCenterBLL.GetGroupCenter();
+
+            var input = Mapper.Map<GroupCostCenterParamInput>(filter);
+            List<GroupCostCenterDto> GroupCostCenter = _GroupCostCenterBLL.GetGroupCenter(input);
             var listData = Mapper.Map<List<GroupCostCenterItem>>(GroupCostCenter);
 
             var slDocument = new SLDocument();
