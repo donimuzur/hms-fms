@@ -116,6 +116,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Function { get; set; }
+        public string VehicleType { get; set; }
     }
 
     public class SumPtdFuncGetByParamInput
