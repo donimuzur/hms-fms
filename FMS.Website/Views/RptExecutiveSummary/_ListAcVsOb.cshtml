@@ -5,14 +5,18 @@
     <thead>
         <tr>
             <th>Function</th>
+            <th>Vehicle Type</th>
             <th>Month</th>
             <th>Year</th>
+            <th>Unit</th>
             <th>Cost OB</th>
             <th>Actual Cost</th>
         </tr>
     </thead>
     <thead class="filters">
         <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -25,8 +29,10 @@
         {
             <tr>
                 <td>@Html.Raw(data.Function)</td>
+                <td>@Html.Raw(data.VehicleType)</td>
                 <td>@Html.Raw(data.Month)</td>
                 <td>@Html.Raw(data.ReportYear)</td>
+                <td>@Html.Raw(data.Unit)</td>
                 <td>@string.Format("{0:N0}", data.CostOb)</td>
                 <td>@string.Format("{0:N0}", data.ActualCost)</td>
             </tr>

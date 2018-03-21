@@ -537,6 +537,10 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
                 }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {
                     var listFunction = filter.Function.ToUpper().Split(',').ToList();
