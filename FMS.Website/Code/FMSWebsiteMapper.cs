@@ -430,6 +430,10 @@ namespace FMS.Website.Code
             #region AutoGR
             Mapper.CreateMap<RptAutoGrDto, RptAutoGrItem>().IgnoreAllNonExisting();
             #endregion
+
+            Mapper.CreateMap<LocationMappingParamInput, LocationMappingSearchView>().IgnoreAllNonExisting();
+            Mapper.CreateMap<LocationMappingSearchView, LocationMappingParamInput>().IgnoreAllNonExisting();
+
         }
     }
 }

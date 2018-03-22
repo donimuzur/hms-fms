@@ -911,11 +911,13 @@ namespace FMS.Website.Models
     {
         public int Id { get; set; }
         public string Function { get; set; }
+        public string VehicleType { get; set; }
         public decimal? ActualCost { get; set; }
         public decimal? CostOb { get; set; }
         public int? ReportMonth { get; set; }
         public string Month { get; set; }
         public int? ReportYear { get; set; }
+        public int? Unit { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 
@@ -925,6 +927,7 @@ namespace FMS.Website.Models
         public int MonthTo { get; set; }
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
+        public string VehicleType { get; set; }
         public string Function { get; set; }
         public string FunctionId { get; set; }
 
@@ -954,6 +957,8 @@ namespace FMS.Website.Models
             }
 
         }
+
+        public SelectList VehicleTypeList { get; set; }
     }
 
     public class AcVsObSearchViewExport
@@ -963,6 +968,7 @@ namespace FMS.Website.Models
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Function { get; set; }
+        public string VehicleType { get; set; }
     }
 
     #endregion

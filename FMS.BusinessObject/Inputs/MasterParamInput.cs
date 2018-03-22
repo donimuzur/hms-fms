@@ -33,4 +33,16 @@ namespace FMS.BusinessObject.Inputs
         public string EpafAction { get; set; }
         public string DocumentType { get; set; }
     }
+
+    public class LocationMappingParamInput
+    {
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public string Basetown { get; set; }
+        public string Region { get; set; }
+        public string ZoneSales { get; set; }
+        public string ZonePriceList { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+    }
 }

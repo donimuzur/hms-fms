@@ -19,6 +19,7 @@ using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Globalization;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -35,17 +36,73 @@ namespace FMS.Website.Controllers
             _employeeBLL = EmployeeBLL;
             _mainMenu = Enums.MenuList.MasterData;
         }
+        public LocationMappingSearchView Initial(LocationMappingModel model)
+        {
+            var GetLocationMapping = _locationMappingBLL.GetLocationMapping().Where(x=> x.IsActive).Select(x => new LocationMappingItem { Location = (x.Location == null ? "" : x.Location.ToUpper()),
+                Region = (x.Region == null ? "" : x.Region.ToUpper()),
+                Basetown = (x.Basetown == null ? "" : x.Basetown.ToUpper()),
+                ZonePriceList = (x.ZonePriceList == null ? "" : x.ZonePriceList.ToUpper()),
+                ZoneSales = (x.ZoneSales == null ? "" : x.ZoneSales.ToUpper())
+            }).ToList();
+
+            var LocationList = GetLocationMapping.Select(x => new { x.Location }).Distinct().OrderBy(x => x.Location).ToList();
+            var RegionList = GetLocationMapping.Select(x => new { x.Region }).Distinct().OrderBy(x => x.Region).ToList();
+            var BasetownList = GetLocationMapping.Select(x => new { x.Basetown }).Distinct().OrderBy(x => x.Basetown).ToList();
+            var ZonePriceListList = GetLocationMapping.Select(x => new { x.ZonePriceList }).Distinct().OrderBy(x => x.ZonePriceList).ToList();
+            var ZoneSalesList = GetLocationMapping.Select(x => new { x.ZoneSales }).Distinct().OrderBy(x => x.ZoneSales).ToList();
+
+            model.SearchView.LocationList = new SelectList(LocationList, "Location", "Location");
+            model.SearchView.RegionList= new SelectList(RegionList, "Region", "Region");
+            model.SearchView.BasetownList = new SelectList(BasetownList, "Basetown", "Basetown");
+            model.SearchView.ZonePriceListList = new SelectList(ZonePriceListList, "ZonePriceList", "ZonePriceList");
+            model.SearchView.ZoneSalesList = new SelectList(ZoneSalesList, "ZoneSales", "ZoneSales");
+            model.SearchView.DateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            model.SearchView.DateTo = DateTime.Today;
+
+            return model.SearchView;
+        }
         public ActionResult Index()
         {
-            var dto = new LocationMappingDto();
-            var data = _locationMappingBLL.GetLocationMapping();
             var model = new LocationMappingModel();
+            var filter = new LocationMappingParamInput();
+            filter.DateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            filter.DateTo = DateTime.Today;
+
+            var data = _locationMappingBLL.GetLocationMapping(filter);
             model.Details = Mapper.Map<List<LocationMappingItem>>(data);
+            model.SearchView = Initial(model);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
         }
+        [HttpPost]
+        public PartialViewResult ListLocationMapping(LocationMappingModel model)
+        {
+            model.Details = new List<LocationMappingItem>();
+            model.Details = GetLocationMapping(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+           
+            return PartialView("_listLocationMapping", model);
+        }
+        private List<LocationMappingItem> GetLocationMapping(LocationMappingSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _locationMappingBLL.GetLocationMapping(new LocationMappingParamInput());
+                return Mapper.Map<List<LocationMappingItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<LocationMappingParamInput>(filter);
+
+            var dbData = _locationMappingBLL.GetLocationMapping(input);
+            return Mapper.Map<List<LocationMappingItem>>(dbData);
+        }
+
         public ActionResult Create()
         {
             var model = new LocationMappingItem();
@@ -310,7 +367,6 @@ namespace FMS.Website.Controllers
                     {
                         item.ErrorMessage = "Zone Price list Can't be empty";
                     }
-
                     try
                     {
                         double dValidfrom = double.Parse(dataRow[6].ToString());
@@ -321,7 +377,6 @@ namespace FMS.Website.Controllers
                     catch (Exception)
                     {
                         item.ErrorMessage = "Format Date is not Valid";
-                        
                     }
                     var exist = _locationMappingBLL.GetLocationMapping().Where(x => x.Address == item.Address
                            && (x.Basetown == null ? "" : x.Basetown.ToLower()) == (item.Basetown == null ? "" : item.Basetown.ToLower())
@@ -330,14 +385,13 @@ namespace FMS.Website.Controllers
                            && (x.ZoneSales == null ? "" : x.ZoneSales.ToLower()) == (item.ZoneSales == null ? "" : item.ZoneSales.ToLower())
                            && (x.ZonePriceList == null ? "" : x.ZonePriceList.ToLower()) == (item.ZonePriceList == null ? "" : item.ZonePriceList.ToLower())
                            && x.IsActive).FirstOrDefault();
-
                     if (exist != null) item.ErrorMessage = "Data Already Exist";
                     model.Add(item);
                 }
             }
             return Json(model);
         }
-
+    
         #region -----------------Json Result ----------------
         [HttpPost]
         public JsonResult GetAddress(string Location, string Basetown)
@@ -357,10 +411,10 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region export xls
-        public string ExportMasterLocationMapping()
+        public string ExportMasterLocationMapping(LocationMappingModel model)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterLocationMapping();
+            pathFile = CreateXlsMasterLocationMapping(model.SearchView);
             return pathFile;
         }
 
@@ -379,11 +433,13 @@ namespace FMS.Website.Controllers
 
         }
 
-        private string CreateXlsMasterLocationMapping()
+        private string CreateXlsMasterLocationMapping(LocationMappingSearchView filter)
         {
             //get data
-            List<LocationMappingDto> LocationMapping = _locationMappingBLL.GetLocationMapping();
-            var listData = Mapper.Map<List<LocationMappingItem>>(LocationMapping);
+            var input = Mapper.Map<LocationMappingParamInput>(filter);
+
+            var dbData = _locationMappingBLL.GetLocationMapping(input);
+            var listData = Mapper.Map<List<LocationMappingItem>>(dbData);
 
             var slDocument = new SLDocument();
 
