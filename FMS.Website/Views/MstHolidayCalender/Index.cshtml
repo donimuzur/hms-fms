@@ -110,7 +110,7 @@
         var objToUpload =
 			{
 			    SearchView: {
-			        DateFrom: $('#SearchView_DateFrom').val(),
+			        DateFrom: getFunctionStr($('#SearchView_DateFrom').val().toString()),
 			        DateTo: getFunctionStr($('#SearchView_DateTo').val().toString()),
 			        Description: getFunctionStr($('#SearchView_Description').val())
 			    }
