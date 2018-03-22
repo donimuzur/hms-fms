@@ -27,7 +27,7 @@ namespace FMS.DAL.Services
 
         public List<MST_HOLIDAY_CALENDAR> GetHolidayCalender()
         {
-            return _holidaycalenderRepository.Get().ToList();
+            return _holidaycalenderRepository.Get().ToList().Where(h => h.IS_ACTIVE).ToList();
         }
 
         public MST_HOLIDAY_CALENDAR GetHolidayCalenderById(int MstHolidayCalenderId)
@@ -56,11 +56,11 @@ namespace FMS.DAL.Services
 
                 if (filter.DateFrom != null)
                 {
-                    queryFilter = queryFilter.And(c => c.MST_HOLIDAY_DATE <= filter.DateFrom);
+                    queryFilter = queryFilter.And(c => c.MST_HOLIDAY_DATE >= filter.DateFrom);
                 }
                 if (filter.DateTo != null)
                 {
-                    queryFilter = queryFilter.And(c => c.MST_HOLIDAY_DATE >= filter.DateTo);
+                    queryFilter = queryFilter.And(c => c.MST_HOLIDAY_DATE <= filter.DateTo);
                 }
                 if (!string.IsNullOrEmpty(filter.Description))
                 {

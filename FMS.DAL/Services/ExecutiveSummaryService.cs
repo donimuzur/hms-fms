@@ -245,7 +245,7 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
-                    queryFilter = queryFilter.And(c => c.VEHCILE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
                 }
             }
 
