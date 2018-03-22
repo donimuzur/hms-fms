@@ -154,10 +154,10 @@ namespace FMS.Website.Controllers
         }
 
         #region ExportXLS
-        public string ExportMasterHolidayCalender()
+        public string ExportMasterHolidayCalender(HolidayCalenderModel model = null)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterHolidayCalender();
+            pathFile = CreateXlsMasterHolidayCalender(model.SearchView);
             return pathFile; 
         }
         public void GetExcelFile(string pathFile)
@@ -174,11 +174,12 @@ namespace FMS.Website.Controllers
             Response.End();
 
         }
-        private string CreateXlsMasterHolidayCalender()
+        private string CreateXlsMasterHolidayCalender(HolidayCalenderSearchView filter)
         {
             //get data
-            List<HolidayCalenderDto> penalty = _HolidayCalenderBLL.GetHolidayCalender();
-            var listData = Mapper.Map<List<HolidayCalenderItem>>(penalty);
+            var input = Mapper.Map<HolidayCalenderParamInput>(filter);
+            List<HolidayCalenderDto> holidayCalender = _HolidayCalenderBLL.GetHolidayCalender(input);
+            var listData = Mapper.Map<List<HolidayCalenderItem>>(holidayCalender);
 
             var slDocument = new SLDocument();
 
