@@ -667,6 +667,7 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.VehicleType = "WTC";
             input.Function = "Sales,Marketing";
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
@@ -3237,10 +3238,10 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES").Sum(x => x.ActualCost);
+                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == item).Sum(x => x.ActualCost);
                 slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
 
-                var countData2 = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING").Sum(x => x.CostOb);
+                var countData2 = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == item).Sum(x => x.CostOb);
                 slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
 
                 total1 += countData == null ? 0 : countData.Value;
