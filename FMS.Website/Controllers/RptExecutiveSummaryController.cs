@@ -667,6 +667,7 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            input.VehicleType = "WTC";
             input.Function = "Sales,Marketing";
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
@@ -1369,7 +1370,7 @@ namespace FMS.Website.Controllers
 
 
             //title Sales By Region
-            slDocument.AddWorksheet("Sales By Region");
+            slDocument.AddWorksheet("Operational Cost");
             slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
@@ -1387,7 +1388,7 @@ namespace FMS.Website.Controllers
 
 
             //title AC Vs OB
-            slDocument.AddWorksheet("AC Vs OB");
+            slDocument.AddWorksheet("Actual Cost Vs Budget");
             slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
@@ -1921,7 +1922,7 @@ namespace FMS.Website.Controllers
             chart.SetChartStyle(SLChartStyle.Style32);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
             chart.SetChartPosition(2, 1, firstRow - 2, 10);
-            chart.Title.SetTitle("Sales By Region");
+            chart.Title.SetTitle("Operational Cost");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
@@ -2003,7 +2004,7 @@ namespace FMS.Website.Controllers
             chart.SetChartStyle(SLChartStyle.Style31);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
             chart.SetChartPosition(2, 1, firstRow - 2, 10);
-            chart.Title.SetTitle("AC Vs OB");
+            chart.Title.SetTitle("Actual Cost Vs Budget");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
@@ -2675,16 +2676,19 @@ namespace FMS.Website.Controllers
 
             var inputOdo = Mapper.Map<OdometerGetByParamInput>(inputExport);
             inputOdo.Function = "Sales,Marketing";
+            inputOdo.VehicleType = "WTC";
             List<OdometerDto> dataOdo = _execSummBLL.GetOdometerData(inputOdo);
             var listDataOdo = Mapper.Map<List<OdometerData>>(dataOdo);
 
             var inputLiter = Mapper.Map<LiterFuncGetByParamInput>(inputExport);
             inputLiter.Function = "Sales,Marketing";
+            inputLiter.VehicleType = "WTC";
             List<LiterByFunctionDto> dataLiter = _execSummBLL.GetLiterByFunctionData(inputLiter);
             var listDataLiter = Mapper.Map<List<LiterByFunctionData>>(dataLiter);
 
             var inputFuel = Mapper.Map<FuelCostFuncGetByParamInput>(inputExport);
             inputFuel.Function = "Sales,Marketing";
+            inputFuel.VehicleType = "WTC";
             List<FuelCostByFunctionDto> dataFuel = _execSummBLL.GetFuelCostByFunctionData(inputFuel);
             var listDataFuel = Mapper.Map<List<FuelCostByFunctionData>>(dataFuel);
 
@@ -2695,18 +2699,20 @@ namespace FMS.Website.Controllers
 
             var inputAccident = Mapper.Map<AccidentGetByParamInput>(inputExport);
             inputAccident.Function = "Sales,Marketing";
+            inputAccident.VehicleType = "WTC";
             List<AccidentDto> dataAccident = _execSummBLL.GetAccidentData(inputAccident);
             var listDataAccident = Mapper.Map<List<AccidentData>>(dataAccident);
 
             var inputAcOb = Mapper.Map<AcVsObGetByParamInput>(inputExport);
             inputAcOb.Function = "Sales,Marketing";
+            inputAcOb.VehicleType = "WTC";
             List<AcVsObDto> dataAcOb = _execSummBLL.GetAcVsObData(inputAcOb);
             var listDataAcOb = Mapper.Map<List<AcVsObData>>(dataAcOb);
 
             var slDocument = new SLDocument();
 
             //title no of vehicle
-            slDocument.SetCellValue(1, 2, "Executive Summary By Sales & Marketing " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.RenameWorksheet("Sheet1", "Vehicle By Regional");
             //create style
@@ -2726,7 +2732,7 @@ namespace FMS.Website.Controllers
 
             //title Odometer
             slDocument.AddWorksheet("Odometer");
-            slDocument.SetCellValue(1, 2, "Executive Summary By Sales & Marketing " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             //create style
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
@@ -2736,7 +2742,7 @@ namespace FMS.Website.Controllers
 
             //title Liter
             slDocument.AddWorksheet("Liters");
-            slDocument.SetCellValue(1, 2, "Executive Summary By Sales & Marketing " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
@@ -2745,7 +2751,7 @@ namespace FMS.Website.Controllers
 
             //title Fuel Cost
             slDocument.AddWorksheet("Fuel Cost");
-            slDocument.SetCellValue(1, 2, "Executive Summary By Sales & Marketing " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
@@ -2754,7 +2760,7 @@ namespace FMS.Website.Controllers
 
             //title Lease Cost
             slDocument.AddWorksheet("Lease Cost");
-            slDocument.SetCellValue(1, 2, "Executive Summary By Sales & Marketing " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
@@ -2763,22 +2769,22 @@ namespace FMS.Website.Controllers
 
             //title Accident
             slDocument.AddWorksheet("Accident");
-            slDocument.SetCellValue(1, 2, "Executive Summary By Sales & Marketing " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
             slDocument = CreateDataExcelSheet6Region(slDocument, listDataAccident);
 
             //title AC Vs Ob
-            slDocument.AddWorksheet("AC Vs OB");
-            slDocument.SetCellValue(1, 2, "Executive Summary By Sales & Marketing " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.AddWorksheet("Actual Cost Vs Budget");
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
             slDocument.MergeWorksheetCells(1, 2, 1, 10);
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
             slDocument = CreateDataExcelSheet7Region(slDocument, listDataAcOb);
 
 
-            var fileName = "ExecSum_SummaryBySalesMarketing" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
+            var fileName = "ExecSum_SummaryWorkingToolCar" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
 
             slDocument.SaveAs(path);
@@ -3232,10 +3238,10 @@ namespace FMS.Website.Controllers
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES").Sum(x => x.ActualCost);
+                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == item).Sum(x => x.ActualCost);
                 slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
 
-                var countData2 = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING").Sum(x => x.CostOb);
+                var countData2 = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == item).Sum(x => x.CostOb);
                 slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
 
                 total1 += countData == null ? 0 : countData.Value;
@@ -3269,7 +3275,7 @@ namespace FMS.Website.Controllers
             chart.SetChartStyle(SLChartStyle.Style30);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
             chart.SetChartPosition(2, 1, firstRow - 2, 10);
-            chart.Title.SetTitle("AC Vs OB");
+            chart.Title.SetTitle("Actual Cost Vs Budget");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
