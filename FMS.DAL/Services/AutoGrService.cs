@@ -40,6 +40,14 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(x => x.PO_DATE <= input.PeriodEnd);
                 }
+                if (!String.IsNullOrEmpty(input.PONumber))
+                {
+                    queryFilter = queryFilter.And(x => x.PO_NUMBER == input.PONumber);
+                }
+                if (input.POLine != null)
+                {
+                    queryFilter = queryFilter.And(x => x.LINE_ITEM == input.POLine);
+                }
 
 
             }
