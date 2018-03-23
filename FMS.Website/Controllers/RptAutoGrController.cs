@@ -50,7 +50,9 @@ namespace FMS.Website.Controllers
             var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
             {
                 PeriodStart = rptModel.PeriodStart,
-                PeriodEnd = rptModel.PeriodEnd
+                PeriodEnd = rptModel.PeriodEnd,
+                PONumber = rptModel.PONumber,
+                POLine = rptModel.POLine
             });
 
             rptModel.Details = Mapper.Map<List<RptAutoGrItem>>(data);
@@ -65,7 +67,9 @@ namespace FMS.Website.Controllers
             var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
             {
                 PeriodEnd = model.PeriodEnd,
-                PeriodStart = model.PeriodStart
+                PeriodStart = model.PeriodStart,
+                PONumber = model.PONumber,
+                POLine = model.POLine
             });
 
             model.Details = Mapper.Map<List<RptAutoGrItem>>(data);
@@ -103,7 +107,9 @@ namespace FMS.Website.Controllers
             var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
             {
                 PeriodEnd = model.PeriodEnd,
-                PeriodStart = model.PeriodStart
+                PeriodStart = model.PeriodStart,
+                PONumber = model.PONumber,
+                POLine = model.POLine
             });
 
             var listData = Mapper.Map<List<RptAutoGrItem>>(data);
