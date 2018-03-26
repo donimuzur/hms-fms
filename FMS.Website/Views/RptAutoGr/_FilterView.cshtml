@@ -27,6 +27,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">PO Number</label>
+                            @Html.TextBoxFor(model => model.PONumber, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">PO Line</label>
+                                @Html.TextBoxFor(model => model.POLine, new { @class = "form-control " })
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
