@@ -60,7 +60,7 @@ namespace FMS.BLL.AutoGR
 
             foreach(var dto in autoGrDto)
             {
-                var calculatedGr = data.Where(x => x.PO_DATE < dto.GrDate)
+                var calculatedGr = data/**.Where(x => x.PO_DATE < dto.GrDate)**/
                     .GroupBy(x => new { x.LINE_ITEM, x.PO_NUMBER })
                     .Select(x => new RptAutoGrDto()
                     {
