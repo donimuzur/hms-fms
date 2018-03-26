@@ -245,7 +245,7 @@ namespace FMS.DAL.Services
                 }
                 if (!string.IsNullOrEmpty(filter.VehicleType))
                 {
-                    queryFilter = queryFilter.And(c => c.VEHCILE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
                 }
             }
 
@@ -536,6 +536,10 @@ namespace FMS.DAL.Services
                 if (filter.YearTo > 0)
                 {
                     queryFilter = queryFilter.And(c => c.REPORT_YEAR <= filter.YearTo);
+                }
+                if (!string.IsNullOrEmpty(filter.VehicleType))
+                {
+                    queryFilter = queryFilter.And(c => c.VEHICLE_TYPE.ToUpper() == filter.VehicleType.ToUpper());
                 }
                 if (!string.IsNullOrEmpty(filter.Function))
                 {

@@ -52,8 +52,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Vehicle By Regional</a></b></div>
-                    <div class="card-body">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link1">Vehicle By Regional</a></b></div>
+                    <div class="card-body" id="chart1">
                         @*<h5 class="card-title"><i class="fa fa-compress"></i> Vehicle By Regional</h5>*@
                         <canvas id="mybarChart"></canvas>
                     </div>
@@ -61,8 +61,8 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></b></div>
-                    <div class="card-body">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link2">Odometer</a></b></div>
+                    <div class="card-body" id="chart2">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart"></canvas>
                     </div>
@@ -70,8 +70,8 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liters</a></b></div>
-                    <div class="card-body">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link3">Liters</a></b></div>
+                    <div class="card-body" id="chart3">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart2"></canvas>
                     </div>
@@ -79,8 +79,8 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost</a></b></div>
-                    <div class="card-body">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link4">Fuel Cost</a></b></div>
+                    <div class="card-body" id="chart4">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="mybarChart2"></canvas>
                     </div>
@@ -88,8 +88,8 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost</a></b></div>
-                    <div class="card-body">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link5">Lease Cost</a></b></div>
+                    <div class="card-body" id="chart5">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="mybarChart3"></canvas>
                     </div>
@@ -97,8 +97,8 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></b></div>
-                    <div class="card-body">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link6">Accident</a></b></div>
+                    <div class="card-body" id="chart6">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart3"></canvas>
                     </div>
@@ -106,8 +106,8 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC vs OB</a></b></div>
-                    <div class="card-body">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link7">Actual Cost Vs Budget</a></b></div>
+                    <div class="card-body" id="chart7">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart4"></canvas>
                     </div>
@@ -405,10 +405,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_KM_SALES);
                     second_chart.push(response[i].TOTAL_KM_MARKETING);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -420,14 +426,15 @@
                 // Line chart
 
                 if ($('#lineChart').length) {
-
+                    $('#lineChart').remove();
+                    $('#chart2').append('<canvas id="lineChart"><canvas>');
                     var ctx = document.getElementById("lineChart");
                     var lineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "Sales",
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -437,7 +444,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "Marketing",
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -448,6 +455,23 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'KM'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }
@@ -464,10 +488,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_LITER_SALES);
                     second_chart.push(response[i].TOTAL_LITER_MARKETING);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -479,14 +509,15 @@
                 // Line chart
 
                 if ($('#lineChart2').length) {
-
+                    $('#lineChart2').remove();
+                    $('#chart3').append('<canvas id="lineChart2"><canvas>');
                     var ctx = document.getElementById("lineChart2");
                     var lineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "Sales",
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -496,7 +527,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "Marketing",
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -507,6 +538,23 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Liters'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }
@@ -522,10 +570,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].ACCIDENT_COUNT_SALES);
                     second_chart.push(response[i].ACCIDENT_COUNT_MARKETING);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -537,14 +591,15 @@
                 // Line chart
 
                 if ($('#lineChart3').length) {
-
+                    $('#lineChart3').remove();
+                    $('#chart6').append('<canvas id="lineChart3"><canvas>');
                     var ctx = document.getElementById("lineChart3");
                     var lineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "Sales",
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -554,7 +609,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "Marketing",
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -565,6 +620,23 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }
@@ -580,10 +652,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Actual";
+                var label_2 = "Budget";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     first_chart.push(response[i].ACTUAL_COST);
                     second_chart.push(response[i].COST_OB);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -595,14 +673,15 @@
                 // Line chart
 
                 if ($('#lineChart4').length) {
-
+                    $('#lineChart4').remove();
+                    $('#chart7').append('<canvas id="lineChart4"><canvas>');
                     var ctx = document.getElementById("lineChart4");
                     var lineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: "Actual Cost",
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -612,7 +691,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: "Operational Budget",
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -623,6 +702,23 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
+                                    }
+                                }]
+                            }
+                        }
                     });
 
                 }
@@ -638,10 +734,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGIONAL);
                     first_chart.push(response[i].NO_OF_VEHICLE_SALES);
                     second_chart.push(response[i].NO_OF_VEHICLE_MARKETING);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -653,18 +755,19 @@
                 // Bar chart
 
                 if ($('#mybarChart').length) {
-
+                    $('#mybarChart').remove();
+                    $('#chart1').append('<canvas id="mybarChart"><canvas>');
                     var ctx = document.getElementById("mybarChart");
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: 'Sales',
+                                label: label_1,
                                 backgroundColor: "#B21B1B",
                                 data: first_chart
                             }, {
-                                label: 'Marketing',
+                                label: label_2,
                                 backgroundColor: "#1FB21B",
                                 data: second_chart
                             }]
@@ -675,6 +778,19 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
                                     }
                                 }]
                             }
@@ -694,10 +810,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_FUEL_COST_SALES);
                     second_chart.push(response[i].TOTAL_FUEL_COST_MARKETING);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -709,18 +831,19 @@
                 // Bar chart
 
                 if ($('#mybarChart2').length) {
-
+                    $('#mybarChart2').remove();
+                    $('#chart4').append('<canvas id="mybarChart2"><canvas>');
                     var ctx = document.getElementById("mybarChart2");
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: 'Sales',
+                                label: label_1,
                                 backgroundColor: "#21A4FF",
                                 data: first_chart
                             }, {
-                                label: 'Marketing',
+                                label: label_2,
                                 backgroundColor: "#FF8000",
                                 data: second_chart
                             }]
@@ -731,6 +854,19 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
                                     }
                                 }]
                             }
@@ -750,10 +886,16 @@
                 var first_chart = [];
                 var second_chart = [];
 
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_LEASE_COST_SALES);
                     second_chart.push(response[i].TOTAL_LEASE_COST_MARKETING);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 //if (response.length == 0) {
@@ -765,18 +907,19 @@
                 // Bar chart
 
                 if ($('#mybarChart3').length) {
-
+                    $('#mybarChart3').remove();
+                    $('#chart5').append('<canvas id="mybarChart3"><canvas>');
                     var ctx = document.getElementById("mybarChart3");
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: 'Sales',
+                                label: label_1,
                                 backgroundColor: "#00FF00",
                                 data: first_chart
                             }, {
-                                label: 'Marketing',
+                                label: label_2,
                                 backgroundColor: "#FFFF80",
                                 data: second_chart
                             }]
@@ -787,6 +930,19 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
                                     }
                                 }]
                             }
@@ -809,6 +965,10 @@
 
     $(document).ready(function () {
         init_charts_data();
+
+        $('aside').animate({
+            scrollTop: $("#SummRegion").offset().top
+        }, 1000);
     });
 
     function ExportXls() {
@@ -852,6 +1012,48 @@
 
     $(document).on('click', '#btn-filter', function () {
         init_charts_data();
+    });
+
+    $(document).on('click', '#link1', function () {
+        var myUrl = '@Url.Action("VehicleWtc", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link2', function () {
+        var myUrl = '@Url.Action("Odometer", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link3', function () {
+        var myUrl = '@Url.Action("LiterByFunction", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link4', function () {
+        var myUrl = '@Url.Action("FuelCostByFunction", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link5', function () {
+        var myUrl = '@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link6', function () {
+        var myUrl = '@Url.Action("Accident", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link7', function () {
+        var myUrl = '@Url.Action("AcVsOb", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
     });
 
 </script>

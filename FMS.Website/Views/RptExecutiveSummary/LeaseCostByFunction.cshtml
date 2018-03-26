@@ -9,6 +9,23 @@
 	.datepicker {
 		margin-left: 15px;
 	}
+    .default {
+        display: block !important;
+        width: 100% !important;
+        height: 30px !important;
+        padding: 6px 12px !important;
+        font-size: 14px !important;
+        line-height: 1.42857143 !important;
+        background-color: #fff !important;
+        background-image: none !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s !important;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+    }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
@@ -281,6 +298,10 @@
 
     $(document).ready(function () {
         init_charts();
+
+        $('aside').animate({
+            scrollTop: $("#LeaseCostByFunction").offset().top
+        }, 1000);
     });
 
     function init_charts() {
@@ -308,10 +329,14 @@
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
+                var label_1 = "Sales";
+                var label_2 = "Marketing";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].REGION);
                     first_chart.push(response[i].TOTAL_LEASE_COST_SALES);
                     second_chart.push(response[i].TOTAL_LEASE_COST_MARKETING);
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
 
                 if ($('#mylineChart').length) {
@@ -323,7 +348,7 @@
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of SALES',
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
                                 borderColor: "rgba(130, 130, 130, 0.7)",
                                 pointBorderColor: "rgba(130, 130, 130, 0.7)",
@@ -333,7 +358,7 @@
                                 pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: '# of MARKETING',
+                                label: label_2,
                                 backgroundColor: "rgba(33, 164, 255, 0.3)",
                                 borderColor: "rgba(33, 164, 255, 0.70)",
                                 pointBorderColor: "rgba(33, 164, 255, 0.70)",
@@ -344,11 +369,19 @@
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
                         options: {
                             scales: {
                                 yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
                                     }
                                 }]
                             }

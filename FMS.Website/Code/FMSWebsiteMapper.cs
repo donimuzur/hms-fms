@@ -32,6 +32,8 @@ namespace FMS.Website.Code
             InitializeGs();
             InitializePenalty();
             InitializeVehicleSpect();
+            InitializeGroupCostCenter();
+            InitializeHolidayCalender();
 
             Mapper.CreateMap<ChangesHistoryDto, ChangesLogs>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.Action, opt => opt.MapFrom(src => src.ACTION))
@@ -428,6 +430,10 @@ namespace FMS.Website.Code
             #region AutoGR
             Mapper.CreateMap<RptAutoGrDto, RptAutoGrItem>().IgnoreAllNonExisting();
             #endregion
+
+            Mapper.CreateMap<LocationMappingParamInput, LocationMappingSearchView>().IgnoreAllNonExisting();
+            Mapper.CreateMap<LocationMappingSearchView, LocationMappingParamInput>().IgnoreAllNonExisting();
+
         }
     }
 }

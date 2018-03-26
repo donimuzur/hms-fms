@@ -19,6 +19,7 @@ using System.Text;
 using SpreadsheetLight;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Globalization;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -43,10 +44,42 @@ namespace FMS.Website.Controllers
             var data = _HolidayCalenderBLL.GetHolidayCalender();
             var model = new HolidayCalenderModel();
             model.Details = Mapper.Map<List<HolidayCalenderItem>>(data);
+            model.SearchView.DateFrom = DateTime.Today;
+            model.SearchView.DateTo = DateTime.Today;
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult ListHolidayCalender(HolidayCalenderModel model)
+        {
+            model.Details = new List<HolidayCalenderItem>();
+            model.Details = GetHolidayCalender(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListHolidayCalender", model);
+        }
+
+        private List<HolidayCalenderItem> GetHolidayCalender(HolidayCalenderSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _HolidayCalenderBLL.GetHolidayCalender(new HolidayCalenderParamInput());
+                return Mapper.Map<List<HolidayCalenderItem>>(data);
+            }
+
+            filter.DateFrom = filter.DateFrom.Date;
+            filter.DateTo = filter.DateTo.Date;
+
+            //getbyparams
+            var input = Mapper.Map<HolidayCalenderParamInput>(filter);
+
+            var dbData = _HolidayCalenderBLL.GetHolidayCalender(input);
+            return Mapper.Map<List<HolidayCalenderItem>>(dbData);
         }
 
         public ActionResult Create()
@@ -121,10 +154,10 @@ namespace FMS.Website.Controllers
         }
 
         #region ExportXLS
-        public string ExportMasterHolidayCalender()
+        public string ExportMasterHolidayCalender(HolidayCalenderModel model = null)
         {
             string pathFile = "";
-            pathFile = CreateXlsMasterHolidayCalender();
+            pathFile = CreateXlsMasterHolidayCalender(model.SearchView);
             return pathFile; 
         }
         public void GetExcelFile(string pathFile)
@@ -141,11 +174,12 @@ namespace FMS.Website.Controllers
             Response.End();
 
         }
-        private string CreateXlsMasterHolidayCalender()
+        private string CreateXlsMasterHolidayCalender(HolidayCalenderSearchView filter)
         {
             //get data
-            List<HolidayCalenderDto> penalty = _HolidayCalenderBLL.GetHolidayCalender();
-            var listData = Mapper.Map<List<HolidayCalenderItem>>(penalty);
+            var input = Mapper.Map<HolidayCalenderParamInput>(filter);
+            List<HolidayCalenderDto> holidayCalender = _HolidayCalenderBLL.GetHolidayCalender(input);
+            var listData = Mapper.Map<List<HolidayCalenderItem>>(holidayCalender);
 
             var slDocument = new SLDocument();
 

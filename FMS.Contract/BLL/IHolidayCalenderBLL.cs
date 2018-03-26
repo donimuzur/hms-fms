@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.BLL
 {
@@ -14,5 +15,6 @@ namespace FMS.Contract.BLL
         HolidayCalenderDto GetholidayCalenderById(int MstHolidayDateId);
         void Save(HolidayCalenderDto HolidayCalenderDto);
         void Save(HolidayCalenderDto data, Login currentUser);
+        List<HolidayCalenderDto> GetHolidayCalender(HolidayCalenderParamInput holidayCalenderParamInput);
     }
 }

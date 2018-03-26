@@ -2,6 +2,7 @@
 using FMS.BusinessObject;
 using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Contract;
 using FMS.Contract.BLL;
 using FMS.Contract.Service;
@@ -31,7 +32,12 @@ namespace FMS.BLL.LocationMapping
             var redata = Mapper.Map<List<LocationMappingDto>>(data);
             return redata;
         }
-
+        public List<LocationMappingDto> GetLocationMapping(LocationMappingParamInput filter)
+        {
+            var data = _locationMappingService.GetLocationMapping(filter);
+            var redata = Mapper.Map<List<LocationMappingDto>>(data);
+            return redata;
+        }
         public LocationMappingDto GetLocationMappingById(int MstLocationMappingId)
         {
             var data = _locationMappingService.GetLocationMappingById(MstLocationMappingId);

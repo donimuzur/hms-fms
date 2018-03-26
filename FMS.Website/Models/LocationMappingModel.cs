@@ -9,9 +9,11 @@ namespace FMS.Website.Models
     public class LocationMappingModel : BaseModel
     {
         public List<LocationMappingItem> Details { get; set; }
+        public LocationMappingSearchView SearchView { get; set; }
         public LocationMappingModel()
         {
             Details = new List<LocationMappingItem>();
+            SearchView = new LocationMappingSearchView();
         }
 
     }
@@ -35,5 +37,24 @@ namespace FMS.Website.Models
         public SelectList LocationList { get; set; }
         public SelectList AddressList { get; set; }
         public SelectList BasetownList { get; set; }
+    }
+
+    public class LocationMappingSearchView
+    {
+        public string Location { get; set; }
+        public string Address { get; set; }
+        public string Basetown { get; set; }
+        public string Region { get; set; }
+        public string ZoneSales { get; set; }
+        public string ZonePriceList { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+
+
+        public SelectList LocationList { get; set; }
+        public SelectList BasetownList { get; set; }
+        public SelectList RegionList { get; set; }
+        public SelectList ZoneSalesList { get; set; }
+        public SelectList ZonePriceListList { get; set; }
     }
 }

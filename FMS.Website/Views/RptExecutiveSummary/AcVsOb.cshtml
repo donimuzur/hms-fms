@@ -9,6 +9,23 @@
 	.datepicker {
 		margin-left: 15px;
 	}
+    .default {
+        display: block !important;
+        width: 100% !important;
+        height: 30px !important;
+        padding: 6px 12px !important;
+        font-size: 14px !important;
+        line-height: 1.42857143 !important;
+        background-color: #fff !important;
+        background-image: none !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s !important;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+    }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
@@ -80,6 +97,27 @@
 					</div>
 				</div>
 				<div class="clearfix"></div>
+                <div class="col-md-3">
+					<div class="form-group">
+						<label for="">Vehicle Type</label>
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.EHS
+                                                || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator
+                                                || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager)
+                        { 
+						    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "", new { @class = "form-control select" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic|| Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.LDManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control", @readonly = "readonly", @Value = "WTC" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.HRManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control", @readonly = "readonly", @Value = "BENEFIT" })
+                        }
+					</div>
+				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Function</label>
@@ -253,6 +291,10 @@
 
     $(document).ready(function () {
         init_charts();
+
+        $('aside').animate({
+            scrollTop: $("#AcVsOb").offset().top
+        }, 1000);
     });
 
     function init_charts() {
@@ -269,57 +311,80 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualAcOb", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, functions: theList },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, functions: theList, vehType: $('#SearchView_VehicleType').val() },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
+                var third_chart = [];
+                var forth_chart = [];
+                var label_1 = "Actual BENEFIT";
+                var label_2 = "Actual WTC";
+                var label_3 = "Budget BENEFIT";
+                var label_4 = "Budget WTC";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
-                    first_chart.push(response[i].ACTUAL_COST);
-                    second_chart.push(response[i].COST_OB);
+                    first_chart.push(response[i].ACTUAL_COST_BENEFIT);
+                    second_chart.push(response[i].ACTUAL_COST_WTC);
+                    third_chart.push(response[i].COST_OB_BENEFIT);
+                    forth_chart.push(response[i].COST_OB_WTC);
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
+                    label_3 = response[i].LABEL3;
+                    label_4 = response[i].LABEL4;
                 }
 
                 if ($('#mylineChart').length) {
                     $('#mylineChart').remove();
                     $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
-                    var mylineChart = new Chart(ctx, {
-                        type: 'line',
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of Actual Cost',
-                                backgroundColor: "rgba(130, 130, 130, 0.31)",
-                                borderColor: "rgba(130, 130, 130, 0.7)",
-                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
-                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
-                                pointHoverBackgroundColor: "#fff",
-                                pointHoverBorderColor: "rgba(130,130,130,1)",
-                                pointBorderWidth: 1,
+                                label: label_1,
+                                backgroundColor: "#00FF00",
                                 data: first_chart
                             }, {
-                                label: '# of Cost OB',
-                                backgroundColor: "rgba(33, 164, 255, 0.3)",
-                                borderColor: "rgba(33, 164, 255, 0.70)",
-                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
-                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
-                                pointHoverBackgroundColor: "#fff",
-                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
-                                pointBorderWidth: 1,
+                                label: label_2,
+                                backgroundColor: "#FFFF80",
                                 data: second_chart
+                            }, {
+                                label: label_3,
+                                backgroundColor: "#21A4FF",
+                                data: third_chart
+                            }, {
+                                label: label_4,
+                                backgroundColor: "#FF8000",
+                                data: forth_chart
                             }]
                         },
+
                         options: {
                             scales: {
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
                                     }
                                 }]
                             }
                         }
                     });
+
                 }
             },
             error: function (jqhxr) {
