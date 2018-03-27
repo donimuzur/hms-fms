@@ -1,0 +1,20 @@
+﻿@using FMS.Core
+@model FMS.Website.Models.RptAutoGrModel
+<input type="hidden" id="returnTotalData" value="@Model.TotalData" />
+<input type="hidden" id="returnTotalPerPage" value="@Model.TotalDataPerPage" />
+<input type="hidden" id="returnCurrentPage" value="@Model.CurrentPage" />
+<table id="tbEpaf" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 100px">PO Number</th>
+            <th style="min-width: 100px">PO Line</th>
+            <th style="min-width: 100px">GR Date</th>
+            <th style="min-width: 100px">Police Number</th>
+            <th style="min-width: 100px">Start Contract</th>
+            <th style="min-width: 100px">End Contract</th>
+            <th style="min-width: 100px">Termination Date</th>
+            <th style="min-width: 100px">All Quantity</th>
+            <th style="min-width: 100px">Quantity Remaining</th>
+        </tr>
+    </thead>
+</table>

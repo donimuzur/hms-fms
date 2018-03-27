@@ -20,6 +20,11 @@ namespace FMS.Website.Models
         public string PONumber { get; set; }
 
         public int? POLine { get; set; }
+
+        public int TotalData { get; set; }
+        public int TotalDataPerPage { get; set; }
+
+        public int CurrentPage { get; set; }
     }
 
     public class RptAutoGrItem

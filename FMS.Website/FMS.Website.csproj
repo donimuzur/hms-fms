@@ -4440,6 +4440,7 @@
     <Content Include="Views\MstGroupCostCenter\_ListGroupCostCenter.cshtml" />
     <Content Include="Views\MstHolidayCalender\_ListHolidayCalender.cshtml" />
     <Content Include="Views\MstLocationMapping\_listLocationMapping.cshtml" />
+    <Content Include="Views\RptAutoGr\_ListAutoGr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
