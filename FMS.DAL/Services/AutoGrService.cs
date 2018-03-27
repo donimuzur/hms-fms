@@ -44,7 +44,7 @@ namespace FMS.DAL.Services
                 {
                     queryFilter = queryFilter.And(x => x.PO_NUMBER == input.PONumber);
                 }
-                if (input.POLine != null)
+                if (input.POLine.HasValue)
                 {
                     queryFilter = queryFilter.And(x => x.LINE_ITEM == input.POLine);
                 }

@@ -11,7 +11,7 @@ namespace FMS.BusinessObject.Inputs
         public DateTime? PeriodStart { get; set; }
         public DateTime? PeriodEnd { get; set; }
         public string PONumber { get; set; }
-        public int POLine { get; set; }
+        public int? POLine { get; set; }
 
     }
 }

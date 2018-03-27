@@ -19,7 +19,7 @@ namespace FMS.Website.Models
 
         public string PONumber { get; set; }
 
-        public int POLine { get; set; }
+        public int? POLine { get; set; }
     }
 
     public class RptAutoGrItem
