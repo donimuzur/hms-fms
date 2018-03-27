@@ -163,6 +163,10 @@ namespace FMS.Website.Models
         public bool IsActive { get; set; }
         public int Year { get; set; }
         public string Zone { get; set; }
+        public DateTime? PeriodEnd { get; set; }
+        public DateTime? PeriodStart { get; set; }
+        public string PONumber { get; set; }
+        public int? POLine { get; set; }
     }
 
     /// <summary>
