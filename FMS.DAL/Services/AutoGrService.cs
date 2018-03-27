@@ -24,7 +24,10 @@ namespace FMS.DAL.Services
             _autoGrRepository = _uow.GetGenericRepository<AUTO_GR>();
             _autoGrDetailRepository = _uow.GetGenericRepository<AUTO_GR_DETAIL>();
         }
-
+        public List<AUTO_GR> GetAutoGr()
+        {
+            return _uow.GetGenericRepository<AUTO_GR>().Get().Where(x => x.IS_POSTED.HasValue && x.IS_POSTED.Value).ToList();
+        }
         public List<AUTO_GR> GetAutoGr(RptAutoGrInput input)
         {
             Expression<Func<AUTO_GR, bool>> queryFilter = c => c.IS_POSTED.HasValue && c.IS_POSTED.Value;
