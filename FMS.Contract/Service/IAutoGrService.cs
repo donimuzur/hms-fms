@@ -10,6 +10,7 @@ namespace FMS.Contract.Service
 {
     public interface IAutoGrService
     {
+        List<AUTO_GR> GetAutoGr();
         List<AUTO_GR> GetAutoGr(RptAutoGrInput rptAutoGrInput);
 
         List<AUTO_GR_DETAIL> GetAutoGrDetails(List<int> autoGrIds);
