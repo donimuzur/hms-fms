@@ -753,6 +753,7 @@
                     $('#mybarChart3').remove();
                     $('#chart10').append('<canvas id="mybarChart3"><canvas>');
                     var ctx = document.getElementById("mybarChart3");
+                    ctx.height = 100;
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
                         data: {

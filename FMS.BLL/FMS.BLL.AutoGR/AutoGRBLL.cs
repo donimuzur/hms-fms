@@ -61,8 +61,21 @@ namespace FMS.BLL.AutoGR
                     
                             }).ToList();
 
+            var groupData = autoGrDto.GroupBy(x => new { x.AutoGrId, x.EndContract, x.StartContract, x.GrDate, x.PoLine, x.PoNumber, x.PoliceNumber, x.QtyAutoGr })
+                .Select(p => new RptAutoGrDto()
+                {
+                    AutoGrId = p.FirstOrDefault().AutoGrId,
+                    EndContract = p.FirstOrDefault().EndContract,
+                    StartContract = p.FirstOrDefault().StartContract,
+                    GrDate = p.FirstOrDefault().GrDate,
+                    PoLine = p.FirstOrDefault().PoLine,
+                    PoNumber = p.FirstOrDefault().PoNumber,
+                    PoliceNumber = p.FirstOrDefault().PoliceNumber,
+                    QtyAutoGr = p.FirstOrDefault().QtyAutoGr
+                }).ToList();
 
-            foreach(var dto in autoGrDto)
+
+            foreach (var dto in groupData)
             {
                 var calculatedGr = GetListAutoGr.Where(x => x.PO_DATE < dto.GrDate)
                     .GroupBy(x => new { x.LINE_ITEM, x.PO_NUMBER })
@@ -94,8 +107,8 @@ namespace FMS.BLL.AutoGR
                 //    dto.TerminationDate = terminatedData.END_DATE;
                 //}
             }
-            autoGrDto.OrderByDescending(x => x.GrDate);
-            return autoGrDto;
+            groupData.OrderByDescending(x => x.GrDate);
+            return groupData;
         }
         public int GetCalday(DateTime StartContract, DateTime EndContract)
         {

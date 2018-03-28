@@ -713,17 +713,154 @@ namespace FMS.Website.Controllers
             }
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
 
-            var label1 = "BENEFIT (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(x => x.NO_OF_VEHICLE) + ")";
-            var label2 = "WTC (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label1 = "BENEFIT Jan " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label2 = "BENEFIT Feb " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label3 = "BENEFIT Mar " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label4 = "BENEFIT Apr " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label5 = "BENEFIT May " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label6 = "BENEFIT Jun " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label7 = "BENEFIT Jul " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label8 = "BENEFIT Aug " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label9 = "BENEFIT Sep " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label10 = "BENEFIT Oct " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label11 = "BENEFIT Nov " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label12 = "BENEFIT Dec " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label13 = "WTC Jan " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label14 = "WTC Feb " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label15 = "WTC Mar " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label16 = "WTC Apr " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label17 = "WTC May " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label18 = "WTC Jun " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label19 = "WTC Jul " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label20 = "WTC Aug " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label21 = "WTC Sep " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label22 = "WTC Oct " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label23 = "WTC Nov " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label24 = "WTC Dec " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new NoVehicleDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
-                    NO_OF_VEHICLE_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BENEFIT_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_WTC_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.FUNCTION).ToList();
 
             return Json(groupData);
