@@ -16,12 +16,58 @@ namespace FMS.BusinessObject.Dto
         public int? NO_OF_VEHICLE { get; set; }
         public int? NO_OF_VEHICLE_BENEFIT { get; set; }
         public int? NO_OF_VEHICLE_WTC { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_1 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_2 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_3 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_4 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_5 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_6 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_7 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_8 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_9 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_10 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_11 { get; set; }
+        public int? NO_OF_VEHICLE_BENEFIT_12 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_1 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_2 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_3 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_4 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_5 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_6 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_7 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_8 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_9 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_10 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_11 { get; set; }
+        public int? NO_OF_VEHICLE_WTC_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class NoVehicleWtcDto
