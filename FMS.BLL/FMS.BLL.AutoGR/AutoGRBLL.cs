@@ -134,9 +134,9 @@ namespace FMS.BLL.AutoGR
                 }
                 Start_Contract = Start_Contract.AddMonths(1);
             }
-            var EndOfMonth = new DateTime(EndContract.Year, EndContract.Month + 1, 1);
-
-            if(EndContract.Day == EndOfMonth.AddDays(-1).Day)
+            var EndOfMonth = new DateTime(EndContract.Year, EndContract.Month, 1);
+            EndOfMonth = EndOfMonth.AddMonths(1);
+            if (EndContract.Day == EndOfMonth.AddDays(-1).Day)
             {
                 if (EndContract.Month == 1 || EndContract.Month == 3 || EndContract.Month == 5 || EndContract.Month == 7 || EndContract.Month == 8 || EndContract.Month == 10 || EndContract.Month == 12)
                 {
