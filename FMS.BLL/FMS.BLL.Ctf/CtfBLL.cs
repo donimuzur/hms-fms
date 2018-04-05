@@ -593,7 +593,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("<li>Copy of Bank Account (for COP Scheme)</li>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<li>Your Transfer Receipt (for COP Scheme)</li>");
+                        bodyMail.Append("<li>Your Transfer Receipt (for COP Scheme with outstanding payment)</li>");
                         bodyMail.AppendLine(); 
                         bodyMail.Append("<li>Supporting Letter (for COP Scheme, will be send in separate email)</li>");
                         bodyMail.AppendLine();
