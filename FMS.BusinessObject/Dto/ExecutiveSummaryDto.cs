@@ -78,12 +78,58 @@ namespace FMS.BusinessObject.Dto
         public int? NO_OF_VEHICLE { get; set; }
         public int? NO_OF_VEHICLE_SALES { get; set; }
         public int? NO_OF_VEHICLE_MARKETING { get; set; }
+        public int? NO_OF_VEHICLE_SALES_1 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_2 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_3 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_4 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_5 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_6 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_7 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_8 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_9 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_10 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_11 { get; set; }
+        public int? NO_OF_VEHICLE_SALES_12 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_1 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_2 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_3 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_4 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_5 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_6 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_7 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_8 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_9 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_10 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_11 { get; set; }
+        public int? NO_OF_VEHICLE_MARKETING_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class NoVehicleMakeDto
@@ -92,14 +138,58 @@ namespace FMS.BusinessObject.Dto
         public string MANUFACTURER { get; set; }
         public string BODY_TYPE { get; set; }
         public int? NO_OF_VEHICLE { get; set; }
-        public int? NO_OF_VEHICLE_FIRST { get; set; }
-        public int? NO_OF_VEHICLE_ELSE { get; set; }
+        public int? NO_OF_VEHICLE_MAN_1 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_2 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_3 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_4 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_5 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_6 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_7 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_8 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_9 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_10 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_11 { get; set; }
+        public int? NO_OF_VEHICLE_MAN_12 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_1 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_2 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_3 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_4 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_5 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_6 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_7 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_8 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_9 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_10 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_11 { get; set; }
+        public int? NO_OF_VEHICLE_BOD_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class OdometerDto
@@ -111,6 +201,30 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_KM { get; set; }
         public decimal? TOTAL_KM_BENEFIT { get; set; }
         public decimal? TOTAL_KM_WTC { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_1 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_2 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_3 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_4 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_5 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_6 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_7 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_8 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_9 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_10 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_11 { get; set; }
+        public decimal? TOTAL_KM_BENEFIT_12 { get; set; }
+        public decimal? TOTAL_KM_WTC_1 { get; set; }
+        public decimal? TOTAL_KM_WTC_2 { get; set; }
+        public decimal? TOTAL_KM_WTC_3 { get; set; }
+        public decimal? TOTAL_KM_WTC_4 { get; set; }
+        public decimal? TOTAL_KM_WTC_5 { get; set; }
+        public decimal? TOTAL_KM_WTC_6 { get; set; }
+        public decimal? TOTAL_KM_WTC_7 { get; set; }
+        public decimal? TOTAL_KM_WTC_8 { get; set; }
+        public decimal? TOTAL_KM_WTC_9 { get; set; }
+        public decimal? TOTAL_KM_WTC_10 { get; set; }
+        public decimal? TOTAL_KM_WTC_11 { get; set; }
+        public decimal? TOTAL_KM_WTC_12 { get; set; }
         public decimal? TOTAL_KM_SALES { get; set; }
         public decimal? TOTAL_KM_MARKETING { get; set; }
         public int? REPORT_MONTH { get; set; }
@@ -119,6 +233,28 @@ namespace FMS.BusinessObject.Dto
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class LiterByFunctionDto
@@ -132,12 +268,58 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_LITER_WTC { get; set; }
         public decimal? TOTAL_LITER_SALES { get; set; }
         public decimal? TOTAL_LITER_MARKETING { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_1 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_2 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_3 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_4 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_5 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_6 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_7 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_8 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_9 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_10 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_11 { get; set; }
+        public decimal? TOTAL_LITER_BENEFIT_12 { get; set; }
+        public decimal? TOTAL_LITER_WTC_1 { get; set; }
+        public decimal? TOTAL_LITER_WTC_2 { get; set; }
+        public decimal? TOTAL_LITER_WTC_3 { get; set; }
+        public decimal? TOTAL_LITER_WTC_4 { get; set; }
+        public decimal? TOTAL_LITER_WTC_5 { get; set; }
+        public decimal? TOTAL_LITER_WTC_6 { get; set; }
+        public decimal? TOTAL_LITER_WTC_7 { get; set; }
+        public decimal? TOTAL_LITER_WTC_8 { get; set; }
+        public decimal? TOTAL_LITER_WTC_9 { get; set; }
+        public decimal? TOTAL_LITER_WTC_10 { get; set; }
+        public decimal? TOTAL_LITER_WTC_11 { get; set; }
+        public decimal? TOTAL_LITER_WTC_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class FuelCostByFunctionDto
@@ -151,12 +333,58 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_FUEL_COST_WTC { get; set; }
         public decimal? TOTAL_FUEL_COST_SALES { get; set; }
         public decimal? TOTAL_FUEL_COST_MARKETING { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_1 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_2 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_3 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_4 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_5 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_6 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_7 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_8 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_9 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_10 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_11 { get; set; }
+        public decimal? TOTAL_FUEL_COST_BENEFIT_12 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_1 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_2 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_3 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_4 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_5 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_6 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_7 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_8 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_9 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_10 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_11 { get; set; }
+        public decimal? TOTAL_FUEL_COST_WTC_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class LeaseCostByFunctionDto
@@ -169,12 +397,58 @@ namespace FMS.BusinessObject.Dto
         public decimal? TOTAL_LEASE_COST_ELSE { get; set; }
         public decimal? TOTAL_LEASE_COST_SALES { get; set; }
         public decimal? TOTAL_LEASE_COST_MARKETING { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_1 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_2 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_3 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_4 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_5 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_6 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_7 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_8 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_9 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_10 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_11 { get; set; }
+        public decimal? TOTAL_LEASE_COST_SALES_12 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_1 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_2 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_3 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_4 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_5 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_6 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_7 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_8 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_9 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_10 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_11 { get; set; }
+        public decimal? TOTAL_LEASE_COST_MARKETING_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class FuelLeaseDto
@@ -193,6 +467,30 @@ namespace FMS.BusinessObject.Dto
         public string REGION { get; set; }
         public decimal? TOTAL_KM { get; set; }
         public decimal? TOTAL_COST { get; set; }
+        public decimal? TOTAL_KM_1 { get; set; }
+        public decimal? TOTAL_KM_2 { get; set; }
+        public decimal? TOTAL_KM_3 { get; set; }
+        public decimal? TOTAL_KM_4 { get; set; }
+        public decimal? TOTAL_KM_5 { get; set; }
+        public decimal? TOTAL_KM_6 { get; set; }
+        public decimal? TOTAL_KM_7 { get; set; }
+        public decimal? TOTAL_KM_8 { get; set; }
+        public decimal? TOTAL_KM_9 { get; set; }
+        public decimal? TOTAL_KM_10 { get; set; }
+        public decimal? TOTAL_KM_11 { get; set; }
+        public decimal? TOTAL_KM_12 { get; set; }
+        public decimal? TOTAL_COST_1 { get; set; }
+        public decimal? TOTAL_COST_2 { get; set; }
+        public decimal? TOTAL_COST_3 { get; set; }
+        public decimal? TOTAL_COST_4 { get; set; }
+        public decimal? TOTAL_COST_5 { get; set; }
+        public decimal? TOTAL_COST_6 { get; set; }
+        public decimal? TOTAL_COST_7 { get; set; }
+        public decimal? TOTAL_COST_8 { get; set; }
+        public decimal? TOTAL_COST_9 { get; set; }
+        public decimal? TOTAL_COST_10 { get; set; }
+        public decimal? TOTAL_COST_11 { get; set; }
+        public decimal? TOTAL_COST_12 { get; set; }
         public decimal? STICK { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
@@ -200,6 +498,28 @@ namespace FMS.BusinessObject.Dto
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class AccidentDto
@@ -213,12 +533,58 @@ namespace FMS.BusinessObject.Dto
         public int? ACCIDENT_COUNT_WTC { get; set; }
         public int? ACCIDENT_COUNT_SALES { get; set; }
         public int? ACCIDENT_COUNT_MARKETING { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_1 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_2 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_3 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_4 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_5 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_6 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_7 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_8 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_9 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_10 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_11 { get; set; }
+        public int? ACCIDENT_COUNT_BENEFIT_12 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_1 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_2 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_3 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_4 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_5 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_6 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_7 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_8 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_9 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_10 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_11 { get; set; }
+        public int? ACCIDENT_COUNT_WTC_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }
         public string LABEL2 { get; set; }
+        public string LABEL3 { get; set; }
+        public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
     }
 
     public class AcVsObDto
@@ -232,6 +598,54 @@ namespace FMS.BusinessObject.Dto
         public decimal? COST_OB { get; set; }
         public decimal? COST_OB_BENEFIT { get; set; }
         public decimal? COST_OB_WTC { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_1 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_2 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_3 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_4 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_5 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_6 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_7 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_8 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_9 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_10 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_11 { get; set; }
+        public decimal? ACTUAL_COST_BENEFIT_12 { get; set; }
+        public decimal? COST_OB_BENEFIT_1 { get; set; }
+        public decimal? COST_OB_BENEFIT_2 { get; set; }
+        public decimal? COST_OB_BENEFIT_3 { get; set; }
+        public decimal? COST_OB_BENEFIT_4 { get; set; }
+        public decimal? COST_OB_BENEFIT_5 { get; set; }
+        public decimal? COST_OB_BENEFIT_6 { get; set; }
+        public decimal? COST_OB_BENEFIT_7 { get; set; }
+        public decimal? COST_OB_BENEFIT_8 { get; set; }
+        public decimal? COST_OB_BENEFIT_9 { get; set; }
+        public decimal? COST_OB_BENEFIT_10 { get; set; }
+        public decimal? COST_OB_BENEFIT_11 { get; set; }
+        public decimal? COST_OB_BENEFIT_12 { get; set; }
+        public decimal? ACTUAL_COST_WTC_1 { get; set; }
+        public decimal? ACTUAL_COST_WTC_2 { get; set; }
+        public decimal? ACTUAL_COST_WTC_3 { get; set; }
+        public decimal? ACTUAL_COST_WTC_4 { get; set; }
+        public decimal? ACTUAL_COST_WTC_5 { get; set; }
+        public decimal? ACTUAL_COST_WTC_6 { get; set; }
+        public decimal? ACTUAL_COST_WTC_7 { get; set; }
+        public decimal? ACTUAL_COST_WTC_8 { get; set; }
+        public decimal? ACTUAL_COST_WTC_9 { get; set; }
+        public decimal? ACTUAL_COST_WTC_10 { get; set; }
+        public decimal? ACTUAL_COST_WTC_11 { get; set; }
+        public decimal? ACTUAL_COST_WTC_12 { get; set; }
+        public decimal? COST_OB_WTC_1 { get; set; }
+        public decimal? COST_OB_WTC_2 { get; set; }
+        public decimal? COST_OB_WTC_3 { get; set; }
+        public decimal? COST_OB_WTC_4 { get; set; }
+        public decimal? COST_OB_WTC_5 { get; set; }
+        public decimal? COST_OB_WTC_6 { get; set; }
+        public decimal? COST_OB_WTC_7 { get; set; }
+        public decimal? COST_OB_WTC_8 { get; set; }
+        public decimal? COST_OB_WTC_9 { get; set; }
+        public decimal? COST_OB_WTC_10 { get; set; }
+        public decimal? COST_OB_WTC_11 { get; set; }
+        public decimal? COST_OB_WTC_12 { get; set; }
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public int? UNIT { get; set; }
@@ -241,6 +655,50 @@ namespace FMS.BusinessObject.Dto
         public string LABEL2 { get; set; }
         public string LABEL3 { get; set; }
         public string LABEL4 { get; set; }
+        public string LABEL5 { get; set; }
+        public string LABEL6 { get; set; }
+        public string LABEL7 { get; set; }
+        public string LABEL8 { get; set; }
+        public string LABEL9 { get; set; }
+        public string LABEL10 { get; set; }
+        public string LABEL11 { get; set; }
+        public string LABEL12 { get; set; }
+        public string LABEL13 { get; set; }
+        public string LABEL14 { get; set; }
+        public string LABEL15 { get; set; }
+        public string LABEL16 { get; set; }
+        public string LABEL17 { get; set; }
+        public string LABEL18 { get; set; }
+        public string LABEL19 { get; set; }
+        public string LABEL20 { get; set; }
+        public string LABEL21 { get; set; }
+        public string LABEL22 { get; set; }
+        public string LABEL23 { get; set; }
+        public string LABEL24 { get; set; }
+        public string LABEL25 { get; set; }
+        public string LABEL26 { get; set; }
+        public string LABEL27 { get; set; }
+        public string LABEL28 { get; set; }
+        public string LABEL29 { get; set; }
+        public string LABEL30 { get; set; }
+        public string LABEL31 { get; set; }
+        public string LABEL32 { get; set; }
+        public string LABEL33 { get; set; }
+        public string LABEL34 { get; set; }
+        public string LABEL35 { get; set; }
+        public string LABEL36 { get; set; }
+        public string LABEL37 { get; set; }
+        public string LABEL38 { get; set; }
+        public string LABEL39 { get; set; }
+        public string LABEL40 { get; set; }
+        public string LABEL41 { get; set; }
+        public string LABEL42 { get; set; }
+        public string LABEL43 { get; set; }
+        public string LABEL44 { get; set; }
+        public string LABEL45 { get; set; }
+        public string LABEL46 { get; set; }
+        public string LABEL47 { get; set; }
+        public string LABEL48 { get; set; }
     }
 
     public class SumPtdByFunctionDto

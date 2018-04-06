@@ -883,17 +883,154 @@ namespace FMS.Website.Controllers
             }
             List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
 
-            var label1 = "Sales (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(x => x.NO_OF_VEHICLE) + ")";
-            var label2 = "Marketing (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label1 = "Sales Jan " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label2 = "Sales Feb " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label3 = "Sales Mar " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label4 = "Sales Apr " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label5 = "Sales May " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label6 = "Sales Jun " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label7 = "Sales Jul " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label8 = "Sales Aug " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label9 = "Sales Sep " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label10 = "Sales Oct " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label11 = "Sales Nov " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label12 = "Sales Dec " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label13 = "Marketing Jan " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label14 = "Marketing Feb " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label15 = "Marketing Mar " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label16 = "Marketing Apr " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label17 = "Marketing May " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label18 = "Marketing Jun " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label19 = "Marketing Jul " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label20 = "Marketing Aug " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label21 = "Marketing Sep " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label22 = "Marketing Oct " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label23 = "Marketing Nov " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label24 = "Marketing Dec " + yearFrom + " (" + data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
 
             var groupData = data.GroupBy(x => new { x.REGIONAL })
                 .Select(p => new NoVehicleWtcDto()
                 {
                     REGIONAL = p.FirstOrDefault().REGIONAL,
-                    NO_OF_VEHICLE_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.NO_OF_VEHICLE),
-                    NO_OF_VEHICLE_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_1 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_2 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_3 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_4 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_5 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_6 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_7 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_8 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_9 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_10 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_11 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_SALES_12 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_1 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_2 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_3 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_4 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_5 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_6 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_7 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_8 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_9 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_10 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_11 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MARKETING_12 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.REGIONAL).ToList();
 
             return Json(groupData);
@@ -912,14 +1049,58 @@ namespace FMS.Website.Controllers
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
-            var label1 = "Total (" + data.Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label1 = "Total Jan " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label2 = "Total Feb " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label3 = "Total Mar " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label4 = "Total Apr " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label5 = "Total May " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label6 = "Total Jun " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label7 = "Total Jul " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label8 = "Total Aug " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label9 = "Total Sep " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label10 = "Total Oct " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label11 = "Total Nov " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label12 = "Total Dec " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
 
             var groupData = data.GroupBy(x => new { x.MANUFACTURER })
                 .Select(p => new NoVehicleMakeDto()
                 {
                     MANUFACTURER = p.FirstOrDefault().MANUFACTURER,
-                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE),
-                    LABEL1 = label1
+                    NO_OF_VEHICLE_MAN_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_MAN_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    LABEL1 = label1,
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
                 }).OrderBy(x => x.MANUFACTURER).ToList();
 
             return Json(groupData);
@@ -938,14 +1119,58 @@ namespace FMS.Website.Controllers
 
             List<NoVehicleMakeDto> data = _execSummBLL.GetNoOfVehicleMakeData(input);
 
-            var label1 = "Total (" + data.Sum(x => x.NO_OF_VEHICLE) + ")";
+            var label13 = "Total Jan " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label14 = "Total Feb " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label15 = "Total Mar " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label16 = "Total Apr " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label17 = "Total May " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label18 = "Total Jun " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label19 = "Total Jul " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label20 = "Total Aug " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label21 = "Total Sep " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label22 = "Total Oct " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label23 = "Total Nov " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
+
+            var label24 = "Total Dec " + yearFrom + " (" + data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.NO_OF_VEHICLE) + ")";
 
             var groupData = data.GroupBy(x => new { x.BODY_TYPE })
                 .Select(p => new NoVehicleMakeDto()
                 {
                     BODY_TYPE = p.FirstOrDefault().BODY_TYPE,
-                    NO_OF_VEHICLE = p.Sum(c => c.NO_OF_VEHICLE),
-                    LABEL1 = label1
+                    NO_OF_VEHICLE_BOD_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    NO_OF_VEHICLE_BOD_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.BODY_TYPE).ToList();
 
             return Json(groupData);
@@ -969,20 +1194,157 @@ namespace FMS.Website.Controllers
             }
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
-            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_KM);
-            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_KM);
+            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb3 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb4 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb5 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb6 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb7 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb8 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb9 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb10 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb11 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb12 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb13 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb14 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb15 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb16 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb17 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb18 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb19 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb20 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb21 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb22 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb23 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
+            var numb24 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM);
 
-            var label1 = "BENEFIT (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
-            var label2 = "WTC (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label1 = "BENEFIT Jan " + yearFrom + " (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "BENEFIT Feb " + yearFrom + " (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label3 = "BENEFIT Mar " + yearFrom + " (" + (numb3 == null ? "0" : numb3.Value.ToString("N2")) + ")";
+            var label4 = "BENEFIT Apr " + yearFrom + " (" + (numb4 == null ? "0" : numb4.Value.ToString("N2")) + ")";
+            var label5 = "BENEFIT May " + yearFrom + " (" + (numb5 == null ? "0" : numb5.Value.ToString("N2")) + ")";
+            var label6 = "BENEFIT Jun " + yearFrom + " (" + (numb6 == null ? "0" : numb6.Value.ToString("N2")) + ")";
+            var label7 = "BENEFIT Jul " + yearFrom + " (" + (numb7 == null ? "0" : numb7.Value.ToString("N2")) + ")";
+            var label8 = "BENEFIT Aug " + yearFrom + " (" + (numb8 == null ? "0" : numb8.Value.ToString("N2")) + ")";
+            var label9 = "BENEFIT Sep " + yearFrom + " (" + (numb9 == null ? "0" : numb9.Value.ToString("N2")) + ")";
+            var label10 = "BENEFIT Oct " + yearFrom + " (" + (numb10 == null ? "0" : numb10.Value.ToString("N2")) + ")";
+            var label11 = "BENEFIT Nov " + yearFrom + " (" + (numb11 == null ? "0" : numb11.Value.ToString("N2")) + ")";
+            var label12 = "BENEFIT Dec " + yearFrom + " (" + (numb12 == null ? "0" : numb12.Value.ToString("N2")) + ")";
+            var label13 = "WTC Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString("N2")) + ")";
+            var label14 = "WTC Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString("N2")) + ")";
+            var label15 = "WTC Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString("N2")) + ")";
+            var label16 = "WTC Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString("N2")) + ")";
+            var label17 = "WTC May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString("N2")) + ")";
+            var label18 = "WTC Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString("N2")) + ")";
+            var label19 = "WTC Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString("N2")) + ")";
+            var label20 = "WTC Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString("N2")) + ")";
+            var label21 = "WTC Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString("N2")) + ")";
+            var label22 = "WTC Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString("N2")) + ")";
+            var label23 = "WTC Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString("N2")) + ")";
+            var label24 = "WTC Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString("N2")) + ")";
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new OdometerDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
-                    TOTAL_KM_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_KM),
-                    TOTAL_KM_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_KM),
+
+                    TOTAL_KM_BENEFIT_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_BENEFIT_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
+                    TOTAL_KM_WTC_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_KM),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.FUNCTION).ToList();
 
             return Json(groupData);
@@ -1006,20 +1368,157 @@ namespace FMS.Website.Controllers
             }
             List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
 
-            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_LITER);
-            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_LITER);
+            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb3 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb4 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb5 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb6 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb7 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb8 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb9 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb10 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb11 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb12 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb13 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb14 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb15 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb16 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb17 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb18 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb19 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb20 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb21 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb22 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb23 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
+            var numb24 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER);
 
-            var label1 = "BENEFIT (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
-            var label2 = "WTC (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label1 = "BENEFIT Jan " + yearFrom + " (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "BENEFIT Feb " + yearFrom + " (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label3 = "BENEFIT Mar " + yearFrom + " (" + (numb3 == null ? "0" : numb3.Value.ToString("N2")) + ")";
+            var label4 = "BENEFIT Apr " + yearFrom + " (" + (numb4 == null ? "0" : numb4.Value.ToString("N2")) + ")";
+            var label5 = "BENEFIT May " + yearFrom + " (" + (numb5 == null ? "0" : numb5.Value.ToString("N2")) + ")";
+            var label6 = "BENEFIT Jun " + yearFrom + " (" + (numb6 == null ? "0" : numb6.Value.ToString("N2")) + ")";
+            var label7 = "BENEFIT Jul " + yearFrom + " (" + (numb7 == null ? "0" : numb7.Value.ToString("N2")) + ")";
+            var label8 = "BENEFIT Aug " + yearFrom + " (" + (numb8 == null ? "0" : numb8.Value.ToString("N2")) + ")";
+            var label9 = "BENEFIT Sep " + yearFrom + " (" + (numb9 == null ? "0" : numb9.Value.ToString("N2")) + ")";
+            var label10 = "BENEFIT Oct " + yearFrom + " (" + (numb10 == null ? "0" : numb10.Value.ToString("N2")) + ")";
+            var label11 = "BENEFIT Nov " + yearFrom + " (" + (numb11 == null ? "0" : numb11.Value.ToString("N2")) + ")";
+            var label12 = "BENEFIT Dec " + yearFrom + " (" + (numb12 == null ? "0" : numb12.Value.ToString("N2")) + ")";
+            var label13 = "WTC Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString("N2")) + ")";
+            var label14 = "WTC Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString("N2")) + ")";
+            var label15 = "WTC Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString("N2")) + ")";
+            var label16 = "WTC Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString("N2")) + ")";
+            var label17 = "WTC May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString("N2")) + ")";
+            var label18 = "WTC Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString("N2")) + ")";
+            var label19 = "WTC Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString("N2")) + ")";
+            var label20 = "WTC Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString("N2")) + ")";
+            var label21 = "WTC Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString("N2")) + ")";
+            var label22 = "WTC Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString("N2")) + ")";
+            var label23 = "WTC Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString("N2")) + ")";
+            var label24 = "WTC Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString("N2")) + ")";
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new LiterByFunctionDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
-                    TOTAL_LITER_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_LITER),
-                    TOTAL_LITER_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_LITER),
+
+                    TOTAL_LITER_BENEFIT_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_BENEFIT_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
+                    TOTAL_LITER_WTC_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LITER),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.FUNCTION).ToList();
 
             return Json(groupData);
@@ -1043,20 +1542,157 @@ namespace FMS.Website.Controllers
             }
             List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
 
-            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_FUEL_COST);
-            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_FUEL_COST);
+            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb3 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb4 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb5 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb6 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb7 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb8 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb9 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb10 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb11 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb12 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb13 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb14 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb15 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb16 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb17 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb18 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb19 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb20 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb21 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb22 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb23 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
+            var numb24 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST);
 
-            var label1 = "BENEFIT (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
-            var label2 = "WTC (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label1 = "BENEFIT Jan " + yearFrom + " (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "BENEFIT Feb " + yearFrom + " (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label3 = "BENEFIT Mar " + yearFrom + " (" + (numb3 == null ? "0" : numb3.Value.ToString("N2")) + ")";
+            var label4 = "BENEFIT Apr " + yearFrom + " (" + (numb4 == null ? "0" : numb4.Value.ToString("N2")) + ")";
+            var label5 = "BENEFIT May " + yearFrom + " (" + (numb5 == null ? "0" : numb5.Value.ToString("N2")) + ")";
+            var label6 = "BENEFIT Jun " + yearFrom + " (" + (numb6 == null ? "0" : numb6.Value.ToString("N2")) + ")";
+            var label7 = "BENEFIT Jul " + yearFrom + " (" + (numb7 == null ? "0" : numb7.Value.ToString("N2")) + ")";
+            var label8 = "BENEFIT Aug " + yearFrom + " (" + (numb8 == null ? "0" : numb8.Value.ToString("N2")) + ")";
+            var label9 = "BENEFIT Sep " + yearFrom + " (" + (numb9 == null ? "0" : numb9.Value.ToString("N2")) + ")";
+            var label10 = "BENEFIT Oct " + yearFrom + " (" + (numb10 == null ? "0" : numb10.Value.ToString("N2")) + ")";
+            var label11 = "BENEFIT Nov " + yearFrom + " (" + (numb11 == null ? "0" : numb11.Value.ToString("N2")) + ")";
+            var label12 = "BENEFIT Dec " + yearFrom + " (" + (numb12 == null ? "0" : numb12.Value.ToString("N2")) + ")";
+            var label13 = "WTC Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString("N2")) + ")";
+            var label14 = "WTC Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString("N2")) + ")";
+            var label15 = "WTC Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString("N2")) + ")";
+            var label16 = "WTC Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString("N2")) + ")";
+            var label17 = "WTC May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString("N2")) + ")";
+            var label18 = "WTC Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString("N2")) + ")";
+            var label19 = "WTC Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString("N2")) + ")";
+            var label20 = "WTC Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString("N2")) + ")";
+            var label21 = "WTC Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString("N2")) + ")";
+            var label22 = "WTC Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString("N2")) + ")";
+            var label23 = "WTC Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString("N2")) + ")";
+            var label24 = "WTC Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString("N2")) + ")";
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new FuelCostByFunctionDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
-                    TOTAL_FUEL_COST_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.TOTAL_FUEL_COST),
-                    TOTAL_FUEL_COST_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.TOTAL_FUEL_COST),
+
+                    TOTAL_FUEL_COST_BENEFIT_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_BENEFIT_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
+                    TOTAL_FUEL_COST_WTC_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_FUEL_COST),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.FUNCTION).ToList();
 
             return Json(groupData);
@@ -1079,20 +1715,157 @@ namespace FMS.Website.Controllers
             }
             List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
 
-            var numb1 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LEASE_COST);
-            var numb2 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST);
+            var numb1 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb2 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb3 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb4 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb5 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb6 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb7 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb8 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb9 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb10 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb11 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb12 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb13 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb14 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb15 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb16 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb17 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb18 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb19 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb20 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb21 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb22 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb23 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
+            var numb24 = data.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST);
 
-            var label1 = "Sales (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
-            var label2 = "Marketing (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label1 = "Sales Jan " + yearFrom + " (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Sales Feb " + yearFrom + " (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label3 = "Sales Mar " + yearFrom + " (" + (numb3 == null ? "0" : numb3.Value.ToString("N2")) + ")";
+            var label4 = "Sales Apr " + yearFrom + " (" + (numb4 == null ? "0" : numb4.Value.ToString("N2")) + ")";
+            var label5 = "Sales May " + yearFrom + " (" + (numb5 == null ? "0" : numb5.Value.ToString("N2")) + ")";
+            var label6 = "Sales Jun " + yearFrom + " (" + (numb6 == null ? "0" : numb6.Value.ToString("N2")) + ")";
+            var label7 = "Sales Jul " + yearFrom + " (" + (numb7 == null ? "0" : numb7.Value.ToString("N2")) + ")";
+            var label8 = "Sales Aug " + yearFrom + " (" + (numb8 == null ? "0" : numb8.Value.ToString("N2")) + ")";
+            var label9 = "Sales Sep " + yearFrom + " (" + (numb9 == null ? "0" : numb9.Value.ToString("N2")) + ")";
+            var label10 = "Sales Oct " + yearFrom + " (" + (numb10 == null ? "0" : numb10.Value.ToString("N2")) + ")";
+            var label11 = "Sales Nov " + yearFrom + " (" + (numb11 == null ? "0" : numb11.Value.ToString("N2")) + ")";
+            var label12 = "Sales Dec " + yearFrom + " (" + (numb12 == null ? "0" : numb12.Value.ToString("N2")) + ")";
+            var label13 = "Marketing Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString("N2")) + ")";
+            var label14 = "Marketing Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString("N2")) + ")";
+            var label15 = "Marketing Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString("N2")) + ")";
+            var label16 = "Marketing Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString("N2")) + ")";
+            var label17 = "Marketing May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString("N2")) + ")";
+            var label18 = "Marketing Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString("N2")) + ")";
+            var label19 = "Marketing Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString("N2")) + ")";
+            var label20 = "Marketing Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString("N2")) + ")";
+            var label21 = "Marketing Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString("N2")) + ")";
+            var label22 = "Marketing Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString("N2")) + ")";
+            var label23 = "Marketing Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString("N2")) + ")";
+            var label24 = "Marketing Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString("N2")) + ")";
 
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new LeaseCostByFunctionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
-                    TOTAL_LEASE_COST_SALES = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES").Sum(c => c.TOTAL_LEASE_COST),
-                    TOTAL_LEASE_COST_MARKETING = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING").Sum(c => c.TOTAL_LEASE_COST),
+
+                    TOTAL_LEASE_COST_SALES_1 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_2 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_3 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_4 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_5 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_6 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_7 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_8 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_9 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_10 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_11 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_SALES_12 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_1 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_2 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_3 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_4 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_5 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_6 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_7 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_8 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_9 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_10 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_11 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
+                    TOTAL_LEASE_COST_MARKETING_12 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "MARKETING"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.REGION).ToList();
 
             return Json(groupData);
@@ -1111,20 +1884,109 @@ namespace FMS.Website.Controllers
             
             List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
 
-            var numb1 = data.Sum(c => c.TOTAL_COST / c.STICK);
-            var numb2 = data.Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb1 = data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb2 = data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb3 = data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb4 = data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb5 = data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb6 = data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb7 = data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb8 = data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb9 = data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb10 = data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb11 = data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb12 = data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
+            var numb13 = data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb14 = data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb15 = data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb16 = data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb17 = data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb18 = data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb19 = data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb20 = data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb21 = data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb22 = data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb23 = data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb24 = data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
 
-            var label1 = "per Stick (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
-            var label2 = "per KM (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label1 = "per Stick Jan " + yearFrom + " (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "per Stick Feb " + yearFrom + " (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label3 = "per Stick Mar " + yearFrom + " (" + (numb3 == null ? "0" : numb3.Value.ToString("N2")) + ")";
+            var label4 = "per Stick Apr " + yearFrom + " (" + (numb4 == null ? "0" : numb4.Value.ToString("N2")) + ")";
+            var label5 = "per Stick May " + yearFrom + " (" + (numb5 == null ? "0" : numb5.Value.ToString("N2")) + ")";
+            var label6 = "per Stick Jun " + yearFrom + " (" + (numb6 == null ? "0" : numb6.Value.ToString("N2")) + ")";
+            var label7 = "per Stick Jul " + yearFrom + " (" + (numb7 == null ? "0" : numb7.Value.ToString("N2")) + ")";
+            var label8 = "per Stick Aug " + yearFrom + " (" + (numb8 == null ? "0" : numb8.Value.ToString("N2")) + ")";
+            var label9 = "per Stick Sep " + yearFrom + " (" + (numb9 == null ? "0" : numb9.Value.ToString("N2")) + ")";
+            var label10 = "per Stick Oct " + yearFrom + " (" + (numb10 == null ? "0" : numb10.Value.ToString("N2")) + ")";
+            var label11 = "per Stick Nov " + yearFrom + " (" + (numb11 == null ? "0" : numb11.Value.ToString("N2")) + ")";
+            var label12 = "per Stick Dec " + yearFrom + " (" + (numb12 == null ? "0" : numb12.Value.ToString("N2")) + ")";
+            var label13 = "per KM Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString("N2")) + ")";
+            var label14 = "per KM Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString("N2")) + ")";
+            var label15 = "per KM Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString("N2")) + ")";
+            var label16 = "per KM Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString("N2")) + ")";
+            var label17 = "per KM May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString("N2")) + ")";
+            var label18 = "per KM Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString("N2")) + ")";
+            var label19 = "per KM Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString("N2")) + ")";
+            var label20 = "per KM Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString("N2")) + ")";
+            var label21 = "per KM Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString("N2")) + ")";
+            var label22 = "per KM Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString("N2")) + ")";
+            var label23 = "per KM Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString("N2")) + ")";
+            var label24 = "per KM Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString("N2")) + ")";
 
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new SalesByRegionDto()
                 {
                     REGION = p.FirstOrDefault().REGION,
-                    TOTAL_KM = p.Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST = p.Sum(c => c.TOTAL_COST / c.STICK),
+
+                    TOTAL_COST_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_KM_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.REGION).ToList();
 
             return Json(groupData);
@@ -1148,17 +2010,154 @@ namespace FMS.Website.Controllers
             }
             List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
 
-            var label1 = "BENEFIT (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(x => x.ACCIDENT_COUNT) + ")";
-            var label2 = "WTC (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(x => x.ACCIDENT_COUNT) + ")";
+            var label1 = "BENEFIT Jan " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label2 = "BENEFIT Feb " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label3 = "BENEFIT Mar " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label4 = "BENEFIT Apr " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label5 = "BENEFIT May " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label6 = "BENEFIT Jun " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label7 = "BENEFIT Jul " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label8 = "BENEFIT Aug " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label9 = "BENEFIT Sep " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label10 = "BENEFIT Oct " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label11 = "BENEFIT Nov " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label12 = "BENEFIT Dec " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label13 = "WTC Jan " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label14 = "WTC Feb " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label15 = "WTC Mar " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label16 = "WTC Apr " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label17 = "WTC May " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label18 = "WTC Jun " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label19 = "WTC Jul " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label20 = "WTC Aug " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label21 = "WTC Sep " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label22 = "WTC Oct " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label23 = "WTC Nov " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
+
+            var label24 = "WTC Dec " + yearFrom + " (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(x => x.ACCIDENT_COUNT) + ")";
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AccidentDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
-                    ACCIDENT_COUNT_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.ACCIDENT_COUNT),
-                    ACCIDENT_COUNT_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_BENEFIT_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
+                    ACCIDENT_COUNT_WTC_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACCIDENT_COUNT),
                     LABEL1 = label1,
-                    LABEL2 = label2
+                    LABEL2 = label2,
+                    LABEL3 = label3,
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
                 }).OrderBy(x => x.FUNCTION).ToList();
 
             return Json(groupData);
@@ -1180,28 +2179,301 @@ namespace FMS.Website.Controllers
             }
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
-            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.ACTUAL_COST);
-            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACTUAL_COST);
-            var numb3 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.COST_OB);
-            var numb4 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.COST_OB);
+            var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb2 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb3 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb4 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb5 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb6 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb7 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb8 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb9 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb10 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb11 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb12 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb13 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb14 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb15 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb16 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb17 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb18 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb19 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb20 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb21 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb22 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb23 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb24 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb25 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb26 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb27 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb28 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb29 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb30 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb31 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb32 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb33 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb34 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb35 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb36 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST);
+            var numb37 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb38 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb39 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb40 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb41 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb42 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb43 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb44 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb45 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb46 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb47 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
+            var numb48 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB);
 
-            var label1 = "Actual BENEFIT (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
-            var label2 = "Actual WTC (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
-            var label3 = "Budget BENEFIT (" + (numb3 == null ? "0" : numb3.Value.ToString("N2")) + ")";
-            var label4 = "Budget WTC (" + (numb4 == null ? "0" : numb4.Value.ToString("N2")) + ")";
+            var label1 = "Actual BENEFIT Jan " + yearFrom + " (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
+            var label2 = "Actual BENEFIT Feb " + yearFrom + " (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
+            var label3 = "Actual BENEFIT Mar " + yearFrom + " (" + (numb3 == null ? "0" : numb3.Value.ToString("N2")) + ")";
+            var label4 = "Actual BENEFIT Apr " + yearFrom + " (" + (numb4 == null ? "0" : numb4.Value.ToString("N2")) + ")";
+            var label5 = "Actual BENEFIT May " + yearFrom + " (" + (numb5 == null ? "0" : numb5.Value.ToString("N2")) + ")";
+            var label6 = "Actual BENEFIT Jun " + yearFrom + " (" + (numb6 == null ? "0" : numb6.Value.ToString("N2")) + ")";
+            var label7 = "Actual BENEFIT Jul " + yearFrom + " (" + (numb7 == null ? "0" : numb7.Value.ToString("N2")) + ")";
+            var label8 = "Actual BENEFIT Aug " + yearFrom + " (" + (numb8 == null ? "0" : numb8.Value.ToString("N2")) + ")";
+            var label9 = "Actual BENEFIT Sep " + yearFrom + " (" + (numb9 == null ? "0" : numb9.Value.ToString("N2")) + ")";
+            var label10 = "Actual BENEFIT Oct " + yearFrom + " (" + (numb10 == null ? "0" : numb10.Value.ToString("N2")) + ")";
+            var label11 = "Actual BENEFIT Nov " + yearFrom + " (" + (numb11 == null ? "0" : numb11.Value.ToString("N2")) + ")";
+            var label12 = "Actual BENEFIT Dec " + yearFrom + " (" + (numb12 == null ? "0" : numb12.Value.ToString("N2")) + ")";
+            var label13 = "Budget BENEFIT Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString("N2")) + ")";
+            var label14 = "Budget BENEFIT Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString("N2")) + ")";
+            var label15 = "Budget BENEFIT Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString("N2")) + ")";
+            var label16 = "Budget BENEFIT Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString("N2")) + ")";
+            var label17 = "Budget BENEFIT May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString("N2")) + ")";
+            var label18 = "Budget BENEFIT Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString("N2")) + ")";
+            var label19 = "Budget BENEFIT Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString("N2")) + ")";
+            var label20 = "Budget BENEFIT Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString("N2")) + ")";
+            var label21 = "Budget BENEFIT Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString("N2")) + ")";
+            var label22 = "Budget BENEFIT Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString("N2")) + ")";
+            var label23 = "Budget BENEFIT Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString("N2")) + ")";
+            var label24 = "Budget BENEFIT Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString("N2")) + ")";
+            var label25 = "Actual WTC Jan " + yearFrom + " (" + (numb25 == null ? "0" : numb25.Value.ToString("N2")) + ")";
+            var label26 = "Actual WTC Feb " + yearFrom + " (" + (numb26 == null ? "0" : numb26.Value.ToString("N2")) + ")";
+            var label27 = "Actual WTC Mar " + yearFrom + " (" + (numb27 == null ? "0" : numb27.Value.ToString("N2")) + ")";
+            var label28 = "Actual WTC Apr " + yearFrom + " (" + (numb28 == null ? "0" : numb28.Value.ToString("N2")) + ")";
+            var label29 = "Actual WTC May " + yearFrom + " (" + (numb29 == null ? "0" : numb29.Value.ToString("N2")) + ")";
+            var label30 = "Actual WTC Jun " + yearFrom + " (" + (numb30 == null ? "0" : numb30.Value.ToString("N2")) + ")";
+            var label31 = "Actual WTC Jul " + yearFrom + " (" + (numb31 == null ? "0" : numb31.Value.ToString("N2")) + ")";
+            var label32 = "Actual WTC Aug " + yearFrom + " (" + (numb32 == null ? "0" : numb32.Value.ToString("N2")) + ")";
+            var label33 = "Actual WTC Sep " + yearFrom + " (" + (numb33 == null ? "0" : numb33.Value.ToString("N2")) + ")";
+            var label34 = "Actual WTC Oct " + yearFrom + " (" + (numb34 == null ? "0" : numb34.Value.ToString("N2")) + ")";
+            var label35 = "Actual WTC Nov " + yearFrom + " (" + (numb35 == null ? "0" : numb35.Value.ToString("N2")) + ")";
+            var label36 = "Actual WTC Dec " + yearFrom + " (" + (numb36 == null ? "0" : numb36.Value.ToString("N2")) + ")";
+            var label37 = "Budget WTC Jan " + yearFrom + " (" + (numb37 == null ? "0" : numb37.Value.ToString("N2")) + ")";
+            var label38 = "Budget WTC Feb " + yearFrom + " (" + (numb38 == null ? "0" : numb38.Value.ToString("N2")) + ")";
+            var label39 = "Budget WTC Mar " + yearFrom + " (" + (numb39 == null ? "0" : numb39.Value.ToString("N2")) + ")";
+            var label40 = "Budget WTC Apr " + yearFrom + " (" + (numb40 == null ? "0" : numb40.Value.ToString("N2")) + ")";
+            var label41 = "Budget WTC May " + yearFrom + " (" + (numb41 == null ? "0" : numb41.Value.ToString("N2")) + ")";
+            var label42 = "Budget WTC Jun " + yearFrom + " (" + (numb42 == null ? "0" : numb42.Value.ToString("N2")) + ")";
+            var label43 = "Budget WTC Jul " + yearFrom + " (" + (numb43 == null ? "0" : numb43.Value.ToString("N2")) + ")";
+            var label44 = "Budget WTC Aug " + yearFrom + " (" + (numb44 == null ? "0" : numb44.Value.ToString("N2")) + ")";
+            var label45 = "Budget WTC Sep " + yearFrom + " (" + (numb45 == null ? "0" : numb45.Value.ToString("N2")) + ")";
+            var label46 = "Budget WTC Oct " + yearFrom + " (" + (numb46 == null ? "0" : numb46.Value.ToString("N2")) + ")";
+            var label47 = "Budget WTC Nov " + yearFrom + " (" + (numb47 == null ? "0" : numb47.Value.ToString("N2")) + ")";
+            var label48 = "Budget WTC Dec " + yearFrom + " (" + (numb48 == null ? "0" : numb48.Value.ToString("N2")) + ")";
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AcVsObDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
-                    ACTUAL_COST_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.ACTUAL_COST),
-                    ACTUAL_COST_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.ACTUAL_COST),
-                    COST_OB_BENEFIT = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.COST_OB),
-                    COST_OB_WTC = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").Sum(c => c.COST_OB),
+
+                    ACTUAL_COST_BENEFIT_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_BENEFIT_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    COST_OB_BENEFIT_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_BENEFIT_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    ACTUAL_COST_WTC_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    ACTUAL_COST_WTC_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                            && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.ACTUAL_COST),
+                    COST_OB_WTC_1 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_2 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_3 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_4 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_5 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_6 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_7 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_8 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_9 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_10 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_11 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
+                    COST_OB_WTC_12 = p.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC"
+                                                        && x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.COST_OB),
                     LABEL1 = label1,
                     LABEL2 = label2,
                     LABEL3 = label3,
-                    LABEL4 = label4
+                    LABEL4 = label4,
+                    LABEL5 = label5,
+                    LABEL6 = label6,
+                    LABEL7 = label7,
+                    LABEL8 = label8,
+                    LABEL9 = label9,
+                    LABEL10 = label10,
+                    LABEL11 = label11,
+                    LABEL12 = label12,
+                    LABEL13 = label13,
+                    LABEL14 = label14,
+                    LABEL15 = label15,
+                    LABEL16 = label16,
+                    LABEL17 = label17,
+                    LABEL18 = label18,
+                    LABEL19 = label19,
+                    LABEL20 = label20,
+                    LABEL21 = label21,
+                    LABEL22 = label22,
+                    LABEL23 = label23,
+                    LABEL24 = label24,
+                    LABEL25 = label25,
+                    LABEL26 = label26,
+                    LABEL27 = label27,
+                    LABEL28 = label28,
+                    LABEL29 = label29,
+                    LABEL30 = label30,
+                    LABEL31 = label31,
+                    LABEL32 = label32,
+                    LABEL33 = label33,
+                    LABEL34 = label34,
+                    LABEL35 = label35,
+                    LABEL36 = label36,
+                    LABEL37 = label37,
+                    LABEL38 = label38,
+                    LABEL39 = label39,
+                    LABEL40 = label40,
+                    LABEL41 = label41,
+                    LABEL42 = label42,
+                    LABEL43 = label43,
+                    LABEL44 = label44,
+                    LABEL45 = label45,
+                    LABEL46 = label46,
+                    LABEL47 = label47,
+                    LABEL48 = label48,
                 }).OrderBy(x => x.FUNCTION).ToList();
 
             return Json(groupData);
@@ -3703,23 +4975,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Number Of Vehicle");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardNew(slDocument, listData, input);
 
             var fileName = "ExecSum_NumbVehicle" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -3730,44 +4987,86 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardNew(SLDocument slDocument, List<NoVehicleData> listData)
+        private SLDocument CreateDataExcelDashboardNew(SLDocument slDocument, List<NoVehicleData> listData, VehicleGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = 0;
-            var total2 = 0;
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "WTC");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "BENEFIT " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "WTC " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
-                                                        && x.Function == item).Sum(x => x.NoOfVehicle);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                var countData2 = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
-                                                        && x.Function == item).Sum(x => x.NoOfVehicle);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? 0 : countData.Value;
-                total2 += countData2 == null ? 0 : countData2.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -3782,18 +5081,42 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style32);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Number Of Vehicle");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
+
+            //title
+            slDocument.SetCellValue(1, 2, "Number Of Vehicle");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
 
             #endregion
 
@@ -4070,23 +5393,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Number Of Vehicle WTC");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardWtcNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardWtcNew(slDocument, listData, input);
 
             var fileName = "ExecSum_NumbVehicleWtc" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -4097,44 +5405,86 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardWtcNew(SLDocument slDocument, List<NoVehicleWtcData> listData)
+        private SLDocument CreateDataExcelDashboardWtcNew(SLDocument slDocument, List<NoVehicleWtcData> listData, VehicleWtcGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = 0;
-            var total2 = 0;
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Regional).Select(x => x.Regional).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY REGIONAL");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "SALES");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "MARKETING");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "SALES " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "MARKETING " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
 
-                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
-                                                        && x.Regional == item).Sum(x => x.NoOfVehicle);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
+                                                        && x.Regional == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                var countData2 = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
-                                                        && x.Regional == item).Sum(x => x.NoOfVehicle);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? 0 : countData.Value;
-                total2 += countData2 == null ? 0 : countData2.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
+                                                        && x.Regional == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -4149,18 +5499,42 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style31);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Vehicle By Regional");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
+
+            //title
+            slDocument.SetCellValue(1, 2, "Number Of Vehicle WTC");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
 
             #endregion
 
@@ -4436,23 +5810,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Number Of Vehicle Make-Type");
-            slDocument.MergeWorksheetCells(1, 2, 1, 16);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 16, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardMakeNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardMakeNew(slDocument, listData, input);
 
             var fileName = "ExecSum_NumbVehicleMake" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -4463,35 +5822,58 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardMakeNew(SLDocument slDocument, List<NoVehicleMakeData> listData)
+        private SLDocument CreateDataExcelDashboardMakeNew(SLDocument slDocument, List<NoVehicleMakeData> listData, VehicleMakeGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = 0;
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 8;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Manufacturer).Select(x => x.Manufacturer).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY MANUFACTURER");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "TOTAL");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "TOTAL " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Manufacturer" : item);
 
-                var countData = listData.Where(x => x.Manufacturer == item).Sum(x => x.NoOfVehicle);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => x.Manufacturer == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                total1 += countData == null ? 0 : countData.Value;
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -4506,14 +5888,23 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 8, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 8, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 1);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style30);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 8);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Vehicle By Make");
             chart.ShowChartTitle(true);
 
@@ -4525,42 +5916,86 @@ namespace FMS.Website.Controllers
 
             firstRow = 14;
             contRow = 15;
-            firstColumn = 10;
-            total1 = 0;
+            firstColumn = minColumn + 2;
+            nextColumn = minColumn + 3;
+            endColumn = minColumn + 3;
+            minColumn = minColumn + 8;
 
             //select distinct data
             dataList = listData.OrderBy(x => x.BodyType).Select(x => x.BodyType).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY TYPE");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "TOTAL");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "TOTAL " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Body Type" : item);
 
-                var countData = listData.Where(x => x.BodyType == item).Sum(x => x.NoOfVehicle);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => x.BodyType == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                total1 += countData == null ? 0 : countData.Value;
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
 
-            slDocument.AutoFitColumn(firstColumn);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 16, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 16, headerStyleNumbChart);
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-            chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 1);
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style32);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 9, firstRow - 2, 16);
+            chart.SetChartPosition(2, firstColumn - 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Vehicle By Type");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
+
+            //title
+            slDocument.SetCellValue(1, 2, "Number Of Vehicle Make-Type");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
 
             #endregion
 
@@ -4847,23 +6282,10 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Odometer");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+            
 
             //create data
-            slDocument = CreateDataExcelDashboardOdometerNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardOdometerNew(slDocument, listData, input);
 
             var fileName = "ExecSum_Odometer" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -4874,44 +6296,86 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardOdometerNew(SLDocument slDocument, List<OdometerData> listData)
+        private SLDocument CreateDataExcelDashboardOdometerNew(SLDocument slDocument, List<OdometerData> listData, OdometerGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = Convert.ToDecimal(0);
-            var total2 = Convert.ToDecimal(0);
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "WTC");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "BENEFIT " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "WTC " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT" && 
-                    x.Function == item).Sum(x => x.TotalKm);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalKm);
 
-                var countData2 = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC" &&
-                    x.Function == item).Sum(x => x.TotalKm);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? Convert.ToDecimal(0) : countData.Value;
-                total2 += countData2 == null ? Convert.ToDecimal(0) : countData2.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalKm);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalKm);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalKm);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -4926,18 +6390,42 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style31);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Monthly KM's driven By Function");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
+
+            //title
+            slDocument.SetCellValue(1, 2, "Odometer");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
 
             #endregion
 
@@ -5224,23 +6712,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Liter By Function");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardLiterByFunctionNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardLiterByFunctionNew(slDocument, listData, input);
 
             var fileName = "ExecSum_LiterByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -5251,44 +6724,86 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardLiterByFunctionNew(SLDocument slDocument, List<LiterByFunctionData> listData)
+        private SLDocument CreateDataExcelDashboardLiterByFunctionNew(SLDocument slDocument, List<LiterByFunctionData> listData, LiterFuncGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = Convert.ToDecimal(0);
-            var total2 = Convert.ToDecimal(0);
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "WTC");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "BENEFIT " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "WTC " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
-                                                        && x.Function == item).Sum(x => x.TotalLiter);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLiter);
 
-                var countData2 = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
-                                                        && x.Function == item).Sum(x => x.TotalLiter);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? 0 : countData.Value;
-                total2 += countData2 == null ? 0 : countData2.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLiter);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLiter);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLiter);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -5303,18 +6818,41 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style30);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Monthly Fuel Purchased (in liters) By Regional");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
+
+            //title
+            slDocument.SetCellValue(1, 2, "Liter By Function");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
 
             #endregion
 
@@ -5601,23 +7139,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Fuel Cost By Function");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardFuelCostByFunctionNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardFuelCostByFunctionNew(slDocument, listData, input);
 
             var fileName = "ExecSum_FuelCostByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -5628,44 +7151,86 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardFuelCostByFunctionNew(SLDocument slDocument, List<FuelCostByFunctionData> listData)
+        private SLDocument CreateDataExcelDashboardFuelCostByFunctionNew(SLDocument slDocument, List<FuelCostByFunctionData> listData, FuelCostFuncGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = Convert.ToDecimal(0);
-            var total2 = Convert.ToDecimal(0);
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "WTC");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "BENEFIT " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "WTC " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
-                                                        && x.Function == item).Sum(x => x.TotalFuelCost);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalFuelCost);
 
-                var countData2 = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
-                                                        && x.Function == item).Sum(x => x.TotalFuelCost);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? 0 : countData.Value;
-                total2 += countData2 == null ? 0 : countData2.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalFuelCost);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalFuelCost);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalFuelCost);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -5680,18 +7245,41 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style32);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Fuel Cost");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
+
+            //title
+            slDocument.SetCellValue(1, 2, "Fuel Cost By Function");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
 
             #endregion
 
@@ -5974,23 +7562,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Lease Cost By Function");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardLeaseCostByFunctionNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardLeaseCostByFunctionNew(slDocument, listData, input);
 
             var fileName = "ExecSum_LeaseCostByFunction" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -6001,44 +7574,86 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardLeaseCostByFunctionNew(SLDocument slDocument, List<LeaseCostByFunctionData> listData)
+        private SLDocument CreateDataExcelDashboardLeaseCostByFunctionNew(SLDocument slDocument, List<LeaseCostByFunctionData> listData, LeaseCostFuncGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = Convert.ToDecimal(0);
-            var total2 = Convert.ToDecimal(0);
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Region).Select(x => x.Region).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY REGIONAL");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "SALES");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "MARKETING");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "SALES " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "MARKETING " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
 
-                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
-                                                        && x.Region == item).Sum(x => x.TotalLeaseCost);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
+                                                        && x.Region == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLeaseCost);
 
-                var countData2 = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
-                                                        && x.Region == item).Sum(x => x.TotalLeaseCost);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? 0 : countData.Value;
-                total2 += countData2 == null ? 0 : countData2.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
+                                                        && x.Region == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLeaseCost);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLeaseCost);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLeaseCost);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -6053,19 +7668,42 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style31);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Lease Cost");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
 
+            //title
+            slDocument.SetCellValue(1, 2, "Lease Cost By Function");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
+            
             #endregion
 
             return slDocument;
@@ -6352,23 +7990,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Sales By Region");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardSalesByRegionNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardSalesByRegionNew(slDocument, listData, input);
 
             var fileName = "ExecSum_SalesByRegion" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -6379,42 +8002,82 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardSalesByRegionNew(SLDocument slDocument, List<SalesByRegionData> listData)
+        private SLDocument CreateDataExcelDashboardSalesByRegionNew(SLDocument slDocument, List<SalesByRegionData> listData, SalesRegionGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = Convert.ToDecimal(0);
-            var total2 = Convert.ToDecimal(0);
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Region).Select(x => x.Region).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY REGIONAL");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "Operational Cost Per Stick");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "Operational Cost Per KM");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "Per Stick " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "Per KM " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
 
-                var countData = listData.Where(x => x.Region == item).Sum(x => x.TotalCost / x.Stick);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => x.Region == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalCost / x.Stick);
 
-                var countData2 = listData.Where(x => x.Region == item).Sum(x => x.TotalCost / x.TotalKm);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? Convert.ToDecimal(0) : countData.Value;
-                total2 += countData2 == null ? Convert.ToDecimal(0) : countData2.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => x.Region == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalCost / x.TotalKm);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalCost / x.Stick);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalCost / x.TotalKm);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -6429,19 +8092,42 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style32);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Sales By Region");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
 
+            //title
+            slDocument.SetCellValue(1, 2, "Sales By Region");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
+            
             #endregion
 
             return slDocument;
@@ -6727,23 +8413,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "Accident");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardAccidentNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardAccidentNew(slDocument, listData, input);
 
             var fileName = "ExecSum_Accident" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -6754,42 +8425,86 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardAccidentNew(SLDocument slDocument, List<AccidentData> listData)
+        private SLDocument CreateDataExcelDashboardAccidentNew(SLDocument slDocument, List<AccidentData> listData, AccidentGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total2 = Convert.ToDecimal(0);
-            var total3 = Convert.ToDecimal(0);
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "WTC");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "BENEFIT " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "WTC " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData2 = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").Sum(x => x.AccidentCount);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData2.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.AccidentCount);
 
-                var countData3 = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC").Sum(x => x.AccidentCount);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData3.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total2 += countData2 == null ? Convert.ToDecimal(0) : countData2.Value;
-                total3 += countData3 == null ? Convert.ToDecimal(0) : countData3.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.AccidentCount);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total2);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total3);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.AccidentCount);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.AccidentCount);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -6804,19 +8519,43 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style30);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("Accident");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
 
+            //title
+            slDocument.SetCellValue(1, 2, "Accident");
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+            
             #endregion
 
             return slDocument;
@@ -7098,23 +8837,8 @@ namespace FMS.Website.Controllers
 
             var slDocument = new SLDocument();
 
-            //title
-            slDocument.SetCellValue(1, 2, "AC Vs OB");
-            slDocument.MergeWorksheetCells(1, 2, 1, 10);
-
-            SLStyle valueStyle = slDocument.CreateStyle();
-            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
-            valueStyle.Font.Bold = true;
-            valueStyle.Font.FontSize = 14;
-            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
-            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
-            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
-
             //create data
-            slDocument = CreateDataExcelDashboardAcVsObNew(slDocument, listData);
+            slDocument = CreateDataExcelDashboardAcVsObNew(slDocument, listData, input);
 
             var fileName = "ExecSum_AcVsOb" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -7125,56 +8849,138 @@ namespace FMS.Website.Controllers
 
         }
 
-        private SLDocument CreateDataExcelDashboardAcVsObNew(SLDocument slDocument, List<AcVsObData> listData)
+        private SLDocument CreateDataExcelDashboardAcVsObNew(SLDocument slDocument, List<AcVsObData> listData, AcVsObGetByParamInput input)
         {
             #region --------- Chart --------------
 
             var firstRow = 14;
             var contRow = 15;
             var firstColumn = 2;
-            var total1 = Convert.ToDecimal(0);
-            var total2 = Convert.ToDecimal(0);
-            var total3 = Convert.ToDecimal(0);
-            var total4 = Convert.ToDecimal(0);
+            var nextColumn = 3;
+            var endColumn = 3;
+            var minColumn = 10;
 
             //select distinct data
             var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
-            slDocument.SetCellValue(firstRow, firstColumn + 1, "Actual BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "Actual WTC");
-            slDocument.SetCellValue(firstRow, firstColumn + 3, "Budget BENEFIT");
-            slDocument.SetCellValue(firstRow, firstColumn + 4, "Budget WTC");
+
+            nextColumn = firstColumn + 1;
+            endColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "Actual BENEFIT " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "Budget BENEFIT " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "Actual WTC " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                slDocument.SetCellValue(firstRow, nextColumn, "Budget WTC " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                nextColumn++;
+                endColumn++;
+            }
 
             foreach (var item in dataList)
             {
                 slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
 
-                var countData = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").Sum(x => x.ActualCost);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+                nextColumn = firstColumn + 1;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.ActualCost);
 
-                var countData2 = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC").Sum(x => x.ActualCost);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                var countData3 = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT").Sum(x => x.CostOb);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 3, countData3.ToString());
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.CostOb);
 
-                var countData4 = listData.Where(x => x.Function == item && (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC").Sum(x => x.CostOb);
-                slDocument.SetCellValueNumeric(contRow, firstColumn + 4, countData4.ToString());
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
-                total1 += countData == null ? Convert.ToDecimal(0) : countData.Value;
-                total2 += countData2 == null ? Convert.ToDecimal(0) : countData2.Value;
-                total3 += countData3 == null ? Convert.ToDecimal(0) : countData3.Value;
-                total4 += countData4 == null ? Convert.ToDecimal(0) : countData4.Value;
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.ActualCost);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
+
+                for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+                {
+                    var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.Function == item
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.CostOb);
+
+                    slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
+                    nextColumn++;
+                }
 
                 contRow++;
             }
 
             slDocument.SetCellValue(contRow, firstColumn, "Total");
-            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
-            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
-            slDocument.SetCellValue(contRow, firstColumn + 3, total3);
-            slDocument.SetCellValue(contRow, firstColumn + 4, total4);
+
+            nextColumn = firstColumn + 1;
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.ActualCost);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.CostOb);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.ActualCost);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
+
+            for (int i = input.MonthFrom; i <= input.MonthTo; i++)
+            {
+                var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
+                                                        && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.CostOb);
+
+                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                nextColumn++;
+            }
 
             SLStyle headerStyleChart = slDocument.CreateStyle();
             headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
@@ -7189,19 +8995,42 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 4);
-            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
-            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            SLStyle rightStyleChart = slDocument.CreateStyle();
+            rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 4);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            if (minColumn < endColumn)
+            {
+                minColumn = endColumn;
+            }
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
+            slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style31);
             chart.SetChartType(SLColumnChartType.ClusteredColumn);
-            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.SetChartPosition(2, 1, firstRow - 2, minColumn);
             chart.Title.SetTitle("AC Vs OB");
             chart.ShowChartTitle(true);
 
             slDocument.InsertChart(chart);
 
+            //title
+            slDocument.SetCellValue(1, 2, "AC Vs OB");
+            slDocument.MergeWorksheetCells(1, 2, 1, minColumn);
+
+            SLStyle valueStyle = slDocument.CreateStyle();
+            valueStyle.SetHorizontalAlignment(HorizontalAlignmentValues.Center);
+            valueStyle.Font.Bold = true;
+            valueStyle.Font.FontSize = 14;
+            valueStyle.Border.LeftBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.RightBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            valueStyle.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.Aqua, System.Drawing.Color.Aqua);
+            slDocument.SetCellStyle(1, 2, 1, minColumn, valueStyle);
+            
             #endregion
 
             return slDocument;
