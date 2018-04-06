@@ -236,15 +236,6 @@
         }
     }
 
-    function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-
     function LoadingHide() {
         $('#LoadingModal').hide();
     }
@@ -522,204 +513,242 @@
                     if (i == 1) {
                         var data1 = {
                             label: label_1,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#8ECD0",
                             data: chart_1
                         };
 
-                        var data2 = {
-                            label: label_13,
-                            backgroundColor: getRandomColor(),
-                            data: chart_13
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 2) {
                         var data1 = {
                             label: label_2,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#FECACD",
                             data: chart_2
                         };
 
-                        var data2 = {
-                            label: label_14,
-                            backgroundColor: getRandomColor(),
-                            data: chart_14
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 3) {
                         var data1 = {
                             label: label_3,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#E203AB",
                             data: chart_3
                         };
 
-                        var data2 = {
-                            label: label_15,
-                            backgroundColor: getRandomColor(),
-                            data: chart_15
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 4) {
                         var data1 = {
                             label: label_4,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#E08488",
                             data: chart_4
                         };
 
-                        var data2 = {
-                            label: label_16,
-                            backgroundColor: getRandomColor(),
-                            data: chart_16
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 5) {
                         var data1 = {
                             label: label_5,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#FA1106",
                             data: chart_5
                         };
 
-                        var data2 = {
-                            label: label_17,
-                            backgroundColor: getRandomColor(),
-                            data: chart_17
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 6) {
                         var data1 = {
                             label: label_6,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#9F0336",
                             data: chart_6
                         };
 
-                        var data2 = {
-                            label: label_18,
-                            backgroundColor: getRandomColor(),
-                            data: chart_18
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 7) {
                         var data1 = {
                             label: label_7,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#F4550F",
                             data: chart_7
                         };
 
-                        var data2 = {
-                            label: label_19,
-                            backgroundColor: getRandomColor(),
-                            data: chart_19
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 8) {
                         var data1 = {
                             label: label_8,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#FFF5B0",
                             data: chart_8
                         };
 
-                        var data2 = {
-                            label: label_20,
-                            backgroundColor: getRandomColor(),
-                            data: chart_20
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 9) {
                         var data1 = {
                             label: label_9,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#FFF553",
                             data: chart_9
                         };
 
-                        var data2 = {
-                            label: label_21,
-                            backgroundColor: getRandomColor(),
-                            data: chart_21
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 10) {
                         var data1 = {
                             label: label_10,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#E79E03",
                             data: chart_10
                         };
 
-                        var data2 = {
-                            label: label_22,
-                            backgroundColor: getRandomColor(),
-                            data: chart_22
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 11) {
                         var data1 = {
                             label: label_11,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#FC9B11",
                             data: chart_11
                         };
 
-                        var data2 = {
-                            label: label_23,
-                            backgroundColor: getRandomColor(),
-                            data: chart_23
-                        };
-
                         data_chart.push(data1);
-                        data_chart.push(data2);
                     }
 
                     if (i == 12) {
                         var data1 = {
                             label: label_12,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#FF9769",
                             data: chart_12
                         };
 
+                        data_chart.push(data1);
+                    }
+                }
+
+                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                    if (i == 1) {
+                        var data2 = {
+                            label: label_13,
+                            backgroundColor: "#D3FDB4",
+                            data: chart_13
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 2) {
+                        var data2 = {
+                            label: label_14,
+                            backgroundColor: "#5FF59F",
+                            data: chart_14
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 3) {
+                        var data2 = {
+                            label: label_15,
+                            backgroundColor: "#31B204",
+                            data: chart_15
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 4) {
+                        var data2 = {
+                            label: label_16,
+                            backgroundColor: "#3E4440",
+                            data: chart_16
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 5) {
+                        var data2 = {
+                            label: label_17,
+                            backgroundColor: "#4DD292",
+                            data: chart_17
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 6) {
+                        var data2 = {
+                            label: label_18,
+                            backgroundColor: "#B0D8F7",
+                            data: chart_18
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 7) {
+                        var data2 = {
+                            label: label_19,
+                            backgroundColor: "#26A4EC",
+                            data: chart_19
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 8) {
+                        var data2 = {
+                            label: label_20,
+                            backgroundColor: "#100A91",
+                            data: chart_20
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 9) {
+                        var data2 = {
+                            label: label_21,
+                            backgroundColor: "#606596",
+                            data: chart_21
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 10) {
+                        var data2 = {
+                            label: label_22,
+                            backgroundColor: "#B0B4D9",
+                            data: chart_22
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 11) {
+                        var data2 = {
+                            label: label_23,
+                            backgroundColor: "#C0A2F5",
+                            data: chart_23
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 12) {
                         var data2 = {
                             label: label_24,
-                            backgroundColor: getRandomColor(),
+                            backgroundColor: "#53017D",
                             data: chart_24
                         };
 
-                        data_chart.push(data1);
                         data_chart.push(data2);
                     }
                 }
@@ -749,6 +778,9 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });

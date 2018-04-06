@@ -314,24 +314,660 @@
             data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, functions: theList, vehType: $('#SearchView_VehicleType').val() },
             success: function (response) {
                 var labels_chart = [];
-                var first_chart = [];
-                var second_chart = [];
-                var third_chart = [];
-                var forth_chart = [];
-                var label_1 = "Actual BENEFIT";
-                var label_2 = "Actual WTC";
-                var label_3 = "Budget BENEFIT";
-                var label_4 = "Budget WTC";
+                var data_chart = [];
+
+                var chart_1 = []; var chart_2 = []; var chart_3 = []; var chart_4 = []; var chart_5 = []; var chart_6 = [];
+                var chart_7 = []; var chart_8 = []; var chart_9 = []; var chart_10 = []; var chart_11 = []; var chart_12 = [];
+                var chart_13 = []; var chart_14 = []; var chart_15 = []; var chart_16 = []; var chart_17 = []; var chart_18 = [];
+                var chart_19 = []; var chart_20 = []; var chart_21 = []; var chart_22 = []; var chart_23 = []; var chart_24 = [];
+                var chart_25 = []; var chart_26 = []; var chart_27 = []; var chart_28 = []; var chart_29 = []; var chart_30 = [];
+                var chart_31 = []; var chart_32 = []; var chart_33 = []; var chart_34 = []; var chart_35 = []; var chart_36 = [];
+                var chart_37 = []; var chart_38 = []; var chart_39 = []; var chart_40 = []; var chart_41 = []; var chart_42 = [];
+                var chart_43 = []; var chart_44 = []; var chart_45 = []; var chart_46 = []; var chart_47 = []; var chart_48 = [];
+
+                var label_1 = "Actual BENEFIT Jan " + $('#SearchView_YearFrom').val();
+                var label_2 = "Actual BENEFIT Feb " + $('#SearchView_YearFrom').val();
+                var label_3 = "Actual BENEFIT Mar " + $('#SearchView_YearFrom').val();
+                var label_4 = "Actual BENEFIT Apr " + $('#SearchView_YearFrom').val();
+                var label_5 = "Actual BENEFIT May " + $('#SearchView_YearFrom').val();
+                var label_6 = "Actual BENEFIT Jun " + $('#SearchView_YearFrom').val();
+                var label_7 = "Actual BENEFIT Jul " + $('#SearchView_YearFrom').val();
+                var label_8 = "Actual BENEFIT Aug " + $('#SearchView_YearFrom').val();
+                var label_9 = "Actual BENEFIT Sep " + $('#SearchView_YearFrom').val();
+                var label_10 = "Actual BENEFIT Oct " + $('#SearchView_YearFrom').val();
+                var label_11 = "Actual BENEFIT Nov " + $('#SearchView_YearFrom').val();
+                var label_12 = "Actual BENEFIT Dec " + $('#SearchView_YearFrom').val();
+
+                var label_13 = "Budget BENEFIT Jan " + $('#SearchView_YearFrom').val();
+                var label_14 = "Budget BENEFIT Feb " + $('#SearchView_YearFrom').val();
+                var label_15 = "Budget BENEFIT Mar " + $('#SearchView_YearFrom').val();
+                var label_16 = "Budget BENEFIT Apr " + $('#SearchView_YearFrom').val();
+                var label_17 = "Budget BENEFIT May " + $('#SearchView_YearFrom').val();
+                var label_18 = "Budget BENEFIT Jun " + $('#SearchView_YearFrom').val();
+                var label_19 = "Budget BENEFIT Jul " + $('#SearchView_YearFrom').val();
+                var label_20 = "Budget BENEFIT Aug " + $('#SearchView_YearFrom').val();
+                var label_21 = "Budget BENEFIT Sep " + $('#SearchView_YearFrom').val();
+                var label_22 = "Budget BENEFIT Oct " + $('#SearchView_YearFrom').val();
+                var label_23 = "Budget BENEFIT Nov " + $('#SearchView_YearFrom').val();
+                var label_24 = "Budget BENEFIT Dec " + $('#SearchView_YearFrom').val();
+
+                var label_25 = "Actual WTC Jan " + $('#SearchView_YearFrom').val();
+                var label_26 = "Actual WTC Feb " + $('#SearchView_YearFrom').val();
+                var label_27 = "Actual WTC Mar " + $('#SearchView_YearFrom').val();
+                var label_28 = "Actual WTC Apr " + $('#SearchView_YearFrom').val();
+                var label_29 = "Actual WTC May " + $('#SearchView_YearFrom').val();
+                var label_30 = "Actual WTC Jun " + $('#SearchView_YearFrom').val();
+                var label_31 = "Actual WTC Jul " + $('#SearchView_YearFrom').val();
+                var label_32 = "Actual WTC Aug " + $('#SearchView_YearFrom').val();
+                var label_33 = "Actual WTC Sep " + $('#SearchView_YearFrom').val();
+                var label_34 = "Actual WTC Oct " + $('#SearchView_YearFrom').val();
+                var label_35 = "Actual WTC Nov " + $('#SearchView_YearFrom').val();
+                var label_36 = "Actual WTC Dec " + $('#SearchView_YearFrom').val();
+
+                var label_37 = "Budget WTC Jan " + $('#SearchView_YearFrom').val();
+                var label_38 = "Budget WTC Feb " + $('#SearchView_YearFrom').val();
+                var label_39 = "Budget WTC Mar " + $('#SearchView_YearFrom').val();
+                var label_40 = "Budget WTC Apr " + $('#SearchView_YearFrom').val();
+                var label_41 = "Budget WTC May " + $('#SearchView_YearFrom').val();
+                var label_42 = "Budget WTC Jun " + $('#SearchView_YearFrom').val();
+                var label_43 = "Budget WTC Jul " + $('#SearchView_YearFrom').val();
+                var label_44 = "Budget WTC Aug " + $('#SearchView_YearFrom').val();
+                var label_45 = "Budget WTC Sep " + $('#SearchView_YearFrom').val();
+                var label_46 = "Budget WTC Oct " + $('#SearchView_YearFrom').val();
+                var label_47 = "Budget WTC Nov " + $('#SearchView_YearFrom').val();
+                var label_48 = "Budget WTC Dec " + $('#SearchView_YearFrom').val();
+
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
-                    first_chart.push(response[i].ACTUAL_COST_BENEFIT);
-                    second_chart.push(response[i].ACTUAL_COST_WTC);
-                    third_chart.push(response[i].COST_OB_BENEFIT);
-                    forth_chart.push(response[i].COST_OB_WTC);
+
+                    chart_1.push(response[i].ACTUAL_COST_BENEFIT_1);
+                    chart_2.push(response[i].ACTUAL_COST_BENEFIT_2);
+                    chart_3.push(response[i].ACTUAL_COST_BENEFIT_3);
+                    chart_4.push(response[i].ACTUAL_COST_BENEFIT_4);
+                    chart_5.push(response[i].ACTUAL_COST_BENEFIT_5);
+                    chart_6.push(response[i].ACTUAL_COST_BENEFIT_6);
+                    chart_7.push(response[i].ACTUAL_COST_BENEFIT_7);
+                    chart_8.push(response[i].ACTUAL_COST_BENEFIT_8);
+                    chart_9.push(response[i].ACTUAL_COST_BENEFIT_9);
+                    chart_10.push(response[i].ACTUAL_COST_BENEFIT_10);
+                    chart_11.push(response[i].ACTUAL_COST_BENEFIT_11);
+                    chart_12.push(response[i].ACTUAL_COST_BENEFIT_12);
+
+                    chart_13.push(response[i].COST_OB_BENEFIT_1);
+                    chart_14.push(response[i].COST_OB_BENEFIT_2);
+                    chart_15.push(response[i].COST_OB_BENEFIT_3);
+                    chart_16.push(response[i].COST_OB_BENEFIT_4);
+                    chart_17.push(response[i].COST_OB_BENEFIT_5);
+                    chart_18.push(response[i].COST_OB_BENEFIT_6);
+                    chart_19.push(response[i].COST_OB_BENEFIT_7);
+                    chart_20.push(response[i].COST_OB_BENEFIT_8);
+                    chart_21.push(response[i].COST_OB_BENEFIT_9);
+                    chart_22.push(response[i].COST_OB_BENEFIT_10);
+                    chart_23.push(response[i].COST_OB_BENEFIT_11);
+                    chart_24.push(response[i].COST_OB_BENEFIT_12);
+
+                    chart_25.push(response[i].ACTUAL_COST_WTC_1);
+                    chart_26.push(response[i].ACTUAL_COST_WTC_2);
+                    chart_27.push(response[i].ACTUAL_COST_WTC_3);
+                    chart_28.push(response[i].ACTUAL_COST_WTC_4);
+                    chart_29.push(response[i].ACTUAL_COST_WTC_5);
+                    chart_30.push(response[i].ACTUAL_COST_WTC_6);
+                    chart_31.push(response[i].ACTUAL_COST_WTC_7);
+                    chart_32.push(response[i].ACTUAL_COST_WTC_8);
+                    chart_33.push(response[i].ACTUAL_COST_WTC_9);
+                    chart_34.push(response[i].ACTUAL_COST_WTC_10);
+                    chart_35.push(response[i].ACTUAL_COST_WTC_11);
+                    chart_36.push(response[i].ACTUAL_COST_WTC_12);
+
+                    chart_37.push(response[i].COST_OB_WTC_1);
+                    chart_38.push(response[i].COST_OB_WTC_2);
+                    chart_39.push(response[i].COST_OB_WTC_3);
+                    chart_40.push(response[i].COST_OB_WTC_4);
+                    chart_41.push(response[i].COST_OB_WTC_5);
+                    chart_42.push(response[i].COST_OB_WTC_6);
+                    chart_43.push(response[i].COST_OB_WTC_7);
+                    chart_44.push(response[i].COST_OB_WTC_8);
+                    chart_45.push(response[i].COST_OB_WTC_9);
+                    chart_46.push(response[i].COST_OB_WTC_10);
+                    chart_47.push(response[i].COST_OB_WTC_11);
+                    chart_48.push(response[i].COST_OB_WTC_12);
+
                     label_1 = response[i].LABEL1;
                     label_2 = response[i].LABEL2;
                     label_3 = response[i].LABEL3;
                     label_4 = response[i].LABEL4;
+                    label_5 = response[i].LABEL5;
+                    label_6 = response[i].LABEL6;
+                    label_7 = response[i].LABEL7;
+                    label_8 = response[i].LABEL8;
+                    label_9 = response[i].LABEL9;
+                    label_10 = response[i].LABEL10;
+                    label_11 = response[i].LABEL11;
+                    label_12 = response[i].LABEL12;
+                    label_13 = response[i].LABEL13;
+                    label_14 = response[i].LABEL14;
+                    label_15 = response[i].LABEL15;
+                    label_16 = response[i].LABEL16;
+                    label_17 = response[i].LABEL17;
+                    label_18 = response[i].LABEL18;
+                    label_19 = response[i].LABEL19;
+                    label_20 = response[i].LABEL20;
+                    label_21 = response[i].LABEL21;
+                    label_22 = response[i].LABEL22;
+                    label_23 = response[i].LABEL23;
+                    label_24 = response[i].LABEL24;
+                    label_25 = response[i].LABEL25;
+                    label_26 = response[i].LABEL26;
+                    label_27 = response[i].LABEL27;
+                    label_28 = response[i].LABEL28;
+                    label_29 = response[i].LABEL29;
+                    label_30 = response[i].LABEL30;
+                    label_31 = response[i].LABEL31;
+                    label_32 = response[i].LABEL32;
+                    label_33 = response[i].LABEL33;
+                    label_34 = response[i].LABEL34;
+                    label_35 = response[i].LABEL35;
+                    label_36 = response[i].LABEL36;
+                    label_37 = response[i].LABEL37;
+                    label_38 = response[i].LABEL38;
+                    label_39 = response[i].LABEL39;
+                    label_40 = response[i].LABEL40;
+                    label_41 = response[i].LABEL41;
+                    label_42 = response[i].LABEL42;
+                    label_43 = response[i].LABEL43;
+                    label_44 = response[i].LABEL44;
+                    label_45 = response[i].LABEL45;
+                    label_46 = response[i].LABEL46;
+                    label_47 = response[i].LABEL47;
+                    label_48 = response[i].LABEL48;
+                }
+
+                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                    if (i == 1) {
+                        var data1 = {
+                            label: label_1,
+                            backgroundColor: "#8ECD0",
+                            data: chart_1
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 2) {
+                        var data1 = {
+                            label: label_2,
+                            backgroundColor: "#FECACD",
+                            data: chart_2
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 3) {
+                        var data1 = {
+                            label: label_3,
+                            backgroundColor: "#E203AB",
+                            data: chart_3
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 4) {
+                        var data1 = {
+                            label: label_4,
+                            backgroundColor: "#E08488",
+                            data: chart_4
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 5) {
+                        var data1 = {
+                            label: label_5,
+                            backgroundColor: "#FA1106",
+                            data: chart_5
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 6) {
+                        var data1 = {
+                            label: label_6,
+                            backgroundColor: "#9F0336",
+                            data: chart_6
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 7) {
+                        var data1 = {
+                            label: label_7,
+                            backgroundColor: "#F4550F",
+                            data: chart_7
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 8) {
+                        var data1 = {
+                            label: label_8,
+                            backgroundColor: "#FFF5B0",
+                            data: chart_8
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 9) {
+                        var data1 = {
+                            label: label_9,
+                            backgroundColor: "#FFF553",
+                            data: chart_9
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 10) {
+                        var data1 = {
+                            label: label_10,
+                            backgroundColor: "#E79E03",
+                            data: chart_10
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 11) {
+                        var data1 = {
+                            label: label_11,
+                            backgroundColor: "#FC9B11",
+                            data: chart_11
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 12) {
+                        var data1 = {
+                            label: label_12,
+                            backgroundColor: "#FF9769",
+                            data: chart_12
+                        };
+
+                        data_chart.push(data1);
+                    }
+                }
+
+                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                    if (i == 1) {
+                        var data2 = {
+                            label: label_13,
+                            backgroundColor: "#D3FDB4",
+                            data: chart_13
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 2) {
+                        var data2 = {
+                            label: label_14,
+                            backgroundColor: "#5FF59F",
+                            data: chart_14
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 3) {
+                        var data2 = {
+                            label: label_15,
+                            backgroundColor: "#31B204",
+                            data: chart_15
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 4) {
+                        var data2 = {
+                            label: label_16,
+                            backgroundColor: "#3E4440",
+                            data: chart_16
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 5) {
+                        var data2 = {
+                            label: label_17,
+                            backgroundColor: "#4DD292",
+                            data: chart_17
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 6) {
+                        var data2 = {
+                            label: label_18,
+                            backgroundColor: "#B0D8F7",
+                            data: chart_18
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 7) {
+                        var data2 = {
+                            label: label_19,
+                            backgroundColor: "#26A4EC",
+                            data: chart_19
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 8) {
+                        var data2 = {
+                            label: label_20,
+                            backgroundColor: "#100A91",
+                            data: chart_20
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 9) {
+                        var data2 = {
+                            label: label_21,
+                            backgroundColor: "#606596",
+                            data: chart_21
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 10) {
+                        var data2 = {
+                            label: label_22,
+                            backgroundColor: "#B0B4D9",
+                            data: chart_22
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 11) {
+                        var data2 = {
+                            label: label_23,
+                            backgroundColor: "#C0A2F5",
+                            data: chart_23
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 12) {
+                        var data2 = {
+                            label: label_24,
+                            backgroundColor: "#53017D",
+                            data: chart_24
+                        };
+
+                        data_chart.push(data2);
+                    }
+                }
+
+                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                    if (i == 1) {
+                        var data1 = {
+                            label: label_25,
+                            backgroundColor: "#8ECD0",
+                            data: chart_25
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 2) {
+                        var data1 = {
+                            label: label_26,
+                            backgroundColor: "#FECACD",
+                            data: chart_26
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 3) {
+                        var data1 = {
+                            label: label_27,
+                            backgroundColor: "#E203AB",
+                            data: chart_27
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 4) {
+                        var data1 = {
+                            label: label_28,
+                            backgroundColor: "#E08488",
+                            data: chart_28
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 5) {
+                        var data1 = {
+                            label: label_29,
+                            backgroundColor: "#FA1106",
+                            data: chart_29
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 6) {
+                        var data1 = {
+                            label: label_30,
+                            backgroundColor: "#9F0336",
+                            data: chart_30
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 7) {
+                        var data1 = {
+                            label: label_31,
+                            backgroundColor: "#F4550F",
+                            data: chart_31
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 8) {
+                        var data1 = {
+                            label: label_32,
+                            backgroundColor: "#FFF5B0",
+                            data: chart_32
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 9) {
+                        var data1 = {
+                            label: label_33,
+                            backgroundColor: "#FFF553",
+                            data: chart_33
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 10) {
+                        var data1 = {
+                            label: label_34,
+                            backgroundColor: "#E79E03",
+                            data: chart_34
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 11) {
+                        var data1 = {
+                            label: label_35,
+                            backgroundColor: "#FC9B11",
+                            data: chart_35
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 12) {
+                        var data1 = {
+                            label: label_36,
+                            backgroundColor: "#FF9769",
+                            data: chart_36
+                        };
+
+                        data_chart.push(data1);
+                    }
+                }
+
+                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                    if (i == 1) {
+                        var data2 = {
+                            label: label_37,
+                            backgroundColor: "#D3FDB4",
+                            data: chart_37
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 2) {
+                        var data2 = {
+                            label: label_38,
+                            backgroundColor: "#5FF59F",
+                            data: chart_38
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 3) {
+                        var data2 = {
+                            label: label_39,
+                            backgroundColor: "#31B204",
+                            data: chart_39
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 4) {
+                        var data2 = {
+                            label: label_40,
+                            backgroundColor: "#3E4440",
+                            data: chart_40
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 5) {
+                        var data2 = {
+                            label: label_41,
+                            backgroundColor: "#4DD292",
+                            data: chart_41
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 6) {
+                        var data2 = {
+                            label: label_42,
+                            backgroundColor: "#B0D8F7",
+                            data: chart_42
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 7) {
+                        var data2 = {
+                            label: label_43,
+                            backgroundColor: "#26A4EC",
+                            data: chart_43
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 8) {
+                        var data2 = {
+                            label: label_44,
+                            backgroundColor: "#100A91",
+                            data: chart_44
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 9) {
+                        var data2 = {
+                            label: label_45,
+                            backgroundColor: "#606596",
+                            data: chart_45
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 10) {
+                        var data2 = {
+                            label: label_46,
+                            backgroundColor: "#B0B4D9",
+                            data: chart_46
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 11) {
+                        var data2 = {
+                            label: label_47,
+                            backgroundColor: "#C0A2F5",
+                            data: chart_47
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 12) {
+                        var data2 = {
+                            label: label_48,
+                            backgroundColor: "#53017D",
+                            data: chart_48
+                        };
+
+                        data_chart.push(data2);
+                    }
                 }
 
                 if ($('#mylineChart').length) {
@@ -342,25 +978,8 @@
                         type: 'bar',
                         data: {
                             labels: labels_chart,
-                            datasets: [{
-                                label: label_1,
-                                backgroundColor: "#00FF00",
-                                data: first_chart
-                            }, {
-                                label: label_2,
-                                backgroundColor: "#FFFF80",
-                                data: second_chart
-                            }, {
-                                label: label_3,
-                                backgroundColor: "#21A4FF",
-                                data: third_chart
-                            }, {
-                                label: label_4,
-                                backgroundColor: "#FF8000",
-                                data: forth_chart
-                            }]
+                            datasets: data_chart
                         },
-
                         options: {
                             scales: {
                                 yAxes: [{
@@ -369,7 +988,7 @@
                                     },
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Cost'
+                                        labelString: 'Cost (IDR)'
                                     }
                                 }],
                                 xAxes: [{
@@ -381,6 +1000,9 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });
