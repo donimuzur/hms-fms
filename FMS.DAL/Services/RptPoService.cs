@@ -50,6 +50,7 @@ namespace FMS.DAL.Services
                 //                                        (c.END_CONTRACT.Value.Month <= filter.PeriodTo.Month) &&
                 //                                        (c.END_CONTRACT.Value.Year <= filter.PeriodTo.Year));
                 //}
+                queryFilter = queryFilter.And(c => (c.VEHICLE_TYPE == null ? "" : c.VEHICLE_TYPE.ToUpper() ) == "BENEFIT");
                 if (filter.MonthFrom > 0)
                 {
                     queryFilter = queryFilter.And(c => c.REPORT_MONTH >= filter.MonthFrom);
