@@ -1283,8 +1283,8 @@ namespace FMS.BLL.Ctf
             {
                 InActiveCOPEndRent(copitem.MST_FLEET_ID);
             }
-
-            var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
+            var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)).ToList();
+            listCtfInProgress = listCtfInProgress.Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
                                                                         && x.EFFECTIVE_DATE.Value <= dateMinus1).ToList();
 
             foreach (var item in listCtfInProgress)
