@@ -837,9 +837,17 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.InProgress:
                     rc.Subject = csfData.DOCUMENT_NUMBER + " - Document In Progress";
 
-                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    bodyMail.Append("Dear Mr/Mrs " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " will be arrived at " + csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Kindly help to inform the delivery information through this email:<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("PIC & Phone                     :<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Date & Time                     :<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Place/Address                   :<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                     bodyMail.AppendLine();
