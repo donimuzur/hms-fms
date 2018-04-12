@@ -660,6 +660,47 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
+        public JsonResult AcObUnitDataVisual(int monthFrom, int? yearFrom)
+        {
+            var input = new AcVsObGetByParamInput();
+            input.MonthFrom = monthFrom;
+            input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
+            input.MonthTo = monthFrom;
+            input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
+            {
+                input.Function = "Sales,Marketing";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
+            {
+                input.Function = "Operations";
+            }
+            else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                input.Function = "Logistic";
+            }
+            List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
+
+            var numb1 = data.Sum(c => c.UNIT);
+            var numb2 = data.Sum(c => c.UNIT_BUDGET);
+
+            var label1 = "Unit Actual (" + (numb1 == null ? 0 : numb1.Value) + ")";
+            var label2 = "Unit Bugdet (" + (numb2 == null ? 0 : numb2.Value) + ")";
+
+            var groupData = data.GroupBy(x => new { x.FUNCTION })
+                .Select(p => new AcVsObDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    UNIT = p.Sum(c => c.UNIT),
+                    UNIT_BUDGET = p.Sum(c => c.UNIT_BUDGET),
+                    LABEL1 = label1,
+                    LABEL2 = label2
+                }).OrderBy(x => x.FUNCTION).ToList();
+
+            return Json(groupData);
+        }
+
+        [HttpPost]
         public JsonResult AcObDataVisualRegion(int monthFrom, int? yearFrom)
         {
             var input = new AcVsObGetByParamInput();
@@ -2707,6 +2748,9 @@ namespace FMS.Website.Controllers
             List<AcVsObDto> dataAcOb = _execSummBLL.GetAcVsObData(inputAcOb);
             var listDataAcOb = Mapper.Map<List<AcVsObData>>(dataAcOb);
 
+            List<AcVsObDto> dataAcObUnit = _execSummBLL.GetAcVsObUnitData(inputAcOb);
+            var listDataAcObUnit = Mapper.Map<List<AcVsObData>>(dataAcObUnit);
+
             var slDocument = new SLDocument();
 
             //title no of vehicle
@@ -2803,6 +2847,14 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
             slDocument = CreateDataExcelSheet8(slDocument, listDataAcOb);
+
+            //title AC Vs OB Unit
+            slDocument.AddWorksheet("Actual Unit Vs Budget");
+            slDocument.SetCellValue(1, 2, "Executive Summary " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+
+            slDocument = CreateDataExcelSheet13(slDocument, listDataAcObUnit);
 
 
             //title Sum Total
@@ -4032,6 +4084,73 @@ namespace FMS.Website.Controllers
             return slDocument;
         }
 
+        private SLDocument CreateDataExcelSheet13(SLDocument slDocument, List<AcVsObData> listData)
+        {
+            #region --------- Chart --------------
+
+            var firstRow = 14;
+            var contRow = 15;
+            var firstColumn = 2;
+            var total1 = 0;
+            var total2 = 0;
+
+            //select distinct data
+            var dataList = listData.OrderBy(x => x.Function).Select(x => x.Function).Distinct();
+
+            slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
+            slDocument.SetCellValue(firstRow, firstColumn + 1, "Unit Actual");
+            slDocument.SetCellValue(firstRow, firstColumn + 2, "Unit Budget");
+
+            foreach (var item in dataList)
+            {
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Function" : item);
+
+                var countData = listData.Where(x => x.Function == item).Sum(x => x.Unit);
+                slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
+
+                var countData2 = listData.Where(x => x.Function == item).Sum(x => x.UnitBudget);
+                slDocument.SetCellValueNumeric(contRow, firstColumn + 2, countData2.ToString());
+
+                total1 += countData == null ? 0 : countData.Value;
+                total2 += countData2 == null ? 0 : countData2.Value;
+
+                contRow++;
+            }
+
+            slDocument.SetCellValue(contRow, firstColumn, "Total");
+            slDocument.SetCellValue(contRow, firstColumn + 1, total1);
+            slDocument.SetCellValue(contRow, firstColumn + 2, total2);
+
+            SLStyle headerStyleChart = slDocument.CreateStyle();
+            headerStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Center;
+            headerStyleChart.Font.Bold = true;
+            headerStyleChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.GreenYellow, System.Drawing.Color.GreenYellow);
+
+            SLStyle headerStyleNumbChart = slDocument.CreateStyle();
+            headerStyleNumbChart.Font.Bold = true;
+            headerStyleNumbChart.Border.TopBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
+            headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
+
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
+            slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+
+            SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
+            chart.SetChartStyle(SLChartStyle.Style31);
+            chart.SetChartType(SLColumnChartType.ClusteredColumn);
+            chart.SetChartPosition(2, 1, firstRow - 2, 10);
+            chart.Title.SetTitle("Actual Unit Vs Budget");
+            chart.ShowChartTitle(true);
+
+            slDocument.InsertChart(chart);
+
+            #endregion
+
+            return slDocument;
+        }
         #endregion
 
         #endregion

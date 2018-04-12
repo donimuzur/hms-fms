@@ -918,6 +918,7 @@ namespace FMS.Website.Models
         public string Month { get; set; }
         public int? ReportYear { get; set; }
         public int? Unit { get; set; }
+        public int? UnitBudget { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 

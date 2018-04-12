@@ -229,6 +229,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.Month, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.REPORT_MONTH.Value)))
                 .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))
                 .ForMember(dest => dest.Unit, opt => opt.MapFrom(src => src.UNIT))
+                .ForMember(dest => dest.UnitBudget, opt => opt.MapFrom(src => src.UNIT_BUDGET))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
                 ;
 
@@ -241,6 +242,7 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.REPORT_MONTH, opt => opt.MapFrom(src => src.ReportMonth))
                 .ForMember(dest => dest.REPORT_YEAR, opt => opt.MapFrom(src => src.ReportYear))
                 .ForMember(dest => dest.UNIT, opt => opt.MapFrom(src => src.Unit))
+                .ForMember(dest => dest.UNIT_BUDGET, opt => opt.MapFrom(src => src.UnitBudget))
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 ;
 
