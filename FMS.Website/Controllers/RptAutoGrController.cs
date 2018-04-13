@@ -45,34 +45,74 @@ namespace FMS.Website.Controllers
             rptModel.PeriodStart = new DateTime(DateTime.Today.Year,
                 DateTime.Today.Month,1);
             rptModel.PeriodEnd = new DateTime(DateTime.Today.Year,
-                DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year,DateTime.Today.Month));
+                DateTime.Today.Month, 1);
 
-            var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
-            {
-                PeriodStart = rptModel.PeriodStart,
-                PeriodEnd = rptModel.PeriodEnd
-            });
+            //var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
+            //{
+            //    PeriodStart = rptModel.PeriodStart,
+            //    PeriodEnd = rptModel.PeriodEnd,
+            //    PONumber = rptModel.PONumber,
+            //    POLine = rptModel.POLine
+            //});
 
-            rptModel.Details = Mapper.Map<List<RptAutoGrItem>>(data);
+            //rptModel.Details = Mapper.Map<List<RptAutoGrItem>>(data);
             return View(rptModel);
         }
 
-        [HttpPost]
-        public ActionResult Index(RptAutoGrModel model)
-        {
-            model = InitModel(model);
+        //[HttpPost]
+        //public ActionResult Index(RptAutoGrModel model)
+        //{
+        //    model = InitModel(model);
             
-            var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
-            {
-                PeriodEnd = model.PeriodEnd,
-                PeriodStart = model.PeriodStart
-            });
+        //    var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
+        //    {
+        //        PeriodEnd = model.PeriodEnd,
+        //        PeriodStart = model.PeriodStart,
+        //        PONumber = model.PONumber,
+        //        POLine = model.POLine
+        //    });
 
-            model.Details = Mapper.Map<List<RptAutoGrItem>>(data);
+        //    model.Details = Mapper.Map<List<RptAutoGrItem>>(data);
 
 
 
-            return View(model);
+        //    return View(model);
+        //}
+
+        [HttpPost]
+        public JsonResult SearchAutoGrAjax(DTParameters<RptAutoGrModel> param)
+        {
+            var model = param;
+            var data = model != null ? SearchDataAutoGr(model) : SearchDataAutoGr();
+            DTResult<RptAutoGrItem> result = new DTResult<RptAutoGrItem>();
+            result.draw = param.Draw;
+            result.recordsFiltered = data.Count;
+            result.recordsTotal = data.Count;
+            //param.TotalData = data.Count;
+            //if (param != null && param.Start > 0)
+            //{
+
+            data = data.ToList();
+            data = data.Skip(param.Start).Take(param.Length).ToList();
+
+            //}
+            result.data = data;
+
+            return Json(result);
+        }
+
+        private List<RptAutoGrItem> SearchDataAutoGr(DTParameters<RptAutoGrModel> searchView = null)
+        {
+            var param = new RptAutoGrInput();
+            param.PeriodEnd = searchView.PeriodEnd;
+            param.PeriodStart = searchView.PeriodStart;
+            param.PONumber = searchView.PONumber;
+            param.POLine = searchView.POLine;
+
+            var dbData = _autoGrBLL.GetAutoGR(param);
+            var redata = Mapper.Map<List<RptAutoGrItem>>(dbData);
+
+            return redata;
         }
 
         #region ----- Export Excel ------
@@ -103,9 +143,11 @@ namespace FMS.Website.Controllers
             var data = _autoGrBLL.GetAutoGR(new RptAutoGrInput()
             {
                 PeriodEnd = model.PeriodEnd,
-                PeriodStart = model.PeriodStart
+                PeriodStart = model.PeriodStart,
+                PONumber = model.PONumber,
+                POLine = model.POLine
             });
-
+            
             var listData = Mapper.Map<List<RptAutoGrItem>>(data);
 
             var slDocument = new SLDocument();

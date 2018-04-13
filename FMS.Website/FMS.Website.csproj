@@ -241,12 +241,17 @@
     <Compile Include="Code\FMSWebsiteMapperCSF.cs" />
     <Compile Include="Code\FMSWebsiteMapperCTF.cs" />
     <Compile Include="Code\FMSWebsiteMapperExecSum.cs" />
+    <Compile Include="Code\FMSWebsiteMapperGroupCostCenter.cs" />
+    <Compile Include="Code\FMSWebsiteMapperGs.cs" />
+    <Compile Include="Code\FMSWebsiteMapperHolidayCalender.cs" />
+    <Compile Include="Code\FMSWebsiteMapperPenalty.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptCCF.cs" />
     <Compile Include="Code\FMSWebsiteMapperKpiMonitoring.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptFuel.cs" />
     <Compile Include="Code\FMSWebsiteMapperRptPo.cs" />
     <Compile Include="Code\FMSWebsiteMapperTEMP.cs" />
     <Compile Include="Code\FMSWebsiteMapperVehicleOverallReport.cs" />
+    <Compile Include="Code\FMSWebsiteMapperVehicleSpect.cs" />
     <Compile Include="Code\FormsAuthenticationService.cs" />
     <Compile Include="Code\GenericHelpers.cs" />
     <Compile Include="Code\IFormsAuthenticationService.cs" />
@@ -255,6 +260,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangesLogController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MstComplaintController.cs" />
@@ -284,6 +290,7 @@
     <Compile Include="Controllers\RptCfmIdleController.cs" />
     <Compile Include="Controllers\RptExecutiveSummaryController.cs" />
     <Compile Include="Controllers\RptFuelController.cs" />
+    <Compile Include="Controllers\RptGSController.cs" />
     <Compile Include="Controllers\RptKpiMonitoringController.cs" />
     <Compile Include="Controllers\RptPoController.cs" />
     <Compile Include="Controllers\RptVehicleOverallController.cs" />
@@ -1040,6 +1047,14 @@
     <Content Include="files_upload\masterFuelOdometer.xlsx" />
     <Content Include="files_upload\masterCostOB.xlsx" />
     <Content Include="files_upload\UploadCtf.xlsx" />
+    <Content Include="Help_Files\User Guideline\BENEFIT.pdf" />
+    <Content Include="Help_Files\User Guideline\WTC.pdf" />
+    <Content Include="Help_Files\Vehicle Information\BENEFIT.pdf" />
+    <Content Include="Help_Files\Vehicle Information\WTC.pdf" />
+    <Content Include="Help_Files\Vendor Information\ASSA.pdf" />
+    <Content Include="Help_Files\Vendor Information\TRAC.pdf" />
+    <Content Include="Help_Files\Vendor SLA\ASSA.pdf" />
+    <Content Include="Help_Files\Vendor SLA\TRAC.pdf" />
     <None Include="Properties\PublishProfiles\hms-fms.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Images\accident.png" />
@@ -1049,6 +1064,7 @@
     <Content Include="Images\odometers.png" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\HelpScript.js" />
     <Content Include="Scripts\ccfscript.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\AutoGr.js" />
@@ -4405,6 +4421,25 @@
     <Content Include="Views\MstFleetDashboard\Index.cshtml" />
     <Content Include="Views\MstFleetDashboard\_FleetDashboardList.cshtml" />
     <Content Include="Views\Shared\ErrorHandler.cshtml" />
+    <Content Include="Views\RptGS\Index.cshtml" />
+    <Content Include="Views\RptGS\_RptGsFilter.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SummaryAllNew.cshtml" />
+    <Content Include="Views\MstGs\_ListGS.cshtml" />
+    <Content Include="Views\MstPriceList\_listPriceList.cshtml" />
+    <Content Include="Views\MstEpaf\_ListEpaf.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleFromVendorDetails.cshtml" />
+    <Content Include="Views\TraCsf\_ListVehicleDetails.cshtml" />
+    <Content Include="Views\RptExecutiveSummary\SummaryRegion.cshtml" />
+    <Content Include="Views\MstPenalty\_ListPenalty.cshtml" />
+    <Content Include="Views\MstVehicleSpect\_ListVehicleSpect.cshtml" />
+    <Content Include="Views\Help\Index.cshtml" />
+    <Content Include="Views\Help\VendorSLA.cshtml" />
+    <Content Include="Views\Help\VendorInformation.cshtml" />
+    <Content Include="Views\Help\VehicleInformation.cshtml" />
+    <Content Include="Views\MstGroupCostCenter\_ListGroupCostCenter.cshtml" />
+    <Content Include="Views\MstHolidayCalender\_ListHolidayCalender.cshtml" />
+    <Content Include="Views\MstLocationMapping\_listLocationMapping.cshtml" />
+    <Content Include="Views\RptAutoGr\_ListAutoGr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

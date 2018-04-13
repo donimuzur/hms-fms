@@ -14,6 +14,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearTo { get; set; }
         public string VehicleType { get; set; }
         public string Regional { get; set; }
+        public string ZoneId { get; set; }
         public string SupplyMethod { get; set; }
         public string Function { get; set; }
     }
@@ -25,6 +26,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Regional { get; set; }
+        public string ZoneId { get; set; }
         public string Function { get; set; }
     }
 
@@ -46,6 +48,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearTo { get; set; }
         public string VehicleType { get; set; }
         public string Region { get; set; }
+        public string ZoneId { get; set; }
         public string Function { get; set; }
     }
 
@@ -57,6 +60,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearTo { get; set; }
         public string VehicleType { get; set; }
         public string Region { get; set; }
+        public string ZoneId { get; set; }
         public string Function { get; set; }
     }
 
@@ -68,6 +72,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearTo { get; set; }
         public string VehicleType { get; set; }
         public string Region { get; set; }
+        public string ZoneId { get; set; }
         public string Function { get; set; }
     }
 
@@ -78,6 +83,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Region { get; set; }
+        public string ZoneId { get; set; }
         public string Function { get; set; }
     }
 
@@ -88,6 +94,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Region { get; set; }
+        public string ZoneId { get; set; }
     }
 
     public class AccidentGetByParamInput
@@ -98,6 +105,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearTo { get; set; }
         public string VehicleType { get; set; }
         public string Region { get; set; }
+        public string ZoneId { get; set; }
         public string Function { get; set; }
     }
 
@@ -108,6 +116,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearFrom { get; set; }
         public int YearTo { get; set; }
         public string Function { get; set; }
+        public string VehicleType { get; set; }
     }
 
     public class SumPtdFuncGetByParamInput

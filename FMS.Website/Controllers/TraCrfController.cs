@@ -121,11 +121,7 @@ namespace FMS.Website.Controllers
                 Details = Mapper.Map<List<TraCrfItemDetails>>(data),
                 MainMenu = Enums.MenuList.PersonalDashboard,
                 CurrentLogin = CurrentUser,
-                CurrentPageAccess = new RoleDto()
-                {
-                    ReadAccess = true,
-                    
-                },
+                CurrentPageAccess = CurrentPageAccess,
                 IsPersonalDashboard = true
             };
             foreach (var traCrfDto in model.Details)
@@ -144,6 +140,14 @@ namespace FMS.Website.Controllers
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             var data = _CRFBLL.GetCompleted().OrderByDescending(x => x.MODIFIED_DATE).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FleetManager)
+            {
+                data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
+            }
+            else if(CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
+            }
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
             return View(model);
         }
@@ -853,6 +857,14 @@ namespace FMS.Website.Controllers
             if (isCompleted)
             {
                 CRF = _CRFBLL.GetCompleted();
+                if (CurrentUser.UserRole == Enums.UserRole.FleetManager)
+                {
+                    CRF = CRF.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
+                }
+                else if (CurrentUser.UserRole == Enums.UserRole.HRManager)
+                {
+                    CRF = CRF.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
+                }
 
             }
             else

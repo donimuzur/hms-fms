@@ -138,7 +138,12 @@
     <Compile Include="Inputs\FleetParamInput.cs" />
     <Compile Include="Inputs\FuelOdometerParamInput.cs" />
     <Compile Include="Inputs\GenerateDocNumberInput.cs" />
+    <Compile Include="Inputs\GroupCostCenterParamInput.cs" />
+    <Compile Include="Inputs\GSParamInput.cs" />
+    <Compile Include="Inputs\HolidayCalenderParamInput.cs" />
     <Compile Include="Inputs\MasterParamInput.cs" />
+    <Compile Include="Inputs\PricelistParamInput.cs" />
+    <Compile Include="Inputs\PenaltyParamInput.cs" />
     <Compile Include="Inputs\RptAutoGrInput.cs" />
     <Compile Include="Inputs\RptCCFInput.cs" />
     <Compile Include="Inputs\RptGsInput.cs" />
@@ -147,6 +152,7 @@
     <Compile Include="Inputs\RptPo.cs" />
     <Compile Include="Inputs\TempParamInput.cs" />
     <Compile Include="Inputs\VehicleOverallReportInput.cs" />
+    <Compile Include="Inputs\VehicleSpectParamInput.cs" />
     <Compile Include="KPI_REPORT_DATA.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

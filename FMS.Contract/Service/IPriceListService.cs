@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Contract.Service
 {
@@ -15,5 +16,6 @@ namespace FMS.Contract.Service
         MST_PRICELIST GetExist(string Model);
         void save(MST_PRICELIST dbPriceList);
         void save(MST_PRICELIST dbPriceList, Login userLogin);
+        List<MST_PRICELIST> GetPriceList(PricelistParamInput input);
     }
 }

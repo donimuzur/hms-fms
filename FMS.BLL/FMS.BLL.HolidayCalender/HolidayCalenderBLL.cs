@@ -11,7 +11,7 @@ using AutoMapper;
 using FMS.BusinessObject;
 using FMS.Contract.BLL;
 using FMS.BusinessObject.Business;
-
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.HolidayCalender
 {
@@ -50,6 +50,13 @@ namespace FMS.BLL.HolidayCalender
         {
             var dbHolidayCalender = Mapper.Map<MST_HOLIDAY_CALENDAR>(Dto);
             _holidayCalenderService.save(dbHolidayCalender, userLogin);
+        }
+
+        public List<HolidayCalenderDto> GetHolidayCalender(HolidayCalenderParamInput filter)
+        {
+            var data = _holidayCalenderService.GetHolidayCalender(filter);
+            var retData = Mapper.Map<List<HolidayCalenderDto>>(data);
+            return retData;
         }
     }
 }

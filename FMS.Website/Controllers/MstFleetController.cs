@@ -144,7 +144,8 @@ namespace FMS.Website.Controllers
             param.EmployeeId = searchView.EmployeeId;
             param.FormalName = searchView.FormalName;
             param.PoliceNumber = searchView.PoliceNumber;
-
+            param.ChasisNumber = searchView.ChasisNumber;
+            param.EngineNumber = searchView.EngineNumber;
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }
@@ -170,7 +171,8 @@ namespace FMS.Website.Controllers
             param.EmployeeId = searchView.EmployeeID;
             param.FormalName = searchView.EmployeeName;
             param.PoliceNumber = searchView.PoliceNumber;
-
+            param.ChasisNumber = searchView.ChasisNumber;
+            param.EngineNumber = searchView.EngineNumber;
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }

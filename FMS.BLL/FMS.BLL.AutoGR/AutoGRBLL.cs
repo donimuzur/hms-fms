@@ -30,6 +30,10 @@ namespace FMS.BLL.AutoGR
         public List<RptAutoGrDto> GetAutoGR(RptAutoGrInput rptAutoGrInput)
         {
             List<AUTO_GR> data = _grService.GetAutoGr(rptAutoGrInput);
+            var Dto = Mapper.Map<List<RptAutoGrDto>>(data);
+            if (data.Count == 0) return Dto;
+
+            var GetListAutoGr = _grService.GetAutoGr();
             var polineList = data.GroupBy(x=> new { x.PO_NUMBER, x.LINE_ITEM }).Select(x => x.Key.PO_NUMBER + "_" + x.Key.LINE_ITEM).ToList();
             var dataFleet = _fleetService.GetFleet().Where(x=> polineList.Contains(x.PO_NUMBER + "_"+x.PO_LINE)).ToList();
             //var dataFleetTerminated = dataFleet.Where(x => x.END_DATE.HasValue && x.END_DATE.Value < x.END_CONTRACT).ToList();
@@ -57,10 +61,23 @@ namespace FMS.BLL.AutoGR
                     
                             }).ToList();
 
+            var groupData = autoGrDto.GroupBy(x => new { x.AutoGrId, x.EndContract, x.StartContract, x.GrDate, x.PoLine, x.PoNumber, x.PoliceNumber, x.QtyAutoGr })
+                .Select(p => new RptAutoGrDto()
+                {
+                    AutoGrId = p.FirstOrDefault().AutoGrId,
+                    EndContract = p.FirstOrDefault().EndContract,
+                    StartContract = p.FirstOrDefault().StartContract,
+                    GrDate = p.FirstOrDefault().GrDate,
+                    PoLine = p.FirstOrDefault().PoLine,
+                    PoNumber = p.FirstOrDefault().PoNumber,
+                    PoliceNumber = p.FirstOrDefault().PoliceNumber,
+                    QtyAutoGr = p.FirstOrDefault().QtyAutoGr
+                }).ToList();
 
-            foreach(var dto in autoGrDto)
+
+            foreach (var dto in groupData)
             {
-                var calculatedGr = data.Where(x => x.PO_DATE < dto.GrDate)
+                var calculatedGr = GetListAutoGr.Where(x => x.PO_DATE < dto.GrDate)
                     .GroupBy(x => new { x.LINE_ITEM, x.PO_NUMBER })
                     .Select(x => new RptAutoGrDto()
                     {
@@ -76,8 +93,7 @@ namespace FMS.BLL.AutoGR
 
                 if (dto.StartContract != null && dto.EndContract != null)
                 {
-                    var contractQty = ((dto.EndContract.Value.Year - dto.StartContract.Value.Year) * 12) +
-                                       dto.EndContract.Value.Month - dto.StartContract.Value.Month;
+                    var contractQty = ((decimal)(dto.EndContract.Value - dto.StartContract.Value).TotalDays + 1 + (decimal)GetCalday(dto.StartContract.Value, dto.EndContract.Value))/(decimal)30.00;
                     if (dto.EndContract.Value.Year == dto.StartContract.Value.Year && dto.EndContract.Value.Month == dto.StartContract.Value.Month) contractQty = 1;
 
                     dto.QtyRemaining = contractQty - dto.QtyCalculated - dto.QtyAutoGr;
@@ -91,8 +107,54 @@ namespace FMS.BLL.AutoGR
                 //    dto.TerminationDate = terminatedData.END_DATE;
                 //}
             }
-
-            return autoGrDto;
+            groupData.OrderByDescending(x => x.GrDate);
+            return groupData;
+        }
+        public int GetCalday(DateTime StartContract, DateTime EndContract)
+        {
+            var End_Contract = new DateTime(EndContract.Year, EndContract.Month,15);
+            DateTime Start_Contract = new DateTime(StartContract.Year, StartContract.Month, 15);
+            int Result =0;
+            while (Start_Contract < End_Contract)
+            {
+                if (Start_Contract.Month == 1 || Start_Contract.Month == 3 || Start_Contract.Month == 5 || Start_Contract.Month == 7 || Start_Contract.Month == 8 || Start_Contract.Month == 10 || Start_Contract.Month == 12)
+                {
+                    Result = Result - 1;
+                }
+		        else if (Start_Contract.Month == 2)
+                {
+                    if(Start_Contract.Year % 4 == 0)
+                    {
+                        Result = Result + 1;
+                    }
+                    else
+                    {
+                        Result = Result + 2;
+                    }
+                }
+                Start_Contract = Start_Contract.AddMonths(1);
+            }
+            var EndOfMonth = new DateTime(EndContract.Year, EndContract.Month, 1);
+            EndOfMonth = EndOfMonth.AddMonths(1);
+            if (EndContract.Day == EndOfMonth.AddDays(-1).Day)
+            {
+                if (EndContract.Month == 1 || EndContract.Month == 3 || EndContract.Month == 5 || EndContract.Month == 7 || EndContract.Month == 8 || EndContract.Month == 10 || EndContract.Month == 12)
+                {
+                    Result = Result - 1;
+                }
+                else if (EndContract.Month == 2)
+                {
+                    if (EndContract.Year % 4 == 0)
+                    {
+                        Result = Result + 1;
+                    }
+                    else
+                    {
+                        Result = Result + 2;
+                    }
+                }
+            }
+            return Result;
         }
 
     }

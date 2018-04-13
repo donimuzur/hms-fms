@@ -4,36 +4,32 @@
 @{
 	ViewBag.Title = Model.TitleForm;
 }
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet">
-<style>
-	.datepicker {
-		margin-left: 15px;
-	}
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
-		$(document).ready(function () {
-			$('#SearchView_YearFrom').datepicker({
-			  minViewMode: 2,
-			  format: 'yyyy',
-			  autoclose: true,
-			  position: 'right bottom',
-			  container: '#xz'
-			});
-			$('#SearchView_YearTo').datepicker({
-				minViewMode: 2,
-				format: 'yyyy',
-				autoclose: true,
-				position: 'right bottom',
-				container: '#xy'
-			});
-		});
+		//$(document).ready(function () {
+		//	$('#SearchView_YearFrom').datepicker({
+		//	  minViewMode: 2,
+		//	  format: 'yyyy',
+		//	  autoclose: true,
+		//	  position: 'right bottom',
+		//	  container: '#xz'
+		//	});
+		//	$('#SearchView_YearTo').datepicker({
+		//		minViewMode: 2,
+		//		format: 'yyyy',
+		//		autoclose: true,
+		//		position: 'right bottom',
+		//		container: '#xy'
+		//	});
+		//});
 </script>
 <div class="opt-content clearfloat">
 	<h5 class="title-page">@ViewBag.Title</h5>
-	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-		<i class="fa fa-download"></i> Export
-	</a>
+    @if (Model.CurrentPageAccess.ReadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-upload"></i> Export
+        </a>
+    }
 </div>
 <section class="content">
 	<div class="wpanel">
@@ -60,7 +56,8 @@
 				<div class="col-md-3">
 					<div class="form-group" id="xz">
 						<label for="">Year From</label>
-						<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />
+                        @Html.TextBoxFor(model => model.SearchView.YearFrom, new { @class = "form-control year" })
+						@*<input type="text" id="SearchView_YearFrom" value="@Model.SearchView.YearFrom" class="form-control year" data-provide="datepicker" />*@
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -72,7 +69,8 @@
 				<div class="col-md-3">
 					<div class="form-group" id="xy">
 						<label for="">Year To</label>
-						<input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />
+                        @Html.TextBoxFor(model => model.SearchView.YearTo, new { @class = "form-control year" })
+						@*<input type="text" id="SearchView_YearTo" value="@Model.SearchView.YearTo" class="form-control year" data-provide="datepicker" />*@
 					</div>
 				</div>
 				<div class="col-md-3">
@@ -232,6 +230,10 @@
 
     $(function () {
         setupDataTables();
+
+        $('.year').datetimepicker({
+            format: 'YYYY'
+        });
         //$("#btn-reset").trigger('click');
     });
 </script>

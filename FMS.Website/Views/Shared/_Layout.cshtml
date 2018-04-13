@@ -139,7 +139,7 @@
 								<h5>Car Selection</h5>
 							</a>
 							<ul class="childmenu collapse" id="CsfMenu" data-parent="#sidemenu">
-								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
 								{
 									<li><a id="CsfDashboard" href="@Url.Action("Dashboard","TraCsf", new { IsPersonalDashboard = false })">Dashboard</a></li>
 								}
@@ -153,7 +153,7 @@
 								<h5>Car Relocation</h5>
 							</a>
 							<ul class="childmenu collapse" id="CrfMenu" data-parent="#sidemenu">
-								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
 								{
 									<li><a id="CrfDashboard" href="@Url.Action("Dashboard","TraCrf")">Dashboard</a></li>
 								}
@@ -198,7 +198,7 @@
 								<h5>Car Termination</h5>
 							</a>
 							<ul class="childmenu collapse" id="CtfMenu" data-parent="#sidemenu">
-								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+								@if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
 								{
 									<li><a id="CtfDashboard" href="@Url.Action("DashboardEpaf","TraCtf")">Dashboard</a></li>
 								}
@@ -301,7 +301,7 @@
 							</a>
 						</li>
 						<li>
-							<a id="GsParent" href="@Url.Action("ReportGs","MstGs")">
+							<a id="GsParent" href="@Url.Action("Index","RptGS")">
 								<span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
 								<h5>GS</h5>
 							</a>
@@ -320,26 +320,81 @@
 								<h5>Executive Summary</h5>
 							</a>
 							<ul class="childmenu collapse" id="ExecSummMenu" data-parent="#sidemenu">
-								<li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary All</a></li>
-								<li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary By Sales & Marketing</a></li>
-								<li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle</a></li>
-								<li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle WTC</a></li>
-								<li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make</a></li>
+								<li><a id="SummAll" href="@Url.Action("SummaryAll", "RptExecutiveSummary")">Summary - All</a></li>
+                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic
+                                    && Model.CurrentLogin.UserRole != Enums.UserRole.LDManager && Model.CurrentLogin.UserRole != Enums.UserRole.HR
+                                     && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager) { 
+								    <li><a id="SummRegion" href="@Url.Action("SummaryRegion", "RptExecutiveSummary")">Summary - Working Tool Car</a></li>
+                                }
+								<li><a id="NumbVehicle" href="@Url.Action("Index", "RptExecutiveSummary")">Number Of Vehicle - All</a></li>
+                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic
+                                    && Model.CurrentLogin.UserRole != Enums.UserRole.LDManager && Model.CurrentLogin.UserRole != Enums.UserRole.HR
+                                     && Model.CurrentLogin.UserRole != Enums.UserRole.HRManager)
+                                {
+								    <li><a id="NumbWtc" href="@Url.Action("VehicleWtc", "RptExecutiveSummary")">Number Of Vehicle - Working Tool Car</a></li>
+                                }
+								<li><a id="NumbMakeType" href="@Url.Action("VehicleMake", "RptExecutiveSummary")">Number Of Vehicle Make - Type</a></li>
 								<li><a id="Odometer" href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></li>
-								<li><a id="LiterByFunction" href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Liter By Function</a></li>
-								<li><a id="FuelCostByFunction" href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost By Function</a></li>
-								<li><a id="LeaseCostByFunction" href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost By Function</a></li>
-								<li><a id="SalesByRegion" href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Sales By Region</a></li>
+								<li><a id="LiterByFunction" href="@Url.Action("LiterByFunction", "RptExecutiveSummary")">Fuel Purchased (liters)</a></li>
+								<li><a id="FuelCostByFunction" href="@Url.Action("FuelCostByFunction", "RptExecutiveSummary")">Fuel Cost</a></li>
+								<li><a id="LeaseCostByFunction" href="@Url.Action("LeaseCostByFunction", "RptExecutiveSummary")">Lease Cost</a></li>
+                                @if (Model.CurrentLogin.UserRole != Enums.UserRole.OpsFinanceManager && Model.CurrentLogin.UserRole != Enums.UserRole.Logistic 
+                                    && Model.CurrentLogin.UserRole != Enums.UserRole.LDManager) {
+								    <li><a id="SalesByRegion" href="@Url.Action("SalesByRegion", "RptExecutiveSummary")">Operational Cost</a></li>
+                                }
 								<li><a id="Accident" href="@Url.Action("Accident", "RptExecutiveSummary")">Accident</a></li>
-								<li><a id="AcVsOb" href="@Url.Action("AcVsOb", "RptExecutiveSummary")">AC Vs OB</a></li>
+								<li><a id="AcVsOb" href="@Url.Action("AcVsOb", "RptExecutiveSummary")">Actual Cost Vs Budget</a></li>
 								@*<li><a id="SumPtdByFunction" href="@Url.Action("SumPtdByFunction", "RptExecutiveSummary")">Sum PTD By Function</a></li>*@
 							</ul>
 						</li>
-					</ul>
-					break;
-
-			}
-		}
+					</ul>  break;
+                case Enums.MenuList.Help:
+                    <h5 class="sb-title">Main Menu - Help</h5>
+                    <ul id="sidemenu" role="tablist">
+                        <li>
+                            <a id="UserGuideParent" href="#UserGuideMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>User Guideline</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="UserGuideMenu" data-parent="#sidemenu">
+                                <li><a id="UserGuideBENEFIT" href="@Url.Action("Index", "Help", new { Type = "BENEFIT" })">BENEFIT</a></li>
+                                <li><a id="UserGuideWTC" href="@Url.Action("Index", "Help", new { Type = "WTC" })">WTC</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="VendorSLAParent" href="#VendorSLAMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Vendor SLA</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="VendorSLAMenu" data-parent="#sidemenu">
+                                <li><a id="VendorSLATRAC" href="@Url.Action("VendorSLA", "Help", new { Type = "TRAC" })">TRAC</a></li>
+                                <li><a id="VendorSLAASSA" href="@Url.Action("VendorSLA", "Help", new { Type = "ASSA" })">ASSA</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="VendorInformationParent" href="#VendorInformationMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Vendor Information</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="VendorInformationMenu" data-parent="#sidemenu">
+                                <li><a id="VendorInformationTRAC" href="@Url.Action("VendorInformation", "Help", new { Type = "TRAC" })">TRAC</a></li>
+                                <li><a id="VendorInformationASSA" href="@Url.Action("VendorInformation", "Help", new { Type = "ASSA" })">ASSA</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="VehicleInformationParent" href="#VehicleInformationMenu" data-toggle="collapse">
+                                <span class="icon-col"><img src="~/Content/images/key-mini.png" alt=""></span>
+                                <h5>Vehicle Information</h5>
+                            </a>
+                            <ul class="childmenu collapse" id="VehicleInformationMenu" data-parent="#sidemenu">
+                                <li><a id="VehicleInformationBENEFIT" href="@Url.Action("VehicleInformation", "Help", new { Type = "BENEFIT" })">BENEFIT</a></li>
+                                <li><a id="VehicleInformationWTC" href="@Url.Action("VehicleInformation", "Help", new { Type = "WTC" })">WTC</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    break;
+            }
+        }
 	</aside>
 	<main>
 		@*<div class="content">*@

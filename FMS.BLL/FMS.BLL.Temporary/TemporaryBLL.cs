@@ -297,6 +297,13 @@ namespace FMS.BLL.Temporary
             {
                 dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
             }
+            else
+            {
+                if (input.UserRole == Enums.UserRole.Fleet)
+                {
+                    dbData.DOCUMENT_STATUS = Enums.DocumentStatus.InProgress;
+                }
+            }
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
@@ -396,15 +403,13 @@ namespace FMS.BLL.Temporary
             var typeEnv = ConfigurationManager.AppSettings["Environment"];
             var serverIntranet = ConfigurationManager.AppSettings["ServerIntranet"];
             var employeeData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID);
-            var creatorData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID_CREATOR);
+            //var creatorData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID_CREATOR);
             var fleetApprovalData = _employeeService.GetEmployeeById(tempData.EMPLOYEE_ID_FLEET_APPROVAL);
 
             var employeeDataEmail = employeeData == null ? string.Empty : employeeData.EMAIL_ADDRESS;
-            var creatorDataEmail = creatorData == null ? string.Empty : creatorData.EMAIL_ADDRESS;
             var fleetApprovalDataEmail = fleetApprovalData == null ? string.Empty : fleetApprovalData.EMAIL_ADDRESS;
 
             var employeeDataName = employeeData == null ? string.Empty : employeeData.FORMAL_NAME;
-            var creatorDataName = creatorData == null ? string.Empty : creatorData.FORMAL_NAME;
             var fleetApprovalDataName = fleetApprovalData == null ? string.Empty : fleetApprovalData.FORMAL_NAME;
 
             var hrList = string.Empty;
@@ -431,8 +436,28 @@ namespace FMS.BLL.Temporary
             string connectionString = e.ProviderConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
-            SqlCommand query = new SqlCommand(hrQuery, con);
+            //----------UPDATE CREATOR EMAIL FROM ADSI------------//
+            var creatorDataEmail = string.Empty;
+            var creatorDataName = string.Empty;
+
+            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + tempData.CREATED_BY + "'";
+            if (typeEnv == "VTI")
+            {
+                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE FULL_NAME = 'PMI\\" + tempData.CREATED_BY + "'";
+            }
+
+            SqlCommand query = new SqlCommand(CreatorQuery, con);
             SqlDataReader reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                creatorDataEmail = reader[0].ToString();
+                creatorDataName = reader[1].ToString();
+            }
+            ///////////////////////////////////////////////////////
+
+
+            query = new SqlCommand(hrQuery, con);
+            reader = query.ExecuteReader();
             while (reader.Read())
             {
                 var hrLogin = "'" + reader[0].ToString() + "',";
@@ -483,38 +508,38 @@ namespace FMS.BLL.Temporary
                     //if submit from FLEET for wtc
                     if (tempData.CREATED_BY == input.UserId && !isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
+                        //rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.To.Add(vendorEmail);
-                        }
+                        //    rc.To.Add(vendorEmail);
+                        //}
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
 
-                        rc.CC.Add(employeeDataEmail);
+                        //rc.CC.Add(employeeDataEmail);
 
-                        
+                        return rc;
                     }
                     //if submit from HR for benefit
                     if (tempData.CREATED_BY == input.UserId && isBenefit)
@@ -554,37 +579,37 @@ namespace FMS.BLL.Temporary
                     //if Fleet Approve for benefit
                     if (input.UserRole == Enums.UserRole.Fleet && isBenefit)
                     {
-                        rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
+                        //rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Vendor Information Temporary Car";
 
-                        bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("You have new car request. Please check attached file<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Thanks<br /><br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Regards,<br />");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("Fleet Team");
-                        bodyMail.AppendLine();
+                        //bodyMail.Append("Dear Vendor " + vendorName + ",<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("You have new car request. Please check attached file<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Thanks<br /><br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Regards,<br />");
+                        //bodyMail.AppendLine();
+                        //bodyMail.Append("Fleet Team");
+                        //bodyMail.AppendLine();
 
-                        //if vendor exists
-                        if (!string.IsNullOrEmpty(vendorEmail))
-                        {
-                            foreach (var item in input.Attachments)
-                            {
-                                rc.Attachments.Add(item);
-                            }
+                        ////if vendor exists
+                        //if (!string.IsNullOrEmpty(vendorEmail))
+                        //{
+                        //    foreach (var item in input.Attachments)
+                        //    {
+                        //        rc.Attachments.Add(item);
+                        //    }
 
-                            rc.To.Add(vendorEmail);
-                        }
+                        //    rc.To.Add(vendorEmail);
+                        //}
 
-                        rc.To.Add(creatorDataEmail);
+                        //rc.To.Add(creatorDataEmail);
 
-                        foreach (var item in fleetEmailList)
-                        {
-                            rc.CC.Add(item);
-                        }
-
+                        //foreach (var item in fleetEmailList)
+                        //{
+                        //    rc.CC.Add(item);
+                        //}
+                        return rc;
                         //rc.CC.Add(employeeDataEmail);
                     }
                     rc.IsCCExist = true;
@@ -637,7 +662,10 @@ namespace FMS.BLL.Temporary
 
                     rc.To.Add(creatorDataEmail);
                     rc.CC.Add(employeeDataEmail);
-                    rc.CC.Add(fleetApprovalDataEmail);
+                    if(fleetApprovalDataEmail != "" && fleetApprovalDataEmail != null)
+                    {
+                        rc.CC.Add(fleetApprovalDataEmail);
+                    }
                     rc.IsCCExist = true;
                     break;
                 case Enums.ActionType.Cancel:
@@ -670,10 +698,18 @@ namespace FMS.BLL.Temporary
                     rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Document In Progress";
 
                     //if not using CFM IDLE
-                    if (tempData.CFM_IDLE_ID == null || tempData.CFM_IDLE_ID == 0) { 
-                        bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    if (tempData.CFM_IDLE_ID == null || tempData.CFM_IDLE_ID == 0) {
+                        bodyMail.Append("Dear Mr/Mrs " + employeeDataName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your temporary car with request no. " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Kindly help to inform the delivery information through this email:<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("PIC & Phone                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Date & Time                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Place/Address                   :<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
@@ -689,9 +725,17 @@ namespace FMS.BLL.Temporary
                     //if using CFM IDLE
                     else
                     {
-                        bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                        bodyMail.Append("Dear Mr/Mrs " + employeeDataName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your temporary car with request no. " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Kindly help to inform the delivery information through this email:<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("PIC & Phone                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Date & Time                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Place/Address                   :<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> for your temporary car details.<br /><br />");
                         bodyMail.AppendLine();

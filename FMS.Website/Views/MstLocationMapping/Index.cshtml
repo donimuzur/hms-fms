@@ -6,11 +6,11 @@
     @if (Model.CurrentPageAccess.UploadAccess == true)
     {
         <a href="@Url.Action("Upload", "MstLocationMapping")" class="btn btn-primary line" title="Upload & View">
-            <i class="fa fa-download"></i> Import
+            <i class="fa fa-upload"></i> Import
         </a>
     }
     <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-upload"></i> Export
+        <i class="fa fa-download"></i> Export
     </a>
 </div>
 <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -26,83 +26,176 @@
 </div>
 
 <section class="content">
-   
     <div class="wpanel">
-        <table id="tbLocationMapping" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th style="min-width: 50px">Action</th>
-                    <th>Location</th>
-                    <th>Address</th>
-                    <th>Basetown</th>
-                    <th>Region</th>
-                    <th>Zone Sales</th>
-                    <th>Zone Price List</th>
-                    <th>Validity From</th>
-                    <th>Created By</th>
-                    <th>Created Date</th>
-                    <th>Modified By</th>
-                    <th>Modified Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th>
-                        @if (Model.CurrentPageAccess.WriteAccess == true)
-                        {
-                            <a href="@Url.Action("Create", "MstLocationMapping")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
-                        }
-                    </th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var data in Model.Details)
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListLocationMapping", "MstLocationMapping",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                    OnBegin = "LoadingShow",
+                    OnSuccess = "LoadingHide",
+                    OnFailure = "LoadingHide",
+                }))
             {
-            <tr>
-                <td style="text-align: center;">
-                    @if (Model.CurrentPageAccess.WriteAccess == true)
-                    {
-                        <a href="@Url.Action("Edit", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                    }
-                    @if (Model.CurrentPageAccess.ReadAccess == true)
-                    {
-                        <a href="@Url.Action("Detail", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                    }
-                </td>
-
-                <td>@Html.Raw(data.Location)</td>
-                <td>@Html.Raw(data.Address)</td>
-                <td>@Html.Raw(data.Basetown)</td>
-                <td>@Html.Raw(data.Region)</td>
-                <td>@Html.Raw(data.ZoneSales)</td>
-                <td>@Html.Raw(data.ZonePriceList)</td>
-                <td>@Html.Raw(data.ValidFrom.Value.ToString("dd-MMM-yyyy"))</td>
-                <td>@Html.Raw(data.CreatedBy)</td>
-                <td>@Html.Raw(data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                <td>@Html.Raw(data.ModifiedBy == null ? data.CreatedBy : data.ModifiedBy)</td>
-                <td>@Html.Raw(data.ModifiedDate == null ? data.CreatedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss") : data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                <td>@Html.Raw(data.IsActive==true ?  "Active" : "InActive")</td>
-            </tr>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Address</label>
+                            @Html.TextBoxFor(model => model.SearchView.Address, new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_Location">Location</label>
+                            @Html.DropDownList("Search_Location", Model.SearchView.LocationList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Location)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_Basetown">Basetown</label>
+                            @Html.DropDownList("Search_Basetown", Model.SearchView.BasetownList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Basetown)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_Region">Region</label>
+                            @Html.DropDownList("Search_Region", Model.SearchView.RegionList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Region)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_ZonePriceList">Zone PriceList</label>
+                            @Html.DropDownList("Search_ZonePriceList", Model.SearchView.ZonePriceListList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.ZonePriceList)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_ZoneSales">Zone Sales</label>
+                            @Html.DropDownList("Search_ZoneSales", Model.SearchView.ZoneSalesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.ZoneSales)
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Valid From</label>
+                            <div class="input-group date" id="DateFrom">
+                                @Html.TextBoxFor(model => model.SearchView.DateFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
+                                <span class="input-group-addon btn btn-primary">
+                                    <i class="fa fa-calendar "></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Valid To</label>
+                            <div class="input-group date" id="DateTo">
+                                @Html.TextBoxFor(model => model.SearchView.DateTo, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "To", @id = "To_Date" })
+                                <span class="input-group-addon btn btn-primary">
+                                    <i class="fa fa-calendar "></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                        <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                    </div>
+                </div>
             }
-            </tbody>
-        </table>
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_listLocationMapping")
     </div>
 </section>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
+    function ExportXls() {
+        console.log('Submitting');
+        var url = '@Url.Action("ExportMasterLocationMapping", "MstLocationMapping")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstLocationMapping")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        DateFrom: $('#From_Date').val(),
+			        DateTo: $('#To_Date').val(),
+			        Address: $('#SearchView_Address').val(),
+			        Location: getFunctionStr($('#Search_Location').val()),
+			        Basetown: getFunctionStr($('#Search_Basetown').val()),
+			        Region: getFunctionStr($('#Search_Region').val()),
+			        ZonePriceList: getFunctionStr($('#Search_ZonePriceList').val()),
+			        ZoneSales: getFunctionStr($('#Search_ZoneSales').val())
+			    }
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+
+    }
+    function setupDataTables() {
+        // DataTable
+        var table = $('#tbLocationMapping').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    }
+
+    function getFunctionStr(arr) {
+        var dataStr = "";
+        if (arr.length > 0) {
+            dataStr = arr.toString();
+        }
+        return dataStr;
+    }
+
+    $(function () {
+        // DataTable
         $('aside').animate({
             scrollTop: $("#MstLocationMapping").offset().top
         }, 1000);
@@ -110,47 +203,45 @@
         if ($('.title-page').html() == 'Master Data Location Mapping') {
             $('#MstLocationMappingMenu').addClass('active');
         }
+        $(".chosen").chosen();
+        setupDataTables();
+        $(document).on('click', '#btn-filter', function () {
+            $("#SearchView_Location").val(getFunctionStr($('#Search_Location').val()));
+            $("#SearchView_Basetown").val(getFunctionStr($('#Search_Basetown').val()));
+            $("#SearchView_Region").val(getFunctionStr($('#Search_Region').val()));
+            $("#SearchView_ZonePriceList").val(getFunctionStr($('#Search_ZonePriceList').val()));
+            $("#SearchView_ZoneSales").val(getFunctionStr($('#Search_ZoneSales').val()));
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+
+            var todayDate = new Date();
+            todayDate.setHours(00, 00, 00, 00);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var todayDatestr = todayDate.getDate() + '-' + (months[todayDate.getMonth()]) + '-' + todayDate.getFullYear();
+
+            var date = new Date();
+            date.setDate(1);
+            date.setHours(00, 00, 00, 00);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
+
+
+            $('#From_Date').val(datestr);
+            $('#To_Date').val(todayDatestr);
+
+            $('#SearchView_Address').val('');
+            $("#SearchView_Location").val('');
+            $("#SearchView_Basetown").val('');
+            $('#SearchView_Region').val('');
+            $("#SearchView_ZonePriceList").val('');
+            $("#SearchView_ZoneSales").val('');
+            $("#Search_Location").val('').trigger('chosen:updated');
+            $("#Search_Basetown").val('').trigger('chosen:updated');
+            $("#Search_Region").val('').trigger('chosen:updated');
+            $("#Search_ZonePriceList").val('').trigger('chosen:updated');
+            $("#Search_ZoneSales").val('').trigger('chosen:updated');
+            $("#btn-filter").trigger('click');
+        });
     });
-
-      function ExportXls() {
-      	console.log('Submitting');
-      	var url = '@Url.Action("ExportMasterLocationMapping", "MstLocationMapping")';
-      	var getFileUrl = '@Url.Action("GetExcelFile", "MstLocationMapping")';
-      	console.log(url);
-      	$.ajax({
-      		url: url,
-      		beforeSend: function () {
-      			$('#LoadingModal').show();
-      		},
-      		success: function (response, status, jqxhr) {
-      			console.log("DONE");
-      			window.location = getFileUrl + "?pathFile=" + response;
-      			$('#LoadingModal').hide();
-      		},
-      		error: function (jqhxr) {
-      			console.log("ERROR");
-      			console.log(jqhxr.responseText);
-      			$('#LoadingModal').hide();
-      		},
-      		type: 'POST'
-      	});
-
-      }
-      $(function () {
-          // DataTable
-          var table = $('#tbLocationMapping').DataTable({
-              "dom": 'lf<"table-overflow"t>pi',
-              orderCellsTop: true
-          });
-
-          // Apply the search
-          table.columns().eq(0).each(function (colIdx) {
-              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                  table
-                      .column(colIdx)
-                      .search(this.value)
-                      .draw();
-              });
-          });
-      });
 </script>

@@ -53,6 +53,7 @@ namespace FMS.Website.Controllers
                 model.TitleForm = "Fuel Report";
                 model.TitleExport = "ExportFuel";
                 model.CurrentLogin = CurrentUser;
+                model.CurrentPageAccess = CurrentPageAccess;
                 var settingData = _settingBLL.GetSetting();
                 var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
                 var costCenter = _fleetBLL.GetFleet().Select(x=> new {x.CostCenter}).ToList().Distinct().OrderBy(x => x.CostCenter);
@@ -117,6 +118,7 @@ namespace FMS.Website.Controllers
                 model.TitleForm = "Fuel Report";
                 model.TitleExport = "ExportFuel";
                 model.CurrentLogin = CurrentUser;
+                model.CurrentPageAccess = CurrentPageAccess;
                 var settingData = _settingBLL.GetSetting();
                 var listVehType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.SettingValue }).ToList();
                 var costCenter = _fleetBLL.GetFleet().Select(x => new { x.CostCenter }).ToList().Distinct().OrderBy(x => x.CostCenter);

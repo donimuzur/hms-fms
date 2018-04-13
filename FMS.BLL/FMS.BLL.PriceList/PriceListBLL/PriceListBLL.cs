@@ -11,6 +11,7 @@ using FMS.Contract;
 using FMS.DAL.Services;
 using AutoMapper;
 using FMS.BusinessObject.Business;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.BLL.PriceList
 {
@@ -32,7 +33,12 @@ namespace FMS.BLL.PriceList
             var retData = Mapper.Map<List<PriceListDto>>(data);
             return retData;
         }
-
+        public List<PriceListDto> GetPriceList(PricelistParamInput filter)
+        {
+            var data = _PriceListService.GetPriceList(filter);
+            var redata = Mapper.Map<List<PriceListDto>>(data);
+            return redata;
+        }
         public PriceListDto GetExist(string Model)
         {
             var data = _PriceListService.GetExist(Model);

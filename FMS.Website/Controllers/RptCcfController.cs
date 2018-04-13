@@ -50,6 +50,7 @@ namespace FMS.Website.Controllers
             model.TitleForm = "CCF Report";
             model.TitleExport = "ExportCCF";
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             var settingData = _settingBLL.GetSetting();
 
             model.RptCCFItem = Mapper.Map<List<RptCCFItem>>(data);
@@ -93,7 +94,7 @@ namespace FMS.Website.Controllers
         public string ExportCcfReportGenerateReport(RptCCFModel model = null)
         {
             string pathFile = "";
-            var input = Mapper.Map<RptCCFInput>(model.SearchViewExport);
+            var input = Mapper.Map<RptCCFInput>(model.SearchView);
             pathFile = CreateXlsRptCCF(input);
             return pathFile;
 

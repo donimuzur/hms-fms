@@ -73,7 +73,10 @@
                         
                         @*else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
                         {*@
-                        <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        @if (Model.CurrentPageAccess.ReadAccess.Value)
+                        {
+                            <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
                         @*}*@
 
 

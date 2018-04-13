@@ -11,9 +11,30 @@ namespace FMS.Website.Models
         public PenaltyModel()
         {
             Details = new List<PenaltyItem>();
+            SearchView = new PenaltySearchView();
         }
 
+        public PenaltySearchView SearchView { get; set; }
         public List<PenaltyItem> Details { get; set; }
+    }
+
+    public class PenaltySearchView
+    {
+        public string Vendor { get; set; }
+        public string RequestYear { get; set; }
+        public string Manufacturer { get; set; }
+        public string Model { get; set; }
+        public string Series { get; set; }
+        public string BodyType { get; set; }
+        public string VehicleType { get; set; }
+
+        public SelectList VendorList { get; set; }
+        public SelectList RequestYearList { get; set; }
+        public SelectList ManufacturerList { get; set; }
+        public SelectList ModelList { get; set; }
+        public SelectList SeriesList { get; set; }
+        public SelectList BodyTypeList { get; set; }
+        public SelectList VehicleTypeList { get; set; }
     }
 
     public class PenaltyItem : BaseModel

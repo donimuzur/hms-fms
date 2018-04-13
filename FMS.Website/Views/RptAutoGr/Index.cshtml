@@ -1,7 +1,5 @@
 ﻿@using FMS.Core
-
 @model FMS.Website.Models.RptAutoGrModel
-
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">Auto GR Report</h5>
@@ -17,57 +15,52 @@
 
 </div>
 <section class="content">
-    @using (Html.BeginForm("Index", "RptAutoGr", FormMethod.Post, new { @id = "ExportToXls" }))
-    {
-        <div class="wpanel">
-            @Html.Partial("_FilterView")            
-        </div>
-    }
     <div class="wpanel">
-        <table id="tbEpaf" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>PO Number</th>
-                    <th>PO Line</th>
-                    <th>GR Date</th>
-                    <th>Police Number</th>
-                    <th>Start Contract</th>
-                    <th>End Contract</th>
-                    <th>Termination Date</th>
-                    <th>All Quantity</th>
-                    <th>Quantity Remaining</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
-                {
-                    <tr>
-                        <td>@Html.Raw(data.PoNumber)</td>
-                        <td>@Html.Raw(data.PoLine)</td>
-                        <td>@Html.Raw(data.GrDateString)</td>
-                        <td>@Html.Raw(data.PoliceNumber)</td>
-                        <td>@Html.Raw(data.StartContractString)</td>
-                        <td>@Html.Raw(data.EndContractString)</td>
-                        <td>@Html.Raw(data.TerminationDateString)</td>
-                        <td>@Html.Raw(data.QtyAutoGr)</td>
-                        <td>@Html.Raw(data.QtyRemaining)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="row col-md-12">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Period Start</label>
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.PeriodStart, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Period End</label>
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.PeriodEnd, "{0:dd-MMM-yyyy}", new { @class = "form-control " })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">PO Number</label>
+                    @Html.TextBoxFor(model => model.PONumber, new { @class = "form-control " })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">PO Line</label>
+                    @Html.TextBoxFor(model => model.POLine, new { @class = "form-control " })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListAutoGr")
+        @Html.HiddenFor(m => m.CurrentPage)
     </div>
 </section>
 <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -81,8 +74,97 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/AutoGr.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function setupColumns() {
+        var columns = [
+            { "data": "PoNumber", "orderable": false },
+            { "data": "PoLine", "orderable": false },
+            { "data": "GrDateString", "orderable": false },
+            { "data": "PoliceNumber", "orderable": false },
+            {
+                "data": "StartContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "EndContract", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            {
+                "data": "TerminationDate", "orderable": true, "render": function (datum, type, record) {
+                    return (datum) ? moment(datum).format("DD-MMM-YYYY") : "";
+                }
+            },
+            { 
+                "data": "QtyAutoGr", "orderable": false , "render": function (datum, type, record) {
+                    return (datum) ? datum : "";
+                }
+            },
+            { 
+                "data": "QtyRemaining", "orderable": false , "render": function (datum, type, record) {
+                    return (datum) ? datum : "";
+                }
+            }
+        ];
+
+        return columns;
+    }
+    function setupDataTables() {
+        var actionHtml = '';
+        var table = null;
+        if ($.fn.dataTable.isDataTable('#tbEpaf')) {
+            table = $('#tbEpaf').DataTable();
+            table.destroy();
+        }
+
+        var WriteAccess = @Model.WriteAccess;
+        var ReadAccess = @Model.ReadAccess;
+
+        table = $('#tbEpaf').DataTable({
+            "sDom": 'lf<"table-overflow"t>pi',
+            "sPaginationType": "full_numbers",
+            "language": {
+                "zeroRecords": "No records found",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "serverSide": true,
+            "stateSave": true,
+            //"processing": true,
+            "paging": true,
+            "deferRender": true,
+            "columns": setupColumns(),
+            "ajax": {
+                "url": "@Url.Action("SearchAutoGrAjax", "RptAutoGr")",
+            "type": "POST",
+            "data": function(d) {
+                return $.extend({}, d, {
+                    "PeriodStart": $('#PeriodStart').val(),
+                    "PeriodEnd": $('#PeriodEnd').val(),
+                    "PONumber": $('#PONumber').val(),
+                    "POLine": $('#POLine').val()
+                });
+            },
+            "beforeSend": function () {
+                $('#LoadingModal').show();
+            },
+            "error": function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            }    
+        }
+        });
+    table.on('preXhr', function(e, settings, data) {
+        $('#LoadingModal').show();
+    });
+
+    table.on('xhr', function(e, settings, data) {
+        $('#LoadingModal').hide();
+    });
+    $('#LoadingModal').hide();
+    }
     function LoadingShow() {
         $('#LoadingModal').show();
     }
@@ -98,6 +180,8 @@
 			{
 			    PeriodStart: $('#PeriodStart').val(),
 			    PeriodEnd: $('#PeriodEnd').val(),
+			    PONumber: $('#PONumber').val(),
+                POLine: $('#POLine').val()
 			};
         $.ajax({
             url: url,
@@ -121,31 +205,38 @@
 
     }
 
-    function filter() {
-        $('#LoadingModal').show();
-        $("#ExportToXls").attr("action", '@Url.Action("Index", "RptAutoGr")');
-        $("#btnSubmit").trigger('click');
-    }
-
-    function reset() {
-        $(".form-control").val("");
-    }
-
     $(function () {
-        // DataTable
-        var table = $('#tbEpaf').DataTable({
-            "dom": 'lf<"table-overflow"t>pi',
-            orderCellsTop: true
+        $('#AutoGrParent').removeClass('collapse');
+        if ($('.title-page').html() == 'Auto GR Report') {
+            $('#AutoGrParent').addClass('active');
+        }
+
+        setupDataTables();
+
+        $(document).on('click', '#btn-filter', function () {
+            var table = $('#tbEpaf').DataTable();
+            table.ajax.reload();
         });
 
-        // Apply the search
-        table.columns().eq(0).each(function (colIdx) {
-            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                table
-                    .column(colIdx)
-                    .search(this.value)
-                    .draw();
-            });
+        $(document).on('click', '#btn-reset', function () {
+
+            $(".form-control").val("");
+
+            var todayDate = new Date();
+            todayDate.setHours(00, 00, 00, 00);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var todayDatestr = todayDate.getDate() + '-' + (months[todayDate.getMonth()]) + '-' + todayDate.getFullYear();
+
+            var date = new Date();
+            date.setDate(1);
+            date.setHours(00, 00, 00, 00);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var datestr = date.getDate() + '-' + (months[date.getMonth()]) + '-' + date.getFullYear();
+
+
+            $('#PeriodStart').val(datestr);
+            $('#PeriodEnd').val(todayDatestr);
+            $("#btn-filter").trigger('click');
         });
     });
 </script>

@@ -7,9 +7,11 @@
 
 <div class="opt-content clearfloat">
 	<h5 class="title-page">@ViewBag.Title</h5>
+    @if (Model.CurrentPageAccess.ReadAccess == true) { 
 	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
 		<i class="fa fa-download"></i> Export
 	</a>
+    }
 </div>
 <script type="text/javascript">
 		$(document).ready(function () {
@@ -358,7 +360,7 @@
 					</div>
 					<div class="col-md-12">
 						<h5 style="font-size:1.5rem"><a href="@Url.Action("Odometer", "RptExecutiveSummary")">Odometer</a></h5>
-						<h4>Benefit <span class="number" id="totalOdometerBenefit">50</span> - WTC <span class="number" id="totalOdometerWtc">30</span></h4>
+						<h4>Benefit <span class="number" id="totalOdometerBenefit">0</span> - WTC <span class="number" id="totalOdometerWtc">0</span></h4>
 					</div>
 				</div>
 			</div>
@@ -524,11 +526,11 @@
 					}
 					total += response[i].ACCIDENT_COUNT;
 				}
-				$("#totalNumberOfVehicleAccident").text(formatNumber(total));
-				$("#numberOfBenefitAccident").text(formatNumber(countBenefit) + " BENEFIT");
-				$("#numberOfWTCSalesAccident").text(formatNumber(countWTC) + " WTC");
-				$("#numberOfBenefitAccident2").text(formatNumber(countBenefit));
-				$("#numberOfWTCSalesAccident2").text(formatNumber(countWTC));
+				//$("#totalNumberOfVehicleAccident").text(formatNumber(total));
+				//$("#numberOfBenefitAccident").text(formatNumber(countBenefit) + " BENEFIT");
+				//$("#numberOfWTCSalesAccident").text(formatNumber(countWTC) + " WTC");
+				$("#numberOfBenefitAccident2").html(countBenefit);
+				$("#numberOfWTCSalesAccident2").html(countWTC);
 
 			}
 		});

@@ -9,6 +9,23 @@
 	.datepicker {
 		margin-left: 15px;
 	}
+    .default {
+        display: block !important;
+        width: 100% !important;
+        height: 30px !important;
+        padding: 6px 12px !important;
+        font-size: 14px !important;
+        line-height: 1.42857143 !important;
+        background-color: #fff !important;
+        background-image: none !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s !important;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s !important;
+    }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
@@ -32,9 +49,11 @@
 
 <div class="opt-content clearfloat">
 	<h5 class="title-page">@ViewBag.Title</h5>
+    @if (Model.CurrentPageAccess.ReadAccess == true) { 
 	<a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
 		<i class="fa fa-download"></i> Export
 	</a>
+    }
 </div>
 <section class="content">
 	<div class="wpanel">
@@ -82,28 +101,75 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Vehicle Type</label>
-						@Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control select" })
+                        @if (Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.EHS
+                                                || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator
+                                                || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager)
+                        { 
+						    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "", new { @class = "form-control select" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic|| Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager
+                        || Model.CurrentLogin.UserRole == Enums.UserRole.LDManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control", @readonly = "readonly", @Value = "WTC" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.HR || Model.CurrentLogin.UserRole == Enums.UserRole.HRManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.VehicleType, new { @class = "form-control", @readonly = "readonly", @Value = "BENEFIT" })
+                        }
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Regional</label>
-						@Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control select" })
+						@Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "", new { @class = "form-control select" })
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Supply Method</label>
-						@Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "ALL", new { @class = "form-control select" })
+						@Html.DropDownListFor(model => model.SearchView.SupplyMethod, Model.SearchView.SupplyMethodList, "", new { @class = "form-control select" })
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="">Function</label>
-						@Html.HiddenFor(model => model.SearchView.FunctionId)
-						@Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
-					</div>
+						@if (Model.CurrentLogin.UserRole == Enums.UserRole.Viewer || Model.CurrentLogin.UserRole == Enums.UserRole.EHS
+                                        || Model.CurrentLogin.UserRole == Enums.UserRole.Fleet || Model.CurrentLogin.UserRole == Enums.UserRole.HR
+                                        || Model.CurrentLogin.UserRole == Enums.UserRole.Administrator || Model.CurrentLogin.UserRole == Enums.UserRole.IsSupport
+                                        || Model.CurrentLogin.UserRole == Enums.UserRole.FleetManager || Model.CurrentLogin.UserRole == Enums.UserRole.HRManager)
+                        { 
+                            @Html.HiddenFor(model => model.SearchView.FunctionId)
+						    @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.Functions, new { @id = "select-function-id", @class = "chosen form-control", multiple = "multiple" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.ComFinanceManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.FunctionId, new { @class = "form-control", @readonly = "readonly", @Value = "Sales,Marketing" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.OpsFinanceManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.FunctionId, new { @class = "form-control", @readonly = "readonly", @Value = "Operations" })
+                        }
+                        else if (Model.CurrentLogin.UserRole == Enums.UserRole.Logistic || Model.CurrentLogin.UserRole == Enums.UserRole.LDManager)
+                        {
+                            @Html.TextBoxFor(model => model.SearchView.FunctionId, new { @class = "form-control", @readonly = "readonly", @Value = "Logistic" })
+                        }
+                    </div>
 				</div>
+                if (Model.CurrentLogin.UserRole == Enums.UserRole.FinanceZone || Model.CurrentLogin.UserRole == Enums.UserRole.Logistic)
+                {
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_Zone">Zone</label>
+                            @Html.HiddenFor(model => model.SearchView.ZoneId)
+                            @Html.DropDownListFor(model => model.SearchView.Zone, Model.SearchView.ZoneList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.SearchView.Zone)
+                }
 				<div class="clearfix"></div>
 				<div class="col-md-12">
 					<button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
@@ -127,7 +193,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" id="chartDiv">
                                     <canvas id="mylineChart"></canvas>
                                 </div>
                                 <div class="card-footer"></div>
@@ -156,7 +222,20 @@
 <script type="text/javascript">
     function LoadingShow() {
         $('#LoadingModal').show();
+
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+        
+        if ($("#SearchView_ZoneId").length > 0) {
+            $("#SearchView_ZoneId").val(theList.slice(0, -1));
+        } else {
+            $("#SearchView_FunctionId").val(theList.slice(0, -1));
+        }
     }
+
     function LoadingHide() {
         $('#LoadingModal').hide();
     }
@@ -171,6 +250,12 @@
 
         theList = theList.slice(0, -1);
 
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
         var url = '@Url.Action(Model.TitleExport , "RptExecutiveSummary")';
         var getFileUrl = '@Url.Action("GetExcelFile", "RptExecutiveSummary")';
         console.log(url);
@@ -184,7 +269,8 @@
 			        VehicleType: $('#SearchView_VehicleType').val(),
 			        SupplyMethod:$('#SearchView_SupplyMethod').val(),
 			        Regional:$('#SearchView_Regional').val(),
-			        Function:theList,
+			        Function: theList,
+			        ZoneId: zoneId,
 			    }
 
 			};
@@ -243,60 +329,458 @@
 
     $(document).ready(function () {
         init_charts();
+
+        $('aside').animate({
+            scrollTop: $("#NumbVehicle").offset().top
+        }, 1000);
     });
 
     function init_charts() {
         $('#LoadingModal').show();
 
-        $.ajax({
+        var theList = "";
+
+        $("li.search-choice span").each(function (e) {
+            theList += $(this).text() + ",";
+        });
+
+        theList = theList.slice(0, -1);
+
+        var zoneId = "";
+        if ($("#SearchView_ZoneId").length > 0) {
+            zoneId = theList;
+            theList = $("#SearchView_FunctionId").val();
+        }
+
+        @*$.ajax({
             type: 'POST',
             url: '@Url.Action("VisualNoVehicle", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, vehType: $('#SearchView_VehicleType').val(), regional: $('#SearchView_Regional').val(), suppMethod: $('#SearchView_SupplyMethod').val(), functions: theList, zone: zoneId },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
                 var second_chart = [];
+                var label_1 = "BENEFIT";
+                var label_2 = "WTC";
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
                     first_chart.push(response[i].NO_OF_VEHICLE_BENEFIT);
                     second_chart.push(response[i].NO_OF_VEHICLE_WTC);
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
                 }
                 
                 if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
                     var ctx = document.getElementById("mylineChart");
                     var mylineChart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: labels_chart,
                             datasets: [{
-                                label: '# of BENEFIT',
+                                label: label_1,
                                 backgroundColor: "rgba(130, 130, 130, 0.31)",
-                                borderColor: "rgba(130, 130, 130, 0.7)",
-                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
-                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
-                                pointHoverBackgroundColor: "#fff",
-                                pointHoverBorderColor: "rgba(130,130,130,1)",
-                                pointBorderWidth: 1,
                                 data: first_chart
                             }, {
-                                label: '# of WTC',
-                                backgroundColor: "rgba(33, 164, 255, 0.3)",
-                                borderColor: "rgba(33, 164, 255, 0.70)",
-                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
-                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
-                                pointHoverBackgroundColor: "#fff",
-                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
-                                pointBorderWidth: 1,
+                                label: label_2,
+                                backgroundColor: "rgba(33, 164, 255, 0.70)",
                                 data: second_chart
                             }]
                         },
+                        //HERE COMES THE AXIS LABEL
                         options: {
                             scales: {
                                 yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
                                     }
                                 }]
+                            }
+                        }
+                    });
+                }
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            }
+        });*@
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("VisualNoVehicle", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, vehType: $('#SearchView_VehicleType').val(), regional: $('#SearchView_Regional').val(), suppMethod: $('#SearchView_SupplyMethod').val(), functions: theList, zone: zoneId },
+            success: function (response) {
+                var labels_chart = [];
+                var data_chart = [];
+
+                var chart_1 = []; var chart_2 = []; var chart_3 = []; var chart_4 = []; var chart_5 = []; var chart_6 = [];
+                var chart_7 = []; var chart_8 = []; var chart_9 = []; var chart_10 = []; var chart_11 = []; var chart_12 = [];
+                var chart_13 = []; var chart_14 = []; var chart_15 = []; var chart_16 = []; var chart_17 = []; var chart_18 = [];
+                var chart_19 = []; var chart_20 = []; var chart_21 = []; var chart_22 = []; var chart_23 = []; var chart_24 = [];
+
+                var label_1 = "BENEFIT Jan " + $('#SearchView_YearFrom').val();
+                var label_2 = "BENEFIT Feb " + $('#SearchView_YearFrom').val();
+                var label_3 = "BENEFIT Mar " + $('#SearchView_YearFrom').val();
+                var label_4 = "BENEFIT Apr " + $('#SearchView_YearFrom').val();
+                var label_5 = "BENEFIT May " + $('#SearchView_YearFrom').val();
+                var label_6 = "BENEFIT Jun " + $('#SearchView_YearFrom').val();
+                var label_7 = "BENEFIT Jul " + $('#SearchView_YearFrom').val();
+                var label_8 = "BENEFIT Aug " + $('#SearchView_YearFrom').val();
+                var label_9 = "BENEFIT Sep " + $('#SearchView_YearFrom').val();
+                var label_10 = "BENEFIT Oct " + $('#SearchView_YearFrom').val();
+                var label_11 = "BENEFIT Nov " + $('#SearchView_YearFrom').val();
+                var label_12 = "BENEFIT Dec " + $('#SearchView_YearFrom').val();
+
+                var label_13 = "WTC Jan " + $('#SearchView_YearFrom').val();
+                var label_14 = "WTC Feb " + $('#SearchView_YearFrom').val();
+                var label_15 = "WTC Mar " + $('#SearchView_YearFrom').val();
+                var label_16 = "WTC Apr " + $('#SearchView_YearFrom').val();
+                var label_17 = "WTC May " + $('#SearchView_YearFrom').val();
+                var label_18 = "WTC Jun " + $('#SearchView_YearFrom').val();
+                var label_19 = "WTC Jul " + $('#SearchView_YearFrom').val();
+                var label_20 = "WTC Aug " + $('#SearchView_YearFrom').val();
+                var label_21 = "WTC Sep " + $('#SearchView_YearFrom').val();
+                var label_22 = "WTC Oct " + $('#SearchView_YearFrom').val();
+                var label_23 = "WTC Nov " + $('#SearchView_YearFrom').val();
+                var label_24 = "WTC Dec " + $('#SearchView_YearFrom').val();
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].FUNCTION);
+
+                    chart_1.push(response[i].NO_OF_VEHICLE_BENEFIT_1);
+                    chart_2.push(response[i].NO_OF_VEHICLE_BENEFIT_2);
+                    chart_3.push(response[i].NO_OF_VEHICLE_BENEFIT_3);
+                    chart_4.push(response[i].NO_OF_VEHICLE_BENEFIT_4);
+                    chart_5.push(response[i].NO_OF_VEHICLE_BENEFIT_5);
+                    chart_6.push(response[i].NO_OF_VEHICLE_BENEFIT_6);
+                    chart_7.push(response[i].NO_OF_VEHICLE_BENEFIT_7);
+                    chart_8.push(response[i].NO_OF_VEHICLE_BENEFIT_8);
+                    chart_9.push(response[i].NO_OF_VEHICLE_BENEFIT_9);
+                    chart_10.push(response[i].NO_OF_VEHICLE_BENEFIT_10);
+                    chart_11.push(response[i].NO_OF_VEHICLE_BENEFIT_11);
+                    chart_12.push(response[i].NO_OF_VEHICLE_BENEFIT_12);
+
+                    chart_13.push(response[i].NO_OF_VEHICLE_WTC_1);
+                    chart_14.push(response[i].NO_OF_VEHICLE_WTC_2);
+                    chart_15.push(response[i].NO_OF_VEHICLE_WTC_3);
+                    chart_16.push(response[i].NO_OF_VEHICLE_WTC_4);
+                    chart_17.push(response[i].NO_OF_VEHICLE_WTC_5);
+                    chart_18.push(response[i].NO_OF_VEHICLE_WTC_6);
+                    chart_19.push(response[i].NO_OF_VEHICLE_WTC_7);
+                    chart_20.push(response[i].NO_OF_VEHICLE_WTC_8);
+                    chart_21.push(response[i].NO_OF_VEHICLE_WTC_9);
+                    chart_22.push(response[i].NO_OF_VEHICLE_WTC_10);
+                    chart_23.push(response[i].NO_OF_VEHICLE_WTC_11);
+                    chart_24.push(response[i].NO_OF_VEHICLE_WTC_12);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
+                    label_3 = response[i].LABEL3;
+                    label_4 = response[i].LABEL4;
+                    label_5 = response[i].LABEL5;
+                    label_6 = response[i].LABEL6;
+                    label_7 = response[i].LABEL7;
+                    label_8 = response[i].LABEL8;
+                    label_9 = response[i].LABEL9;
+                    label_10 = response[i].LABEL10;
+                    label_11 = response[i].LABEL11;
+                    label_12 = response[i].LABEL12;
+                    label_13 = response[i].LABEL13;
+                    label_14 = response[i].LABEL14;
+                    label_15 = response[i].LABEL15;
+                    label_16 = response[i].LABEL16;
+                    label_17 = response[i].LABEL17;
+                    label_18 = response[i].LABEL18;
+                    label_19 = response[i].LABEL19;
+                    label_20 = response[i].LABEL20;
+                    label_21 = response[i].LABEL21;
+                    label_22 = response[i].LABEL22;
+                    label_23 = response[i].LABEL23;
+                    label_24 = response[i].LABEL24;
+                }
+
+                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val(); i++) {
+                    if (i == 1) {
+                        var data1 = {
+                            label: label_1,
+                            backgroundColor: "#8ECD0",
+                            data: chart_1
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 2) {
+                        var data1 = {
+                            label: label_2,
+                            backgroundColor: "#FECACD",
+                            data: chart_2
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 3) {
+                        var data1 = {
+                            label: label_3,
+                            backgroundColor: "#E203AB",
+                            data: chart_3
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 4) {
+                        var data1 = {
+                            label: label_4,
+                            backgroundColor: "#E08488",
+                            data: chart_4
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 5) {
+                        var data1 = {
+                            label: label_5,
+                            backgroundColor: "#FA1106",
+                            data: chart_5
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 6) {
+                        var data1 = {
+                            label: label_6,
+                            backgroundColor: "#9F0336",
+                            data: chart_6
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 7) {
+                        var data1 = {
+                            label: label_7,
+                            backgroundColor: "#F4550F",
+                            data: chart_7
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 8) {
+                        var data1 = {
+                            label: label_8,
+                            backgroundColor: "#FFF5B0",
+                            data: chart_8
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 9) {
+                        var data1 = {
+                            label: label_9,
+                            backgroundColor: "#FFF553",
+                            data: chart_9
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 10) {
+                        var data1 = {
+                            label: label_10,
+                            backgroundColor: "#E79E03",
+                            data: chart_10
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 11) {
+                        var data1 = {
+                            label: label_11,
+                            backgroundColor: "#FC9B11",
+                            data: chart_11
+                        };
+
+                        data_chart.push(data1);
+                    }
+
+                    if (i == 12) {
+                        var data1 = {
+                            label: label_12,
+                            backgroundColor: "#FF9769",
+                            data: chart_12
+                        };
+
+                        data_chart.push(data1);
+                    }
+                }
+
+                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                    if (i == 1) {
+                        var data2 = {
+                            label: label_13,
+                            backgroundColor: "#D3FDB4",
+                            data: chart_13
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 2) {
+                        var data2 = {
+                            label: label_14,
+                            backgroundColor: "#5FF59F",
+                            data: chart_14
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 3) {
+                        var data2 = {
+                            label: label_15,
+                            backgroundColor: "#31B204",
+                            data: chart_15
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 4) {
+                        var data2 = {
+                            label: label_16,
+                            backgroundColor: "#3E4440",
+                            data: chart_16
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 5) {
+                        var data2 = {
+                            label: label_17,
+                            backgroundColor: "#4DD292",
+                            data: chart_17
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 6) {
+                        var data2 = {
+                            label: label_18,
+                            backgroundColor: "#B0D8F7",
+                            data: chart_18
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 7) {
+                        var data2 = {
+                            label: label_19,
+                            backgroundColor: "#26A4EC",
+                            data: chart_19
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 8) {
+                        var data2 = {
+                            label: label_20,
+                            backgroundColor: "#100A91",
+                            data: chart_20
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 9) {
+                        var data2 = {
+                            label: label_21,
+                            backgroundColor: "#606596",
+                            data: chart_21
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 10) {
+                        var data2 = {
+                            label: label_22,
+                            backgroundColor: "#B0B4D9",
+                            data: chart_22
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 11) {
+                        var data2 = {
+                            label: label_23,
+                            backgroundColor: "#C0A2F5",
+                            data: chart_23
+                        };
+
+                        data_chart.push(data2);
+                    }
+
+                    if (i == 12) {
+                        var data2 = {
+                            label: label_24,
+                            backgroundColor: "#53017D",
+                            data: chart_24
+                        };
+
+                        data_chart.push(data2);
+                    }
+                }
+
+                if ($('#mylineChart').length) {
+                    $('#mylineChart').remove();
+                    $('#chartDiv').append('<canvas id="mylineChart"><canvas>');
+                    var ctx = document.getElementById("mylineChart");
+                    var mylineChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: data_chart
+                        },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });

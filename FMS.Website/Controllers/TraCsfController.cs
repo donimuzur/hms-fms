@@ -80,6 +80,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportOpen";
             model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = _mainMenu;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             return View(model);
         }
@@ -96,6 +97,7 @@ namespace FMS.Website.Controllers
             model.TitleExport = "ExportPersonal";
             model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.CREATED_DATE));
             model.MainMenu = Enums.MenuList.PersonalDashboard;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             model.IsPersonalDashboard = true;
             return View("Index",model);
@@ -136,6 +138,7 @@ namespace FMS.Website.Controllers
             model.CsfList = Mapper.Map<List<CsfData>>(data.OrderByDescending(x => x.MODIFIED_DATE));
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
             model.IsCompleted = true;
             return View("Index", model);
         }

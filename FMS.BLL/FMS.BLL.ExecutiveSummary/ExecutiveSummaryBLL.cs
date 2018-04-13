@@ -17,11 +17,13 @@ namespace FMS.BLL.ExecutiveSummary
     {
         private IExecutiveSummaryService _ExecSummService;
         private IUnitOfWork _uow;
+        private ICostObService _CostObService;
 
         public ExecutiveSummaryBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _ExecSummService = new ExecutiveSummaryService(_uow);
+            _CostObService = new CostObService(_uow);
         }
 
         public List<NoVehicleDto> GetNoOfVehicleData(VehicleGetByParamInput filter)
@@ -208,15 +210,49 @@ namespace FMS.BLL.ExecutiveSummary
 
             var listData = Mapper.Map<List<AcVsObDto>>(data);
 
-            var groupData = listData.GroupBy(x => new { x.FUNCTION, x.REPORT_MONTH, x.REPORT_YEAR })
+            var groupData = listData.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE, x.REPORT_MONTH, x.REPORT_YEAR })
                 .Select(p => new AcVsObDto()
                 {
                     FUNCTION = p.FirstOrDefault().FUNCTION,
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
                     REPORT_MONTH = p.FirstOrDefault().REPORT_MONTH,
                     REPORT_YEAR = p.FirstOrDefault().REPORT_YEAR,
+                    UNIT = p.Sum(c => c.UNIT),
                     ACTUAL_COST = p.Sum(c => c.ACTUAL_COST),
                     COST_OB = p.Sum(c => c.COST_OB)
                 }).ToList();
+
+            return groupData;
+        }
+
+        public List<AcVsObDto> GetAcVsObUnitData(AcVsObGetByParamInput filter)
+        {
+            var data = _ExecSummService.GetAllAcVsOb(filter);
+
+            var listData = Mapper.Map<List<AcVsObDto>>(data);
+
+            var groupData = listData.GroupBy(x => new { x.FUNCTION, x.VEHICLE_TYPE, x.REPORT_MONTH, x.REPORT_YEAR })
+                .Select(p => new AcVsObDto()
+                {
+                    FUNCTION = p.FirstOrDefault().FUNCTION,
+                    VEHICLE_TYPE = p.FirstOrDefault().VEHICLE_TYPE,
+                    REPORT_MONTH = p.FirstOrDefault().REPORT_MONTH,
+                    REPORT_YEAR = p.FirstOrDefault().REPORT_YEAR,
+                    UNIT = p.Sum(c => c.UNIT)
+                }).ToList();
+
+            var costOb = _CostObService.GetCostOb();
+
+            foreach (var item in groupData)
+            {
+                var unitBudget = costOb.Where(x => x.VEHICLE_TYPE == item.VEHICLE_TYPE && x.FUNCTION_NAME == item.FUNCTION
+                                                && x.MONTH == item.REPORT_MONTH && x.YEAR == item.REPORT_YEAR
+                                                && (x.TYPE == null ? "" : x.TYPE.ToUpper()) == "QTY").FirstOrDefault();
+
+                var unit = unitBudget == null ? 0 : unitBudget.QTY;
+
+                item.UNIT_BUDGET = unit;
+            }
 
             return groupData;
         }

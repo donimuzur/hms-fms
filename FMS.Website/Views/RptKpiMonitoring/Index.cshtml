@@ -4,9 +4,12 @@
 
 <div class="opt-content clearfloat">
     <h5 class="title-page">KPI Monitoring Report</h5>
-    <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
-        <i class="fa fa-download"></i> Export
-    </a>
+    @if (Model.CurrentPageAccess.ReadAccess == true)
+    {
+        <a href="#!" class="btn btn-primary line" id="btnExport" title="Export To Excel" onclick="ExportXls()">
+            <i class="fa fa-upload"></i> Export
+        </a>
+    }
 </div>
 <section class="content">
     <div class="wpanel">
@@ -28,7 +31,7 @@
                     <div class="form-group">
                         <label class="control-label">Period From</label>
                         <div class="input-group date" id="FromDate">
-                            @Html.TextBoxFor(model => model.SearchView.FormDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
+                            @Html.TextBoxFor(model => model.SearchView.FromDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @placeholder = "From", @id = "From_Date" })
                             <span class="input-group-addon btn btn-primary">
                                 <i class="fa fa-calendar "></i>
                             </span>

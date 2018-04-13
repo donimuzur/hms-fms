@@ -52,8 +52,12 @@
         @foreach (var data in Model.Details)
         {
             <tr>
+                
                 <td style="text-align: center;">
-                    <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    @if (Model.CurrentPageAccess.ReadAccess.Value)
+                    {
+                        <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    }
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>
                 <td>@Html.Raw(data.DocumentStatus.ToString())</td>

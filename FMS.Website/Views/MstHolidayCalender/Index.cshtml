@@ -14,88 +14,84 @@
     </a>
 </div>
 <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body">
-				<div align="center">
-					<img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <section class="content">
-   
+
     <div class="wpanel">
-        <table id="tbHolidayCalender" class="table table-bordered table-striped">
-            <thead>
-
-                <tr>
-                    <th style="min-width: 50px">Action</th>
-                    <th>Holiday Date</th>
-                    <th>Description</th>
-                    <th>Created By</th>
-                    <th>Created Date</th>
-                    <th>Modified By</th>
-                    <th>Modified Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th>
-                        @if (Model.CurrentPageAccess.WriteAccess == true)
-                        {
-                            <a href="@Url.Action("Create", "MstHolidayCalender")" class="btn btn-primary line" ng-click="insHolidayCalender()"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
-                        }
-                    </th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListHolidayCalender", "MstHolidayCalender",
+                new AjaxOptions
                 {
-                    <tr ng-repeat="data in dataHolidayCalender">
-
-                        <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Edit", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
-                            }
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
-                            {
-                                <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                            }
-                        </td>
-                        <td>@Html.Raw(data.MstHolidayDate.ToString("dd-MMM-yyyy"))</td>
-                        <td>@Html.Raw(data.Description)</td>
-                        <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.CreatedDate.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        <td>@Html.Raw(data.ModifiedDate==null? "":data.ModifiedDate.Value.ToString("dd-MMM-yyyy HH:mm:ss"))</td>
-                        @if (data.IsActive == true)
-                        {
-                            <td>@Html.Raw("Active")</td>
-                        }
-                        else
-                        {
-                            <td>@Html.Raw("Inactive")</td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "contenttable",
+                    OnComplete = "setupDataTables",
+                    OnBegin = "LoadingShow",
+                    OnSuccess = "LoadingHide",
+                    OnFailure = "LoadingHide",
+                }))
+            {
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_DateFrom">Date From</label>
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.SearchView.DateFrom, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @name = "Search_DateFrom" })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_DateTo">Date To</label>
+                            <div class="input-group date">
+                                @Html.TextBoxFor(model => model.SearchView.DateTo, "{0:dd-MMM-yyyy}", new { @class = "form-control ", @name = "Search_DateTo" })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_Description">Description</label>
+                            @Html.TextBoxFor(model => Model.SearchView.Description, new { @class = "form-control", @name = "Search_Description" })
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
+        @Html.Partial("_ListHolidayCalender")
     </div>
 </section>
 <!-- /.content -->
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     $(document).ready(function () {
         $('aside').animate({
             scrollTop: $("#MstHolidayCalender").offset().top
@@ -107,45 +103,107 @@
     });
 
     function ExportXls() {
-    	console.log('Submitting');
-    	var url = '@Url.Action("ExportMasterHolidayCalender", "MstHolidayCalender")';
-    	var getFileUrl = '@Url.Action("GetExcelFile", "MstHolidayCalender")';
-    	console.log(url);
-    	$.ajax({
-    		url: url,
-    		beforeSend: function () {
-    			$('#LoadingModal').show();
-    		},
-    		success: function (response, status, jqxhr) {
-    			console.log("DONE");
-    			window.location = getFileUrl + "?pathFile=" + response;
-    			$('#LoadingModal').hide();
-    		},
-    		error: function (jqhxr) {
-    			console.log("ERROR");
-    			console.log(jqhxr.responseText);
-    			$('#LoadingModal').hide();
-    		},
-    		type: 'POST'
-    	});
-      }
+        console.log('Submitting');
+        var url = '@Url.Action("ExportMasterHolidayCalender", "MstHolidayCalender")';
+        var getFileUrl = '@Url.Action("GetExcelFile", "MstHolidayCalender")';
+        console.log(url);
+        var objToUpload =
+			{
+			    SearchView: {
+			        DateFrom: getFunctionStr($('#SearchView_DateFrom').val().toString()),
+			        DateTo: getFunctionStr($('#SearchView_DateTo').val().toString()),
+			        Description: getFunctionStr($('#SearchView_Description').val())
+			    }
+			};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(objToUpload),
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function () {
+                $('#LoadingModal').show();
+            },
+            success: function (response, status, jqxhr) {
+                console.log("DONE");
+                window.location = getFileUrl + "?pathFile=" + response;
+                $('#LoadingModal').hide();
+            },
+            error: function (jqhxr) {
+                console.log("ERROR");
+                console.log(jqhxr.responseText);
+                $('#LoadingModal').hide();
+            },
+            type: 'POST'
+        });
+    }
 
-      $(function () {
-          // DataTable
-          var table = $('#tbHolidayCalender').DataTable({
-              "dom": 'lf<"table-overflow"t>pi',
-              orderCellsTop: true
-          });
+    function setupDataTables() {
+        // DataTable
+        var table = $('#tbHolidayCalender').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
 
-          // Apply the search
-          table.columns().eq(0).each(function (colIdx) {
-              $('input', $('.filters th')[colIdx]).on('keyup change', function () {
-                  table
-                      .column(colIdx)
-                      .search(this.value)
-                      .draw();
-              });
-          });
-      });
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+    }
+
+    function getFunctionStr(arr) {
+        var dataStr = "";
+        if (arr.length > 0) {
+            dataStr = arr.toString();
+        }
+        return dataStr;
+    }
+
+    $(function () {
+        $(".chosen").chosen();
+        // DataTable
+        var table = $('#tbHolidayCalender').DataTable({
+            "dom": 'lf<"table-overflow"t>pi',
+            orderCellsTop: true
+        });
+
+        // Apply the search
+        table.columns().eq(0).each(function (colIdx) {
+            $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+                table
+                    .column(colIdx)
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+        $(document).on('click', '#btn-filter', function () {
+            console.log('a');
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+            var today = new Date;
+            var day = today.getDate().toString();
+            day = day.length > 1 ? day : '0' + day;
+
+            var monthNames = [
+  "Jan", "Feb", "Mar",
+  "Apr", "May", "Jun", "Jul",
+  "Aug", "Sep", "Oct",
+  "Nov", "Dec"
+            ];
+
+            var monthIndex = today.getMonth();
+
+            var todayDate = day + '-' + monthNames[monthIndex] + '-' + today.getFullYear()
+
+            $("#SearchView_DateFrom").val(todayDate).trigger('chosen:updated');
+            $("#SearchView_DateTo").val(todayDate).trigger('chosen:updated');
+            $("#SearchView_Description").val('').trigger('chosen:updated');
+            $("#btn-filter").trigger('click');
+        });
+    });
 </script>
-
