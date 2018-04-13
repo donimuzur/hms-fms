@@ -350,6 +350,7 @@ namespace FMS.Website.Controllers
                 {
                     model.VatDecimal = Convert.ToDecimal(model.VatDecimalStr.Replace(",", ""));
                 }
+                model.EmployeeName = model.EmployeeName.Split('-')[1].TrimStart();
 
                 var data = Mapper.Map<FleetDto>(model);
                 data.Project = false;
@@ -681,6 +682,29 @@ namespace FMS.Website.Controllers
             var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage && x.IsActive).ToList();
 
             return Json(listVehUsage);
+        }
+
+        public JsonResult GetEmployeeList()
+        {
+            var allEmployee = _employeeBLL
+                .GetEmployee()
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                    .ToList();
+
+            return Json(allEmployee, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetEmployee(string Id)
+        {
+            var data = Id.Split('-');
+            var model = _employeeBLL.GetByID(data[0].Trim());
+            return Json(model);
         }
 
         #region export xls
