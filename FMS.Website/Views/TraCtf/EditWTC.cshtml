@@ -525,12 +525,14 @@
             $('#EffectiveDate').prop('readonly', true);
         }
         else if (reasonval == '' || !reasonval) {
+            $('#idExtend').show();
             $('#idExtend').prop('disabled', false);
             $('#ExtendVehicle').prop('disabled', false);
             $('#EffectiveDate').prop('readonly', true);
             onExtendVehicle();
         }
         else {
+            $('#idExtend').hide();
             $('#idExtend').prop('disabled', true);
             $('#ExtendVehicle').prop('disabled', true);
             $('#EffectiveDate').prop('readonly', false);
