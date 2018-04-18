@@ -133,7 +133,7 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link7">Actual Unit Vs Budget</a></b></div>
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link12">Actual Unit Vs Budget</a></b></div>
                     <div class="card-body" id="chart11">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="mybarChart4"></canvas>
@@ -1495,7 +1495,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("AcObUnitDataVisual", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isRegion:false },
             success: function (response) {
                 var labels_chart = [];
                 var first_chart = [];
@@ -1686,6 +1686,12 @@
     });
 
     $(document).on('click', '#link11', function () {
+        var myUrl = '@Url.Action("AcVsOb", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link12', function () {
         var myUrl = '@Url.Action("AcVsOb", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
 
         window.location.href = myUrl;
