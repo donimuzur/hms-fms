@@ -61,6 +61,24 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link8">Vehicle By Make</a></b></div>
+                    <div class="card-body" id="chart8">
+                        @*<h5 class="card-title"><i class="fa fa-credit-card"></i> Vehicle By Make</h5>*@
+                        <canvas id="canvasDoughnut"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link9">Vehicle By Type</a></b></div>
+                    <div class="card-body" id="chart9">
+                        @*<h5 class="card-title"><i class="fa fa-balance-scale"></i> Vehicle By Type</h5>*@
+                        <canvas id="polarArea"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link2">Odometer</a></b></div>
                     <div class="card-body" id="chart2">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
@@ -97,10 +115,10 @@
             </div>
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link6">Accident</a></b></div>
-                    <div class="card-body" id="chart6">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link10">Operational Cost</a></b></div>
+                    <div class="card-body" id="chart10">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
-                        <canvas id="lineChart3"></canvas>
+                        <canvas id="lineChart5"></canvas>
                     </div>
                 </div>
             </div>
@@ -110,6 +128,24 @@
                     <div class="card-body" id="chart7">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
                         <canvas id="lineChart4"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link12">Actual Unit Vs Budget</a></b></div>
+                    <div class="card-body" id="chart11">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
+                        <canvas id="mybarChart4"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link6">Accident</a></b></div>
+                    <div class="card-body" id="chart6">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
+                        <canvas id="lineChart3"></canvas>
                     </div>
                 </div>
             </div>
@@ -973,6 +1009,282 @@
                 }
             }
         });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetVehicleMakeDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+
+                var label_1 = "Total";
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].MANUFACTURER);
+                    first_chart.push(response[i].NO_OF_VEHICLE);
+
+                    label_1 = response[i].LABEL1;
+                }
+
+                if ($('#canvasDoughnut').length) {
+                    $('#canvasDoughnut').remove();
+                    $('#chart8').append('<canvas id="canvasDoughnut"><canvas>');
+                    var ctx = document.getElementById("canvasDoughnut");
+                    var canvasDoughnut = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }]
+                        },
+
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Manufacturers'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetVehicleTypeDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+
+                var label_1 = "Total";
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].BODY_TYPE);
+                    first_chart.push(response[i].NO_OF_VEHICLE);
+
+                    label_1 = response[i].LABEL1;
+                }
+
+                if ($('#polarArea').length) {
+                    $('#polarArea').remove();
+                    $('#chart9').append('<canvas id="polarArea"><canvas>');
+                    var ctx = document.getElementById("polarArea");
+                    var polarArea = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
+                                backgroundColor: "#FD13ED",
+                                data: first_chart
+                            }]
+                        },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Body Type'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SalesByRegionDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val() },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                var label_1 = "per Stick";
+                var label_2 = "per KM";
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].REGION);
+                    first_chart.push(response[i].TOTAL_COST);
+                    second_chart.push(response[i].TOTAL_KM);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
+                }
+
+                // Line chart
+
+                if ($('#lineChart5').length) {
+                    $('#lineChart5').remove();
+                    $('#chart10').append('<canvas id="lineChart5"><canvas>');
+                    var ctx = document.getElementById("lineChart5");
+                    var lineChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
+                                backgroundColor: "rgba(130, 130, 130, 0.31)",
+                                borderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBorderColor: "rgba(130, 130, 130, 0.7)",
+                                pointBackgroundColor: "rgba(130, 130, 130, 0.7)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(130,130,130,1)",
+                                pointBorderWidth: 1,
+                                data: first_chart
+                            }, {
+                                label: label_2,
+                                backgroundColor: "rgba(33, 164, 255, 0.3)",
+                                borderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBorderColor: "rgba(33, 164, 255, 0.70)",
+                                pointBackgroundColor: "rgba(33, 164, 255, 0.70)",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(33, 164, 255,1)",
+                                pointBorderWidth: 1,
+                                data: second_chart
+                            }]
+                        },
+                        //HERE COMES THE AXIS LABEL
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Cost (IDR)'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Regional'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AcObUnitDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isRegion: true },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                var label_1 = "Unit Actual";
+                var label_2 = "Unit Bugdet";
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].FUNCTION);
+                    first_chart.push(response[i].UNIT);
+                    second_chart.push(response[i].UNIT_BUDGET);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
+                }
+
+                if ($('#mybarChart4').length) {
+                    $('#mybarChart4').remove();
+                    $('#chart11').append('<canvas id="mybarChart4"><canvas>');
+                    var ctx = document.getElementById("mybarChart4");
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
+                                backgroundColor: "#21A4FF",
+                                data: first_chart
+                            }, {
+                                label: label_2,
+                                backgroundColor: "#FF8000",
+                                data: second_chart
+                            }]
+                        },
+
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
     }
 
     function getRandomColor() {
@@ -1072,6 +1384,30 @@
     });
 
     $(document).on('click', '#link7', function () {
+        var myUrl = '@Url.Action("AcVsOb", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link8', function () {
+        var myUrl = '@Url.Action("VehicleMake", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link9', function () {
+        var myUrl = '@Url.Action("VehicleMake", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link10', function () {
+        var myUrl = '@Url.Action("SalesByRegion", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link12', function () {
         var myUrl = '@Url.Action("AcVsOb", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
 
         window.location.href = myUrl;

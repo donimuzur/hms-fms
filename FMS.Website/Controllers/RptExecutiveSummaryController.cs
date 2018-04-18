@@ -49,10 +49,10 @@ namespace FMS.Website.Controllers
         {
             var items = new List<SelectListItem>()
             {
-                new SelectListItem() {Text = "SALES", Value = "Sales" },
-                new SelectListItem() {Text = "MARKETING", Value = "Marketing" },
-                new SelectListItem() {Text = "OPERATIONS", Value = "Operations" },
-                new SelectListItem() {Text = "OTHERS", Value = "Others" }
+                new SelectListItem() {Text = "Sales", Value = "Sales" },
+                new SelectListItem() {Text = "Marketing", Value = "Marketing" },
+                new SelectListItem() {Text = "Operations", Value = "Operations" },
+                new SelectListItem() {Text = "Others", Value = "Others" }
             };
 
             return new MultiSelectList(items, "Value", "Text");
@@ -660,7 +660,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public JsonResult AcObUnitDataVisual(int monthFrom, int? yearFrom)
+        public JsonResult AcObUnitDataVisual(int monthFrom, int? yearFrom, bool isRegion)
         {
             var input = new AcVsObGetByParamInput();
             input.MonthFrom = monthFrom;
@@ -678,6 +678,11 @@ namespace FMS.Website.Controllers
             else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
             {
                 input.Function = "Logistic";
+            }
+
+            if (isRegion)
+            {
+                input.Function = "Sales,Marketing";
             }
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
@@ -4202,6 +4207,10 @@ namespace FMS.Website.Controllers
             List<NoVehicleWtcDto> dataWtc = _execSummBLL.GetNoOfVehicleWtcData(inputWtc);
             var listDataWtc = Mapper.Map<List<NoVehicleWtcData>>(dataWtc);
 
+            var inputMake = Mapper.Map<VehicleMakeGetByParamInput>(inputExport);
+            List<NoVehicleMakeDto> dataMake = _execSummBLL.GetNoOfVehicleMakeData(inputMake);
+            var listDataMake = Mapper.Map<List<NoVehicleMakeData>>(dataMake);
+
             var inputOdo = Mapper.Map<OdometerGetByParamInput>(inputExport);
             inputOdo.Function = "Sales,Marketing";
             inputOdo.VehicleType = "WTC";
@@ -4225,6 +4234,10 @@ namespace FMS.Website.Controllers
             List<LeaseCostByFunctionDto> dataLease = _execSummBLL.GetLeaseCostByFunctionData(inputLease);
             var listDataLease = Mapper.Map<List<LeaseCostByFunctionData>>(dataLease);
 
+            var inputSales = Mapper.Map<SalesRegionGetByParamInput>(inputExport);
+            List<SalesByRegionDto> dataSales = _execSummBLL.GetSalesByRegionData(inputSales);
+            var listDataSales = Mapper.Map<List<SalesByRegionData>>(dataSales);
+
             var inputAccident = Mapper.Map<AccidentGetByParamInput>(inputExport);
             inputAccident.Function = "Sales,Marketing";
             inputAccident.VehicleType = "WTC";
@@ -4236,6 +4249,9 @@ namespace FMS.Website.Controllers
             inputAcOb.VehicleType = "WTC";
             List<AcVsObDto> dataAcOb = _execSummBLL.GetAcVsObData(inputAcOb);
             var listDataAcOb = Mapper.Map<List<AcVsObData>>(dataAcOb);
+
+            List<AcVsObDto> dataAcObUnit = _execSummBLL.GetAcVsObUnitData(inputAcOb);
+            var listDataAcObUnit = Mapper.Map<List<AcVsObData>>(dataAcObUnit);
 
             var slDocument = new SLDocument();
 
@@ -4256,6 +4272,15 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
             slDocument = CreateDataExcelSheet1Region(slDocument, listDataWtc);
+
+
+            //title no of vehicle Make
+            slDocument.AddWorksheet("Make Type");
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 16);
+            slDocument.SetCellStyle(1, 2, 1, 16, valueStyle);
+
+            slDocument = CreateDataExcelSheet3(slDocument, listDataMake);
 
 
             //title Odometer
@@ -4295,6 +4320,15 @@ namespace FMS.Website.Controllers
             slDocument = CreateDataExcelSheet5Region(slDocument, listDataLease);
 
 
+            //title Sales By Region
+            slDocument.AddWorksheet("Operational Cost");
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+
+            slDocument = CreateDataExcelSheet7(slDocument, listDataSales);
+
+
             //title Accident
             slDocument.AddWorksheet("Accident");
             slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
@@ -4310,6 +4344,14 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
 
             slDocument = CreateDataExcelSheet7Region(slDocument, listDataAcOb);
+
+            //title AC Vs OB Unit
+            slDocument.AddWorksheet("Actual Unit Vs Budget");
+            slDocument.SetCellValue(1, 2, "Executive Summary Working Tool Car " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(inputExport.MonthFrom) + "-" + inputExport.YearFrom);
+            slDocument.MergeWorksheetCells(1, 2, 1, 10);
+            slDocument.SetCellStyle(1, 2, 1, 10, valueStyle);
+
+            slDocument = CreateDataExcelSheet13(slDocument, listDataAcObUnit);
 
 
             var fileName = "ExecSum_SummaryWorkingToolCar" + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";

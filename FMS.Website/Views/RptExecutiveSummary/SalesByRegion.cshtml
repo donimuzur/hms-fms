@@ -163,6 +163,18 @@
 		</div>
 	</div>
 </div>
+<div id="errormodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Year From need to be same with Year To</h4>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/js/Chart.bundle.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/execsumscript.js"></script>
@@ -675,6 +687,11 @@
     }
 
     $(document).on('click', '#btn-filter', function () {
-        init_charts();
+        if ($('#SearchView_YearFrom').val() == $('#SearchView_YearTo').val()) {
+            init_charts();
+        } else {
+            $('#errormodal').modal('show');
+        }
+
     });
 </script>
