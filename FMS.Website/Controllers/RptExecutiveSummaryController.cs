@@ -2981,7 +2981,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.Regional == item).Sum(x => x.NoOfVehicle);
@@ -3179,9 +3179,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 1, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 1);
             chart.SetChartStyle(SLChartStyle.Style31);
@@ -3240,9 +3244,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 1, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 1);
             chart.SetChartStyle(SLChartStyle.Style32);
@@ -3312,9 +3320,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 2, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style30);
@@ -3349,7 +3361,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => x.Region == item).Sum(x => x.TotalCost / x.Stick);
                 slDocument.SetCellValueNumeric(contRow, firstColumn + 1, countData.ToString());
@@ -3380,9 +3392,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 2, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style32);
@@ -3462,9 +3478,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 4);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 4, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 4);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 4);
             chart.SetChartStyle(SLChartStyle.Style31);
@@ -4386,7 +4406,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.Regional == item).Sum(x => x.NoOfVehicle);
@@ -4456,7 +4476,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.Region == item).Sum(x => x.TotalKm);
@@ -4489,9 +4509,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 2, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style31);
@@ -4526,7 +4550,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.Region == item).Sum(x => x.TotalLiter);
@@ -4559,9 +4583,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 2, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style30);
@@ -4596,7 +4624,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.Region == item).Sum(x => x.TotalFuelCost);
@@ -4629,9 +4657,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 2, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style32);
@@ -4666,7 +4698,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.Region == item).Sum(x => x.TotalLeaseCost);
@@ -4699,9 +4731,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 2, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style31);
@@ -4736,7 +4772,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.Region == item).Sum(x => x.AccidentCount);
@@ -4837,9 +4873,13 @@ namespace FMS.Website.Controllers
             headerStyleNumbChart.Border.BottomBorder.BorderStyle = BorderStyleValues.Thin;
             headerStyleNumbChart.Fill.SetPattern(PatternValues.Solid, System.Drawing.Color.LightGray, System.Drawing.Color.LightGray);
 
-            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, 10, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, 10, headerStyleNumbChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, firstColumn + 2, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, firstColumn + 2);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, firstColumn + 2);
             chart.SetChartStyle(SLChartStyle.Style30);
@@ -5600,7 +5640,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 nextColumn = firstColumn + 1;
                 for (int i = input.MonthFrom; i <= input.MonthTo; i++)
@@ -6554,7 +6594,8 @@ namespace FMS.Website.Controllers
             SLStyle rightStyleChart = slDocument.CreateStyle();
             rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
 
             if (minColumn < endColumn)
             {
@@ -6563,6 +6604,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
             slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, minColumn, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style31);
@@ -6982,7 +7025,9 @@ namespace FMS.Website.Controllers
             SLStyle rightStyleChart = slDocument.CreateStyle();
             rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             if (minColumn < endColumn)
             {
                 minColumn = endColumn;
@@ -6990,6 +7035,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
             slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, minColumn, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style30);
@@ -7409,7 +7456,9 @@ namespace FMS.Website.Controllers
             SLStyle rightStyleChart = slDocument.CreateStyle();
             rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             if (minColumn < endColumn)
             {
                 minColumn = endColumn;
@@ -7417,6 +7466,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
             slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, minColumn, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style32);
@@ -7769,7 +7820,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 nextColumn = firstColumn + 1;
                 for (int i = input.MonthFrom; i <= input.MonthTo; i++)
@@ -7832,7 +7883,9 @@ namespace FMS.Website.Controllers
             SLStyle rightStyleChart = slDocument.CreateStyle();
             rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             if (minColumn < endColumn)
             {
                 minColumn = endColumn;
@@ -7840,6 +7893,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
             slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, minColumn, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style31);
@@ -8197,7 +8252,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "No Regional" : item);
+                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
 
                 nextColumn = firstColumn + 1;
                 for (int i = input.MonthFrom; i <= input.MonthTo; i++)
@@ -8256,7 +8311,9 @@ namespace FMS.Website.Controllers
             SLStyle rightStyleChart = slDocument.CreateStyle();
             rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             if (minColumn < endColumn)
             {
                 minColumn = endColumn;
@@ -8264,6 +8321,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
             slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, minColumn, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style32);
@@ -9159,7 +9218,9 @@ namespace FMS.Website.Controllers
             SLStyle rightStyleChart = slDocument.CreateStyle();
             rightStyleChart.Alignment.Horizontal = HorizontalAlignmentValues.Right;
 
-            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
+            SLStyle numberStyle = slDocument.CreateStyle();
+            numberStyle.FormatCode = "#,##0.00";
+
             if (minColumn < endColumn)
             {
                 minColumn = endColumn;
@@ -9167,6 +9228,8 @@ namespace FMS.Website.Controllers
             slDocument.SetCellStyle(firstRow, firstColumn, firstRow, minColumn, headerStyleChart);
             slDocument.SetCellStyle(contRow, firstColumn, contRow, minColumn, headerStyleNumbChart);
             slDocument.SetCellStyle(contRow, firstColumn + 1, contRow, minColumn, rightStyleChart);
+            slDocument.SetCellStyle(firstRow + 1, firstColumn + 1, contRow, minColumn, numberStyle);
+            slDocument.AutoFitColumn(firstColumn, endColumn - 1);
 
             SLChart chart = slDocument.CreateChart(firstRow, firstColumn, contRow, endColumn - 1);
             chart.SetChartStyle(SLChartStyle.Style31);
