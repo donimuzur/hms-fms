@@ -403,7 +403,7 @@
                     if (i == 1) {
                         var data1 = {
                             label: label_1,
-                            backgroundColor: "#8ECD0",
+                            backgroundColor: "#EC644B",
                             data: chart_1
                         };
 
@@ -413,7 +413,7 @@
                     if (i == 2) {
                         var data1 = {
                             label: label_2,
-                            backgroundColor: "#FECACD",
+                            backgroundColor: "#D24D57",
                             data: chart_2
                         };
 
@@ -423,7 +423,7 @@
                     if (i == 3) {
                         var data1 = {
                             label: label_3,
-                            backgroundColor: "#E203AB",
+                            backgroundColor: "#D2527F",
                             data: chart_3
                         };
 
@@ -433,7 +433,7 @@
                     if (i == 4) {
                         var data1 = {
                             label: label_4,
-                            backgroundColor: "#E08488",
+                            backgroundColor: "#F62459",
                             data: chart_4
                         };
 
@@ -443,7 +443,7 @@
                     if (i == 5) {
                         var data1 = {
                             label: label_5,
-                            backgroundColor: "#FA1106",
+                            backgroundColor: "#663399",
                             data: chart_5
                         };
 
@@ -453,7 +453,7 @@
                     if (i == 6) {
                         var data1 = {
                             label: label_6,
-                            backgroundColor: "#9F0336",
+                            backgroundColor: "#AEA8D3",
                             data: chart_6
                         };
 
@@ -463,7 +463,7 @@
                     if (i == 7) {
                         var data1 = {
                             label: label_7,
-                            backgroundColor: "#F4550F",
+                            backgroundColor: "#9A12B3",
                             data: chart_7
                         };
 
@@ -473,7 +473,7 @@
                     if (i == 8) {
                         var data1 = {
                             label: label_8,
-                            backgroundColor: "#FFF5B0",
+                            backgroundColor: "#BF55EC",
                             data: chart_8
                         };
 
@@ -483,7 +483,7 @@
                     if (i == 9) {
                         var data1 = {
                             label: label_9,
-                            backgroundColor: "#FFF553",
+                            backgroundColor: "#BE90D4",
                             data: chart_9
                         };
 
@@ -493,7 +493,7 @@
                     if (i == 10) {
                         var data1 = {
                             label: label_10,
-                            backgroundColor: "#E79E03",
+                            backgroundColor: "#81CFE0",
                             data: chart_10
                         };
 
@@ -503,7 +503,7 @@
                     if (i == 11) {
                         var data1 = {
                             label: label_11,
-                            backgroundColor: "#FC9B11",
+                            backgroundColor: "#52B3D9",
                             data: chart_11
                         };
 
@@ -513,7 +513,7 @@
                     if (i == 12) {
                         var data1 = {
                             label: label_12,
-                            backgroundColor: "#FF9769",
+                            backgroundColor: "#4ECDC4",
                             data: chart_12
                         };
 
@@ -525,7 +525,7 @@
                     if (i == 1) {
                         var data2 = {
                             label: label_13,
-                            backgroundColor: "#D3FDB4",
+                            backgroundColor: "#03C9A9",
                             data: chart_13
                         };
 
@@ -535,7 +535,7 @@
                     if (i == 2) {
                         var data2 = {
                             label: label_14,
-                            backgroundColor: "#5FF59F",
+                            backgroundColor: "#FABE58",
                             data: chart_14
                         };
 
@@ -545,7 +545,7 @@
                     if (i == 3) {
                         var data2 = {
                             label: label_15,
-                            backgroundColor: "#31B204",
+                            backgroundColor: "#E9D460",
                             data: chart_15
                         };
 
@@ -555,7 +555,7 @@
                     if (i == 4) {
                         var data2 = {
                             label: label_16,
-                            backgroundColor: "#3E4440",
+                            backgroundColor: "#FDE3A7",
                             data: chart_16
                         };
 
@@ -565,7 +565,7 @@
                     if (i == 5) {
                         var data2 = {
                             label: label_17,
-                            backgroundColor: "#4DD292",
+                            backgroundColor: "#FABE58",
                             data: chart_17
                         };
 
@@ -575,7 +575,7 @@
                     if (i == 6) {
                         var data2 = {
                             label: label_18,
-                            backgroundColor: "#B0D8F7",
+                            backgroundColor: "#F2784B",
                             data: chart_18
                         };
 
@@ -585,7 +585,7 @@
                     if (i == 7) {
                         var data2 = {
                             label: label_19,
-                            backgroundColor: "#26A4EC",
+                            backgroundColor: "#03A678",
                             data: chart_19
                         };
 
@@ -595,7 +595,7 @@
                     if (i == 8) {
                         var data2 = {
                             label: label_20,
-                            backgroundColor: "#100A91",
+                            backgroundColor: "#3A539B",
                             data: chart_20
                         };
 
@@ -605,7 +605,7 @@
                     if (i == 9) {
                         var data2 = {
                             label: label_21,
-                            backgroundColor: "#606596",
+                            backgroundColor: "#4B77BE",
                             data: chart_21
                         };
 
@@ -615,7 +615,7 @@
                     if (i == 10) {
                         var data2 = {
                             label: label_22,
-                            backgroundColor: "#B0B4D9",
+                            backgroundColor: "#DB0A5B",
                             data: chart_22
                         };
 
@@ -625,7 +625,7 @@
                     if (i == 11) {
                         var data2 = {
                             label: label_23,
-                            backgroundColor: "#C0A2F5",
+                            backgroundColor: "#947CB0",
                             data: chart_23
                         };
 
@@ -635,7 +635,7 @@
                     if (i == 12) {
                         var data2 = {
                             label: label_24,
-                            backgroundColor: "#53017D",
+                            backgroundColor: "#913D88",
                             data: chart_24
                         };
 
@@ -703,8 +703,12 @@
     $(document).on('click', '#btn-filter', function () {
         if ($('#SearchView_YearFrom').val() == $('#SearchView_YearTo').val()) {
             init_charts();
+            $('#SearchView_YearFrom').attr("style", "border:1px solid #ccc");
+            $('#SearchView_YearTo').attr("style", "border:1px solid #ccc");
         } else {
             $('#errormodal').modal('show');
+            $('#SearchView_YearFrom').attr("style", "border:1px solid #ff0000");
+            $('#SearchView_YearTo').attr("style", "border:1px solid #ff0000");
         }
 
     });
