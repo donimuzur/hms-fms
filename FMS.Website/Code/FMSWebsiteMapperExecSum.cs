@@ -179,6 +179,8 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.TotalKm, opt => opt.MapFrom(src => src.TOTAL_KM))
                 .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TOTAL_COST))
                 .ForMember(dest => dest.Stick, opt => opt.MapFrom(src => src.STICK))
+                .ForMember(dest => dest.PerKm, opt => opt.MapFrom(src => (src.TOTAL_KM == null || src.TOTAL_KM == 0) ? 0 : src.TOTAL_COST / src.TOTAL_KM))
+                .ForMember(dest => dest.PerStick, opt => opt.MapFrom(src => (src.STICK == null || src.STICK == 0) ? 0 : src.TOTAL_COST / src.STICK))
                 .ForMember(dest => dest.ReportMonth, opt => opt.MapFrom(src => src.REPORT_MONTH))
                 .ForMember(dest => dest.Month, opt => opt.MapFrom(src => CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(src.REPORT_MONTH.Value)))
                 .ForMember(dest => dest.ReportYear, opt => opt.MapFrom(src => src.REPORT_YEAR))

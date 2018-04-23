@@ -738,6 +738,8 @@ namespace FMS.Website.Models
         public decimal? TotalKm { get; set; }
         public decimal? TotalCost { get; set; }
         public decimal? Stick { get; set; }
+        public decimal? PerKm { get; set; }
+        public decimal? PerStick { get; set; }
         public int? ReportMonth { get; set; }
         public string Month { get; set; }
         public int? ReportYear { get; set; }

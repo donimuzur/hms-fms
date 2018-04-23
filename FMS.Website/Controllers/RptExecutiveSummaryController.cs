@@ -1004,7 +1004,7 @@ namespace FMS.Website.Controllers
             var groupData = data.GroupBy(x => new { x.REGIONAL })
                 .Select(p => new NoVehicleWtcDto()
                 {
-                    REGIONAL = p.FirstOrDefault().REGIONAL,
+                    REGIONAL = (p.FirstOrDefault().REGIONAL == null || p.FirstOrDefault().REGIONAL == "0") ? "HO" : p.FirstOrDefault().REGIONAL,
                     NO_OF_VEHICLE_SALES_1 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
                                                             && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.NO_OF_VEHICLE),
                     NO_OF_VEHICLE_SALES_2 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
@@ -1838,7 +1838,7 @@ namespace FMS.Website.Controllers
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new LeaseCostByFunctionDto()
                 {
-                    REGION = p.FirstOrDefault().REGION,
+                    REGION = (p.FirstOrDefault().REGION == null || p.FirstOrDefault().REGION == "0") ? "HO" : p.FirstOrDefault().REGION,
 
                     TOTAL_LEASE_COST_SALES_1 = p.Where(x => (x.FUNCTION == null ? "" : x.FUNCTION.ToUpper()) == "SALES"
                                                             && x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_LEASE_COST),
@@ -1930,30 +1930,30 @@ namespace FMS.Website.Controllers
             
             List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
 
-            var numb1 = data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb2 = data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb3 = data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb4 = data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb5 = data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb6 = data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb7 = data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb8 = data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb9 = data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb10 = data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb11 = data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb12 = data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK);
-            var numb13 = data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb14 = data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb15 = data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb16 = data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb17 = data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb18 = data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb19 = data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb20 = data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb21 = data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb22 = data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb23 = data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
-            var numb24 = data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM);
+            var numb1 = data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb2 = data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb3 = data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb4 = data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb5 = data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb6 = data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb7 = data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb8 = data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb9 = data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb10 = data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb11 = data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb12 = data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK);
+            var numb13 = data.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb14 = data.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb15 = data.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb16 = data.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb17 = data.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb18 = data.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb19 = data.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb20 = data.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb21 = data.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb22 = data.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb23 = data.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
+            var numb24 = data.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM);
 
             var label1 = "per Stick Jan " + yearFrom + " (" + (numb1 == null ? "0" : numb1.Value.ToString("N2")) + ")";
             var label2 = "per Stick Feb " + yearFrom + " (" + (numb2 == null ? "0" : numb2.Value.ToString("N2")) + ")";
@@ -1983,32 +1983,32 @@ namespace FMS.Website.Controllers
             var groupData = data.GroupBy(x => new { x.REGION })
                 .Select(p => new SalesByRegionDto()
                 {
-                    REGION = p.FirstOrDefault().REGION,
+                    REGION = (p.FirstOrDefault().REGION == null || p.FirstOrDefault().REGION == "0") ? "HO" : p.FirstOrDefault().REGION,
 
-                    TOTAL_COST_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_COST_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.TOTAL_KM),
-                    TOTAL_KM_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
-                    TOTAL_KM_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => c.TOTAL_COST / c.STICK),
+                    TOTAL_COST_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_COST_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => (c.TOTAL_KM == null || c.TOTAL_KM == 0) ? 0 : c.TOTAL_COST / c.TOTAL_KM),
+                    TOTAL_KM_1 = p.Where(x => x.REPORT_MONTH == 1 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_2 = p.Where(x => x.REPORT_MONTH == 2 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_3 = p.Where(x => x.REPORT_MONTH == 3 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_4 = p.Where(x => x.REPORT_MONTH == 4 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_5 = p.Where(x => x.REPORT_MONTH == 5 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_6 = p.Where(x => x.REPORT_MONTH == 6 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_7 = p.Where(x => x.REPORT_MONTH == 7 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_8 = p.Where(x => x.REPORT_MONTH == 8 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_9 = p.Where(x => x.REPORT_MONTH == 9 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_10 = p.Where(x => x.REPORT_MONTH == 10 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_11 = p.Where(x => x.REPORT_MONTH == 11 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
+                    TOTAL_KM_12 = p.Where(x => x.REPORT_MONTH == 12 && x.REPORT_YEAR == yearFrom).Sum(c => (c.STICK == null || c.STICK == 0) ? 0 : c.TOTAL_COST / c.STICK),
                     LABEL1 = label1,
                     LABEL2 = label2,
                     LABEL3 = label3,
@@ -5380,7 +5380,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -5389,7 +5389,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -5764,7 +5764,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
+                slDocument.SetCellValue(contRow, firstColumn, (string.IsNullOrEmpty(item) || item == "0") ? "HO" : item);
 
                 nextColumn = firstColumn + 1;
                 for (int i = input.MonthFrom; i <= input.MonthTo; i++)
@@ -5798,7 +5798,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -5807,7 +5807,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -6196,7 +6196,7 @@ namespace FMS.Website.Controllers
             {
                 var countData = listData.Where(x => x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.NoOfVehicle);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -6689,7 +6689,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalKm);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -6698,7 +6698,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalKm);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -7120,7 +7120,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLiter);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -7129,7 +7129,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLiter);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -7551,7 +7551,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalFuelCost);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -7560,7 +7560,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalFuelCost);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -7944,7 +7944,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
+                slDocument.SetCellValue(contRow, firstColumn, (string.IsNullOrEmpty(item) || item == "0") ? "HO" : item);
 
                 nextColumn = firstColumn + 1;
                 for (int i = input.MonthFrom; i <= input.MonthTo; i++)
@@ -7978,7 +7978,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "SALES"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLeaseCost);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -7987,7 +7987,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.Function == null ? "" : x.Function.ToUpper()) == "MARKETING"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalLeaseCost);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -8376,7 +8376,7 @@ namespace FMS.Website.Controllers
 
             foreach (var item in dataList)
             {
-                slDocument.SetCellValue(contRow, firstColumn, string.IsNullOrEmpty(item) ? "HO" : item);
+                slDocument.SetCellValue(contRow, firstColumn, (string.IsNullOrEmpty(item) || item == "0") ? "HO" : item);
 
                 nextColumn = firstColumn + 1;
                 for (int i = input.MonthFrom; i <= input.MonthTo; i++)
@@ -8407,7 +8407,7 @@ namespace FMS.Website.Controllers
             {
                 var countData = listData.Where(x => x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalCost / x.Stick);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -8415,7 +8415,7 @@ namespace FMS.Website.Controllers
             {
                 var countData = listData.Where(x => x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.TotalCost / x.TotalKm);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -8837,7 +8837,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.AccidentCount);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -8846,7 +8846,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.AccidentCount);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -9303,7 +9303,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.ActualCost);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -9312,7 +9312,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "BENEFIT"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.CostOb);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -9321,7 +9321,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.ActualCost);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
@@ -9330,7 +9330,7 @@ namespace FMS.Website.Controllers
                 var countData = listData.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == "WTC"
                                                         && x.ReportMonth == i && x.ReportYear == input.YearFrom).Sum(x => x.CostOb);
 
-                slDocument.SetCellValue(contRow, nextColumn, countData.ToString());
+                slDocument.SetCellValueNumeric(contRow, nextColumn, countData.ToString());
                 nextColumn++;
             }
 
