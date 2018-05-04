@@ -319,6 +319,10 @@ namespace FMS.BLL.Ccf
                 case Enums.ActionType.Completed:
                     CompleteDocument(input);
                     break;
+                case Enums.ActionType.Cancel:
+                    CancelDocument(input);
+                    isNeedSendNotif = false;
+                    break;
             }
             //todo sent mail
             if (isNeedSendNotif)
@@ -738,6 +742,22 @@ namespace FMS.BLL.Ccf
             //    dbData.DOCUMENT_STATUS = (int)Enums.DocumentStatus.InProgress;
 
             //}
+
+            input.DocumentNumber = dbData.DOCUMENT_NUMBER;
+
+            AddWorkflowHistory(input);
+
+        }
+
+        private void CancelDocument(CcfWorkflowDocumentInput input)
+        {
+            var dbData = _ccfService.GetCcfById(input.DocumentId);
+
+            dbData.MODIFIED_BY = input.UserId;
+            dbData.MODIFIED_DATE = DateTime.Now;
+
+            if (dbData == null)
+                throw new BLLException(ExceptionCodes.BLLExceptions.DataNotFound);
 
             input.DocumentNumber = dbData.DOCUMENT_NUMBER;
 
