@@ -2006,7 +2006,7 @@ namespace FMS.BLL.Csf
 
         public void EpafCSFNotif ()
         {
-            var CsfList = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+            var CsfList = _CsfService.GetAllCsf().ToList();
             var EpafCSFList = _epafService.GetEpafByDocumentType(Enums.DocumentType.CSF).Where(x => x.REMARK == null && (CsfList == null ? true : CsfList.Where(csf => csf.EPAF_ID == x.MST_EPAF_ID).Count() == 0)).ToList();
             var Scheduler = ConfigurationManager.AppSettings["EpafCSFScheduler"];
             var arrScheduler = Scheduler.Split(',').ToList();
