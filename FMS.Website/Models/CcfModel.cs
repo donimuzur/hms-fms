@@ -95,6 +95,8 @@ namespace FMS.Website.Models
             Details_d1 = new List<CcfItemDetil>();
             DetailSave = new CcfItemDetil();
         }
+
+        public SelectList RemarkList { get; set; }
     }
 
     public class CcfItemDetil : BaseModel
