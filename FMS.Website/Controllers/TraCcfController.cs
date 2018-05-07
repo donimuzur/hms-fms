@@ -88,7 +88,7 @@ namespace FMS.Website.Controllers
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
-                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
                 //model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (
                 //x.DocumentStatus == Enums.DocumentStatus.AssignedForFleet || x.DocumentStatus == Enums.DocumentStatus.AssignedForHR ||
                 //x.DocumentStatus == Enums.DocumentStatus.InProgress)
@@ -96,7 +96,7 @@ namespace FMS.Website.Controllers
             }
             else
             {
-                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus != Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus != Enums.DocumentStatus.Completed && x.DocumentStatus != Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
             }
             return View("Index", model);
         }
@@ -114,22 +114,22 @@ namespace FMS.Website.Controllers
             if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 model.Details = Mapper.Map<List<CcfItem>>(data.Where(
-                    x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "HR") ||
-                    (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+                    x => ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.ComplaintCategoryRole.ToUpper() == "HR") ||
+                    ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet || CurrentUser.UserRole == Enums.UserRole.FleetManager)
             {
                 model.Details = Mapper.Map<List<CcfItem>>(data.Where(
-                    x => (x.DocumentStatus == Enums.DocumentStatus.Completed && x.ComplaintCategoryRole.ToUpper() == "FLEET") ||
-                    (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+                    x => ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.ComplaintCategoryRole.ToUpper() == "FLEET") ||
+                    ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
             {
-                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed) || (x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) || ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
             }
             else
             {
-                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => x.DocumentStatus == Enums.DocumentStatus.Completed && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
+                model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
             }
             return View("Index", model);
         }
@@ -479,6 +479,12 @@ namespace FMS.Website.Controllers
                 model.CurrentLogin = CurrentUser;
                 model.TitleForm = "Car Complaint Form";
                 model.MainMenu = _mainMenu;
+
+                var complaintRole = _complaintCategoryBLL.GetByID(model.ComplaintCategory).RoleType;
+
+                var RemarkList = _remarkBLL.GetRemark().Where(x => x.RoleType.ToUpper() == complaintRole.ToUpper() && x.DocumentType == (int)Enums.DocumentType.CCF).ToList();
+                model.RemarkList = new SelectList(RemarkList, "MstRemarkId", "Remark");
+
                 return View(model);
             }
             catch (Exception exception)
@@ -788,6 +794,29 @@ namespace FMS.Website.Controllers
                 model.MainMenu = _mainMenu;
                 return View(model);
             }
+        }
+
+        #endregion
+
+        #region --------- Cancel Document CCF --------------
+
+        public ActionResult CancelCcf(int TraCcfIdCancel, int RemarkId, bool IsPersonalDashboard)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _ccfBLL.CancelCcf(TraCcfIdCancel, RemarkId, CurrentUser.USER_ID);
+                    CcfWorkflow(TraCcfIdCancel, Enums.ActionType.Cancel, null, false);
+                    AddMessageInfo("Success Cancelled Document", Enums.MessageInfoType.Success);
+                }
+                catch (Exception)
+                {
+
+                }
+
+            }
+            return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
         }
 
         #endregion

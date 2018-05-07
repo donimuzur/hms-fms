@@ -440,6 +440,7 @@
                 <a href="#" id="btnsenddetail" class="btn btn-primary" onclick="SendCcf(@Model.TraCcfId)"><i class="glyphicon glyphicon-ok"></i> Send</a>
                 <input type="submit" value="Save" class="btn btn-primary" id="btnSubmit" style="display:none" />
                 <a href="#ComplaintAtt" class="btn btn-primary" onclick="save();">Save</a>
+                <input type="button" value="Cancel" class="btn btn-primary" onclick="CancelCcf(@Model.TraCcfId)" />
                 @if (Model.IsPersonalDashboard == true)
                 {
                     <a href="@Url.Action("PersonalDashboard", "TraCcf")" class="btn btn-default">Back</a>
@@ -464,6 +465,35 @@
                 <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
                 <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
             </div>
+        </div>
+    </div>
+</div>
+<div id="cancelmodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Cancel document ?</h4>
+            </div>
+            @using (Html.BeginForm("CancelCcf", "TraCcf"))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.IsPersonalDashboard)
+                                <input type="hidden" name="TraCcfIdCancel" id="TraCcfIdCancel">
+                                <label class="control-label">Select Remark</label>
+                                @Html.DropDownList("RemarkId", Model.RemarkList, "Select", new { @class = "form-control SelectPicker", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmCancel" />
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -695,4 +725,9 @@
         $('#isSubmit').val('submit');
         $('#FormEdit').submit();
     });
+
+    function CancelCcf(value) {
+        $('#TraCcfIdCancel').val(value);
+        $('#cancelmodal').modal('show');
+    }
 </script>
