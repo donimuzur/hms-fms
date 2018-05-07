@@ -69,14 +69,16 @@ namespace FMS.Website.Controllers
             var model = new CtfModel();
             var data = _ctfBLL.GetCtfDashboard(CurrentUser, false);
             model.Details = Mapper.Map<List<CtfItem>>(data);
+            var GetExtendList = _ctfExtendBLL.GetCtfExtend().ToList();
+            var GetLocationMappingList = _locationMappingBLL.GetLocationMapping().ToList();
             foreach (var item in model.Details)
             {
-                var ctfExtendDto = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == item.TraCtfId).FirstOrDefault();
+                var ctfExtendDto = GetExtendList.Where(x => x.TraCtfId == item.TraCtfId).FirstOrDefault();
                 if (ctfExtendDto != null)
                 {
                     item.CtfExtend = ctfExtendDto;
                 }
-                var region = _locationMappingBLL.GetLocationMapping().Where(x => x.Location == item.VehicleLocation).FirstOrDefault();
+                var region = GetLocationMappingList.Where(x => x.Location == item.VehicleLocation).FirstOrDefault();
                 if (region != null)
                 {
                     item.Region = region.Region;
