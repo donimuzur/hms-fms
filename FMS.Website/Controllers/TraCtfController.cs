@@ -95,20 +95,27 @@ namespace FMS.Website.Controllers
         }
         public CtfModel TerminationBoard(CtfModel model)
         {
-            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var GetSetting = _settingBLL.GetSetting().Where(x => x.IsActive).ToList();
+            var GetFleet = _fleetBLL.GetFleet().Where(x => x.IsActive).ToList();
+            DateTime adddays = new DateTime();
+
+            var settingData = GetSetting.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
-            var VehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
+            var VehUsage = GetSetting.Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
             var CfmUsage = VehUsage.Where(x => x.SettingName.ToUpper() == "CFM").FirstOrDefault().SettingName;
 
-            var fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(60).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && x.IsActive == true).ToList();
-            var fleetWTC = _fleetBLL.GetFleetForEndContractLessThan(90).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == wtcType.ToUpper() && x.IsActive == true).ToList();
+            adddays = DateTime.Now.AddDays(60);
+            var fleetBenefit = GetFleet.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && x.EndContract < adddays).ToList();
+
+            adddays = DateTime.Now.AddDays(90);
+            var fleetWTC = GetFleet.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == wtcType.ToUpper() && x.EndContract < adddays).ToList();
 
             bool IsSendCsf = false;
             bool IsTerminate = false;
 
-            var GetSetting = _settingBLL.GetSetting();
+
             var ReasonList = _reasonBLL.GetReason();
             var CsfList = _csfBLL.GetList();
             var CtfList = _ctfBLL.GetCtf();
@@ -117,7 +124,7 @@ namespace FMS.Website.Controllers
             {
                 if (fleetBenefit != null)
                 {
-                    
+
                     foreach (var item in fleetBenefit)
                     {
                         try
@@ -156,8 +163,8 @@ namespace FMS.Website.Controllers
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(7).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == CfmUsage.ToUpper() && x.IsActive == true).ToList();
-                
+                fleetBenefit = GetFleet.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == CfmUsage.ToUpper() && x.EndContract < adddays).ToList();
+
                 if (fleetBenefit != null)
                 {
                     foreach (var item in fleetBenefit)
@@ -189,7 +196,6 @@ namespace FMS.Website.Controllers
                             {
                                 model.Details.Add(ctfitem);
                             }
-
                         }
                         catch (Exception exp)
                         {
