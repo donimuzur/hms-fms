@@ -575,9 +575,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("<li>Prepare a copy of your driving license (SIM A) for the vendor</li>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<li>Fill and complete SIRS via Web Link SIRS (Application Access > Environment, Health, Safety & Security > Sampoerna Incident Reporting System (SIRS))</li>");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("<li>ill and compelte CIRF (if there is any incident)</li>");
+                        bodyMail.Append("<li>For CFM unit, fill and complete SIRS via Web Link SIRS (Application Access > Environment, Health, Safety & Security > Sampoerna Incident Reporting System (SIRS)) and CIRF.</li>");
                         bodyMail.AppendLine();
                         bodyMail.Append("</ol> ");
                         bodyMail.AppendLine();
