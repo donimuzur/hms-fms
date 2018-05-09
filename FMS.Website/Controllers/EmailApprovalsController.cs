@@ -59,7 +59,6 @@ namespace FMS.Website.Controllers
             }
 
             return Json(Data, JsonRequestBehavior.AllowGet);
-
         }
 
         public Login GetLoginByEmail()
