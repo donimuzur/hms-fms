@@ -649,6 +649,31 @@ namespace FMS.BusinessObject.Dto
         public int? REPORT_MONTH { get; set; }
         public int? REPORT_YEAR { get; set; }
         public int? UNIT { get; set; }
+        public int? UNIT_BUDGET { get; set; }
+        public int? UNIT_1 { get; set; }
+        public int? UNIT_2 { get; set; }
+        public int? UNIT_3 { get; set; }
+        public int? UNIT_4 { get; set; }
+        public int? UNIT_5 { get; set; }
+        public int? UNIT_6 { get; set; }
+        public int? UNIT_7 { get; set; }
+        public int? UNIT_8 { get; set; }
+        public int? UNIT_9 { get; set; }
+        public int? UNIT_10 { get; set; }
+        public int? UNIT_11 { get; set; }
+        public int? UNIT_12 { get; set; }
+        public int? UNIT_BUDGET_1 { get; set; }
+        public int? UNIT_BUDGET_2 { get; set; }
+        public int? UNIT_BUDGET_3 { get; set; }
+        public int? UNIT_BUDGET_4 { get; set; }
+        public int? UNIT_BUDGET_5 { get; set; }
+        public int? UNIT_BUDGET_6 { get; set; }
+        public int? UNIT_BUDGET_7 { get; set; }
+        public int? UNIT_BUDGET_8 { get; set; }
+        public int? UNIT_BUDGET_9 { get; set; }
+        public int? UNIT_BUDGET_10 { get; set; }
+        public int? UNIT_BUDGET_11 { get; set; }
+        public int? UNIT_BUDGET_12 { get; set; }
         public DateTime CREATED_DATE { get; set; }
 
         public string LABEL1 { get; set; }

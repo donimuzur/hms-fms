@@ -86,7 +86,7 @@
                             }
                             else
                             {
-                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @id = "employeeSelect", @class = "form-control" })
                             }
                             
                         }
@@ -98,7 +98,7 @@
                             }
                             else
                             {
-                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @id = "employeeSelect", @class = "form-control" })
                             }
                             
                         }
@@ -1005,7 +1005,43 @@
 <script type="text/javascript">
     $(document).ready(function () {
         SetDataVehUsage();
+
+        InitEmployee('@Url.Action("GetEmployeeList", "MstFleet")', '@Url.Action("GetEmployee", "MstFleet")');
     });
+
+    function InitEmployee(url, urlsearch) {
+        var options = {
+            url: url,
+            getValue: "DATA",
+
+            list: {
+                match: {
+                    enabled: true
+                },
+                onChooseEvent: function () {
+                    GetEmployee(urlsearch, "#employeeSelect");
+                }
+            },
+
+        };
+
+        $("#employeeSelect").easyAutocomplete(options);
+    }
+
+    function GetEmployee(urlGet, obj) {
+        console.log("url : " + urlGet);
+        console.log(obj);
+        var Id = $(obj).val();
+        $.ajax({
+            url: urlGet,
+            type: "POST",
+            dataType: "JSON",
+            data: { Id: Id },
+            success: function (response) {
+                $("[name='EmployeeID']").val(response.EMPLOYEE_ID);
+            }
+        });
+    }
 
     function checkAirbag() {
         if (document.getElementById('ChkAirbag').checked == true) {

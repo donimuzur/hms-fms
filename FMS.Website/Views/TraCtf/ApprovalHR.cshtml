@@ -63,7 +63,14 @@
                                                             @Html.HiddenFor(model => model.BuyCostTotal)
                                                             @Html.HiddenFor(model => model.BuyCost)
                                                             @Html.HiddenFor(model => model.PenaltyPrice)
+                                                            @*--------------------- Withdrawal detail----------------*@
+                                                            @Html.HiddenFor(model => model.WithdCity)
+                                                            @Html.HiddenFor(model => model.WithdAddress)
+                                                            @Html.HiddenFor(model => model.WithdDate)
+                                                            @Html.HiddenFor(model => model.WithdPhone)
+                                                            @Html.HiddenFor(model => model.WithdPic)
                                                             @*--------------------- calculation----------------*@
+                                                            
                                                             @Html.HiddenFor(model => model.IsActive)
                                                             @Html.HiddenFor(model => model.isSubmit, new { @id = "isSubmit" })
                                                             @Html.TextBoxFor(model => model.DocumentNumber, new { @class = "form-control ", @readonly = "readonly" })
@@ -581,8 +588,8 @@
     }
     function CheckUserDecision()
     {
-        var reason = $('#UserDecision').find("option:selected").text().toLowerCase();
-        if (reason == 'refund') {
+        var reason = $('#UserDecision').val();
+        if (reason == '2') {
             $('#WithdPic').prop('required', true);
             $('#WithdPhone').prop('required', true);
             $('#WithdDate').prop('required', true);

@@ -1088,7 +1088,7 @@ namespace FMS.BLL.Ctf
                 case Enums.ActionType.Extend:
                     rc.Subject = ctfData.DocumentNumber + " - Extend Vehicle";
 
-                    bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                    bodyMail.Append("Dear " + vendorDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Here is vehicle data which extended contract period. <br /><br />");
                     bodyMail.AppendLine();
@@ -1421,17 +1421,6 @@ namespace FMS.BLL.Ctf
                             
                         }
                     }
-                    var reason = _reasonService.GetReasonById(CtfData.REASON.HasValue ? CtfData.REASON.Value : 0);
-                    var GetConfigReason = ConfigurationManager.AppSettings["Reason"].Split(',').ToList();
-                    if ((reason == null ? false : GetConfigReason.Where(x => (x == null ? "" : x.ToUpper() )  == reason.REASON.ToUpper()).Count() > 0 ))
-                    {
-                        var Employee = _employeeService.GetEmployeeById(CtfData.EMPLOYEE_ID);
-                        if (Employee != null)
-                        {
-                            Employee.IS_ACTIVE = false;
-                            _employeeService.save(Employee);
-                        }
-                    }
                 }
             }
             else if (CtfData.EXTEND_VEHICLE.Value)
@@ -1470,7 +1459,17 @@ namespace FMS.BLL.Ctf
                 _fleetService.save(ExtendCar);
                 
             }
-
+            var reason = _reasonService.GetReasonById(CtfData.REASON.HasValue ? CtfData.REASON.Value : 0);
+            var GetConfigReason = ConfigurationManager.AppSettings["Reason"].Split(',').ToList();
+            if ((reason == null ? false : GetConfigReason.Where(x => (x == null ? "" : x.ToUpper()) == reason.REASON.ToUpper()).Count() > 0))
+            {
+                var Employee = _employeeService.GetEmployeeById(CtfData.EMPLOYEE_ID);
+                if (Employee != null)
+                {
+                    Employee.IS_ACTIVE = false;
+                    _employeeService.save(Employee);
+                }
+            }
         }
         public bool CheckCtfExists(TraCtfDto item)
         {
