@@ -259,6 +259,7 @@
     <Compile Include="Code\PdfResult.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangesLogController.cs" />
+    <Compile Include="Controllers\EmailApprovalsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -323,6 +324,7 @@
     <Compile Include="Models\CtfModel.cs" />
     <Compile Include="Models\DataTable.cs" />
     <Compile Include="Models\DelegationModel.cs" />
+    <Compile Include="Models\EmailApprovals.cs" />
     <Compile Include="Models\EpafModel.cs" />
     <Compile Include="Models\ExecutiveSummaryModel.cs" />
     <Compile Include="Models\FleetDashboardModel.cs" />
@@ -4440,6 +4442,7 @@
     <Content Include="Views\MstHolidayCalender\_ListHolidayCalender.cshtml" />
     <Content Include="Views\MstLocationMapping\_listLocationMapping.cshtml" />
     <Content Include="Views\RptAutoGr\_ListAutoGr.cshtml" />
+    <Content Include="Views\EmailsApprovals\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
