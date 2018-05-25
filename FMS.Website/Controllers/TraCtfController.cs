@@ -721,7 +721,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID || (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() > 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
+            if ((ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID || (CurrentUser.USER_ID == ctfData.CreatedBy)|| (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() > 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
             {
                 return RedirectToAction("ApprovalHR", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
