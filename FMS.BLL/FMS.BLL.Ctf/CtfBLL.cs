@@ -1271,6 +1271,15 @@ namespace FMS.BLL.Ctf
         public void CheckCtfInProgress()
         {
             var dateMinus1 = DateTime.Today.AddDays(-1);
+            var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)).ToList();
+            listCtfInProgress = listCtfInProgress.Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
+                                                                        && x.EFFECTIVE_DATE.Value <= dateMinus1).ToList();
+
+            foreach (var item in listCtfInProgress)
+            {
+                UpdateFleet(item.TRA_CTF_ID);
+                _uow.SaveChanges();
+            }
 
             var CopEndRentList = _fleetService.GetFleet().Where(x => x.IS_ACTIVE
                                 && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
@@ -1280,16 +1289,6 @@ namespace FMS.BLL.Ctf
             foreach (var copitem in CopEndRentList)
             {
                 InActiveCOPEndRent(copitem.MST_FLEET_ID);
-            }
-            var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)).ToList();
-            listCtfInProgress = listCtfInProgress.Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
-                                                                        && x.EFFECTIVE_DATE.Value <= dateMinus1).ToList();
-
-            foreach (var item in listCtfInProgress)
-            {
-                UpdateFleet(item.TRA_CTF_ID);
-
-                _uow.SaveChanges();
             }
 
             EmailNotifChangeCC();
