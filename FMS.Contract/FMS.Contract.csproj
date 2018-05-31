@@ -86,6 +86,18 @@
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="BLL\IUserBLL.cs" />
+    <Compile Include="Service\IArchCostObService.cs" />
+    <Compile Include="Service\IArchEmployeeService.cs" />
+    <Compile Include="Service\IArchEpafService.cs" />
+    <Compile Include="Service\IArchFleetService.cs" />
+    <Compile Include="Service\IArchFuelOdometerService.cs" />
+    <Compile Include="Service\IArchFunctionGroupService.cs" />
+    <Compile Include="Service\IArchGsService.cs" />
+    <Compile Include="Service\IArchLocationMappingService.cs" />
+    <Compile Include="Service\IArchPenaltyService.cs" />
+    <Compile Include="Service\IArchPricelistService.cs" />
+    <Compile Include="Service\IArchSalesVolumeService.cs" />
+    <Compile Include="Service\IArchVehicleSpectService.cs" />
     <Compile Include="Service\IAutoGrService.cs" />
     <Compile Include="Service\ICAFService.cs" />
     <Compile Include="Service\ICarComplaintFormService.cs" />
@@ -109,6 +121,7 @@
     <Compile Include="Service\IFunctionChangeService.cs" />
     <Compile Include="Service\IGroupCostCenterService.cs" />
     <Compile Include="Service\IGsService.cs" />
+    <Compile Include="Service\IHolidayCalendarService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
     <Compile Include="Service\IKpiMonitoringService.cs" />
     <Compile Include="Service\ILocationChangeService.cs" />

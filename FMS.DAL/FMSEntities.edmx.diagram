@@ -102,6 +102,19 @@
         <EntityTypeShape EntityType="FMSModel.FLEET_CHANGE" Width="2" PointX="18.375" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.FUNCTION_CHANGE" Width="1.5" PointX="18.375" PointY="4.75" />
         <EntityTypeShape EntityType="FMSModel.LOCATION_CHANGE" Width="1.5" PointX="18.375" PointY="8.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_COST_OB" Width="1.5" PointX="18.75" PointY="12.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_EMPLOYEE" Width="1.5" PointX="18.75" PointY="18.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_EPAF" Width="1.5" PointX="0.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_FLEET" Width="1.5" PointX="20.75" PointY="5.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_FUEL_ODOMETER" Width="1.5" PointX="2.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_FUNCTION_GROUP" Width="1.5" PointX="4.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_GS" Width="1.5" PointX="6.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_HOLIDAY_CALENDAR" Width="1.5" PointX="8.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_LOCATION_MAPPING" Width="1.5" PointX="10.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_PENALTY" Width="1.5" PointX="12.75" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_PRICELIST" Width="1.5" PointX="20.75" PointY="18.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_SALES_VOLUME" Width="1.5" PointX="21.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_MST_VEHICLE_SPECT" Width="1.5" PointX="22.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

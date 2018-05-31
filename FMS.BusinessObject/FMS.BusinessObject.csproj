@@ -54,6 +54,45 @@
     <Compile Include="AC_VS_OB_REPORT_DATA.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="ARCH_MST_COST_OB.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_EMPLOYEE.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_EPAF.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_FLEET.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_FUEL_ODOMETER.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_FUNCTION_GROUP.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_GS.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_HOLIDAY_CALENDAR.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_LOCATION_MAPPING.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_PENALTY.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_PRICELIST.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_SALES_VOLUME.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_MST_VEHICLE_SPECT.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="AUTO_GR.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

@@ -257,6 +257,7 @@
     <Compile Include="Code\IFormsAuthenticationService.cs" />
     <Compile Include="Code\MessageInfo.cs" />
     <Compile Include="Code\PdfResult.cs" />
+    <Compile Include="Controllers\ArchivedController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangesLogController.cs" />
     <Compile Include="Controllers\EmailApprovalsController.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="Helpers\PdfWriterEvents.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Helpers\ValidateAttributes.cs" />
+    <Compile Include="Models\ArchiveModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CarComplaintFormModel.cs" />
     <Compile Include="Models\CcfModel.cs" />
@@ -4443,6 +4445,9 @@
     <Content Include="Views\MstLocationMapping\_listLocationMapping.cshtml" />
     <Content Include="Views\RptAutoGr\_ListAutoGr.cshtml" />
     <Content Include="Views\EmailsApprovals\Index.cshtml" />
+    <Content Include="Views\Archived\Index.cshtml" />
+    <Content Include="Views\Archived\_listMaster.cshtml" />
+    <Content Include="Views\Archived\_listTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

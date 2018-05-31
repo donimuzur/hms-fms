@@ -1876,6 +1876,7 @@ namespace FMS.BLL.Csf
         {
             var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+            var allSetting = _settingService.GetSetting();
 
             var rc = new CsfMailNotification();
             var bodyMail = new StringBuilder();
@@ -1899,14 +1900,25 @@ namespace FMS.BLL.Csf
                                 "<td style='border: 1px solid black; padding : 5px'>Employee Name</td>" +
                                 "<td style='border: 1px solid black; padding : 5px'>Current Basetown</td>" +
                                 "<td style='border: 1px solid black; padding : 5px'>Vehicle Type</td>" +
+                                "<td style='border: 1px solid black; padding : 5px'>Vehicle Usage</td>" +
                             "</tr>");
             bodyMail.AppendLine();
             foreach (var CsfDoc in ListCsf)
             {
                 var vehType = "WTC";
+                var vehUsage = "";
                 if (CsfDoc.VEHICLE_TYPE == benefitType)
                 {
                     vehType = "BENEFIT";
+                }
+
+                var vehUsageData = allSetting.Where(x => x.MST_SETTING_ID ==
+                    (string.IsNullOrEmpty(CsfDoc.VEHICLE_USAGE) ? 0 : Convert.ToInt32(CsfDoc.VEHICLE_USAGE)))
+                    .FirstOrDefault();
+
+                if (vehUsageData != null)
+                {
+                    vehUsage = vehUsageData.SETTING_VALUE;
                 }
 
                 bodyMail.Append("<tr><td style='border: 1px solid black; padding : 5px'>" + CsfDoc.DOCUMENT_NUMBER + "</td>" +
@@ -1915,6 +1927,7 @@ namespace FMS.BLL.Csf
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EMPLOYEE_NAME + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.LOCATION_CITY + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + vehType + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + vehUsage + "</td>" +
                                 "</tr>");
                 bodyMail.AppendLine();
             }

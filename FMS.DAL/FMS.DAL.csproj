@@ -73,6 +73,19 @@
       <DependentUpon>FMSEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ArchCostObService.cs" />
+    <Compile Include="Services\ArchEmployeeService.cs" />
+    <Compile Include="Services\ArchEpafService.cs" />
+    <Compile Include="Services\ArchFleetService.cs" />
+    <Compile Include="Services\ArchFuelOdometerService.cs" />
+    <Compile Include="Services\ArchFunctionGroupService.cs" />
+    <Compile Include="Services\ArchGsService.cs" />
+    <Compile Include="Services\ArchHolidayCalendarService.cs" />
+    <Compile Include="Services\ArchLocationMappingService.cs" />
+    <Compile Include="Services\ArchPenaltyService.cs" />
+    <Compile Include="Services\ArchPricelistService.cs" />
+    <Compile Include="Services\ArchSalesVolumeService.cs" />
+    <Compile Include="Services\ArchVehicleSpectService.cs" />
     <Compile Include="Services\AutoGrService.cs" />
     <Compile Include="Services\CafService.cs" />
     <Compile Include="Services\CarComplaintFormService.cs" />
