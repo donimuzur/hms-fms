@@ -87,7 +87,16 @@ namespace FMS.BLL.Archive
                 var ListTableId = input.TableId.Split(',').ToList();
                 foreach(var item in ListTableId)
                 {
-                    var tableId = Convert.ToInt64(item);
+                    long tableId = 0;
+                    try
+                    {
+                        tableId = Convert.ToInt64(item);
+                    }
+                    catch (Exception)
+                    {
+                             
+                    }
+                    
                     ///---------- Master ----------///
                     #region --- Cost OB ---
                     if (tableId == 1)

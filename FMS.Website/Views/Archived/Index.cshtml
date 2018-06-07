@@ -128,17 +128,16 @@
             $(this).tab('show');
         })
         var message = $("#Message").val();
-        console.log(message);
-        if( message != "")
-        {
-            $("#TextInfo").text(message);
-            $('#infomodal').modal('show');
-            return false;
-        }
+        
         $('#btnConfirmSend').click(function () {
+            console.log(message);
             $("#imgLoader").css("display", "block");
             $("#ButtonArchive").css("display", "none");
         })
+        if (message != "") {
+            $("#TextInfo").text(message);
+            $('#infomodal').modal('show');
+        }
     });
     
     function SelectAll() {
@@ -178,7 +177,6 @@
         {
             $("#TextError").text("CreatedDate Can't be empty");
             $('#errormodal').modal('show');
-            $("#SearchView_CreatedDate").focus();
             return false;
         }
         if (ModifiedDate != '')
@@ -186,7 +184,6 @@
             if (Operator == '') {
                 $("#TextError").text("Please select an operator");
                 $('#errormodal').modal('show');
-                $("#SearchView_Operator").focus();
                 return false;
             }
         }
@@ -197,6 +194,7 @@
         else {
             $("#TextError").text("Please check one or more table on the list");
             $('#errormodal').modal('show');
+            return false;
         }
     }
 </script>
