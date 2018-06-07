@@ -37,55 +37,59 @@
           <Key>
             <PropertyRef Name="MST_COST_OB_ID" />
           </Key>
-          <Property Name="MST_COST_OB_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="YEAR" Type="int" Nullable="false" />
+          <Property Name="MST_COST_OB_ID" Type="bigint" Nullable="false" />
+          <Property Name="YEAR" Type="int" />
           <Property Name="ZONE" Type="nvarchar" MaxLength="50" />
           <Property Name="MODEL" Type="nvarchar" MaxLength="250" />
           <Property Name="TYPE" Type="nvarchar" MaxLength="250" />
           <Property Name="OB_COST" Type="decimal" Precision="18" Scale="2" />
           <Property Name="REMARK" Type="nvarchar" MaxLength="250" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
           <Property Name="QTY" Type="int" />
           <Property Name="MONTH" Type="int" />
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="FUNCTION_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_EMPLOYEE">
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" Nullable="false" />
-          <Property Name="FORMAL_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FORMAL_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="POSITION_TITLE" Type="nvarchar" MaxLength="100" />
-          <Property Name="DIVISON" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="DIRECTORATE" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="ADDRESS" Type="text" Nullable="false" />
-          <Property Name="CITY" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="BASETOWN" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="COMPANY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="COST_CENTER" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="DIVISON" Type="nvarchar" MaxLength="100" />
+          <Property Name="DIRECTORATE" Type="nvarchar" MaxLength="100" />
+          <Property Name="ADDRESS" Type="text" />
+          <Property Name="CITY" Type="nvarchar" MaxLength="100" />
+          <Property Name="BASETOWN" Type="nvarchar" MaxLength="100" />
+          <Property Name="COMPANY" Type="nvarchar" MaxLength="50" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
           <Property Name="GROUP_LEVEL" Type="int" />
           <Property Name="EMAIL_ADDRESS" Type="nvarchar" MaxLength="100" />
           <Property Name="FLEX_POINT" Type="int" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_EPAF">
           <Key>
             <PropertyRef Name="MST_EPAF_ID" />
           </Key>
-          <Property Name="MST_EPAF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DOCUMENT_TYPE" Type="int" Nullable="false" />
-          <Property Name="EPAF_ACTION" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MST_EPAF_ID" Type="bigint" Nullable="false" />
+          <Property Name="DOCUMENT_TYPE" Type="int" />
+          <Property Name="EPAF_ACTION" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
@@ -98,18 +102,20 @@
           <Property Name="EPAF_APPROVED_DATE" Type="datetime" />
           <Property Name="REMARK" Type="int" />
           <Property Name="LAST_UPDATED" Type="nvarchar" MaxLength="50" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="GRADE_LEVEL" Type="int" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_FLEET">
           <Key>
             <PropertyRef Name="MST_FLEET_ID" />
           </Key>
-          <Property Name="MST_FLEET_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_FLEET_ID" Type="bigint" Nullable="false" />
           <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -146,11 +152,11 @@
           <Property Name="VEHICLE_STATUS" Type="nvarchar" MaxLength="50" />
           <Property Name="IS_TAKEN" Type="bit" />
           <Property Name="GR_LEFT_QTY" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="VEHICLE_FUNCTION" Type="nvarchar" MaxLength="50" />
           <Property Name="REGIONAL" Type="nvarchar" MaxLength="50" />
           <Property Name="CERTIFICATE_OWNERSHIP" Type="nvarchar" MaxLength="50" />
@@ -164,12 +170,14 @@
           <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="SALES_CODE" Type="nvarchar" MaxLength="255" />
           <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_FUEL_ODOMETER">
           <Key>
             <PropertyRef Name="MST_FUEL_ODOMETER_ID" />
           </Key>
-          <Property Name="MST_FUEL_ODOMETER_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_FUEL_ODOMETER_ID" Type="bigint" Nullable="false" />
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
@@ -184,30 +192,34 @@
           <Property Name="COST" Type="decimal" Precision="18" Scale="2" />
           <Property Name="CLAIM_COMMENT" Type="text" />
           <Property Name="POSTED_TIME" Type="datetime" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_FUNCTION_GROUP">
           <Key>
             <PropertyRef Name="MST_FUNCTION_GROUP_ID" />
           </Key>
-          <Property Name="MST_FUNCTION_GROUP_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_FUNCTION_GROUP_ID" Type="int" Nullable="false" />
           <Property Name="FUNCTION_NAME" Type="nvarchar" MaxLength="50" />
           <Property Name="COST_CENTER" Type="char" MaxLength="10" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_GS">
           <Key>
             <PropertyRef Name="MST_GS_ID" />
           </Key>
-          <Property Name="MST_GS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_GS_ID" Type="int" Nullable="false" />
           <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
           <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
           <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
@@ -220,11 +232,11 @@
           <Property Name="START_DATE" Type="date" />
           <Property Name="END_DATE" Type="date" />
           <Property Name="REMARK" Type="text" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
           <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
           <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
@@ -236,43 +248,49 @@
           <Property Name="GS_SERIES" Type="nvarchar" MaxLength="50" />
           <Property Name="GS_TRANSMISSION" Type="nvarchar" MaxLength="50" />
           <Property Name="LEAD_TIME" Type="datetime" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_HOLIDAY_CALENDAR">
           <Key>
             <PropertyRef Name="MST_HOLIDAY_ID" />
           </Key>
-          <Property Name="MST_HOLIDAY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="MST_HOLIDAY_DATE" Type="date" Nullable="false" />
-          <Property Name="DESCRIPTION" Type="varchar" MaxLength="250" Nullable="false" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MST_HOLIDAY_ID" Type="int" Nullable="false" />
+          <Property Name="MST_HOLIDAY_DATE" Type="date" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="250" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_LOCATION_MAPPING">
           <Key>
             <PropertyRef Name="MST_LOCATION_MAPPING_ID" />
           </Key>
-          <Property Name="MST_LOCATION_MAPPING_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LOCATION" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MST_LOCATION_MAPPING_ID" Type="int" Nullable="false" />
+          <Property Name="LOCATION" Type="nvarchar" MaxLength="50" />
           <Property Name="ADDRESS" Type="nvarchar" MaxLength="250" />
-          <Property Name="REGION" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ZONE_SALES" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ZONE_PRICE_LIST" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="VALIDITY_FROM" Type="date" Nullable="false" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="REGION" Type="nvarchar" MaxLength="50" />
+          <Property Name="ZONE_SALES" Type="nvarchar" MaxLength="50" />
+          <Property Name="ZONE_PRICE_LIST" Type="nvarchar" MaxLength="50" />
+          <Property Name="VALIDITY_FROM" Type="date" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="BASETOWN" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_PENALTY">
           <Key>
             <PropertyRef Name="MST_PENALTY_ID" />
           </Key>
-          <Property Name="MST_PENALTY_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_PENALTY_ID" Type="int" Nullable="false" />
           <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
           <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
           <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
@@ -282,19 +300,21 @@
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="PENALTY" Type="int" />
           <Property Name="RESTITUTION" Type="bit" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="VENDOR" Type="int" />
           <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_PRICELIST">
           <Key>
             <PropertyRef Name="MST_PRICELIST_ID" />
           </Key>
-          <Property Name="MST_PRICELIST_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_PRICELIST_ID" Type="int" Nullable="false" />
           <Property Name="YEAR" Type="int" />
           <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
           <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
@@ -304,35 +324,39 @@
           <Property Name="INSTALLMEN_HMS" Type="decimal" Precision="18" Scale="2" />
           <Property Name="INSTALLMEN_EMP" Type="decimal" Precision="18" Scale="2" />
           <Property Name="VENDOR" Type="int" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_SALES_VOLUME">
           <Key>
             <PropertyRef Name="MST_SALES_VOLUME_ID" />
           </Key>
-          <Property Name="MST_SALES_VOLUME_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_SALES_VOLUME_ID" Type="int" Nullable="false" />
           <Property Name="TYPE" Type="nvarchar" MaxLength="50" />
           <Property Name="REGION" Type="nvarchar" MaxLength="50" />
           <Property Name="MONTH" Type="int" />
           <Property Name="YEAR" Type="int" />
           <Property Name="VALUE" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ARCH_MST_VEHICLE_SPECT">
           <Key>
             <PropertyRef Name="MST_VEHICLE_SPECT_ID" />
           </Key>
-          <Property Name="MST_VEHICLE_SPECT_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MST_VEHICLE_SPECT_ID" Type="int" Nullable="false" />
           <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
           <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
           <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
@@ -342,13 +366,15 @@
           <Property Name="IMAGE" Type="text" />
           <Property Name="GROUP_LEVEL" Type="int" />
           <Property Name="FLEX_POINT" Type="int" />
-          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_DATE" Type="datetime" />
           <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
           <Property Name="MODIFIED_DATE" Type="datetime" />
-          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="bit" />
           <Property Name="TRANSMISSION" Type="nvarchar" MaxLength="50" />
           <Property Name="FUEL_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AUTO_GR">
           <Key>
@@ -4362,55 +4388,59 @@
           <Key>
             <PropertyRef Name="MST_COST_OB_ID" />
           </Key>
-          <Property Name="MST_COST_OB_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="YEAR" Type="Int32" Nullable="false" />
+          <Property Name="MST_COST_OB_ID" Type="Int64" Nullable="false" />
+          <Property Name="YEAR" Type="Int32" />
           <Property Name="ZONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODEL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="TYPE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="OB_COST" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="REMARK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="QTY" Type="Int32" />
           <Property Name="MONTH" Type="Int32" />
           <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FUNCTION_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_EMPLOYEE">
           <Key>
             <PropertyRef Name="EMPLOYEE_ID" />
           </Key>
           <Property Name="EMPLOYEE_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
-          <Property Name="FORMAL_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FORMAL_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="POSITION_TITLE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DIVISON" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DIRECTORATE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ADDRESS" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CITY" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="BASETOWN" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="COMPANY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="COST_CENTER" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="DIVISON" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DIRECTORATE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CITY" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BASETOWN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COMPANY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="GROUP_LEVEL" Type="Int32" />
           <Property Name="EMAIL_ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="FLEX_POINT" Type="Int32" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_EPAF">
           <Key>
             <PropertyRef Name="MST_EPAF_ID" />
           </Key>
-          <Property Name="MST_EPAF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DOCUMENT_TYPE" Type="Int32" Nullable="false" />
-          <Property Name="EPAF_ACTION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MST_EPAF_ID" Type="Int64" Nullable="false" />
+          <Property Name="DOCUMENT_TYPE" Type="Int32" />
+          <Property Name="EPAF_ACTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
@@ -4423,18 +4453,20 @@
           <Property Name="EPAF_APPROVED_DATE" Type="DateTime" Precision="3" />
           <Property Name="REMARK" Type="Int32" />
           <Property Name="LAST_UPDATED" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="GRADE_LEVEL" Type="Int32" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_FLEET">
           <Key>
             <PropertyRef Name="MST_FLEET_ID" />
           </Key>
-          <Property Name="MST_FLEET_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_FLEET_ID" Type="Int64" Nullable="false" />
           <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4471,11 +4503,11 @@
           <Property Name="VEHICLE_STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IS_TAKEN" Type="Boolean" />
           <Property Name="GR_LEFT_QTY" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="VEHICLE_FUNCTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="REGIONAL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CERTIFICATE_OWNERSHIP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4489,12 +4521,14 @@
           <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="SALES_CODE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="DOCUMENT_NUMBER" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_FUEL_ODOMETER">
           <Key>
             <PropertyRef Name="MST_FUEL_ODOMETER_ID" />
           </Key>
-          <Property Name="MST_FUEL_ODOMETER_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_FUEL_ODOMETER_ID" Type="Int64" Nullable="false" />
           <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
@@ -4509,30 +4543,34 @@
           <Property Name="COST" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="CLAIM_COMMENT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="POSTED_TIME" Type="DateTime" Precision="3" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_FUNCTION_GROUP">
           <Key>
             <PropertyRef Name="MST_FUNCTION_GROUP_ID" />
           </Key>
-          <Property Name="MST_FUNCTION_GROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_FUNCTION_GROUP_ID" Type="Int32" Nullable="false" />
           <Property Name="FUNCTION_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_GS">
           <Key>
             <PropertyRef Name="MST_GS_ID" />
           </Key>
-          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_GS_ID" Type="Int32" Nullable="false" />
           <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4545,11 +4583,11 @@
           <Property Name="START_DATE" Type="DateTime" Precision="0" />
           <Property Name="END_DATE" Type="DateTime" Precision="0" />
           <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
           <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4561,43 +4599,49 @@
           <Property Name="GS_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="GS_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LEAD_TIME" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_HOLIDAY_CALENDAR">
           <Key>
             <PropertyRef Name="MST_HOLIDAY_ID" />
           </Key>
-          <Property Name="MST_HOLIDAY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MST_HOLIDAY_DATE" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MST_HOLIDAY_ID" Type="Int32" Nullable="false" />
+          <Property Name="MST_HOLIDAY_DATE" Type="DateTime" Precision="0" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_LOCATION_MAPPING">
           <Key>
             <PropertyRef Name="MST_LOCATION_MAPPING_ID" />
           </Key>
-          <Property Name="MST_LOCATION_MAPPING_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LOCATION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MST_LOCATION_MAPPING_ID" Type="Int32" Nullable="false" />
+          <Property Name="LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="REGION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ZONE_SALES" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ZONE_PRICE_LIST" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="VALIDITY_FROM" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ZONE_SALES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ZONE_PRICE_LIST" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VALIDITY_FROM" Type="DateTime" Precision="0" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="BASETOWN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_PENALTY">
           <Key>
             <PropertyRef Name="MST_PENALTY_ID" />
           </Key>
-          <Property Name="MST_PENALTY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_PENALTY_ID" Type="Int32" Nullable="false" />
           <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4607,19 +4651,21 @@
           <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PENALTY" Type="Int32" />
           <Property Name="RESTITUTION" Type="Boolean" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="VENDOR" Type="Int32" />
           <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_PRICELIST">
           <Key>
             <PropertyRef Name="MST_PRICELIST_ID" />
           </Key>
-          <Property Name="MST_PRICELIST_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_PRICELIST_ID" Type="Int32" Nullable="false" />
           <Property Name="YEAR" Type="Int32" />
           <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4629,35 +4675,39 @@
           <Property Name="INSTALLMEN_HMS" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="INSTALLMEN_EMP" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="VENDOR" Type="Int32" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_SALES_VOLUME">
           <Key>
             <PropertyRef Name="MST_SALES_VOLUME_ID" />
           </Key>
-          <Property Name="MST_SALES_VOLUME_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_SALES_VOLUME_ID" Type="Int32" Nullable="false" />
           <Property Name="TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MONTH" Type="Int32" />
           <Property Name="YEAR" Type="Int32" />
           <Property Name="VALUE" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ARCH_MST_VEHICLE_SPECT">
           <Key>
             <PropertyRef Name="MST_VEHICLE_SPECT_ID" />
           </Key>
-          <Property Name="MST_VEHICLE_SPECT_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MST_VEHICLE_SPECT_ID" Type="Int32" Nullable="false" />
           <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4667,13 +4717,15 @@
           <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="GROUP_LEVEL" Type="Int32" />
           <Property Name="FLEX_POINT" Type="Int32" />
-          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
-          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_ACTIVE" Type="Boolean" />
           <Property Name="TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FUEL_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5996,6 +6048,8 @@
           <EntitySetMapping Name="ARCH_MST_COST_OB">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_COST_OB">
               <MappingFragment StoreEntitySet="ARCH_MST_COST_OB">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="REGIONAL" ColumnName="REGIONAL" />
                 <ScalarProperty Name="FUNCTION_NAME" ColumnName="FUNCTION_NAME" />
                 <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
@@ -6020,6 +6074,8 @@
           <EntitySetMapping Name="ARCH_MST_EMPLOYEE">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_EMPLOYEE">
               <MappingFragment StoreEntitySet="ARCH_MST_EMPLOYEE">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -6044,6 +6100,8 @@
           <EntitySetMapping Name="ARCH_MST_EPAF">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_EPAF">
               <MappingFragment StoreEntitySet="ARCH_MST_EPAF">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="GRADE_LEVEL" ColumnName="GRADE_LEVEL" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
@@ -6071,6 +6129,8 @@
           <EntitySetMapping Name="ARCH_MST_FLEET">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_FLEET">
               <MappingFragment StoreEntitySet="ARCH_MST_FLEET">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
                 <ScalarProperty Name="SALES_CODE" ColumnName="SALES_CODE" />
                 <ScalarProperty Name="PRICE" ColumnName="PRICE" />
@@ -6132,6 +6192,8 @@
           <EntitySetMapping Name="ARCH_MST_FUEL_ODOMETER">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_FUEL_ODOMETER">
               <MappingFragment StoreEntitySet="ARCH_MST_FUEL_ODOMETER">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -6158,6 +6220,8 @@
           <EntitySetMapping Name="ARCH_MST_FUNCTION_GROUP">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_FUNCTION_GROUP">
               <MappingFragment StoreEntitySet="ARCH_MST_FUNCTION_GROUP">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -6172,6 +6236,8 @@
           <EntitySetMapping Name="ARCH_MST_GS">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_GS">
               <MappingFragment StoreEntitySet="ARCH_MST_GS">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="LEAD_TIME" ColumnName="LEAD_TIME" />
                 <ScalarProperty Name="GS_TRANSMISSION" ColumnName="GS_TRANSMISSION" />
                 <ScalarProperty Name="GS_SERIES" ColumnName="GS_SERIES" />
@@ -6207,6 +6273,8 @@
           <EntitySetMapping Name="ARCH_MST_HOLIDAY_CALENDAR">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_HOLIDAY_CALENDAR">
               <MappingFragment StoreEntitySet="ARCH_MST_HOLIDAY_CALENDAR">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -6221,6 +6289,8 @@
           <EntitySetMapping Name="ARCH_MST_LOCATION_MAPPING">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_LOCATION_MAPPING">
               <MappingFragment StoreEntitySet="ARCH_MST_LOCATION_MAPPING">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="BASETOWN" ColumnName="BASETOWN" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
@@ -6240,6 +6310,8 @@
           <EntitySetMapping Name="ARCH_MST_PENALTY">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_PENALTY">
               <MappingFragment StoreEntitySet="ARCH_MST_PENALTY">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
                 <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
@@ -6263,6 +6335,8 @@
           <EntitySetMapping Name="ARCH_MST_PRICELIST">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_PRICELIST">
               <MappingFragment StoreEntitySet="ARCH_MST_PRICELIST">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
                 <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
@@ -6286,6 +6360,8 @@
           <EntitySetMapping Name="ARCH_MST_SALES_VOLUME">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_SALES_VOLUME">
               <MappingFragment StoreEntitySet="ARCH_MST_SALES_VOLUME">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
                 <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
                 <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
@@ -6303,6 +6379,8 @@
           <EntitySetMapping Name="ARCH_MST_VEHICLE_SPECT">
             <EntityTypeMapping TypeName="FMSModel.ARCH_MST_VEHICLE_SPECT">
               <MappingFragment StoreEntitySet="ARCH_MST_VEHICLE_SPECT">
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
                 <ScalarProperty Name="FUEL_TYPE" ColumnName="FUEL_TYPE" />
                 <ScalarProperty Name="TRANSMISSION" ColumnName="TRANSMISSION" />
                 <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
@@ -6323,7 +6401,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

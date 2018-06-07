@@ -17,5 +17,6 @@ namespace FMS.Contract.Service
         void save(MST_COST_OB dbCostOb);
         void save(MST_COST_OB dbCostOb, Login userlogin);
         List<MST_COST_OB> GetCostObByFilter(CostObParamInput filter);
+        bool Delete(MST_COST_OB db);
     }
 }

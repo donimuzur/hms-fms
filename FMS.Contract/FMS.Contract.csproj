@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\IArchiveBLL.cs" />
     <Compile Include="BLL\IAutoGrBLL.cs" />
     <Compile Include="BLL\ICafBLL.cs" />
     <Compile Include="BLL\ICarComplaintFormBLL.cs" />
@@ -121,7 +122,7 @@
     <Compile Include="Service\IFunctionChangeService.cs" />
     <Compile Include="Service\IGroupCostCenterService.cs" />
     <Compile Include="Service\IGsService.cs" />
-    <Compile Include="Service\IHolidayCalendarService.cs" />
+    <Compile Include="Service\IArchHolidayCalendarService.cs" />
     <Compile Include="Service\IHolidayCalenderService.cs" />
     <Compile Include="Service\IKpiMonitoringService.cs" />
     <Compile Include="Service\ILocationChangeService.cs" />

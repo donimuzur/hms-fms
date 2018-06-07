@@ -168,6 +168,7 @@
     <Compile Include="FUNCTION_CHANGE.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Inputs\ArchiveParamInput.cs" />
     <Compile Include="Inputs\CcfParamInput.cs" />
     <Compile Include="Inputs\CfmIdleInput.cs" />
     <Compile Include="Inputs\CsfParamInput.cs" />

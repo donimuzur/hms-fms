@@ -79,5 +79,19 @@ namespace FMS.DAL.Services
             }
             return _costObRepository.Get(queryFilter, null, "").ToList();
         }
+        public bool Delete(MST_COST_OB db)
+        {
+            var result = true;
+            try
+            {
+                _costObRepository.Delete(db.MST_COST_OB_ID);
+            }
+            catch (Exception exp)
+            {
+                var message = exp;
+                throw;
+            }
+            return result;
+        }
     }
 }

@@ -1,0 +1,21 @@
+﻿@model FMS.Website.Models.ArchiveModel
+
+<table id="tbTransactionArchive" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="min-width: 120px">
+                <input type="checkbox" name="TransactionCheckbox" id="TransactionCheckbox" onclick="SelectAll()"/>&nbsp;Select All
+            </th>
+            <th style="min-width: 200px;text-align:center">Table Transaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.Details.Where(x => x.Type == "Transaction"))
+        {
+            <tr>
+                <td><input type='checkbox' name='TransactionArchive' value=@data.Id /></td>
+                <td>@Html.Raw(data.Table)</td>
+            </tr>
+        }
+    </tbody>
+</table>

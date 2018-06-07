@@ -4471,6 +4471,10 @@
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Archive\FMS.BLL.Archive.csproj">
+      <Project>{BECE47D2-61A0-436A-8384-BA227D2600C4}</Project>
+      <Name>FMS.BLL.Archive</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.AutoGR\FMS.BLL.AutoGR.csproj">
       <Project>{b38e916b-8c98-4dcd-a9d9-eff8069a784a}</Project>
       <Name>FMS.BLL.AutoGR</Name>
