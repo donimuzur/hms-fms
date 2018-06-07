@@ -1,0 +1,202 @@
+﻿@using FMS.Core;
+@model FMS.Website.Models.ArchiveModel
+
+<div class="opt-content clearfloat">
+    <h5 class="title-page">Archive</h5>
+</div>
+<section class="content">
+    <div class="wpanel">
+        <div class="row">
+            @Html.HiddenFor(model => model.Message)
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="Searchview_CreatedDate">Created Date<span style="color:red">*</span></label>
+                    <div class="input-group date">
+                        @Html.TextBoxFor(model => model.SearchView.CreatedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                        <span class="input-group-addon btn btn-primary">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label for="Searchview_Operator">Operator</label>
+                <div class="input-group">
+                    @Html.DropDownListFor(model => model.SearchView.Operator, Model.SearchView.OperatorList, "- Select - ", new { @class = "form-control", @required = "required" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="Searchview_ModifiedDate">Modified Date</label>
+                    <div class="input-group date" >
+                        @Html.TextBoxFor(model => model.SearchView.ModifiedDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                        <span class="input-group-addon btn btn-primary">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label for="btnArchive">&ensp;&emsp;</label>
+                <div>
+                    <a href="#!" class="btn btn-primary line" id="btnArchive" title="Archive" onclick="ArchiveMaster()">
+                        <i class="fa fa-archive"> Archive</i> 
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wpanel">
+        <div role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active" id="DetailsParent" data-toggle="tab"><a href="#Master" aria-controls="Master" role="tab" data-toggle="tab">Master</a></li>
+                <li role="presentation" id="HistoryParent" data-toggle="tab"><a href="#Transaction" aria-controls="Transaction" role="tab" data-toggle="tab">Transaction</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="Master" >
+                    <div class="tab-wrapper">
+                      @Html.Partial("_listMaster")
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="Transaction">
+                    <div class="tab-wrapper">
+                      @Html.Partial("_listTransaction")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="ArchiveModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Archive Selected Master ?</h4>
+            </div>
+            <div align="center">
+                <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:none"/>
+            </div>
+            @using (Html.BeginForm("ArchiveMaster", "Archived"))
+            {
+                <input type="hidden" name="TableArchveId" id="TableArchveId">
+                <input type="hidden" name="Operator" id="Operator">
+                <input type="hidden" name="CreatedDate" id="CreatedDate">
+                <input type="hidden" name="ModifiedDate" id="ModifiedDate">
+                <div class="modal-footer" id="ButtonArchive">
+                    <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
+                    <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="errormodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body">
+                <label id="TextError" class="sub-label">#Error</label>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-danger" data-dismiss="modal" value="OK" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="infomodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body">
+                <label id="TextInfo" class="sub-label">Information</label>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-danger" data-dismiss="modal" value="OK" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script>
+    jQuery(function ($) {
+        $('.nav-tabs a').click(function () {
+           // console.log($(this).parent().attr("class"))
+            $(this).tab('show');
+        })
+        var message = $("#Message").val();
+        console.log(message);
+        if( message != "")
+        {
+            $("#TextInfo").text(message);
+            $('#infomodal').modal('show');
+            return false;
+        }
+        $('#btnConfirmSend').click(function () {
+            $("#imgLoader").css("display", "block");
+            $("#ButtonArchive").css("display", "none");
+        })
+    });
+    
+    function SelectAll() {
+        var tabActive = $(".tab-pane.active").attr("id");
+        var nameActive = "MasterArchive";
+        var Checkbox = "MasterCheckbox";
+        if (tabActive == "Transaction") {
+            console.log("asd");
+            nameActive = "TransactionArchive";
+            Checkbox = "TransactionCheckbox";
+        }
+        if ($("#" + Checkbox + "").is(":checked")) {
+            // Iterate each checkbox
+            $('[name="' + nameActive + '"]:checkbox').each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $('[name="' + nameActive + '"]:checkbox').each(function () {
+                this.checked = false;
+            });
+        }
+    }
+
+    function ArchiveMaster() {
+        var searchIDs = $(':checkbox:checked').map(function () {
+            return $(this).val();
+        });
+        console.log(searchIDs);
+        var CreatedDate = $("#SearchView_CreatedDate").val();
+        var ModifiedDate = $("#SearchView_ModifiedDate").val();
+        var Operator = $("#SearchView_Operator").val();
+        $('#CreatedDate').val(CreatedDate);
+        $('#ModifiedDate').val(ModifiedDate);
+        $('#Operator').val(Operator);
+        if (CreatedDate == '')
+        {
+            $("#TextError").text("CreatedDate Can't be empty");
+            $('#errormodal').modal('show');
+            $("#SearchView_CreatedDate").focus();
+            return false;
+        }
+        if (ModifiedDate != '')
+        {
+            if (Operator == '') {
+                $("#TextError").text("Please select an operator");
+                $('#errormodal').modal('show');
+                $("#SearchView_Operator").focus();
+                return false;
+            }
+        }
+        if (searchIDs.get() != '') {
+            $('#TableArchveId').val(searchIDs.get());
+            $('#ArchiveModal').modal('show');
+        }
+        else {
+            $("#TextError").text("Please check one or more table on the list");
+            $('#errormodal').modal('show');
+        }
+    }
+</script>

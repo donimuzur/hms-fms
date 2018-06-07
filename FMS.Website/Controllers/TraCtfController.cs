@@ -119,7 +119,7 @@ namespace FMS.Website.Controllers
             var ReasonList = _reasonBLL.GetReason();
             var CsfList = _csfBLL.GetList();
             var CtfList = _ctfBLL.GetCtf();
-
+            var vehUsageNoCar = GetSetting.Where(x => x.SettingGroup == "VEHICLE_CATEGORY" && x.SettingName == "NO_CAR").FirstOrDefault().MstSettingId;
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 if (fleetBenefit != null)
@@ -135,7 +135,7 @@ namespace FMS.Website.Controllers
                             var ReasonID = ReasonList.Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
                             var VehType = GetSetting.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (item.VehicleType == null ? "" : item.VehicleType.ToUpper()) && x.IsActive).FirstOrDefault();
-                            var csfdata = CsfList.Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MstSettingId.ToString()) && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+                            var csfdata = CsfList.Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MstSettingId.ToString()) && ((x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled)||(x.DOCUMENT_STATUS ==Enums.DocumentStatus.Completed && vehUsageNoCar.ToString() == x.VEHICLE_CATEGORY))).ToList();
 
                             var days7 = DateTime.Now.AddDays(7);
                             ctfitem.Reason = ReasonID;

@@ -257,6 +257,7 @@
     <Compile Include="Code\IFormsAuthenticationService.cs" />
     <Compile Include="Code\MessageInfo.cs" />
     <Compile Include="Code\PdfResult.cs" />
+    <Compile Include="Controllers\ArchivedController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChangesLogController.cs" />
     <Compile Include="Controllers\EmailApprovalsController.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="Helpers\PdfWriterEvents.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Helpers\ValidateAttributes.cs" />
+    <Compile Include="Models\ArchiveModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CarComplaintFormModel.cs" />
     <Compile Include="Models\CcfModel.cs" />
@@ -4443,6 +4445,9 @@
     <Content Include="Views\MstLocationMapping\_listLocationMapping.cshtml" />
     <Content Include="Views\RptAutoGr\_ListAutoGr.cshtml" />
     <Content Include="Views\EmailsApprovals\Index.cshtml" />
+    <Content Include="Views\Archived\Index.cshtml" />
+    <Content Include="Views\Archived\_listMaster.cshtml" />
+    <Content Include="Views\Archived\_listTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4465,6 +4470,10 @@
     <ProjectReference Include="..\FMS.AutoMapperExtensions\FMS.AutoMapperExtensions.csproj">
       <Project>{1F511AC3-8883-44A0-9D2B-BCD6EC9622A6}</Project>
       <Name>FMS.AutoMapperExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FMS.BLL\FMS.BLL.Archive\FMS.BLL.Archive.csproj">
+      <Project>{BECE47D2-61A0-436A-8384-BA227D2600C4}</Project>
+      <Name>FMS.BLL.Archive</Name>
     </ProjectReference>
     <ProjectReference Include="..\FMS.BLL\FMS.BLL.AutoGR\FMS.BLL.AutoGR.csproj">
       <Project>{b38e916b-8c98-4dcd-a9d9-eff8069a784a}</Project>

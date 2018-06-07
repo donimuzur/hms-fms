@@ -82,5 +82,18 @@ namespace FMS.BusinessObject
         public virtual DbSet<FLEET_CHANGE> FLEET_CHANGE { get; set; }
         public virtual DbSet<FUNCTION_CHANGE> FUNCTION_CHANGE { get; set; }
         public virtual DbSet<LOCATION_CHANGE> LOCATION_CHANGE { get; set; }
+        public virtual DbSet<ARCH_MST_COST_OB> ARCH_MST_COST_OB { get; set; }
+        public virtual DbSet<ARCH_MST_EMPLOYEE> ARCH_MST_EMPLOYEE { get; set; }
+        public virtual DbSet<ARCH_MST_EPAF> ARCH_MST_EPAF { get; set; }
+        public virtual DbSet<ARCH_MST_FLEET> ARCH_MST_FLEET { get; set; }
+        public virtual DbSet<ARCH_MST_FUEL_ODOMETER> ARCH_MST_FUEL_ODOMETER { get; set; }
+        public virtual DbSet<ARCH_MST_FUNCTION_GROUP> ARCH_MST_FUNCTION_GROUP { get; set; }
+        public virtual DbSet<ARCH_MST_GS> ARCH_MST_GS { get; set; }
+        public virtual DbSet<ARCH_MST_HOLIDAY_CALENDAR> ARCH_MST_HOLIDAY_CALENDAR { get; set; }
+        public virtual DbSet<ARCH_MST_LOCATION_MAPPING> ARCH_MST_LOCATION_MAPPING { get; set; }
+        public virtual DbSet<ARCH_MST_PENALTY> ARCH_MST_PENALTY { get; set; }
+        public virtual DbSet<ARCH_MST_PRICELIST> ARCH_MST_PRICELIST { get; set; }
+        public virtual DbSet<ARCH_MST_SALES_VOLUME> ARCH_MST_SALES_VOLUME { get; set; }
+        public virtual DbSet<ARCH_MST_VEHICLE_SPECT> ARCH_MST_VEHICLE_SPECT { get; set; }
     }
 }

@@ -59,6 +59,7 @@ using FMS.BLL.VehicleOverallReport;
 using FMS.BLL.RptPo;
 using FMS.BLL.RptCcf;
 using FMS.BLL.KpiMonitoring;
+using FMS.BLL.Archive;
 
 namespace FMS.Website
 {
@@ -98,6 +99,7 @@ namespace FMS.Website
         private static void Bootstrap()
         {
             //initialize mappers
+            ArchiveMapper.Initialize();
             ComplaintMapper.Initialize();
             RoleMapper.Initialize();
             FMSWebsiteMapper.Initialize();
@@ -189,6 +191,7 @@ namespace FMS.Website
             container.Register<IRptPoBLL, RptPoBLL>();
             container.Register<IRptCcfBLL, RptCcfBLL>();
             container.Register<IKpiMonitoringBLL, KpiMonitoringBLL>();
+            container.Register<IArchiveBLL, ArchiveBLL>();
 
             // 3. Optionally verify the container's configuration.
             container.Verify();
