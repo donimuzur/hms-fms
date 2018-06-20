@@ -51,6 +51,35 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<ARCH_MST_VEHICLE_SPECT, MST_VEHICLE_SPECT>().IgnoreAllNonExisting();
             AutoMapper.Mapper.CreateMap<MST_VEHICLE_SPECT, ARCH_MST_VEHICLE_SPECT>().IgnoreAllNonExisting();
 
+
+            ///---Transaction Mapper---///
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CSF, TRA_CSF>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CSF, ARCH_TRA_CSF>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CRF, TRA_CRF>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CRF, ARCH_TRA_CRF>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CTF, TRA_CTF>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CTF, ARCH_TRA_CTF>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CCF, TRA_CCF>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CCF, ARCH_TRA_CCF>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CAF, TRA_CAF>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CAF, ARCH_TRA_CAF>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_TEMPORARY, TRA_TEMPORARY>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_TEMPORARY, ARCH_TRA_TEMPORARY>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CTF_EXTEND, TRA_CTF_EXTEND>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CTF_EXTEND, ARCH_TRA_CTF_EXTEND>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CCF_DETAIL, TRA_CCF_DETAIL>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CCF_DETAIL, ARCH_TRA_CCF_DETAIL>().IgnoreAllNonExisting();
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CAF_PROGRESS, TRA_CAF_PROGRESS>().IgnoreAllNonExisting();
+            AutoMapper.Mapper.CreateMap<TRA_CAF_PROGRESS, ARCH_TRA_CAF_PROGRESS>().IgnoreAllNonExisting();
+
         }
     }
 }

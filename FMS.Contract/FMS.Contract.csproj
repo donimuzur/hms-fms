@@ -98,6 +98,14 @@
     <Compile Include="Service\IArchPenaltyService.cs" />
     <Compile Include="Service\IArchPricelistService.cs" />
     <Compile Include="Service\IArchSalesVolumeService.cs" />
+    <Compile Include="Service\IArchTraCafProgressService.cs" />
+    <Compile Include="Service\IArchTraCcfDetailService.cs" />
+    <Compile Include="Service\IArchTraCcfService.cs" />
+    <Compile Include="Service\IArchTraCrfService.cs" />
+    <Compile Include="Service\IArchTraCsfService.cs" />
+    <Compile Include="Service\IArchTraCtfExtendService.cs" />
+    <Compile Include="Service\IArchTraCtfService.cs" />
+    <Compile Include="Service\IArchTraTemporaryService.cs" />
     <Compile Include="Service\IArchVehicleSpectService.cs" />
     <Compile Include="Service\IAutoGrService.cs" />
     <Compile Include="Service\ICAFService.cs" />
@@ -140,6 +148,7 @@
     <Compile Include="Service\IRoleService.cs" />
     <Compile Include="Service\ISysAccessService.cs" />
     <Compile Include="Service\ITemporaryService.cs" />
+    <Compile Include="Service\IArchTraCafService.cs" />
     <Compile Include="Service\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IVehicleOverallReportService.cs" />

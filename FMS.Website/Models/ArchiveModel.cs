@@ -30,6 +30,8 @@ namespace FMS.Website.Models
         public DateTime? ModifiedDate { get; set; }
         public string Operator { get; set; }
         public SelectList OperatorList { get; set; }
+        public string VehicleType { get; set; }
+        public SelectList VehicleTypeList { get; set; }
     }
 
 }

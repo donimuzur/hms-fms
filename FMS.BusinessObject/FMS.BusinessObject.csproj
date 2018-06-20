@@ -93,6 +93,33 @@
     <Compile Include="ARCH_MST_VEHICLE_SPECT.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="ARCH_TRA_CAF.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_CAF_PROGRESS.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_CCF.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_CCF_DETAIL.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_CRF.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_CSF.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_CTF.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_CTF_EXTEND.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ARCH_TRA_TEMPORARY.cs">
+      <DependentUpon>FMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="AUTO_GR.cs">
       <DependentUpon>FMSEntities.tt</DependentUpon>
     </Compile>

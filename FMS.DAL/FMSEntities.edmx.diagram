@@ -115,6 +115,15 @@
         <EntityTypeShape EntityType="FMSModel.ARCH_MST_PRICELIST" Width="1.5" PointX="20.75" PointY="18.75" />
         <EntityTypeShape EntityType="FMSModel.ARCH_MST_SALES_VOLUME" Width="1.5" PointX="21.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.ARCH_MST_VEHICLE_SPECT" Width="1.5" PointX="22.75" PointY="4.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CAF" Width="1.5" PointX="23.375" PointY="10.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CAF_PROGRESS" Width="1.5" PointX="23.375" PointY="16.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CCF" Width="1.5" PointX="23.375" PointY="20.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CCF_DETAIL" Width="1.5" PointX="18.375" PointY="24.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CRF" Width="1.5" PointX="20.375" PointY="24.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CSF" Width="1.5" PointX="25.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CTF" Width="1.5" PointX="25.375" PointY="16.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CTF_EXTEND" Width="1.5" PointX="9.375" PointY="25.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_TEMPORARY" Width="1.5" PointX="27.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

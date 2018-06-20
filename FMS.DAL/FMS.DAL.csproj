@@ -85,6 +85,15 @@
     <Compile Include="Services\ArchPenaltyService.cs" />
     <Compile Include="Services\ArchPricelistService.cs" />
     <Compile Include="Services\ArchSalesVolumeService.cs" />
+    <Compile Include="Services\ArchTraCafService.cs" />
+    <Compile Include="Services\ArchTraCafProgressService.cs" />
+    <Compile Include="Services\ArchTraCcfService.cs" />
+    <Compile Include="Services\ArchTraCcfDetailService.cs" />
+    <Compile Include="Services\ArchTraCrfService.cs" />
+    <Compile Include="Services\ArchTraCsfService.cs" />
+    <Compile Include="Services\ArchTraCtfService.cs" />
+    <Compile Include="Services\ArchTraCtfExtendService.cs" />
+    <Compile Include="Services\ArchTraTemporaryService.cs" />
     <Compile Include="Services\ArchVehicleSpectService.cs" />
     <Compile Include="Services\AutoGrService.cs" />
     <Compile Include="Services\CafService.cs" />
