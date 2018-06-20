@@ -521,13 +521,13 @@ namespace FMS.BLL.Archive
                         if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
                         {
                             if (input.Operator == "OR")
-                                TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCsfList = _csfService.GetAllCsf().Where(x => (x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate) && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                             else if (input.Operator == "AND")
-                                TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                         }
                         else
                         {
-                            TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                            TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                         }
 
                         if(!string.IsNullOrEmpty(input.VehicleType))
@@ -554,13 +554,13 @@ namespace FMS.BLL.Archive
                         if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
                         {
                             if (input.Operator == "OR")
-                                TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCrfList = _crfService.GetList().Where(x => (x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate) && x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed).ToList();
                             else if (input.Operator == "AND")
-                                TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate && x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed).ToList();
                         }
                         else
                         {
-                            TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                            TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed).ToList();
                         }
 
                         if (!string.IsNullOrEmpty(input.VehicleType))
@@ -586,13 +586,13 @@ namespace FMS.BLL.Archive
                         if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
                         {
                             if (input.Operator == "OR")
-                                TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCtfList = _ctfService.GetCtf().Where(x =>( x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate) && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                             else if (input.Operator == "AND")
-                                TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                         }
                         else
                         {
-                            TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                            TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                         }
 
                         if (!string.IsNullOrEmpty(input.VehicleType))
@@ -625,13 +625,13 @@ namespace FMS.BLL.Archive
                         if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
                         {
                             if (input.Operator == "OR")
-                                TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCcfList = _ccfService.GetCcf().Where(x =>( x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate) && x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed).ToList();
                             else if (input.Operator == "AND")
-                                TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate && x.DOCUMENT_STATUS ==(int) Enums.DocumentStatus.Completed).ToList();
                         }
                         else
                         {
-                            TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                            TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed).ToList();
                         }
 
                         if (!string.IsNullOrEmpty(input.VehicleType))
@@ -664,13 +664,13 @@ namespace FMS.BLL.Archive
                         if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
                         {
                             if (input.Operator == "OR")
-                                TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCafList = _cafService.GetList().Where(x => (x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate) && x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed).ToList();
                             else if (input.Operator == "AND")
-                                TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate && x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed).ToList();
                         }
                         else
                         {
-                            TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                            TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.DOCUMENT_STATUS ==(int) Enums.DocumentStatus.Completed).ToList();
                         }
                         //if (!string.IsNullOrEmpty(input.VehicleType))
                         //{
@@ -702,13 +702,13 @@ namespace FMS.BLL.Archive
                         if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
                         {
                             if (input.Operator == "OR")
-                                TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraTemporaryList = _temporaryService.GetAllTemp().Where(x => (x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate) && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                             else if (input.Operator == "AND")
-                                TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                                TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                         }
                         else
                         {
-                            TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                            TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate && x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed).ToList();
                         }
                         if (!string.IsNullOrEmpty(input.VehicleType))
                         {
