@@ -14,5 +14,6 @@ namespace FMS.BusinessObject.Inputs
         public DateTime? ModifiedDate { get; set; }
         public string Operator { get; set; }
         public string TableId { get; set;}
+        public string VehicleType { get; set; }
     }
 }

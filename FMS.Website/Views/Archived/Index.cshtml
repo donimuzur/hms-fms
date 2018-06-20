@@ -8,7 +8,7 @@
     <div class="wpanel">
         <div class="row">
             @Html.HiddenFor(model => model.Message)
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label for="Searchview_CreatedDate">Created Date<span style="color:red">*</span></label>
                     <div class="input-group date">
@@ -25,7 +25,7 @@
                     @Html.DropDownListFor(model => model.SearchView.Operator, Model.SearchView.OperatorList, "- Select - ", new { @class = "form-control", @required = "required" })
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="form-group">
                     <label for="Searchview_ModifiedDate">Modified Date</label>
                     <div class="input-group date" >
@@ -36,11 +36,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label for="Searchview_VehicleType">Vehicle Type</label>
+                <div class="input-group">
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "- Select - ", new { @class = "form-control"})
+                </div>
+            </div>
             <div class="col-md-2">
                 <label for="btnArchive">&ensp;&emsp;</label>
                 <div>
                     <a href="#!" class="btn btn-primary line" id="btnArchive" title="Archive" onclick="ArchiveMaster()">
-                        <i class="fa fa-archive"> Archive</i> 
+                        <i class="fa fa-archive"> Archive</i>
                     </a>
                 </div>
             </div>
@@ -82,6 +90,7 @@
                 <input type="hidden" name="Operator" id="Operator">
                 <input type="hidden" name="CreatedDate" id="CreatedDate">
                 <input type="hidden" name="ModifiedDate" id="ModifiedDate">
+                <input type="hidden" name="VehicleType" id="VehicleType">
                 <div class="modal-footer" id="ButtonArchive">
                     <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" id="btnCloseSend" />
                     <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmSend" />
@@ -121,6 +130,7 @@
     </div>
 </div>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
 <script>
     jQuery(function ($) {
         $('.nav-tabs a').click(function () {
@@ -170,9 +180,11 @@
         var CreatedDate = $("#SearchView_CreatedDate").val();
         var ModifiedDate = $("#SearchView_ModifiedDate").val();
         var Operator = $("#SearchView_Operator").val();
+        var VehicleType = $("#SearchView_VehicleType").val();
         $('#CreatedDate').val(CreatedDate);
         $('#ModifiedDate').val(ModifiedDate);
         $('#Operator').val(Operator);
+        $('#VehicleType').val(VehicleType);
         if (CreatedDate == '')
         {
             $("#TextError").text("CreatedDate Can't be empty");

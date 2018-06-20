@@ -376,6 +376,378 @@
           <Property Name="ARCHIVED_DATE" Type="datetime" />
           <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="ARCH_TRA_CAF">
+          <Key>
+            <PropertyRef Name="TRA_CAF_ID" />
+          </Key>
+          <Property Name="TRA_CAF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="int" Nullable="false" />
+          <Property Name="SIRS_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="SUPERVISOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="AREA" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_ID" Type="int" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="VEHICLE_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="INCIDENT_DATE" Type="date" />
+          <Property Name="INCIDENT_LOCATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="INCIDENT_DESCRIPTION" Type="text" />
+          <Property Name="REMARK" Type="int" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CAF_PROGRESS">
+          <Key>
+            <PropertyRef Name="TRA_CAF_PROGRESS_ID" />
+          </Key>
+          <Property Name="TRA_CAF_PROGRESS_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TRA_CAF_ID" Type="bigint" Nullable="false" />
+          <Property Name="STATUS_ID" Type="int" />
+          <Property Name="PROGRESS_DATE" Type="date" />
+          <Property Name="REMARK" Type="text" />
+          <Property Name="ESTIMATION" Type="datetime" />
+          <Property Name="ACTUAL" Type="datetime" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CCF">
+          <Key>
+            <PropertyRef Name="TRA_CCF_ID" />
+          </Key>
+          <Property Name="TRA_CCF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="int" Nullable="false" />
+          <Property Name="COMPLAINT_CATEGORY" Type="int" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMPLOYEE_ID_COMPLAINT_FOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME_COMPLAINT_FOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="POLICE_NUMBER_GS" Type="nvarchar" MaxLength="50" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURE" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_PERIOD" Type="date" />
+          <Property Name="END_PERIOD" Type="date" />
+          <Property Name="COORDINATOR_KPI" Type="int" />
+          <Property Name="VENDOR_KPI" Type="int" />
+          <Property Name="COORDINATOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CCF_DETAIL">
+          <Key>
+            <PropertyRef Name="TRA_CCF_DETAIL_ID" />
+          </Key>
+          <Property Name="TRA_CCF_DETAIL_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TRA_CCF_ID" Type="bigint" Nullable="false" />
+          <Property Name="COMPLAINT_DATE" Type="date" />
+          <Property Name="COMPLAINT_NOTE" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMPLAINT_ATT" Type="nvarchar" MaxLength="100" />
+          <Property Name="COORDINATOR_RESPONSE_DATE" Type="date" />
+          <Property Name="COORDINATOR_NOTE" Type="nvarchar" MaxLength="250" />
+          <Property Name="COORDINATOR_PROMISED_DATE" Type="date" />
+          <Property Name="COORDINATOR_ATT" Type="nvarchar" MaxLength="100" />
+          <Property Name="VENDOR_RESPONSE_DATE" Type="date" />
+          <Property Name="VENDOR_NOTE" Type="nvarchar" MaxLength="250" />
+          <Property Name="VENDOR_PROMISED_DATE" Type="date" />
+          <Property Name="VENDOR_ATT" Type="nvarchar" MaxLength="100" />
+          <Property Name="COMPLAINT_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="COORDINATOR_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="VENDOR_URL" Type="nvarchar" MaxLength="100" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CRF">
+          <Key>
+            <PropertyRef Name="TRA_CRF_ID" />
+          </Key>
+          <Property Name="TRA_CRF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="int" Nullable="false" />
+          <Property Name="EPAF_ID" Type="bigint" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="COST_CENTER_NEW" Type="char" MaxLength="10" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_OFFICE" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_CITY_NEW" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_OFFICE_NEW" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="EFFECTIVE_DATE" Type="date" />
+          <Property Name="RELOCATION_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="TEMPORARY_DELIVERABLE_DATE" Type="date" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_ID" Type="int" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_PERIOD" Type="date" />
+          <Property Name="END_PERIOD" Type="date" />
+          <Property Name="WITHD_CITY" Type="varchar" MaxLength="50" />
+          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="1000" />
+          <Property Name="WITHD_PIC" Type="varchar" MaxLength="50" />
+          <Property Name="WITHD_PHONE" Type="varchar" MaxLength="50" />
+          <Property Name="WITHD_DATETIME" Type="datetime" />
+          <Property Name="DELIV_CITY" Type="varchar" MaxLength="50" />
+          <Property Name="DELIV_ADDRESS" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DELIV_PIC" Type="varchar" MaxLength="50" />
+          <Property Name="DELIV_PHONE" Type="varchar" MaxLength="50" />
+          <Property Name="CHANGE_POLICE_NUMBER" Type="bit" />
+          <Property Name="EXPECTED_DATE" Type="date" />
+          <Property Name="PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="int" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="NEW_POLICE_NUMBER" Type="varchar" MaxLength="50" />
+          <Property Name="MST_FLEET_ID" Type="bigint" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CSF">
+          <Key>
+            <PropertyRef Name="TRA_CSF_ID" />
+          </Key>
+          <Property Name="TRA_CSF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="int" Nullable="false" />
+          <Property Name="EPAF_ID" Type="bigint" />
+          <Property Name="REASON" Type="int" Nullable="false" />
+          <Property Name="EFFECTIVE_DATE" Type="date" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="GROUP_LEVEL" Type="int" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_CATEGORY" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="COLOUR" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_PERIOD" Type="date" />
+          <Property Name="END_PERIOD" Type="date" />
+          <Property Name="VENDOR" Type="int" />
+          <Property Name="EXPECTED_DATE" Type="date" />
+          <Property Name="START_RENT_DATE" Type="date" />
+          <Property Name="END_RENT_DATE" Type="date" />
+          <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="REMARK" Type="int" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="date" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="date" />
+          <Property Name="VENDOR_MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_COLOUR" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_AIR_BAG" Type="bit" />
+          <Property Name="VENDOR_ABS" Type="bit" />
+          <Property Name="VENDOR_BRANDING" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PURPOSE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_VAT" Type="bit" />
+          <Property Name="VENDOR_RESTITUTION" Type="bit" />
+          <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
+          <Property Name="CFM_IDLE_ID" Type="bigint" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="FLEXBEN" Type="int" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CTF">
+          <Key>
+            <PropertyRef Name="TRA_CTF_ID" />
+          </Key>
+          <Property Name="TRA_CTF_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="int" Nullable="false" />
+          <Property Name="EPAF_ID" Type="bigint" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="GROUP_LEVEL" Type="int" />
+          <Property Name="REASON" Type="int" />
+          <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_YEAR" Type="int" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="END_RENT_DATE" Type="date" />
+          <Property Name="EFFECTIVE_DATE" Type="date" />
+          <Property Name="IS_TRANSFER_TO_IDLE" Type="bit" />
+          <Property Name="BUY_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="EXTEND_VEHICLE" Type="bit" />
+          <Property Name="WITHD_PIC" Type="nvarchar" MaxLength="50" />
+          <Property Name="WITHD_PHONE" Type="nvarchar" MaxLength="50" />
+          <Property Name="WITHD_DATE" Type="date" />
+          <Property Name="WITHD_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="WITHD_ADDRESS" Type="nvarchar" MaxLength="1000" />
+          <Property Name="EMPLOYEE_CONTRIBUTION" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PENALTY" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="REFUND_COST" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BUY_COST_TOTAL" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="USER_DECISION" Type="int" />
+          <Property Name="PENALTY_PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="PENALTY_PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="PENALTY_PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="int" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="VEHICLE_LOCATION" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CTF_EXTEND">
+          <Key>
+            <PropertyRef Name="TRA_CTF_EXTEND_ID" />
+          </Key>
+          <Property Name="TRA_CTF_EXTEND_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TRA_CTF_ID" Type="bigint" />
+          <Property Name="NEW_PROPOSED_DATE" Type="date" />
+          <Property Name="EXTEND_PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="EXTEND_PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="EXTEND_PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="REASON" Type="int" />
+          <Property Name="EXTEND_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_TEMPORARY">
+          <Key>
+            <PropertyRef Name="TRA_TEMPORARY_ID" />
+          </Key>
+          <Property Name="TRA_TEMPORARY_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="DOCUMENT_STATUS" Type="int" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER_RELATED" Type="char" MaxLength="15" />
+          <Property Name="REASON" Type="int" />
+          <Property Name="EMPLOYEE_ID" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_NAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="COST_CENTER" Type="char" MaxLength="10" />
+          <Property Name="GROUP_LEVEL" Type="int" />
+          <Property Name="ACTUAL_GROUP" Type="nvarchar" MaxLength="50" />
+          <Property Name="SUPPLY_METHOD" Type="nvarchar" MaxLength="50" />
+          <Property Name="VEHICLE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="COLOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="START_DATE" Type="date" />
+          <Property Name="END_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="datetime" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="nvarchar" MaxLength="50" />
+          <Property Name="MODIFIED_DATE" Type="datetime" />
+          <Property Name="IS_ACTIVE" Type="bit" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="bit" />
+          <Property Name="LOCATION_CITY" Type="nvarchar" MaxLength="50" />
+          <Property Name="LOCATION_ADDRESS" Type="nvarchar" MaxLength="250" />
+          <Property Name="APPROVED_FLEET" Type="nvarchar" MaxLength="50" />
+          <Property Name="APPROVED_FLEET_DATE" Type="datetime" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="nvarchar" MaxLength="9" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="nvarchar" MaxLength="9" />
+          <Property Name="VENDOR_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="date" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="date" />
+          <Property Name="VENDOR_MANUFACTURER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_MODEL" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_SERIES" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_TRANSMISSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_COLOUR" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_BODY_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_AIR_BAG" Type="bit" />
+          <Property Name="VENDOR_ABS" Type="bit" />
+          <Property Name="VENDOR_BRANDING" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PURPOSE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_NUMBER" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_PO_LINE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENDOR_VAT" Type="bit" />
+          <Property Name="VENDOR_RESTITUTION" Type="bit" />
+          <Property Name="VENDOR_VENDOR" Type="nvarchar" MaxLength="100" />
+          <Property Name="CAR_GROUP_LEVEL" Type="int" />
+          <Property Name="PROJECT_NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="CFM_IDLE_ID" Type="bigint" />
+          <Property Name="VEHICLE_USAGE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ASSIGNED_TO" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMMENTS" Type="nvarchar" MaxLength="255" />
+          <Property Name="PRICE" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="datetime" />
+          <Property Name="ARCHIVED_BY" Type="varchar" MaxLength="50" />
+          <Property Name="ARCHIVED_DATE" Type="datetime" />
+        </EntityType>
         <EntityType Name="AUTO_GR">
           <Key>
             <PropertyRef Name="AUTO_GR_ID" />
@@ -2111,6 +2483,15 @@
           <EntitySet Name="ARCH_MST_PRICELIST" EntityType="Self.ARCH_MST_PRICELIST" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ARCH_MST_SALES_VOLUME" EntityType="Self.ARCH_MST_SALES_VOLUME" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ARCH_MST_VEHICLE_SPECT" EntityType="Self.ARCH_MST_VEHICLE_SPECT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CAF" EntityType="Self.ARCH_TRA_CAF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CAF_PROGRESS" EntityType="Self.ARCH_TRA_CAF_PROGRESS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CCF" EntityType="Self.ARCH_TRA_CCF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CCF_DETAIL" EntityType="Self.ARCH_TRA_CCF_DETAIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CRF" EntityType="Self.ARCH_TRA_CRF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CSF" EntityType="Self.ARCH_TRA_CSF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CTF" EntityType="Self.ARCH_TRA_CTF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_CTF_EXTEND" EntityType="Self.ARCH_TRA_CTF_EXTEND" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARCH_TRA_TEMPORARY" EntityType="Self.ARCH_TRA_TEMPORARY" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AUTO_GR" EntityType="Self.AUTO_GR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AUTO_GR_DETAIL" EntityType="Self.AUTO_GR_DETAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CFM_IDLE_REPORT_DATA" EntityType="Self.CFM_IDLE_REPORT_DATA" Schema="dbo" store:Type="Tables" />
@@ -2566,6 +2947,15 @@
           <EntitySet Name="ARCH_MST_PRICELIST" EntityType="FMSModel.ARCH_MST_PRICELIST" />
           <EntitySet Name="ARCH_MST_SALES_VOLUME" EntityType="FMSModel.ARCH_MST_SALES_VOLUME" />
           <EntitySet Name="ARCH_MST_VEHICLE_SPECT" EntityType="FMSModel.ARCH_MST_VEHICLE_SPECT" />
+          <EntitySet Name="ARCH_TRA_CAF" EntityType="FMSModel.ARCH_TRA_CAF" />
+          <EntitySet Name="ARCH_TRA_CAF_PROGRESS" EntityType="FMSModel.ARCH_TRA_CAF_PROGRESS" />
+          <EntitySet Name="ARCH_TRA_CCF" EntityType="FMSModel.ARCH_TRA_CCF" />
+          <EntitySet Name="ARCH_TRA_CCF_DETAIL" EntityType="FMSModel.ARCH_TRA_CCF_DETAIL" />
+          <EntitySet Name="ARCH_TRA_CRF" EntityType="FMSModel.ARCH_TRA_CRF" />
+          <EntitySet Name="ARCH_TRA_CSF" EntityType="FMSModel.ARCH_TRA_CSF" />
+          <EntitySet Name="ARCH_TRA_CTF" EntityType="FMSModel.ARCH_TRA_CTF" />
+          <EntitySet Name="ARCH_TRA_CTF_EXTEND" EntityType="FMSModel.ARCH_TRA_CTF_EXTEND" />
+          <EntitySet Name="ARCH_TRA_TEMPORARY" EntityType="FMSModel.ARCH_TRA_TEMPORARY" />
         </EntityContainer>
         <EnumType Name="DocumentType" a:ExternalTypeName="FMS.Core.Enums.DocumentType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="DocumentStatus" a:ExternalTypeName="FMS.Core.Enums.DocumentStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -4727,6 +5117,378 @@
           <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
           <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="ARCH_TRA_CAF">
+          <Key>
+            <PropertyRef Name="TRA_CAF_ID" />
+          </Key>
+          <Property Name="TRA_CAF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="SIRS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SUPERVISOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AREA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="VENDOR_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="INCIDENT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="INCIDENT_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="INCIDENT_DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="REMARK" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CAF_PROGRESS">
+          <Key>
+            <PropertyRef Name="TRA_CAF_PROGRESS_ID" />
+          </Key>
+          <Property Name="TRA_CAF_PROGRESS_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TRA_CAF_ID" Type="Int64" Nullable="false" />
+          <Property Name="STATUS_ID" Type="Int32" />
+          <Property Name="PROGRESS_DATE" Type="DateTime" Precision="0" />
+          <Property Name="REMARK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ESTIMATION" Type="DateTime" Precision="3" />
+          <Property Name="ACTUAL" Type="DateTime" Precision="3" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CCF">
+          <Key>
+            <PropertyRef Name="TRA_CCF_ID" />
+          </Key>
+          <Property Name="TRA_CCF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="COMPLAINT_CATEGORY" Type="Int32" Nullable="false" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_COMPLAINT_FOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME_COMPLAINT_FOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER_GS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="COORDINATOR_KPI" Type="Int32" />
+          <Property Name="VENDOR_KPI" Type="Int32" />
+          <Property Name="COORDINATOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CCF_DETAIL">
+          <Key>
+            <PropertyRef Name="TRA_CCF_DETAIL_ID" />
+          </Key>
+          <Property Name="TRA_CCF_DETAIL_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TRA_CCF_ID" Type="Int64" Nullable="false" />
+          <Property Name="COMPLAINT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="COMPLAINT_NOTE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COMPLAINT_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COORDINATOR_RESPONSE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="COORDINATOR_NOTE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COORDINATOR_PROMISED_DATE" Type="DateTime" Precision="0" />
+          <Property Name="COORDINATOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_RESPONSE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_NOTE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PROMISED_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_ATT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COMPLAINT_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COORDINATOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CRF">
+          <Key>
+            <PropertyRef Name="TRA_CRF_ID" />
+          </Key>
+          <Property Name="TRA_CRF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="EPAF_ID" Type="Int64" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="COST_CENTER_NEW" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_OFFICE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_CITY_NEW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_OFFICE_NEW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EFFECTIVE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="RELOCATION_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TEMPORARY_DELIVERABLE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="VENDOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="WITHD_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WITHD_DATETIME" Type="DateTime" Precision="3" />
+          <Property Name="DELIV_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DELIV_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DELIV_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DELIV_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CHANGE_POLICE_NUMBER" Type="Boolean" />
+          <Property Name="EXPECTED_DATE" Type="DateTime" Precision="0" />
+          <Property Name="PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="NEW_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MST_FLEET_ID" Type="Int64" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CSF">
+          <Key>
+            <PropertyRef Name="TRA_CSF_ID" />
+          </Key>
+          <Property Name="TRA_CSF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="EPAF_ID" Type="Int64" />
+          <Property Name="REASON" Type="Int32" Nullable="false" />
+          <Property Name="EFFECTIVE_DATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EMPLOYEE_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_CATEGORY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="END_PERIOD" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR" Type="Int32" />
+          <Property Name="EXPECTED_DATE" Type="DateTime" Precision="0" />
+          <Property Name="START_RENT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="END_RENT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IS_PROJECT" Type="Boolean" />
+          <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REMARK" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="VENDOR_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_AIR_BAG" Type="Boolean" />
+          <Property Name="VENDOR_ABS" Type="Boolean" />
+          <Property Name="VENDOR_BRANDING" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PURPOSE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_VAT" Type="Boolean" />
+          <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
+          <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
+          <Property Name="CFM_IDLE_ID" Type="Int64" />
+          <Property Name="ASSIGNED_TO" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FLEXBEN" Type="Int32" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CTF">
+          <Key>
+            <PropertyRef Name="TRA_CTF_ID" />
+          </Key>
+          <Property Name="TRA_CTF_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="EPAF_ID" Type="Int64" />
+          <Property Name="EMPLOYEE_ID" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="REASON" Type="Int32" />
+          <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_YEAR" Type="Int32" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="END_RENT_DATE" Type="DateTime" Precision="0" />
+          <Property Name="EFFECTIVE_DATE" Type="DateTime" Precision="0" />
+          <Property Name="IS_TRANSFER_TO_IDLE" Type="Boolean" />
+          <Property Name="BUY_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EXTEND_VEHICLE" Type="Boolean" />
+          <Property Name="WITHD_PIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WITHD_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WITHD_DATE" Type="DateTime" Precision="0" />
+          <Property Name="WITHD_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WITHD_ADDRESS" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_CONTRIBUTION" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PENALTY" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REFUND_COST" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BUY_COST_TOTAL" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="USER_DECISION" Type="Int32" />
+          <Property Name="PENALTY_PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PENALTY_PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PENALTY_PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REMARK" Type="Int32" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="VEHICLE_LOCATION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_CTF_EXTEND">
+          <Key>
+            <PropertyRef Name="TRA_CTF_EXTEND_ID" />
+          </Key>
+          <Property Name="TRA_CTF_EXTEND_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TRA_CTF_ID" Type="Int64" />
+          <Property Name="NEW_PROPOSED_DATE" Type="DateTime" Precision="0" />
+          <Property Name="EXTEND_PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EXTEND_PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EXTEND_PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="REASON" Type="Int32" />
+          <Property Name="EXTEND_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="ARCH_TRA_TEMPORARY">
+          <Key>
+            <PropertyRef Name="TRA_TEMPORARY_ID" />
+          </Key>
+          <Property Name="TRA_TEMPORARY_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENT_NUMBER" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="DOCUMENT_STATUS" Type="Int32" Nullable="false" />
+          <Property Name="DOCUMENT_NUMBER_RELATED" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="REASON" Type="Int32" />
+          <Property Name="EMPLOYEE_ID" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COST_CENTER" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="GROUP_LEVEL" Type="Int32" />
+          <Property Name="ACTUAL_GROUP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SUPPLY_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VEHICLE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" Precision="3" />
+          <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+          <Property Name="IS_PROJECT" Type="Boolean" />
+          <Property Name="LOCATION_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LOCATION_ADDRESS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APPROVED_FLEET_DATE" Type="DateTime" Precision="3" />
+          <Property Name="EMPLOYEE_ID_CREATOR" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="EMPLOYEE_ID_FLEET_APPROVAL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_POLICE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CHASIS_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_ENGINE_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_CONTRACT_START_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_CONTRACT_END_DATE" Type="DateTime" Precision="0" />
+          <Property Name="VENDOR_MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_MODEL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_SERIES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_TRANSMISSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_COLOUR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_BODY_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_AIR_BAG" Type="Boolean" />
+          <Property Name="VENDOR_ABS" Type="Boolean" />
+          <Property Name="VENDOR_BRANDING" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PURPOSE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_PO_LINE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENDOR_VAT" Type="Boolean" />
+          <Property Name="VENDOR_RESTITUTION" Type="Boolean" />
+          <Property Name="VENDOR_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CAR_GROUP_LEVEL" Type="Int32" />
+          <Property Name="PROJECT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CFM_IDLE_ID" Type="Int64" />
+          <Property Name="VEHICLE_USAGE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ASSIGNED_TO" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COMMENTS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="VAT_DECIMAL" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DATE_SEND_VENDOR" Type="DateTime" Precision="3" />
+          <Property Name="ARCHIVED_BY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ARCHIVED_DATE" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6398,6 +7160,387 @@
                 <ScalarProperty Name="MODEL" ColumnName="MODEL" />
                 <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
                 <ScalarProperty Name="MST_VEHICLE_SPECT_ID" ColumnName="MST_VEHICLE_SPECT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CAF">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CAF">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CAF">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="INCIDENT_DESCRIPTION" ColumnName="INCIDENT_DESCRIPTION" />
+                <ScalarProperty Name="INCIDENT_LOCATION" ColumnName="INCIDENT_LOCATION" />
+                <ScalarProperty Name="INCIDENT_DATE" ColumnName="INCIDENT_DATE" />
+                <ScalarProperty Name="VEHICLE_MODEL" ColumnName="VEHICLE_MODEL" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="AREA" ColumnName="AREA" />
+                <ScalarProperty Name="SUPERVISOR" ColumnName="SUPERVISOR" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="SIRS_NUMBER" ColumnName="SIRS_NUMBER" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_CAF_ID" ColumnName="TRA_CAF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CAF_PROGRESS">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CAF_PROGRESS">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CAF_PROGRESS">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ACTUAL" ColumnName="ACTUAL" />
+                <ScalarProperty Name="ESTIMATION" ColumnName="ESTIMATION" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="PROGRESS_DATE" ColumnName="PROGRESS_DATE" />
+                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+                <ScalarProperty Name="TRA_CAF_ID" ColumnName="TRA_CAF_ID" />
+                <ScalarProperty Name="TRA_CAF_PROGRESS_ID" ColumnName="TRA_CAF_PROGRESS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CCF">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CCF">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CCF">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="COORDINATOR_NAME" ColumnName="COORDINATOR_NAME" />
+                <ScalarProperty Name="VENDOR_KPI" ColumnName="VENDOR_KPI" />
+                <ScalarProperty Name="COORDINATOR_KPI" ColumnName="COORDINATOR_KPI" />
+                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
+                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURE" ColumnName="MANUFACTURE" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="POLICE_NUMBER_GS" ColumnName="POLICE_NUMBER_GS" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="EMPLOYEE_NAME_COMPLAINT_FOR" ColumnName="EMPLOYEE_NAME_COMPLAINT_FOR" />
+                <ScalarProperty Name="EMPLOYEE_ID_COMPLAINT_FOR" ColumnName="EMPLOYEE_ID_COMPLAINT_FOR" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="COMPLAINT_CATEGORY" ColumnName="COMPLAINT_CATEGORY" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_CCF_ID" ColumnName="TRA_CCF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CCF_DETAIL">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CCF_DETAIL">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CCF_DETAIL">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="VENDOR_URL" ColumnName="VENDOR_URL" />
+                <ScalarProperty Name="COORDINATOR_URL" ColumnName="COORDINATOR_URL" />
+                <ScalarProperty Name="COMPLAINT_URL" ColumnName="COMPLAINT_URL" />
+                <ScalarProperty Name="VENDOR_ATT" ColumnName="VENDOR_ATT" />
+                <ScalarProperty Name="VENDOR_PROMISED_DATE" ColumnName="VENDOR_PROMISED_DATE" />
+                <ScalarProperty Name="VENDOR_NOTE" ColumnName="VENDOR_NOTE" />
+                <ScalarProperty Name="VENDOR_RESPONSE_DATE" ColumnName="VENDOR_RESPONSE_DATE" />
+                <ScalarProperty Name="COORDINATOR_ATT" ColumnName="COORDINATOR_ATT" />
+                <ScalarProperty Name="COORDINATOR_PROMISED_DATE" ColumnName="COORDINATOR_PROMISED_DATE" />
+                <ScalarProperty Name="COORDINATOR_NOTE" ColumnName="COORDINATOR_NOTE" />
+                <ScalarProperty Name="COORDINATOR_RESPONSE_DATE" ColumnName="COORDINATOR_RESPONSE_DATE" />
+                <ScalarProperty Name="COMPLAINT_ATT" ColumnName="COMPLAINT_ATT" />
+                <ScalarProperty Name="COMPLAINT_NOTE" ColumnName="COMPLAINT_NOTE" />
+                <ScalarProperty Name="COMPLAINT_DATE" ColumnName="COMPLAINT_DATE" />
+                <ScalarProperty Name="TRA_CCF_ID" ColumnName="TRA_CCF_ID" />
+                <ScalarProperty Name="TRA_CCF_DETAIL_ID" ColumnName="TRA_CCF_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CRF">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CRF">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CRF">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
+                <ScalarProperty Name="MST_FLEET_ID" ColumnName="MST_FLEET_ID" />
+                <ScalarProperty Name="NEW_POLICE_NUMBER" ColumnName="NEW_POLICE_NUMBER" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="PO_LINE" ColumnName="PO_LINE" />
+                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
+                <ScalarProperty Name="EXPECTED_DATE" ColumnName="EXPECTED_DATE" />
+                <ScalarProperty Name="CHANGE_POLICE_NUMBER" ColumnName="CHANGE_POLICE_NUMBER" />
+                <ScalarProperty Name="DELIV_PHONE" ColumnName="DELIV_PHONE" />
+                <ScalarProperty Name="DELIV_PIC" ColumnName="DELIV_PIC" />
+                <ScalarProperty Name="DELIV_ADDRESS" ColumnName="DELIV_ADDRESS" />
+                <ScalarProperty Name="DELIV_CITY" ColumnName="DELIV_CITY" />
+                <ScalarProperty Name="WITHD_DATETIME" ColumnName="WITHD_DATETIME" />
+                <ScalarProperty Name="WITHD_PHONE" ColumnName="WITHD_PHONE" />
+                <ScalarProperty Name="WITHD_PIC" ColumnName="WITHD_PIC" />
+                <ScalarProperty Name="WITHD_ADDRESS" ColumnName="WITHD_ADDRESS" />
+                <ScalarProperty Name="WITHD_CITY" ColumnName="WITHD_CITY" />
+                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
+                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="TEMPORARY_DELIVERABLE_DATE" ColumnName="TEMPORARY_DELIVERABLE_DATE" />
+                <ScalarProperty Name="RELOCATION_TYPE" ColumnName="RELOCATION_TYPE" />
+                <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="LOCATION_OFFICE_NEW" ColumnName="LOCATION_OFFICE_NEW" />
+                <ScalarProperty Name="LOCATION_CITY_NEW" ColumnName="LOCATION_CITY_NEW" />
+                <ScalarProperty Name="LOCATION_OFFICE" ColumnName="LOCATION_OFFICE" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="COST_CENTER_NEW" ColumnName="COST_CENTER_NEW" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="EPAF_ID" ColumnName="EPAF_ID" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_CRF_ID" ColumnName="TRA_CRF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CSF">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CSF">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CSF">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
+                <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="FLEXBEN" ColumnName="FLEXBEN" />
+                <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
+                <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
+                <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
+                <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
+                <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />
+                <ScalarProperty Name="VENDOR_VAT" ColumnName="VENDOR_VAT" />
+                <ScalarProperty Name="VENDOR_PO_LINE" ColumnName="VENDOR_PO_LINE" />
+                <ScalarProperty Name="VENDOR_PO_NUMBER" ColumnName="VENDOR_PO_NUMBER" />
+                <ScalarProperty Name="VENDOR_PURPOSE" ColumnName="VENDOR_PURPOSE" />
+                <ScalarProperty Name="VENDOR_BRANDING" ColumnName="VENDOR_BRANDING" />
+                <ScalarProperty Name="VENDOR_ABS" ColumnName="VENDOR_ABS" />
+                <ScalarProperty Name="VENDOR_AIR_BAG" ColumnName="VENDOR_AIR_BAG" />
+                <ScalarProperty Name="VENDOR_BODY_TYPE" ColumnName="VENDOR_BODY_TYPE" />
+                <ScalarProperty Name="VENDOR_COLOUR" ColumnName="VENDOR_COLOUR" />
+                <ScalarProperty Name="VENDOR_TRANSMISSION" ColumnName="VENDOR_TRANSMISSION" />
+                <ScalarProperty Name="VENDOR_SERIES" ColumnName="VENDOR_SERIES" />
+                <ScalarProperty Name="VENDOR_MODEL" ColumnName="VENDOR_MODEL" />
+                <ScalarProperty Name="VENDOR_MANUFACTURER" ColumnName="VENDOR_MANUFACTURER" />
+                <ScalarProperty Name="VENDOR_CONTRACT_END_DATE" ColumnName="VENDOR_CONTRACT_END_DATE" />
+                <ScalarProperty Name="VENDOR_CONTRACT_START_DATE" ColumnName="VENDOR_CONTRACT_START_DATE" />
+                <ScalarProperty Name="VENDOR_ENGINE_NUMBER" ColumnName="VENDOR_ENGINE_NUMBER" />
+                <ScalarProperty Name="VENDOR_CHASIS_NUMBER" ColumnName="VENDOR_CHASIS_NUMBER" />
+                <ScalarProperty Name="VENDOR_POLICE_NUMBER" ColumnName="VENDOR_POLICE_NUMBER" />
+                <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
+                <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="PO_NUMBER" ColumnName="PO_NUMBER" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="IS_PROJECT" ColumnName="IS_PROJECT" />
+                <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
+                <ScalarProperty Name="END_RENT_DATE" ColumnName="END_RENT_DATE" />
+                <ScalarProperty Name="START_RENT_DATE" ColumnName="START_RENT_DATE" />
+                <ScalarProperty Name="EXPECTED_DATE" ColumnName="EXPECTED_DATE" />
+                <ScalarProperty Name="VENDOR" ColumnName="VENDOR" />
+                <ScalarProperty Name="END_PERIOD" ColumnName="END_PERIOD" />
+                <ScalarProperty Name="START_PERIOD" ColumnName="START_PERIOD" />
+                <ScalarProperty Name="COLOUR" ColumnName="COLOUR" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_CATEGORY" ColumnName="VEHICLE_CATEGORY" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
+                <ScalarProperty Name="EPAF_ID" ColumnName="EPAF_ID" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_CSF_ID" ColumnName="TRA_CSF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CTF">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CTF">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CTF">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
+                <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
+                <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
+                <ScalarProperty Name="VEHICLE_LOCATION" ColumnName="VEHICLE_LOCATION" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="REMARK" ColumnName="REMARK" />
+                <ScalarProperty Name="PENALTY_PRICE" ColumnName="PENALTY_PRICE" />
+                <ScalarProperty Name="PENALTY_PO_LINE" ColumnName="PENALTY_PO_LINE" />
+                <ScalarProperty Name="PENALTY_PO_NUMBER" ColumnName="PENALTY_PO_NUMBER" />
+                <ScalarProperty Name="USER_DECISION" ColumnName="USER_DECISION" />
+                <ScalarProperty Name="BUY_COST_TOTAL" ColumnName="BUY_COST_TOTAL" />
+                <ScalarProperty Name="REFUND_COST" ColumnName="REFUND_COST" />
+                <ScalarProperty Name="PENALTY" ColumnName="PENALTY" />
+                <ScalarProperty Name="EMPLOYEE_CONTRIBUTION" ColumnName="EMPLOYEE_CONTRIBUTION" />
+                <ScalarProperty Name="WITHD_ADDRESS" ColumnName="WITHD_ADDRESS" />
+                <ScalarProperty Name="WITHD_CITY" ColumnName="WITHD_CITY" />
+                <ScalarProperty Name="WITHD_DATE" ColumnName="WITHD_DATE" />
+                <ScalarProperty Name="WITHD_PHONE" ColumnName="WITHD_PHONE" />
+                <ScalarProperty Name="WITHD_PIC" ColumnName="WITHD_PIC" />
+                <ScalarProperty Name="EXTEND_VEHICLE" ColumnName="EXTEND_VEHICLE" />
+                <ScalarProperty Name="BUY_COST" ColumnName="BUY_COST" />
+                <ScalarProperty Name="IS_TRANSFER_TO_IDLE" ColumnName="IS_TRANSFER_TO_IDLE" />
+                <ScalarProperty Name="EFFECTIVE_DATE" ColumnName="EFFECTIVE_DATE" />
+                <ScalarProperty Name="END_RENT_DATE" ColumnName="END_RENT_DATE" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="VEHICLE_YEAR" ColumnName="VEHICLE_YEAR" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="EPAF_ID" ColumnName="EPAF_ID" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_CTF_ID" ColumnName="TRA_CTF_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_CTF_EXTEND">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_CTF_EXTEND">
+              <MappingFragment StoreEntitySet="ARCH_TRA_CTF_EXTEND">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="EXTEND_POLICE_NUMBER" ColumnName="EXTEND_POLICE_NUMBER" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
+                <ScalarProperty Name="EXTEND_PRICE" ColumnName="EXTEND_PRICE" />
+                <ScalarProperty Name="EXTEND_PO_LINE" ColumnName="EXTEND_PO_LINE" />
+                <ScalarProperty Name="EXTEND_PO_NUMBER" ColumnName="EXTEND_PO_NUMBER" />
+                <ScalarProperty Name="NEW_PROPOSED_DATE" ColumnName="NEW_PROPOSED_DATE" />
+                <ScalarProperty Name="TRA_CTF_ID" ColumnName="TRA_CTF_ID" />
+                <ScalarProperty Name="TRA_CTF_EXTEND_ID" ColumnName="TRA_CTF_EXTEND_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARCH_TRA_TEMPORARY">
+            <EntityTypeMapping TypeName="FMSModel.ARCH_TRA_TEMPORARY">
+              <MappingFragment StoreEntitySet="ARCH_TRA_TEMPORARY">
+                <ScalarProperty Name="ARCHIVED_DATE" ColumnName="ARCHIVED_DATE" />
+                <ScalarProperty Name="ARCHIVED_BY" ColumnName="ARCHIVED_BY" />
+                <ScalarProperty Name="DATE_SEND_VENDOR" ColumnName="DATE_SEND_VENDOR" />
+                <ScalarProperty Name="VAT_DECIMAL" ColumnName="VAT_DECIMAL" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="ASSIGNED_TO" ColumnName="ASSIGNED_TO" />
+                <ScalarProperty Name="VEHICLE_USAGE" ColumnName="VEHICLE_USAGE" />
+                <ScalarProperty Name="CFM_IDLE_ID" ColumnName="CFM_IDLE_ID" />
+                <ScalarProperty Name="PROJECT_NAME" ColumnName="PROJECT_NAME" />
+                <ScalarProperty Name="CAR_GROUP_LEVEL" ColumnName="CAR_GROUP_LEVEL" />
+                <ScalarProperty Name="VENDOR_VENDOR" ColumnName="VENDOR_VENDOR" />
+                <ScalarProperty Name="VENDOR_RESTITUTION" ColumnName="VENDOR_RESTITUTION" />
+                <ScalarProperty Name="VENDOR_VAT" ColumnName="VENDOR_VAT" />
+                <ScalarProperty Name="VENDOR_PO_LINE" ColumnName="VENDOR_PO_LINE" />
+                <ScalarProperty Name="VENDOR_PO_NUMBER" ColumnName="VENDOR_PO_NUMBER" />
+                <ScalarProperty Name="VENDOR_PURPOSE" ColumnName="VENDOR_PURPOSE" />
+                <ScalarProperty Name="VENDOR_BRANDING" ColumnName="VENDOR_BRANDING" />
+                <ScalarProperty Name="VENDOR_ABS" ColumnName="VENDOR_ABS" />
+                <ScalarProperty Name="VENDOR_AIR_BAG" ColumnName="VENDOR_AIR_BAG" />
+                <ScalarProperty Name="VENDOR_BODY_TYPE" ColumnName="VENDOR_BODY_TYPE" />
+                <ScalarProperty Name="VENDOR_COLOUR" ColumnName="VENDOR_COLOUR" />
+                <ScalarProperty Name="VENDOR_TRANSMISSION" ColumnName="VENDOR_TRANSMISSION" />
+                <ScalarProperty Name="VENDOR_SERIES" ColumnName="VENDOR_SERIES" />
+                <ScalarProperty Name="VENDOR_MODEL" ColumnName="VENDOR_MODEL" />
+                <ScalarProperty Name="VENDOR_MANUFACTURER" ColumnName="VENDOR_MANUFACTURER" />
+                <ScalarProperty Name="VENDOR_CONTRACT_END_DATE" ColumnName="VENDOR_CONTRACT_END_DATE" />
+                <ScalarProperty Name="VENDOR_CONTRACT_START_DATE" ColumnName="VENDOR_CONTRACT_START_DATE" />
+                <ScalarProperty Name="VENDOR_ENGINE_NUMBER" ColumnName="VENDOR_ENGINE_NUMBER" />
+                <ScalarProperty Name="VENDOR_CHASIS_NUMBER" ColumnName="VENDOR_CHASIS_NUMBER" />
+                <ScalarProperty Name="VENDOR_POLICE_NUMBER" ColumnName="VENDOR_POLICE_NUMBER" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID_FLEET_APPROVAL" ColumnName="EMPLOYEE_ID_FLEET_APPROVAL" />
+                <ScalarProperty Name="EMPLOYEE_ID_CREATOR" ColumnName="EMPLOYEE_ID_CREATOR" />
+                <ScalarProperty Name="APPROVED_FLEET_DATE" ColumnName="APPROVED_FLEET_DATE" />
+                <ScalarProperty Name="APPROVED_FLEET" ColumnName="APPROVED_FLEET" />
+                <ScalarProperty Name="LOCATION_ADDRESS" ColumnName="LOCATION_ADDRESS" />
+                <ScalarProperty Name="LOCATION_CITY" ColumnName="LOCATION_CITY" />
+                <ScalarProperty Name="IS_PROJECT" ColumnName="IS_PROJECT" />
+                <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+                <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="BODY_TYPE" ColumnName="BODY_TYPE" />
+                <ScalarProperty Name="SERIES" ColumnName="SERIES" />
+                <ScalarProperty Name="MODEL" ColumnName="MODEL" />
+                <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+                <ScalarProperty Name="POLICE_NUMBER" ColumnName="POLICE_NUMBER" />
+                <ScalarProperty Name="VEHICLE_TYPE" ColumnName="VEHICLE_TYPE" />
+                <ScalarProperty Name="SUPPLY_METHOD" ColumnName="SUPPLY_METHOD" />
+                <ScalarProperty Name="ACTUAL_GROUP" ColumnName="ACTUAL_GROUP" />
+                <ScalarProperty Name="GROUP_LEVEL" ColumnName="GROUP_LEVEL" />
+                <ScalarProperty Name="COST_CENTER" ColumnName="COST_CENTER" />
+                <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+                <ScalarProperty Name="EMPLOYEE_ID" ColumnName="EMPLOYEE_ID" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
+                <ScalarProperty Name="DOCUMENT_NUMBER_RELATED" ColumnName="DOCUMENT_NUMBER_RELATED" />
+                <ScalarProperty Name="DOCUMENT_STATUS" ColumnName="DOCUMENT_STATUS" />
+                <ScalarProperty Name="DOCUMENT_NUMBER" ColumnName="DOCUMENT_NUMBER" />
+                <ScalarProperty Name="TRA_TEMPORARY_ID" ColumnName="TRA_TEMPORARY_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

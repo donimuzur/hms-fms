@@ -95,5 +95,14 @@ namespace FMS.BusinessObject
         public virtual DbSet<ARCH_MST_PRICELIST> ARCH_MST_PRICELIST { get; set; }
         public virtual DbSet<ARCH_MST_SALES_VOLUME> ARCH_MST_SALES_VOLUME { get; set; }
         public virtual DbSet<ARCH_MST_VEHICLE_SPECT> ARCH_MST_VEHICLE_SPECT { get; set; }
+        public virtual DbSet<ARCH_TRA_CAF> ARCH_TRA_CAF { get; set; }
+        public virtual DbSet<ARCH_TRA_CAF_PROGRESS> ARCH_TRA_CAF_PROGRESS { get; set; }
+        public virtual DbSet<ARCH_TRA_CCF> ARCH_TRA_CCF { get; set; }
+        public virtual DbSet<ARCH_TRA_CCF_DETAIL> ARCH_TRA_CCF_DETAIL { get; set; }
+        public virtual DbSet<ARCH_TRA_CRF> ARCH_TRA_CRF { get; set; }
+        public virtual DbSet<ARCH_TRA_CSF> ARCH_TRA_CSF { get; set; }
+        public virtual DbSet<ARCH_TRA_CTF> ARCH_TRA_CTF { get; set; }
+        public virtual DbSet<ARCH_TRA_CTF_EXTEND> ARCH_TRA_CTF_EXTEND { get; set; }
+        public virtual DbSet<ARCH_TRA_TEMPORARY> ARCH_TRA_TEMPORARY { get; set; }
     }
 }

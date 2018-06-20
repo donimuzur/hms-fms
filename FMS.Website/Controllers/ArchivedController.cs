@@ -49,14 +49,21 @@ namespace FMS.Website.Controllers
             model.Details.Add(new ArchiveItem() { Id = 14, Table = "CSF", Type = "Transaction" });
             model.Details.Add(new ArchiveItem() { Id = 15, Table = "CRF", Type = "Transaction" });
             model.Details.Add(new ArchiveItem() { Id = 16, Table = "CTF", Type = "Transaction" });
-            model.Details.Add(new ArchiveItem() { Id = 17, Table = "TEMPORARY", Type = "Transaction" });
+            model.Details.Add(new ArchiveItem() { Id = 17, Table = "CCF", Type = "Transaction" });
+            model.Details.Add(new ArchiveItem() { Id = 18, Table = "CAF", Type = "Transaction" });
+            model.Details.Add(new ArchiveItem() { Id = 19, Table = "TEMPORARY", Type = "Transaction" });
 
             var OperatorList = new Dictionary<string, string>();
             OperatorList.Add("OR", "OR");
             OperatorList.Add("AND", "AND");
             model.SearchView.OperatorList = new SelectList(OperatorList,"Key","Value");
+
+            var VehicleTypeList = new Dictionary<string, string>();
+            VehicleTypeList.Add("BENEFIT", "BENEFIT");
+            VehicleTypeList.Add("WTC", "WTC");
+            model.SearchView.VehicleTypeList = new SelectList(VehicleTypeList, "Key", "Value");
         }
-        public ActionResult ArchiveMaster(string TableArchveId, DateTime? CreatedDate, DateTime? ModifiedDate, string Operator)
+        public ActionResult ArchiveMaster(string TableArchveId, DateTime? CreatedDate, DateTime? ModifiedDate, string Operator, string VehicleType)
         {
             try
             {
@@ -66,6 +73,7 @@ namespace FMS.Website.Controllers
                 if (ModifiedDate.HasValue) input.ModifiedDate = new DateTime(ModifiedDate.Value.Year, ModifiedDate.Value.Month, ModifiedDate.Value.Day, 23, 59, 59); ;
                 input.TableId = TableArchveId;
                 input.Operator = Operator;
+                input.VehicleType = VehicleType;
 
                 _archiveBLL.DoArchive(input, CurrentUser);
 

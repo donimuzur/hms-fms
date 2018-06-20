@@ -11,12 +11,15 @@ using FMS.DAL.Services;
 using FMS.Contract;
 using FMS.BusinessObject.Business;
 using FMS.Contract.BLL;
+using FMS.Utils;
+using FMS.Core;
 
 namespace FMS.BLL.Archive
 {
     public class ArchiveBLL: IArchiveBLL
     {
         private ICostObService _costObService;
+        private ISettingService _settingService;
         private IEmployeeService _employeeService;
         private IFleetService _fleetService;
         private IEpafService _epafService;
@@ -30,6 +33,14 @@ namespace FMS.BLL.Archive
         private ISalesVolumeService _salesVolumeService;
         private IVehicleSpectService _vehicleSpectService;
         private IMessageService _messageService;
+        private ICcfService _ccfService;
+        private ICAFService _cafService;
+        private ICarComplaintFormService _carComplaintService;
+        private ICRFService _crfService;
+        private ICsfService _csfService;
+        private ICtfService _ctfService;
+        private ICtfExtendService _ctfExtendService;
+        private ITemporaryService _temporaryService;
 
         private IArchCostObService _archCostObService;
         private IArchEmployeeService _archEmployeeService;
@@ -44,11 +55,21 @@ namespace FMS.BLL.Archive
         private IArchPricelistService _archPricelistService;
         private IArchSalesVolumeService _archSalesVolumeService;
         private IArchVehicleSpectService _archVehicleSpectService;
+        private IArchTraCafProgressService _archTraCafProgressService;
+        private IArchTraCafService _archTraCafService;
+        private IArchTraCcfDetailService _archTraCcfDetailService;
+        private IArchTraCcfService _archTraCcfService;
+        private IArchTraCrfService _archTraCrfService;
+        private IArchTraCsfService _archTraCsfService;
+        private IArchTraCtfExtendService _archCtfExtendService;
+        private IArchTraCtfService _archTraCtfService;
+        private IArchTraTemporaryService _archTraTemporaryService;
 
         private IUnitOfWork _uow;
         public ArchiveBLL(IUnitOfWork uow)
         {
             _uow = uow;
+            _settingService = new SettingService(_uow);
             _employeeService = new EmployeeService(_uow);
             _costObService = new CostObService(_uow);
             _fleetService = new FleetService(_uow);
@@ -63,6 +84,14 @@ namespace FMS.BLL.Archive
             _vehicleSpectService = new VehicleSpectService(_uow);
             _penaltyService = new PenaltyService(_uow);
             _messageService = new MessageService(_uow);
+            _ccfService = new CcfService(_uow);
+            
+            _cafService = new CafService(_uow);
+            _crfService = new CrfService(_uow);
+            _csfService = new CsfService(_uow);
+            _ctfService = new CtfService(_uow);
+            _ctfExtendService = new CtfExtendService(_uow);
+            _temporaryService = new TemporaryService(_uow);
 
             _archCostObService = new ArchCostObService(_uow);
             _archEmployeeService = new ArchEmployeeService(_uow);
@@ -77,11 +106,22 @@ namespace FMS.BLL.Archive
             _archSalesVolumeService = new ArchSalesVolumeService(_uow);
             _archVehicleSpectService = new ArchVehicleSpectService(_uow);
             _archPenaltyService = new ArchPenaltyService(_uow);
+            _archTraCafProgressService = new ArchTraCafProgressService(_uow);
+            _archTraCafService = new ArchTraCafService(_uow);
+            _archTraCcfDetailService = new ArchTraCcfDetailService(_uow);
+            _archTraCcfService = new ArchTraCcfService(_uow);
+            _archTraCrfService = new ArchTraCrfService(_uow);
+            _archTraCsfService = new ArchTraCsfService(_uow);
+            _archCtfExtendService = new ArchTraCtfExtendService(_uow);
+            _archTraCtfService = new ArchTraCtfService(_uow);
+            _archTraTemporaryService = new ArchTraTemporaryService(_uow);
+            
         }
         public bool DoArchive (ArchiveParamInput input, Login Login)
         {
             var result = true;
             var TableList =new List<string>();
+            var GetSetting = _settingService.GetSetting().Where(x => x.IS_ACTIVE).ToList();
             try
             {
                 var ListTableId = input.TableId.Split(',').ToList();
@@ -473,7 +513,220 @@ namespace FMS.BLL.Archive
                     }
                     #endregion
                     ///----------- Transaction ----------///
-                   
+                    #region --- Tra CSF ---
+                    else if (tableId == 14)
+                    {
+                        var TraCsfList = new List<TRA_CSF>();
+                        if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
+                        {
+                            if (input.Operator == "OR")
+                                TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                            else if (input.Operator == "AND")
+                                TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                        }
+                        else
+                        {
+                            TraCsfList = _csfService.GetAllCsf().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                        }
+
+                        if(!string.IsNullOrEmpty(input.VehicleType))
+                        {
+                            var VehType = GetSetting.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SETTING_NAME.ToUpper() == (input.VehicleType == null ? "" : input.VehicleType.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+                            TraCsfList = TraCsfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MST_SETTING_ID.ToString())).ToList();
+                        }
+                        foreach (var itemCsf in TraCsfList)
+                        {
+                            var ArchCsf = Mapper.Map<ARCH_TRA_CSF>(itemCsf);
+                            ArchCsf.ARCHIVED_BY = Login.USER_ID;
+                            ArchCsf.ARCHIVED_DATE = DateTime.Now;
+                            _archTraCsfService.Save(ArchCsf, Login);
+                            _uow.GetGenericRepository<TRA_CSF>().Delete(itemCsf.TRA_CSF_ID);
+                        }
+                        _uow.SaveChanges();
+                        TableList.Add("Transaction CSF");
+                    }
+                    #endregion
+                    #region --- Tra CRF ---
+                    else if (tableId == 15)
+                    {
+                        var TraCrfList = new List<TRA_CRF>();
+                        if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
+                        {
+                            if (input.Operator == "OR")
+                                TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                            else if (input.Operator == "AND")
+                                TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                        }
+                        else
+                        {
+                            TraCrfList = _crfService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(input.VehicleType))
+                        {
+                            TraCrfList = TraCrfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
+                        }
+                        foreach (var itemCrf in TraCrfList)
+                        {
+                            var ArchCrf = Mapper.Map<ARCH_TRA_CRF>(itemCrf);
+                            ArchCrf.ARCHIVED_BY = Login.USER_ID;
+                            ArchCrf.ARCHIVED_DATE = DateTime.Now;
+                            _archTraCrfService.Save(ArchCrf, Login);
+                            _uow.GetGenericRepository<TRA_CRF>().Delete(itemCrf.TRA_CRF_ID);
+                        }
+                        _uow.SaveChanges();
+                        TableList.Add("Transaction CRF");
+                    }
+                    #endregion
+                    #region --- Tra Ctf ---
+                    else if (tableId == 16)
+                    {
+                        var TraCtfList = new List<TRA_CTF>();
+                        if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
+                        {
+                            if (input.Operator == "OR")
+                                TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                            else if (input.Operator == "AND")
+                                TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                        }
+                        else
+                        {
+                            TraCtfList = _ctfService.GetCtf().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(input.VehicleType))
+                        {
+                            TraCtfList = TraCtfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
+                        }
+                        foreach (var itemCtf in TraCtfList)
+                        {
+                            var ArchCtf = Mapper.Map<ARCH_TRA_CTF>(itemCtf);
+                            ArchCtf.ARCHIVED_BY = Login.USER_ID;
+                            ArchCtf.ARCHIVED_DATE = DateTime.Now;
+                            var CtfExtendList = _ctfExtendService.GetCtfExtend().Where(x => x.TRA_CTF_ID == itemCtf.TRA_CTF_ID).ToList();
+                            foreach(var itemCtfExtend in CtfExtendList)
+                            {
+                                var ArchCtfExtend = Mapper.Map<ARCH_TRA_CTF_EXTEND>(itemCtfExtend);
+                                _archCtfExtendService.Save(ArchCtfExtend, Login);
+                                _uow.GetGenericRepository<TRA_CTF_EXTEND>().Delete(itemCtfExtend.TRA_CTF_EXTEND_ID);
+                            }
+                            _archTraCtfService.Save(ArchCtf, Login);
+                            _uow.GetGenericRepository<TRA_CTF>().Delete(itemCtf.TRA_CTF_ID);
+                        }
+                        _uow.SaveChanges();
+                        TableList.Add("Transaction CTF");
+                    }
+                    #endregion
+                    #region --- Tra CCF ---
+                    else if (tableId == 17)
+                    {
+                        var TraCcfList = new List<TRA_CCF>();
+                        if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
+                        {
+                            if (input.Operator == "OR")
+                                TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                            else if (input.Operator == "AND")
+                                TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                        }
+                        else
+                        {
+                            TraCcfList = _ccfService.GetCcf().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                        }
+
+                        if (!string.IsNullOrEmpty(input.VehicleType))
+                        {
+                            TraCcfList = TraCcfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
+                        }
+                        foreach (var itemCcf in TraCcfList)
+                        {
+                            var ArchCcf = Mapper.Map<ARCH_TRA_CCF>(itemCcf);
+                            ArchCcf.ARCHIVED_BY = Login.USER_ID;
+                            ArchCcf.ARCHIVED_DATE = DateTime.Now;
+                            var CcfDetaillist = _ccfService.GetCcfDetil().Where(x => x.TRA_CCF_ID == itemCcf.TRA_CCF_ID).ToList();
+                            foreach (var itemCcfDetail in CcfDetaillist)
+                            {
+                                var ArchCcfDetail= Mapper.Map<ARCH_TRA_CCF_DETAIL>(itemCcfDetail);
+                                _archTraCcfDetailService.Save(ArchCcfDetail, Login);
+                                _uow.GetGenericRepository<TRA_CCF_DETAIL>().Delete(itemCcfDetail.TRA_CCF_DETAIL_ID);
+                            }
+                            _archTraCcfService.Save(ArchCcf, Login);
+                            _uow.GetGenericRepository<TRA_CCF>().Delete(itemCcf.TRA_CCF_ID);
+                        }
+                        _uow.SaveChanges();
+                        TableList.Add("Transaction CCF");
+                    }
+                    #endregion
+                    #region --- Tra CAF ---
+                    else if (tableId == 18)
+                    {
+                        var TraCafList = new List<TRA_CAF>();
+                        if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
+                        {
+                            if (input.Operator == "OR")
+                                TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                            else if (input.Operator == "AND")
+                                TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                        }
+                        else
+                        {
+                            TraCafList = _cafService.GetList().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                        }
+                        //if (!string.IsNullOrEmpty(input.VehicleType))
+                        //{
+                        //    TraCafList = TraCafList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
+                        //}
+                        foreach (var itemCaf in TraCafList)
+                        {
+                            var ArchCaf = Mapper.Map<ARCH_TRA_CAF>(itemCaf);
+                            ArchCaf.ARCHIVED_BY = Login.USER_ID;
+                            ArchCaf.ARCHIVED_DATE = DateTime.Now;
+                            var CafProgresslist = _uow.GetGenericRepository<TRA_CAF_PROGRESS>().Get(x => x.TRA_CAF_ID == itemCaf.TRA_CAF_ID).ToList();
+                            foreach (var itemCafProgress in CafProgresslist)
+                            {
+                                var ArchCafProgress = Mapper.Map<ARCH_TRA_CAF_PROGRESS>(itemCafProgress);
+                                _archTraCafProgressService.Save(ArchCafProgress, Login);
+                                _uow.GetGenericRepository<TRA_CAF_PROGRESS>().Delete(itemCafProgress.TRA_CAF_PROGRESS_ID);
+                            }
+                            _archTraCafService.Save(ArchCaf, Login);
+                            _uow.GetGenericRepository<ARCH_TRA_CAF>().Delete(itemCaf.TRA_CAF_ID);
+                        }
+                        _uow.SaveChanges();
+                        TableList.Add("Transaction CAF");
+                    }
+                    #endregion
+                    #region --- Tra Temporary ---
+                    else if (tableId == 19)
+                    {
+                        var TraTemporaryList = new List<TRA_TEMPORARY>();
+                        if (input.ModifiedDate.HasValue && input.CreatedDate.HasValue)
+                        {
+                            if (input.Operator == "OR")
+                                TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate || x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                            else if (input.Operator == "AND")
+                                TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate && x.MODIFIED_DATE <= input.ModifiedDate).ToList();
+                        }
+                        else
+                        {
+                            TraTemporaryList = _temporaryService.GetAllTemp().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
+                        }
+                        if (!string.IsNullOrEmpty(input.VehicleType))
+                        {
+                            var VehType = GetSetting.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SETTING_NAME.ToUpper() == (input.VehicleType == null ? "" : input.VehicleType.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
+                            TraTemporaryList = TraTemporaryList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MST_SETTING_ID.ToString())).ToList();
+                        }
+                        foreach (var itemTemporary in TraTemporaryList)
+                        {
+                            var ArchTemporary = Mapper.Map<ARCH_TRA_TEMPORARY>(itemTemporary);
+                            ArchTemporary.ARCHIVED_BY = Login.USER_ID;
+                            ArchTemporary.ARCHIVED_DATE = DateTime.Now;
+                            _archTraTemporaryService.Save(ArchTemporary, Login);
+                            _uow.GetGenericRepository<ARCH_TRA_TEMPORARY>().Delete(itemTemporary.TRA_TEMPORARY_ID);
+                        }
+                        _uow.SaveChanges();
+                        TableList.Add("Transaction Temporary");
+                    }
+                    #endregion
+
                 }
                 input.EndDate= DateTime.Now;
                 var mailProcess = ProsesMailNotificationBody(TableList, input, Login);
@@ -482,10 +735,11 @@ namespace FMS.BLL.Archive
                 List<string> ListTo = mailProcess.To.Distinct().ToList();
                 _messageService.SendEmailToList(ListTo, mailProcess.Subject, mailProcess.Body, true);
 
+
             }
             catch (Exception exp)
             {
-
+                var msg = exp.Message;
                 throw;
             }
             return result;
