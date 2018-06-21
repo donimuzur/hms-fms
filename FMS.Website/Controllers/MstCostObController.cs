@@ -306,11 +306,12 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Details ----------
-        public ActionResult Detail(int MstCostObid)
+        public ActionResult Detail(int MstCostObid, bool? ArchiveData = null )
         {
-            var data = _costObBLL.GetByID(MstCostObid);
             var model = new CostObItem();
+            var data = _costObBLL.GetByID(MstCostObid,ArchiveData);
             model = Mapper.Map<CostObItem>(data);
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
@@ -734,7 +735,7 @@ namespace FMS.Website.Controllers
         public JsonResult SearchObAjax(DTParameters<CostObModel> param)
         {
             var model = param;
-
+            
             var data = model != null ? SearchDataOb(model) : SearchDataOb();
             DTResult<CostObItem> result = new DTResult<CostObItem>();
             result.draw = param.Draw;

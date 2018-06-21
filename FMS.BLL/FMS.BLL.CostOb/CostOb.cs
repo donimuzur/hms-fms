@@ -58,10 +58,19 @@ namespace FMS.BLL.CostOb
         {
             _uow.SaveChanges();
         }
-        public CostObDto GetByID(int Id)
+        public CostObDto GetByID(int Id, bool? Archived = null)
         {
-            var data = _CostObService.GetCostObById(Id);
-            var retData = Mapper.Map<CostObDto>(data);
+            var retData = new CostObDto();
+            if (Archived.HasValue)
+            {
+                var data = _uow.GetGenericRepository<ARCH_MST_COST_OB>().GetByID(Id);
+                retData = Mapper.Map<CostObDto>(data);
+            }
+            else
+            {
+                var data = _CostObService.GetCostObById(Id);
+                retData = Mapper.Map<CostObDto>(data);
+            }
 
             return retData;
         }

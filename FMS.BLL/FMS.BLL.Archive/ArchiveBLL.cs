@@ -689,7 +689,7 @@ namespace FMS.BLL.Archive
                                 _uow.GetGenericRepository<TRA_CAF_PROGRESS>().Delete(itemCafProgress.TRA_CAF_PROGRESS_ID);
                             }
                             _archTraCafService.Save(ArchCaf, Login);
-                            _uow.GetGenericRepository<ARCH_TRA_CAF>().Delete(itemCaf.TRA_CAF_ID);
+                            _uow.GetGenericRepository<TRA_CAF>().Delete(itemCaf.TRA_CAF_ID);
                         }
                         _uow.SaveChanges();
                         TableList.Add("Transaction CAF");
@@ -721,7 +721,7 @@ namespace FMS.BLL.Archive
                             ArchTemporary.ARCHIVED_BY = Login.USER_ID;
                             ArchTemporary.ARCHIVED_DATE = DateTime.Now;
                             _archTraTemporaryService.Save(ArchTemporary, Login);
-                            _uow.GetGenericRepository<ARCH_TRA_TEMPORARY>().Delete(itemTemporary.TRA_TEMPORARY_ID);
+                            _uow.GetGenericRepository<TRA_TEMPORARY>().Delete(itemTemporary.TRA_TEMPORARY_ID);
                         }
                         _uow.SaveChanges();
                         TableList.Add("Transaction Temporary");
