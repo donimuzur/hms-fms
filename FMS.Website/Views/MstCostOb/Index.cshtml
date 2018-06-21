@@ -16,36 +16,46 @@
 <section class="content">
     <div class="wpanel">
         <div class="row col-md-12">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Year</label>
-                        @Html.TextBoxFor(model => model.SearchView.Year, new { @class = "form-control"})
-                    </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Year</label>
+                    @Html.TextBoxFor(model => model.SearchView.Year, new { @class = "form-control" })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Vehicle Type</label>
-                        @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList,"ALL",new { @class = "form-control" })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Vehicle Type</label>
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "ALL", new { @class = "form-control" })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Function</label>
-                        @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "ALL", new { @class = "form-control" })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Function</label>
+                    @Html.DropDownListFor(model => model.SearchView.Function, Model.SearchView.FunctionList, "ALL", new { @class = "form-control" })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Regional</label>
-                        @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control" })
-                    </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Regional</label>
+                    @Html.DropDownListFor(model => model.SearchView.Regional, Model.SearchView.RegionalList, "ALL", new { @class = "form-control" })
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">Status</label>
-                        @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "ALL", new { @class = "form-control" })
-                    </div>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    @Html.DropDownListFor(model => model.SearchView.Status, Model.SearchView.StatusList, "ALL", new { @class = "form-control" })
                 </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Show Data</label>
+                    @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12">
             <div class="clearfix"></div>
             <div class="col-md-12">
                 <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
@@ -84,6 +94,7 @@
 			        Function: $('#SearchView_Function').val(),
 			        VehicleType: $('#SearchView_VehicleType').val(),
 			        Status: $('#SearchView_Status').val(),
+			        Table: $('#SearchView_Table').val()
 			    }
 			};
         $.ajax({
@@ -133,6 +144,7 @@
             $("#SearchView_Function").val('');
             $("#SearchView_VehicleType").val('');
             $("#SearchView_Status").val('');
+            $("#SearchView_Table").val('1');
             setupDataTables();
         });
     });
@@ -223,6 +235,7 @@
                         "Function": $('#SearchView_Function').val(),
                         "VehicleType": $('#SearchView_VehicleType').val(),
                         "Status": $('#SearchView_Status').val(),
+                        "Table": $('#SearchView_Table').val()
                     });
                 }
             }

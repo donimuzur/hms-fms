@@ -23,6 +23,7 @@ namespace FMS.BusinessObject.Inputs
         public string Function { get; set; }
         public string Regional { get; set; }
         public int? Year { get; set; }
+        public string Table { get; set; }
     }
     public class EpafParamInput
     {

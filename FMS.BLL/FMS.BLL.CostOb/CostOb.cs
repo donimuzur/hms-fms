@@ -20,11 +20,13 @@ namespace FMS.BLL.CostOb
     {
         //private ILogger _logger;
         private ICostObService _CostObService;
+        private IArchCostObService _ArchCostObService;
         private IUnitOfWork _uow;
         public CostObBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _CostObService = new CostObService(uow);
+            _ArchCostObService = new ArchCostObService(uow);
         }
 
         public List<CostObDto> GetCostOb()
@@ -66,8 +68,17 @@ namespace FMS.BLL.CostOb
 
         public List<CostObDto> GetByFilter(CostObParamInput filter)
         {
-            var data = _CostObService.GetCostObByFilter(filter);
-            var redata = Mapper.Map<List<CostObDto>>(data);
+            var redata = new List<CostObDto>();
+            if (filter.Table == "2")
+            {
+                var data = _ArchCostObService.GetCostObByFilter(filter);
+                redata = Mapper.Map<List<CostObDto>>(data);
+            }
+            else
+            {
+                var data = _CostObService.GetCostObByFilter(filter);
+                redata = Mapper.Map<List<CostObDto>>(data);
+            }
             return redata;
         }
     }
