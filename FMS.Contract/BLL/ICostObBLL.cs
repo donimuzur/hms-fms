@@ -14,7 +14,7 @@ namespace FMS.Contract.BLL
     {
         List<CostObDto> GetCostOb();
         CostObDto GetExist(string Model);
-        CostObDto GetByID(int Id);
+        CostObDto GetByID(int Id, bool? Archived = null);
         void Save(CostObDto CostObDto);
         void Save(CostObDto CostObDto, Login userLogin);
         void SaveChanges();

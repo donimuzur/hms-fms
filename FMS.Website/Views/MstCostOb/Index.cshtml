@@ -196,7 +196,6 @@
         var WriteAccess = @Model.WriteAccess;
         var ReadAccess = @Model.ReadAccess;
 
-
         table = $('#tbCostOb').DataTable({
             "sDom": 'lf<"table-overflow"t>pi',
             "sPaginationType": "full_numbers",
@@ -206,14 +205,19 @@
             },
             "rowCallback": function(row, data, index) {
                 actionHtml = '';
+                var RealData = $('#SearchView_Table').val();
 
-                if (WriteAccess == true) {
+                if (WriteAccess == true && RealData =="1") {
                     actionHtml = "<a href='MstCostOb/Edit?MstCostObId="+data.MstCostObId+"' data-toggle='tooltip' data-placement='top' title='Edit' class='action' ><img src='Content/images/pin.png' alt='' /></a>";
                 }
-                if (ReadAccess == true) {
+                if (ReadAccess == true && RealData == "2") {
+                    actionHtml = actionHtml + "<a href='MstCostOb/Detail?MstCostObId="+data.MstCostObId +"&ArchiveData=true' data-toggle='tooltip' data-placement='top' title='Detail' class='action' ><img src='Content/images/search.png' alt='' /></a>";
+                    console.log(ReadAccess+"|"+RealData);
+                }
+                else{
+                    console.log(ReadAccess+"|"+RealData);
                     actionHtml = actionHtml + "<a href='MstCostOb/Detail?MstCostObId="+data.MstCostObId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action' ><img src='Content/images/search.png' alt='' /></a>";
                 }
-
                 var actionRow = $(row).find("td")[0];
 
                 $(actionRow).addClass('action');
