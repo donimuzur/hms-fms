@@ -167,6 +167,7 @@ namespace FMS.Website.Models
         public DateTime? PeriodStart { get; set; }
         public string PONumber { get; set; }
         public int? POLine { get; set; }
+        public string Table { get; set; }
     }
 
     /// <summary>

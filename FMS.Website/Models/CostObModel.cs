@@ -68,6 +68,7 @@ namespace FMS.Website.Models
         public string Function { get; set; }
         public string Regional { get; set; }
         public int? Year { get; set; }
+        public string Table { get; set; }
 
         public SelectList VehicleTypeList { get;set;}
         public SelectList FunctionList { get; set; }
@@ -80,6 +81,7 @@ namespace FMS.Website.Models
                 return new SelectList(listStatus, "Key", "Value");
             }
         }
+        public SelectList TableList { get; set; }
     }
     public class CostOBUpload
     {
