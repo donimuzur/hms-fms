@@ -12,8 +12,8 @@ namespace FMS.Contract.BLL
     public interface ISalesVolumeBLL
     {
         List<SalesVolumeDto> GetSalesVolume(SalesVolumeParamInput inputs);
-        List<SalesVolumeDto> GetAllSalesVolume();
-        SalesVolumeDto GetSalesVolumeById(int MstSalesVolumeId);
+        List<SalesVolumeDto> GetAllSalesVolume(SalesVolumeParamInput input = null);
+        SalesVolumeDto GetSalesVolumeById(int MstSalesVolumeId, bool? Archive = null);
         void Save(SalesVolumeDto SalesVolumeDto);
         void CheckSalesVolume(String Type, String Region, int Month, int Year, String User);
     }
