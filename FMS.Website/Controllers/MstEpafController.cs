@@ -33,10 +33,15 @@ namespace FMS.Website.Controllers
         //
         public EpafSearchView InitialFilter(EpafModel model)
         {
+            var GetEpaf = _epafBLL.GetEpaf();
+            var GetArchEpaf = _epafBLL.GetEpaf(true);
+            GetEpaf.AddRange(GetArchEpaf);
+            GetEpaf.Distinct();
+
             var DocumentTypeList = _documentTypeBLL.GetDocumentType().Where(x => (x.DocumentType == null ? "" : x.DocumentType.ToUpper()) == "CTF" || (x.DocumentType == null ? "" : x.DocumentType.ToUpper()) == "CRF" || (x.DocumentType == null ? "" : x.DocumentType.ToUpper()) == "CSF").Select(x => new {x.DocumentType,x.MstDocumentTypeId }).Distinct().ToList();
-            var EpafActionList = _epafBLL.GetEpaf().Select(x =>new { x.EpafAction }).Distinct().OrderBy(x=>x.EpafAction).ToList();
-            var EmployeeIdList = _epafBLL.GetEpaf().Select(x =>new { x.EmployeeId }).Distinct().OrderBy(x=>x.EmployeeId).ToList();
-            var EmployeeNameList = _epafBLL.GetEpaf().Select(x => new { x.EmployeeName }).Distinct().OrderBy(x=>x.EmployeeName).ToList();
+            var EpafActionList = GetEpaf.Select(x =>new { x.EpafAction }).Distinct().OrderBy(x=>x.EpafAction).ToList();
+            var EmployeeIdList = GetEpaf.Select(x =>new { x.EmployeeId }).Distinct().OrderBy(x=>x.EmployeeId).ToList();
+            var EmployeeNameList = GetEpaf.Select(x => new { x.EmployeeName }).Distinct().OrderBy(x=>x.EmployeeName).ToList();
 
             model.SearchView.DocumentTypeList = new SelectList(DocumentTypeList, "MstDocumentTypeId", "DocumentType");
             model.SearchView.EmployeeIdList = new SelectList(EmployeeIdList, "EmployeeId", "EmployeeId");
@@ -91,9 +96,9 @@ namespace FMS.Website.Controllers
             return Mapper.Map<List<EpafItem>>(dbData);
         }
 
-        public ActionResult Detail(int MstEpafId)
+        public ActionResult Detail(int MstEpafId,bool? ArchiveData =null)
         {
-            var data = _epafBLL.GetEpafById(MstEpafId);
+            var data = _epafBLL.GetEpafById(MstEpafId,ArchiveData);
             var model = new EpafItem();
             model = Mapper.Map<EpafItem>(data);
             model.MainMenu = _mainMenu;

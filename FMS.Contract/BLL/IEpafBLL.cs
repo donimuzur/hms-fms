@@ -12,11 +12,11 @@ namespace FMS.Contract.BLL
 {
     public interface IEpafBLL
     {
-        List<EpafDto> GetEpaf();
+        List<EpafDto> GetEpaf(bool? Archived = null);
         List<EpafDto> GetEpaf(EpafParamInput filter);
         List<EpafDto> GetEpafByDocType(Enums.DocumentType docType);
         void DeactivateEpaf(long epafId, int Remark, string user);
 
-        EpafDto GetEpafById(long? epafId);
+        EpafDto GetEpafById(long? epafId, bool? ArchiveData = null);
     }
 }

@@ -47,10 +47,22 @@ namespace FMS.Website.Models
         public string EmployeeName { get; set; }
         public string EpafAction { get; set; }
         public string DocumentType { get; set; }
-
+        public string Table { get; set; }
         public SelectList EmployeeIdList { get; set; }
         public SelectList EmployeeNameList { get; set; }
         public SelectList EpafActionList { get;set;}
         public SelectList DocumentTypeList { get; set; }
+        public SelectList TableList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Real Data", Value = "1" },
+                    new SelectListItem() {Text = "Archive Data", Value = "2" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
     }
 }
