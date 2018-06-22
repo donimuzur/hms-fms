@@ -15,7 +15,7 @@ namespace FMS.Contract.BLL
         List<PriceListDto> GetPriceList();
         List<PriceListDto> GetPriceList(PricelistParamInput filter);
         PriceListDto GetExist(string Model);
-        PriceListDto GetByID(int Id);
+        PriceListDto GetByID(int Id, bool? Archive = null);
         void Save(PriceListDto PriceListDto);
         void Save(PriceListDto data, Login currentUser);
         void SaveChanges();

@@ -75,5 +75,9 @@ namespace FMS.DAL.Services
 
             return _archPenaltyRepository.Get(queryFilter, null, "").ToList();
         }
+        public ARCH_MST_PENALTY GetPenaltyById(int id)
+        {
+            return _archPenaltyRepository.GetByID(id);
+        }
     }
 }

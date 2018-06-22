@@ -65,11 +65,13 @@ namespace FMS.Website.Models
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
         public string ZonePricelist { get; set; }
+        public string Table { get; set; }
 
 
         public SelectList VendorList { get; set; }
         public SelectList VehicleTypeList { get; set; }
         public SelectList VehicleUsageList { get; set; }
         public SelectList ZonePricelistList { get; set; }
+        public SelectList TableList { get; set; }
     }
 }
