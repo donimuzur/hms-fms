@@ -93,6 +93,13 @@
                             @Html.HiddenFor(model => model.SearchView.VehicleType)
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="SearchView_Table">Show Data</label>
+                            @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control chosen", @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Table)
+                        </div>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
@@ -128,7 +135,8 @@
 			        Model: getFunctionStr($('#Search_Model').val()),
 			        Series: getFunctionStr($('#Search_Series').val()),
 			        BodyType: getFunctionStr($('#Search_BodyType').val()),
-			        VehicleType: getFunctionStr($('#Search_VehicleType').val())
+			        VehicleType: getFunctionStr($('#Search_VehicleType').val()),
+			        Table: getFunctionStr($('#Search_Table').val())
 			    }
 			};
         $.ajax({
@@ -210,6 +218,7 @@
             $("#SearchView_Series").val(getFunctionStr($('#Search_Series').val()));
             $("#SearchView_VehicleType").val(getFunctionStr($('#Search_VehicleType').val()));
             $("#SearchView_Vendor").val(getFunctionStr($('#Search_Vendor').val()));
+            $("#SearchView_Table").val(getFunctionStr($('#Search_Table').val()));
         });
 
         $(document).on('click', '#btn-reset', function () {
