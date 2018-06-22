@@ -46,11 +46,15 @@
             {
             <tr>
                 <td style="text-align: center;">
-                    @if (Model.CurrentPageAccess.WriteAccess == true)
+                    @if (Model.CurrentPageAccess.WriteAccess == true && (Model.SearchView.Table == null || Model.SearchView.Table != "2"))
                     {
                         <a href="@Url.Action("Edit", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
-                    @if (Model.CurrentPageAccess.ReadAccess == true)
+                    @if (Model.CurrentPageAccess.ReadAccess == true && Model.SearchView.Table == "2")
+                    {
+                        <a href="@Url.Action("Detail", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId, Archive = true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                    }
+                    else if (Model.CurrentPageAccess.ReadAccess == true && (Model.SearchView.Table == null || Model.SearchView.Table != "2"))
                     {
                         <a href="@Url.Action("Detail", "MstLocationMapping", new { @MstLocationMappingId = data.MstLocationMappingId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }

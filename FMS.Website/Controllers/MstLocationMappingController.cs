@@ -50,6 +50,11 @@ namespace FMS.Website.Controllers
             var BasetownList = GetLocationMapping.Select(x => new { x.Basetown }).Distinct().OrderBy(x => x.Basetown).ToList();
             var ZonePriceListList = GetLocationMapping.Select(x => new { x.ZonePriceList }).Distinct().OrderBy(x => x.ZonePriceList).ToList();
             var ZoneSalesList = GetLocationMapping.Select(x => new { x.ZoneSales }).Distinct().OrderBy(x => x.ZoneSales).ToList();
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
 
             model.SearchView.LocationList = new SelectList(LocationList, "Location", "Location");
             model.SearchView.RegionList= new SelectList(RegionList, "Region", "Region");
@@ -58,6 +63,7 @@ namespace FMS.Website.Controllers
             model.SearchView.ZoneSalesList = new SelectList(ZoneSalesList, "ZoneSales", "ZoneSales");
             model.SearchView.DateFrom = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             model.SearchView.DateTo = DateTime.Today;
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
 
             return model.SearchView;
         }
@@ -250,9 +256,9 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstLocationMapping");
         }
 
-        public ActionResult Detail(int MstLocationMappingId)
+        public ActionResult Detail(int MstLocationMappingId, bool? ArchiveData = null)
         {
-            var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId);
+            var data = _locationMappingBLL.GetLocationMappingById(MstLocationMappingId, ArchiveData);
             var model = Mapper.Map<LocationMappingItem>(data);
             var list = _employeeBLL.GetEmployee().Select(x => new { x.CITY }).ToList().Distinct().OrderBy(x => x.CITY);
             model.LocationList = new SelectList(list, "City", "City");

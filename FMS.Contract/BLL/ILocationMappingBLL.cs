@@ -11,7 +11,7 @@ namespace FMS.Contract.BLL
 {
     public interface ILocationMappingBLL
     {
-        LocationMappingDto GetLocationMappingById(int MstLocationMappingId);
+        LocationMappingDto GetLocationMappingById(int MstLocationMappingId, bool? Archive = null);
         List<LocationMappingDto> GetLocationMapping(LocationMappingParamInput filter);
         List<LocationMappingDto> GetLocationMapping();
         void Save(LocationMappingDto Dto);
