@@ -106,6 +106,12 @@
                     @Html.TextBoxFor(model => model.SearchView.DateOfCost, new { @class = "form-control date-end" })
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="SearchView_Table">Show Data</label>
+                    @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+                </div>
+            </div>
             <div class="clearfix"></div>
             <div class="col-md-12">
                 <button id="btn-filter" type="button" class="btn btn-primary">Filter</button>
@@ -231,7 +237,8 @@
 					LastKM: $("#SearchView_LastKM").val(),
 					ClaimComment: $("#SearchView_ClaimComment").val(),
 					PostedTime: $("#SearchView_PostedTime").val(),
-					Status: $("#SearchView_Status").val()
+					Status: $("#SearchView_Status").val(),
+					Table: $("#SearchView_Table").val()
 				}				
 			};
     	$.ajax({
@@ -356,9 +363,14 @@
             },
             "rowCallback": function(row, data, index) {
                 actionHtml = '';
+                var RealData = $('#SearchView_Table').val();
 
-                if (ReadAccess == true) {
-                    actionHtml = actionHtml + "<a href='MstFuelOdometer/Detail?MstFuelOdometerId="+data.MstFuelOdometerId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='Content/images/search.png' alt='' /></a>";
+                if (ReadAccess == 1 && RealData =="2") {
+                    actionHtml = actionHtml + "<a href='MstFuelOdometer/Detail?MstFuelOdometerId="+data.MstFuelOdometerId +"&ArchiveData=true' data-toggle='tooltip' data-placement='top' title='Detail' class='action'><img src='Content/images/search.png' alt='' /></a>";
+                }
+                else if(ReadAccess == 1 && RealData =="1"){
+                    console.log(ReadAccess+"|"+RealData);
+                    actionHtml = actionHtml + "<a href='MstFuelOdometer/Detail?MstFuelOdometerId="+data.MstFuelOdometerId +"' data-toggle='tooltip' data-placement='top' title='Detail' class='action' ><img src='Content/images/search.png' alt='' /></a>";
                 }
 
                 var actionRow = $(row).find("td")[0];
@@ -388,7 +400,8 @@
                         "LastKM": $('#SearchView_LastKM').val(),
                         "SeqNumber": $('#SearchView_SeqNumber').val(),
                         "PostedTime": $('#SearchView_PostedTime').val(),
-                        "DateOfCost": $('#SearchView_DateOfCost').val()
+                        "DateOfCost": $('#SearchView_DateOfCost').val(),
+                        "Table": $('#SearchView_Table').val()
                     });
                 }
             }

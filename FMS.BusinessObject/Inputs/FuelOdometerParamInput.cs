@@ -21,5 +21,6 @@ namespace FMS.BusinessObject.Inputs
         public string ClaimComment { get; set; }
         public string PostedTime { get; set; }
         public string Status { get; set; }
+        public string Table { get; set; }
     }
 }
