@@ -20,11 +20,13 @@ namespace FMS.BLL.PriceList
     {
         //private ILogger _logger;
         private IPriceListService _PriceListService;
+        private IArchPricelistService _ArchPriceListService;
         private IUnitOfWork _uow;
         public PriceListBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _PriceListService = new PriceListService(uow);
+            _ArchPriceListService = new ArchPricelistService(uow);
         }
 
         public List<PriceListDto> GetPriceList()
@@ -35,8 +37,17 @@ namespace FMS.BLL.PriceList
         }
         public List<PriceListDto> GetPriceList(PricelistParamInput filter)
         {
-            var data = _PriceListService.GetPriceList(filter);
-            var redata = Mapper.Map<List<PriceListDto>>(data);
+            var redata = new List<PriceListDto>();
+            if (filter.Table == "2")
+            {
+                var data = _ArchPriceListService.GetPriceList(filter);
+                redata = Mapper.Map<List<PriceListDto>>(data);
+            }
+            else
+            {
+                var data = _PriceListService.GetPriceList(filter);
+                redata = Mapper.Map<List<PriceListDto>>(data);
+            }
             return redata;
         }
         public PriceListDto GetExist(string Model)
@@ -60,8 +71,13 @@ namespace FMS.BLL.PriceList
         {
             _uow.SaveChanges();
         }
-        public PriceListDto GetByID(int Id)
+        public PriceListDto GetByID(int Id, bool? Archive = null)
         {
+            if (Archive.HasValue)
+            {
+                var archData = _ArchPriceListService.GetPriceListById(Id);
+                return Mapper.Map<PriceListDto>(archData);
+            }
             var data = _PriceListService.GetPriceListById(Id);
             var retData = Mapper.Map<PriceListDto>(data);
 
