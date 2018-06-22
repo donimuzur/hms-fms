@@ -12,7 +12,7 @@ namespace FMS.Contract.BLL
     {
         List<EmployeeDto> GetEmployee();
         EmployeeDto GetExist(string FormalName);
-        EmployeeDto GetByID(string Id);
+        EmployeeDto GetByID(string Id, bool? Archived = null);
         void Save(EmployeeDto EmployeeDto);
 
         List<EmployeeLocationDto> GetCityLocation();
