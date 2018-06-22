@@ -22,5 +22,6 @@ namespace FMS.BusinessObject.Inputs
         public string GroupLevel { get; set; }
         public string EmailAddress { get; set; }
         public string FlexPoint { get; set; }
+        public string Table { get; set; }
     }
 }
