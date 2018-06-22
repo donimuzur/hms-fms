@@ -40,6 +40,11 @@ namespace FMS.BLL.Penalty
 
         public PenaltyDto GetByID(int Id, bool? Archive = null)
         {
+            if (Archive.HasValue)
+            {
+                var archdata = _archPenaltyService.GetPenaltyById(Id);
+                return Mapper.Map<PenaltyDto>(archdata);
+            }
             var data = _penaltyService.GetPenaltyById(Id);
             var retData = Mapper.Map<PenaltyDto>(data);
 
