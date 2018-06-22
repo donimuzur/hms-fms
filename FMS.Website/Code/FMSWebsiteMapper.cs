@@ -86,10 +86,7 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<FleetItem, FleetDto>().IgnoreAllNonExisting();
 
-            Mapper.CreateMap<FleetDto, FleetItem>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy))
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
-                ;
+            Mapper.CreateMap<FleetDto, FleetItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<FleetDashboardItem, FleetChangeDto>().IgnoreAllNonExisting();
 

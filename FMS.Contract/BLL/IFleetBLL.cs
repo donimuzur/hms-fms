@@ -11,8 +11,8 @@ namespace FMS.Contract.BLL
 {
     public interface IFleetBLL
     {
-        List<FleetDto> GetFleet();
-        FleetDto GetFleetById(int MstFleetId);
+        List<FleetDto> GetFleet(FleetParamInput input = null);
+        FleetDto GetFleetById(int MstFleetId, bool? Archived = null);
         void Save(FleetDto FleetDto);
         void Save(FleetDto FleetDto, Login userLogin);
         List<FleetDto> GetFleetByParam(FleetParamInput param);
