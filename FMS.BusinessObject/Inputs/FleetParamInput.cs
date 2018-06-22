@@ -34,6 +34,7 @@ namespace FMS.BusinessObject.Inputs
         public string Regional { get; set; }
         public string City { get; set; }
         public string Zone { get; set; }
+        public string Table { get; set; }
     }
 
     public class FleetChangeParamInput
