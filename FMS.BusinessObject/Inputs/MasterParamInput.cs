@@ -14,6 +14,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearTo { get; set; }
         public string Type { get; set; }
         public string Regional { get; set; }
+        public string Table { get; set; }
     }
 
     public class CostObParamInput
