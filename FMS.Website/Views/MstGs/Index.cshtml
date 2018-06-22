@@ -28,44 +28,50 @@
     <div class="wpanel">
         <div class="row col-md-12">
             @using (Ajax.BeginForm("ListGS", "MstGs",
-                new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    InsertionMode = InsertionMode.Replace,
-                    UpdateTargetId = "contenttable",
-                    OnComplete = "setupDataTables",
-                    OnBegin = "LoadingShow",
-                    OnSuccess = "LoadingHide",
-                    OnFailure = "LoadingHide",
-                }))
-            {
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_VehicleUsage">Vehicle Usage</label>
-                        @Html.DropDownList("Search_VehicleUsage", Model.SearchView.VehicleUsageList,new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.VehicleUsage)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_PoliceNumber">Police Number</label>
-                        @Html.DropDownList("Search_PoliceNumber", Model.SearchView.PoliceNumberList,new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.PoliceNumber)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_EmployeeName">Employee Name</label>
-                        @Html.DropDownList("Search_EmployeeName", Model.SearchView.EmployeeNameList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                        @Html.HiddenFor(model => model.SearchView.EmployeeName)
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-md-12">
-                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-                </div>
-            }
+        new AjaxOptions
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "contenttable",
+            OnComplete = "setupDataTables",
+            OnBegin = "LoadingShow",
+            OnSuccess = "LoadingHide",
+            OnFailure = "LoadingHide",
+        }))
+    {
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="SearchView_VehicleUsage">Vehicle Usage</label>
+                @Html.DropDownList("Search_VehicleUsage", Model.SearchView.VehicleUsageList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                @Html.HiddenFor(model => model.SearchView.VehicleUsage)
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="SearchView_PoliceNumber">Police Number</label>
+                @Html.DropDownList("Search_PoliceNumber", Model.SearchView.PoliceNumberList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                @Html.HiddenFor(model => model.SearchView.PoliceNumber)
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="SearchView_EmployeeName">Employee Name</label>
+                @Html.DropDownList("Search_EmployeeName", Model.SearchView.EmployeeNameList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                @Html.HiddenFor(model => model.SearchView.EmployeeName)
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Show Data</label>
+                @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-12">
+            <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+            <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+        </div>
+}
         </div>
     </div>
     <div id="contenttable" class="wpanel">
@@ -90,7 +96,8 @@
 			    SearchView: {
 			        VehicleUsage: getFunctionStr($('#Search_VehicleUsage').val()),
 			        EmployeeName: getFunctionStr($('#Search_EmployeeName').val()),
-			        PoliceNumber: getFunctionStr($('#Search_PoliceNumber').val())
+                    PoliceNumber: getFunctionStr($('#Search_PoliceNumber').val()),
+                    Table: $('#SearchView_Table').val()
 			    }
 			};
         $.ajax({
@@ -116,6 +123,8 @@
     }
     function setupDataTables()
     {
+        var actionHtml = '';
+        var table = null;
         // DataTable
         var table = $('#tbGs').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
@@ -153,12 +162,14 @@
             $("#SearchView_VehicleUsage").val(getFunctionStr($('#Search_VehicleUsage').val()));
             $("#SearchView_PoliceNumber").val(getFunctionStr($('#Search_PoliceNumber').val()));
             $("#SearchView_EmployeeName").val(getFunctionStr($('#Search_EmployeeName').val()));
+            $('#SearchView_Table').val();
         });
 
         $(document).on('click', '#btn-reset', function () {
             $('#SearchView_VehicleUsage').val('');
             $("#SearchView_PoliceNumber").val('');
             $("#SearchView_EmployeeName").val('');
+            $("#SearchView_Table").val('1');
             $("#Search_EmployeeName").val('').trigger('chosen:updated');
             $("#Search_PoliceNumber").val('').trigger('chosen:updated');
             $("#Search_VehicleUsage").val('').trigger('chosen:updated');
