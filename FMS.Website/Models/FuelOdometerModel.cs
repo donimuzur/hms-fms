@@ -39,6 +39,7 @@ namespace FMS.Website.Models
         public string ClaimComment { get; set; }
         public string PostedTime { get; set; }
         public string Status { get; set; }
+        public string Table { get; set; }
 
 
         public SelectList PoliceNumberList { get; set; }
@@ -54,6 +55,8 @@ namespace FMS.Website.Models
         public SelectList ClaimTypeList { get; set; }
 
         public SelectList EcsRmbTransIdList { get; set; }
+
+        public SelectList TableList { get; set; }
 
         public SelectList StatusList
         {
