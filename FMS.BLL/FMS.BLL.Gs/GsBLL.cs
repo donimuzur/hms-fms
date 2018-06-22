@@ -18,11 +18,13 @@ namespace FMS.BLL.Gs
     public class GsBLL : IGsBLL
     {
         private IGsService _gsService;
+        private IArchGsService _ArchGsService;
         private IUnitOfWork _uow;
         public GsBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _gsService = new GsService(uow);
+            _ArchGsService = new ArchGsService(uow);
         }
         public List<GsDto> GetGs()
         {
@@ -57,8 +59,18 @@ namespace FMS.BLL.Gs
         }
         public List<GsDto> GetGs(GSParamInput filter)
         {
-            var data = _gsService.GetGsByParam(filter);
-            var redata = Mapper.Map<List<GsDto>>(data);
+            var redata = new List<GsDto>();
+            if (filter.Table == "2")
+            {
+                var data = _ArchGsService.GetGsByParam(filter);
+                redata = Mapper.Map<List<GsDto>>(data);
+            }
+            else
+            {
+                var data = _gsService.GetGsByParam(filter);
+                redata = Mapper.Map<List<GsDto>>(data);
+            }
+           
             return redata;
         }
         public void SaveChanges()

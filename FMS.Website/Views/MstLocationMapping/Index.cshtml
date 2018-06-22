@@ -106,6 +106,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="SearchView_Table">Show Data</label>
+                            @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control chosen", @multiple = "multiple" })
+                            @Html.HiddenFor(model => model.SearchView.Table)
+                        </div>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="row">
@@ -144,7 +151,8 @@
 			        Basetown: getFunctionStr($('#Search_Basetown').val()),
 			        Region: getFunctionStr($('#Search_Region').val()),
 			        ZonePriceList: getFunctionStr($('#Search_ZonePriceList').val()),
-			        ZoneSales: getFunctionStr($('#Search_ZoneSales').val())
+			        ZoneSales: getFunctionStr($('#Search_ZoneSales').val()),
+			        Table: getFunctionStr($('#Search_Table').val())
 			    }
 			};
         $.ajax({
@@ -211,6 +219,7 @@
             $("#SearchView_Region").val(getFunctionStr($('#Search_Region').val()));
             $("#SearchView_ZonePriceList").val(getFunctionStr($('#Search_ZonePriceList').val()));
             $("#SearchView_ZoneSales").val(getFunctionStr($('#Search_ZoneSales').val()));
+            $("#SearchView_Table").val(getFunctionStr($('#Search_Table').val()));
         });
 
         $(document).on('click', '#btn-reset', function () {
@@ -241,6 +250,7 @@
             $("#Search_Region").val('').trigger('chosen:updated');
             $("#Search_ZonePriceList").val('').trigger('chosen:updated');
             $("#Search_ZoneSales").val('').trigger('chosen:updated');
+            $("#Search_Table").val('').trigger('chosen:updated');
             $("#btn-filter").trigger('click');
         });
     });

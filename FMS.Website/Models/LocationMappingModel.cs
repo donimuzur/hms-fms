@@ -49,6 +49,7 @@ namespace FMS.Website.Models
         public string ZonePriceList { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
+        public string Table { get; set; }
 
 
         public SelectList LocationList { get; set; }
@@ -56,5 +57,6 @@ namespace FMS.Website.Models
         public SelectList RegionList { get; set; }
         public SelectList ZoneSalesList { get; set; }
         public SelectList ZonePriceListList { get; set; }
+        public SelectList TableList { get; set; }
     }
 }

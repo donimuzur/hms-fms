@@ -47,5 +47,6 @@ namespace FMS.BusinessObject.Inputs
         public string ZonePriceList { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
+        public string Table { get; set; }
     }
 }
