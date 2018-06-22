@@ -14,7 +14,7 @@ namespace FMS.Contract.BLL
     {
         List<FuelOdometerDto> GetFuelOdometer();
         List<FuelOdometerDto> GetFuelOdometerByParam(FuelOdometerParamInput param);
-        FuelOdometerDto GetByID(long mstFuelOdometerId);
+        FuelOdometerDto GetByID(long mstFuelOdometerId, bool? Archived);
         void Save(FuelOdometerDto SettingDto, Login userLogin);
         void SaveChanges();
     }
