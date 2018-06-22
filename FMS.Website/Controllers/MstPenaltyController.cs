@@ -85,6 +85,11 @@ namespace FMS.Website.Controllers
 
         public PenaltySearchView Initial(PenaltyModel model)
         {
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
             model.SearchView.BodyTypeList = new SelectList(model.Details.Select(x => new { x.BodyType }).Distinct().ToList(), "BodyType", "BodyType");
             model.SearchView.ManufacturerList = new SelectList(model.Details.Select(x => new { x.Manufacturer }).Distinct().ToList(), "Manufacturer", "Manufacturer");
             model.SearchView.ModelList = new SelectList(model.Details.Select(x => new { x.Models }).Distinct().ToList(), "Models", "Models");
@@ -92,6 +97,7 @@ namespace FMS.Website.Controllers
             model.SearchView.SeriesList = new SelectList(model.Details.Select(x => new { x.Series }).Distinct().ToList(), "Series", "Series");
             model.SearchView.VehicleTypeList = new SelectList(model.Details.Select(x => new { x.VehicleType }).Distinct().ToList(), "VehicleType", "VehicleType");
             model.SearchView.VendorList = new SelectList(model.Details.Select(x => new { x.Vendor, x.VendorName }).Distinct().ToList(), "Vendor", "VendorName");
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
             return model.SearchView;
         }
 
@@ -106,8 +112,9 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             var input = Mapper.Map<PenaltyParamInput>(filter);
-
+            
             var dbData = _penaltyBLL.GetPenalty(input);
+
             return Mapper.Map<List<PenaltyItem>>(dbData);
         }
 
@@ -191,9 +198,9 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstPenalty");
         }
 
-        public ActionResult View(int MstPenaltyId)
+        public ActionResult View(int MstPenaltyId, bool? ArchiveData = null)
         {
-            var data = _penaltyBLL.GetByID(MstPenaltyId);
+            var data = _penaltyBLL.GetByID(MstPenaltyId, ArchiveData);
             var model = new PenaltyItem();
             model = Mapper.Map<PenaltyItem>(data);
             model.VendorName = _vendorBLL.GetByID(model.Vendor) == null ? "" : _vendorBLL.GetByID(model.Vendor).VendorName;

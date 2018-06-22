@@ -20,6 +20,7 @@ namespace FMS.BLL.Penalty
     {
         //private ILogger _logger;
         private IPenaltyService _penaltyService;
+        private IArchPenaltyService _archPenaltyService;
         //private IRoleService _roleService;
         private IUnitOfWork _uow;
 
@@ -27,6 +28,7 @@ namespace FMS.BLL.Penalty
         {
             _uow = uow;
             _penaltyService = new PenaltyService(uow);
+            _archPenaltyService = new ArchPenaltyService(uow);
         }
 
         public List<PenaltyDto> GetPenalty()
@@ -36,7 +38,7 @@ namespace FMS.BLL.Penalty
             return retData;
         }
 
-        public PenaltyDto GetByID(int Id)
+        public PenaltyDto GetByID(int Id, bool? Archive = null)
         {
             var data = _penaltyService.GetPenaltyById(Id);
             var retData = Mapper.Map<PenaltyDto>(data);
@@ -62,8 +64,17 @@ namespace FMS.BLL.Penalty
 
         public List<PenaltyDto> GetPenalty(PenaltyParamInput filter)
         {
-            var data = _penaltyService.GetPenalty(filter);
-            var retData = Mapper.Map<List<PenaltyDto>>(data);
+            var retData = new List<PenaltyDto>();
+            if (filter.Table == "2")
+            {
+                var data = _archPenaltyService.GetPenalty(filter);
+                retData = Mapper.Map<List<PenaltyDto>>(data);
+            }
+            else
+            {
+                var data = _penaltyService.GetPenalty(filter);
+                retData = Mapper.Map<List<PenaltyDto>>(data);
+            }
             return retData;
         }
     }
