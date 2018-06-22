@@ -93,7 +93,7 @@ namespace FMS.Website.Controllers
             param.GroupLevel = searchView.GroupLevel;
             param.EmailAddress = searchView.EmailAddress;
             param.FlexPoint = searchView.FlexPoint;
-
+            param.Table = searchView.Table;
             var data = _employeeBLL.GetEmployeeByParam(param);
             return Mapper.Map<List<EmployeeItem>>(data);
         }
@@ -354,7 +354,7 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstEmployee");
         }
 
-        public ActionResult Detail(string EmployeeId)
+        public ActionResult Detail(string EmployeeId, bool? ArchiveData = null)
         {
             var data = _employeeBLL.GetByID(EmployeeId);
             var model = new EmployeeItem();
@@ -498,6 +498,7 @@ namespace FMS.Website.Controllers
             param.GroupLevel = searchView.GroupLevel;
             param.PositionTitle = searchView.PositionTitle;
             param.Status = searchView.Status;
+            param.Table = searchView.Table;
             var data = _employeeBLL.GetEmployeeByParam(param);
             return Mapper.Map<List<EmployeeItem>>(data);
         }
