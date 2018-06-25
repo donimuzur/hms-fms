@@ -19,25 +19,45 @@ namespace FMS.BLL.GroupCostCenter
     public class GroupCostCenterBLL : IGroupCostCenterBLL
     {
         public IGroupCostCenterService _GroupCostCenterService;
+        public IArchFunctionGroupService _archGroupCostCenterService;
         public IUnitOfWork _uow;
 
         public GroupCostCenterBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _GroupCostCenterService = new GroupCostCenterService(_uow);
+            _archGroupCostCenterService = new ArchFunctionGroupService(_uow);
         }
         
-        public List<GroupCostCenterDto> GetGroupCenter()
+        public List<GroupCostCenterDto> GetGroupCenter(bool? Archived = null)
         {
-            var data = _GroupCostCenterService.GetGroupCostCenter();
-            var redata = Mapper.Map<List<GroupCostCenterDto>>(data);
-            return redata;
+            var retData = new List<GroupCostCenterDto>();
+            if(Archived.HasValue)
+            {
+                var data = _archGroupCostCenterService.GetGroupCostCenter();
+                retData = Mapper.Map<List<GroupCostCenterDto>>(data);
+            }
+            else
+            {
+                var data = _GroupCostCenterService.GetGroupCostCenter();
+                retData = Mapper.Map<List<GroupCostCenterDto>>(data);
+            }
+            return retData;
         }
-        public GroupCostCenterDto GetGroupCenterById(int MstGroupCostCenterId)
+        public GroupCostCenterDto GetGroupCenterById(int MstGroupCostCenterId, bool? Archived= null)
         {
-            var data = _GroupCostCenterService.GetGroupCostCenterById(MstGroupCostCenterId);
-            var redata = Mapper.Map<GroupCostCenterDto>(data);
-            return redata;
+            var retData = new GroupCostCenterDto();
+            if(Archived.HasValue)
+            {
+                var data = _archGroupCostCenterService.GetGroupCostCenterById(MstGroupCostCenterId);
+                retData = Mapper.Map<GroupCostCenterDto>(data);
+            }
+            else
+            {
+                var data = _GroupCostCenterService.GetGroupCostCenterById(MstGroupCostCenterId);
+                retData = Mapper.Map<GroupCostCenterDto>(data);
+            }
+            return retData;
         }
         public void Save(GroupCostCenterDto dto)
         {
@@ -52,9 +72,19 @@ namespace FMS.BLL.GroupCostCenter
 
         public List<GroupCostCenterDto> GetGroupCenter(GroupCostCenterParamInput filter)
         {
-            var data = _GroupCostCenterService.GetGroupCostCenter(filter);
-            var redata = Mapper.Map<List<GroupCostCenterDto>>(data);
-            return redata;
+            var retData =new List<GroupCostCenterDto>();
+            if(filter.Table == "2")
+            {
+                var data = _archGroupCostCenterService.GetGroupCostCenter(filter);
+                retData = Mapper.Map<List<GroupCostCenterDto>>(data);
+            }
+            else
+            {
+                var data = _GroupCostCenterService.GetGroupCostCenter(filter);
+                retData = Mapper.Map<List<GroupCostCenterDto>>(data);
+            }
+          
+            return retData;
         }
     }
 }

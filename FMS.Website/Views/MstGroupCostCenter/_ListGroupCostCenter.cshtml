@@ -37,13 +37,21 @@
             <tr ng-repeat="data in dataComplaint">
 
                 <td style="text-align: center;">
-                    @if (Model.CurrentPageAccess.WriteAccess == true)
+                    @if (Model.CurrentPageAccess.WriteAccess == true  && Model.SearchView.Table != "2")
                     {
                         <a href="@Url.Action("Edit", "MstGroupCostCenter", new { @MstGroupCostCenterId = data.MstFunctionGroupId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
                     }
+
                     @if (Model.CurrentPageAccess.ReadAccess == true)
                     {
-                        <a href="@Url.Action("Detail", "MstGroupCostCenter", new { @MstGroupCostCenterId = data.MstFunctionGroupId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        if (Model.SearchView.Table == "2")
+                        {
+                            <a href="@Url.Action("Detail", "MstGroupCostCenter", new { @MstGroupCostCenterId = data.MstFunctionGroupId,@ArchiveData=true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Detail", "MstGroupCostCenter", new { @MstGroupCostCenterId = data.MstFunctionGroupId })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
                     }
                 </td>
                 <td>@Html.Raw(data.FunctionName)</td>
