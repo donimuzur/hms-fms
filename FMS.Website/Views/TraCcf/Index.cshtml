@@ -19,30 +19,104 @@
 <section class="content">
     @if (Model.DocumentStatus == "Completed")
     {
-        using (Html.BeginForm("ExportCCF", "TraCcf", new { IsPersonalDashboard = Model.IsPersonalDashboard, IsCompleted = true}, FormMethod.Post, new { @id = "ExportToXls" }))
+        using (Html.BeginForm("ExportCCF", "TraCcf", new { IsPersonalDashboard = Model.IsPersonalDashboard, IsCompleted = true }, FormMethod.Post, new { @id = "ExportToXls" }))
         {
 
         }
+
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("GetCompleted", "TraCcf",
+                  new AjaxOptions
+                  {
+                      HttpMethod = "POST",
+                      InsertionMode = InsertionMode.Replace,
+                      UpdateTargetId = "contenttable",
+                      OnComplete = "setupDataTables",
+                      OnBegin = "LoadingShow",
+                      OnSuccess = "LoadingHide",
+                      OnFailure = "LoadingHide",
+                  }))
+            {
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="SearchView_Table">Show Data</label>
+                        @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control chosen", @multiple = "multiple" })
+                        @Html.HiddenFor(model => model.SearchView.Table)
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
     }
     else
     {
-        using (Html.BeginForm("ExportCCF", "TraCcf", new {IsPersonalDashboard = Model.IsPersonalDashboard, IsCompleted = false }, FormMethod.Post, new { @id = "ExportToXls" }))
+        using (Html.BeginForm("ExportCCF", "TraCcf", new { IsPersonalDashboard = Model.IsPersonalDashboard, IsCompleted = false }, FormMethod.Post, new { @id = "ExportToXls" }))
         {
 
         }
     }
-    <div class="wpanel">
+
+    <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div align="center">
+                        <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
         @Html.Partial("_DashboardCcf")
     </div>
 </section>
 
 <script src="~/Scripts/ccfscript.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     function ExportXls() {
         $('#ExportToXls').submit();
     }
 
     $(function () {
+        //// DataTable
+        //var table = $('#tbCcfDashboardUser').DataTable({
+        //    "dom": 'lf<"table-overflow"t>pi',
+        //    orderCellsTop: true
+        //});
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+        setupDataTables();
+        $(document).on('click', '#btn-filter', function () {
+            $("#SearchView_Table").val(getFunctionStr($('#Search_Table').val()));
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+
+            $("#Search_Table").val('').trigger('chosen:updated');
+            $("#btn-filter").trigger('click');
+        });
+    });
+
+    function setupDataTables() {
         // DataTable
         var table = $('#tbCcfDashboardUser').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
@@ -58,5 +132,5 @@
                     .draw();
             });
         });
-    });
+    }
 </script>
