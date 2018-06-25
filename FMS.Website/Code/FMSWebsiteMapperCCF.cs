@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FMS.AutoMapperExtensions;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
 using System;
 using System.Collections.Generic;
@@ -88,6 +89,9 @@ namespace FMS.Website.Code
             Mapper.CreateMap<CarComplaintFormItemDetil, CarComplaintFormDtoDetil>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<CarComplaintFormDtoDetil, CarComplaintFormItemDetil>().IgnoreAllNonExisting();
+
+            Mapper.CreateMap<CcfSearchView, CcfParamInput>().IgnoreAllNonExisting();
+
         }
     }
 }

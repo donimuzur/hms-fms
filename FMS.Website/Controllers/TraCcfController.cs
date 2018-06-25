@@ -103,14 +103,56 @@ namespace FMS.Website.Controllers
 
         public ActionResult Completed()
         {
-            var data = _ccfBLL.GetCcf();
+            //var data = _ccfBLL.GetCcf();
             var model = new CcfModel();
             model.MainMenu = _mainMenu;
             model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             model.DocumentStatus = "Completed";
             model.TitleForm = "CCF Completed Document";
-   
+
+            //if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            //{
+            //    model.Details = Mapper.Map<List<CcfItem>>(data.Where(
+            //        x => ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.ComplaintCategoryRole.ToUpper() == "HR") ||
+            //        ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+            //}
+            //else if (CurrentUser.UserRole == Enums.UserRole.Fleet || CurrentUser.UserRole == Enums.UserRole.FleetManager)
+            //{
+            //    model.Details = Mapper.Map<List<CcfItem>>(data.Where(
+            //        x => ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.ComplaintCategoryRole.ToUpper() == "FLEET") ||
+            //        ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+            //}
+            //else if (CurrentUser.UserRole == Enums.UserRole.Viewer)
+            //{
+            //    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) || ((x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID)).OrderBy(x => x.DocumentNumber));
+            //}
+            //else
+            //{
+            //    model.Details = Mapper.Map<List<CcfItem>>(data.Where(x => (x.DocumentStatus == Enums.DocumentStatus.Completed || x.DocumentStatus == Enums.DocumentStatus.Cancelled) && x.CreatedBy == CurrentUser.USER_ID).OrderBy(x => x.DocumentNumber));
+            //}
+            model.Details = new List<CcfItem>();
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
+            model.SearchView = new CcfSearchView();
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
+            return View("Index", model);
+        }
+
+        [HttpPost]
+        public ActionResult Completed(CcfModel model)
+        {
+            var param = Mapper.Map<CcfParamInput>(model.SearchView);
+            var data = _ccfBLL.GetCcfByParam(param);
+            model.MainMenu = _mainMenu;
+            model.CurrentPageAccess = CurrentPageAccess;
+            model.CurrentLogin = CurrentUser;
+            model.DocumentStatus = "Completed";
+            model.TitleForm = "CCF Completed Document";
+
             if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 model.Details = Mapper.Map<List<CcfItem>>(data.Where(
@@ -192,15 +234,16 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region ---------  Details --------------
-        public ActionResult DetailsCcf(int? TraCcfId, bool IsPersonalDashboard)
+        public ActionResult DetailsCcf(int? TraCcfId, bool IsPersonalDashboard, bool? ArchiveData = null)
         {
             if (!TraCcfId.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var ctfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
-            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value);
+            //var ctfData = _ccfBLL.GetCcf().Where(x => x.TraCcfId == TraCcfId.Value).FirstOrDefault();
+            var ctfData = _ccfBLL.GetCcfById(TraCcfId.Value, ArchiveData);
+            var ccfDataD1 = _ccfBLL.GetCcfD1(TraCcfId.Value, ArchiveData);
 
             if (ctfData == null)
             {
