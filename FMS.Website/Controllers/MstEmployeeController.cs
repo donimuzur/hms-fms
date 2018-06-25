@@ -308,8 +308,13 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             string LastEmployeeId = _employeeBLL.GetLastEmployeeId();
-            LastEmployeeId = LastEmployeeId.Trim('X');
-            int LastEmployeeIdInt = Convert.ToInt32(LastEmployeeId);
+            int LastEmployeeIdInt = 0;
+            if (LastEmployeeId != null && LastEmployeeId != "")
+            {
+                LastEmployeeId = LastEmployeeId.Trim('X');
+                LastEmployeeIdInt = Convert.ToInt32(LastEmployeeId);
+            }
+           
             model.EMPLOYEE_ID = (LastEmployeeIdInt + 1).ToString();
             return View(model);
         }

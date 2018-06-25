@@ -38,7 +38,7 @@ namespace FMS.DAL.Services
         }
         public List<ARCH_MST_FLEET> GetFleetByParam(FleetParamInput input)
         {
-            Expression<Func<ARCH_MST_FLEET, bool>> queryFilterFleet = null;
+            Expression<Func<ARCH_MST_FLEET, bool>> queryFilterFleet = PredicateHelper.True<ARCH_MST_FLEET>();
             queryFilterFleet = c => c.MST_FLEET_ID > 0;
             if (input != null)
             {

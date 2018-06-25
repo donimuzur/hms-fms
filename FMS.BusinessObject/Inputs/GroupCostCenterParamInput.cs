@@ -10,5 +10,6 @@ namespace FMS.BusinessObject.Inputs
     {
         public string Function { get; set; }
         public string CostCenter { get; set; }
+        public string Table { get; set; }
     }
 }
