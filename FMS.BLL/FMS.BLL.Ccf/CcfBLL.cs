@@ -43,6 +43,7 @@ namespace FMS.BLL.Ccf
         {
             _uow = uow;
             _ccfService = new CcfService(uow);
+            _archCcfService = new ArchTraCcfService(uow);
             _docNumberService = new DocumentNumberService(uow);
             _workflowService = new WorkflowHistoryService(uow);
             _settingService = new SettingService(uow);
