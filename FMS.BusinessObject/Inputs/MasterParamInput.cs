@@ -34,6 +34,7 @@ namespace FMS.BusinessObject.Inputs
         public string EmployeeName { get; set; }
         public string EpafAction { get; set; }
         public string DocumentType { get; set; }
+        public string Table { get; set; }
     }
 
     public class LocationMappingParamInput

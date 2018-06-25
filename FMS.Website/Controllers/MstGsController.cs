@@ -53,11 +53,18 @@ namespace FMS.Website.Controllers
             var model = new GsModel();
             var filter = new GSParamInput();
             var data = _gsBLL.GetGs(filter);
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
             model.Details = Mapper.Map<List<GsItem>>(data);
             model.SearchView = Initial(model);
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
+
             return View(model);
         }
 

@@ -11,5 +11,6 @@ namespace FMS.BusinessObject.Inputs
         public string EmployeeName { get; set; }
         public string VehicleUsage { get; set; }
         public string PoliceNumber { get; set; }
+        public string Table { get; set; }
     }
 }

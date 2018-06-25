@@ -139,10 +139,12 @@ namespace FMS.Website.Models
         public string VehicleUsage { get; set; }
         public string EmployeeName { get; set; }
         public string PoliceNumber { get; set; }
+        public string Table { get; set; }
 
         public SelectList VehicleUsageList { get; set; }
         public SelectList EmployeeNameList { get; set; }
         public SelectList PoliceNumberList { get; set; }
+        public SelectList TableList { get; set; }
     }
 
     public class ReportFilter

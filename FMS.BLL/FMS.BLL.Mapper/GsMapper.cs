@@ -64,6 +64,33 @@ namespace FMS.BLL.Mapper
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
+
+
+            AutoMapper.Mapper.CreateMap<ARCH_MST_GS, GsDto>().IgnoreAllNonExisting()
+               .ForMember(dest => dest.MstGsId, opt => opt.MapFrom(src => src.MST_GS_ID))
+               .ForMember(dest => dest.EmployeeName, opt => opt.MapFrom(src => src.EMPLOYEE_NAME))
+               .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
+               .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VEHICLE_USAGE))
+               .ForMember(dest => dest.PoliceNumber, opt => opt.MapFrom(src => src.POLICE_NUMBER))
+               .ForMember(dest => dest.GroupLevel, opt => opt.MapFrom(src => src.GROUP_LEVEL))
+               .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.LOCATION))
+               .ForMember(dest => dest.GsRequestDate, opt => opt.MapFrom(src => src.GS_REQUEST_DATE))
+               .ForMember(dest => dest.GsFullfillmentDate, opt => opt.MapFrom(src => src.GS_FULLFILLMENT_DATE))
+               .ForMember(dest => dest.GsUnitType, opt => opt.MapFrom(src => src.GS_UNIT_TYPE))
+               .ForMember(dest => dest.GsPoliceNumber, opt => opt.MapFrom(src => src.GS_POLICE_NUMBER))
+               .ForMember(dest => dest.GsManufacturer, opt => opt.MapFrom(src => src.GS_MANUFACTURER))
+               .ForMember(dest => dest.GsModel, opt => opt.MapFrom(src => src.GS_MODEL))
+               .ForMember(dest => dest.GsSeries, opt => opt.MapFrom(src => src.GS_SERIES))
+               .ForMember(dest => dest.GsTransmission, opt => opt.MapFrom(src => src.GS_TRANSMISSION))
+               .ForMember(dest => dest.GsUnitType, opt => opt.MapFrom(src => src.GS_UNIT_TYPE))
+               .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.START_DATE))
+               .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.END_DATE))
+               .ForMember(dest => dest.Remark, opt => opt.MapFrom(src => src.REMARK))
+               .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+               .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+               .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+               .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
+               .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
         }
     }
 }

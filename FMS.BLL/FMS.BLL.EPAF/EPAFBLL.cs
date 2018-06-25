@@ -18,25 +18,46 @@ namespace FMS.BLL.EPAF
     public class EPAFBLL : IEpafBLL
     {
         private IEpafService _epafService;
+        private IArchEpafService _archEpafService;
         private IUnitOfWork _uow;
         public EPAFBLL(IUnitOfWork uow)
         {
             _uow = uow;
-            _epafService = new EpafService(uow);
+            _epafService = new EpafService(_uow);
+            _archEpafService = new ArchEpafService(_uow);
         }
 
-        public List<EpafDto> GetEpaf()
+        public List<EpafDto> GetEpaf(bool? Archived = null)
         {
-            var data = _epafService.GetEpaf();
-            var retData = Mapper.Map<List<EpafDto>>(data);
+            var retData = new List<EpafDto>();
+            if(Archived.HasValue)
+            {
+                var data = _archEpafService.GetEpaf();
+                retData = Mapper.Map<List<EpafDto>>(data);
+            }
+            else
+            {
+                var data = _epafService.GetEpaf();
+                retData = Mapper.Map<List<EpafDto>>(data);
+            }
             return retData;
         }
 
         public List<EpafDto> GetEpaf(EpafParamInput filter)
         {
-            var data = _epafService.GetEpaf(filter);
-            var redata = Mapper.Map<List<EpafDto>>(data);
-            return redata;
+            var retData = new List<EpafDto>();
+            if(filter.Table == "2")
+            {
+                var data = _archEpafService.GetEpaf(filter);
+                retData = Mapper.Map<List<EpafDto>>(data);
+            }
+            else
+            {
+                var data = _epafService.GetEpaf(filter);
+                retData = Mapper.Map<List<EpafDto>>(data);
+            }
+            
+            return retData;
         }
         public List<EpafDto> GetEpafByDocType(Enums.DocumentType docType)
         {
@@ -50,10 +71,21 @@ namespace FMS.BLL.EPAF
         }
 
 
-        public EpafDto GetEpafById(long? epafId)
+        public EpafDto GetEpafById(long? epafId, bool? ArchiveData = null)
         {
-            var data = _epafService.GetEpafById(epafId);
-            return Mapper.Map<EpafDto>(data);
+            var retData = new EpafDto();
+            if(ArchiveData.HasValue)
+            {
+                var data = _archEpafService.GetEpafById(epafId);
+                retData = Mapper.Map<EpafDto>(data);
+            }
+            else
+            {
+                var data = _epafService.GetEpafById(epafId);
+                retData = Mapper.Map<EpafDto>(data);
+            }
+            
+            return retData;
         }
     }
 }
