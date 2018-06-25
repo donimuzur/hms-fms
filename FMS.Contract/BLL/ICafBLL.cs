@@ -1,5 +1,6 @@
 ﻿using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,10 @@ namespace FMS.Contract.BLL
     {
         void Save(TraCafDto data, Login user);
 
-        List<TraCafDto> GetCaf();
+        List<TraCafDto> GetCafWithParam();
+        List<TraCafDto> GetCafWithParam(CafParamInput Param);
 
-        TraCafDto GetById(long id);
+        TraCafDto GetById(long id, bool? Archive = null);
 
         void SaveList(List<TraCafDto> data, Login CurrentUser);
 

@@ -25,5 +25,15 @@ namespace FMS.DAL.Services
         {
             _uow.GetGenericRepository<ARCH_TRA_CAF>().InsertOrUpdate(db, userlogin, Enums.MenuList.MasterData);
         }
+
+        public List<ARCH_TRA_CAF> GetList()
+        {
+            return _archTraCafRepository.Get().ToList();
+        }
+
+        public ARCH_TRA_CAF GetCafById(long id)
+        {
+            return _archTraCafRepository.GetByID(id);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using FMS.Utils;
+using System.Web.Mvc;
 
 namespace FMS.Website.Models
 {
@@ -39,10 +40,17 @@ namespace FMS.Website.Models
         }
 
         public List<TraCafItemDetails> Details { get; set; }
+        public TraCafSearchView SearchView { get; set; }
 
         public System.Web.Mvc.SelectList RemarkList { get; set; }
 
         public bool IsPersonalDashboard { get; set; }
+    }
+
+    public class TraCafSearchView
+    {
+        public string Table { get; set; }
+        public SelectList TableList { get; set; }
     }
 
     public class TraCafItemDetails{
