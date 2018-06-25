@@ -18,4 +18,9 @@ namespace FMS.BusinessObject.Inputs
         public string DocumentNumber { get; set; }
         public bool EndRent { get; set; }
     }
+
+    public class CcfParamInput
+    {
+        public string Table { get; set; }
+    }
 }

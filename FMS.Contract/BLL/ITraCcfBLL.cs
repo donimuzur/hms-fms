@@ -12,11 +12,11 @@ namespace FMS.Contract.BLL
     public interface ITraCcfBLL
     {
         List<TraCcfDto> GetCcf();
-        List<TraCcfDto> GetCcfD1(int TraCCFId);
+        List<TraCcfDto> GetCcfD1(int TraCCFId, bool? ArchiveData = null);
         List<TraCcfDto> GetCcfDetil();
         TraCcfDto Save(TraCcfDto Dto, Login userLogin);
         void CcfWorkflow(CcfWorkflowDocumentInput param);
-        TraCcfDto GetCcfById(long id);
+        TraCcfDto GetCcfById(long id, bool? Archive = null);
         void CancelCcf(long id, int Remark, string user);
         List<TraCcfDto> GetCcfPersonal(Login userLogin);
 
@@ -24,5 +24,6 @@ namespace FMS.Contract.BLL
         string GetNumber();
         string GetCcfDetil(long traCcfId);
         void NotifEmail();
+        List<TraCcfDto> GetCcfByParam(CcfParamInput param);
     }
 }
