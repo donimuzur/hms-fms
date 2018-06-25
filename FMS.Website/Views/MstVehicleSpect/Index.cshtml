@@ -28,51 +28,57 @@
       <div class="wpanel">
           <div class="row col-md-12">
               @using (Ajax.BeginForm("ListVehicleSpect", "MstVehicleSpect",
-              new AjaxOptions
-              {
-                  HttpMethod = "POST",
-                  InsertionMode = InsertionMode.Replace,
-                  UpdateTargetId = "contenttable",
-                  OnComplete = "setupDataTables",
-                  OnBegin = "LoadingShow",
-                  OnSuccess = "LoadingHide",
-                  OnFailure = "LoadingHide",
-              }))
-              {
-                  <div class="col-md-4">
-                      <div class="form-group">
-                          <label for="SearchView_Manufacturer">Manufacturer</label>
-                          @Html.DropDownList("Search_Manufacturer", Model.SearchView.ManufacturerList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                          @Html.HiddenFor(model => model.SearchView.Manufacturer)
-                      </div>
-                  </div>
-                  <div class="col-md-4">
-                      <div class="form-group">
-                          <label for="SearchView_Model">Model</label>
-                          @Html.DropDownList("Search_Model", Model.SearchView.ModelList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                          @Html.HiddenFor(model => model.SearchView.Model)
-                      </div>
-                  </div>
-                  <div class="col-md-4">
-                      <div class="form-group">
-                          <label for="SearchView_Series">Series</label>
-                          @Html.DropDownList("Search_Series", Model.SearchView.SeriesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                          @Html.HiddenFor(model => model.SearchView.Series)
-                      </div>
-                  </div>
-                  <div class="col-md-4">
-                      <div class="form-group">
-                          <label for="SearchView_BodyType">Body Type</label>
-                          @Html.DropDownList("Search_BodyType", Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                          @Html.HiddenFor(model => model.SearchView.BodyType)
-                      </div>
-                  </div>
-                  <div class="clearfix"></div>
-                  <div class="col-md-12">
-                      <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-                      <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-                  </div>
-              }
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "contenttable",
+        OnComplete = "setupDataTables",
+        OnBegin = "LoadingShow",
+        OnSuccess = "LoadingHide",
+        OnFailure = "LoadingHide",
+    }))
+    {
+          <div class="col-md-4">
+              <div class="form-group">
+                  <label for="SearchView_Manufacturer">Manufacturer</label>
+                  @Html.DropDownList("Search_Manufacturer", Model.SearchView.ManufacturerList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                  @Html.HiddenFor(model => model.SearchView.Manufacturer)
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <label for="SearchView_Model">Model</label>
+                  @Html.DropDownList("Search_Model", Model.SearchView.ModelList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                  @Html.HiddenFor(model => model.SearchView.Model)
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <label for="SearchView_Series">Series</label>
+                  @Html.DropDownList("Search_Series", Model.SearchView.SeriesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                  @Html.HiddenFor(model => model.SearchView.Series)
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <label for="SearchView_BodyType">Body Type</label>
+                  @Html.DropDownList("Search_BodyType", Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                  @Html.HiddenFor(model => model.SearchView.BodyType)
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <label class="control-label">Show Data</label>
+                  @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="col-md-12">
+              <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+              <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+          </div>
+}
           </div>
     </div>
     <div id="contenttable" class="wpanel">
@@ -98,7 +104,8 @@
 			        Manufacturer: getFunctionStr($('#Search_Manufacturer').val()),
 			        Model: getFunctionStr($('#Search_Model').val()),
 			        Series: getFunctionStr($('#Search_Series').val()),
-			        BodyType: getFunctionStr($('#Search_BodyType').val())
+                    BodyType: getFunctionStr($('#Search_BodyType').val()),
+                    Table: $('#SearchView_Table').val()
 			    }
 			};
 		$.ajax({
@@ -176,6 +183,7 @@
             $("#SearchView_Manufacturer").val(getFunctionStr($('#Search_Manufacturer').val()));
             $("#SearchView_Model").val(getFunctionStr($('#Search_Model').val()));
             $("#SearchView_Series").val(getFunctionStr($('#Search_Series').val()));
+            $('#SearchView_Table').val();
         });
 
         $(document).on('click', '#btn-reset', function () {
@@ -183,6 +191,7 @@
             $("#SearchView_Manufacturer").val('');
             $("#SearchView_Model").val('');
             $("#SearchView_Series").val('');
+            $("#SearchView_Table").val('1');
 
             $("#Search_BodyType").val('').trigger('chosen:updated');
             $("#Search_Manufacturer").val('').trigger('chosen:updated');

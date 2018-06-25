@@ -60,7 +60,10 @@
                         <td style="text-align: center;">
                             @if (Model.CurrentPageAccess.WriteAccess == true)
                             {
+                                if (Model.SearchView.Table != "2")
+                                {
                                 <a href="@Url.Action("Edit", "MstVehicleSpect", new { MstVehicleSpectid = data.MstVehicleSpectId })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                }
                             }
                             @if (Model.CurrentPageAccess.ReadAccess == true)
                             {
