@@ -11,5 +11,6 @@ namespace FMS.Contract.Service
     public interface IArchTraCtfExtendService
     {
         void Save(ARCH_TRA_CTF_EXTEND db, Login Login);
+        ARCH_TRA_CTF_EXTEND GetCtfExtendByCtfId(long? TraCtfId);
     }
 }

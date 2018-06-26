@@ -16,7 +16,7 @@ namespace FMS.BusinessObject
     {
         public long TRA_CTF_ID { get; set; }
         public string DOCUMENT_NUMBER { get; set; }
-        public int DOCUMENT_STATUS { get; set; }
+        public FMS.Core.Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
         public Nullable<long> EPAF_ID { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }

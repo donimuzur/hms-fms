@@ -1,5 +1,6 @@
 ﻿using FMS.BusinessObject.Business;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace FMS.Contract.BLL
     {
         void Save(CtfExtendDto CtfExtendDto);
         List<CtfExtendDto> GetCtfExtend();
+        CtfExtendDto GetCtfExtendByCtfId(long? CtfId, CtfParamInput input = null);
         void Save(CtfExtendDto Dto, Login userLogin);
     }
 }

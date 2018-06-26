@@ -12,6 +12,7 @@ namespace FMS.Contract.Service
     {
         void Save(TRA_CTF_EXTEND dbCtfExtend);
         List<TRA_CTF_EXTEND> GetCtfExtend();
+        TRA_CTF_EXTEND GetCtfExtendByCtfId(long? TraCtfId);
         void Save(TRA_CTF_EXTEND dbCtf, Login userlogin);
     }
 }

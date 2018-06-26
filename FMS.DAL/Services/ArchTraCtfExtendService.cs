@@ -25,6 +25,9 @@ namespace FMS.DAL.Services
         {
             _uow.GetGenericRepository<ARCH_TRA_CTF_EXTEND>().InsertOrUpdate(db, userlogin, Enums.MenuList.MasterData);
         }
-
+        public ARCH_TRA_CTF_EXTEND GetCtfExtendByCtfId(long? TraCtfId)
+        {
+            return _archTraCtfExtendRepository.Get(x => x.TRA_CTF_ID == TraCtfId).FirstOrDefault();
+        }
     }
 }
