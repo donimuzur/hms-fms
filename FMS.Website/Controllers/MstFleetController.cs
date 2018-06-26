@@ -350,7 +350,12 @@ namespace FMS.Website.Controllers
                 {
                     model.VatDecimal = Convert.ToDecimal(model.VatDecimalStr.Replace(",", ""));
                 }
-                model.EmployeeName = model.EmployeeName.Split('-')[1].TrimStart();
+                var arrEmployeeName = model.EmployeeName.Split('-');
+                model.EmployeeName = arrEmployeeName[0].TrimStart();
+                if (arrEmployeeName.Count() > 1)
+                {
+                    model.EmployeeName = arrEmployeeName[1].TrimStart();
+                }
 
                 var data = Mapper.Map<FleetDto>(model);
                 data.Project = false;
