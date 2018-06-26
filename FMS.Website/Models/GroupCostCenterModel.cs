@@ -21,9 +21,22 @@ namespace FMS.Website.Models
     {
         public string Function { get; set; }
         public string CostCenter { get; set; }
+        public string Table { get; set; }
 
         public SelectList FunctionList { get; set; }
         public SelectList CostCenterList { get; set; }
+        public SelectList TableList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Real Data", Value = "1" },
+                    new SelectListItem() {Text = "Archive Data", Value = "2" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
     }
 
     public class GroupCostCenterItem : BaseModel

@@ -30,7 +30,7 @@ namespace FMS.DAL.Services
         }
         public List<ARCH_MST_EMPLOYEE> GetEmployeeByParam(EmployeeParamInput input)
         {
-            Expression<Func<ARCH_MST_EMPLOYEE, bool>> queryFilterEmployee = null;
+            Expression<Func<ARCH_MST_EMPLOYEE, bool>> queryFilterEmployee = PredicateHelper.True<ARCH_MST_EMPLOYEE>();
             queryFilterEmployee = c => 1 == 1;
             if (input.Status != null)
             {

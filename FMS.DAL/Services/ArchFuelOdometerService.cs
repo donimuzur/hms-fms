@@ -31,7 +31,7 @@ namespace FMS.DAL.Services
 
         public List<ARCH_MST_FUEL_ODOMETER> GetFuelOdometerByParam(FuelOdometerParamInput param)
         {
-            Expression<Func<ARCH_MST_FUEL_ODOMETER, bool>> queryFilterFuelOdometer = null;
+            Expression<Func<ARCH_MST_FUEL_ODOMETER, bool>> queryFilterFuelOdometer = PredicateHelper.True<ARCH_MST_FUEL_ODOMETER>();
             queryFilterFuelOdometer = c => c.IS_ACTIVE == true;
             if (param != null)
             {

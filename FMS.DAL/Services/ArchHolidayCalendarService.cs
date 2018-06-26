@@ -29,7 +29,7 @@ namespace FMS.DAL.Services
         }
         public List<ARCH_MST_HOLIDAY_CALENDAR> GetHolidayCalender(HolidayCalenderParamInput filter)
         {
-            Expression<Func<ARCH_MST_HOLIDAY_CALENDAR, bool>> queryFilter = c => c.IS_ACTIVE == true;
+            Expression<Func<ARCH_MST_HOLIDAY_CALENDAR, bool>> queryFilter = PredicateHelper.True<ARCH_MST_HOLIDAY_CALENDAR>(); ;
 
             if (filter != null)
             {

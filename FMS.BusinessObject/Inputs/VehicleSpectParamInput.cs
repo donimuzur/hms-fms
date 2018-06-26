@@ -12,5 +12,6 @@ namespace FMS.BusinessObject.Inputs
         public string Model { get; set; }
         public string Series { get; set; }
         public string BodyType { get; set; }
+        public string Table { get; set; }
     }
 }

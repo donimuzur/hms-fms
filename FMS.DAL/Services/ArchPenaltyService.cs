@@ -31,7 +31,7 @@ namespace FMS.DAL.Services
 
         public List<ARCH_MST_PENALTY> GetPenalty(PenaltyParamInput filter)
         {
-            Expression<Func<ARCH_MST_PENALTY, bool>> queryFilter = c => c.IS_ACTIVE == true;
+            Expression<Func<ARCH_MST_PENALTY, bool>> queryFilter = PredicateHelper.True<ARCH_MST_PENALTY>();
 
             if (filter != null)
             {
