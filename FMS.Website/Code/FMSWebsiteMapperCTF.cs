@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FMS.AutoMapperExtensions;
 using FMS.BusinessObject.Dto;
+using FMS.BusinessObject.Inputs;
 using FMS.Website.Models;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,9 @@ namespace FMS.Website.Code
              .ForMember(dest => dest.VehicleUsage, opt => opt.MapFrom(src => src.VehicleUsage))
              .ForMember(dest => dest.EndContract, opt => opt.MapFrom(src => src.EndRendDate))
              .ForMember(dest => dest.DocumentNumber, opt => opt.MapFrom(src => ""));
+
+            Mapper.CreateMap<CtfSearchView, CtfParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<CtfParamInput, CtfSearchView >().IgnoreAllNonExisting();
         }
     }
 }

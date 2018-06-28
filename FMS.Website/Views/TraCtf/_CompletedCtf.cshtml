@@ -56,7 +56,14 @@
                 <td style="text-align: center;">
                     @if (Model.CurrentPageAccess.ReadAccess.Value)
                     {
-                        <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        if (Model.SearchView.Table == "2")
+                        {
+                            <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard ,ArchiveData=true})" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Details", "TraCtf", new { @TraCtfId = data.TraCtfId ,  IsPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
                     }
                 </td>
                 <td>@Html.Raw(data.DocumentNumber)</td>

@@ -15,8 +15,8 @@ namespace FMS.Contract.BLL
         bool CheckCtfExists(TraCtfDto item);
         TraCtfDto Save(TraCtfDto Dto, Login userLogin);
         void CtfWorkflow(CtfWorkflowDocumentInput param);
-        TraCtfDto GetCtfById(long id);
-        List<TraCtfDto> GetCtfDashboard(Login userLogin, bool isCompleted);
+        TraCtfDto GetCtfById(long id, bool? ArchivedData = null);
+        List<TraCtfDto> GetCtfDashboard(Login userLogin, bool isCompleted, CtfParamInput input = null);
         void CancelCtf(long id, int Remark, Login user);
          List<TraCtfDto> GetCtfPersonal(Login userLogin);
         decimal? PenaltyCost(TraCtfDto CtfDto);
