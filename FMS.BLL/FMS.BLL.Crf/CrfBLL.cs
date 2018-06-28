@@ -26,6 +26,7 @@ namespace FMS.BLL.Crf
     public class CrfBLL : ITraCrfBLL
     {
         private ICRFService _CrfService;
+        private IArchTraCrfService _ArchCrfService;
         private IEpafService _epafService;
         private IDocumentNumberService _docNumberService;
         private IEmployeeService _employeeService;
@@ -113,8 +114,15 @@ namespace FMS.BLL.Crf
         }
 
 
-        public List<TraCrfDto> GetCompleted()
+        public List<TraCrfDto> GetCompleted(bool? Archive = null)
         {
+            if (Archive.HasValue)
+            {
+                var archData = _ArchCrfService.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed
+                || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled);
+
+                return Mapper.Map<List<TraCrfDto>>(archData);
+            }
             var data = _CrfService.GetList().Where(x => x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Completed
                 || x.DOCUMENT_STATUS == (int)Enums.DocumentStatus.Cancelled);
 
@@ -122,8 +130,13 @@ namespace FMS.BLL.Crf
             return Mapper.Map<List<TraCrfDto>>(data);
         }
 
-        public TraCrfDto GetDataById(long id)
+        public TraCrfDto GetDataById(long id, bool? Archive = null)
         {
+            if (Archive.HasValue)
+            {
+                var archData = _ArchCrfService.GetById((int)id);
+                return Mapper.Map<TraCrfDto>(archData);
+            }
             var data = _CrfService.GetById((int)id);
 
             return Mapper.Map<TraCrfDto>(data);

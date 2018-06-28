@@ -139,16 +139,51 @@ namespace FMS.Website.Controllers
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
-            var data = _CRFBLL.GetCompleted().OrderByDescending(x => x.MODIFIED_DATE).ToList();
+            //var data = _CRFBLL.GetCompleted().OrderByDescending(x => x.MODIFIED_DATE).ToList();
+            //if (CurrentUser.UserRole == Enums.UserRole.FleetManager)
+            //{
+            //    data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
+            //}
+            //else if (CurrentUser.UserRole == Enums.UserRole.HRManager)
+            //{
+            //    data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
+            //}
+            //model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
+            model.Details = new List<TraCrfItemDetails>();
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
+            model.SearchView = new CrfSearchView();
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Completed(TraCrfIndexViewModel model)
+        {
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            var Archive = model.SearchView.Table == "2" ? true : false;
+            var data = _CRFBLL.GetCompleted(Archive).OrderByDescending(x => x.MODIFIED_DATE).ToList();
             if (CurrentUser.UserRole == Enums.UserRole.FleetManager)
             {
                 data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "WTC").ToList();
             }
-            else if(CurrentUser.UserRole == Enums.UserRole.HRManager)
+            else if (CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
                 data = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").ToList();
             }
             model.Details = Mapper.Map<List<TraCrfItemDetails>>(data);
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
+            model.SearchView = new CrfSearchView();
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
             return View(model);
         }
 
@@ -299,7 +334,7 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult Details(long id, bool isPersonalDashboard)
+        public ActionResult Details(long id, bool isPersonalDashboard, bool? ArchiveData = null)
         {
             var model = new TraCrfItemViewModel();
             model.MainMenu = _mainMenu;
@@ -308,7 +343,7 @@ namespace FMS.Website.Controllers
             model = InitialModel(model);
             model.ChangesLogs = GetChangesHistory((int)Enums.MenuList.TraCrf, id);
             model.WorkflowLogs = GetWorkflowHistory((int)Enums.MenuList.TraCsf, model.Detail.TraCrfId);
-            var data = _CRFBLL.GetDataById(id);
+            var data = _CRFBLL.GetDataById(id, ArchiveData);
             var dataLocations = _employeeBLL.GetLocationAll();
             model.LocationNewList = new SelectList(dataLocations, "Location", "Location");
 
