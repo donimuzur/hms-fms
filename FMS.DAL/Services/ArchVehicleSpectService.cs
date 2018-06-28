@@ -29,7 +29,7 @@ namespace FMS.DAL.Services
         }
         public List<ARCH_MST_VEHICLE_SPECT> GetVehicleSpect(VehicleSpectParamInput filter)
         {
-            Expression<Func<ARCH_MST_VEHICLE_SPECT, bool>> queryFilter = c => c.IS_ACTIVE;
+            Expression<Func<ARCH_MST_VEHICLE_SPECT, bool>> queryFilter = PredicateHelper.True<ARCH_MST_VEHICLE_SPECT>(); ;
 
             if (filter != null)
             {

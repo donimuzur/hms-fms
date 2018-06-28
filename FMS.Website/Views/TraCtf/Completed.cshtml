@@ -18,20 +18,66 @@
 <section class="content">
     @using (Html.BeginForm("ExportCompleted", "TraCtf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
+        @Html.Hidden("SearchView.Table", "1", new { @id= "ShowData" })
     }
     <div class="wpanel">
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("ListTraCtfCompleted", "TraCtf",
+        new AjaxOptions
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "contenttable",
+            OnComplete = "setupDataTables",
+            OnBegin = "LoadingShow",
+            OnSuccess = "LoadingHide",
+            OnFailure = "LoadingHide",
+        }))
+            {
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Show Data</label>
+                        @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
         @Html.Partial("_CompletedCtf")
     </div>
 </section>
+<div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div align="center">
+                    <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script src="~/Scripts/ctfscript.js"></script>
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     function ExportXls() {
+        $("#ShowData").val($("#SearchView_Table").val())
         $('#ExportToXls').submit();
     }
-
-    $(function () {
-        // DataTable
+    function setupDataTables() {
         var table = $('#tbCtfCompleted').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
             orderCellsTop: true
@@ -45,6 +91,16 @@
                     .search(this.value)
                     .draw();
             });
+        });
+    }
+    $(function () {
+        // DataTable
+        setupDataTables();
+
+        $(document).on('click', '#btn-reset', function () {
+            $("#SearchView_Table").val('1');
+
+            $("#btn-filter").trigger('click');
         });
     });
 </script>

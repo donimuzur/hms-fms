@@ -34,5 +34,9 @@ namespace FMS.DAL.Services
             _ctfExtendRepository.InsertOrUpdate(dbCtf);
             _uow.SaveChanges();
         }
+        public TRA_CTF_EXTEND GetCtfExtendByCtfId(long? TraCtfId)
+        {
+            return _ctfExtendRepository.Get(x => x.TRA_CTF_ID == TraCtfId).FirstOrDefault();
+        }
     }
 }
