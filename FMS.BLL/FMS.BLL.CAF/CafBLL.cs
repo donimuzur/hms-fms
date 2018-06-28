@@ -23,6 +23,7 @@ namespace FMS.BLL.CAF
     public class CafBLL : ICafBLL
     {
         private ICAFService _CafService;
+        private IArchTraCafService _archCafService;
         private IUnitOfWork _uow;
 
         private IDocumentNumberService _docNumberService;
@@ -40,6 +41,7 @@ namespace FMS.BLL.CAF
         {
             _uow = uow;
             _CafService = new CafService(_uow);
+            _archCafService = new ArchTraCafService(_uow);
 
             _docNumberService = new DocumentNumberService(_uow);
             _workflowService = new WorkflowHistoryService(_uow);
@@ -58,15 +60,30 @@ namespace FMS.BLL.CAF
             throw new NotImplementedException();
         }
 
-        public List<BusinessObject.Dto.TraCafDto> GetCaf()
+        public List<BusinessObject.Dto.TraCafDto> GetCafWithParam()
         {
             var data = _CafService.GetList();
 
             return Mapper.Map<List<TraCafDto>>(data);
         }
 
-        public BusinessObject.Dto.TraCafDto GetById(long id)
+        public List<BusinessObject.Dto.TraCafDto> GetCafWithParam(CafParamInput param)
         {
+            if(param.Table == "2")
+            {
+                var archData = _archCafService.GetList();
+            }
+            var data = _CafService.GetList();
+
+            return Mapper.Map<List<TraCafDto>>(data);
+        }
+
+        public BusinessObject.Dto.TraCafDto GetById(long id, bool? Archive = null)
+        {
+            if (Archive.HasValue)
+            {
+                var archData = _archCafService.GetCafById(id);
+            }
             var data = _CafService.GetCafById(id);
 
             return Mapper.Map<TraCafDto>(data);
@@ -399,7 +416,7 @@ namespace FMS.BLL.CAF
 
         public List<TraCafDto> GetCafPersonal(Login CurrentUser)
         {
-            var allData = this.GetCaf();
+            var allData = this.GetCafWithParam();
             var data = allData.Where(x => x.IsActive && (x.EmployeeId == CurrentUser.EMPLOYEE_ID
                 || x.CreatedBy == CurrentUser.USER_ID)).ToList();
 

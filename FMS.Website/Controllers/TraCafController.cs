@@ -14,6 +14,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SpreadsheetLight;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Controllers
 {
@@ -84,7 +85,7 @@ namespace FMS.Website.Controllers
            
             //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
             model = InitialIndexModel(model);
-            var data = _cafBLL.GetCaf();
+            var data = _cafBLL.GetCafWithParam();
             if (CurrentUser.UserRole == Enums.UserRole.Fleet ||
                 CurrentUser.UserRole == Enums.UserRole.Viewer ||
                 CurrentUser.UserRole == Enums.UserRole.Administrator || CurrentUser.UserRole == Enums.UserRole.FleetManager)
@@ -112,11 +113,11 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "TraCaf");
         }
 
-        public ActionResult Details(long id, bool isPersonalDashboard)
+        public ActionResult Details(long id, bool isPersonalDashboard, bool? ArchiveData = null)
         {
             var model = new TraCafItemViewModel();
             model = InitialItemModel(model);
-            var data = _cafBLL.GetById(id);
+            var data = _cafBLL.GetById(id, ArchiveData);
             model.Detail = AutoMapper.Mapper.Map<TraCafItemDetails>(data);
             model.CurrentLogin = CurrentUser;
             model.ChangesLogs = GetChangesHistory((int) Enums.MenuList.TraCaf, id);
@@ -324,7 +325,43 @@ namespace FMS.Website.Controllers
 
             //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
             model = InitialIndexModel(model);
-            var data = _cafBLL.GetCaf();
+            //var data = _cafBLL.GetCafWithParam();
+            //if (CurrentUser.UserRole != Enums.UserRole.User)
+            //{
+            //    data = data
+            //        .Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed
+            //                    || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled
+            //                    ).ToList();
+            //}
+            //else
+            //{
+            //    data = data
+            //        .Where(x => (x.DocumentStatus == (int)Enums.DocumentStatus.Completed
+            //                    || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled)
+            //                    && x.EmployeeId == CurrentUser.EMPLOYEE_ID).ToList();
+            //}
+
+
+
+            //model.Details = AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data);
+            model.Details = new List<TraCafItemDetails>();
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
+            model.SearchView = new TraCafSearchView();
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Completed(TraCafIndexViewModel model)
+        {
+            //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
+            model = InitialIndexModel(model);
+            var param = Mapper.Map<CafParamInput>(model.SearchView);
+            var data = _cafBLL.GetCafWithParam(param);
             if (CurrentUser.UserRole != Enums.UserRole.User)
             {
                 data = data
@@ -339,10 +376,17 @@ namespace FMS.Website.Controllers
                                 || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled)
                                 && x.EmployeeId == CurrentUser.EMPLOYEE_ID).ToList();
             }
-                
-            
+
+
 
             model.Details = AutoMapper.Mapper.Map<List<TraCafItemDetails>>(data);
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
+            model.SearchView = new TraCafSearchView();
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
             return View(model);
         }
 
@@ -477,12 +521,12 @@ namespace FMS.Website.Controllers
             List<TraCafDto> CRF = new List<TraCafDto>(); //_CRFBLL.GetCRF();
             if (isCompleted)
             {
-                CRF = _cafBLL.GetCaf().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled).ToList();
+                CRF = _cafBLL.GetCafWithParam().Where(x => x.DocumentStatus == (int)Enums.DocumentStatus.Completed || x.DocumentStatus == (int)Enums.DocumentStatus.Cancelled).ToList();
 
             }
             else
             {
-                CRF = _cafBLL.GetCaf().Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled).ToList();
+                CRF = _cafBLL.GetCafWithParam().Where(x => x.DocumentStatus != (int)Enums.DocumentStatus.Completed && x.DocumentStatus != (int)Enums.DocumentStatus.Cancelled).ToList();
             }
             var listData = Mapper.Map<List<TraCafItemDetails>>(CRF);
 
