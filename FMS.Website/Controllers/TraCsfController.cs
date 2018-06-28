@@ -128,7 +128,6 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Completed Document --------------
-
         public ActionResult Completed()
         {
             var data = _csfBLL.GetCsf(CurrentUser, true);
@@ -142,7 +141,30 @@ namespace FMS.Website.Controllers
             model.IsCompleted = true;
             return View("Index", model);
         }
+        [HttpPost]
+        public PartialViewResult ListTraCsfCompleted(CsfIndexModel model)
+        {
+            model.CsfList = new List<CsfData>();
+            model.CsfList = GetCsfCompleted(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_ListCsf", model);
+        }
+        private List<CsfData> GetCsfCompleted(CsfSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _csfBLL.GetCsf(CurrentUser, true);
+                return Mapper.Map<List<CsfData>>(data);
+            }
 
+            //getbyparams
+            var input = Mapper.Map<CsfParamInput>(filter);
+            var dbData = _csfBLL.GetCsf(CurrentUser, true,input);
+            return Mapper.Map<List<CsfData>>(dbData);
+        }
         #endregion
 
         #region --------- Create --------------
@@ -298,14 +320,14 @@ namespace FMS.Website.Controllers
 
         #region --------- Detail --------------
 
-        public ActionResult Detail(int? id, bool isPersonalDashboard)
+        public ActionResult Detail(int? id, bool isPersonalDashboard,bool? ArchiveData = null)
         {
             if (!id.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var csfData = _csfBLL.GetCsfById(id.Value);
+            var csfData = _csfBLL.GetCsfById(id.Value,ArchiveData);
 
             if (csfData == null)
             {
@@ -1886,11 +1908,11 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        public void ExportCompleted()
+        public void ExportCompleted(CsfSearchView SearchView = null)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsCsf(true);
+            pathFile = CreateXlsCsf(true,SearchView);
 
             var newFile = new FileInfo(pathFile);
 
@@ -1906,10 +1928,11 @@ namespace FMS.Website.Controllers
             Response.End();
         }
 
-        private string CreateXlsCsf(bool isCompleted)
+        private string CreateXlsCsf(bool isCompleted, CsfSearchView SearchView = null)
         {
             //get data
-            List<TraCsfDto> csf = _csfBLL.GetCsf(CurrentUser, isCompleted);
+            var input = Mapper.Map<CsfParamInput>(SearchView);
+            List<TraCsfDto> csf = _csfBLL.GetCsf(CurrentUser, isCompleted,input);
             var listData = Mapper.Map<List<CsfData>>(csf);
 
             var slDocument = new SLDocument();

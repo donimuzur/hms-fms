@@ -27,6 +27,7 @@ namespace FMS.BLL.Csf
     public class CsfBLL : ITraCsfBLL
     {
         private ICsfService _CsfService;
+        private IArchTraCsfService _archCsfService;
         private IUnitOfWork _uow;
 
         private IDocumentNumberService _docNumberService;
@@ -42,12 +43,14 @@ namespace FMS.BLL.Csf
         private ILocationMappingService _locationMappingService;
         private IVehicleSpectService _vehicleSpectService;
         private IVendorService _vendorService;
+        private IReasonService _reasonService;
         private IGroupCostCenterService _groupCostService;
 
         public CsfBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _CsfService = new CsfService(_uow);
+            _archCsfService = new ArchTraCsfService(_uow);
 
             _docNumberService = new DocumentNumberService(_uow);
             _workflowService = new WorkflowHistoryService(_uow);
@@ -63,6 +66,7 @@ namespace FMS.BLL.Csf
             _vehicleSpectService = new VehicleSpectService(_uow);
             _vendorService = new VendorService(_uow);
             _groupCostService = new GroupCostCenterService(_uow);
+            _reasonService = new ReasonService(_uow);
         }
 
         public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted)
@@ -100,7 +104,57 @@ namespace FMS.BLL.Csf
 
             return retData;
         }
+        public List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted,CsfParamInput input = null)
+        {
+            var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+            var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
+            var vehUsageList = _settingService.GetSetting();
+
+            var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+            var retData = new List<TraCsfDto>();
+            if(input != null && input.Table == "2")
+            {
+                var data = _archCsfService.GetCsf(userLogin, isCompleted, benefitType, wtcType);
+                retData = Mapper.Map<List<TraCsfDto>>(data);
+                foreach (var item in retData)
+                {
+                    var Reason = _reasonService.GetReasonById(item.REASON_ID);
+                    if(Reason != null)
+                    {
+                        item.REASON_NAME = Reason.REASON;
+                    }
+                }
+            }
+            else
+            {
+                var data = _CsfService.GetCsf(userLogin, isCompleted, benefitType, wtcType);
+                retData = Mapper.Map<List<TraCsfDto>>(data);
+            }
+            
+            foreach (var item in retData)
+            {
+                var region = locationMapping.Where(x => x.LOCATION.ToUpper() == item.LOCATION_CITY.ToUpper()).FirstOrDefault();
+
+                item.REGIONAL = region == null ? string.Empty : region.REGION;
+
+                item.VEHICLE_TYPE_NAME = "BENEFIT";
+
+                if (item.VEHICLE_TYPE == wtcType)
+                {
+                    item.VEHICLE_TYPE_NAME = "WTC";
+                }
+
+                var vehUsage = vehUsageList.Where(x => x.MST_SETTING_ID == Convert.ToInt32(item.VEHICLE_USAGE == null ? 0 : Convert.ToInt32(item.VEHICLE_USAGE))).FirstOrDefault();
+                if (vehUsage != null)
+                {
+                    item.VEHICLE_USAGE_NAME = vehUsage.SETTING_VALUE;
+                }
+            }
+
+            return retData;
+        }
         public List<TraCsfDto> GetCsfPersonal(Login userLogin)
         {
             var data = _CsfService.GetAllCsf().Where(x => (x.EMPLOYEE_ID == userLogin.EMPLOYEE_ID && x.DOCUMENT_STATUS != Enums.DocumentStatus.Draft) 
@@ -1084,7 +1138,28 @@ namespace FMS.BLL.Csf
             var retData = Mapper.Map<TraCsfDto>(data);
             return retData;
         }
-
+        public TraCsfDto GetCsfById(long id, bool? ArchiveData = null)
+        {
+            var retData = new TraCsfDto();
+            if(ArchiveData != null && ArchiveData.Value)
+            {
+                var data = _archCsfService.GetCsfById(id);
+                retData = Mapper.Map<TraCsfDto>(data);
+                
+                var Reason = _reasonService.GetReasonById(retData.REASON_ID);
+                if (Reason != null)
+                {
+                    retData.REASON_NAME = Reason.REASON;
+                }
+            }
+            else
+            {
+                var data = _CsfService.GetCsfById(id);
+                retData = Mapper.Map<TraCsfDto>(data);
+            }
+            
+            return retData;
+        }
         private void ApproveDocument(CsfWorkflowDocumentInput input)
         {
             var dbData = _CsfService.GetCsfById(input.DocumentId);

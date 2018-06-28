@@ -25,6 +25,7 @@ namespace FMS.Website.Models
         public CsfIndexModel()
         {
             CsfList = new List<CsfData>();
+            SearchView = new CsfSearchView();
         }
 
         public string TitleForm { get; set; }
@@ -32,6 +33,7 @@ namespace FMS.Website.Models
         public List<CsfData> CsfList { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsPersonalDashboard { get; set; }
+        public CsfSearchView SearchView { get; set;}
     }
 
     public class CsfItemModel : BaseModel
@@ -222,5 +224,21 @@ namespace FMS.Website.Models
         public string AssignedTo { get; set; }
         public string Vendor { get; set; }
         public string MessageError { get; set; }
+    }
+    public class CsfSearchView
+    {
+        public string Table { get; set; }
+        public SelectList TableList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Real Data", Value = "1" },
+                    new SelectListItem() {Text = "Archive Data", Value = "2" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
     }
 }
