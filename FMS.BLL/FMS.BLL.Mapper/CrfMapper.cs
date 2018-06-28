@@ -56,7 +56,15 @@ namespace FMS.BLL.Mapper
             AutoMapper.Mapper.CreateMap<TraCrfDto, TRA_CRF>().IgnoreAllNonExisting()
                 .ForMember(dest => dest.RELOCATION_TYPE, opt => opt.MapFrom(src => src.RelocationType))
                 .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.Body));
-                
+
+            AutoMapper.Mapper.CreateMap<ARCH_TRA_CRF, TraCrfDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.RelocationType, opt => opt.MapFrom(src => src.RELOCATION_TYPE))
+                .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.BODY_TYPE));
+
+            AutoMapper.Mapper.CreateMap<TraCrfDto, ARCH_TRA_CRF>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.RELOCATION_TYPE, opt => opt.MapFrom(src => src.RelocationType))
+                .ForMember(dest => dest.BODY_TYPE, opt => opt.MapFrom(src => src.Body));
+
         }
     }
 }

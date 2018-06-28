@@ -23,6 +23,33 @@
     }
 
     <div class="wpanel">
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("Completed", "TraCaf",
+                          new AjaxOptions
+                          {
+                              HttpMethod = "POST",
+                              InsertionMode = InsertionMode.Replace,
+                              UpdateTargetId = "contenttable",
+                              OnComplete = "setupDataTables",
+                              OnBegin = "LoadingShow",
+                              OnSuccess = "LoadingHide",
+                              OnFailure = "LoadingHide",
+                          }))
+            {
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="SearchView_Table">Show Data</label>
+                        @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control" })
+                        @Html.HiddenFor(model => model.SearchView.Table)
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-md-12">
+                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                </div>
+            }
+        </div>
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -46,8 +73,8 @@
             <thead class="filters">
                 <tr>
                     <th>
-                        
-                </th>
+
+                    </th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
@@ -63,63 +90,67 @@
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
                     <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var data in Model.Details)
-            {
-                <tr>
-                    <td style="text-align: center;">
-                        
-                        @*else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
-                        {*@
-                        @if (Model.CurrentPageAccess.ReadAccess.Value)
-                        {
-                            <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                        }
-                        @*}*@
-
-
-                    </td>
-                    <td>@Html.Raw(data.DocumentNumber)</td>
-                    <td>@Html.Raw(data.DocumentStatusString)</td>
-                    <td>@Html.Raw(data.VehicleType)</td>
-                    <td>@Html.Raw(data.EmployeeId)</td>
-                    <td>@Html.Raw(data.EmployeeName)</td>
-                    <td>@Html.Raw(data.RelocationType)</td>
-
-                    @if (data.EffectiveDate.HasValue)
-                    {
-                        <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy"))</td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-
-
-                    <td>@Html.Raw(data.LocationCity)</td>
-                    <td>@Html.Raw(data.LocationCityNew)</td>
-                    <td>@Html.Raw(data.Region)</td>
-                    <td>@Html.Raw(data.CreatedBy)</td>
-
-                    <td>@Html.Raw(data.ModifiedBy)</td>
-                    @if (data.ModifiedDate.HasValue)
-                    {
-                        <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-
-
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @foreach (var data in Model.Details)
+                {
+                    <tr>
+                        <td style="text-align: center;">
 
-        </tbody>
-    </table>
-</div>
+                            @*else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                                {*@
+                            @if (Model.CurrentPageAccess.ReadAccess.Value && (Model.SearchView.Table == null || Model.SearchView.Table != "2"))
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                            else if (Model.CurrentPageAccess.ReadAccess.Value && Model.SearchView.Table == "2")
+                            {
+                                <a href="@Url.Action("Details", "TraCrf", new { @id = data.TraCrfId, @isPersonalDashboard = Model.IsPersonalDashboard, ArchiveData = true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                            }
+                            @*}*@
+
+
+                        </td>
+                        <td>@Html.Raw(data.DocumentNumber)</td>
+                        <td>@Html.Raw(data.DocumentStatusString)</td>
+                        <td>@Html.Raw(data.VehicleType)</td>
+                        <td>@Html.Raw(data.EmployeeId)</td>
+                        <td>@Html.Raw(data.EmployeeName)</td>
+                        <td>@Html.Raw(data.RelocationType)</td>
+
+                        @if (data.EffectiveDate.HasValue)
+                        {
+                            <td>@Html.Raw(data.EffectiveDate.Value.ToString("dd-MM-yyyy"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+
+                        <td>@Html.Raw(data.LocationCity)</td>
+                        <td>@Html.Raw(data.LocationCityNew)</td>
+                        <td>@Html.Raw(data.Region)</td>
+                        <td>@Html.Raw(data.CreatedBy)</td>
+
+                        <td>@Html.Raw(data.ModifiedBy)</td>
+                        @if (data.ModifiedDate.HasValue)
+                        {
+                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
     <script src="~/Scripts/crfscript.js"></script>
     <script type="text/javascript">
         function ExportXls() {
