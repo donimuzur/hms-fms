@@ -715,6 +715,8 @@ namespace FMS.BLL.Temporary
                         bodyMail.AppendLine();
                         bodyMail.Append("If you need to propose another delivery schedule, kindly inform us through this email.<br /><br />");
                         bodyMail.AppendLine();
+                        bodyMail.Append("*If your temporary car has delivered, please ignore this email.<br /><br />");
+                        bodyMail.AppendLine();
                         bodyMail.Append("Thank you.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Regards,<br />");
@@ -742,6 +744,8 @@ namespace FMS.BLL.Temporary
                         bodyMail.Append("Kindly note that the temporary car is Company pool car which makes it possible to be exchanged with another unit should someone choose it as their permanent CFM. You will be informed earlier should this exchange occurs.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("If you need to propose another delivery schedule, kindly inform us through this email.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("*If your temporary car has delivered, please ignore this email.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thank you.<br /><br />");
                         bodyMail.AppendLine();
