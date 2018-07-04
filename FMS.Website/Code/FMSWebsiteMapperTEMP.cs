@@ -8,6 +8,7 @@ using FMS.BusinessObject.Dto;
 using FMS.Website.Models;
 using FMS.BusinessObject;
 using FMS.Utils;
+using FMS.BusinessObject.Inputs;
 
 namespace FMS.Website.Code
 {
@@ -132,6 +133,9 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.PRICE, opt => opt.MapFrom(src => src.PriceVendor))
                 .ForMember(dest => dest.COMMENTS, opt => opt.MapFrom(src => src.CommentsVendor))
                 ;
+
+                Mapper.CreateMap<TempSearchView, TempParamInput>().IgnoreAllNonExisting();
+                Mapper.CreateMap<TempParamInput, TempSearchView>().IgnoreAllNonExisting();
         }
     }
 }

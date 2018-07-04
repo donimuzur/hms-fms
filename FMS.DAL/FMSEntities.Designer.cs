@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\doni titip\Project\FMS\hms-fms-cr1\hms-fms\FMS.DAL\FMSEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\Kantor\VTI\Source Code\hms-fms\FMS.DAL\FMSEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
