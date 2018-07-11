@@ -633,6 +633,10 @@ namespace FMS.Website.Controllers
                 input.Function = "Logistic";
                 input.VehicleType = "WTC";
             }
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+            }
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
             var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(c => c.ACTUAL_COST);
@@ -673,16 +677,23 @@ namespace FMS.Website.Controllers
             if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
             {
                 input.Function = "Sales,Marketing";
+                input.VehicleType = "WTC";
             }
             else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
             {
                 input.Function = "Operations";
+                input.VehicleType = "WTC";
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
             {
                 input.Function = "Logistic";
+                input.VehicleType = "WTC";
             }
-
+            else if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                input.VehicleType = "BENEFIT";
+                input.VehicleType = "WTC";
+            }
             if (isRegion)
             {
                 input.Function = "Sales,Marketing";
