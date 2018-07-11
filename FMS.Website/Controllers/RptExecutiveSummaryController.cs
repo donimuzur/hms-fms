@@ -621,14 +621,17 @@ namespace FMS.Website.Controllers
             if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
             {
                 input.Function = "Sales,Marketing";
+                input.VehicleType = "WTC";
             }
             else if (CurrentUser.UserRole == Enums.UserRole.OpsFinanceManager)
             {
                 input.Function = "Operations";
+                input.VehicleType = "WTC";
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
             {
                 input.Function = "Logistic";
+                input.VehicleType = "WTC";
             }
             List<AcVsObDto> data = _execSummBLL.GetAcVsObData(input);
 
