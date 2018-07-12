@@ -86,6 +86,10 @@ namespace FMS.Website.Controllers
             //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
             model = InitialIndexModel(model);
             var data = _cafBLL.GetCafWithParam();
+            if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
             if (CurrentUser.UserRole == Enums.UserRole.Fleet ||
                 CurrentUser.UserRole == Enums.UserRole.Viewer ||
                 CurrentUser.UserRole == Enums.UserRole.Administrator || CurrentUser.UserRole == Enums.UserRole.FleetManager)
