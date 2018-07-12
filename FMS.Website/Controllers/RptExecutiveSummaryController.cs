@@ -28,9 +28,11 @@ namespace FMS.Website.Controllers
         private ISettingBLL _settingBLL;
         private ILocationMappingBLL _locationMappingBLL;
         private IGroupCostCenterBLL _groupCostCenterBLL;
+        private IEmployeeBLL _employeeBLL;
+
 
         public RptExecutiveSummaryController(IPageBLL pageBll, IExecutiveSummaryBLL execSummBLL, ISettingBLL settingBLL, ILocationMappingBLL locationMappingBLL,
-            IGroupCostCenterBLL groupCostCenterBLL)
+            IGroupCostCenterBLL groupCostCenterBLL, IEmployeeBLL EmployeeBLL)
             : base(pageBll, Core.Enums.MenuList.RptExecutiveSummary)
         {
             _pageBLL = pageBll;
@@ -38,6 +40,7 @@ namespace FMS.Website.Controllers
             _settingBLL = settingBLL;
             _locationMappingBLL = locationMappingBLL;
             _groupCostCenterBLL = groupCostCenterBLL;
+            _employeeBLL = EmployeeBLL;
             _mainMenu = Enums.MenuList.RptExecutiveSummary;
         }
 
@@ -93,6 +96,21 @@ namespace FMS.Website.Controllers
             {
                 input.Function = "Logistic";
             }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
+            }
+
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
 
             var label1 = "BENEFIT (" + data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT").Sum(x => x.NO_OF_VEHICLE) + ")";
@@ -125,6 +143,20 @@ namespace FMS.Website.Controllers
                  || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 input.Function = "---";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
 
@@ -210,7 +242,6 @@ namespace FMS.Website.Controllers
             {
                 input.VehicleType = "BENEFIT";
             }
-
             if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.ComFinanceManager)
             {
                 input.Function = "Sales,Marketing";
@@ -222,6 +253,20 @@ namespace FMS.Website.Controllers
             else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
             {
                 input.Function = "Logistic";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
@@ -301,6 +346,20 @@ namespace FMS.Website.Controllers
             else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
             {
                 input.Function = "Logistic";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
 
@@ -384,6 +443,20 @@ namespace FMS.Website.Controllers
             else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
             {
                 input.Function = "Logistic";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
 
@@ -510,7 +583,20 @@ namespace FMS.Website.Controllers
             input.YearFrom = yearFrom == null ? 0 : yearFrom.Value;
             input.MonthTo = monthFrom;
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
+            }
             List<SalesByRegionDto> data = _execSummBLL.GetSalesByRegionData(input);
 
             var numb1 = data.Sum(c => c.TOTAL_COST / c.STICK);
@@ -562,6 +648,20 @@ namespace FMS.Website.Controllers
             else if (CurrentUser.UserRole == Enums.UserRole.Logistic || CurrentUser.UserRole == Enums.UserRole.LDManager)
             {
                 input.Function = "Logistic";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<AccidentDto> data = _execSummBLL.GetAccidentData(input);
 
@@ -753,7 +853,6 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Get Data Json Graphic New Request -----------------------
-
         [HttpPost]
         public JsonResult VisualNoVehicle(int monthFrom, int? yearFrom, int monthTo, int? yearTo, bool isByRegion, string vehType, string regional, string suppMethod, string functions, string zone)
         {
@@ -770,6 +869,20 @@ namespace FMS.Website.Controllers
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<NoVehicleDto> data = _execSummBLL.GetNoOfVehicleData(input);
 
@@ -940,6 +1053,20 @@ namespace FMS.Website.Controllers
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<NoVehicleWtcDto> data = _execSummBLL.GetNoOfVehicleWtcData(input);
 
@@ -1252,6 +1379,20 @@ namespace FMS.Website.Controllers
             {
                 input.Function = "Sales,Marketing";
             }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
+            }
             List<OdometerDto> data = _execSummBLL.GetOdometerData(input);
 
             var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
@@ -1425,6 +1566,20 @@ namespace FMS.Website.Controllers
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<LiterByFunctionDto> data = _execSummBLL.GetLiterByFunctionData(input);
 
@@ -1600,6 +1755,20 @@ namespace FMS.Website.Controllers
             {
                 input.Function = "Sales,Marketing";
             }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
+            }
             List<FuelCostByFunctionDto> data = _execSummBLL.GetFuelCostByFunctionData(input);
 
             var numb1 = data.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
@@ -1772,6 +1941,20 @@ namespace FMS.Website.Controllers
             if (isByRegion)
             {
                 input.Function = "Sales,Marketing";
+            }
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        input.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
             List<LeaseCostByFunctionDto> data = _execSummBLL.GetLeaseCostByFunctionData(input);
 
@@ -5044,7 +5227,8 @@ namespace FMS.Website.Controllers
             var model = new ExecutiveSummaryModel();
             model.SearchView.YearFrom = DateTime.Now.Year;
             model.SearchView.YearTo = DateTime.Now.Year;
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
             if (month.HasValue)
             {
                 model.SearchView.MonthFrom = month.Value;
@@ -5054,6 +5238,19 @@ namespace FMS.Website.Controllers
             {
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
+            }
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
             }
 
             var input = Mapper.Map<VehicleGetByParamInput>(model.SearchView);
@@ -5096,6 +5293,7 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             filter.Function = filter.FunctionId;
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<VehicleGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetNoOfVehicleData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -5472,7 +5670,6 @@ namespace FMS.Website.Controllers
             var model = new NumberVehicleWtcModel();
             model.SearchView.YearFrom = DateTime.Now.Year;
             model.SearchView.YearTo = DateTime.Now.Year;
-
             if (month.HasValue)
             {
                 model.SearchView.MonthFrom = month.Value;
@@ -5483,7 +5680,21 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
+            }
             var input = Mapper.Map<VehicleWtcGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -5519,6 +5730,7 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             filter.Function = filter.FunctionId;
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<VehicleWtcGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetNoOfVehicleWtcData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -6363,7 +6575,21 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                    }
+                }
+            }
             var input = Mapper.Map<OdometerGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -6401,6 +6627,7 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             filter.Function = filter.FunctionId;
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<OdometerGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetOdometerData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -6796,7 +7023,21 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                    }
+                }
+            }
             var input = Mapper.Map<LiterFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -6834,6 +7075,7 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             filter.Function = filter.FunctionId;
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<LiterFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetLiterByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -7227,7 +7469,21 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                    }
+                }
+            }
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -7265,6 +7521,7 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             filter.Function = filter.FunctionId;
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<FuelCostFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetFuelCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -7658,7 +7915,21 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                    }
+                }
+            }
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -7694,6 +7965,7 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             filter.Function = filter.FunctionId;
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<LeaseCostFuncGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetLeaseCostByFunctionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -8085,7 +8357,21 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                    }
+                }
+            }
             var input = Mapper.Map<SalesRegionGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetSalesByRegionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -8119,6 +8405,7 @@ namespace FMS.Website.Controllers
             }
 
             //getbyparams
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<SalesRegionGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetSalesByRegionData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
@@ -8513,7 +8800,21 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-
+            var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
+            var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if (GetCity != null)
+                {
+                    var GetRegion = LocationMappingList.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if (GetRegion != null)
+                    {
+                        model.SearchView.ZoneId = GetRegion.ZoneSales;
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                    }
+                }
+            }
             var input = Mapper.Map<AccidentGetByParamInput>(model.SearchView);
             var data = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
             var listRegional = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
@@ -8551,6 +8852,7 @@ namespace FMS.Website.Controllers
 
             //getbyparams
             filter.Function = filter.FunctionId;
+            filter.ZoneId = filter.Zone;
             var input = Mapper.Map<AccidentGetByParamInput>(filter);
 
             var dbData = _execSummBLL.GetAccidentData(input).OrderBy(x => x.REPORT_MONTH).OrderBy(x => x.REPORT_YEAR);
