@@ -144,7 +144,8 @@ namespace FMS.Website.Controllers
             param.EmployeeId = searchView.EmployeeId;
             param.FormalName = searchView.FormalName;
             param.PoliceNumber = searchView.PoliceNumber;
-
+            param.ChasisNumber = searchView.ChasisNumber;
+            param.EngineNumber = searchView.EngineNumber;
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }
@@ -170,7 +171,8 @@ namespace FMS.Website.Controllers
             param.EmployeeId = searchView.EmployeeID;
             param.FormalName = searchView.EmployeeName;
             param.PoliceNumber = searchView.PoliceNumber;
-
+            param.ChasisNumber = searchView.ChasisNumber;
+            param.EngineNumber = searchView.EngineNumber;
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }
@@ -347,6 +349,12 @@ namespace FMS.Website.Controllers
                 if (model.VatDecimalStr != null)
                 {
                     model.VatDecimal = Convert.ToDecimal(model.VatDecimalStr.Replace(",", ""));
+                }
+                var arrEmployeeName = model.EmployeeName.Split('-');
+                model.EmployeeName = arrEmployeeName[0].TrimStart();
+                if (arrEmployeeName.Count() > 1)
+                {
+                    model.EmployeeName = arrEmployeeName[1].TrimStart();
                 }
 
                 var data = Mapper.Map<FleetDto>(model);
@@ -679,6 +687,29 @@ namespace FMS.Website.Controllers
             var listVehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == paramVehUsage && x.IsActive).ToList();
 
             return Json(listVehUsage);
+        }
+
+        public JsonResult GetEmployeeList()
+        {
+            var allEmployee = _employeeBLL
+                .GetEmployee()
+                .Select(x
+                    => new
+                    {
+                        DATA = string.Concat(x.EMPLOYEE_ID, " - ", x.FORMAL_NAME)
+                    })
+                    .OrderBy(X => X.DATA)
+                    .ToList();
+
+            return Json(allEmployee, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetEmployee(string Id)
+        {
+            var data = Id.Split('-');
+            var model = _employeeBLL.GetByID(data[0].Trim());
+            return Json(model);
         }
 
         #region export xls

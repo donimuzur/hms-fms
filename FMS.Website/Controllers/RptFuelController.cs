@@ -65,9 +65,11 @@ namespace FMS.Website.Controllers
                 model.SearchView.FunctionList = new SelectList(function, "DIRECTORATE", "DIRECTORATE");
                 model.SearchView.RegionalList = new SelectList(locationMapping, "Region", "Region");
                 model.RptFuelItem = Mapper.Map<List<RptFuelItem>>(data);
-
-                var dataFuel = _rptFuelBLL.GetRptFuelData();
-
+                var dataFuel =new List<RptFuelDto>();
+                if (model.RptFuelItem.Count() == 0 )
+                {
+                    dataFuel = _rptFuelBLL.GetRptFuelData();
+                }
                 foreach (var item in model.RptFuelItem)
                 {
                    
@@ -141,7 +143,11 @@ namespace FMS.Website.Controllers
             model.RptFuelItem = GetFuelData(model.SearchView);
             var input = Mapper.Map<RptFuelByParamInput>(model.SearchView);
 
-            var dataFuel = _rptFuelBLL.GetRptFuelData();
+            var dataFuel = new List<RptFuelDto>();
+            if (model.RptFuelItem.Count() == 0)
+            {
+                dataFuel = _rptFuelBLL.GetRptFuelData();
+            }
 
             foreach (var item in model.RptFuelItem)
             {

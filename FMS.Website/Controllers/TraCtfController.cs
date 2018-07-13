@@ -61,8 +61,6 @@ namespace FMS.Website.Controllers
         #region --------- Open Document--------------
         public ActionResult Index()
         {
-            _ctfBLL.CheckCtfInProgress();
-
             if (CurrentUser.UserRole == Enums.UserRole.User)
             {
                 return RedirectToAction("PersonalDashboard");
@@ -71,14 +69,16 @@ namespace FMS.Website.Controllers
             var model = new CtfModel();
             var data = _ctfBLL.GetCtfDashboard(CurrentUser, false);
             model.Details = Mapper.Map<List<CtfItem>>(data);
+            var GetExtendList = _ctfExtendBLL.GetCtfExtend().ToList();
+            var GetLocationMappingList = _locationMappingBLL.GetLocationMapping().ToList();
             foreach (var item in model.Details)
             {
-                var ctfExtendDto = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == item.TraCtfId).FirstOrDefault();
+                var ctfExtendDto = GetExtendList.Where(x => x.TraCtfId == item.TraCtfId).FirstOrDefault();
                 if (ctfExtendDto != null)
                 {
                     item.CtfExtend = ctfExtendDto;
                 }
-                var region = _locationMappingBLL.GetLocationMapping().Where(x => x.Location == item.VehicleLocation).FirstOrDefault();
+                var region = GetLocationMappingList.Where(x => x.Location == item.VehicleLocation).FirstOrDefault();
                 if (region != null)
                 {
                     item.Region = region.Region;
@@ -95,29 +95,36 @@ namespace FMS.Website.Controllers
         }
         public CtfModel TerminationBoard(CtfModel model)
         {
-            var settingData = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
+            var GetSetting = _settingBLL.GetSetting().Where(x => x.IsActive).ToList();
+            var GetFleet = _fleetBLL.GetFleet().Where(x => x.IsActive).ToList();
+            DateTime adddays = new DateTime();
+
+            var settingData = GetSetting.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SettingName.ToUpper() == "BENEFIT").FirstOrDefault().SettingName;
             var wtcType = settingData.Where(x => x.SettingName.ToUpper() == "WTC").FirstOrDefault().SettingName;
 
-            var VehUsage = _settingBLL.GetSetting().Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
+            var VehUsage = GetSetting.Where(x => x.SettingGroup == "VEHICLE_USAGE_BENEFIT");
             var CfmUsage = VehUsage.Where(x => x.SettingName.ToUpper() == "CFM").FirstOrDefault().SettingName;
 
-            var fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(60).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && x.IsActive == true).ToList();
-            var fleetWTC = _fleetBLL.GetFleetForEndContractLessThan(90).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == wtcType.ToUpper() && x.IsActive == true).ToList();
+            adddays = DateTime.Now.AddDays(60);
+            var fleetBenefit = GetFleet.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && x.EndContract < adddays).ToList();
+
+            adddays = DateTime.Now.AddDays(90);
+            var fleetWTC = GetFleet.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == wtcType.ToUpper() && x.EndContract < adddays).ToList();
 
             bool IsSendCsf = false;
             bool IsTerminate = false;
 
-            var GetSetting = _settingBLL.GetSetting();
+
             var ReasonList = _reasonBLL.GetReason();
             var CsfList = _csfBLL.GetList();
             var CtfList = _ctfBLL.GetCtf();
-
+            var vehUsageNoCar = GetSetting.Where(x => x.SettingGroup == "VEHICLE_CATEGORY" && x.SettingName == "NO_CAR").FirstOrDefault().MstSettingId;
             if (CurrentUser.UserRole == Enums.UserRole.HR)
             {
                 if (fleetBenefit != null)
                 {
-                    
+
                     foreach (var item in fleetBenefit)
                     {
                         try
@@ -128,7 +135,7 @@ namespace FMS.Website.Controllers
                             var ReasonID = ReasonList.Where(x => x.Reason.ToLower() == "end rent").FirstOrDefault().MstReasonId;
 
                             var VehType = GetSetting.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SettingName.ToUpper() == (item.VehicleType == null ? "" : item.VehicleType.ToUpper()) && x.IsActive).FirstOrDefault();
-                            var csfdata = CsfList.Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MstSettingId.ToString()) && x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+                            var csfdata = CsfList.Where(x => x.EMPLOYEE_ID == ctfitem.EmployeeId && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MstSettingId.ToString()) && ((x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled) || (x.DOCUMENT_STATUS == Enums.DocumentStatus.Completed && vehUsageNoCar.ToString() == x.VEHICLE_CATEGORY))).ToList();
 
                             var days7 = DateTime.Now.AddDays(7);
                             ctfitem.Reason = ReasonID;
@@ -156,8 +163,8 @@ namespace FMS.Website.Controllers
             }
             else if (CurrentUser.UserRole == Enums.UserRole.Fleet)
             {
-                fleetBenefit = _fleetBLL.GetFleetForEndContractLessThan(7).Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == CfmUsage.ToUpper() && x.IsActive == true).ToList();
-                
+                fleetBenefit = GetFleet.Where(x => (x.VehicleType == null ? "" : x.VehicleType.ToUpper()) == benefitType.ToUpper() && (x.VehicleUsage == null ? "" : x.VehicleUsage.ToUpper()) == CfmUsage.ToUpper() && x.EndContract < adddays).ToList();
+
                 if (fleetBenefit != null)
                 {
                     foreach (var item in fleetBenefit)
@@ -189,7 +196,6 @@ namespace FMS.Website.Controllers
                             {
                                 model.Details.Add(ctfitem);
                             }
-
                         }
                         catch (Exception exp)
                         {
@@ -715,7 +721,7 @@ namespace FMS.Website.Controllers
             {
                 return RedirectToAction("ApprovalFleetBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }
-            if ((ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID || (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() > 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
+            if ((ctfData.EmployeeIdCreator == CurrentUser.EMPLOYEE_ID || (CurrentUser.USER_ID == ctfData.CreatedBy)|| (CurrentUser.LoginFor == null ? false : (CurrentUser.LoginFor.Where(x => x.EMPLOYEE_ID == ctfData.EmployeeIdCreator).Count() > 0 ? true : false))) && ctfData.DocumentStatus == Enums.DocumentStatus.WaitingHRApproval)
             {
                 return RedirectToAction("ApprovalHR", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
             }

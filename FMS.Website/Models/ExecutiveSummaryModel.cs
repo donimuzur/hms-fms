@@ -141,7 +141,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -233,7 +233,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -315,7 +315,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -402,7 +402,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -494,7 +494,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -586,7 +586,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -676,7 +676,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -738,6 +738,8 @@ namespace FMS.Website.Models
         public decimal? TotalKm { get; set; }
         public decimal? TotalCost { get; set; }
         public decimal? Stick { get; set; }
+        public decimal? PerKm { get; set; }
+        public decimal? PerStick { get; set; }
         public int? ReportMonth { get; set; }
         public string Month { get; set; }
         public int? ReportYear { get; set; }
@@ -761,7 +763,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -850,7 +852,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },
@@ -918,6 +920,7 @@ namespace FMS.Website.Models
         public string Month { get; set; }
         public int? ReportYear { get; set; }
         public int? Unit { get; set; }
+        public int? UnitBudget { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 
@@ -939,7 +942,7 @@ namespace FMS.Website.Models
             {
                 var items = new List<SelectListItem>()
                 {
-                    new SelectListItem() {Text = "", Value = "0" },
+                    //new SelectListItem() {Text = "", Value = "0" },
                     new SelectListItem() {Text = "January", Value = "1" },
                     new SelectListItem() {Text = "February", Value = "2" },
                     new SelectListItem() {Text = "March", Value = "3" },

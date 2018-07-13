@@ -10,10 +10,14 @@
             <th>Total KM</th>
             <th>Total Cost</th>
             <th>Stick</th>
+            <th>Per KM</th>
+            <th>Per Stick</th>
         </tr>
     </thead>
     <thead class="filters">
         <tr>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
+            <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
             <th><input type="text" style="border-radius: 7px; text-align: center; width: 100%" placeholder="Search" /></th>
@@ -29,9 +33,11 @@
                 <td>@Html.Raw(data.Region)</td>
                 <td>@Html.Raw(data.Month)</td>
                 <td>@Html.Raw(data.ReportYear)</td>
-                <td>@string.Format("{0:N0}", data.TotalKm)</td>
-                <td>@string.Format("{0:N0}", data.TotalCost)</td>
+                <td>@string.Format("{0:N2}", data.TotalKm)</td>
+                <td>@string.Format("{0:N2}", data.TotalCost)</td>
                 <td>@Html.Raw(data.Stick)</td>
+                <td>@string.Format("{0:N2}", data.PerKm)</td>
+                <td>@string.Format("{0:N2}", data.PerStick)</td>
             </tr>
         }
     </tbody>

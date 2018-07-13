@@ -698,14 +698,24 @@ namespace FMS.BLL.Temporary
                     rc.Subject = tempData.DOCUMENT_NUMBER_TEMP + " - Document In Progress";
 
                     //if not using CFM IDLE
-                    if (tempData.CFM_IDLE_ID == null || tempData.CFM_IDLE_ID == 0) { 
-                        bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    if (tempData.CFM_IDLE_ID == null || tempData.CFM_IDLE_ID == 0) {
+                        bodyMail.Append("Dear Mr/Mrs " + employeeDataName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your temporary car with request no. " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Kindly help to inform the delivery information through this email:<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("PIC & Phone                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Date & Time                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Place/Address                   :<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("If you need to propose another delivery schedule, kindly inform us through this email.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("*If your temporary car has delivered, please ignore this email.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thank you.<br /><br />");
                         bodyMail.AppendLine();
@@ -717,15 +727,25 @@ namespace FMS.BLL.Temporary
                     //if using CFM IDLE
                     else
                     {
-                        bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                        bodyMail.Append("Dear Mr/Mrs " + employeeDataName + ",<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Your temporary car with request no. " + tempData.DOCUMENT_NUMBER_TEMP + " will be arrived at " + tempData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Kindly help to inform the delivery information through this email:<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("PIC & Phone                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Date & Time                     :<br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("Place/Address                   :<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Click <a href='" + webRootUrl + "/TraTemporary/Detail/" + tempData.TRA_TEMPORARY_ID + "?isPersonalDashboard=True" + "'>HERE</a> for your temporary car details.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Kindly note that the temporary car is Company pool car which makes it possible to be exchanged with another unit should someone choose it as their permanent CFM. You will be informed earlier should this exchange occurs.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("If you need to propose another delivery schedule, kindly inform us through this email.<br /><br />");
+                        bodyMail.AppendLine();
+                        bodyMail.Append("*If your temporary car has delivered, please ignore this email.<br /><br />");
                         bodyMail.AppendLine();
                         bodyMail.Append("Thank you.<br /><br />");
                         bodyMail.AppendLine();

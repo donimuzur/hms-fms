@@ -797,10 +797,10 @@ namespace FMS.BLL.Crf
             //----------UPDATE CREATOR EMAIL FROM ADSI------------//
             var employeeData = new MST_EMPLOYEE();
 
-            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE FULL_NAME = 'PMI\\" + crfData.CREATED_BY + "'";
+            var CreatorQuery = "SELECT EMAIL, INTERNAL_EMAIL FROM " + serverIntranet + ".[dbo].[tbl_ADSI_User] WHERE ID = 'ID" + crfData.EMPLOYEE_ID + "'";
             if (typeEnv == "VTI")
             {
-                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE FULL_NAME = 'PMI\\" + crfData.CREATED_BY + "'";
+                CreatorQuery = "SELECT EMAIL, FULL_NAME FROM EMAIL_FOR_VTI WHERE ID = 'ID" + crfData.EMPLOYEE_ID + "'";
             }
 
             SqlCommand query = new SqlCommand(CreatorQuery, con);

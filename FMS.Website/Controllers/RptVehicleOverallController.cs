@@ -54,6 +54,7 @@ namespace FMS.Website.Controllers
             //model.Details = new List<FleetItem>();
 
             var fleetList = _fleetBLL.GetFleet().ToList();
+            var EmployeeList = _employeeBLL.GetEmployee();
             var settingData = _settingBLL.GetSetting().Where(x => x.IsActive);
             var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.SettingValue }).ToList();
             var listBodType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType)).Select(x => new { x.SettingValue }).ToList();
@@ -77,6 +78,19 @@ namespace FMS.Website.Controllers
             model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().ToList(), "Basetown", "Basetown");
             model.SearchView.ZoneList = new SelectList(locationMappingData.Select(x => new { x.ZoneSales}).Distinct().ToList(), "ZoneSales", "ZoneSales");
             
+            if(CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager )
+            {
+                var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
+                if(GetCity != null)
+                {
+                    var GetRegion = locationMappingData.Where(x => (x.Location == null ? "" : x.Location.ToUpper()) == (GetCity.CITY == null ? "" : GetCity.CITY.ToUpper())).FirstOrDefault();
+                    if(GetRegion != null)
+                    {
+                        model.SearchView.Zone = GetRegion.ZoneSales;
+                    }
+                }
+            }
+
             model.SearchView.StatusSource = "True";
 
             model.MainMenu = _mainMenu;
@@ -169,7 +183,7 @@ namespace FMS.Website.Controllers
             param.EmployeeId = searchView.EmployeeID;
             param.FormalName = searchView.EmployeeName;
             param.PoliceNumber = searchView.PoliceNumber;
-
+            param.Zone = searchView.Zone;
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }

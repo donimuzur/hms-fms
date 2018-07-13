@@ -575,9 +575,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("<li>Prepare a copy of your driving license (SIM A) for the vendor</li>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<li>Fill and complete SIRS via Web Link SIRS (Application Access > Environment, Health, Safety & Security > Sampoerna Incident Reporting System (SIRS))</li>");
-                        bodyMail.AppendLine();
-                        bodyMail.Append("<li>ill and compelte CIRF (if there is any incident)</li>");
+                        bodyMail.Append("<li>For CFM unit, fill and complete SIRS via Web Link SIRS (Application Access > Environment, Health, Safety & Security > Sampoerna Incident Reporting System (SIRS)) and CIRF.</li>");
                         bodyMail.AppendLine();
                         bodyMail.Append("</ol> ");
                         bodyMail.AppendLine();
@@ -593,7 +591,7 @@ namespace FMS.BLL.Ctf
                         bodyMail.AppendLine();
                         bodyMail.Append("<li>Copy of Bank Account (for COP Scheme)</li>");
                         bodyMail.AppendLine();
-                        bodyMail.Append("<li>Your Transfer Receipt (for COP Scheme)</li>");
+                        bodyMail.Append("<li>Your Transfer Receipt (for COP Scheme with outstanding payment)</li>");
                         bodyMail.AppendLine(); 
                         bodyMail.Append("<li>Supporting Letter (for COP Scheme, will be send in separate email)</li>");
                         bodyMail.AppendLine();
@@ -1088,7 +1086,7 @@ namespace FMS.BLL.Ctf
                 case Enums.ActionType.Extend:
                     rc.Subject = ctfData.DocumentNumber + " - Extend Vehicle";
 
-                    bodyMail.Append("Dear " + ctfData.EmployeeName + ",<br /><br />");
+                    bodyMail.Append("Dear " + vendorDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Here is vehicle data which extended contract period. <br /><br />");
                     bodyMail.AppendLine();
@@ -1273,6 +1271,15 @@ namespace FMS.BLL.Ctf
         public void CheckCtfInProgress()
         {
             var dateMinus1 = DateTime.Today.AddDays(-1);
+            var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)).ToList();
+            listCtfInProgress = listCtfInProgress.Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
+                                                                        && x.EFFECTIVE_DATE.Value <= dateMinus1).ToList();
+
+            foreach (var item in listCtfInProgress)
+            {
+                UpdateFleet(item.TRA_CTF_ID);
+                _uow.SaveChanges();
+            }
 
             var CopEndRentList = _fleetService.GetFleet().Where(x => x.IS_ACTIVE
                                 && (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == "BENEFIT"
@@ -1282,16 +1289,6 @@ namespace FMS.BLL.Ctf
             foreach (var copitem in CopEndRentList)
             {
                 InActiveCOPEndRent(copitem.MST_FLEET_ID);
-            }
-
-            var listCtfInProgress = _ctfService.GetCtf().Where(x => (x.DOCUMENT_STATUS == Enums.DocumentStatus.InProgress || x.DOCUMENT_STATUS == Enums.DocumentStatus.Extended)
-                                                                        && x.EFFECTIVE_DATE.Value <= dateMinus1).ToList();
-
-            foreach (var item in listCtfInProgress)
-            {
-                UpdateFleet(item.TRA_CTF_ID);
-
-                _uow.SaveChanges();
             }
 
             EmailNotifChangeCC();
@@ -1421,17 +1418,6 @@ namespace FMS.BLL.Ctf
                             
                         }
                     }
-                    var reason = _reasonService.GetReasonById(CtfData.REASON.HasValue ? CtfData.REASON.Value : 0);
-                    var GetConfigReason = ConfigurationManager.AppSettings["Reason"].Split(',').ToList();
-                    if ((reason == null ? false : GetConfigReason.Where(x => (x == null ? "" : x.ToUpper() )  == reason.REASON.ToUpper()).Count() > 0 ))
-                    {
-                        var Employee = _employeeService.GetEmployeeById(CtfData.EMPLOYEE_ID);
-                        if (Employee != null)
-                        {
-                            Employee.IS_ACTIVE = false;
-                            _employeeService.save(Employee);
-                        }
-                    }
                 }
             }
             else if (CtfData.EXTEND_VEHICLE.Value)
@@ -1470,7 +1456,17 @@ namespace FMS.BLL.Ctf
                 _fleetService.save(ExtendCar);
                 
             }
-
+            var reason = _reasonService.GetReasonById(CtfData.REASON.HasValue ? CtfData.REASON.Value : 0);
+            var GetConfigReason = ConfigurationManager.AppSettings["Reason"].Split(',').ToList();
+            if ((reason == null ? false : GetConfigReason.Where(x => (x == null ? "" : x.ToUpper()) == reason.REASON.ToUpper()).Count() > 0))
+            {
+                var Employee = _employeeService.GetEmployeeById(CtfData.EMPLOYEE_ID);
+                if (Employee != null)
+                {
+                    Employee.IS_ACTIVE = false;
+                    _employeeService.save(Employee);
+                }
+            }
         }
         public bool CheckCtfExists(TraCtfDto item)
         {

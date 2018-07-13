@@ -837,9 +837,17 @@ namespace FMS.BLL.Csf
                 case Enums.ActionType.InProgress:
                     rc.Subject = csfData.DOCUMENT_NUMBER + " - Document In Progress";
 
-                    bodyMail.Append("Dear " + employeeDataName + ",<br /><br />");
+                    bodyMail.Append("Dear Mr/Mrs " + employeeDataName + ",<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Your new car request " + csfData.DOCUMENT_NUMBER + " will be arrived at " + csfData.VENDOR_CONTRACT_START_DATE.Value.ToString("dd-MMM-yyyy") + "<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Kindly help to inform the delivery information through this email:<br /><br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("PIC & Phone                     :<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Date & Time                     :<br />");
+                    bodyMail.AppendLine();
+                    bodyMail.Append("Place/Address                   :<br /><br />");
                     bodyMail.AppendLine();
                     bodyMail.Append("Click <a href='" + webRootUrl + "/TraCsf/Detail/" + csfData.TRA_CSF_ID + "?isPersonalDashboard=True" + "'>HERE</a> to monitor your request<br />");
                     bodyMail.AppendLine();
@@ -1868,6 +1876,7 @@ namespace FMS.BLL.Csf
         {
             var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
+            var allSetting = _settingService.GetSetting();
 
             var rc = new CsfMailNotification();
             var bodyMail = new StringBuilder();
@@ -1891,14 +1900,25 @@ namespace FMS.BLL.Csf
                                 "<td style='border: 1px solid black; padding : 5px'>Employee Name</td>" +
                                 "<td style='border: 1px solid black; padding : 5px'>Current Basetown</td>" +
                                 "<td style='border: 1px solid black; padding : 5px'>Vehicle Type</td>" +
+                                "<td style='border: 1px solid black; padding : 5px'>Vehicle Usage</td>" +
                             "</tr>");
             bodyMail.AppendLine();
             foreach (var CsfDoc in ListCsf)
             {
                 var vehType = "WTC";
+                var vehUsage = "";
                 if (CsfDoc.VEHICLE_TYPE == benefitType)
                 {
                     vehType = "BENEFIT";
+                }
+
+                var vehUsageData = allSetting.Where(x => x.MST_SETTING_ID == 
+                    (string.IsNullOrEmpty(CsfDoc.VEHICLE_USAGE) ? 0 : Convert.ToInt32(CsfDoc.VEHICLE_USAGE)))
+                    .FirstOrDefault();
+
+                if (vehUsageData != null)
+                {
+                    vehUsage = vehUsageData.SETTING_VALUE;
                 }
 
                 bodyMail.Append("<tr><td style='border: 1px solid black; padding : 5px'>" + CsfDoc.DOCUMENT_NUMBER + "</td>" +
@@ -1907,6 +1927,7 @@ namespace FMS.BLL.Csf
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.EMPLOYEE_NAME + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + CsfDoc.LOCATION_CITY + "</td>" +
                                     "<td style='border: 1px solid black; padding : 5px'>" + vehType + "</td>" +
+                                    "<td style='border: 1px solid black; padding : 5px'>" + vehUsage + "</td>" +
                                 "</tr>");
                 bodyMail.AppendLine();
             }
@@ -1998,7 +2019,7 @@ namespace FMS.BLL.Csf
 
         public void EpafCSFNotif ()
         {
-            var CsfList = _CsfService.GetAllCsf().Where(x => x.DOCUMENT_STATUS != Enums.DocumentStatus.Completed && x.DOCUMENT_STATUS != Enums.DocumentStatus.Cancelled).ToList();
+            var CsfList = _CsfService.GetAllCsf().ToList();
             var EpafCSFList = _epafService.GetEpafByDocumentType(Enums.DocumentType.CSF).Where(x => x.REMARK == null && (CsfList == null ? true : CsfList.Where(csf => csf.EPAF_ID == x.MST_EPAF_ID).Count() == 0)).ToList();
             var Scheduler = ConfigurationManager.AppSettings["EpafCSFScheduler"];
             var arrScheduler = Scheduler.Split(',').ToList();

@@ -122,21 +122,30 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link11">Actual Cost Vs Budget</a></b></div>
+                    <div class="card-body" id="chart10">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
+                        <canvas id="mybarChart3"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link12">Actual Unit Vs Budget</a></b></div>
+                    <div class="card-body" id="chart11">
+                        @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
+                        <canvas id="mybarChart4"></canvas>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link10">Accident</a></b></div>
                     <div class="card-body" id="chart9">
                         @*<h5 class="card-title"><i class="fa fa-car"></i> Fuel & Lease Cost</h5>*@
                         <canvas id="lineChart3"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-footer"><i class="fa fa-clock-o"></i> <b style="font-size:14px"><a id="link11">Actual Cost Vs Budget</a></b></div>
-                    <div class="card-body" id="chart10">
-                        @*<h5 class="card-title"><i class="fa fa-car"></i> Sales By Region</h5>*@
-                        <canvas id="mybarChart3"></canvas>
                     </div>
                 </div>
             </div>
@@ -620,6 +629,9 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });
@@ -695,6 +707,12 @@
                                     scaleLabel: {
                                         display: true,
                                         labelString: 'Cost (IDR)'
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return number_format(value);
+                                        }
                                     }
                                 }],
                                 xAxes: [{
@@ -703,6 +721,17 @@
                                         labelString: 'Regional'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, chart) {
+                                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel, 2);
+                                    }
+                                }
                             }
                         }
                     });
@@ -753,25 +782,26 @@
                     $('#mybarChart3').remove();
                     $('#chart10').append('<canvas id="mybarChart3"><canvas>');
                     var ctx = document.getElementById("mybarChart3");
+                    ctx.height = 100;
                     var mybarChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels_chart,
                             datasets: [{
                                 label: label_1,
-                                backgroundColor: "#00FF00",
+                                backgroundColor: "#F08080",
                                 data: first_chart
                             }, {
                                 label: label_2,
-                                backgroundColor: "#FFFF80",
+                                backgroundColor: "#FF70D2",
                                 data: second_chart
                             }, {
                                 label: label_3,
-                                backgroundColor: "#B21B1B",
+                                backgroundColor: "#FFA072",
                                 data: third_chart
                             }, {
                                 label: label_4,
-                                backgroundColor: "#FD13ED",
+                                backgroundColor: "#7096FF",
                                 data: forth_chart
                             }]
                         },
@@ -780,7 +810,10 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return number_format(value);
+                                        }
                                     },
                                     scaleLabel: {
                                         display: true,
@@ -796,6 +829,17 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, chart) {
+                                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel, 2);
+                                    }
+                                }
                             }
                         }
                     });
@@ -873,6 +917,9 @@
                                         labelString: 'Regional'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });
@@ -934,7 +981,10 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return number_format(value);
+                                        }
                                     },
                                     scaleLabel: {
                                         display: true,
@@ -950,6 +1000,17 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, chart) {
+                                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel, 2);
+                                    }
+                                }
                             }
                         }
                     });
@@ -1034,6 +1095,9 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });
@@ -1130,6 +1194,9 @@
                                         labelString: 'Manufacturers'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });
@@ -1232,6 +1299,12 @@
                                     scaleLabel: {
                                         display: true,
                                         labelString: 'KM'
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return number_format(value);
+                                        }
                                     }
                                 }],
                                 xAxes: [{
@@ -1240,6 +1313,17 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, chart) {
+                                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel, 2);
+                                    }
+                                }
                             }
                         }
                     });
@@ -1327,7 +1411,10 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        callback: function (value, index, values) {
+                                            return number_format(value);
+                                        }
                                     },
                                     scaleLabel: {
                                         display: true,
@@ -1343,6 +1430,17 @@
                                         labelString: 'Functions'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function (tooltipItem, chart) {
+                                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel, 2);
+                                    }
+                                }
                             }
                         }
                     });
@@ -1444,6 +1542,80 @@
                                         labelString: 'Body Type'
                                     }
                                 }]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AcObUnitDataVisual", "RptExecutiveSummary")',
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), isRegion:false },
+            success: function (response) {
+                var labels_chart = [];
+                var first_chart = [];
+                var second_chart = [];
+
+                var label_1 = "Unit Actual";
+                var label_2 = "Unit Bugdet";
+
+                for (var i = 0; i < response.length; i++) {
+                    labels_chart.push(response[i].FUNCTION);
+                    first_chart.push(response[i].UNIT);
+                    second_chart.push(response[i].UNIT_BUDGET);
+
+                    label_1 = response[i].LABEL1;
+                    label_2 = response[i].LABEL2;
+                }
+
+                if ($('#mybarChart4').length) {
+                    $('#mybarChart4').remove();
+                    $('#chart11').append('<canvas id="mybarChart4"><canvas>');
+                    var ctx = document.getElementById("mybarChart4");
+                    var mybarChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels_chart,
+                            datasets: [{
+                                label: label_1,
+                                backgroundColor: "#21A4FF",
+                                data: first_chart
+                            }, {
+                                label: label_2,
+                                backgroundColor: "#FF8000",
+                                data: second_chart
+                            }]
+                        },
+
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Unit'
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Functions'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     });
@@ -1508,6 +1680,31 @@
             type: 'POST'
         });
 
+    }
+
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function (n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.round(n * k) / k;
+                };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
     }
 
     $(document).on('click', '#btn-filter', function () {
@@ -1575,6 +1772,12 @@
     });
 
     $(document).on('click', '#link11', function () {
+        var myUrl = '@Url.Action("AcVsOb", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
+
+        window.location.href = myUrl;
+    });
+
+    $(document).on('click', '#link12', function () {
         var myUrl = '@Url.Action("AcVsOb", "RptExecutiveSummary")/?' + 'month=' + $('#SearchView_MonthFrom').val() + '&year=' + $('#SearchView_YearFrom').val();
 
         window.location.href = myUrl;
