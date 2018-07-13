@@ -78,7 +78,7 @@ namespace FMS.Website.Controllers
             model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().ToList(), "Basetown", "Basetown");
             model.SearchView.ZoneList = new SelectList(locationMappingData.Select(x => new { x.ZoneSales}).Distinct().ToList(), "ZoneSales", "ZoneSales");
             
-            if(CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager )
+            if(CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic )
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if(GetCity != null)
