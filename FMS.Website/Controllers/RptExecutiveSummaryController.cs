@@ -98,7 +98,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -145,7 +145,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -256,7 +256,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -349,7 +349,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -446,7 +446,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -585,7 +585,7 @@ namespace FMS.Website.Controllers
             input.YearTo = yearFrom == null ? 0 : yearFrom.Value;
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -651,7 +651,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -872,7 +872,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -1056,7 +1056,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -1381,7 +1381,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -1569,7 +1569,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -1757,7 +1757,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -1944,7 +1944,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -5239,7 +5239,7 @@ namespace FMS.Website.Controllers
                 model.SearchView.YearFrom = year.Value;
                 model.SearchView.YearTo = year.Value;
             }
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -5682,7 +5682,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -6577,7 +6577,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -7025,7 +7025,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -7471,7 +7471,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -7917,7 +7917,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -8359,7 +8359,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
@@ -8802,7 +8802,7 @@ namespace FMS.Website.Controllers
             }
             var EmployeeList = _employeeBLL.GetEmployee().Where(x => x.IS_ACTIVE).ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).ToList();
-            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.LDManager)
+            if (CurrentUser.UserRole == Enums.UserRole.FinanceZone || CurrentUser.UserRole == Enums.UserRole.Logistic)
             {
                 var GetCity = EmployeeList.Where(x => x.EMPLOYEE_ID == CurrentUser.EMPLOYEE_ID && x.IS_ACTIVE).FirstOrDefault();
                 if (GetCity != null)
