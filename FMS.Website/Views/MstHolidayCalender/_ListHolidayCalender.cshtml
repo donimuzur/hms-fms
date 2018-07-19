@@ -44,7 +44,7 @@
                     }
                     @if (Model.CurrentPageAccess.ReadAccess == true && Model.SearchView.Table == "2")
                     {
-                        <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId, Archive = true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        <a href="@Url.Action("Detail", "MstHolidayCalender", new { @MstHolidayCalenderId = data.MstHolidayDateId, ArchiveData = true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
                     }
                     else if (Model.CurrentPageAccess.ReadAccess == true && (Model.SearchView.Table == null || Model.SearchView.Table != "2"))
                     {
