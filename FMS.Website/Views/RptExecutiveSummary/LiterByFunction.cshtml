@@ -155,7 +155,7 @@
                         <div class="form-group">
                             <label for="SearchView_Zone">Zone</label>
                             @Html.HiddenFor(model => model.SearchView.ZoneId)
-                            @Html.DropDownListFor(model => model.SearchView.Zone, Model.SearchView.ZoneList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                            @Html.TextBoxFor(model => model.SearchView.Zone, new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                 }
@@ -273,7 +273,7 @@
 			        VehicleType: $('#SearchView_VehicleType').val(),
 			        Region: $('#SearchView_Region').val(),
 			        Function: theList,
-			        ZoneId: zoneId,
+			        ZoneId: $('#SearchView_Zone').val()
 			    }
 
 			};
@@ -359,7 +359,7 @@
         $.ajax({
             type: 'POST',
             url: '@Url.Action("VisualLiter", "RptExecutiveSummary")',
-            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, vehType: $('#SearchView_VehicleType').val(), regional: $('#SearchView_Regional').val(), functions: theList, zone: zoneId },
+            data: { monthFrom: $('#SearchView_MonthFrom').val(), yearFrom: $('#SearchView_YearFrom').val(), monthTo: $('#SearchView_MonthTo').val(), yearTo: $('#SearchView_YearTo').val(), isByRegion: false, vehType: $('#SearchView_VehicleType').val(), regional: $('#SearchView_Regional').val(), functions: theList, zone: $('#SearchView_Zone').val() },
             success: function (response) {
                 var labels_chart = [];
                 var data_chart = [];

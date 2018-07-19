@@ -12,6 +12,7 @@ namespace FMS.Website.Models
         public TemporaryIndexModel()
         {
             TempList = new List<TempData>();
+            SearchView = new TempSearchView();
         }
 
         public string TitleForm { get; set; }
@@ -19,6 +20,7 @@ namespace FMS.Website.Models
         public List<TempData> TempList { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsPersonalDashboard { get; set; }
+        public TempSearchView SearchView { get; set; }
     }
 
     public class TempItemModel : BaseModel
@@ -110,5 +112,22 @@ namespace FMS.Website.Models
         public SelectList LocationCityList { get; set; }
         public SelectList LocationAddressList { get; set; }
         public SelectList ProjectList { get; set; }
+    }
+
+    public class TempSearchView
+    {
+        public string Table { get; set; }
+        public SelectList TableList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Real Data", Value = "1" },
+                    new SelectListItem() {Text = "Archive Data", Value = "2" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
     }
 }

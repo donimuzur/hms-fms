@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="41">
+      <Diagram DiagramId="04e66114c28146908ac75cd8e45a073b" Name="Diagram1" ZoomLevel="85">
         <EntityTypeShape EntityType="FMSModel.AC_VS_OB_REPORT_DATA" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.ACCIDENT_REPORT_DATA" Width="1.5" PointX="5.75" PointY="3.75" />
         <EntityTypeShape EntityType="FMSModel.AUTO_GR" Width="1.5" PointX="5.75" PointY="6.75" />
@@ -123,7 +123,7 @@
         <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CSF" Width="1.5" PointX="25.375" PointY="0.75" />
         <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CTF" Width="1.5" PointX="25.375" PointY="16.75" />
         <EntityTypeShape EntityType="FMSModel.ARCH_TRA_CTF_EXTEND" Width="1.5" PointX="9.375" PointY="25.75" />
-        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_TEMPORARY" Width="1.5" PointX="27.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FMSModel.ARCH_TRA_TEMPORARY" Width="1.5" PointX="27.375" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
