@@ -18,7 +18,7 @@
     <thead class="filters">
         <tr>
             <th>
-                @if (Model.CurrentPageAccess.WriteAccess == true)
+                @if (Model.CurrentPageAccess.WriteAccess == true && (Model.SearchView.Table == null || Model.SearchView.Table != "2"))
                 {
                     <a href="@Url.Action("Create", "MstHolidayCalender")" class="btn btn-primary line" ng-click="insHolidayCalender()"><i class="fa fa-plus" id="myModalLabel"></i> New</a>
                 }
