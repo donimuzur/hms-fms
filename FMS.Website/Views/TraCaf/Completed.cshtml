@@ -65,103 +65,7 @@
         </div>
     </div>
     <div id="contenttable" class="wpanel">
-        <table id="tbEpaf" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th>CAF Number</th>
-                    <th>CAF Status</th>
-                    <th>Vehicle Type</th>
-                    <th>Employee Id</th>
-                    <th>Employee Name</th>
-                    <th>SIRS Number</th>
-                    <th>Police Number</th>
-                    <th>Vehicle Model</th>
-                    <th>Regional</th>
-                    <th>Vendor</th>
-                    <th>Incident Date</th>
-                    <th>Coordinator</th>
-                    <th>Updated By</th>
-                    <th>Updated Date</th>
-                </tr>
-            </thead>
-            <thead class="filters">
-                <tr>
-                    <th>
-                        @*@if (Model.CurrentPageAccess.WriteAccess == true)
-                            {
-                                <a href="@Url.Action("Create","TraCaf")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel">New</i></a>
-                            }*@
-                    </th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                    <th><input style="border-radius: 5px; text-align: center;" type="text" placeholder="search"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var data in Model.Details)
-                {
-                    <tr>
-                        <td style="text-align: center;">
-                            @if (Model.SearchView.Table == null || Model.SearchView.Table != "2")
-                            {
-                                if (Model.CurrentPageAccess.ReadAccess == true)
-                                {
-                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                                }
-                                else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
-                                {
-                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                                }
-                            }
-                            else
-                            {
-                                if (Model.CurrentPageAccess.ReadAccess == true)
-                                {
-                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard, ArchiveData = true })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                                }
-                                else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
-                                {
-                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard, ArchiveData = true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
-                                }
-                            }
-                        </td>
-                        <td>@Html.Raw(data.DocumentNumber)</td>
-                        <td>@Html.Raw(data.DocumentStatusString)</td>
-                        <td>@Html.Raw(data.VehicleType)</td>
-                        <td>@Html.Raw(data.EmployeeId)</td>
-                        <td>@Html.Raw(data.EmployeeName)</td>
-                        <td>@Html.Raw(data.SirsNumber)</td>
-                        <td>@Html.Raw(data.PoliceNumber)</td>
-                        <td>@Html.Raw(data.VehicleModel)</td>
-                        <td>@Html.Raw(data.Area)</td>
-                        <td>@Html.Raw(data.VendorName)</td>
-                        <td>@Html.Raw(data.IncidentDate.ToString("dd-MM-yyyy hh:mm"))</td>
-                        <td>@Html.Raw(data.CreatedBy)</td>
-                        <td>@Html.Raw(data.ModifiedBy)</td>
-                        @if (data.ModifiedDate.HasValue)
-                        {
-                            <td>@Html.Raw(data.ModifiedDate.Value.ToString("dd-MM-yyyy hh:mm"))</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
+        @Html.Partial("_ListCaf")
     </div>
     <div id="closemodal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog">
@@ -243,9 +147,7 @@
         });
         //setupDataTables();
         $(document).on('click', '#btn-filter', function () {
-            alert($('#Search_Table').val());
             $("#SearchView_Table").val(getFunctionStr($('#Search_Table').val()));
-            alert($('#SearchView_Table').val());
         });
 
         $(document).on('click', '#btn-reset', function () {
