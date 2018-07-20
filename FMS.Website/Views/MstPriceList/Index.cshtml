@@ -160,7 +160,6 @@
     $(function () {
         $(".chosen").chosen();
         $(document).on('click', '#btn-filter', function () {
-            console.log('a');
             $("#SearchView_VehicleUsage").val(getFunctionStr($('#Search_VehicleUsage').val()));
             $("#SearchView_vendor").val(getFunctionStr($('#Search_Vendor').val()));
             $("#SearchView_VehicleType").val(getFunctionStr($('#Search_VehicleType').val()));
