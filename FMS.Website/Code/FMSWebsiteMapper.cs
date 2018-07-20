@@ -86,10 +86,7 @@ namespace FMS.Website.Code
 
             Mapper.CreateMap<FleetItem, FleetDto>().IgnoreAllNonExisting();
 
-            Mapper.CreateMap<FleetDto, FleetItem>().IgnoreAllNonExisting()
-                .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.ModifiedBy == null ? src.CreatedBy : src.ModifiedBy))
-                .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.ModifiedDate == null ? src.CreatedDate : src.ModifiedDate))
-                ;
+            Mapper.CreateMap<FleetDto, FleetItem>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<FleetDashboardItem, FleetChangeDto>().IgnoreAllNonExisting();
 
@@ -143,6 +140,47 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IS_ACTIVE));
 
+            Mapper.CreateMap<ARCH_MST_EMPLOYEE, EmployeeDto>().IgnoreAllNonExisting()
+                .ForMember(dest => dest.EMPLOYEE_ID, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
+                .ForMember(dest => dest.FORMAL_NAME, opt => opt.MapFrom(src => src.FORMAL_NAME))
+                .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GROUP_LEVEL))
+                .ForMember(dest => dest.POSITION_TITLE, opt => opt.MapFrom(src => src.POSITION_TITLE))
+                .ForMember(dest => dest.DIVISON, opt => opt.MapFrom(src => src.DIVISON))
+                .ForMember(dest => dest.DIRECTORATE, opt => opt.MapFrom(src => src.DIRECTORATE))
+                .ForMember(dest => dest.ADDRESS, opt => opt.MapFrom(src => src.ADDRESS))
+                .ForMember(dest => dest.CITY, opt => opt.MapFrom(src => src.CITY))
+                .ForMember(dest => dest.BASETOWN, opt => opt.MapFrom(src => src.BASETOWN))
+                .ForMember(dest => dest.COMPANY, opt => opt.MapFrom(src => src.COMPANY))
+                .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.COST_CENTER))
+                .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GROUP_LEVEL))
+                .ForMember(dest => dest.EMAIL_ADDRESS, opt => opt.MapFrom(src => src.EMAIL_ADDRESS))
+                .ForMember(dest => dest.FLEX_POINT, opt => opt.MapFrom(src => src.FLEX_POINT))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IS_ACTIVE));
+
+            Mapper.CreateMap<EmployeeDto, ARCH_MST_EMPLOYEE>().IgnoreAllNonExisting()
+               .ForMember(dest => dest.EMPLOYEE_ID, opt => opt.MapFrom(src => src.EMPLOYEE_ID))
+                .ForMember(dest => dest.FORMAL_NAME, opt => opt.MapFrom(src => src.FORMAL_NAME))
+                .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GROUP_LEVEL))
+                .ForMember(dest => dest.POSITION_TITLE, opt => opt.MapFrom(src => src.POSITION_TITLE))
+                .ForMember(dest => dest.DIVISON, opt => opt.MapFrom(src => src.DIVISON))
+                .ForMember(dest => dest.DIRECTORATE, opt => opt.MapFrom(src => src.DIRECTORATE))
+                .ForMember(dest => dest.ADDRESS, opt => opt.MapFrom(src => src.ADDRESS))
+                .ForMember(dest => dest.CITY, opt => opt.MapFrom(src => src.CITY))
+                .ForMember(dest => dest.BASETOWN, opt => opt.MapFrom(src => src.BASETOWN))
+                .ForMember(dest => dest.COMPANY, opt => opt.MapFrom(src => src.COMPANY))
+                .ForMember(dest => dest.COST_CENTER, opt => opt.MapFrom(src => src.COST_CENTER))
+                .ForMember(dest => dest.GROUP_LEVEL, opt => opt.MapFrom(src => src.GROUP_LEVEL))
+                .ForMember(dest => dest.EMAIL_ADDRESS, opt => opt.MapFrom(src => src.EMAIL_ADDRESS))
+                .ForMember(dest => dest.FLEX_POINT, opt => opt.MapFrom(src => src.FLEX_POINT))
+                .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CREATED_BY))
+                .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CREATED_DATE))
+                .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.MODIFIED_BY))
+                .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+                .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IS_ACTIVE));
             Mapper.CreateMap<EmployeeUploadItem, EmployeeItem>().IgnoreAllNonExisting()
            .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.MODIFIED_DATE == null ? src.CREATED_DATE : src.MODIFIED_DATE));
 
@@ -418,6 +456,34 @@ namespace FMS.Website.Code
                 .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
                 .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
+
+            Mapper.CreateMap<ARCH_MST_COST_OB, CostObDto>().IgnoreAllNonExisting()
+             .ForMember(dest => dest.MstCostObId, opt => opt.MapFrom(src => src.MST_COST_OB_ID))
+             .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.YEAR))
+             .ForMember(dest => dest.Zone, opt => opt.MapFrom(src => src.ZONE))
+             .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.MODEL))
+             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.TYPE))
+             .ForMember(dest => dest.ObCost, opt => opt.MapFrom(src => src.OB_COST))
+             .ForMember(dest => dest.Remark, opt => opt.MapFrom(src => src.REMARK))
+             .ForMember(dest => dest.ModifiedBy, opt => opt.MapFrom(src => src.MODIFIED_BY))
+             .ForMember(dest => dest.ModifiedDate, opt => opt.MapFrom(src => src.MODIFIED_DATE))
+             .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CREATED_DATE))
+             .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CREATED_BY))
+             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IS_ACTIVE));
+
+            Mapper.CreateMap<CostObDto, ARCH_MST_COST_OB>().IgnoreAllNonExisting()
+            .ForMember(dest => dest.MST_COST_OB_ID, opt => opt.MapFrom(src => src.MstCostObId))
+            .ForMember(dest => dest.YEAR, opt => opt.MapFrom(src => src.Year))
+            .ForMember(dest => dest.ZONE, opt => opt.MapFrom(src => src.Zone))
+            .ForMember(dest => dest.MODEL, opt => opt.MapFrom(src => src.Model))
+            .ForMember(dest => dest.TYPE, opt => opt.MapFrom(src => src.Type))
+            .ForMember(dest => dest.OB_COST, opt => opt.MapFrom(src => src.ObCost))
+            .ForMember(dest => dest.REMARK, opt => opt.MapFrom(src => src.Remark))
+            .ForMember(dest => dest.MODIFIED_BY, opt => opt.MapFrom(src => src.ModifiedBy))
+            .ForMember(dest => dest.MODIFIED_DATE, opt => opt.MapFrom(src => src.ModifiedDate))
+            .ForMember(dest => dest.CREATED_DATE, opt => opt.MapFrom(src => src.CreatedDate))
+            .ForMember(dest => dest.CREATED_BY, opt => opt.MapFrom(src => src.CreatedBy))
+            .ForMember(dest => dest.IS_ACTIVE, opt => opt.MapFrom(src => src.IsActive));
 
             Mapper.CreateMap<CostObSearchView, CostObParamInput>().IgnoreAllNonExisting();
             Mapper.CreateMap<CostObParamInput, CostObSearchView>().IgnoreAllNonExisting();

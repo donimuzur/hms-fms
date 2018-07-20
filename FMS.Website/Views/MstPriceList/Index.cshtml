@@ -68,6 +68,13 @@
                         @Html.HiddenFor(model => model.SearchView.VehicleUsage)
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="SearchView_Table">Show Data </label>
+                        @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control" })
+                        @Html.HiddenFor(model => model.SearchView.Table)
+                    </div>
+                </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
                     <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
@@ -107,7 +114,8 @@
 			        VehicleType: getFunctionStr($('#Search_VehicleType').val()),
 			        vendor: getFunctionStr($('#Search_Vendor').val()),
 			        VehicleUsage: getFunctionStr($('#Search_VehicleUsage').val()),
-			        ZonePricelist: getFunctionStr($('#Search_ZonePricelist').val())
+			        ZonePricelist: getFunctionStr($('#Search_ZonePricelist').val()),
+			        Table: getFunctionStr($('#Search_Table').val())
 			    }
 			};
         $.ajax({
@@ -157,6 +165,7 @@
             $("#SearchView_vendor").val(getFunctionStr($('#Search_Vendor').val()));
             $("#SearchView_VehicleType").val(getFunctionStr($('#Search_VehicleType').val()));
             $("#SearchView_ZonePricelist").val(getFunctionStr($('#Search_ZonePricelist').val()));
+            $("#SearchView_Table").val(getFunctionStr($('#Search_Table').val()));
         });
 
         $(document).on('click', '#btn-reset', function () {
@@ -164,11 +173,13 @@
             $("#SearchView_vendor").val('');
             $("#SearchView_VehicleType").val('');
             $("#SearchView_ZonePricelist").val('');
+            $("#SearchView_Table").val('');
 
             $("#Search_VehicleUsage").val('').trigger('chosen:updated');
             $("#Search_Vendor").val('').trigger('chosen:updated');
             $("#Search_VehicleType").val('').trigger('chosen:updated');
             $("#Search_ZonePricelist").val('').trigger('chosen:updated');
+            $("#Search_Table").val('').trigger('chosen:updated');
 
             $("#btn-filter").trigger('click');
         });

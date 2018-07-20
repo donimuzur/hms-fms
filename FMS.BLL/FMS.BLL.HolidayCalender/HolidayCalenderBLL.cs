@@ -18,11 +18,13 @@ namespace FMS.BLL.HolidayCalender
     public class HolidayCalenderBLL :IHolidayCalenderBLL
     {
         private IHolidayCalenderService _holidayCalenderService;
+        private IArchHolidayCalendarService _archHolidayCalenderService;
         private IUnitOfWork _uow;
         public HolidayCalenderBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _holidayCalenderService = new HolidayCalenderService(uow);
+            _archHolidayCalenderService = new ArchHolidayCalendarService(uow);
         }
 
         public List<HolidayCalenderDto> GetHolidayCalender()
@@ -32,8 +34,13 @@ namespace FMS.BLL.HolidayCalender
             return retData;
         }
 
-        public HolidayCalenderDto GetholidayCalenderById(int MstHolidayDateId)
+        public HolidayCalenderDto GetholidayCalenderById(int MstHolidayDateId, bool? Archive = null)
         {
+            if (Archive.HasValue)
+            {
+                var archData = _archHolidayCalenderService.GetHolidayCalenderById(MstHolidayDateId);
+                return Mapper.Map<HolidayCalenderDto>(archData);
+            }
             var data = _holidayCalenderService.GetHolidayCalenderById(MstHolidayDateId);
             var retData = Mapper.Map<HolidayCalenderDto>(data);
 
@@ -54,6 +61,12 @@ namespace FMS.BLL.HolidayCalender
 
         public List<HolidayCalenderDto> GetHolidayCalender(HolidayCalenderParamInput filter)
         {
+            if(filter.Table == "2")
+            {
+                var archData = _archHolidayCalenderService.GetHolidayCalender(filter);
+                return Mapper.Map<List<HolidayCalenderDto>>(archData);
+            }
+
             var data = _holidayCalenderService.GetHolidayCalender(filter);
             var retData = Mapper.Map<List<HolidayCalenderDto>>(data);
             return retData;

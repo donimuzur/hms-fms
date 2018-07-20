@@ -25,6 +25,7 @@ namespace FMS.BLL.Ccf
     {
         private IUnitOfWork _uow;
         private ICcfService _ccfService;
+        private IArchTraCcfService _archCcfService;
         private IDocumentNumberService _docNumberService;
         private IWorkflowHistoryService _workflowService;
         private ISettingService _settingService;
@@ -42,6 +43,7 @@ namespace FMS.BLL.Ccf
         {
             _uow = uow;
             _ccfService = new CcfService(uow);
+            _archCcfService = new ArchTraCcfService(uow);
             _docNumberService = new DocumentNumberService(uow);
             _workflowService = new WorkflowHistoryService(uow);
             _settingService = new SettingService(uow);
@@ -765,10 +767,27 @@ namespace FMS.BLL.Ccf
 
         }
 
-        public TraCcfDto GetCcfById(long id)
+        public TraCcfDto GetCcfById(long id, bool? Archive = null)
         {
+            if (Archive.HasValue)
+            {
+                var archData = _archCcfService.GetCcfById(id);
+                return Mapper.Map<TraCcfDto>(archData);
+            }
             var data = _ccfService.GetCcfById(id);
             var retData = Mapper.Map<TraCcfDto>(data);
+            return retData;
+        }
+
+        public List<TraCcfDto> GetCcfByParam(CcfParamInput param)
+        {
+            if (param.Table == "2")
+            {
+                var archData = _archCcfService.GetCcf();
+                return Mapper.Map<List<TraCcfDto>>(archData);
+            }
+            var data = _ccfService.GetCcf();
+            var retData = Mapper.Map<List<TraCcfDto>>(data);
             return retData;
         }
 
@@ -824,11 +843,22 @@ namespace FMS.BLL.Ccf
 
         }
 
-        public List<TraCcfDto> GetCcfD1(int traCCFid)
+        public List<TraCcfDto> GetCcfD1(int traCCFid, bool? Archive = null)
         {
-            var dataCcf = _ccfService.GetCcfById(traCCFid);
-            var data = _ccfService.GetCcfD1().Where(x=>x.TRA_CCF_ID == traCCFid);
-            var redata = Mapper.Map<List<TraCcfDto>>(data);
+            var dataCcf = new TRA_CCF();
+            var archDataCcf = new ARCH_TRA_CCF();
+            var data = new List<TRA_CCF_DETAIL>();
+            var archData = new List<ARCH_TRA_CCF_DETAIL>();
+            var redata = new List<TraCcfDto>();
+            if (Archive.HasValue)
+            {
+                archDataCcf = _archCcfService.GetCcfById(traCCFid);
+                archData = _archCcfService.GetCcfD1().Where(x => x.TRA_CCF_ID == traCCFid).ToList();
+                redata = Mapper.Map<List<TraCcfDto>>(data);
+            }
+            dataCcf = _ccfService.GetCcfById(traCCFid);
+            data = _ccfService.GetCcfD1().Where(x => x.TRA_CCF_ID == traCCFid).ToList();
+            redata = Mapper.Map<List<TraCcfDto>>(data);
             return redata;
         }
 

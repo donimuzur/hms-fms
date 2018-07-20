@@ -43,6 +43,8 @@ namespace FMS.BLL.Ctf
         private IFleetChangeService _fleetChangeService;
         private IFunctionChangeService _functionChangeService;
         private ILocationChangeService _locationChangeService;
+
+        private IArchTraCtfService _archCtfService;
         public CtfBLL(IUnitOfWork uow)
         {
             _uow = uow;
@@ -63,6 +65,7 @@ namespace FMS.BLL.Ctf
             _fleetChangeService = new FleetChangeService(_uow);
             _functionChangeService = new FunctionChangeService(_uow);
             _locationChangeService = new LocationChangeService(_uow);
+            _archCtfService = new ArchTraCtfService(_uow);
         }
         public List<TraCtfDto> GetCtf()
         {
@@ -70,20 +73,50 @@ namespace FMS.BLL.Ctf
             var redata = Mapper.Map<List<TraCtfDto>>(data);
             return redata;
         }
-        public TraCtfDto GetCtfById(long id)
+        public TraCtfDto GetCtfById(long id, bool? ArchivedData = null)
         {
-            var data = _ctfService.GetCtfById(id);
-            var retData = Mapper.Map<TraCtfDto>(data);
+            var retData = new TraCtfDto();
+            if(ArchivedData.HasValue)
+            {
+                var data = _archCtfService.GetCtfById(id);
+                retData = Mapper.Map<TraCtfDto>(data);
+            }
+            else
+            {
+                var data = _ctfService.GetCtfById(id);
+                retData = Mapper.Map<TraCtfDto>(data);
+            }
             return retData;
         }
-        public List<TraCtfDto> GetCtfDashboard(Login userLogin, bool isCompleted)
+        public List<TraCtfDto> GetCtfDashboard(Login userLogin, bool isCompleted,CtfParamInput input = null)
         {
             var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().SETTING_NAME;
             var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().SETTING_NAME;
-
-            var data = _ctfService.GetCtfDashboard(userLogin, isCompleted, benefitType, wtcType);
-            var retData = Mapper.Map<List<TraCtfDto>>(data);
+            var retData = new List<TraCtfDto>();
+            if(input != null && input.Table == "2")
+            {
+                var data = _archCtfService.GetCtfDashboard(userLogin, isCompleted, benefitType, wtcType);
+                retData = Mapper.Map<List<TraCtfDto>>(data);
+                foreach (var item in retData)
+                {
+                    if (item.Reason.HasValue)
+                    {
+                        var Reason = _reasonService.GetReasonById(item.Reason.Value);
+                        if (Reason != null)
+                        {
+                            item.ReasonS = Reason.REASON;
+                            item.IsPenalty = Reason.IS_PENALTY;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var data = _ctfService.GetCtfDashboard(userLogin, isCompleted, benefitType, wtcType);
+                retData = Mapper.Map<List<TraCtfDto>>(data);
+            }
+            
             return retData;
         }
         public List<TraCtfDto> GetCtfPersonal(Login userLogin)

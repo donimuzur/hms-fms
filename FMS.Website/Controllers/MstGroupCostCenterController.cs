@@ -58,8 +58,16 @@ namespace FMS.Website.Controllers
 
         public GroupCostCenterSearchView Initial(GroupCostCenterModel model)
         {
-            model.SearchView.FunctionList = new SelectList(model.Details.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName");
-            model.SearchView.CostCenterList = new SelectList(model.Details.Select(x => new { x.CostCenter }).Distinct().ToList(), "CostCenter", "CostCenter");
+            var dataAll = _GroupCostCenterBLL.GetGroupCenter(true);
+            var GetGroupCostCenterList = new List<GroupCostCenterItem>();
+            var data = Mapper.Map<List<GroupCostCenterItem>>(dataAll);
+            GetGroupCostCenterList.AddRange(data);
+            dataAll = _GroupCostCenterBLL.GetGroupCenter();
+            data = Mapper.Map<List<GroupCostCenterItem>>(dataAll);
+            GetGroupCostCenterList.AddRange(data);
+
+            model.SearchView.FunctionList = new SelectList(GetGroupCostCenterList.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName");
+            model.SearchView.CostCenterList = new SelectList(GetGroupCostCenterList.Select(x => new { x.CostCenter }).Distinct().ToList(), "CostCenter", "CostCenter");
             return model.SearchView;
         }
 
@@ -145,9 +153,9 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstGroupCostCenter");
         }
 
-        public ActionResult Detail(int MstGroupCostCenterId)
+        public ActionResult Detail(int MstGroupCostCenterId, bool? ArchiveData = null)
         {
-            var data = _GroupCostCenterBLL.GetGroupCenterById(MstGroupCostCenterId);
+            var data = _GroupCostCenterBLL.GetGroupCenterById(MstGroupCostCenterId, ArchiveData);
             var model = Mapper.Map<GroupCostCenterItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;

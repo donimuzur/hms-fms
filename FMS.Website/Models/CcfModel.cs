@@ -2,6 +2,7 @@
 using FMS.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,12 +15,19 @@ namespace FMS.Website.Models
         public string TitleForm { get; set; }
         public string DocumentStatus { get; set; }
         public SelectList RemarkList { get; set; }
+        public CcfSearchView SearchView { get; set; }
 
         public bool IsPersonalDashboard { get; set; }
         public CcfModel()
         {
             Details = new List<CcfItem>();
         }
+    }
+
+    public class CcfSearchView
+    {
+        public string Table { get; set; }
+        public SelectList TableList { get; set; }
     }
 
     public class CcfItem : BaseModel

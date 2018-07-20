@@ -12,5 +12,6 @@ namespace FMS.BusinessObject.Inputs
         public string VehicleType { get; set; }
         public string VehicleUsage { get; set; }
         public string ZonePricelist { get; set; }
+        public string Table { get; set; }
     }
 }

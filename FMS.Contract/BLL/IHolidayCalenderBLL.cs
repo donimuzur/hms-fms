@@ -12,7 +12,7 @@ namespace FMS.Contract.BLL
     public interface IHolidayCalenderBLL
     {
         List<HolidayCalenderDto> GetHolidayCalender();
-        HolidayCalenderDto GetholidayCalenderById(int MstHolidayDateId);
+        HolidayCalenderDto GetholidayCalenderById(int MstHolidayDateId, bool? Archive = null);
         void Save(HolidayCalenderDto HolidayCalenderDto);
         void Save(HolidayCalenderDto data, Login currentUser);
         List<HolidayCalenderDto> GetHolidayCalender(HolidayCalenderParamInput holidayCalenderParamInput);

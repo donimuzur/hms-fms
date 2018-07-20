@@ -18,6 +18,7 @@ namespace FMS.BLL.Employee
     {
         //private ILogger _logger;
         private IEmployeeService _employeeService;
+        private IArchEmployeeService _archEmployeeService;
         //private IRoleService _roleService;
         private IUnitOfWork _uow;
 
@@ -25,6 +26,7 @@ namespace FMS.BLL.Employee
         {
             _uow = uow;
             _employeeService = new EmployeeService(uow);
+            _archEmployeeService = new ArchEmployeeService(_uow);
         }
 
         public List<EmployeeDto> GetEmployee()
@@ -34,11 +36,19 @@ namespace FMS.BLL.Employee
             return retData;
         }
 
-        public EmployeeDto GetByID(string Id)
+        public EmployeeDto GetByID(string Id, bool? Archived=null)
         {
-            var data = _employeeService.GetEmployeeById(Id);
-            var retData = Mapper.Map<EmployeeDto>(data);
-
+            var retData = new EmployeeDto();
+            if(Archived.HasValue)
+            {
+                var data = _archEmployeeService.GetEmployeeById(Id);
+                retData = Mapper.Map<EmployeeDto>(data);
+            }
+            else
+            {
+                var data = _employeeService.GetEmployeeById(Id);
+                retData = Mapper.Map<EmployeeDto>(data);
+            }
             return retData;
         }
 
@@ -108,8 +118,19 @@ namespace FMS.BLL.Employee
 
         public List<EmployeeDto> GetEmployeeByParam(EmployeeParamInput param)
         {
-            var data = _employeeService.GetEmployeeByParam(param);
-            return Mapper.Map<List<EmployeeDto>>(data);
+            var retData = new List<EmployeeDto>();
+            if (param.Table == "2")
+            {
+                var data = _archEmployeeService.GetEmployeeByParam(param);
+                retData = Mapper.Map<List<EmployeeDto>>(data);
+            }
+            else
+            {
+                var data = _employeeService.GetEmployeeByParam(param);
+                retData = Mapper.Map<List<EmployeeDto>>(data);
+            }
+            
+            return retData;
         }
 
         public string GetLastEmployeeId()

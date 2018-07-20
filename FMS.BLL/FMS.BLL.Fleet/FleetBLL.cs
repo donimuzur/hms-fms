@@ -19,18 +19,30 @@ namespace FMS.BLL.Fleet
     {
         //private ILogger _logger;
         private IFleetService _FleetService;
+        private IArchFleetService _archFleetService;
         private IUnitOfWork _uow;
         public FleetBLL(IUnitOfWork uow)
         {
             _uow = uow;
-            _FleetService = new FleetService(uow);
+            _FleetService = new FleetService(_uow);
+            _archFleetService = new ArchFleetService(_uow);
         }
         
-        public List<FleetDto> GetFleet()
+        public List<FleetDto> GetFleet(FleetParamInput input = null)
         {
-            var data = _FleetService.GetFleet();
-            var redata = Mapper.Map<List<FleetDto>>(data);
-            return redata;
+            var retData = new List<FleetDto>();
+
+            if (input != null && input.Table == "2")
+            {
+                var data = _archFleetService.GetFleet();
+                retData = Mapper.Map<List<FleetDto>>(data);
+            }
+            else
+            {
+                var data = _FleetService.GetFleet();
+                retData = Mapper.Map<List<FleetDto>>(data);
+            }
+            return retData;
         }
 
         public void Save(FleetDto FleetDto)
@@ -45,11 +57,21 @@ namespace FMS.BLL.Fleet
             _FleetService.save(dbFleet, userLogin);
         }
 
-        public FleetDto GetFleetById(int MstFleetId)
+        public FleetDto GetFleetById(int MstFleetId,bool? Archived = null)
         {
-            var db = _FleetService.GetFleetById(MstFleetId);
-            var data = Mapper.Map<FleetDto>(db);
-            return data;
+            var retData = new FleetDto();
+
+            if (Archived.HasValue)
+            {
+                var data = _archFleetService.GetFleetById(MstFleetId);
+                retData = Mapper.Map<FleetDto>(data);
+            }
+            else
+            {
+                var data = _FleetService.GetFleetById(MstFleetId);
+                retData = Mapper.Map<FleetDto>(data);
+            }
+            return retData;
         }
 
         public FleetDto GetVehicleByEmployeeId(string employeeId, string vehicleType)
@@ -79,8 +101,18 @@ namespace FMS.BLL.Fleet
 
         public List<FleetDto> GetFleetByParam(FleetParamInput param)
         {
-            var data = _FleetService.GetFleetByParam(param);
-            return Mapper.Map<List<FleetDto>>(data);
+            var retData = new List<FleetDto>();
+            if(param.Table == "2")
+            {
+                var data = _archFleetService.GetFleetByParam(param);
+                retData = Mapper.Map<List<FleetDto>>(data);
+            }
+            else
+            {
+                var data = _FleetService.GetFleetByParam(param);
+                retData = Mapper.Map<List<FleetDto>>(data);
+            }
+            return retData;
         }
 
         public List<FleetDto> GetFleetForEndContractLessThan(int days)

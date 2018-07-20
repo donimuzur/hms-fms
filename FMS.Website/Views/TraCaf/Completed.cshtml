@@ -15,16 +15,56 @@
         </a>
     }
 
-    
+
 
 </div>
 
 <section class="content">
+    <div id="LoadingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div align="center">
+                        <img src="~/Content/img/loader2.gif" id="imgLoader" style="display:block" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @using (Html.BeginForm("ExportCompleted", "TraCaf", FormMethod.Post, new { @id = "ExportToXls" }))
     {
 
     }
     <div class="wpanel">
+        <div class="row col-md-12">
+            @using (Ajax.BeginForm("Completed", "TraCaf",
+                  new AjaxOptions
+                  {
+                      HttpMethod = "POST",
+                      InsertionMode = InsertionMode.Replace,
+                      UpdateTargetId = "contenttable",
+                      OnComplete = "setupDataTables",
+                      OnBegin = "LoadingShow",
+                      OnSuccess = "LoadingHide",
+                      OnFailure = "LoadingHide",
+                  }))
+            {
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="SearchView_Table">Show Data</label>
+                    @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control"})
+                    @Html.HiddenFor(model => model.SearchView.Table)
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+            </div>
+            }
+        </div>
+    </div>
+    <div id="contenttable" class="wpanel">
         <table id="tbEpaf" class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -74,13 +114,27 @@
                 {
                     <tr>
                         <td style="text-align: center;">
-                            @if (Model.CurrentPageAccess.ReadAccess == true)
+                            @if (Model.SearchView.Table == null || Model.SearchView.Table != "2")
                             {
-                                <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                if (Model.CurrentPageAccess.ReadAccess == true)
+                                {
+                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                }
+                                else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                                {
+                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                }
                             }
-                            else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                            else
                             {
-                                <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                if (Model.CurrentPageAccess.ReadAccess == true)
+                                {
+                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard, ArchiveData = true })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                }
+                                else if (Model.CurrentLogin.EMPLOYEE_ID == data.EmployeeId)
+                                {
+                                    <a href="@Url.Action("Details", "TraCaf", new { @id = data.TraCafId, @isPersonalDashboard = Model.IsPersonalDashboard, ArchiveData = true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                                }
                             }
                         </td>
                         <td>@Html.Raw(data.DocumentNumber)</td>
@@ -129,10 +183,10 @@
                         </div>
 
                     </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
-                        <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
-                    </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-grey" data-dismiss="modal" value="Close" />
+                            <input type="submit" class="btn btn-danger" value="OK" id="btnConfirmClose" />
+                        </div>
                 }
             </div>
         </div>
@@ -140,6 +194,12 @@
 </section>
 
 <script type="text/javascript">
+    function LoadingShow() {
+        $('#LoadingModal').show();
+    }
+    function LoadingHide() {
+        $('#LoadingModal').hide();
+    }
     $(document).ready(function() {
         $('#CafMenu').removeClass('collapse');
 
@@ -163,8 +223,36 @@
     function ExportXls() {
         $('#ExportToXls').submit();
     }
-    
+
     $(function () {
+        // DataTable
+        //var table = $('#tbEpaf').DataTable({
+        //    "dom": 'lf<"table-overflow"t>pi',
+        //    orderCellsTop: true
+        //});
+
+        //// Apply the search
+        //table.columns().eq(0).each(function (colIdx) {
+        //    $('input', $('.filters th')[colIdx]).on('keyup change', function () {
+        //        table
+        //            .column(colIdx)
+        //            .search(this.value)
+        //            .draw();
+        //    });
+        //});
+        setupDataTables();
+        $(document).on('click', '#btn-filter', function () {
+            $("#SearchView_Table").val(getFunctionStr($('#Search_Table').val()));
+        });
+
+        $(document).on('click', '#btn-reset', function () {
+
+            $("#Search_Table").val('').trigger('chosen:updated');
+            $("#btn-filter").trigger('click');
+        });
+    });
+
+    function setupDataTables() {
         // DataTable
         var table = $('#tbEpaf').DataTable({
             "dom": 'lf<"table-overflow"t>pi',
@@ -180,6 +268,5 @@
                     .draw();
             });
         });
-    });
 
 </script>

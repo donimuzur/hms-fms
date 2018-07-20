@@ -50,6 +50,11 @@ namespace FMS.Website.Controllers
             var costCenterList = _groupCostCenterBLL.GetGroupCenter().ToList();
             var fuelOdometerList = _fuelodometerBLL.GetFuelOdometer().ToList();
             var listVehType = _settingBLL.GetSetting().Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.IsActive).Select(x => new { x.MstSettingId, x.SettingValue }).ToList();
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
 
             model.SearchView.PoliceNumberList = new SelectList(fleetList.Select(x => new { x.PoliceNumber }).Distinct().ToList(), "PoliceNumber", "PoliceNumber");
             model.SearchView.EmployeeNameList = new SelectList(fleetList.Select(x => new { x.EmployeeName }).Distinct().ToList(), "EmployeeName", "EmployeeName");
@@ -58,9 +63,12 @@ namespace FMS.Website.Controllers
             model.SearchView.EcsRmbTransIdList = new SelectList(fuelOdometerList.Select(x => new { x.EcsRmbTransId }).Distinct().ToList(), "EcsRmbTransId", "EcsRmbTransId");
             model.SearchView.ClaimTypeList = new SelectList(fuelOdometerList.Select(x => new { x.ClaimType }).Distinct().ToList(), "ClaimType", "ClaimType");
             model.SearchView.VehicleTypeList = new SelectList(listVehType.Select(x => new { x.SettingValue }).Distinct().ToList(), "SettingValue", "SettingValue");
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
+            model.WriteAccess = CurrentPageAccess.WriteAccess != null? CurrentPageAccess.WriteAccess == true? 1 : 0 : 0;
+            model.ReadAccess = CurrentPageAccess.ReadAccess != null ? CurrentPageAccess.ReadAccess == true ? 1 : 0 : 0;
             return View(model);
         }
 
@@ -72,9 +80,9 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult Detail(long MstFuelOdometerId)
+        public ActionResult Detail(long MstFuelOdometerId, bool? ArchiveData = null)
         {
-            var data = _fuelodometerBLL.GetByID(MstFuelOdometerId);
+            var data = _fuelodometerBLL.GetByID(MstFuelOdometerId, ArchiveData);
             var model = new FuelOdometerItem();
             model = Mapper.Map<FuelOdometerItem>(data);
             model.MainMenu = _mainMenu;
@@ -134,6 +142,7 @@ namespace FMS.Website.Controllers
             param.ClaimType = searchView.ClaimType;
             param.CostCenter = searchView.CostCenter;
             param.EcsRmbTransId = searchView.EcsRmbTransId;
+            param.Table = searchView.Table;
 
             var data = _fuelodometerBLL.GetFuelOdometerByParam(param);
             return Mapper.Map<List<FuelOdometerItem>>(data);
@@ -154,6 +163,7 @@ namespace FMS.Website.Controllers
             param.ClaimType = searchView.ClaimType;
             param.CostCenter = searchView.CostCenter;
             param.EcsRmbTransId = searchView.EcsRmbTransId;
+            param.Table = searchView.Table;
 
             var data = _fuelodometerBLL.GetFuelOdometerByParam(param);
             return Mapper.Map<List<FuelOdometerItem>>(data);

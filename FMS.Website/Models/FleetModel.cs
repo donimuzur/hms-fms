@@ -46,6 +46,7 @@ namespace FMS.Website.Models
         public string EndDate { get; set; }
         public string EndDateTo { get; set; }
         public string Zone { get; set; }
+        public string Table { get; set; }
 
         public SelectList ZoneList { get; set; }
 
@@ -81,6 +82,7 @@ namespace FMS.Website.Models
         public SelectList FunctionList { get; set; }
         public SelectList RegionalList { get; set; }
         public SelectList CityList { get; set; }
+        public SelectList TableList { get; set; }
     }
 
     public class FleetItem : BaseModel

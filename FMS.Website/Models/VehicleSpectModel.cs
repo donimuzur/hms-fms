@@ -31,11 +31,13 @@ namespace FMS.Website.Models
         public string Model { get; set; }
         public string Series { get; set; }
         public string BodyType { get; set; }
-        
+        public string Table { get; set; }
+
         public SelectList ManufacturerList { get; set; }
         public SelectList ModelList { get; set; }
         public SelectList SeriesList { get; set; }
         public SelectList BodyTypeList { get; set; }
+        public SelectList TableList { get; set; }
     }
 
     public class VehicleSpectItem : BaseModel

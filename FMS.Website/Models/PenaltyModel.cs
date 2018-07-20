@@ -27,6 +27,7 @@ namespace FMS.Website.Models
         public string Series { get; set; }
         public string BodyType { get; set; }
         public string VehicleType { get; set; }
+        public string Table { get; set; }
 
         public SelectList VendorList { get; set; }
         public SelectList RequestYearList { get; set; }
@@ -35,6 +36,7 @@ namespace FMS.Website.Models
         public SelectList SeriesList { get; set; }
         public SelectList BodyTypeList { get; set; }
         public SelectList VehicleTypeList { get; set; }
+        public SelectList TableList { get; set; }
     }
 
     public class PenaltyItem : BaseModel

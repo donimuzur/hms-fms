@@ -110,11 +110,17 @@ namespace FMS.Website.Controllers
             var VehicleTypeList = _settingBLL.GetSetting().Where(x => x.IsActive && x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType)).Select(x => new { x.SettingName}).Distinct().ToList();
             var FunctionList = _functionGroupBll.GetGroupCenter().Where(x => x.IsActive).Select(x => new { x.FunctionName }).Distinct().ToList();
             var LocationMappingList = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.Region }).Distinct().ToList();
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
 
             model.SearchView.VehicleTypeList = new SelectList(VehicleTypeList, "SettingName", "SettingName");
             model.SearchView.FunctionList = new SelectList(FunctionList, "FunctionName", "FunctionName");
             model.SearchView.RegionalList = new SelectList(LocationMappingList, "Region", "Region");
-            
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
+
             var filter = new CostObParamInput();
             filter.Year = DateTime.Now.Year; 
 
@@ -300,11 +306,12 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region --------- Details ----------
-        public ActionResult Detail(int MstCostObid)
+        public ActionResult Detail(int MstCostObid, bool? ArchiveData = null )
         {
-            var data = _costObBLL.GetByID(MstCostObid);
             var model = new CostObItem();
+            var data = _costObBLL.GetByID(MstCostObid,ArchiveData);
             model = Mapper.Map<CostObItem>(data);
+            
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model = InitialModel(model);
@@ -728,7 +735,7 @@ namespace FMS.Website.Controllers
         public JsonResult SearchObAjax(DTParameters<CostObModel> param)
         {
             var model = param;
-
+            
             var data = model != null ? SearchDataOb(model) : SearchDataOb();
             DTResult<CostObItem> result = new DTResult<CostObItem>();
             result.draw = param.Draw;
@@ -755,6 +762,7 @@ namespace FMS.Website.Controllers
             param.Regional = searchView.Regional;
             param.VehicleType = searchView.VehicleType;
             param.Year = searchView.Year;
+            param.Table = searchView.Table;
 
             var dbData = _costObBLL.GetByFilter(param);
             var redata = Mapper.Map<List<CostObItem>>(dbData);

@@ -81,11 +81,17 @@ namespace FMS.Website.Controllers
             var VendorList = _vendorBLL.GetVendor().Where(x => x.IsActive).Select(x => new VendorDto { MstVendorId = x.MstVendorId, VendorName = x.VendorName }).Distinct().OrderBy(x => x.VendorName).ToList();
             var SettingList = _settingBLL.GetSetting().Where(x => x.IsActive ).ToList();
             var ZonePriceList = _locationMapping.GetLocationMapping().Where(x => x.IsActive).Select(x => new { x.ZonePriceList}).Distinct().OrderBy(x => x.ZonePriceList).ToList();
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
 
             model.SearchView.VehicleUsageList = new SelectList(model.Details.Select(x => new { x.VehicleUsage }).Distinct().ToList(), "VehicleUsage", "VehicleUsage");
             model.SearchView.VehicleTypeList = new SelectList(SettingList.Where(x => x.SettingGroup == "VEHICLE_TYPE").Select(x => new SettingDto { SettingName = x.SettingName }).Distinct().OrderBy(x => x.SettingName).ToList(), "SettingName", "SettingName");
             model.SearchView.VendorList = new SelectList(VendorList, "MstVendorId", "VendorName");
             model.SearchView.ZonePricelistList = new SelectList(ZonePriceList, "ZonePriceList", "ZonePriceList");
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
             return model.SearchView;
         }
         public ActionResult Index()
@@ -233,13 +239,13 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstPriceList");
         }
 
-        public ActionResult View(int? MstPriceListid)
+        public ActionResult View(int? MstPriceListid, bool? ArchiveData = null)
         {
             if (!MstPriceListid.HasValue)
             {
                 return HttpNotFound();
             }
-            var data = _priceListBLL.GetByID(MstPriceListid.Value);
+            var data = _priceListBLL.GetByID(MstPriceListid.Value, ArchiveData);
             var model = new PriceListItem();
             model = Mapper.Map<PriceListItem>(data);
             model.MainMenu = _mainMenu;

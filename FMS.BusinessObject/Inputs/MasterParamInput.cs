@@ -14,6 +14,7 @@ namespace FMS.BusinessObject.Inputs
         public int YearTo { get; set; }
         public string Type { get; set; }
         public string Regional { get; set; }
+        public string Table { get; set; }
     }
 
     public class CostObParamInput
@@ -23,6 +24,7 @@ namespace FMS.BusinessObject.Inputs
         public string Function { get; set; }
         public string Regional { get; set; }
         public int? Year { get; set; }
+        public string Table { get; set; }
     }
     public class EpafParamInput
     {
@@ -32,6 +34,7 @@ namespace FMS.BusinessObject.Inputs
         public string EmployeeName { get; set; }
         public string EpafAction { get; set; }
         public string DocumentType { get; set; }
+        public string Table { get; set; }
     }
 
     public class LocationMappingParamInput
@@ -44,5 +47,6 @@ namespace FMS.BusinessObject.Inputs
         public string ZonePriceList { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
+        public string Table { get; set; }
     }
 }

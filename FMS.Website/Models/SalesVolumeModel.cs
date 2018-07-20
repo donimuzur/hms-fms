@@ -59,6 +59,7 @@ namespace FMS.Website.Models
         public int YearTo { get; set; }
         public string Type { get; set; }
         public string Regional { get; set; }
+        public string Table { get; set; }
 
         public SelectList MonthList
         {
@@ -84,7 +85,7 @@ namespace FMS.Website.Models
             }
 
         }
-
+        public SelectList TableList { get; set; }
         public SelectList TypeList { get; set; }
         public SelectList RegionalList { get; set; }
     }
@@ -97,5 +98,6 @@ namespace FMS.Website.Models
         public int YearTo { get; set; }
         public string Type { get; set; }
         public string Regional { get; set; }
+        public string Table { get; set; }
     }
 }

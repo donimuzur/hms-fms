@@ -46,9 +46,21 @@ namespace FMS.Website.Controllers
             var input = Mapper.Map<SalesVolumeParamInput>(model.SearchView);
             var data = _SalesVolumeBLL.GetSalesVolume(input);
             var allData = _SalesVolumeBLL.GetAllSalesVolume();
+            input.Table = "2";
+            var allDataArchive = _SalesVolumeBLL.GetAllSalesVolume(input);
+            allData.AddRange(allDataArchive);
+            allData.Distinct();
 
             model.Details = Mapper.Map<List<SalesVolumeItem>>(data);
-            model.SearchView.TypeList = new SelectList(allData.Select(x => new { x.Type }).Distinct().ToList(), "Type", "Type");
+
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
+
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
+            model.SearchView.TypeList = new SelectList(allData.Select(x => new { x.Type }).Distinct().OrderBy(x => x.Type).ToList(), "Type", "Type");
             model.SearchView.RegionalList = new SelectList(allData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -56,9 +68,9 @@ namespace FMS.Website.Controllers
             return View(model);
         }
 
-        public ActionResult Detail(int MstSalesVolumeId)
+        public ActionResult Detail(int MstSalesVolumeId, bool? Archive = null)
         {
-            var data = _SalesVolumeBLL.GetSalesVolumeById(MstSalesVolumeId);
+            var data = _SalesVolumeBLL.GetSalesVolumeById(MstSalesVolumeId,Archive);
             var model = Mapper.Map<SalesVolumeItem>(data);
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
@@ -69,6 +81,7 @@ namespace FMS.Website.Controllers
         public PartialViewResult FilterData(SalesVolumeModel model)
         {
             model.Details = GetData(model.SearchView);
+          
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
             return PartialView("_ListData", model);

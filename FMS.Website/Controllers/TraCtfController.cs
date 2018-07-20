@@ -532,14 +532,14 @@ namespace FMS.Website.Controllers
         #endregion
 
         #region ---------  Details --------------
-        public ActionResult Details(int? TraCtfId, bool IsPersonalDashboard)
+        public ActionResult Details(int? TraCtfId, bool IsPersonalDashboard,bool? ArchiveData= null)
         {
             if (!TraCtfId.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
+            var ctfData = _ctfBLL.GetCtfById(TraCtfId.Value,ArchiveData);
 
             if (ctfData == null)
             {
@@ -551,21 +551,21 @@ namespace FMS.Website.Controllers
 
             if (ctfData.VehicleType == wtcType)
             {
-                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+                return RedirectToAction("DetailsWTC", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard, ArchiveData = ArchiveData });
             }
             else
             {
-                return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard });
+                return RedirectToAction("DetailsBenefit", "TraCtf", new { TraCtfId = ctfData.TraCtfId, IsPersonalDashboard = IsPersonalDashboard, ArchiveData = ArchiveData });
             }
         }
-        public ActionResult DetailsBenefit(int? TraCtfId, bool IsPersonalDashboard)
+        public ActionResult DetailsBenefit(int? TraCtfId, bool IsPersonalDashboard, bool? ArchiveData = null)
         {
             if (!TraCtfId.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
+            var ctfData = _ctfBLL.GetCtfById(TraCtfId.Value, ArchiveData);
 
             if (ctfData == null)
             {
@@ -578,7 +578,13 @@ namespace FMS.Website.Controllers
 
                 if (model.ExtendVehicle)
                 {
-                    var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
+                    CtfParamInput input = null;
+                    if(ArchiveData.HasValue && ArchiveData.Value)
+                    {
+                        input = new CtfParamInput();
+                        input.Table = "2";
+                    }
+                    var ctfExtend = _ctfExtendBLL.GetCtfExtendByCtfId(model.TraCtfId,input);
                     model.CtfExtend = ctfExtend;
                     if (model.CtfExtend != null)
                     {
@@ -606,14 +612,14 @@ namespace FMS.Website.Controllers
                 return RedirectToAction(IsPersonalDashboard ? "PersonalDashboard" : "Index");
             }
         }
-        public ActionResult DetailsWTC(int? TraCtfId, bool IsPersonalDashboard)
+        public ActionResult DetailsWTC(int? TraCtfId, bool IsPersonalDashboard, bool? ArchiveData = null)
         {
             if (!TraCtfId.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var ctfData = _ctfBLL.GetCtf().Where(x => x.TraCtfId == TraCtfId.Value).FirstOrDefault();
+            var ctfData = _ctfBLL.GetCtfById(TraCtfId.Value, ArchiveData);
 
             if (ctfData == null)
             {
@@ -626,7 +632,13 @@ namespace FMS.Website.Controllers
 
                 if (model.ExtendVehicle)
                 {
-                    var ctfExtend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == model.TraCtfId).FirstOrDefault();
+                    CtfParamInput input = null;
+                    if (ArchiveData.HasValue && ArchiveData.Value)
+                    {
+                        input = new CtfParamInput();
+                        input.Table = "2";
+                    }
+                    var ctfExtend = _ctfExtendBLL.GetCtfExtendByCtfId(model.TraCtfId,input);
                     model.CtfExtend = ctfExtend;
                     if (model.CtfExtend != null)
                     {
@@ -2061,11 +2073,10 @@ namespace FMS.Website.Controllers
         {
             var model = new CtfModel();
             var data = new List<TraCtfDto>();
-
-            data = _ctfBLL.GetCtfDashboard(CurrentUser, true);
+            
             model.TitleForm = "CTF Completed Document";
 
-            model.Details = Mapper.Map<List<CtfItem>>(data);
+            model.Details = GetCtfCompleted();
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -2080,6 +2091,31 @@ namespace FMS.Website.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        public PartialViewResult ListTraCtfCompleted(CtfModel model)
+        {
+            model.Details = new List<CtfItem>();
+            model.Details = GetCtfCompleted(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            return PartialView("_CompletedCtf", model);
+        }
+        private List<CtfItem> GetCtfCompleted(CtfSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _ctfBLL.GetCtfDashboard(CurrentUser, true);
+                return Mapper.Map<List<CtfItem>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<CtfParamInput>(filter);
+            var dbData = _ctfBLL.GetCtfDashboard(CurrentUser, true, input);
+            return Mapper.Map<List<CtfItem>>(dbData);
         }
         #endregion
 
@@ -2885,15 +2921,15 @@ namespace FMS.Website.Controllers
             return slDocument;
         }
         //------------------------------------------------------------------------------//
-        public void ExportCompleted()
+        public void ExportCompleted(CtfSearchView SearchView = null)
         {
             if (CurrentUser.UserRole == Enums.UserRole.HR || CurrentUser.UserRole == Enums.UserRole.HRManager)
             {
-                ExportHR(true);
+                ExportHR(true, SearchView);
             }
             else
             {
-                ExportFleet(true);
+                ExportFleet(true, SearchView);
             }
         }
         public void ExportOpen()
@@ -2908,11 +2944,11 @@ namespace FMS.Website.Controllers
             }
         }
         //------------------------------------------------------------------------------//     
-        public void ExportFleet(bool Completed)
+        public void ExportFleet(bool Completed, CtfSearchView SearchView=null)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsFleet(Completed);
+            pathFile = CreateXlsFleet(Completed, SearchView);
 
             var newFile = new FileInfo(pathFile);
 
@@ -2927,10 +2963,11 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-        private string CreateXlsFleet(bool Completed)
+        private string CreateXlsFleet(bool Completed, CtfSearchView SearchView = null)
         {
             //get data
-            var data = _ctfBLL.GetCtfDashboard(CurrentUser, Completed);
+            var input = Mapper.Map<CtfParamInput>(SearchView);
+            var data = _ctfBLL.GetCtfDashboard(CurrentUser, Completed, input);
 
             var slDocument = new SLDocument();
 
@@ -2948,7 +2985,7 @@ namespace FMS.Website.Controllers
             slDocument = CreateHeaderExcelFleet(slDocument);
 
             //create data
-            slDocument = CreateDataExcelFleet(slDocument, data, true);
+            slDocument = CreateDataExcelFleet(slDocument, data, true, SearchView);
 
             var fileName = (Completed == true ? "CTF_Completed_Document" : "CTF_Open_Document") + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -3019,7 +3056,7 @@ namespace FMS.Website.Controllers
             return slDocument;
 
         }
-        private SLDocument CreateDataExcelFleet(SLDocument slDocument, List<TraCtfDto> listData, bool isComplete)
+        private SLDocument CreateDataExcelFleet(SLDocument slDocument, List<TraCtfDto> listData, bool isComplete, CtfSearchView SearchView = null)
         {
             int iRow = 3; //starting row data
 
@@ -3051,8 +3088,8 @@ namespace FMS.Website.Controllers
                 slDocument.SetCellValue(iRow, 20, data.WithdCity);
                 slDocument.SetCellValue(iRow, 21, data.WithdAddress);
 
-
-                var extend = _ctfExtendBLL.GetCtfExtend().Where(x => x.TraCtfId == data.TraCtfId).FirstOrDefault();
+                var input = Mapper.Map<CtfParamInput>(SearchView);
+                var extend = _ctfExtendBLL.GetCtfExtendByCtfId(data.TraCtfId,input);
 
                 slDocument.SetCellValue(iRow, 22, data.ExtendVehicle == true ? "Yes" : "No");
                 slDocument.SetCellValue(iRow, 23, extend == null ? "" : extend.NewProposedDate.Value.ToString("dd MMM yyyy"));
@@ -3096,11 +3133,11 @@ namespace FMS.Website.Controllers
             return slDocument;
         }
         //--------------------------------HR---------------------------------------//
-        public void ExportHR(bool Completed)
+        public void ExportHR(bool Completed, CtfSearchView SearchView = null)
         {
             string pathFile = "";
 
-            pathFile = CreateXlsHR(Completed);
+            pathFile = CreateXlsHR(Completed, SearchView);
 
             var newFile = new FileInfo(pathFile);
 
@@ -3115,10 +3152,11 @@ namespace FMS.Website.Controllers
             newFile.Delete();
             Response.End();
         }
-        private string CreateXlsHR(bool Completed)
+        private string CreateXlsHR(bool Completed, CtfSearchView SearchView = null)
         {
             //get data
-            var data = _ctfBLL.GetCtfDashboard(CurrentUser, Completed);
+            var input = Mapper.Map<CtfParamInput>(SearchView);
+            var data = _ctfBLL.GetCtfDashboard(CurrentUser, Completed, input);
             var slDocument = new SLDocument();
 
             slDocument.SetCellValue(1, 1, Completed == true ? "CTF Completed Document" : "CTF Open Document");
@@ -3134,7 +3172,7 @@ namespace FMS.Website.Controllers
             slDocument = CreateHeaderExcelHR(slDocument);
 
             //create data
-            slDocument = CreateDataExcelHR(slDocument, data, Completed);
+            slDocument = CreateDataExcelHR(slDocument, data, Completed, SearchView);
 
             var fileName = (Completed == true ? "CTF_Completed_Document" : "CTF_Open_Document") + DateTime.Now.ToString("_yyyyMMddHHmmss") + ".xlsx";
             var path = Path.Combine(Server.MapPath(Constans.UploadPath), fileName);
@@ -3199,7 +3237,7 @@ namespace FMS.Website.Controllers
             return slDocument;
 
         }
-        private SLDocument CreateDataExcelHR(SLDocument slDocument, List<TraCtfDto> listData, bool isComplete)
+        private SLDocument CreateDataExcelHR(SLDocument slDocument, List<TraCtfDto> listData, bool isComplete, CtfSearchView SearchView = null)
         {
             int iRow = 3; //starting row data
 

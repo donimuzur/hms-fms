@@ -53,8 +53,13 @@ namespace FMS.Website.Controllers
             model.SearchView = new FleetSearchView();
             //model.Details=Mapper.Map<List<FleetItem>>(data);
             //model.Details = new List<FleetItem>();
-
+            var input = Mapper.Map<FleetParamInput>(model.SearchView);
             var fleetList = _fleetBLL.GetFleet().ToList();
+            input.Table = "2";
+            var fleetListArchive = _fleetBLL.GetFleet(input);
+            fleetList.AddRange(fleetListArchive);
+            fleetList.Distinct();
+
             var settingData = _settingBLL.GetSetting().Where(x => x.IsActive);
             var listSupMethod = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.SupplyMethod)).Select(x => new { x.SettingValue }).ToList();
             var listBodType = settingData.Where(x => x.SettingGroup == EnumHelper.GetDescription(Enums.SettingGroup.BodyType)).Select(x => new { x.SettingValue }).ToList();
@@ -62,7 +67,11 @@ namespace FMS.Website.Controllers
             var locationMappingData = _locationMappingBLL.GetLocationMapping().Where(x => x.IsActive == true);
             var groupCostData = _groupCostCenterBLL.GetGroupCenter().Where(x => x.IsActive == true);
             var data = _vendorBLL.GetVendor().Where(x => x.IsActive == true);
-                        
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
             model.SearchView.PoliceNumberList = new SelectList(fleetList.Select(x => new { x.PoliceNumber }).Distinct().ToList(), "PoliceNumber", "PoliceNumber");
             model.SearchView.EmployeeNameList = new SelectList(fleetList.Select(x => new { x.EmployeeName }).Distinct().ToList(), "EmployeeName", "EmployeeName");
             model.SearchView.ChasisNumberList = new SelectList(fleetList.Select(x => new { x.ChasisNumber }).Distinct().ToList(), "ChasisNumber", "ChasisNumber");
@@ -76,6 +85,7 @@ namespace FMS.Website.Controllers
             model.SearchView.FunctionList = new SelectList(groupCostData.Select(x => new { x.FunctionName }).Distinct().ToList(), "FunctionName", "FunctionName");
             model.SearchView.RegionalList = new SelectList(locationMappingData.Select(x => new { x.Region }).Distinct().ToList(), "Region", "Region");
             model.SearchView.CityList = new SelectList(locationMappingData.Select(x => new { x.Basetown }).Distinct().ToList(), "Basetown", "Basetown");
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
 
             model.SearchView.StatusSource = "True";
 
@@ -146,6 +156,7 @@ namespace FMS.Website.Controllers
             param.PoliceNumber = searchView.PoliceNumber;
             param.ChasisNumber = searchView.ChasisNumber;
             param.EngineNumber = searchView.EngineNumber;
+            param.Table = searchView.Table;
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }
@@ -173,6 +184,7 @@ namespace FMS.Website.Controllers
             param.PoliceNumber = searchView.PoliceNumber;
             param.ChasisNumber = searchView.ChasisNumber;
             param.EngineNumber = searchView.EngineNumber;
+            param.Table = searchView.Table;
             var data = _fleetBLL.GetFleetByParam(param);
             return Mapper.Map<List<FleetItem>>(data);
         }
@@ -350,7 +362,12 @@ namespace FMS.Website.Controllers
                 {
                     model.VatDecimal = Convert.ToDecimal(model.VatDecimalStr.Replace(",", ""));
                 }
-                model.EmployeeName = model.EmployeeName.Split('-')[1].TrimStart();
+                var arrEmployeeName = model.EmployeeName.Split('-');
+                model.EmployeeName = arrEmployeeName[0].TrimStart();
+                if (arrEmployeeName.Count() > 1)
+                {
+                    model.EmployeeName = arrEmployeeName[1].TrimStart();
+                }
 
                 var data = Mapper.Map<FleetDto>(model);
                 data.Project = false;
@@ -395,9 +412,9 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index","MstFleet");
         }
 
-        public ActionResult Detail(int MstFleetId)
+        public ActionResult Detail(int MstFleetId, bool? ArchiveData = null)
         {
-            var data = _fleetBLL.GetFleetById(MstFleetId);
+            var data = _fleetBLL.GetFleetById(MstFleetId,ArchiveData);
             var model = Mapper.Map<FleetItem>(data);
             model = initEdit(model);
             model.MainMenu = _mainMenu;

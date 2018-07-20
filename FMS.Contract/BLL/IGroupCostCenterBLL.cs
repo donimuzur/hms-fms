@@ -11,8 +11,8 @@ namespace FMS.Contract.BLL
 {
     public interface IGroupCostCenterBLL
     {
-        List<GroupCostCenterDto> GetGroupCenter();
-        GroupCostCenterDto GetGroupCenterById(int MstGroupCostCenterId);
+        List<GroupCostCenterDto> GetGroupCenter(bool? Archived = null);
+        GroupCostCenterDto GetGroupCenterById(int MstGroupCostCenterId, bool? Archived = null);
         void Save(GroupCostCenterDto dto);
         void Save(GroupCostCenterDto data, Login currentUser);
         List<GroupCostCenterDto> GetGroupCenter(GroupCostCenterParamInput groupCostCenterParamInput);

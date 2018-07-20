@@ -18,11 +18,13 @@ namespace FMS.BLL.VehicleSpect
     public class VehicleSpectBLL : IVehicleSpectBLL
     {
         private IVehicleSpectService _VehicleSpectService;
+        private IArchVehicleSpectService _ArchVehicleSpectService;
         private IUnitOfWork _uow;
         public VehicleSpectBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _VehicleSpectService = new VehicleSpectService(uow);
+            _ArchVehicleSpectService = new ArchVehicleSpectService(uow);
         }
 
         public List<VehicleSpectDto> GetVehicleSpect()
@@ -140,12 +142,34 @@ namespace FMS.BLL.VehicleSpect
 
         public List<VehicleSpectDto> GetVehicleSpect(VehicleSpectParamInput filter)
         {
-            var data = _VehicleSpectService.GetVehicleSpect(filter);
-            var retData = Mapper.Map<List<VehicleSpectDto>>(data);
-            foreach (VehicleSpectDto item in retData)
+            var retData = new List<VehicleSpectDto>();
+            List<ARCH_MST_VEHICLE_SPECT> dataarchieve = null;
+            List<MST_VEHICLE_SPECT> data = null;
+            try
             {
-                item.FuelTypeSpect = data.Where(x => x.MST_VEHICLE_SPECT_ID == item.MstVehicleSpectId).First().FUEL_TYPE;
+                if (filter.Table == "2")
+                {
+                    dataarchieve = _ArchVehicleSpectService.GetVehicleSpect(filter);
+                    retData = Mapper.Map<List<VehicleSpectDto>>(dataarchieve);
+                    foreach (VehicleSpectDto item in retData)
+                    {
+                        item.FuelTypeSpect = dataarchieve.Where(x => x.MST_VEHICLE_SPECT_ID == item.MstVehicleSpectId).First().FUEL_TYPE;
+                    }
+                }
+                else
+                {
+                    data = _VehicleSpectService.GetVehicleSpect(filter);
+                    retData = Mapper.Map<List<VehicleSpectDto>>(data);
+                    foreach (VehicleSpectDto item in retData)
+                    {
+                        item.FuelTypeSpect = data.Where(x => x.MST_VEHICLE_SPECT_ID == item.MstVehicleSpectId).First().FUEL_TYPE;
+                    }
+                }
             }
+            catch (Exception ex) {
+                Console.Write(ex.Message);
+            }
+
             return retData;
         }
     }

@@ -19,4 +19,9 @@ namespace FMS.BusinessObject.Inputs
         public bool? EndRent { get; set; }
         public bool? isBenefit{ get; set; }
     }
+
+    public class CtfParamInput
+    {
+        public string Table { get; set; }
+    }
 }

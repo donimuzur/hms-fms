@@ -46,6 +46,12 @@ namespace FMS.Website.Controllers
             model.Details = Mapper.Map<List<HolidayCalenderItem>>(data);
             model.SearchView.DateFrom = DateTime.Today;
             model.SearchView.DateTo = DateTime.Today;
+            var TableList = new List<SelectListItem>()
+            {
+                new SelectListItem() {Text = "Real Data", Value = "1" },
+                new SelectListItem() {Text = "Archive Data", Value = "2" }
+            };
+            model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
             model.MainMenu = _mainMenu;
             model.CurrentLogin = CurrentUser;
             model.CurrentPageAccess = CurrentPageAccess;
@@ -142,9 +148,9 @@ namespace FMS.Website.Controllers
             return RedirectToAction("Index", "MstHolidayCalender");
         }
 
-        public ActionResult Detail(int MstHolidayCalenderId)
+        public ActionResult Detail(int MstHolidayCalenderId, bool? ArchiveData = null)
         {
-            var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId);
+            var data = _HolidayCalenderBLL.GetholidayCalenderById(MstHolidayCalenderId, ArchiveData);
             var model = new HolidayCalenderItem();
             model = Mapper.Map<HolidayCalenderItem>(data);
             model.MainMenu = _mainMenu;
