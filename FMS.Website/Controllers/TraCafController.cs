@@ -360,7 +360,7 @@ namespace FMS.Website.Controllers
         }
 
         [HttpPost]
-        public ActionResult Completed(TraCafIndexViewModel model)
+        public PartialViewResult Completed(TraCafIndexViewModel model)
         {
             //var data = _cafBLL.GetCrfEpaf().Where(x => x.CrfId == null);
             model = InitialIndexModel(model);
@@ -391,7 +391,7 @@ namespace FMS.Website.Controllers
             };
             model.SearchView = new TraCafSearchView();
             model.SearchView.TableList = new SelectList(TableList, "Value", "Text");
-            return View(model);
+            return PartialView("_ListCaf",model);
         }
 
 

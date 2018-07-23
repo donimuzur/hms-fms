@@ -24,7 +24,7 @@
     </thead>
     <thead class="filters">
         <tr>
-            @if (Model.CurrentPageAccess.WriteAccess == true)
+            @if (Model.CurrentPageAccess.WriteAccess == true && (Model.SearchView.Table == null || Model.SearchView.Table != "2"))
             {
                 <th><a href="@Url.Action("Create","MstPriceList")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"> New</i></a></th>
             }
