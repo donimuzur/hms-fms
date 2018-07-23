@@ -8,7 +8,7 @@
     <div class="wpanel">
         <div class="row">
             @Html.HiddenFor(model => model.Message)
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="Searchview_CreatedDate">Created Date<span style="color:red">*</span></label>
                     <div class="input-group date">
@@ -21,11 +21,11 @@
             </div>
             <div class="col-md-2">
                 <label for="Searchview_Operator">Operator</label>
-                <div class="input-group">
+                <div class="input-group" style="width:100%">
                     @Html.DropDownListFor(model => model.SearchView.Operator, Model.SearchView.OperatorList, "- Select - ", new { @class = "form-control", @required = "required" })
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4" >
                 <div class="form-group">
                     <label for="Searchview_ModifiedDate">Modified Date</label>
                     <div class="input-group date" >
@@ -36,18 +36,18 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2" id="ddVehicleType" style="display:none">
+                <label for="Searchview_VehicleType">Vehicle Type</label>
+                <div class="input-group" style="width:100%">
+                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "- Select - ", new { @class = "form-control" })
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-2">
-                <label for="Searchview_VehicleType">Vehicle Type</label>
-                <div class="input-group">
-                    @Html.DropDownListFor(model => model.SearchView.VehicleType, Model.SearchView.VehicleTypeList, "- Select - ", new { @class = "form-control"})
-                </div>
-            </div>
-            <div class="col-md-2">
                 <label for="btnArchive">&ensp;&emsp;</label>
                 <div>
-                    <a href="#!" class="btn btn-primary line" id="btnArchive" title="Archive" onclick="ArchiveMaster()">
+                    <a href="#!" class="btn btn-primary" id="btnArchive" title="Archive" onclick="ArchiveMaster()">
                         <i class="fa fa-archive"> Archive</i>
                     </a>
                 </div>
@@ -133,10 +133,28 @@
 
 <script>
     jQuery(function ($) {
+
+        $('aside').animate({
+            scrollTop: $("#Archived").offset().top
+        }, 1000);
+        $('#ArchiveMenu').addClass('active');
+
         $('.nav-tabs a').click(function () {
            // console.log($(this).parent().attr("class"))
             $(this).tab('show');
         })
+
+        $(':checkbox').click(function () {
+            if($('[name="TransactionArchive"]:checkbox').is(":checked") == true)
+            {
+                $('#ddVehicleType').show();
+            }
+            else {
+                $('#SearchView_VehicleType').val('');
+                $('#ddVehicleType').hide();
+            }
+        })
+
         var message = $("#Message").val();
         
         $('#btnConfirmSend').click(function () {
@@ -187,7 +205,7 @@
         $('#VehicleType').val(VehicleType);
         if (CreatedDate == '')
         {
-            $("#TextError").text("CreatedDate Can't be empty");
+            $("#TextError").text("Created Date Can't be empty");
             $('#errormodal').modal('show');
             return false;
         }
