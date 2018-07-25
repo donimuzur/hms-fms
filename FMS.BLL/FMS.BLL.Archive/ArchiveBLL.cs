@@ -154,7 +154,7 @@ namespace FMS.BLL.Archive
                             CostObList = _costObService.GetCostOb().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-                        
+                        if (CostObList.Count() == 0) return false;
                         foreach (var itemCostOb in CostObList)
                         {
                             var ArchCostOb = Mapper.Map<ARCH_MST_COST_OB>(itemCostOb);
@@ -182,6 +182,7 @@ namespace FMS.BLL.Archive
                         {
                             EmployeeList = _employeeService.GetEmployee().Where(x => x.CREATED_DATE <= input.CreatedDate && x.IS_ACTIVE == false).ToList();
                         }
+                        if (EmployeeList.Count() == 0) return false;
                         foreach (var itemEmployee in EmployeeList)
                         {
                             var ArchEmployee = Mapper.Map<ARCH_MST_EMPLOYEE>(itemEmployee);
@@ -240,7 +241,7 @@ namespace FMS.BLL.Archive
                             FleetList = _fleetService.GetFleet().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (FleetList.Count() == 0) return false;
                         foreach (var itemFleet in FleetList)
                         {
                             var ArchFleet = Mapper.Map<ARCH_MST_FLEET>(itemFleet);
@@ -268,8 +269,8 @@ namespace FMS.BLL.Archive
                         {
                             FuelOdometerList = _fuelOdometerService.GetFuelOdometer().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
-
-
+                        
+                        if (FuelOdometerList.Count() == 0) return false;
                         foreach (var itemFuelOdometer in FuelOdometerList)
                         {
                             var ArchFuelOdometer= Mapper.Map<ARCH_MST_FUEL_ODOMETER>(itemFuelOdometer);
@@ -298,7 +299,7 @@ namespace FMS.BLL.Archive
                             FunctionGroupList = _functionGroupService.GetGroupCostCenter().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (FunctionGroupList.Count() == 0) return false;
                         foreach (var itemFunctionGroup in FunctionGroupList)
                         {
                             var ArchFunctionGroup = Mapper.Map<ARCH_MST_FUNCTION_GROUP>(itemFunctionGroup);
@@ -327,7 +328,7 @@ namespace FMS.BLL.Archive
                             GsList = _gsService.GetGs().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (GsList.Count() == 0) return false;
                         foreach (var itemGs in GsList)
                         {
                             var ArchGs = Mapper.Map<ARCH_MST_GS>(itemGs);
@@ -356,7 +357,7 @@ namespace FMS.BLL.Archive
                             HolidayCalendarList = _holidayCalendarService.GetHolidayCalender(new HolidayCalenderParamInput()).Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (HolidayCalendarList.Count() == 0) return false;
                         foreach (var itemHolidayCalendar in HolidayCalendarList)
                         {
                             var ArchHolidayCalendar = Mapper.Map<ARCH_MST_HOLIDAY_CALENDAR>(itemHolidayCalendar);
@@ -385,7 +386,7 @@ namespace FMS.BLL.Archive
                             LocationMappingList = _locationMappingService.GetLocationMapping().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (LocationMappingList.Count() == 0) return false;
                         foreach (var itemLocationMapping in LocationMappingList)
                         {
                             var ArchLocationMapping = Mapper.Map<ARCH_MST_LOCATION_MAPPING>(itemLocationMapping);
@@ -414,7 +415,7 @@ namespace FMS.BLL.Archive
                             PenaltyList = _penaltyService.GetPenalty().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (PenaltyList.Count() == 0) return false;
                         foreach (var itemPenalty in PenaltyList)
                         {
                             var ArchPenalty = Mapper.Map<ARCH_MST_PENALTY>(itemPenalty);
@@ -443,7 +444,7 @@ namespace FMS.BLL.Archive
                             PriceList = _pricelistService.GetPriceList().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (PriceList.Count() == 0) return false;
                         foreach (var itemPricelist in PriceList)
                         {
                             var ArchPriceList = Mapper.Map<ARCH_MST_PRICELIST>(itemPricelist);
@@ -471,6 +472,7 @@ namespace FMS.BLL.Archive
                         {
                             SalesVolumeList = _salesVolumeService.GetSalesVolume(new SalesVolumeParamInput()).Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
+                        if (SalesVolumeList.Count() == 0) return false;
                         foreach (var itemSalesVolume in SalesVolumeList)
                         {
                             var ArchSalesVolume = Mapper.Map<ARCH_MST_SALES_VOLUME>(itemSalesVolume);
@@ -499,7 +501,7 @@ namespace FMS.BLL.Archive
                             VehicleSpectList = _vehicleSpectService.GetVehicleSpect().Where(x => x.CREATED_DATE <= input.CreatedDate).ToList();
                         }
 
-
+                        if (VehicleSpectList.Count() == 0) return false;
                         foreach (var itemVehicle in VehicleSpectList)
                         {
                             var ArchVehicleSpect= Mapper.Map<ARCH_MST_VEHICLE_SPECT>(itemVehicle);
@@ -535,6 +537,7 @@ namespace FMS.BLL.Archive
                             var VehType = GetSetting.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SETTING_NAME.ToUpper() == (input.VehicleType == null ? "" : input.VehicleType.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
                             TraCsfList = TraCsfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MST_SETTING_ID.ToString())).ToList();
                         }
+                        if (TraCsfList.Count() == 0) return false;
                         foreach (var itemCsf in TraCsfList)
                         {
                             var ArchCsf = Mapper.Map<ARCH_TRA_CSF>(itemCsf);
@@ -567,6 +570,7 @@ namespace FMS.BLL.Archive
                         {
                             TraCrfList = TraCrfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
                         }
+                        if (TraCrfList.Count() == 0) return false;
                         foreach (var itemCrf in TraCrfList)
                         {
                             var ArchCrf = Mapper.Map<ARCH_TRA_CRF>(itemCrf);
@@ -599,6 +603,7 @@ namespace FMS.BLL.Archive
                         {
                             TraCtfList = TraCtfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
                         }
+                        if (TraCtfList.Count() == 0) return false;
                         foreach (var itemCtf in TraCtfList)
                         {
                             var ArchCtf = Mapper.Map<ARCH_TRA_CTF>(itemCtf);
@@ -638,6 +643,7 @@ namespace FMS.BLL.Archive
                         {
                             TraCcfList = TraCcfList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
                         }
+                        if (TraCcfList.Count() == 0) return false;
                         foreach (var itemCcf in TraCcfList)
                         {
                             var ArchCcf = Mapper.Map<ARCH_TRA_CCF>(itemCcf);
@@ -676,6 +682,7 @@ namespace FMS.BLL.Archive
                         //{
                         //    TraCafList = TraCafList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (input.VehicleType == null ? "" : input.VehicleType.ToUpper())).ToList();
                         //}
+                        if (TraCafList.Count() == 0) return false;
                         foreach (var itemCaf in TraCafList)
                         {
                             var ArchCaf = Mapper.Map<ARCH_TRA_CAF>(itemCaf);
@@ -715,6 +722,7 @@ namespace FMS.BLL.Archive
                             var VehType = GetSetting.Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType) && x.SETTING_NAME.ToUpper() == (input.VehicleType == null ? "" : input.VehicleType.ToUpper()) && x.IS_ACTIVE).FirstOrDefault();
                             TraTemporaryList = TraTemporaryList.Where(x => (x.VEHICLE_TYPE == null ? "" : x.VEHICLE_TYPE.ToUpper()) == (VehType == null ? "" : VehType.MST_SETTING_ID.ToString())).ToList();
                         }
+                        if (TraTemporaryList.Count() == 0) return false;
                         foreach (var itemTemporary in TraTemporaryList)
                         {
                             var ArchTemporary = Mapper.Map<ARCH_TRA_TEMPORARY>(itemTemporary);
