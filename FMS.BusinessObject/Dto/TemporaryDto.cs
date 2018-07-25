@@ -13,7 +13,7 @@ namespace FMS.BusinessObject.Dto
         public string DOCUMENT_NUMBER_TEMP { get; set; }
         public Enums.DocumentStatus DOCUMENT_STATUS { get; set; }
         public string DOCUMENT_NUMBER_RELATED { get; set; }
-        public int REASON_ID { get; set; }
+        public int? REASON_ID { get; set; }
         public string REASON_NAME { get; set; }
         public string EMPLOYEE_ID { get; set; }
         public string EMPLOYEE_NAME { get; set; }

@@ -75,7 +75,8 @@ namespace FMS.Website.Controllers
                 input.Operator = Operator;
                 input.VehicleType = VehicleType;
 
-                _archiveBLL.DoArchive(input, CurrentUser);
+                var result = _archiveBLL.DoArchive(input, CurrentUser);
+                if (result == false) return RedirectToAction("Index", "Archived", new { message = "data is not exist on database/data already archived" });
 
             }
             catch (Exception)

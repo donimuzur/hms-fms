@@ -56,8 +56,16 @@ namespace FMS.Website.Models
 
         public bool IsCompleted { get; set; }
         public List<TraCrfItemDetails> Details { get; set; }
+        public CrfSearchView SearchView { get; set; }
 
         public bool IsPersonalDashboard { get; set; }
+    }
+
+    public class CrfSearchView
+    {
+        public string Table { get; set; }
+
+        public SelectList TableList { get; set; }
     }
 
     public class TraCrfDashboardViewModel : BaseModel

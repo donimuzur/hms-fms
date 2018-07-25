@@ -13,8 +13,8 @@ namespace FMS.Contract.BLL
     {
         List<TraCrfDto> GetList(Login currentUser);
         List<TraCrfDto> GetList();
-        List<TraCrfDto> GetCompleted();
-        TraCrfDto GetDataById(long id);
+        List<TraCrfDto> GetCompleted(bool? Archive = null);
+        TraCrfDto GetDataById(long id, bool? Archive = null);
         TraCrfDto SaveCrf(TraCrfDto data,Login userLogin);
         
 

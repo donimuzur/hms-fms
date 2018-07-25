@@ -88,4 +88,9 @@ namespace FMS.BusinessObject.Dto
         public bool? IsActive { get; set; }
         public DateTime? EffectiveDateComplete { get; set; }
     }
+
+    public class TraCrfParamInput
+    {
+        public string Table { get; set; }
+    }
 }

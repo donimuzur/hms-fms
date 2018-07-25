@@ -77,4 +77,8 @@ namespace FMS.BusinessObject.Inputs
         public string Vendor { get; set; }
         public string MessageError { get; set; }
     }
+    public class CsfParamInput
+    {
+        public string Table;
+    }
 }
