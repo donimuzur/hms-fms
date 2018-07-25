@@ -11,11 +11,11 @@ namespace FMS.Contract.BLL
 {
     public interface ITraTemporaryBLL
     {
-        List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted);
+        List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted, TempParamInput input = null);
         List<TemporaryDto> GetTempPersonal(Login userLogin);
         TemporaryDto Save(TemporaryDto item, Login userLogin);
         void TempWorkflow(TempWorkflowDocumentInput input);
-        TemporaryDto GetTempById(long id);
+        TemporaryDto GetTempById(long id, bool? ArchivedData = null);
         List<VehicleFromVendorUpload> ValidationUploadDocumentProcess(List<VehicleFromVendorUpload> inputs, int id);
         List<VehicleFromVendorUpload> ValidationUploadDocumentProcessMassUpload(List<VehicleFromVendorUpload> inputs);
         void CheckTempInProgress();

@@ -96,7 +96,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="SearchView_Table">Show Data</label>
-                            @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control chosen", @multiple = "multiple" })
+                            @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control" })
                             @Html.HiddenFor(model => model.SearchView.Table)
                         </div>
                     </div>
@@ -210,7 +210,6 @@
         });
 
         $(document).on('click', '#btn-filter', function () {
-            console.log('a');
             $("#SearchView_BodyType").val(getFunctionStr($('#Search_BodyType').val()));
             $("#SearchView_Manufacturer").val(getFunctionStr($('#Search_Manufacturer').val()));
             $("#SearchView_Model").val(getFunctionStr($('#Search_Model').val()));

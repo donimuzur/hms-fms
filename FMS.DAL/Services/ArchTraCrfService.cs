@@ -25,5 +25,15 @@ namespace FMS.DAL.Services
         {
             _uow.GetGenericRepository<ARCH_TRA_CRF>().InsertOrUpdate(db, userlogin, Enums.MenuList.MasterData);
         }
+        
+        public List<ARCH_TRA_CRF> GetList()
+        {
+            return _archTraCrfRepository.Get().ToList();
+        }
+
+        public ARCH_TRA_CRF GetById(int id)
+        {
+            return _archTraCrfRepository.GetByID(id);
+        }
     }
 }

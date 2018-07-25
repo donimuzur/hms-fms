@@ -12,11 +12,13 @@ namespace FMS.Contract.BLL
     public interface ITraCsfBLL
     {
         List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted);
+        List<TraCsfDto> GetCsf(Login userLogin, bool isCompleted,CsfParamInput input);
         List<TraCsfDto> GetCsfPersonal(Login userLogin);
         TraCsfDto Save(TraCsfDto item, Login userLogin);
         void CsfWorkflow(CsfWorkflowDocumentInput input);
         void CancelCsf(long id, int Remark, string user);
         TraCsfDto GetCsfById(long id);
+        TraCsfDto GetCsfById(long id, bool? ArchiveData = null);
         List<EpafDto> GetCsfEpaf(bool isActive = true);
         TemporaryDto SaveTemp(TemporaryDto item, Login userLogin);
         List<TemporaryDto> GetTempByCsf(string csfNumber);

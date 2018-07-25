@@ -172,6 +172,9 @@ namespace FMS.Website.Code
             Mapper.CreateMap<VehicleFromUserUpload, VehicleData>().IgnoreAllNonExisting();
 
             Mapper.CreateMap<VehicleData, VehicleFromUserUpload>().IgnoreAllNonExisting();
+            
+            Mapper.CreateMap<CsfSearchView, CsfParamInput>().IgnoreAllNonExisting();
+            Mapper.CreateMap<CsfParamInput, CsfSearchView>().IgnoreAllNonExisting();
         }
     }
 }

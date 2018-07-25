@@ -18,4 +18,9 @@ namespace FMS.BusinessObject.Inputs
         public string DocumentNumber { get; set; }
         public List<string> Attachments { get; set; }
     }
+
+    public class TempParamInput
+    {
+        public string Table { get; set; }
+    }
 }

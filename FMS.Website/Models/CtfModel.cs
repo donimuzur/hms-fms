@@ -15,9 +15,11 @@ namespace FMS.Website.Models
         public SelectList RemarkList { get; set; }
 
         public bool IsPersonalDashboard { get; set; }
+        public CtfSearchView SearchView { get; set; }
         public CtfModel()
         {
             Details = new List<CtfItem>();
+            SearchView = new CtfSearchView();
         }
     }
     public class CtfItem : BaseModel
@@ -129,5 +131,21 @@ namespace FMS.Website.Models
     {
       
 
+    }
+    public class CtfSearchView
+    {
+        public string Table { get; set; }
+        public SelectList TableList
+        {
+            get
+            {
+                var items = new List<SelectListItem>()
+                {
+                    new SelectListItem() {Text = "Real Data", Value = "1" },
+                    new SelectListItem() {Text = "Archive Data", Value = "2" }
+                };
+                return new SelectList(items, "Value", "Text");
+            }
+        }
     }
 }

@@ -78,16 +78,30 @@ namespace FMS.Website.Controllers
 
         public ActionResult Completed()
         {
-            var data = _tempBLL.GetTemporary(CurrentUser, true);
             var model = new TemporaryIndexModel();
             model.TitleForm = "Temporary Completed Document";
             model.TitleExport = "ExportCompleted";
-            model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.MODIFIED_DATE));
+            //model.TempList = Mapper.Map<List<TempData>>(data.OrderByDescending(x => x.MODIFIED_DATE));
+            model.TempList = GetTempCompleted();
             model.MainMenu = _mainMenu;
             model.CurrentPageAccess = CurrentPageAccess;
             model.CurrentLogin = CurrentUser;
             model.IsCompleted = true;
             return View("Index", model);
+        }
+        private List<TempData> GetTempCompleted(TempSearchView filter = null)
+        {
+            if (filter == null)
+            {
+                //Get All
+                var data = _tempBLL.GetTemporary(CurrentUser, true);
+                return Mapper.Map<List<TempData>>(data);
+            }
+
+            //getbyparams
+            var input = Mapper.Map<TempParamInput>(filter);
+            var dbData = _tempBLL.GetTemporary(CurrentUser, true, input);
+            return Mapper.Map<List<TempData>>(dbData);
         }
 
         #endregion
@@ -264,14 +278,14 @@ namespace FMS.Website.Controllers
 
         #region --------- Detail --------------
 
-        public ActionResult Detail(int? id, bool isPersonalDashboard)
+        public ActionResult Detail(int? id, bool isPersonalDashboard, bool? ArchiveData = null)
         {
             if (!id.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var tempData = _tempBLL.GetTempById(id.Value);
+            var tempData = _tempBLL.GetTempById(id.Value, ArchiveData);
 
             if (tempData == null)
             {
@@ -298,14 +312,14 @@ namespace FMS.Website.Controllers
 
         #region --------- Edit --------------
 
-        public ActionResult Edit(int? id, bool isPersonalDashboard)
+        public ActionResult Edit(int? id, bool isPersonalDashboard, bool? ArchiveData = null)
         {
             if (!id.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var tempData = _tempBLL.GetTempById(id.Value);
+            var tempData = _tempBLL.GetTempById(id.Value, ArchiveData);
 
             if (tempData == null)
             {
@@ -389,14 +403,14 @@ namespace FMS.Website.Controllers
 
         #region --------- Approve / Reject --------------
 
-        public ActionResult ApproveFleet(int? id, bool isPersonalDashboard)
+        public ActionResult ApproveFleet(int? id, bool isPersonalDashboard, bool? ArchivedData = null)
         {
             if (!id.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var tempData = _tempBLL.GetTempById(id.Value);
+            var tempData = _tempBLL.GetTempById(id.Value, ArchivedData);
 
             if (tempData == null)
             {
@@ -467,14 +481,14 @@ namespace FMS.Website.Controllers
 
         #region --------- In Progress --------------
 
-        public ActionResult InProgress(int? id, bool isPersonalDashboard)
+        public ActionResult InProgress(int? id, bool isPersonalDashboard, bool? ArchivedData = null)
         {
             if (!id.HasValue)
             {
                 return HttpNotFound();
             }
 
-            var tempData = _tempBLL.GetTempById(id.Value);
+            var tempData = _tempBLL.GetTempById(id.Value, ArchivedData);
 
             if (tempData == null)
             {
@@ -534,11 +548,11 @@ namespace FMS.Website.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InProgress(TempItemModel model)
+        public ActionResult InProgress(TempItemModel model, bool? ArchivedData = null)
         {
             try
             {
-                var tempData = _tempBLL.GetTempById(model.Detail.TraTempId);
+                var tempData = _tempBLL.GetTempById(model.Detail.TraTempId, ArchivedData);
                 tempData.VENDOR_POLICE_NUMBER = model.Detail.PoliceNumberVendor;
                 tempData.VENDOR_MANUFACTURER = model.Detail.ManufacturerVendor;
                 tempData.VENDOR_MODEL = model.Detail.ModelsVendor;
@@ -919,10 +933,10 @@ namespace FMS.Website.Controllers
 
         #region --------- Add Attachment File For Vendor --------------
 
-        private string CreateExcelForVendor(long id)
+        private string CreateExcelForVendor(long id, bool? ArchivedData = null)
         {
             //get data
-            var tempData = _tempBLL.GetTempById(id);
+            var tempData = _tempBLL.GetTempById(id,ArchivedData);
 
             var slDocument = new SLDocument();
 
@@ -1282,6 +1296,20 @@ namespace FMS.Website.Controllers
             return slDocument;
         }
 
+        #endregion
+
+        #region  --------- Archieve --------------
+        [HttpPost]
+        public PartialViewResult ListTraTempCompleted(TemporaryIndexModel model)
+        {
+            model.TempList = new List<TempData>();
+            model.TempList = GetTempCompleted(model.SearchView);
+            model.MainMenu = _mainMenu;
+            model.CurrentLogin = CurrentUser;
+            model.CurrentPageAccess = CurrentPageAccess;
+            model.IsCompleted = true;
+            return PartialView("_ListTemporary", model);
+        }
         #endregion
     }
 }

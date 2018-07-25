@@ -56,14 +56,24 @@
                             if ((data.TempStatus == Enums.DocumentStatus.Draft && (Model.CurrentLogin.USER_ID == data.CreateBy || (Model.CurrentLogin.LoginFor == null ? false : (Model.CurrentLogin.LoginFor.Where(x => x.EMPLOYEE_ID == data.EmployeeIdCreator).Count() > 0 ? true : false)))) ||
                             ((data.TempStatus == Enums.DocumentStatus.WaitingFleetApproval || data.TempStatus == Enums.DocumentStatus.InProgress)
                                 && Model.CurrentLogin.UserRole == Enums.UserRole.Fleet))
-                            { 
+                            {
+                                if (Model.SearchView.Table != "2")
+                                {
                                 <a href="@Url.Action("Edit", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Edit" class="action"><img src="~/Content/images/pin.png" alt="" /></a>
+                                }
                             }
                         }
                     }
                     @if (Model.CurrentPageAccess.ReadAccess.Value)
                     {
-                        <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        if (Model.SearchView.Table == "2") {
+                            <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard,ArchiveData=true })" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Detail", "TraTemporary", new { id = data.TraTempId, isPersonalDashboard = Model.IsPersonalDashboard})" data-toggle="tooltip" data-placement="top" title="Detail" class="action"><img src="~/Content/images/search.png" alt="" /></a>
+                        }
+
                     }
                 </td>
                 <td>@Html.Raw(data.TempNumber)</td>

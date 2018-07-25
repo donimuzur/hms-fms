@@ -26,6 +26,7 @@ namespace FMS.BLL.Temporary
     public class TemporaryBLL : ITraTemporaryBLL
     {
         private ITemporaryService _TemporaryService;
+        private IArchTraTemporaryService _TemporaryServiceArch;
         private IUnitOfWork _uow;
 
         private ISettingService _settingService;
@@ -40,11 +41,13 @@ namespace FMS.BLL.Temporary
         private IVendorService _vendorService;
         private IGroupCostCenterService _groupCostService;
         private IVehicleSpectService _vehicleSpectService;
+        private IReasonService _reasonService;
 
         public TemporaryBLL(IUnitOfWork uow)
         {
             _uow = uow;
             _TemporaryService = new TemporaryService(_uow);
+            _TemporaryServiceArch = new ArchTraTemporaryService(_uow);
 
             _settingService = new SettingService(_uow);
             _docNumberService = new DocumentNumberService(_uow);
@@ -58,18 +61,39 @@ namespace FMS.BLL.Temporary
             _vendorService = new VendorService(_uow);
             _groupCostService = new GroupCostCenterService(_uow);
             _vehicleSpectService = new VehicleSpectService(_uow);
+            _reasonService = new ReasonService(_uow);
         }
 
-        public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted)
+        public List<TemporaryDto> GetTemporary(Login userLogin, bool isCompleted, TempParamInput input = null)
         {
             var settingData = _settingService.GetSetting().Where(x => x.SETTING_GROUP == EnumHelper.GetDescription(Enums.SettingGroup.VehicleType));
             var benefitType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "BENEFIT").FirstOrDefault().MST_SETTING_ID.ToString();
             var wtcType = settingData.Where(x => x.SETTING_NAME.ToUpper() == "WTC").FirstOrDefault().MST_SETTING_ID.ToString();
 
             var locationMapping = _locationMappingService.GetLocationMapping().Where(x => x.IS_ACTIVE).OrderByDescending(x => x.VALIDITY_FROM).ToList();
+            var retData = new List<TemporaryDto>();
 
-            var data = _TemporaryService.GetTemp(userLogin, isCompleted, benefitType, wtcType);
-            var retData = Mapper.Map<List<TemporaryDto>>(data);
+            if (input != null && input.Table == "2")
+            {
+                var data = _TemporaryServiceArch.GetTemp(userLogin, isCompleted, benefitType, wtcType);
+                retData = Mapper.Map<List<TemporaryDto>>(data);
+                foreach (var item in retData)
+                {
+                    if (item.REASON_ID.HasValue)
+                    {
+                        var Reason = _reasonService.GetReasonById(item.REASON_ID.Value);
+                        if (Reason != null)
+                        {
+                            item.REASON_NAME = Reason.REASON;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var data = _TemporaryService.GetTemp(userLogin, isCompleted, benefitType, wtcType);
+                retData = Mapper.Map<List<TemporaryDto>>(data);
+            }
 
             foreach (var item in retData)
             {
@@ -767,10 +791,19 @@ namespace FMS.BLL.Temporary
             return rc;
         }
 
-        public TemporaryDto GetTempById(long id)
+        public TemporaryDto GetTempById(long id, bool? ArchivedData = null)
         {
-            var data = _TemporaryService.GetTemporaryById(id);
-            var retData = Mapper.Map<TemporaryDto>(data);
+            var retData = new TemporaryDto();
+            if (ArchivedData.HasValue)
+            {
+                var data = _TemporaryServiceArch.GetTempById(id);
+                retData = Mapper.Map<TemporaryDto>(data);
+            }
+            else
+            {
+                var data = _TemporaryServiceArch.GetTempById(id);
+                retData = Mapper.Map<TemporaryDto>(data);
+            }
             return retData;
         }
 

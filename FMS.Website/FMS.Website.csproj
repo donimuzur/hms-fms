@@ -4448,6 +4448,7 @@
     <Content Include="Views\Archived\Index.cshtml" />
     <Content Include="Views\Archived\_listMaster.cshtml" />
     <Content Include="Views\Archived\_listTransaction.cshtml" />
+    <Content Include="Views\TraCaf\_ListCaf.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

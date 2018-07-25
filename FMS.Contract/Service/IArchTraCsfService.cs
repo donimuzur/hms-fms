@@ -11,5 +11,7 @@ namespace FMS.Contract.Service
     public interface IArchTraCsfService
     {
         void Save(ARCH_TRA_CSF db, Login Login);
+        List<ARCH_TRA_CSF> GetCsf(Login userLogin, bool isCompleted, string benefitType, string wtcType);
+        ARCH_TRA_CSF GetCsfById(long id);
     }
 }
