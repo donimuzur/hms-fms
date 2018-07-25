@@ -34,12 +34,15 @@
             OnFailure = "LoadingHide",
         }))
             {
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label">Show Data</label>
-                        @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+                if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+                {
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Show Data</label>
+                            @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+                        </div>
                     </div>
-                </div>
+                }
                 <div class="clearfix"></div>
                 <div class="col-md-12">
                     <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
