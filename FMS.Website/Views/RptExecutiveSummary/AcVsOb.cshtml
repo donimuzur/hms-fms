@@ -502,7 +502,7 @@
                     label_48 = response[i].LABEL48;
                 }
 
-                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                for (var i =parseInt( $('#SearchView_MonthFrom').val()) ; i <= parseInt($('#SearchView_MonthTo').val()) ; i++) {
                     if (i == 1) {
                         var data1 = {
                             label: label_1,
@@ -624,7 +624,7 @@
                     }
                 }
 
-                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                for (var i = parseInt($('#SearchView_MonthFrom').val()) ; i <= parseInt($('#SearchView_MonthTo').val()) ; i++) {
                     if (i == 1) {
                         var data2 = {
                             label: label_13,
@@ -746,7 +746,7 @@
                     }
                 }
 
-                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                for (var i =parseInt( $('#SearchView_MonthFrom').val()) ; i <= parseInt($('#SearchView_MonthTo').val()) ; i++) {
                     if (i == 1) {
                         var data1 = {
                             label: label_25,
@@ -868,7 +868,7 @@
                     }
                 }
 
-                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                for (var i = parseInt($('#SearchView_MonthFrom').val()) ; i <=parseInt( $('#SearchView_MonthTo').val() ); i++) {
                     if (i == 1) {
                         var data2 = {
                             label: label_37,
@@ -1073,18 +1073,18 @@
                 var label_11 = "Unit BENEFIT Nov " + $('#SearchView_YearFrom').val();
                 var label_12 = "Unit BENEFIT Dec " + $('#SearchView_YearFrom').val();
 
-                var label_13 = "Unit Budget BENEFIT Jan " + $('#SearchView_YearFrom').val();
-                var label_14 = "Unit Budget BENEFIT Feb " + $('#SearchView_YearFrom').val();
-                var label_15 = "Unit Budget BENEFIT Mar " + $('#SearchView_YearFrom').val();
-                var label_16 = "Unit Budget BENEFIT Apr " + $('#SearchView_YearFrom').val();
-                var label_17 = "Unit Budget BENEFIT May " + $('#SearchView_YearFrom').val();
-                var label_18 = "Unit Budget BENEFIT Jun " + $('#SearchView_YearFrom').val();
-                var label_19 = "Unit Budget BENEFIT Jul " + $('#SearchView_YearFrom').val();
-                var label_20 = "Unit Budget BENEFIT Aug " + $('#SearchView_YearFrom').val();
-                var label_21 = "Unit Budget BENEFIT Sep " + $('#SearchView_YearFrom').val();
-                var label_22 = "Unit Budget BENEFIT Oct " + $('#SearchView_YearFrom').val();
-                var label_23 = "Unit Budget BENEFIT Nov " + $('#SearchView_YearFrom').val();
-                var label_24 = "Unit Budget BENEFIT Dec " + $('#SearchView_YearFrom').val();
+                var label_13 = "Budget BENEFIT Jan " + $('#SearchView_YearFrom').val();
+                var label_14 = "Budget BENEFIT Feb " + $('#SearchView_YearFrom').val();
+                var label_15 = "Budget BENEFIT Mar " + $('#SearchView_YearFrom').val();
+                var label_16 = "Budget BENEFIT Apr " + $('#SearchView_YearFrom').val();
+                var label_17 = "Budget BENEFIT May " + $('#SearchView_YearFrom').val();
+                var label_18 = "Budget BENEFIT Jun " + $('#SearchView_YearFrom').val();
+                var label_19 = "Budget BENEFIT Jul " + $('#SearchView_YearFrom').val();
+                var label_20 = "Budget BENEFIT Aug " + $('#SearchView_YearFrom').val();
+                var label_21 = "Budget BENEFIT Sep " + $('#SearchView_YearFrom').val();
+                var label_22 = "Budget BENEFIT Oct " + $('#SearchView_YearFrom').val();
+                var label_23 = "Budget BENEFIT Nov " + $('#SearchView_YearFrom').val();
+                var label_24 = "Budget BENEFIT Dec " + $('#SearchView_YearFrom').val();
 
                 for (var i = 0; i < response.length; i++) {
                     labels_chart.push(response[i].FUNCTION);
@@ -1141,7 +1141,7 @@
                     label_24 = response[i].LABEL24;
                 }
 
-                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                for (var i = parseInt($('#SearchView_MonthFrom').val()) ; i <= parseInt($('#SearchView_MonthTo').val()) ; i++) {
                     if (i == 1) {
                         var data1 = {
                             label: label_1,
@@ -1263,7 +1263,7 @@
                     }
                 }
 
-                for (var i = $('#SearchView_MonthFrom').val() ; i <= $('#SearchView_MonthTo').val() ; i++) {
+                for (var i = parseInt($('#SearchView_MonthFrom').val()) ; i <=parseInt( $('#SearchView_MonthTo').val()) ; i++) {
                     if (i == 1) {
                         var data2 = {
                             label: label_13,
