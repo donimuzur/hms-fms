@@ -37,7 +37,7 @@
             <th>
                 @if (Model.CurrentPageAccess.WriteAccess == true)
                 {
-                    <a href="@Url.Action("Create","MstGs")" class="btn btn-primary line"><i class="fa fa-plus"></i> New</a>
+                    <a href="@Url.Action("Create","MstGs")" class="btn btn-primary line" id="btnNew"><i class="fa fa-plus" ></i> New</a>
                 }
             </th>
             <th><input style="border-radius: 5px; text-align: center;" type="text" class="form-control" placeholder="search"></th>
