@@ -28,7 +28,7 @@
                 <tr>
                     @if (Model.CurrentPageAccess.WriteAccess == true)
                     {
-                        <th><a href="@Url.Action("Create","MstVehicleSpect")" class="btn btn-primary line"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
+                        <th><a href="@Url.Action("Create","MstVehicleSpect")" class="btn btn-primary line" id="btnNew"><i class="fa fa-plus" id="myModalLabel"></i> New</a></th>
                     }
                     else
                     {

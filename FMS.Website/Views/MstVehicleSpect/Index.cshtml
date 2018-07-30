@@ -39,38 +39,42 @@
         OnFailure = "LoadingHide",
     }))
     {
-          <div class="col-md-4">
-              <div class="form-group">
-                  <label for="SearchView_Manufacturer">Manufacturer</label>
-                  @Html.DropDownList("Search_Manufacturer", Model.SearchView.ManufacturerList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                  @Html.HiddenFor(model => model.SearchView.Manufacturer)
+          <div class="row">
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="SearchView_Manufacturer">Manufacturer</label>
+                      @Html.DropDownList("Search_Manufacturer", Model.SearchView.ManufacturerList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                      @Html.HiddenFor(model => model.SearchView.Manufacturer)
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="SearchView_Model">Model</label>
+                      @Html.DropDownList("Search_Model", Model.SearchView.ModelList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                      @Html.HiddenFor(model => model.SearchView.Model)
+                  </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="SearchView_Series">Series</label>
+                      @Html.DropDownList("Search_Series", Model.SearchView.SeriesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                      @Html.HiddenFor(model => model.SearchView.Series)
+                  </div>
               </div>
           </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                  <label for="SearchView_Model">Model</label>
-                  @Html.DropDownList("Search_Model", Model.SearchView.ModelList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                  @Html.HiddenFor(model => model.SearchView.Model)
+          <div class="row">
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="SearchView_BodyType">Body Type</label>
+                      @Html.DropDownList("Search_BodyType", Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                      @Html.HiddenFor(model => model.SearchView.BodyType)
+                  </div>
               </div>
-          </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                  <label for="SearchView_Series">Series</label>
-                  @Html.DropDownList("Search_Series", Model.SearchView.SeriesList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                  @Html.HiddenFor(model => model.SearchView.Series)
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                  <label for="SearchView_BodyType">Body Type</label>
-                  @Html.DropDownList("Search_BodyType", Model.SearchView.BodyTypeList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                  @Html.HiddenFor(model => model.SearchView.BodyType)
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="form-group">
-                  <label class="control-label">Show Data</label>
-                  @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+              <div class="col-md-4">
+                  <div class="form-group">
+                      <label class="control-label">Show Data</label>
+                      @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control", onchange = "TableChange()" })
+                  </div>
               </div>
           </div>
           <div class="clearfix"></div>
@@ -87,6 +91,15 @@
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function TableChange() {
+        var ShowTable = $('#SearchView_Table').val();
+        if (ShowTable == "2") {
+            $('#btnNew').hide();
+        }
+        else {
+            $('#btnNew').show();
+        }
+    }
     function LoadingShow() {
         $('#LoadingModal').show();
     }
