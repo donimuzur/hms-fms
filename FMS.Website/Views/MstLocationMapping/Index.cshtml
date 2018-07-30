@@ -106,11 +106,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="SearchView_Table">Show Data</label>
-                            @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control" })
-                            @Html.HiddenFor(model => model.SearchView.Table)
+                            @Html.DropDownListFor(model => model.SearchView.Table,  Model.SearchView.TableList, new { @class = "form-control", onchange = "TableChange()" })
                         </div>
                     </div>
                 </div>
@@ -130,6 +131,15 @@
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function TableChange() {
+        var ShowTable = $('#SearchView_Table').val();
+        if (ShowTable == "2") {
+            $('#btnNew').hide();
+        }
+        else {
+            $('#btnNew').show();
+        }
+    }
     function LoadingShow() {
         $('#LoadingModal').show();
     }
@@ -192,6 +202,7 @@
                     .draw();
             });
         });
+        TableChange();
     }
 
     function getFunctionStr(arr) {
