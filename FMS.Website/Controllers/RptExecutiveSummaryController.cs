@@ -2775,18 +2775,18 @@ namespace FMS.Website.Controllers
             var label10 = "Unit Oct " + yearFrom + " (" + (numb10 == null ? "0" : numb10.Value.ToString()) + ")";
             var label11 = "Unit Nov " + yearFrom + " (" + (numb11 == null ? "0" : numb11.Value.ToString()) + ")";
             var label12 = "Unit Dec " + yearFrom + " (" + (numb12 == null ? "0" : numb12.Value.ToString()) + ")";
-            var label13 = "Unit Budget Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString()) + ")";
-            var label14 = "Unit Budget Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString()) + ")";
-            var label15 = "Unit Budget Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString()) + ")";
-            var label16 = "Unit Budget Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString()) + ")";
-            var label17 = "Unit Budget May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString()) + ")";
-            var label18 = "Unit Budget Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString()) + ")";
-            var label19 = "Unit Budget Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString()) + ")";
-            var label20 = "Unit Budget Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString()) + ")";
-            var label21 = "Unit Budget Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString()) + ")";
-            var label22 = "Unit Budget Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString()) + ")";
-            var label23 = "Unit Budget Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString()) + ")";
-            var label24 = "Unit Budget Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString()) + ")";
+            var label13 = "Budget Jan " + yearFrom + " (" + (numb13 == null ? "0" : numb13.Value.ToString()) + ")";
+            var label14 = "Budget Feb " + yearFrom + " (" + (numb14 == null ? "0" : numb14.Value.ToString()) + ")";
+            var label15 = "Budget Mar " + yearFrom + " (" + (numb15 == null ? "0" : numb15.Value.ToString()) + ")";
+            var label16 = "Budget Apr " + yearFrom + " (" + (numb16 == null ? "0" : numb16.Value.ToString()) + ")";
+            var label17 = "Budget May " + yearFrom + " (" + (numb17 == null ? "0" : numb17.Value.ToString()) + ")";
+            var label18 = "Budget Jun " + yearFrom + " (" + (numb18 == null ? "0" : numb18.Value.ToString()) + ")";
+            var label19 = "Budget Jul " + yearFrom + " (" + (numb19 == null ? "0" : numb19.Value.ToString()) + ")";
+            var label20 = "Budget Aug " + yearFrom + " (" + (numb20 == null ? "0" : numb20.Value.ToString()) + ")";
+            var label21 = "Budget Sep " + yearFrom + " (" + (numb21 == null ? "0" : numb21.Value.ToString()) + ")";
+            var label22 = "Budget Oct " + yearFrom + " (" + (numb22 == null ? "0" : numb22.Value.ToString()) + ")";
+            var label23 = "Budget Nov " + yearFrom + " (" + (numb23 == null ? "0" : numb23.Value.ToString()) + ")";
+            var label24 = "Budget Dec " + yearFrom + " (" + (numb24 == null ? "0" : numb24.Value.ToString()) + ")";
 
             var groupData = data.GroupBy(x => new { x.FUNCTION })
                 .Select(p => new AcVsObDto()
@@ -4445,7 +4445,7 @@ namespace FMS.Website.Controllers
 
             slDocument.SetCellValue(firstRow, firstColumn, "BY FUNCTION");
             slDocument.SetCellValue(firstRow, firstColumn + 1, "Unit Actual");
-            slDocument.SetCellValue(firstRow, firstColumn + 2, "Unit Budget");
+            slDocument.SetCellValue(firstRow, firstColumn + 2, "Budget");
 
             foreach (var item in dataList)
             {
@@ -9735,7 +9735,7 @@ namespace FMS.Website.Controllers
 
             for (int i = input.MonthFrom; i <= input.MonthTo; i++)
             {
-                slDocument.SetCellValue(firstRow, nextColumn, "Unit Budget " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
+                slDocument.SetCellValue(firstRow, nextColumn, "Budget " + CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i) + " " + input.YearFrom);
                 nextColumn++;
                 endColumn++;
             }
