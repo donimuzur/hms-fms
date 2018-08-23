@@ -39,33 +39,37 @@
             OnFailure = "LoadingHide",
         }))
     {
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="SearchView_VehicleUsage">Vehicle Usage</label>
-                @Html.DropDownList("Search_VehicleUsage", Model.SearchView.VehicleUsageList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                @Html.HiddenFor(model => model.SearchView.VehicleUsage)
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="SearchView_VehicleUsage">Vehicle Usage</label>
+                    @Html.DropDownList("Search_VehicleUsage", Model.SearchView.VehicleUsageList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                    @Html.HiddenFor(model => model.SearchView.VehicleUsage)
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="SearchView_PoliceNumber">Police Number</label>
+                    @Html.DropDownList("Search_PoliceNumber", Model.SearchView.PoliceNumberList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                    @Html.HiddenFor(model => model.SearchView.PoliceNumber)
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="SearchView_EmployeeName">Employee Name</label>
+                    @Html.DropDownList("Search_EmployeeName", Model.SearchView.EmployeeNameList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
+                    @Html.HiddenFor(model => model.SearchView.EmployeeName)
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="SearchView_PoliceNumber">Police Number</label>
-                @Html.DropDownList("Search_PoliceNumber", Model.SearchView.PoliceNumberList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                @Html.HiddenFor(model => model.SearchView.PoliceNumber)
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="SearchView_EmployeeName">Employee Name</label>
-                @Html.DropDownList("Search_EmployeeName", Model.SearchView.EmployeeNameList, new { @class = "form-control chosen", @data_live_search = true, @multiple = "multiple" })
-                @Html.HiddenFor(model => model.SearchView.EmployeeName)
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label class="control-label">Show Data</label>
-                @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
-            </div>
-        </div>
+       <div class="row">
+           <div class="col-md-4">
+               <div class="form-group">
+                   <label class="control-label">Show Data</label>
+                   @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control", onchange = "TableChange()" })
+               </div>
+           </div>
+       </div>
         <div class="clearfix"></div>
         <div class="col-md-12">
             <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
@@ -80,6 +84,15 @@
 </section>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function TableChange() {
+        var ShowTable = $('#SearchView_Table').val();
+        if (ShowTable == "2") {
+            $('#btnNew').hide();
+        }
+        else {
+            $('#btnNew').show();
+        }
+    }
     function LoadingShow() {
         $('#LoadingModal').show();
     }
@@ -140,6 +153,7 @@
                     .draw();
             });
         });
+        TableChange();
     }
 
     function getFunctionStr(arr) {

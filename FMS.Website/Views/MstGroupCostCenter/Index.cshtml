@@ -59,7 +59,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label">Show Data</label>
-                            @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control" })
+                            @Html.DropDownListFor(model => model.SearchView.Table, Model.SearchView.TableList, new { @class = "form-control", onchange="TableChange()" })
                         </div>
                     </div>
                 <div class="clearfix"></div>
@@ -77,6 +77,18 @@
 <!-- /.content -->
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script type="text/javascript">
+    function TableChange()
+    {
+        var ShowTable = $('#SearchView_Table').val();
+        if(ShowTable == "2")
+        {
+            $('#btnNew').hide();
+        }
+        else {
+            $('#btnNew').show();
+        }
+    }
+
     function LoadingShow() {
         $('#LoadingModal').show();
     }
@@ -135,6 +147,7 @@
                     .draw();
             });
         });
+        TableChange();
     }
 
     function getFunctionStr(arr) {
