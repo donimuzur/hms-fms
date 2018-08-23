@@ -13,7 +13,7 @@
             <i class="fa fa-download"></i> Export
         </a>
     }
-    
+
 </div>
 
 <section class="content">
@@ -24,33 +24,38 @@
 
         }
 
-        <div class="row col-md-12">
-            @using (Ajax.BeginForm("Completed", "TraCcf",
-                  new AjaxOptions
-                  {
-                      HttpMethod = "POST",
-                      InsertionMode = InsertionMode.Replace,
-                      UpdateTargetId = "contenttable",
-                      OnComplete = "setupDataTables",
-                      OnBegin = "LoadingShow",
-                      OnSuccess = "LoadingHide",
-                      OnFailure = "LoadingHide",
-                  }))
-            {
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="SearchView_Table">Show Data</label>
-                        @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control" })
-                        @Html.HiddenFor(model => model.SearchView.Table)
-                    </div>
+        if (Model.CurrentLogin.UserRole == Enums.UserRole.Administrator)
+        {
+            <div class="wpanel">
+                <div class="row col-md-12">
+                    @using (Ajax.BeginForm("Completed", "TraCcf",
+                          new AjaxOptions
+                          {
+                              HttpMethod = "POST",
+                              InsertionMode = InsertionMode.Replace,
+                              UpdateTargetId = "contenttable",
+                              OnComplete = "setupDataTables",
+                              OnBegin = "LoadingShow",
+                              OnSuccess = "LoadingHide",
+                              OnFailure = "LoadingHide",
+                          }))
+                    {
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="SearchView_Table">Show Data</label>
+                                @Html.DropDownList("Search_Table", Model.SearchView.TableList, new { @class = "form-control" })
+                                @Html.HiddenFor(model => model.SearchView.Table)
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-12">
+                            <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
+                            <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
+                        </div>
+                    }
                 </div>
-                <div class="clearfix"></div>
-                <div class="col-md-12">
-                    <button id="btn-filter" type="submit" class="btn btn-primary">Filter</button>
-                    <button id="btn-reset" type="button" class="btn btn-default">Reset</button>
-                </div>
-            }
-        </div>
+            </div>
+        }
     }
     else
     {
