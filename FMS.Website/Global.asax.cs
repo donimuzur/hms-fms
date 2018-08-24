@@ -140,6 +140,7 @@ namespace FMS.Website
             RptPOMapper.Initialize();
             RptCCFMapper.Initialize();
             KpiMonitoringMapper.Initialize();
+            VehicleSpectMapper.Initialize();
 
             // 1. Create a new Simple Injector container
             var container = new Container();
